@@ -1,0 +1,581 @@
+id: dev.rlxos.toolchain
+version: 2109
+about: |
+  Toolchain for rlxos
+
+# TODO: add cmake, yaml-cpp, librlx, pkgupd
+
+compile: true
+split: false
+clean: true
+pack: none
+
+prescript: |
+  if [[ ! -L /tools ]] || [[ $(realpath /tools) != ${TOOLS} ]] || [[ ! -d ${TOOLS} ]] ; then
+    echo "Please run configure"
+    exit 1
+  fi
+
+packages:
+  - id: binutils-stage1
+    dir: binutils-2.36.1
+    sources:
+      - http://ftp.gnu.org/gnu/binutils/binutils-2.36.1.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          --prefix=/tools
+          --with-sysroot=${RLXOS}
+          --target=${RLXTGT}
+          --disable-nls
+          --disable-werror
+          --with-lib-path=/tools/bin:/tools/lib32
+    
+    postscript: |
+      ln -sv lib /tools/lib64
+      mkdir -p /tools/lib32
+
+  - id: gcc-pass1
+    dir: gcc-11.1.0
+    sources:
+      - http://ftp.gnu.org/gnu/gcc/gcc-11.1.0/gcc-11.1.0.tar.xz
+      - http://ftp.gnu.org/gnu/gmp/gmp-6.2.0.tar.xz
+      - https://ftp.gnu.org/gnu/mpc/mpc-1.2.1.tar.gz
+      - http://www.mpfr.org/mpfr-4.1.0/mpfr-4.1.0.tar.xz
+
+    prescript: |
+      mv -v ../mpfr-4.1.0 mpfr
+      mv -v ../mpc-1.2.1 mpc
+      mv -v ../gmp-6.2.0 gmp
+
+      for file in gcc/config/linux.h gcc/config/i386/linux.h gcc/config/i386/linux64.h
+      do
+        cp -uv $file $file.orig
+        sed -e "s@/lib\(64\)\?\(32\)\?/ld@/tools&@g" \
+          -e "s@/usr@/tools@g" $file.orig > $file
+        echo "
+      #undef STANDARD_STARTFILE_PREFIX_1
+      #undef STANDARD_STARTFILE_PREFIX_2
+      #define STANDARD_STARTFILE_PREFIX_1 \"/tools/lib/\"
+      #define STANDARD_STARTFILE_PREFIX_2 \"\"" >> $file
+        touch $file.orig
+      done
+
+      sed -i -e "s@/lib/ld-linux.so.2@/lib32/ld-linux.so.2@g" gcc/config/i386/linux64.h
+      sed -i -e "/MULTILIB_OSDIRNAMES/d" gcc/config/i386/t-linux64
+      echo "MULTILIB_OSDIRNAMES = m64=../lib m32=../lib32 mx32=../libx32" >> gcc/config/i386/t-linux64
+
+    flags:
+        - id: configure
+          only: true
+          value: >
+            --target=${RLXTGT}
+            --prefix=/tools
+            --with-glibc-version=2.11
+            --with-sysroot=${RLXOS}
+            --with-newlib
+            --without-headers
+            --with-local-prefix=/tools
+            --with-native-system-header-dir=/tools/include
+            --disable-nls
+            --disable-shared
+            --disable-decimal-float
+            --disable-threads
+            --disable-libatomic
+            --disable-libgomp
+            --disable-libmpx
+            --disable-libquadmath
+            --disable-libssp
+            --disable-libvtv
+            --disable-libstdcxx
+            --enable-languages=c,c++
+            --with-multilib-list=m32,m64
+
+  
+  - id: kernel-headers
+    dir: linux-5.12.10
+    sources:
+      - https://www.kernel.org/pub/linux/kernel/v5.x/linux-5.12.10.tar.xz
+    plugin: script
+
+    script: |
+      make mrproper
+      make headers
+
+      find usr/include -name ".*" -delete
+      rm usr/include/Makefile
+      mkdir -p /tools/include
+      cp -rv usr/include/* /tools/include
+
+  
+  - id: glibc-32
+    dir: glibc-2.33
+    sources:
+      - http://ftp.gnu.org/gnu/glibc/glibc-2.33.tar.xz
+    
+    prescript: |
+      echo slibdir=/tools/lib32 > configparms
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          --prefix=/tools
+          --host=${RLXTGT32}
+          --build=$(../scripts/config.guess)
+          --libdir=/tools/lib32
+          --enable-kernel=3.2
+          --with-headers=/tools/include
+          CC="${RLXTGT}-gcc -m32"
+          CXX="${RLXTGT}-g++ -m32"
+
+  - id: glibc
+    dir: glibc-2.33
+    sources:
+      - http://ftp.gnu.org/gnu/glibc/glibc-2.33.tar.xz
+
+    flags:
+      - id: configure
+        only: true
+        value: >
+          --prefix=/tools
+          --host=${RLXTGT}
+          --build=$(../scripts/config.guess)
+          --enable-kernel=3.2
+          --with-headers=/tools/include
+  
+  - id: libstdcxx32
+    dir: gcc-11.1.0/libstdc++-v3
+    sources:
+      - http://ftp.gnu.org/gnu/gcc/gcc-11.1.0/gcc-11.1.0.tar.xz
+
+    flags:
+      - id: configure
+        only: true
+        value: >
+          --host=${RLXTGT32}
+          --prefix=/tools
+          --libdir=/tools/lib32
+          --disable-multilib
+          --disable-nls
+          --disable-libstdcxx-threads
+          --disable-libstdcxx-pch
+          --with-gxx-include-dir=/tools/${RLXTGT}/include/c++/11.1.0
+          CC="${RLXTGT}-gcc -m32"
+          CXX="${RLXTGT}-g++ -m32"
+
+  - id: libstdcxx
+    dir: gcc-11.1.0/libstdc++-v3
+    sources:
+      - http://ftp.gnu.org/gnu/gcc/gcc-11.1.0/gcc-11.1.0.tar.xz
+
+    flags:
+      - id: configure
+        only: true
+        value: >
+          --host=${RLXTGT}
+          --prefix=/tools
+          --disable-multilib
+          --disable-nls
+          --disable-libstdcxx-threads
+          --disable-libstdcxx-pch
+          --with-gxx-include-dir=/tools/${RLXTGT}/include/c++/11.1.0
+
+  - id: binutils-stage2
+    dir: binutils-2.36.1
+    sources:
+      - http://ftp.gnu.org/gnu/binutils/binutils-2.36.1.tar.xz
+    
+    environ:
+      - CC="${RLXTGT}-gcc"
+      - AR="${RLXTGT}-ar"
+      - RANLIB="${RLXTGT}-ranlib"
+
+    flags:
+      - id: configure
+        only: true
+        value: >
+          --prefix=/tools
+          --disable-nls
+          --disable-werror
+          --with-lib-path=/tools/lib
+          --with-sysroot
+    
+    postscript: |
+      cd ${pkgupd_srcdir}/build_binutils-stage2
+      make -C ld clean
+      make -C ld LIB_PATH=/usr/lib:/usr/lib32
+      cp -v ld/ld-new /tools/bin
+
+  - id: gcc-pass2
+    dir: gcc-11.1.0
+    sources:
+      - http://ftp.gnu.org/gnu/gcc/gcc-11.1.0/gcc-11.1.0.tar.xz
+      - http://ftp.gnu.org/gnu/gmp/gmp-6.2.0.tar.xz
+      - https://ftp.gnu.org/gnu/mpc/mpc-1.2.1.tar.gz
+      - http://www.mpfr.org/mpfr-4.1.0/mpfr-4.1.0.tar.xz
+
+    prescript: |
+      mv -v ../mpfr-4.1.0 mpfr
+      mv -v ../mpc-1.2.1 mpc
+      mv -v ../gmp-6.2.0 gmp
+
+      cat gcc/limitx.h gcc/glimits.h gcc/limity.h > \
+        $(dirname $($RLXTGT-gcc -print-libgcc-file-name))/include-fixed/limits.h
+
+      for file in gcc/config/linux.h gcc/config/i386/linux.h gcc/config/i386/linux64.h
+      do
+        cp -uv $file $file.orig
+        sed -e "s@/lib\(64\)\?\(32\)\?/ld@/tools&@g" \
+          -e "s@/usr@/tools@g" $file.orig > $file
+        echo "
+      #undef STANDARD_STARTFILE_PREFIX_1
+      #undef STANDARD_STARTFILE_PREFIX_2
+      #define STANDARD_STARTFILE_PREFIX_1 \"/tools/lib/\"
+      #define STANDARD_STARTFILE_PREFIX_2 \"\"" >> $file
+        touch $file.orig
+      done
+
+      sed -i -e "s@/lib/ld-linux.so.2@/lib32/ld-linux.so.2@g" gcc/config/i386/linux64.h
+      sed -i -e "/MULTILIB_OSDIRNAMES/d" gcc/config/i386/t-linux64
+      echo "MULTILIB_OSDIRNAMES = m64=../lib m32=../lib32 mx32=../libx32" >> gcc/config/i386/t-linux64
+
+    environ:
+      - CC="${RLXTGT}-gcc"
+      - CXX="${RLXTGT}-g++"
+      - AR="${RLXTGT}-ar"
+      - RANLIB="${RLXTGT}-ranlib"
+
+
+    flags:
+      - id: configure
+        only: true
+        value: >
+          --prefix=/tools
+          --with-local-prefix=/tools
+          --with-native-system-header-dir=/tools/include
+          --enable-languages=c,c++
+          --disable-libstdcxx-pch
+          --disable-bootstrap
+          --disable-libgomp
+          --with-multilib-list=m32,m64
+
+    postscript: |
+      ln -sv gcc /tools/bin/cc
+    
+  
+  - id: m4
+    dir: m4-1.4.19
+    sources:
+      - http://ftp.gnu.org/gnu/m4/m4-1.4.19.tar.xz
+    
+    prescript: |
+      sed -i "s/IO_ftrylockfile/IO_EOF_SEEN/" lib/*.c
+      echo "#define _IO_IN_BACKUP 0x100" >> lib/stdio-impl.h
+    flags:
+      - id: configure
+        only: true
+        value: --prefix=/tools
+
+  - id: ncurses
+    dir: ncurses-6.2
+    sources:
+      - http://ftp.gnu.org/gnu/ncurses/ncurses-6.2.tar.gz
+
+    prescript: |
+      sed -i s/mawk// configure
+
+    flags:
+      - id: configure
+        only: true
+        value: >
+          --prefix=/tools
+          --with-shared
+          --without-debug
+          --without-ada
+          --enable-widec
+          --enabel-overwrite
+
+    postscript: |
+      ln -s libncursesw.so /tools/lib/libncurses.so
+
+  - id: bash
+    dir: bash-5.1
+    sources:
+      - http://ftp.gnu.org/gnu/bash/bash-5.1.tar.gz
+
+    flags:
+      - id: configure
+        only: true
+        value: >
+          --prefix=/tools
+          --without-bash-malloc
+        
+    postscript: |
+      ln -sv bash /tools/bin/sh
+
+  - id: bison
+    dir: bison-3.7.6
+    sources:
+      - http://ftp.gnu.org/gnu/bison/bison-3.7.6.tar.xz
+
+    flags:
+      - id: configure
+        only: true
+        value: >
+          --prefix=/tools
+
+  - id: bzip2
+    dir: bzip2-1.0.8
+    sources:
+      - https://www.sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz
+    plugin: script
+    script: |
+      make -f Makefile-libbz2_so
+      make clean
+      make
+      make PREFIX=/tools install
+      cp -v bzip2-shared /tools/bin/bzip2
+      cp -av libbz2.so* /tools/lib
+      ln -sv libbz2.so.1.0 /tools/lib/libbz2.so
+
+  - id: coreutils
+    dir: coreutils-8.32
+    sources:
+      - http://ftp.gnu.org/gnu/coreutils/coreutils-8.32.tar.xz
+
+    flags:
+      - id: configure
+        only: true
+        value: >
+          --prefix=/tools
+          --enable-install-program=hostname
+
+  - id: diffutils
+    dir: diffutils-3.7
+    sources:
+      - http://ftp.gnu.org/gnu/diffutils/diffutils-3.7.tar.xz
+
+    flags:
+      - id: configure
+        only: true
+        value: >
+          --prefix=/tools
+
+  - id: file
+    dir: file-5.40
+    sources:
+      - ftp://ftp.astron.com/pub/file/file-5.40.tar.gz
+
+    flags:
+      - id: configure
+        only: true
+        value: >
+          --prefix=/tools
+  
+  - id: findutils
+    dir: findutils-4.8.0
+    sources:
+      - http://ftp.gnu.org/gnu/findutils/findutils-4.8.0.tar.xz
+
+    flags:
+      - id: configure
+        only: true
+        value: >
+          --prefix=/tools
+
+  - id: gawk
+    dir: gawk-5.1.0
+    sources:
+      - http://ftp.gnu.org/gnu/gawk/gawk-5.1.0.tar.xz
+
+    flags:
+      - id: configure
+        only: true
+        value: >
+          --prefix=/tools
+
+  - id: gettext
+    dir: gettext-0.21
+    sources:
+      - http://ftp.gnu.org/gnu/gettext/gettext-0.21.tar.xz
+
+    plugin: script
+    script: |
+      ./configure --disable-shared
+      make -j1
+      cp -v gettext-tools/src/msgfmt \
+            gettext-tools/src/msgmerge \
+            gettext-tools/src/xgettext \
+            /tools/bin
+
+  - id: grep
+    dir: grep-3.6
+    sources:
+      - http://ftp.gnu.org/gnu/grep/grep-3.6.tar.xz
+
+    flags:
+      - id: configure
+        only: true
+        value: >
+          --prefix=/tools
+  
+  - id: gzip
+    dir: gzip-1.10
+    sources:
+      - http://ftp.gnu.org/gnu/gzip/gzip-1.10.tar.xz
+
+    flags:
+      - id: configure
+        only: true
+        value: >
+          --prefix=/tools
+
+  - id: make
+    dir: make-4.3
+    sources:
+      - http://ftp.gnu.org/gnu/make/make-4.3.tar.gz
+
+    flags:
+      - id: configure
+        only: true
+        value: >
+          --prefix=/tools
+          --without-guile
+
+  - id: patch
+    dir: patch-2.7.6
+    sources:
+      - http://ftp.gnu.org/gnu/patch/patch-2.7.5.tar.xz
+
+    flags:
+      - id: configure
+        only: true
+        value: >
+          --prefix=/tools
+
+  - id: perl
+    dir: perl-5.34.0
+    sources:
+      - https://www.cpan.org/src/5.0/perl-5.34.0.tar.xz
+
+    plugin: script
+    script: |
+      sh Configure -des -Dprefix=/tools -Dlibs=-lm
+      make
+      cp -v perl cpan/podlators/scripts/pod2man /tools/bin
+      mkdir -pv /tools/lib/perl5/5.34.0
+      cp -Rv lib/* /tools/lib/perl5/5.34.0
+
+  - id: python
+    dir: python-3.9.5
+    sources:
+      - https://www.python.org/ftp/python/3.9.5/Python-3.9.5.tar.xz
+
+    flags:
+      - id: configure
+        only: true
+        value: >
+          --prefix=/tools
+          --without-ensurepip
+
+  - id: sed
+    dir: sed-4.8
+    sources:
+      - http://ftp.gnu.org/gnu/sed/sed-4.8.tar.xz
+
+    flags:
+      - id: configure
+        only: true
+        value: >
+          --prefix=/tools
+  
+  - id: tar
+    dir: tar-1.34
+    sources:
+      - http://ftp.gnu.org/gnu/tar/tar-1.34.tar.xz
+
+    flags:
+      - id: configure
+        only: true
+        value: >
+          --prefix=/tools
+
+  - id: texinfo
+    dir: texinfo-6.7
+    sources:
+      - http://ftp.gnu.org/gnu/texinfo/texinfo-6.7.tar.xz
+
+    flags:
+      - id: configure
+        only: true
+        value: >
+          --prefix=/tools
+
+  - id: xz
+    dir: xz-5.2.5
+    sources:
+      - http://ftp.gnu.org/gnu/xz/xz-5.2.5.tar.xz
+
+    flags:
+      - id: configure
+        only: true
+        value: >
+          --prefix=/tools
+  
+  - id: openssl
+    dir: openssl-1.1.1k
+    sources:
+      - https://openssl.org/source/openssl-1.1.1k.tar.gz
+
+    flags:
+      - id: configure
+        only: true
+        value: >
+          --prefix=/tools
+          --openssldir=/tools/etc/ssl
+          --libdir=lib
+          shared
+          no-ssl3-method
+
+      - id: install
+        value: -j1 MANDIR=/tools/share/man MANSUFFIX=ssl
+
+  - id: ca-certificates
+    dir: .
+    sources:
+      - https://curl.se/ca/cacert-2021-01-19.pem
+    
+    plugin: script
+    script: |
+      install -D -m 644 ${pkgupd_srcdir}/cacert-2021-01-19.pem \
+        /tools/etc/ssl/cert.pem
+    
+  - id: curl
+    dir: curl-7.77.0
+    sources:
+      - https://curl.haxx.se/download/curl-7.77.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          --prefix=/tools
+          --disable-static
+          --enable-threaded-resolver
+          --with-openssl
+          --with-ca-bundle=/tools/etc/ssl/cert/pem
+
+  - id: libarchive
+    dir: libarchive-3.5.1
+    sources:
+      - https://github.com/libarchive/libarchive/releases/download/3.5.1/libarchive-3.5.1.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          --prefix=/tools
+          --without-xml2

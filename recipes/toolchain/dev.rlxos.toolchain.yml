@@ -658,4 +658,19 @@ packages:
 
       install -v -D -m 644 ${FILES}/passwd ${RLXOS}/etc/passwd
       install -v -D -m 644 ${FILES}/group ${RLXOS}/etc/group
+
+  - id: strip
+    dir: .
+
+    plugin: script
+    script: |
+      set +e
+
+      strip --strip-debug /tools/lib/*
+      /usr/bin/strip --strip-unneeded /tools/bin/* /tools/sbin/*
+      rm -rf /tools/info /tools/man /tools/doc /tools/share/info /tools/share/man /tools/share/doc
+      find /tools/lib /tools/libexec -name \*.la -delete
+
+      strip --strip-debug /tools/lib32/*
+      find /tools/lib32 -name \*.la -delete
       

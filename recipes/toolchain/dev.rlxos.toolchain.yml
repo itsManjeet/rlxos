@@ -574,7 +574,7 @@ packages:
           --disable-static
           --enable-threaded-resolver
           --with-openssl
-          --with-ca-bundle=/tools/etc/ssl/cert/pem
+          --with-ca-bundle=/tools/etc/ssl/cert.pem
 
   - id: libarchive
     dir: libarchive-3.5.1
@@ -656,8 +656,8 @@ packages:
       ln -svf bash ${RLXOS}/bin/sh
       ln -svf /proc/self/mounts ${RLXOS}/etc/mtab
 
-      install -v -D -m 644 ${FILES}/passwd ${RLXOS}/etc/passwd
-      install -v -D -m 644 ${FILES}/group ${RLXOS}/etc/group
+      install -v -D -m 644 ${FILES}/fs/passwd ${RLXOS}/etc/passwd
+      install -v -D -m 644 ${FILES}/fs/group ${RLXOS}/etc/group
 
   - id: strip
     dir: .

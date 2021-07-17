@@ -1,0 +1,14 @@
+id: iana-etc
+version: 20210611
+about: |
+  Provides data for network services and protocols
+
+sources:
+  - https://github.com/Mic92/iana-etc/releases/download/20210611/iana-etc-20210611.tar.gz
+
+packages:
+  - id: pkg
+    dir: iana-etc-20210611
+    plugin: script
+    script: |
+      install -v -D -m 644 services protocols -t ${pkgupd_pkgdir}/etc/

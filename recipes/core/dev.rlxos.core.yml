@@ -1,0 +1,17 @@
+id: dev.rlxos.core
+version: 2209
+about: |
+  core packages for rlxos
+
+depends:
+  runtime:
+    - man-pages
+    - glibc
+
+packages:
+  - id: config
+    dir: .
+    plugin: script
+    script: |
+      mkdir -p ${pkgupd_pkgdir}/usr/share/rlxos
+      echo 2209 > ${pkgupd_pkgdir}/usr/share/rlxos/version

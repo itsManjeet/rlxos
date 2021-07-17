@@ -1,0 +1,40 @@
+#
+# /etc/profile: System wide profile
+#
+
+export PATH=/usr/bin:/opt/bin:/apps
+
+PS1="\u [ \W ] -> "
+if [[ $EUID -eq 0 ]] ; then
+	unset HISTFILE
+	PS1="\u [ \W ] \$ "
+fi
+
+export HISTSIZE=1000
+export HISTIGNORE="&:[bf]g:exit"
+
+export XDG_DATA_DIRS=${XDG_DATA_DIRS:-/usr/share:/opt/share}
+export XDG_CONFIG_DIRS=${XDG_CONFIG_DIRS:-/etc/xdg:/opt/xdg}
+export XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR:-/tmp/xdg-$USER}
+export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/opt/lib/pkgconfig"
+
+export MANPATH="/usr/share/man:/opt/share/man"
+export INFOPATH="/usr/share/info:/opt/share/info"
+
+if [ -z "$INPUTRC" -a ! -f "$HOME/.config/inputrc" ] ; then
+	INPUTRC=/etc/inputrc
+fi
+
+if [ "$(id -gn)" = "$(id -un)" -a $EUID -gt 99 ] ; then
+	umask 002
+else
+	umask 022
+fi
+
+[[ -f /etc/locale.conf ]] && . /etc/locale.conf
+
+for s in /etc/profile.d/*.sh ; do
+	if [[ -r $s ]] ; then
+		. $s
+	fi
+done

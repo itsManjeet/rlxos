@@ -1,0 +1,15 @@
+id: man-pages
+version: 5.11
+about: |
+  Linux man pages
+
+sources:
+  - https://www.kernel.org/pub/linux/docs/man-pages/man-pages-5.11.tar.xz
+
+packages:
+  - id: man
+    dir: man-pages-5.11
+
+    plugin: script
+    script: |
+      make DESTDIR=${pkgupd_pkgdir} install

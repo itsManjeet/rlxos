@@ -1,0 +1,32 @@
+id: filesystem
+version: 2107
+about: |
+  rlxos filesystem
+
+depends:
+  runtime:
+    - iana-etc
+
+packages:
+  - id: pkg
+    dir: filesystem-main
+
+    plugin: script
+    script: |
+      mkdir -p ${pkgupd_pkgdir}/usr/{bin,lib,share,include}
+      ln -sv bin ${pkgupd_pkgdir}/usr/sbin
+      ln -sv lib ${pkgupd_pkgdir}/usr/lib64
+
+      for i in bin sbin lib lib64; do
+        ln -sv usr/$i "${pkgupd_pkgdir}"/$i
+      done
+
+      for i in fstab group hosts inputrc \
+        issue lsb-release nsswitch.conf os-release \
+        passwd profile shells ; do
+        install -v -D -m 644 ${FILES}/fs/$i ${pkgupd_pkgdir}/etc/$i
+      done
+
+      install -v -D -m 644 ${FILES}/fs/bash_profile "${pkgupd_pkgdir}"/etc/skel/.bash_profile
+      install -v -D -m 644 ${FILES}/fs/user_profile "${pkgupd_pkgdir}"/etc/skel/.profile
+      

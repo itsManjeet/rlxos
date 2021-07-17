@@ -33,6 +33,7 @@ environ:
     - TOOLS=${TOOLS}
     - PATH=${TOOLS}/bin:/usr/bin:/opt/bin
     - DESTDIR=\"\"
+    - FILES=${BASEDIR}/files
 " > ${BASEDIR}/pkgupd.yml
 
 if [[ ! -L /tools ]] || [[ $(realpath /tools) != ${TOOLS} ]] ; then

@@ -3,8 +3,6 @@ version: 2109
 about: |
   Toolchain for rlxos
 
-# TODO: add cmake, yaml-cpp, librlx, pkgupd
-
 compile: true
 split: false
 clean: true
@@ -579,3 +577,44 @@ packages:
         value: >
           --prefix=/tools
           --without-xml2
+
+  - id: libyaml-cpp
+    dir: yaml-cpp-yaml-cpp-0.7.0
+    sources:
+      - https://github.com/jbeder/yaml-cpp/archive/refs/tags/yaml-cpp-0.7.0.tar.gz
+    
+    flags:
+        - id: configure
+          only: true
+          value: >
+            -DCMAKE_INSTALL_PREFIX=/tools
+            -DCMAKE_TOOLCHAIN_FILE=${FILES}/cross-compilation.cmake
+            -DYAML_BUILD_SHARED_LIBS=ON
+
+  - id: librlx
+    dir: librlx-main
+    sources:
+      - librlx-0.1.0.tar.gz::https://github.com/rlxos/librlx/archive/refs/heads/main.tar.gz
+    
+    environ:
+      - CXXFLAGS+=" -isystem ${pkgupd_srcdir}/ -fpermissive"
+    flags:
+        - id: configure
+          only: true
+          value: >
+            -DCMAKE_INSTALL_PREFIX=/tools
+            -DCMAKE_TOOLCHAIN_FILE=${FILES}/cross-compilation.cmake
+
+  - id: pkgupd
+    dir: pkgupd-main
+    sources:
+      - pkgupd-0.1.0.tar.gz::https://github.com/rlxos/pkgupd/archive/refs/heads/main.tar.gz
+    
+    environ:
+      - CXXFLAGS+=" -isystem /tools/include/rlx -fpermissive"
+    flags:
+        - id: configure
+          only: true
+          value: >
+            -DCMAKE_INSTALL_PREFIX=/tools
+            -DCMAKE_TOOLCHAIN_FILE=${FILES}/cross-compilation.cmake

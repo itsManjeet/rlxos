@@ -446,9 +446,12 @@ packages:
   - id: patch
     dir: patch-2.7.6
     sources:
-      - http://ftp.gnu.org/gnu/patch/patch-2.7.5.tar.xz
+      - http://ftp.gnu.org/gnu/patch/patch-2.7.6.tar.xz
 
     flags:
+      - id: configurator
+        value: configure
+
       - id: configure
         only: true
         value: >

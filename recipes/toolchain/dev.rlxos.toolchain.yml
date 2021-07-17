@@ -471,7 +471,7 @@ packages:
       cp -Rv lib/* /tools/lib/perl5/5.34.0
 
   - id: python
-    dir: python-3.9.5
+    dir: Python-3.9.5
     sources:
       - https://www.python.org/ftp/python/3.9.5/Python-3.9.5.tar.xz
 
@@ -521,6 +521,9 @@ packages:
       - http://ftp.gnu.org/gnu/xz/xz-5.2.5.tar.xz
 
     flags:
+      - id: configurator
+        value: configure
+
       - id: configure
         only: true
         value: >
@@ -531,6 +534,7 @@ packages:
     sources:
       - https://openssl.org/source/openssl-1.1.1k.tar.gz
 
+    prescript: ln -sv config configure
     flags:
       - id: configure
         only: true
@@ -560,6 +564,9 @@ packages:
       - https://curl.haxx.se/download/curl-7.77.0.tar.xz
     
     flags:
+      - id: configurator
+        value: configure
+
       - id: configure
         only: true
         value: >
@@ -575,12 +582,15 @@ packages:
       - https://github.com/libarchive/libarchive/releases/download/3.5.1/libarchive-3.5.1.tar.xz
     
     flags:
+      - id: configurator
+        value: configure
+
       - id: configure
         only: true
         value: >
           --prefix=/tools
           --without-xml2
-
+          
   - id: libyaml-cpp
     dir: yaml-cpp-yaml-cpp-0.7.0
     sources:
@@ -593,6 +603,10 @@ packages:
             -DCMAKE_INSTALL_PREFIX=/tools
             -DCMAKE_TOOLCHAIN_FILE=${FILES}/cross-compilation.cmake
             -DYAML_BUILD_SHARED_LIBS=ON
+            -DYAML_CPP_BUILD_CONTRIB=OFF
+            -DYAML_CPP_BUILD_TOOLS=OFF
+            -DYAML_CPP_BUILD_TESTS=OFF
+            -S ..
 
   - id: librlx
     dir: librlx-main
@@ -607,6 +621,7 @@ packages:
           value: >
             -DCMAKE_INSTALL_PREFIX=/tools
             -DCMAKE_TOOLCHAIN_FILE=${FILES}/cross-compilation.cmake
+            -S ..
 
   - id: pkgupd
     dir: pkgupd-main
@@ -621,3 +636,26 @@ packages:
           value: >
             -DCMAKE_INSTALL_PREFIX=/tools
             -DCMAKE_TOOLCHAIN_FILE=${FILES}/cross-compilation.cmake
+            -S ..
+
+  - id: links-and-dir
+    dir: .
+
+    plugin: script
+    script: |
+      mkdir -p ${RLXOS}/usr/{bin,lib}
+      mkdir -p ${RLXOS}/etc
+      ln -sv usr/bin ${RLXOS}/bin
+      for i in bash cat chmod dd echo ln mkdir pwd rm stty touch \
+               env install perl printf; do
+        ln -svf /tools/bin/$i ${RLXOS}/usr/bin/
+      done
+
+      ln -svf /tools/lib/libgcc_s.so /tools/lib/libgcc_s.so.1 ${RLXOS}/usr/lib
+      ln -svf /tools/lib/libstdc++.a /tools/lib/libstdc++.so /tools/lib/libstdc++.so.6 ${RLXOS}/usr/lib
+      ln -svf bash ${RLXOS}/bin/sh
+      ln -svf /proc/self/mounts ${RLXOS}/etc/mtab
+
+      install -v -D -m 644 ${FILES}/passwd ${RLXOS}/etc/passwd
+      install -v -D -m 644 ${FILES}/group ${RLXOS}/etc/group
+      

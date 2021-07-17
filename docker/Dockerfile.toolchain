@@ -1,0 +1,6 @@
+FROM scratch
+ADD . /
+ENV HOME=/root
+ENV PS1='(docker) \u:\w\$ '
+ENV PATH=/usr/bin:/tools/bin
+CMD ["/bin/bash"]

@@ -1,0 +1,10 @@
+services:
+    rlxos-toolchain:
+        image: rlxos.toolchain:latest
+
+        volumes: 
+            - ../pkgs:/var/cache/pkgupd/pkgs
+            - ../src:/var/cache/pkgupd/src
+            - ../recipes:/var/cache/pkgupd/recipes
+
+        command: ["/bin/sleep","infinity"]

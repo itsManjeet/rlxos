@@ -296,7 +296,7 @@ packages:
           --without-debug
           --without-ada
           --enable-widec
-          --enabel-overwrite
+          --enable-overwrite
 
     postscript: |
       ln -s libncursesw.so /tools/lib/libncurses.so

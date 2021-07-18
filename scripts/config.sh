@@ -18,8 +18,8 @@ echo "
 dir:
     recipes: ${BASEDIR}/recipes
     roots: ${RLXOS}
-    pkgs: ${BASEDIR}/pkgs
-    src: ${BASEDIR}/src
+    pkgs: ${BASEDIR}/build/pkgs
+    src: ${BASEDIR}/build/src
     data: ${RLXOS}/var/lib/pkgupd/data
     
 default:

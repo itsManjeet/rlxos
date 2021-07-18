@@ -7,6 +7,38 @@ depends:
   runtime:
     - man-pages
     - glibc
+    - tzdata
+    - file
+    - readline
+    - gcc:lib
+    - shadow
+    - bash
+    - grep
+    - sed
+    - psmisc
+    - libtool
+    - xz
+    - kmod
+    - coreutils
+    - diffutils
+    - findutils
+    - which
+    - inetutils
+    - procps-ng
+    - e2fsprogs
+    - less
+    - gzip
+    - iproute2
+    - kbd
+    - eudev
+    - man-db
+    - vim
+    - util-linux
+    - pkgupd
+    - sysklogd
+    - rc
+    - linux:kernel
+    - initramfs
 
 packages:
   - id: config

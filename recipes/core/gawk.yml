@@ -1,0 +1,19 @@
+id: gawk
+version: 5.1.0
+about: |
+  GNU version of awk
+
+depends:
+  runtime:
+    - glibc
+    - libmpfr
+
+sources:
+  - https://ftp.gnu.org/gnu/gawk/gawk-5.1.0.tar.xz
+
+packages:
+  - id: gawk
+    dir: gawk-5.1.0
+
+    prescript: |
+      sed -i 's/extras//' Makefile.in

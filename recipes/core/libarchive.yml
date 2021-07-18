@@ -1,0 +1,27 @@
+id: libarchive
+version: 3.5.1
+about: |
+  Library provides a single interface for reading/writing various compression formats
+
+depends:
+  runtime:
+    - acl
+    - bzip2
+    - expat
+    - lz4
+    - openssl
+    - xz
+    - zlib
+    - zstd
+
+
+sources:
+  - https://github.com/libarchive/libarchive/releases/download/3.5.1/libarchive-3.5.1.tar.xz
+
+packages:
+  - id: pkg
+    dir: libarchive-3.5.1
+
+    flags:
+      - id: configurator
+        value: configure

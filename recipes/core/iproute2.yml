@@ -1,0 +1,35 @@
+id: iproute2
+version: 5.13.0
+about: |
+  IP Routing Utilities
+
+depends:
+  runtime:
+    - glibc
+    - iptables
+    - elfutils:lib
+    - libcap
+
+  buildtime:
+    - flex
+    - bison
+
+sources:
+  - https://www.kernel.org/pub/linux/utils/net/iproute2/iproute2-5.13.0.tar.xz
+
+packages:
+  - id: pkg
+    dir: iproute2-5.13.0
+
+    prescript: |
+      sed -i "s/-Werror//" Makefile
+      sed -i /ARPD/d Makefile
+
+    plugin: script
+    script: |
+      make
+      make DESTDIR=${pkgupd_pkgdir} install
+
+    postscript: |
+      install -Dm0644 ${pkgupd_srcdir}/include/libnetlink.h "${pkgdir}/usr/include/libnetlink.h"
+      install -Dm0644 ${pkgupd_srcdir}/build_pkg/lib/libnetlink.a "${pkgdir}/usr/lib/libnetlink.a"

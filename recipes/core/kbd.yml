@@ -1,0 +1,28 @@
+id: kbd
+version: 2.4.0
+about: |
+  Key-table files, console fonts, and keyboard utilities
+
+depends:
+  runtime:
+    - glibc
+    - pam
+
+sources:
+  - https://www.kernel.org/pub/linux/utils/kbd/kbd-2.4.0.tar.xz
+  - http://www.linuxfromscratch.org/patches/lfs/development/kbd-2.4.0-backspace-1.patch
+
+packages:
+  - id: pkg
+    dir: kbd-2.4.0
+
+    prescript: |
+      patch -Np1 -i ../kbd-2.4.0-backspace-1.patch
+
+      sed -i "s/\(RESIZECONS_PROGS=\)yes/\1no/g" configure
+      sed -i "s/resizecons.8 //" docs/man/man8/Makefile.in      
+
+    flags:
+      - id: configure
+        value: >
+          --disable-vlock

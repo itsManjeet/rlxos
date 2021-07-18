@@ -1,0 +1,26 @@
+id: procps-ng
+version: 3.3.17
+about: |
+  Programs for monitoring processes
+
+depends:
+  runtime:
+    - glibc
+    - ncurses
+
+sources:
+  - https://sourceforge.net/projects/procps-ng/files/Production/procps-ng-3.3.17.tar.xz
+
+packages:
+  - id: pkg
+    dir: procps-3.3.17
+
+    flags:
+      - id: configurator
+        value: configure
+        
+      - id: configure
+        value: >
+          --disable-static
+          --disable-kill
+          --without-systemd

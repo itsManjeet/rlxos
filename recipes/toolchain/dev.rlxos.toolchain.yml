@@ -638,6 +638,7 @@ packages:
             -DCMAKE_TOOLCHAIN_FILE=${FILES}/cross-compilation.cmake
             -S ..
 
+
   - id: links-and-dir
     dir: .
 
@@ -650,6 +651,8 @@ packages:
                env install perl printf; do
         ln -svf /tools/bin/$i ${RLXOS}/usr/bin/
       done
+
+      ln -sfv /tools/lib/pkgupd /usr/lib/pkgupd
 
       ln -svf /tools/lib/libgcc_s.so /tools/lib/libgcc_s.so.1 ${RLXOS}/usr/lib
       ln -svf /tools/lib/libstdc++.a /tools/lib/libstdc++.so /tools/lib/libstdc++.so.6 ${RLXOS}/usr/lib

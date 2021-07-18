@@ -1,0 +1,19 @@
+id: initramfs
+version: 0.1.0
+about: |
+  rlxos initramfs tool
+
+depends:
+  runtime:
+    - bash
+    - kmod
+    - cpio
+
+packages:
+  - id: pkg
+    dir: .
+    
+    plugin: script
+    script: |
+      install -v -D -m 644 ${FILES}/initramfs/init.in.sh  ${pkgupd_pkgdir}/usr/share/initramfs/init.in
+      install -v -D -m 755 ${FILES}/initramfs/mkinitramfs.sh  ${pkgupd_pkgdir}/usr/bin/mkinitramfs

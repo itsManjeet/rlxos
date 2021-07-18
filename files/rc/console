@@ -1,0 +1,5 @@
+#UNICODE="1"
+#KEYMAP="de-latin1"
+#KEYMAP_CORRECTIONS="euro2"
+#LEGACY_CHARSET="iso-8859-15"
+#FONT="LatArCyrHeb-16 -m 8859-15"

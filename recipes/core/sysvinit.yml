@@ -1,0 +1,25 @@
+id: sysvinit
+version: 2.99
+about: |
+  Programs for controlling the startup, running, and shutdown of the system
+
+depends:
+  runtime:
+    - glibc
+    - procps-ng
+
+sources:
+  - http://download.savannah.gnu.org/releases/sysvinit/sysvinit-2.99.tar.xz
+  - https://www.linuxfromscratch.org/patches/lfs/development/sysvinit-2.99-consolidated-1.patch
+
+packages:
+  - id: pkg
+    dir: sysvinit-2.99
+
+    plugin: script
+    script: |
+      patch -Np1 -i ../sysvinit-2.99-consolidated-1.patch
+
+      make
+
+      make ROOT=${pkgupd_pkgdir} install

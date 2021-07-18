@@ -1,0 +1,25 @@
+id: vim
+version: 8.2.2984
+about: |
+  Vi Improved, a highly configurable, improved version of the vi text editor
+
+depends:
+  runtime:
+    - acl
+    - gawk
+
+sources:
+  - https://github.com/vim/vim/archive/v8.2.2984.tar.gz
+
+packages:
+  - id: pkg
+    dir: vim-8.2.2984
+
+    prescript: |
+      echo '#define SYS_VIMRC_FILE "/etc/vimrc"' >> src/feature.h
+
+    plugin: script
+    script: |
+      ./configure --prefix=/usr --enable-multibyte --disable-gui
+      make
+      make DESTDIR=${pkgupd_pkgdir} install

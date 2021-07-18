@@ -1,0 +1,36 @@
+id: pam
+version: 1.5.1
+about: |
+  Pluggable Authentication Modules library
+
+depends:
+  runtime:
+    - glibc
+
+packages:
+  - id: pkg
+    dir: Linux-PAM-1.5.1
+    sources:
+      - https://github.com/linux-pam/linux-pam/releases/download/v1.5.1/Linux-PAM-1.5.1.tar.xz
+    environ:
+      - SCONFIGDIR=/etc/security
+
+    flags:
+      - id: configure
+        value: >
+          --disable-db
+
+    postscript: |
+      chmod +s "${pkgupd_pkgdir}"/usr/bin/unix_chkpwd
+
+  - id: config
+    dir: .
+    plugin: script
+    script: |
+      for i in other \
+              system-account \
+              system-auth \
+              system-password \
+              system-session ; do
+        install -v -D -m 644 ${FILES}/pam/${i} -t ${pkgupd_pkgdir}/etc/pam.d/
+      done

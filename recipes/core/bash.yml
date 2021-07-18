@@ -1,0 +1,28 @@
+id: bash
+version: 5.1.8
+about: |
+  Bourne-Again SHell
+
+depends:
+  runtime:
+    - glibc
+    - readline
+    - ncurses
+
+sources:
+  - https://ftp.gnu.org/gnu/bash/bash-5.1.8.tar.gz
+
+packages:
+  - id: pkg
+    dir: bash-5.1.8
+    flags:
+      - id: configure
+        value: >
+          --without-bash-malloc
+          --with-installed-readline
+
+      - id: install
+        value: DESTDIR=${pkgupd_pkgdir}
+
+    postscript: |
+      ln -sv bash ${pkgupd_pkgdir}/usr/bin/sh

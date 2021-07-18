@@ -1,0 +1,17 @@
+id: autoconf
+version: 2.71
+about: |
+  Programs for producing shell scripts that can automatically configure source code
+
+depends:
+  runtime:
+    - gawk
+    - m4
+    - perl
+
+sources:
+  - https://ftp.gnu.org/gnu/autoconf/autoconf-2.71.tar.xz
+
+packages:
+  - id: pkg
+    dir: autoconf-2.71

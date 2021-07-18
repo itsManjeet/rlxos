@@ -1,0 +1,21 @@
+id: librlx
+version: 0.1.0
+about: |
+  A complete mess XD
+
+depends: 
+  runtime: 
+    - libyaml-cpp
+    - curl
+
+  buildtime: 
+    - cmake
+
+sources:
+  - librlx-0.1.0.tar.gz::https://github.com/rlxos/librlx/archive/refs/heads/main.tar.gz
+
+packages:
+  - id: librlx
+    dir: librlx-main
+    environ:
+      - CXXFLAGS+=" -isystem ${pkgupd_srcdir}/ -fpermissive"

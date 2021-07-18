@@ -1,0 +1,22 @@
+id: xz
+version: 5.2.5
+about: |
+  Compressing and Decompressing files
+
+sources:
+  - https://tukaani.org/xz/xz-5.2.5.tar.xz
+
+depends:
+  runtime:
+    - glibc
+
+packages:
+  - id: lib
+    dir: xz-5.2.5
+    flags:
+      - id: configurator
+        value: configure
+        
+      - id: configure
+        value: >
+          --disable-static

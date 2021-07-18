@@ -1,0 +1,20 @@
+id: libgmp
+version: 6.2.1
+about: |
+  Library for arbitrary precision arithmetic.
+
+sources:
+  - https://ftp.gnu.org/gnu/gmp/gmp-6.2.1.tar.xz
+
+depends:
+  runtime:
+    - glibc
+
+packages:
+  - id: lib
+    dir: gmp-6.2.1
+    flags:
+      - id: configure
+        value: >
+          --enable-cxx
+          --disable-static

@@ -1,0 +1,24 @@
+id: eudev
+version: 3.2.10
+about: |
+  Programs for dynamic creation of device nodes
+
+depends:
+  runtime:
+    - kbd
+    - kmod
+    - util-linux
+  buildtime:
+    - gperf
+    
+sources:
+  - https://dev.gentoo.org/~blueness/eudev/eudev-3.2.10.tar.gz
+
+packages:
+  - id: pkg
+    dir: eudev-3.2.10
+    flags:
+      - id: configure
+        value: >
+          --enable-manpages
+          --disable-static

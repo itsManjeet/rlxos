@@ -1,0 +1,24 @@
+id: bc
+version: 1.07.1
+about: |
+  An arbitrary precision calculator language
+
+depends:
+  runtime:
+    - readline
+
+environ:
+  - CC=gcc
+
+sources:
+  - https://github.com/gavinhoward/bc/releases/download/4.0.2/bc-4.0.2.tar.xz
+
+packages:
+  - id: pkg
+    dir: bc-4.0.2
+    plugin: script
+    script: |
+      CC=gcc ./configure --prefix=/usr -G -O3
+      make
+      make install DESTDIR=${pkgupd_pkgdir}
+

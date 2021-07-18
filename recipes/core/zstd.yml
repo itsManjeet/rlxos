@@ -1,0 +1,24 @@
+id: zstd
+version: 1.5.0
+about: |
+  Real-time compression algorithm, providing high compression ratios.
+
+sources:
+  - https://github.com/facebook/zstd/releases/download/v1.5.0/zstd-1.5.0.tar.gz
+
+depends:
+  runtime:
+    - glibc
+    - xz
+    - zlib
+
+packages:
+  - id: lib
+    dir: zstd-1.5.0
+    plugin: script
+
+    script: |
+      make
+
+      make prefix=${pkgupd_pkgdir}/usr install
+      rm -v ${pkgupd_pkgdir}/usr/lib/libzstd.a

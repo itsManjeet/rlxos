@@ -3,4 +3,5 @@ ADD . /
 ENV HOME=/root
 ENV PS1='(docker) \u:\w\$ '
 ENV PATH=/usr/bin:/tools/bin
+ENV PKGUPD_PLUGINS=/tools/lib/pkgupd
 CMD ["/bin/bash"]

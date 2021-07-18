@@ -1,0 +1,31 @@
+id: readline
+version: 8.1
+about: |
+  Set of libraries that offers command-line editing and history capabilities
+
+sources:
+  - https://ftp.gnu.org/gnu/readline/readline-8.1.tar.gz
+
+depends:
+  runtime:
+    - glibc
+
+environ:
+  - SHLIB_LIBS="-L/tools/lib -lncursesw"
+
+packages:
+  - id: lib
+    dir: readline-8.1
+
+    prescript: |
+      sed -i "/MV.*old/d" Makefile.in
+      sed -i "/{OLDSUFF}/c:" support/shlib-install
+
+    flags:
+      - id: configure
+        value: >
+          --disable-static
+          --with-curses
+          
+      - id: install
+        value: DESTDIR=${pkgupd_pkgdir}

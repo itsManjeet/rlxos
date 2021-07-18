@@ -1,0 +1,18 @@
+id: ca-certificates
+version: 20210119
+about: |
+  CA Root certificates bundle from Mozilla
+
+sources:
+  - https://curl.se/ca/cacert-2021-01-19.pem
+
+packages:
+  - id: cert
+    dir: .
+    plugin: script
+    script: |
+      install -D -m 644 ${pkgupd_srcdir}/cacert-2021-01-19.pem \
+        ${pkgupd_pkgdir}/etc/ssl/cert.pem
+      
+      install -d ${pkgupd_pkgdir}/etc/ssl/certs
+      ln -s /etc/ssl/cert.pem ${pkgupd_pkgdir}/etc/ssl/certs/ca-certificates.crt

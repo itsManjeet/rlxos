@@ -1,0 +1,21 @@
+id: libuv
+version: 1.41.1
+about: Multi-platform support library with a focus on asynchronous I/O
+
+depends:
+  runtime:
+    - glibc
+
+sources:
+  - https://dist.libuv.org/dist/v1.41.1/libuv-v1.41.1.tar.gz
+
+packages:
+  - id: lib
+    dir: libuv-v1.41.1
+
+    prescript: |
+      sh autogen.sh
+
+    flags:
+      - id: configurator
+        value: configure

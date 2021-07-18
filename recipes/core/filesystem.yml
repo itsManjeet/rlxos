@@ -17,16 +17,38 @@ packages:
       ln -sv bin ${pkgupd_pkgdir}/usr/sbin
       ln -sv lib ${pkgupd_pkgdir}/usr/lib64
 
+      mkdir -p ${pkgupd_pkgdir}/{dev,proc,sys,run}
+
       for i in bin sbin lib lib64; do
         ln -sv usr/$i "${pkgupd_pkgdir}"/$i
       done
 
-      for i in fstab group hosts inputrc \
+     
+
+      mkdir -p ${pkgupd_pkgdir}/{boot,home,mnt,srv,opt}
+      mkdir -p ${pkgupd_pkgdir}/etc/{opt,sysconfig}
+      mkdir -p ${pkgupd_pkgdir}/usr/share/{color,dict,doc,info,locale,man,misc,terminfo,zoneinfo}
+      mkdir -p ${pkgupd_pkgdir}/usr/share/man/man{1..8}
+      mkdir -p ${pkgupd_pkgdir}/var/{cache,local,log,mail,opt,spool}
+      mkdir -p ${pkgupd_pkgdir}/var/lib/{color,misc,locate}
+
+      ln -sv /run ${pkgupd_pkgdir}/var/run
+      ln -sv /run/lock ${pkgupd_pkgdir}/var/lock
+
+      for i in fstab group inputrc \
         issue lsb-release nsswitch.conf os-release \
         passwd profile shells ; do
         install -v -D -m 644 ${FILES}/fs/$i ${pkgupd_pkgdir}/etc/$i
       done
 
+      install -v -d -m 0750 ${pkgupd_pkgdir}/root
+      install -v -d -m 1777 ${pkgupd_pkgdir}/tmp ${pkgupd_pkgdir}/var/tmp
+
       install -v -D -m 644 ${FILES}/fs/bash_profile "${pkgupd_pkgdir}"/etc/skel/.bash_profile
       install -v -D -m 644 ${FILES}/fs/user_profile "${pkgupd_pkgdir}"/etc/skel/.profile
+
+      touch ${pkgupd_pkgdir}/var/log/{btmp,lastlog,faillog,wtmp}
+      chgrp -v 16 ${pkgupd_pkgdir}/var/log/lastlog
+      chmod -v 664 ${pkgupd_pkgdir}/var/log/lastlog
+      chmod -v 600 ${pkgupd_pkgdir}/var/log/btmp
       

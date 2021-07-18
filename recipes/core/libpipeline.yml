@@ -1,0 +1,15 @@
+id: libpipeline
+version: 1.5.3
+about: |
+  Library for manipulating pipelines of subprocesses in a flexible and convenient way
+
+depends:
+  runtime:
+    - glibc
+
+sources:
+  - https://download.savannah.gnu.org/releases/libpipeline/libpipeline-1.5.3.tar.gz
+
+packages:
+  - id: lib
+    dir: libpipeline-1.5.3

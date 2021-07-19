@@ -33,7 +33,6 @@ packages:
       mkdir -p ${pkgupd_pkgdir}/var/lib/{color,misc,locate}
 
       ln -sv /run ${pkgupd_pkgdir}/var/run
-      ln -sv /run/lock ${pkgupd_pkgdir}/var/lock
 
       for i in fstab group inputrc \
         issue lsb-release nsswitch.conf os-release \

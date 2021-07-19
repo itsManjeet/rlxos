@@ -39,7 +39,7 @@ mkdir -p ${_build_dir}
 echo "
 dir:
     recipes: ${BASEDIR}/recipes
-    pkgs: ${BASEDIR}/pkgs
+    pkgs: ${BASEDIR}/build/pkgs
     data: ${_build_dir}/var/lib/pkgupd/data
     root: ${_build_dir}
 " >${BASEDIR}/build/pkgupd.yml
@@ -59,9 +59,7 @@ fi
 
 rm -f ${BASEDIR}/build/iso.sfs
 
-#
-# add autologin
-sed 's#--noclear#--noclear --autologin root#' $_build_dir/etc/inittab >${BASEDIR}/overlay/etc/inittab
+
 fakeroot mksquashfs ${BASEDIR}/overlay ${BASEDIR}/build/iso.sfs \
     -b 1048576 -comp xz -Xdict-size 100%
 if [[ $? -ne 0 ]]; then

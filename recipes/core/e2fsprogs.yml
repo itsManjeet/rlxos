@@ -7,6 +7,7 @@ depends:
   runtime:
     - bash
     - bc
+    - util-linux
 
 sources:
   - https://www.kernel.org/pub/linux/kernel/people/tytso/e2fsprogs/v1.45.6/e2fsprogs-1.45.6.tar.xz

@@ -46,4 +46,9 @@ packages:
         ln -s /etc/init.d/agetty.tty${i} ${pkgupd_pkgdir}/etc/runlevels/default/
       done
 
+      for i in reboot poweroff halt ; do
+        install -v -D -m 0755 ${FILES}/${i}.sh ${pkgupd_pkgdir}/usr/bin/${i}
+      done
+      ln -sv openrc-init ${pkgupd_pkgdir}/usr/bin/init
+
 

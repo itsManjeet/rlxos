@@ -3,8 +3,8 @@ services:
         image: rlxos.toolchain:latest
 
         volumes: 
-            - ../pkgs:/var/cache/pkgupd/pkgs
-            - ../src:/var/cache/pkgupd/src
+            - ../build/pkgs:/var/cache/pkgupd/pkgs
+            - ../build/src:/var/cache/pkgupd/src
             - ../recipes:/var/cache/pkgupd/recipes
             - ../files:/var/cache/files
             - ../files/pkgupd.yml:/etc/pkgupd.yml

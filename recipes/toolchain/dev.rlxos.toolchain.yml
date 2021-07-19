@@ -515,6 +515,22 @@ packages:
         value: >
           --prefix=/tools
 
+  - id: util-linux
+    dir: util-linux-2.37
+    sources:
+      - https://www.kernel.org/pub/linux/utils/util-linux/v2.37/util-linux-2.37.tar.xz
+
+    flags:
+      - id: configure
+        only: true
+        value: >
+          --prefix=/tools
+          --without-python
+          --disable-makeinstall-chown
+          --without-systemdsystemunitdir
+          --without-ncurses
+          PKG_CONFIG=""
+
   - id: xz
     dir: xz-5.2.5
     sources:

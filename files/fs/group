@@ -21,4 +21,5 @@ mail:x:34:
 kvm:x:61:
 wheel:x:97:
 nogroup:x:99:
+uucp:x:986:
 users:x:999:

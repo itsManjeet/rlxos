@@ -50,6 +50,8 @@ popd
 
 rm -f ${BASEDIR}/build/root.sfs
 
+fakeroot mkdir -p ${_build_dir}/{dev,proc,sys}
+
 fakeroot mksquashfs ${_build_dir} ${BASEDIR}/build/root.sfs \
     -b 1048576 -comp xz -Xdict-size 100%
 if [[ $? -ne 0 ]]; then
@@ -100,13 +102,6 @@ if loadfont /boot/grub/fonts/unicode.pf2 ; then
     terminal_output gfxterm
 fi
 
-if background_image /boot/grub/splash.png ; then
-    set color_normal=light-gray/black
-    set color_highlight=white/black
-else
-    set color_normal=cyan/blue
-    set color_highlight=white/blue
-fi
 
 menuentry 'rlxos installer' {
     linux /boot/vmlinuz root=LABEL=RLXOS iso=1 quiet

@@ -30,13 +30,12 @@ depends:
     - gzip
     - iproute2
     - kbd
-    - eudev
     - man-db
     - vim
     - util-linux
     - pkgupd
-    - sysklogd
-    - openrc
+    - systemd
+    - dbus
     - linux:kernel
     - initramfs
 

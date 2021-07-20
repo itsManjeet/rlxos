@@ -15,7 +15,7 @@ depends:
     - readline
     - pam
     - shadow
-
+    - systemd
 
 packages:
   - id: pkg
@@ -37,6 +37,4 @@ packages:
           --disable-pylibmount
           --disable-static
           --without-python
-          --without-systemd
-          --without-systemdunitdir
           runstatedir=/run

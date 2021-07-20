@@ -1,0 +1,19 @@
+id: py-jinja2
+version: 3.0.1
+about: |
+  Python module that implements a simple pythonic template lanuage
+
+depends:
+  runtime:
+    - py-markupsafe
+
+sources:
+  - https://files.pythonhosted.org/packages/source/J/Jinja2/Jinja2-3.0.1.tar.gz
+
+packages:
+  - id: pkg
+    dir: Jinja2-3.0.1
+    plugin: script
+    script: |
+      python3 setup.py build
+      python3 setup.py install --root=${pkgupd_pkgdir} --optimize=1

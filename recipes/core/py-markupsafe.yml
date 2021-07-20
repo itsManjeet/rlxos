@@ -1,0 +1,19 @@
+id: py-markupsafe
+version: 2.0.1
+about: |
+  Python module that implements a XML/HTML/XHTML Markup safe string
+
+depends:
+  runtime:
+    - python
+
+sources:
+  - https://files.pythonhosted.org/packages/source/M/MarkupSafe/MarkupSafe-2.0.1.tar.gz
+
+packages:
+  - id: pkg
+    dir: MarkupSafe-2.0.1
+    plugin: script
+    script: |
+      python3 setup.py build
+      python3 setup.py install --root=${pkgupd_pkgdir} --optimize=1

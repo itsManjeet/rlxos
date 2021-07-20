@@ -1,5 +1,5 @@
 id: e2fsprogs
-version: 1.45.6
+version: 1.46.2
 about: |
   Utilities for handling the ext2, ext3 and ext4 file system
 
@@ -8,13 +8,14 @@ depends:
     - bash
     - bc
     - util-linux
+    - systemd
 
 sources:
-  - https://www.kernel.org/pub/linux/kernel/people/tytso/e2fsprogs/v1.45.6/e2fsprogs-1.45.6.tar.xz
+  - https://www.kernel.org/pub/linux/kernel/people/tytso/e2fsprogs/v1.46.2/e2fsprogs-1.46.2.tar.xz
 
 packages:
   - id: pkg
-    dir: e2fsprogs-1.45.6
+    dir: e2fsprogs-1.46.2
     flags:
       - id: configure
         value: >

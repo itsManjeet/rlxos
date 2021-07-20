@@ -17,7 +17,7 @@ packages:
       ln -sv bin ${pkgupd_pkgdir}/usr/sbin
       ln -sv lib ${pkgupd_pkgdir}/usr/lib64
 
-      mkdir -p ${pkgupd_pkgdir}/{dev,proc,sys,run}
+      mkdir -p ${pkgupd_pkgdir}/run
 
       for i in bin sbin lib lib64; do
         ln -sv usr/$i "${pkgupd_pkgdir}"/$i

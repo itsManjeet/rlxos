@@ -30,7 +30,7 @@ BINARIES="sh bash cat cp dd ls mkdir mknod mount \
          blkid dmesg findfs tail head \
          switch_root losetup touch install chroot agetty \
          truncate df awk mkfs.ext4 mkfs mkfs.ext2 mkfs.ext3
-         udevadm udevd killall"
+         udevadm killall"
 
 INITRD_DIR=$(mktemp -d /tmp/initramfs.XXXXXXXXXX)
 INIT_IN=${INIT_IN:-'/usr/share/initramfs/init.in'}
@@ -104,12 +104,13 @@ install_binary() {
 install_libraries() {
 
     copy /usr/lib/ld-linux-x86-64.so.2
+    copy /usr/lib/systemd/libsystemd-shared-249.so
 
     sort $unsorted | uniq | while read library; do
         if [[ "$library" == linux-vdso.so.1 ]] ||
             [[ "$library" == linux-gate.so.1 ]] ||
             [[ "$library" =~ ld-linux-x86-64.so.2 ]] ||
-            [[ "$library" =~ libsystemd-shared-247.so ]]; then
+            [[ "$library" =~ libsystemd-shared-249.so ]]; then
 
             continue
         fi
@@ -170,6 +171,8 @@ prepare_structure() {
 # required when booting from non native system (iso, live booting)
 install_udev() {
 
+    copy /lib/systemd/systemd-udevd
+    
     for i in ata_id scsi_id cdrom_id mtd_probe v4l_id; do
         install_binary /usr/lib/udev/${i}
     done
@@ -192,6 +195,7 @@ install_modules() {
     copy /usr/lib/modules/$KERNEL/kernel/drivers/scsi/sr_mod.ko.xz
     copy /usr/lib/modules/$KERNEL/kernel/fs/overlayfs/overlay.ko.xz
     copy /usr/lib/modules/$KERNEL/kernel/fs/hfsplus/hfsplus.ko.xz
+    copy /usr/lib/modules/$KERNEL/kernel/drivers/parport/parport.ko.xz
 
     for i in /usr/lib/modules/$KERNEL/modules.*; do
         copy $i

@@ -68,7 +68,7 @@ load_modules() {
         modprobe $m || rescue_shell "failed to load $m module"
     done
 
-    udevd --daemon --resolve-names=never
+    /lib/systemd/systemd-udevd --daemon --resolve-names=never
     udevadm trigger --action=add --type=subsystems
     udevadm trigger --action=add --type=devices
     udevadm trigger --action=change --type=devices
@@ -248,7 +248,7 @@ function main() {
         mount_root
     fi
 
-    killall -w udevd
+    killall -w /lib/systemd/systemd-udevd
 
     debug "checking resume"
     check_resume

@@ -521,6 +521,9 @@ packages:
       - https://www.kernel.org/pub/linux/utils/util-linux/v2.37/util-linux-2.37.tar.xz
 
     flags:
+      - id: configurator
+        value: configure
+
       - id: configure
         only: true
         value: >
@@ -668,7 +671,7 @@ packages:
         ln -svf /tools/bin/$i ${RLXOS}/usr/bin/
       done
 
-      ln -sfv /tools/lib/pkgupd /usr/lib/pkgupd
+      ln -sfv /tools/lib/pkgupd ${RLXOS}/usr/lib/pkgupd
 
       ln -svf /tools/lib/libgcc_s.so /tools/lib/libgcc_s.so.1 ${RLXOS}/usr/lib
       ln -svf /tools/lib/libstdc++.a /tools/lib/libstdc++.so /tools/lib/libstdc++.so.6 ${RLXOS}/usr/lib

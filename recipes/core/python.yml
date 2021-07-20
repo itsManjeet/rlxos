@@ -1,0 +1,31 @@
+id: python
+version: 3.9.6
+about: |
+  Python development environment
+
+depends:  
+  runtime:
+    - bzip2
+    - expat
+    - gdbm
+    - libffi
+    - openssl
+    - zlib
+
+sources:
+  - https://www.python.org/ftp/python/3.9.6/Python-3.9.6.tar.xz
+
+packages:
+  - id: pkg
+    dir: Python-3.9.6
+    flags:
+      - id: configure
+        value: >
+          --enable-shared
+          --with-system-expat
+          --with-system-ffi
+          --with-ensurepip=yes
+          --enable-optimization
+          --with-lto
+          --with-tzpath=/usr/share/zoneinfo
+          --enable-loadable-sqlite-extensions

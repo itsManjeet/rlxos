@@ -657,6 +657,38 @@ packages:
             -DCMAKE_TOOLCHAIN_FILE=${FILES}/cross-compilation.cmake
             -S ..
 
+  - id: expat
+    dir: expat-2.4.1 
+    sources:
+      -  https://prdownloads.sourceforge.net/expat/expat-2.4.1.tar.xz
+
+    flags:
+      - id: configurator
+        value: configure
+
+      - id: configure
+        only: true
+        value: >
+          --prefix=/tools
+
+  - id: dbus
+    dir: dbus-1.12.20
+    sources:
+      - https://dbus.freedesktop.org/releases/dbus/dbus-1.12.20.tar.gz
+
+    flags:
+      - id: configurator
+        value: configure
+
+      - id: configure
+        only: true
+        value: >
+          --prefix=/tools
+          --disable-systemd
+          --without-x
+          --disable-modular-tests
+          --disable-xml-docs
+          --disable-doxygen-docs
 
   - id: links-and-dir
     dir: .

@@ -15,6 +15,7 @@ depends:
     - libcap
     - sed
     - gawk
+    - lz4
 
   buildtime:
     - gcc
@@ -56,15 +57,16 @@ packages:
           -D install-tests=false
           -D sysusers=false
           -D rpmmacrosdir=no
+          -D pam=true
+          -D userdb=true
+          -D pam=true
+          -D lz4=true
           -D man=false
           -D mode=release
           -D kmod-path=/usr/bin/kmod
           -D mount-path=/usr/bin/mount
           -D umount-path=/usr/bin/umount
           -D sulogin-path=/usr/bin/sulogin
-
-    postscript: |
-      rm -rf ${pkgupd_pkgdir}/usr/lib/pam.d
 
 postinstall: |
   systemd-machine-id-setup

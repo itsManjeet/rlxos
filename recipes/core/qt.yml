@@ -24,7 +24,7 @@ sources:
   - https://download.qt.io/archive/qt/5.15/5.15.2/single/qt-everywhere-src-5.15.2.tar.xz
 
 prescript: |
-  cd ${PKGUPD_WORKDIR}/src/qt-everywhere-src-5.12.2
+  cd ${PKGUPD_WORKDIR}/src/qt-everywhere-src-5.15.2
   patch -Np1 -i ${FILES}/qt/qt-everywhere-src-5.15.2-CVE-2021-3481-1.patch
 
   sed -i "/utility/a #include <limits>"     qtbase/src/corelib/global/qglobal.h
@@ -34,7 +34,7 @@ prescript: |
 
 packages:
   - id: pkg
-    dir: qt-everywhere-src-5.12.2
+    dir: qt-everywhere-src-5.15.2
 
     flags:
       - id: configure

@@ -17,7 +17,7 @@ sources:
 
 packages:
   - id: pkg
-    dir: gdk-pixbuf-2.46.6
+    dir: gdk-pixbuf-2.42.6
     flags:
       - id: configure
         value: >

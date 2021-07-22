@@ -1,0 +1,17 @@
+id: graphite2
+version: 1.3.14
+about: |
+  A rendering engine for graphite fonts. These are TrueType fonts with additional tables containing smart rendering information and were originally developed to support complex non-Roman writing systems
+
+depends:
+  buildtime:
+    - cmake
+
+sources:
+  - https://github.com/silnrsi/graphite/releases/download/1.3.14/graphite2-1.3.14.tgz
+
+packages:
+  - id: pkg
+    dir: graphite2-1.3.14
+    prescript: |
+      sed -i "/cmptest/d" tests/CMakeLists.txt

@@ -1,0 +1,33 @@
+id: js
+version: 78.12.0 
+about: |
+  Mozilla's JavaScript engine written in C
+
+depends:
+  runtime:
+    - autoconf-2.13
+    - icu
+  buildtime:
+    - rustc
+    - which
+
+sources:
+  - https://archive.mozilla.org/pub/firefox/releases/78.12.0esr/source/firefox-78.12.0esr.source.tar.xz
+
+packages:
+  - id: pkg
+    dir: firefox-78.12.0esr.source
+
+    flags:
+      - id: configure
+        value: >
+          --with-intl-api
+          --with-system-zlib
+          --with-system-icu
+          --disable-jemalloc
+          --disable-debug-symbols
+          --enable-readline
+
+    postscript: |
+      rm -v ${pkgupd_pkgdir}/usr/lib/libjs_static.ajs
+      sed -i "/@NSPR_CFLAGS@/d" ${pkgupd_pkgdir}/usr/bin/js78-config

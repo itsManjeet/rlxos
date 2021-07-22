@@ -12,4 +12,4 @@ sources:
 
 packages:
   - id: lib
-    dir: libtiff-4.3.0
+    dir: tiff-4.3.0

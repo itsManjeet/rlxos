@@ -1,0 +1,13 @@
+id: yasm
+version: 1.3.0
+about: |
+  A complete rewrite of the NASM-2.15.05 assembler
+
+sources:
+  - https://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz
+
+packages:
+  - id: pkg
+    dir: yasm-1.3.0
+    prescript: |
+      sed -i "s#) ytasm.*#)#" Makefile.in 

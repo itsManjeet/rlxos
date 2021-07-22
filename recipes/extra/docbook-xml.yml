@@ -1,0 +1,114 @@
+id: docbook-xml
+version: 4.5
+about: |
+  Package contains document type definitions for verification of XML data files against the DocBook rule set
+
+depends:
+  runtime:
+    - libxml2
+
+sources:
+  - https://docbook.org/xml/4.1.2/docbkx412.zip
+  - https://www.docbook.org/xml/4.5/docbook-xml-4.5.zip
+  - https://www.docbook.org/xml/4.4/docbook-xml-4.4.zip
+  - https://www.docbook.org/xml/4.3/docbook-xml-4.3.zip
+  - https://www.docbook.org/xml/4.2/docbook-xml-4.2.zip
+
+packages:
+  - id: pkg
+    dir: .
+    plugin: script
+    script: |
+      for ver in 4.5 4.4 4.3 4.2; do
+        mkdir docbook-xml-$ver
+        cd docbook-xml-$ver
+        bsdtar -xf ${PKGUPD_SRCDIR}/docbook-xml-$ver.zip
+        install -v -d -m755 ${pkgupd_pkgdir}/usr/share/xml/docbook/xml-dtd-$ver
+        chown -R root:root .
+        cp -v -af docbook.cat *.dtd ent/ *.mod \
+          ${pkgupd_pkgdir}/usr/share/xml/docbook/xml-dtd-$ver/
+        cd -
+      done
+
+      mkdir docbook-xml-4.1.2
+      cd docbook-xml-4.1.2
+      bsdtar -xf ${PKGUPD_SRCDIR}/docbkx412.zip
+      install -v -d -m755 ${pkgupd_pkgdir}/usr/share/xml/docbook/xml-dtd-4.1.2
+      chown -R root:root .
+      cp -v -af docbook.cat *.dtd ent/ *.mod \
+        ${pkgupd_pkgdir}/usr/share/xml/docbook/xml-dtd-4.1.2/
+      cd -
+
+      install -v -d -m755 ${pkgupd_pkgdir}/etc/xml
+      xmlcatalog --noout --create ${pkgupd_pkgdir}/etc/xml/docbook
+
+      for vers in 4.1.2 4.2 4.3 4.4 4.5; do
+      xmlcatalog --noout --add "public" \
+          "-//OASIS//DTD DocBook XML V$vers//EN" \
+          "http://www.oasis-open.org/docbook/xml/$vers/docbookx.dtd" \
+          ${pkgupd_pkgdir}/etc/xml/docbook
+      xmlcatalog --noout --add "public" \
+          "-//OASIS//DTD DocBook XML CALS Table Model V$vers//EN" \
+          "file:///usr/share/xml/docbook/xml-dtd-$vers/calstblx.dtd" \
+          ${pkgupd_pkgdir}/etc/xml/docbook
+      xmlcatalog --noout --add "public" \
+          "-//OASIS//DTD XML Exchange Table Model 19990315//EN" \
+          "file:///usr/share/xml/docbook/xml-dtd-$vers/soextblx.dtd" \
+          ${pkgupd_pkgdir}/etc/xml/docbook
+      xmlcatalog --noout --add "public" \
+          "-//OASIS//ELEMENTS DocBook XML Information Pool V$vers//EN" \
+          "file:///usr/share/xml/docbook/xml-dtd-$vers/dbpoolx.mod" \
+          ${pkgupd_pkgdir}/etc/xml/docbook
+      xmlcatalog --noout --add "public" \
+          "-//OASIS//ELEMENTS DocBook XML Document Hierarchy V$vers//EN" \
+          "file:///usr/share/xml/docbook/xml-dtd-$vers/dbhierx.mod" \
+          ${pkgupd_pkgdir}/etc/xml/docbook
+      xmlcatalog --noout --add "public" \
+          "-//OASIS//ELEMENTS DocBook XML HTML Tables V$vers//EN" \
+          "file:///usr/share/xml/docbook/xml-dtd-$vers/htmltblx.mod" \
+          ${pkgupd_pkgdir}/etc/xml/docbook
+      xmlcatalog --noout --add "public" \
+          "-//OASIS//ENTITIES DocBook XML Notations V$vers//EN" \
+          "file:///usr/share/xml/docbook/xml-dtd-$vers/dbnotnx.mod" \
+          ${pkgupd_pkgdir}/etc/xml/docbook
+      xmlcatalog --noout --add "public" \
+          "-//OASIS//ENTITIES DocBook XML Character Entities V$vers//EN" \
+          "file:///usr/share/xml/docbook/xml-dtd-$vers/dbcentx.mod" \
+          ${pkgupd_pkgdir}/etc/xml/docbook
+      xmlcatalog --noout --add "public" \
+          "-//OASIS//ENTITIES DocBook XML Additional General Entities V$vers//EN" \
+          "file:///usr/share/xml/docbook/xml-dtd-$vers/dbgenent.mod" \
+          ${pkgupd_pkgdir}/etc/xml/docbook
+      xmlcatalog --noout --add "rewriteSystem" \
+          "http://www.oasis-open.org/docbook/xml/$vers" \
+          "file:///usr/share/xml/docbook/xml-dtd-$vers" \
+          ${pkgupd_pkgdir}/etc/xml/docbook
+      xmlcatalog --noout --add "rewriteURI" \
+          "http://www.oasis-open.org/docbook/xml/$vers" \
+          "file:///usr/share/xml/docbook/xml-dtd-$vers" \
+          ${pkgupd_pkgdir}/etc/xml/docbook
+      done     
+
+
+postinstall: |
+  if [ -e etc/xml/catalog.preserve ]; then
+    mv etc/xml/catalog.preserve etc/xml/catalog
+  elif [ ! -e etc/xml/catalog ]; then
+    xmlcatalog --noout --create etc/xml/catalog
+  fi
+  xmlcatalog --noout --add "delegatePublic" \
+    "-//OASIS//ENTITIES DocBook XML" \
+    "file:///etc/xml/docbook-xml" \
+    etc/xml/catalog
+  xmlcatalog --noout --add "delegatePublic" \
+    "-//OASIS//DTD DocBook XML" \
+    "file:///etc/xml/docbook-xml" \
+    etc/xml/catalog
+  xmlcatalog --noout --add "delegateSystem" \
+    "http://www.oasis-open.org/docbook/" \
+    "file:///etc/xml/docbook-xml" \
+    etc/xml/catalog
+  xmlcatalog --noout --add "delegateURI" \
+    "http://www.oasis-open.org/docbook/" \
+    "file:///etc/xml/docbook-xml" \
+    etc/xml/catalog

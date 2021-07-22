@@ -1,0 +1,15 @@
+id: xcb-proto
+version: 1.14.1
+about: |
+  XML-XCB protocol descriptions that libxcb uses to generate the majority of its code and API
+
+depends:
+  buildtime:
+    - libxml2
+
+sources:
+  - https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-1.14.1.tar.xz
+
+packages:
+  - id: pkg
+    dir: xcb-proto-1.14.1

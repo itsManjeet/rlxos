@@ -1,0 +1,28 @@
+id: gdk-pixbuf
+version: 2.42.6
+about: |
+  Package is a toolkit for image loading and pixel buffer manipulation
+
+# TODO: depends - gobject-introspection, librsvg
+depends:
+  runtime:
+    - glib
+    - libjpeg-turbo
+    - libpng
+    - shared-mime-info
+    - libtiff
+
+sources:
+  - https://download.gnome.org/sources/gdk-pixbuf/2.42/gdk-pixbuf-2.42.6.tar.xz
+
+packages:
+  - id: pkg
+    dir: gdk-pixbuf-2.46.6
+    flags:
+      - id: configure
+        value: >
+          --buildtype=release
+          -D gtk_doc=false
+
+postinstall: |
+  gdk-pixbuf-query-loaders --update-cache

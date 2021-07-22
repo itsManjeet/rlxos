@@ -1,0 +1,15 @@
+id: xcb-util-cursor
+version: 0.1.3
+about: |
+  Additional extensions to the XCB library
+
+depends:
+  runtime:
+    - xcb-util
+
+sources:
+  - https://xcb.freedesktop.org/dist/xcb-util-cursor-0.1.3.tar.bz2
+
+packages:
+  - id: configure
+    dir: xcb-util-cursor-0.1.3

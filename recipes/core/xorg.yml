@@ -1,0 +1,29 @@
+id: xorg
+version: 7
+about: |
+  Freely redistributable, open-source implementation of the X Window System
+
+depends:
+  runtime:
+    - util-macros
+    - xorgproto
+    - libxau
+    - libxdmcp
+    - xcb-proto
+    - libxcb
+    - xorg-lib
+    - xcb-util
+    - xcb-util-image
+    - xcb-util-keysyms
+    - xcb-util-renderutil
+    - xcb-util-wm
+    - xcb-util-cursor
+    - mesa
+    - xbitmap
+    - xorg-apps
+    - xcursor-themes
+    - xorg-fonts
+    - xkeyboardconfig
+    - xorg-server
+    - xorg-drivers
+    

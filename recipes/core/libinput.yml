@@ -1,0 +1,27 @@
+id: libinput
+version: 1.18.0
+about: |
+  Library that handles input devices for display servers and other applications that need to directly deal with input devices
+
+depends:
+  runtime:
+    - libevdev
+    - mtdev
+
+sources:
+  - https://www.freedesktop.org/software/libinput/libinput-1.18.0.tar.xz
+
+kernel:
+  - CONFIG_INPUT_UINPUT
+
+packages:
+  - id: lib
+    dir: libinput-1.18.0
+    flags:
+      - id: configure
+        value: >
+          -D debug-gui=false
+          --buildtype=release
+          -D tests=false
+          -D documentation=false
+          -D libwacom=false

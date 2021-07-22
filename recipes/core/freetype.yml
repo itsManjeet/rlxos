@@ -1,0 +1,30 @@
+id: freetype
+version: 2.10.4
+about: |
+  Library which allows applications to properly render TrueType fonts
+
+depends:
+  runtime:
+    - bzip2
+    - libpng
+    - zlib
+  
+packages:
+  - id: pkg
+    dir: freetype-2.10.4
+    sources:
+      - https://downloads.sourceforge.net/freetype/freetype-2.10.4.tar.xz
+      
+    prescript: |
+      sed -ri "s:.*(AUX_MODULES.*valid):\1:" modules.cfg
+      sed -r "s:.*(#.*SUBPIXEL_RENDERING) .*:\1:" -i include/freetype/config/ftoption.h
+
+    
+    flags:
+      - id: configurator
+        value: configure
+        
+      - id: configure
+        value: >
+          --enable-freetype-config
+          --disable-static

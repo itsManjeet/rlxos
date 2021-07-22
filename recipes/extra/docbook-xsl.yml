@@ -1,0 +1,59 @@
+id: docbook-xsl
+version: 1.79.2
+about: |
+  XSL Stylesheets package contains XSL stylesheets
+
+depends:
+  runtime:
+    - libxml2
+    - libxslt
+    - docbook-xml
+
+sources:
+  - https://github.com/docbook/xslt10-stylesheets/releases/download/release/1.79.2/docbook-xsl-nons-1.79.2.tar.bz2
+
+
+packages:
+  - id: pkg
+    dir: docbook-xsl-nons-1.79.2
+    prescript: |
+      patch -Np1 -i ${FILES}/docbook-xsl/docbook-xsl-nons-1.79.2-stack_fix-1.patch
+
+    plugin: script
+    script: |
+      install -v -m755 -d ${pkgupd_pkgdir}/usr/share/xml/docbook/xsl-stylesheets-nons-1.79.2
+
+      cp -v -R VERSION assembly common eclipse epub epub3 extensions fo        \
+              highlighting html htmlhelp images javahelp lib manpages params  \
+              profiling roundtrip slides template tests tools webhelp website \
+              xhtml xhtml-1_1 xhtml5                                          \
+          ${pkgupd_pkgdir}/usr/share/xml/docbook/xsl-stylesheets-nons-1.79.2
+
+      ln -s VERSION ${pkgupd_pkgdir}/usr/share/xml/docbook/xsl-stylesheets-nons-1.79.2/VERSION.xsl
+
+      install -v -m644 -D README \
+                          ${pkgupd_pkgdir}/usr/share/doc/docbook-xsl-nons-1.79.2/README.txt
+      install -v -m644    RELEASE-NOTES* NEWS* \
+                          ${pkgupd_pkgdir}/usr/share/doc/docbook-xsl-nons-1.79.2
+
+postinstall: |
+  _xmlcatalog() {
+    xmlcatalog --noout "$@" /etc/xml/catalog
+  }
+
+  version=1.79.2
+
+  [ -f /etc/xml/catalog ] || _xmlcatalog --create
+
+  for ver in $version current; do
+    for x in rewriteSystem rewriteURI; do
+      _xmlcatalog --add $x http://cdn.docbook.org/release/xsl/$ver \
+      /usr/share/xml/docbook/xsl-stylesheets-$version
+
+      _xmlcatalog --add $x http://docbook.sourceforge.net/release/xsl-ns/$ver \
+      /usr/share/xml/docbook/xsl-stylesheets-$version
+
+      _xmlcatalog --add $x http://docbook.sourceforge.net/release/xsl/$ver \
+      /usr/share/xml/docbook/xsl-stylesheets-nons-$version
+    done
+  done

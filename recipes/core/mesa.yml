@@ -1,0 +1,45 @@
+id: mesa
+version: 21.1.5
+about: |
+  OpenGL compatible 3D graphics library
+
+depends:
+  runtime:
+    - xorg-lib
+    - libdrm
+    - wayland
+
+  buildtime:
+    - py-mako
+    - llvm
+
+sources:
+  - https://mesa.freedesktop.org/archive/mesa-21.1.5.tar.xz
+
+packages:
+  - id: pkg
+    dir: mesa-21.1.5
+    prescript: |
+      sed "1s/python/&3/" -i bin/symbols-check.py
+
+    flags:
+      - id: configure
+        value: >
+          -D valgrind=false
+          -D glx=dri
+          -D egl=enabled
+          -D osmesa=true
+          -D gallium-nine=true
+          -D platform=x11,wayland
+          -D glvnd=true
+          -D llvm=enabled
+          -D b_lto=true
+          -D b_ndebug=true
+          -D dri-drivers=i915,i965,r100,r200,nouveau
+          -D gallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,swr,iris,zink
+          -D vulkan-drivers=amd,intel,swrast
+          -D vulkan-layers=device-select,intel-nullhw,overlay
+          -D swr-arches=avx,avx2
+          -D dri3=enabled
+          -D builtype=release
+          

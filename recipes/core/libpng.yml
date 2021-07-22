@@ -1,0 +1,16 @@
+id: libpng
+version: 1.6.37
+about: |
+  Libraries used by other programs for reading and writing PNG files
+
+sources:
+  - https://downloads.sourceforge.net/libpng/libpng-1.6.37.tar.xz
+
+prescript: |
+  cd ${PKGUPD_WORKDIR}/src/libpng-1.6.37
+  gzip -cd ${FILES}/libpng/libpng-1.6.37-apng.patch.gz | patch -p1
+  
+packages:
+  - id: lib
+    dir: libpng-1.6.37
+    

@@ -1,0 +1,21 @@
+id: libxml2
+version: 2.9.12
+about: |
+  Package contains libraries and utilities used for parsing XML files
+
+sources:
+  - http://xmlsoft.org/sources/libxml2-2.9.12.tar.gz
+
+packages:
+  - id: lib
+    dir: libxml2-2.9.12
+    flags:
+      - id: configurator
+        value: configure
+        
+      - id: configure
+        value: >
+          --disable-static
+          --with-history
+          --with-python=/usr/bin/python3
+          --with-threads

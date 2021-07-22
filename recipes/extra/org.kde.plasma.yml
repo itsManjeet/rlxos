@@ -1,0 +1,12 @@
+id: org.kde.plasma
+version: 5.22.1
+about: |
+  KDE Plasma Desktop Environment
+
+packages:
+  - id: pkg
+    dir: .
+    plugin: script
+    script: |
+      mkdir -p ${pkgupd_pkgdir}/usr/share/org.kde.plasma
+      echo 5.22.1 > ${pkgupd_pkgdir}/usr/share/org.kde.plasma/version

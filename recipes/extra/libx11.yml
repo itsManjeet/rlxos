@@ -1,0 +1,20 @@
+id: libx11
+version: 1.7.2
+about: |
+  X11 client-side library
+
+depends:
+  runtime:
+    - libxcb
+
+  buildtime:
+    - util-macros
+    - xorgproto
+    - xtrans
+
+sources:
+  - https://www.x.org/pub/individual/lib/libx11-1.7.2.tar.bz2
+
+packages:
+  - id: lib
+    dir: libx11-1.7.2

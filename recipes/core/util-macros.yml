@@ -1,0 +1,12 @@
+id: util-macros
+version: 1.19.3
+about: |
+  X.Org Autotools macros
+
+sources:
+  - https://www.x.org/pub/individual/util/util-macros-1.19.3.tar.bz2
+
+packages:
+  - id: pkg
+    dir: util-macros-1.19.3
+    

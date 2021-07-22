@@ -1,0 +1,19 @@
+id: xkeyboardconfig
+version: 2.33
+about: |
+  Keyboard configuration database for the X Window System
+
+depends:
+  runtime:
+    - xorg-lib
+
+sources:
+  - https://www.x.org/pub/individual/data/xkeyboard-config/xkeyboard-config-2.33.tar.bz2
+
+packages:
+  - id: pkg
+    dir: xkeyboard-config-2.33
+    flags:
+      - id: configure
+        value: >
+          --with-xkb-rules-symlink=xorg

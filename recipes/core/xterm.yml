@@ -1,0 +1,27 @@
+id: xterm
+version: 368
+about: |
+  A terminal emulator for the X Window System
+
+depends:
+  runtime:
+    - xorg-apps
+
+sources:
+  - https://invisible-mirror.net/archives/xterm/xterm-368.tgz
+
+packages:
+  - id: pkg
+    dir: xterm-368
+
+    environ:
+      - TERMINFO=/usr/share/terminfo
+
+    prescript: |
+      sed -i "/v0/{n;s/new:/new:kb=^?:/}" termcap
+      printf "\tkbs=\\177,\n" >> terminfo
+
+    flags:
+      - id: configure
+        value: >
+          --with-app-defaults=/etc/X11/app-defaults

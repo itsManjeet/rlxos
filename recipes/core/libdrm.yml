@@ -1,0 +1,25 @@
+id: libdrm
+version: 2.4.107
+about: |
+  Library for accessing the DRM
+
+depends:
+  runtime:
+    - libpciaccess
+  
+  buildtime:
+    - meson
+
+sources:
+  - https://dri.freedesktop.org/libdrm/libdrm-2.4.107.tar.xz
+
+packages:
+  - id: lib
+    dir: libdrm-2.4.107
+
+    flags:
+      - id: configure
+        value: >
+          --buildtype=release
+          -D udev=true
+          -D valgrind=false

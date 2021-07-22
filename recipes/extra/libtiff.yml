@@ -1,0 +1,15 @@
+id: libtiff
+version: 4.3.0
+about: |
+  TIFF libraries and associated utilities
+
+depends:
+  buildtime:
+    - cmake
+
+sources:
+  - https://download.osgeo.org/libtiff/tiff-4.3.0.tar.gz
+
+packages:
+  - id: lib
+    dir: libtiff-4.3.0

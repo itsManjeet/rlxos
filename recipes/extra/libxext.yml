@@ -1,0 +1,18 @@
+id: libxext
+version: 1.3.4
+about: |
+  X11 miscellaneous extensions library
+
+depends:
+  runtime:
+    - libx11  
+  buildtime:
+    - util-macros
+    - xorgproto
+
+sources:
+  - https://www.x.org/pub/individual/lib/libxext-1.3.4.tar.bz2
+
+packages:
+  - id: lib
+    dir: libxext-1.3.4

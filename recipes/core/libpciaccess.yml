@@ -1,0 +1,18 @@
+id: libpciaccess
+version: 0.16
+about: |
+  X11 PCI access library
+
+depends:
+  runtime:
+    - glibc
+  
+  buildtime:
+    - util-macros
+
+sources:
+  - https://www.x.org/pub/individual/lib/libpciaccess-0.16.tar.bz2
+
+packages:
+  - id: lib
+    dir: libpciaccess-0.16

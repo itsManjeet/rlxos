@@ -1,4 +1,4 @@
-id: xbitmap
+id: xbitmaps
 version: 1.1.2
 about: |
   Bitmap images used by multiple applications
@@ -12,4 +12,4 @@ sources:
 
 packages:
   - id: pkg
-    dir: xbitmap-1.1.2
+    dir: xbitmaps-1.1.2

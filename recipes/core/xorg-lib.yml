@@ -171,3 +171,18 @@ packages:
     dir: libdmx-1.1.4
     sources:
       - https://www.x.org/pub/individual/lib/libdmx-1.1.4.tar.bz2
+
+  - id: libpciaccess
+    dir: libpciaccess-0.16
+    sources:
+      - https://www.x.org/pub/individual/lib/libpciaccess-0.16.tar.bz2
+
+  - id: libxkbfile
+    dir: libxkbfile-1.1.0
+    sources:
+      - https://www.x.org/pub/individual/lib/libxkbfile-1.1.0.tar.bz2
+
+  - id: libxshmfence
+    dir: libxshmfence-1.3
+    sources:
+      - https://www.x.org/pub/individual/lib/libxshmfence-1.3.tar.bz2

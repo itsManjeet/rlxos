@@ -25,11 +25,6 @@ packages:
     dir: font-alias-1.0.4
     sources:
       - https://www.x.org/pub/individual/font/font-alias-1.0.4.tar.bz2
-
-  - id: font-adobe-utopia-type1
-    dir: font-adobe-utopia-type1-1.0.4
-    sources:
-      - https://www.x.org/pub/individual/font/font-adobe-utopia-type1-1.0.4.tar.bz2
   
   - id: font-bh-ttf
     dir: font-bh-ttf-1.0.3
@@ -45,13 +40,3 @@ packages:
     dir: font-ibm-type1-1.0.3
     sources:
       - https://www.x.org/pub/individual/font/font-ibm-type1-1.0.3.tar.bz2
-  
-  - id: font-misc-ethiopic
-    dir: font-misc-ethiopic-1.0.4
-    sources:
-      - https://www.x.org/pub/individual/font/font-misc-ethiopic-1.0.4.tar.bz2
-  
-  - id: font-xfree86-type1
-    dir: font-xfree86-type1-1.0.4
-    sources:
-      - https://www.x.org/pub/individual/font/font-xfree86-type1-1.0.4.tar.bz2

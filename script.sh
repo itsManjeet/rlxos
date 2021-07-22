@@ -54,7 +54,7 @@ packages:" > xorg-apps.yml
 for i in ${_list} ; do
   echo "
   - id: $(echo $i | cut -d '-' -f1)
-    dir: ${i}
+    dir: $(echo $i | sed 's|.tar.bz2||g')
     sources:
       - https://www.x.org/pub/individual/app/${i}" >> xorg-apps.yml
 

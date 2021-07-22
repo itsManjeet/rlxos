@@ -18,12 +18,24 @@ depends:
     - xcb-util-renderutil
     - xcb-util-wm
     - xcb-util-cursor
+    - llvm:lib
     - mesa
-    - xbitmap
+    - xbitmaps
     - xorg-apps
     - xcursor-themes
     - xorg-fonts
     - xkeyboardconfig
     - xorg-server
     - xorg-drivers
+    - xinit
+    - twm
+    - xterm
+    
+packages:
+  - id: conf
+    dir: .
+    plugin: script
+    script: |
+      mkdir -p ${pkgupd_pkgdir}/usr/share/xorg/
+      echo 7 > ${pkgupd_pkgdir}/usr/share/xorg/config
     

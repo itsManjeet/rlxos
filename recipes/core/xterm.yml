@@ -25,3 +25,6 @@ packages:
       - id: configure
         value: >
           --with-app-defaults=/etc/X11/app-defaults
+      
+      - id: install
+        value: DESTDIR=$pkgupd_pkgdir

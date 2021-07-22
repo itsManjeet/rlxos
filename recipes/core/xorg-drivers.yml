@@ -41,7 +41,7 @@ packages:
   - id: wacom
     dir: xf86-input-wacom-0.40.0
     sources:
-    - https://www.x.org/pub/individual/driver/xf86-input-wacom-0.40.0.tar.bz2
+    - https://github.com/linuxwacom/xf86-input-wacom/releases/download/xf86-input-wacom-0.40.0/xf86-input-wacom-0.40.0.tar.bz2
   
   - id: amdgpu
     dir: xf86-video-amdgpu-19.1.0

@@ -8,10 +8,13 @@ depends:
     - xorg-lib
     - libdrm
     - wayland
+    - libxml2
 
   buildtime:
     - py-mako
     - llvm
+    - flex
+    - bison
 
 sources:
   - https://mesa.freedesktop.org/archive/mesa-21.1.5.tar.xz
@@ -31,15 +34,11 @@ packages:
           -D osmesa=true
           -D gallium-nine=true
           -D platform=x11,wayland
-          -D glvnd=true
           -D llvm=enabled
           -D b_lto=true
           -D b_ndebug=true
-          -D dri-drivers=i915,i965,r100,r200,nouveau
-          -D gallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,swr,iris,zink
-          -D vulkan-drivers=amd,intel,swrast
-          -D vulkan-layers=device-select,intel-nullhw,overlay
-          -D swr-arches=avx,avx2
+          -D dri-drivers=i965,nouveau
+          -D gallium-drivers=i915,iris,nouveau,r600,radeonsi,svga,swrast,virgl
           -D dri3=enabled
           -D builtype=release
           

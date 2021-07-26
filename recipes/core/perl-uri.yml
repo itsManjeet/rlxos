@@ -1,0 +1,21 @@
+id: perl-uri
+version: 5.09
+about: |
+  Module implements the URI class
+
+depends:
+  runtime:
+    - perl
+
+sources:
+  - https://www.cpan.org/authors/id/O/OA/OALDERS/URI-5.09.tar.gz
+
+packages:
+  - id: pkg
+    dir: URI-5.09
+
+    plugin: script
+    script: |
+      perl Makefile.PL
+      make
+      make install DESTDIR=${pkgupd_pkgdir}

@@ -10,3 +10,9 @@ services:
             - ../files/pkgupd.yml:/etc/pkgupd.yml
 
         command: ["/tools/bin/sleep","infinity"]
+
+        deploy:
+            resources:
+                limits:
+                    cpus: 0.50
+                    memory: 3G

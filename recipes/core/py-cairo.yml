@@ -1,0 +1,21 @@
+id: py-cairo
+version: 1.20.1
+about: |
+  Python bindings to cairo
+
+depends:
+  runtime:
+    - cairo
+  
+sources:
+  - https://github.com/pygobject/pycairo/releases/download/v1.20.1/pycairo-1.20.1.tar.gz
+
+packages:
+  - id: pkg
+    dir: pycairo-1.20.1
+
+    plugin: script
+    script: |
+      python3 setup.py build
+      python3 setup.py install --skip-build --optimize=1 --root=${pkgupd_pkgdir}
+

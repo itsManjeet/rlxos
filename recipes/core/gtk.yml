@@ -1,0 +1,21 @@
+id: gtk
+version: 3.24.30
+about: |
+  Libraries used for creating graphical user interfaces for applications
+
+depends:
+  runtime:
+    - at-spi2-atk
+    - gdk-pixbuf
+    - libepoxy
+    - pango
+
+packages:
+  - id: pkg
+    dir: gtk+-3.24.30
+    flags:
+      - id: configure
+        value: >
+          --enable-broadway-backend
+          --enable-x11-backend
+          --enable-wayland-backend

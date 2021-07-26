@@ -1,0 +1,470 @@
+id: dev.rlxos.musl
+version: 2109
+about: |
+  Musl libc toolchain for rlxos
+
+strip: false
+compile: true
+
+environ:
+  - CARCH="x86_64"
+  - TARGET="${CARCH}-linux-musl"
+  - HOST="$(echo $MACHTYPE | sed "s/-[^-]*/-cross/")"
+  - MAKEFLAGS="-j $(nproc)"
+  - CFLAGS="-O2 -march=x86-64 -pipe"
+  - CXXFLAGS="${CFLAGS}"
+  - RLXOS=$(pwd)/build/rlxos.${CARCH}
+  - TCDIR=$(pwd)/build/tools.${CARCH}
+  - PATH=${TCDIR}/bin:$PATH
+  - CC=${TARGET}-gcc
+  - CXX=${TARGET}-g++
+  - AR=${TARGET}-ar
+  - AS=${TARGET}-as
+  - RANLIB=${TARGET}-ranlib
+  - LD=${TARGET}-ld
+  - STRIP=${TARGET}-strip
+  - PKG_CONFIG_PATH=${RLXOS}/usr/lib/pkgconfig:${RLXOS}/usr/share/pkgconfig
+  - FILES=$(pwd)/files
+
+packages:
+  - id: headers
+    dir: linux-5.4.80
+    sources:
+      - https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.4.80.tar.xz
+    
+    plugin: script
+    script: |
+      make ARCH=${CARCH} mrproper
+      make ARCH=${CARCH} INSTALL_HDR_PATH=dest headers_install
+      find dest/include \( -name .install -o -name ..install.cmd \) -delete
+      mkdir -p ${pkgupd_pkgdir}/usr/include
+      cp -rv dest/include/* ${pkgupd_pkgdir}/usr/include/
+  
+  - id: cross-binutils
+    environ:
+      - CFLAGS=""
+      - CXXFLAGS=""
+      - CC=""
+      - CXX=""
+      - AR=""
+      - AS=""
+      - RANLIB=""
+      - LD=""
+      - STRIP=""
+      - PKG_CONFIG_PATH=""
+      - DESTDIR=""
+
+    pack: none
+    dir: binutils-2.35.1
+    sources:
+      - https://ftp.gnu.org/gnu/binutils/binutils-2.35.1.tar.xz
+    
+    plugin: script
+    script: |
+      mkdir build && cd build
+
+      ../configure \
+          --prefix=${TCDIR} \
+          --target=${TARGET} \
+          --with-sysroot=${RLXOS} \
+          --disable-nls \
+          --disable-multilib
+
+      make configure-host
+      make
+      make install
+      
+
+  - id: cross-gcc-static
+    pack: none
+    environ:
+      - CFLAGS=""
+      - CXXFLAGS=""
+      - CC=""
+      - CXX=""
+      - AR=""
+      - AS=""
+      - RANLIB=""
+      - LD=""
+      - STRIP=""
+      - PKG_CONFIG_PATH=""
+      - DESTDIR=""
+      
+    sources:
+      - https://ftp.gnu.org/gnu/gcc/gcc-10.2.0/gcc-10.2.0.tar.xz
+      - https://ftp.gnu.org/gnu/mpc/mpc-1.2.1.tar.gz
+      - https://www.mpfr.org/mpfr-4.1.0/mpfr-4.1.0.tar.xz
+      - https://ftp.gnu.org/gnu/gmp/gmp-6.2.1.tar.xz
+    dir: gcc-10.2.0
+
+    prescript: |
+      mv ../mpfr-4.1.0 mpfr
+      mv ../mpc-1.2.1 mpc
+      mv ../gmp-6.2.1 gmp
+      case ${CARCH} in
+        x86_64)
+          sed -e "/m64=/s/lib64/lib/" -i.orig gcc/config/i386/t-linux64
+          ;;
+      esac
+      sed -i "s@\./fixinc\.sh@-c true@" gcc/Makefile.in
+
+    plugin: script
+    script: |
+      mkdir -p build && cd build
+      ../configure \
+          --prefix=${TCDIR} \
+          --target=${TARGET} \
+          --build=${HOST} \
+          --host=${HOST} \
+          --libexecdir=${TCDIR}/lib \
+          --with-sysroot=${RLXOS} \
+          --with-local-prefix=${RLXOS} \
+          --with-native-system-header-dir="/usr/include" \
+          --disable-nls \
+          --disable-shared \
+          --without-headers \
+          --disable-multilib \
+          --disable-decimal-float \
+          --disable-libgomp \
+          --disable-libmudflap \
+          --disable-libssp \
+          --disable-libatomic \
+          --disable-libquadmath \
+          --disable-threads \
+          --enable-languages=c \
+          --with-newlib
+
+      make all-gcc all-target-libgcc 
+      make -j1 install-gcc install-target-libgcc
+
+  - id: musl
+    dir: musl-1.2.1
+    sources:
+      - https://musl.libc.org/releases/musl-1.2.1.tar.gz
+    
+    flags:
+      - id: configure
+        value: >
+          --host=${TARGET}
+          --build=${HOST}
+          --target=${TARGET}
+          --prefix=/usr
+        only: true
+
+    postscript: |
+      mkdir -p ${pkgupd_pkgdir}/usr/bin/
+      ln -sf ../lib/libc.so ${pkgupd_pkgdir}/usr/bin/ldd
+
+
+  - id: cross-gcc
+    pack: none
+    environ:
+      - CFLAGS=""
+      - CXXFLAGS=""
+      - CC=""
+      - CXX=""
+      - AR=""
+      - AS=""
+      - RANLIB=""
+      - LD=""
+      - STRIP=""
+      - PKG_CONFIG_PATH=""
+      
+    sources:
+      - https://ftp.gnu.org/gnu/gcc/gcc-10.2.0/gcc-10.2.0.tar.xz
+      - https://ftp.gnu.org/gnu/mpc/mpc-1.2.1.tar.gz
+      - https://www.mpfr.org/mpfr-4.1.0/mpfr-4.1.0.tar.xz
+      - https://ftp.gnu.org/gnu/gmp/gmp-6.2.1.tar.xz
+    dir: gcc-10.2.0
+
+    prescript: |
+      mv ../mpfr-4.1.0 mpfr
+      mv ../mpc-1.2.1 mpc
+      mv ../gmp-6.2.1 gmp
+      case ${CARCH} in
+        x86_64)
+          sed -e "/m64=/s/lib64/lib/" -i.orig gcc/config/i386/t-linux64
+          ;;
+      esac
+
+      sed -i "s@\./fixinc\.sh@-c true@" gcc/Makefile.in
+
+    flags:
+      - id: configure
+        only: true
+        value: >
+          --prefix=${TCDIR}
+          --target=${TARGET}
+          --build=${HOST}
+          --host=${HOST}
+          --libexecdir=${TCDIR}/lib
+          --with-sysroot=${RLXOS}
+          --with-local-prefix=${RLXOS}
+          --with-native-system-header-dir="/usr/include"
+          --disable-nls
+          --enable-languages=c,c++
+          --enable-c99
+          --enable-long-long
+          --disable-libmudflap
+          --disable-multilib
+          --disable-libmpx
+          --disable-libssp
+          --disable-libsanitizer
+
+      - id: install
+        value: >
+          DESTDIR="" -j1 install
+        only: true
+
+  - id: filesystem
+    dir: .
+    plugin: script
+    script: |
+      mkdir -p ${pkgupd_pkgdir}
+      cd ${pkgupd_pkgdir}
+
+      mkdir -p dev run home mnt run var etc usr/{bin,lib,share}
+      install -d -m 555 proc
+      install -d -m 555 sys
+      install -d -m 0750 root
+      install -d -m 1777 tmp var/tmp
+
+      ln -s bin usr/sbin
+
+      for i in bin sbin lib ; do
+        ln -sv usr/$i $i
+      done
+
+      mkdir -p var/{log,mail,spool,opt,cache,lib/misc}
+      ln -s ../run var/run
+      ln -s ../run/lock var/lock
+
+      ln -s /proc/self/mounts etc/mtab
+      for i in passwd group hosts ; do
+        install -m 644 ${FILES}/$i etc/
+      done
+
+
+  - id: zlib
+    dir: zlib-1.2.11
+    sources:
+      - https://zlib.net/zlib-1.2.11.tar.xz
+
+    environ:
+      - CHOST=${TARGET}
+      - CC=${CC}
+
+
+  - id: binutils
+    dir: binutils-2.35.1
+    sources:
+      - https://ftp.gnu.org/gnu/binutils/binutils-2.35.1.tar.xz
+    
+    prescript: |
+      sed -i "/^SUBDIRS/s/doc//" bfd/Makefile.in
+      echo "printf \"makeinfo (GNU texinfo) 5.2\\n\"" > makeinfo
+      chmod +x makeinfo
+
+    environ:
+      PATH=${pkgupd_srcdir}:$PATH
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          --host=${TARGET}
+          --build=${HOST}
+          --target=${TARGET}
+          --with-sysroot=${RLXOS}
+          --prefix=/usr
+          --enable-gold
+          --disable-nls
+          --enable-ld=default
+          --enable-plugins
+          --enable-shared
+          --disable-werror
+          --with-system-zlib
+          --disable-multilib
+          --with-lib-path=/usr/lib
+        
+      - id: compile
+        value: tooldir=/usr
+      
+      - id: install
+        value: tooldir=/usr DESTDIR=${pkgupd_pkgdir}
+
+  - id: m4
+    dir: m4-1.4.18
+    sources:
+      - https://ftp.gnu.org/gnu/m4/m4-1.4.18.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          --host=${TARGET}
+          --build=${HOST}
+
+  - id: libgmp
+    dir: gmp-6.2.1
+    sources:
+      - https://ftp.gnu.org/gnu/gmp/gmp-6.2.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          --host=${TARGET}
+          --enable-cxx
+          --build=${HOST}
+          --disable-static
+
+  - id: libmpfr
+    dir: mpfr-4.1.0
+    sources:
+      - https://ftp.gnu.org/gnu/mpfr/mpfr-4.1.0.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          --host=${TARGET}
+          --build=${HOST}
+          --enable-thread-safe
+
+  - id: libmpc
+    dir: mpc-1.2.1
+    sources:
+      - https://ftp.gnu.org/gnu/mpc/mpc-1.2.1.tar.gz
+    
+    flags:
+      - id: configure
+        value: >
+          --host=${TARGET}
+          --build=${HOST}
+          --target=${TARGET}
+          --disable-static
+
+  - id: gcc
+    dir: gcc-10.2.0
+    sources:
+      - https://ftp.gnu.org/gnu/gcc/gcc-10.2.0/gcc-10.2.0.tar.xz
+    
+    environ:
+      - SED=sed
+      
+    prescript: |
+      case ${CARCH} in
+        x86_64)
+          sed -e "/m64=/s/lib64/lib/" -i.orig gcc/config/i386/t-linux64
+          ;;
+      esac
+
+      sed -i "s@\./fixinc\.sh@-c true@" gcc/Makefile.in
+
+    flags:
+      - id: configure
+        value: >
+          --host=${TARGET}
+          --build=${HOST}
+          --target=${TARGET}
+          --enable-languages=c,c++
+          --disable-bootstrap
+          --disable-libmpx
+          --with-system-zlib
+          --disable-nls
+          --disable-multilib
+          --disable-libsanitizer  
+
+  - id: make
+    dir: make-4.3
+    sources:
+      - https://ftp.gnu.org/gnu/make/make-4.3.tar.gz
+    
+    flags:
+      - id: configure
+        value: >
+          --host=${TARGET}
+          --build=${HOST}
+          --disable-nls
+          --without-guile
+
+  - id: file
+    dir: file-5.39
+    sources:
+      - https://astron.com/pub/file/file-5.39.tar.gz
+    
+    prescript: |
+      mkdir build
+      pushd build
+        CC="" \
+        CXX="" \
+        AS="" \
+        AR="" \
+        LD="" \
+        RANLIB="" \
+        ../configure --disable-bzlib      \
+                    --disable-libseccomp \
+                    --disable-xzlib      \
+                    --disable-zlib
+        make
+      popd
+
+    flags:
+      - id: configure
+        value: >
+          --host=${TARGET}
+          --build=${HOST}
+          --enable-fsect-man5
+          --enable-static
+          --disable-libseccomp
+
+      - id: compile
+        value: FILE_COMPILE=${pkgupd_srcdir}/build/src/file
+
+
+  - id: busybox
+    dir: busybox-1.32.0
+    sources:
+      - https://www.busybox.net/downloads/busybox-1.32.0.tar.bz2
+
+    plugin: script
+    script: |
+      ARGS="ARCH=${CARCH} CROSS_COMPILE=${TARGET}-"
+      make defconfig $ARGS
+      sed -i "s/CONFIG_LINUXRC=y/# CONFIG_LINUXRC is not set/" .config
+      sed -i "s/CONFIG_STRINGS=y/# CONFIG_STRINGS is not set/" .config
+
+      make $ARGS
+      make $ARGS CONFIG_PREFIX=${pkgupd_pkgdir} install
+      install -v -D -m 644 .config ${pkgupd_pkgdir}/usr/share/busybox/config
+
+  - id: curl
+    dir: curl-7.73.0
+    sources:
+      - https://curl.haxx.se/download/curl-7.73.0.tar.xz
+
+    prescript: |
+      rm CMakeLists.txt
+
+    flags:
+      - id: configure
+        value: >
+          --host=${TARGET}
+          --build=${HOST}
+          --disable-static
+          --enable-thread-resolver
+          --with-ca-bundle=/etc/ssl/cert.pem
+          ac_av_sizeof_off_t=8
+
+  - id: kernel
+    dir: linux-5.4.80
+    sources:
+      - https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.4.80.tar.xz
+    
+    plugin: script
+    script: |
+      make ARCH=${CARCH} mrproper
+      make ARCH=${CARCH} defconfig
+      sed -i "s/CONFIG_DEBUG_KERNEL=y/# CONFIG_DEBUG_KERNEL is not set/" .config
+      
+      make ARCH=${CARCH} bzImage
+      install -v -D arch/x86/boot/bzImage $pkgupd_pkgdir/boot/5.4.80/kernel
+      install -v -D .config $pkgupd_pkgdir/boot/5.4.80/config

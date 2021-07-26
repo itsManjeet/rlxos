@@ -1,0 +1,14 @@
+id: libgpg-error
+version: 1.42
+about: |
+  Library that defines common error values for all GnuPG components
+
+sources:
+  - https://www.gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-1.42.tar.bz2
+
+packages:
+  - id: lib
+    dir: libgpg-error-1.42
+    flags:
+      - id: configurator
+        value: configure

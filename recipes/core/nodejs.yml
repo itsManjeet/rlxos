@@ -1,0 +1,22 @@
+id: nodejs
+version: 14.17.3
+about: |
+  A JavaScript runtime built on Chrome's V8 JavaScript engine.
+
+depends:
+  runtime:
+    - which
+    - icu
+
+sources:
+  - https://nodejs.org/dist/v14.17.3/node-v14.17.3.tar.xz
+
+# TODO: add cares, nghttp, libuv
+packages:
+  - id: pkg
+    dir: node-v14.17.3
+    plugin: script
+    script: |
+      ./configure --prefix=/usr --shared-openssl --shared-zlib --with-intl=system-icu
+      make
+      make install DESTDIR=${pkgupd_pkgdir}

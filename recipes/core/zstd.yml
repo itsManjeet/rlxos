@@ -20,5 +20,5 @@ packages:
     script: |
       make
 
-      make prefix=${pkgupd_pkgdir}/usr install
+      make PREFIX=/usr DESTDIR=${pkgupd_pkgdir} install
       rm -v ${pkgupd_pkgdir}/usr/lib/libzstd.a

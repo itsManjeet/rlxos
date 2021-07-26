@@ -1,0 +1,56 @@
+id: networkmanager
+version: 1.32.4
+about: |
+  A set of co-operative tools that make networking simple and straightforward
+
+depends:
+  runtime:
+    - jansson
+    - libndp
+    - curl
+    - gobject-introspection
+    - iptables
+    - newt
+    - nss
+    - polkit
+    - py-gobject
+    - systemd
+    - upower
+    - wpa_supplicant
+  
+kernel:
+  - CONFIG_NETDEVICES
+  - CONFIG_BONDING
+  - CONFIG_DUMMY
+  - CONFIG_NET_TEAM
+
+sources:
+  - https://download.gnome.org/sources/NetworkManager/1.32/NetworkManager-1.32.4.tar.xz
+
+
+groups:
+  - id: 86
+    name: netdev
+
+packages:
+  - id: pkg
+    dir: NetworkManager-1.32.4
+
+    flags:
+      - id: configurator
+        value: meson.build
+      - id: configure
+        value: >
+          -Dlibaudit=no
+          -Dlibpsl=false
+          -Dnmtui=true
+          -Dovs=false
+          -Dppp=false
+          -Dselinux=false
+          -Dqt=false
+          -Dsession_tracking=systemd
+          -Dmodem_manager=false
+
+    postscript: |
+      install -v -D -m 644 ${FILES}/networkmanager/org.freedesktop.NetworkManager.rules -t \
+        ${pkgupd_pkgdir}/usr/share/polkit-1/rules.d/

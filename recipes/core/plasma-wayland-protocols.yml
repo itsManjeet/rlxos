@@ -1,0 +1,15 @@
+id: plasma-wayland-protocols
+version: 1.3.0
+about: |
+  A custom set of protocol definitions for KDE
+
+depends:
+  buildtime:
+    - extra-cmake-modules
+
+sources:
+  - https://download.kde.org/stable/plasma-wayland-protocols/plasma-wayland-protocols-1.3.0.tar.xz
+
+packages:
+  - id: pkg
+    dir: plasma-wayland-protocols-1.3.0

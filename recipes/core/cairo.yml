@@ -9,7 +9,7 @@ depends:
     - pixman
     - fontconfig
     - glib
-    - xorg:lib
+    - xorg-lib
 
 sources:
   - https://www.cairographics.org/snapshots/cairo-1.17.4.tar.xz

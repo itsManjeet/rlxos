@@ -1,0 +1,14 @@
+id: popt
+version: 1.18
+about: |
+  Libraries which are used by some programs to parse command-line options
+
+sources:
+  - http://ftp.rpm.org/popt/releases/popt-1.x/popt-1.18.tar.gz
+
+packages:
+  - id: pkg
+    dir: popt-1.18
+    flags:
+      - id: configurator
+        value: configure

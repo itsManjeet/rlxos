@@ -1,13 +1,13 @@
-id: js
+id: js78
 version: 78.12.0 
 about: |
   Mozilla's JavaScript engine written in C
 
 depends:
   runtime:
-    - autoconf-2.13
     - icu
   buildtime:
+    - autoconf-2.13
     - rustc
     - which
 
@@ -16,17 +16,18 @@ sources:
 
 packages:
   - id: pkg
-    dir: firefox-78.12.0esr.source
+    dir: firefox-78.12.0/js/src
 
     flags:
       - id: configure
+        only: true
         value: >
+          --prefix=/usr
           --with-intl-api
           --with-system-zlib
           --with-system-icu
           --disable-jemalloc
           --disable-debug-symbols
-          --enable-readline
 
     postscript: |
       rm -v ${pkgupd_pkgdir}/usr/lib/libjs_static.ajs

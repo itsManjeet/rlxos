@@ -1,0 +1,1265 @@
+id: kf5
+version: 5.83
+about: |
+  A collection of libraries based on top of Qt5 and QML derived from the monolithic KDE 4 libraries
+
+clean: true
+split: false
+
+# TODO: {avahi,bluez}
+depends:
+  runtime:
+    - giflib
+    - libepoxy
+    - libgcrypt
+    - libical
+    - libjpeg-turbo
+    - libpng
+    - networkmanager
+    - libxslt
+    - lmdb
+    - qrencode
+    - phonon
+    - plasma-wayland-protocols
+    - shared-mime-info
+    - perl-uri
+    - polkit-qt
+    - qtwebengine
+    
+  buildtime:
+    - extra-cmake-modules
+    - boost
+    - docbook-xml
+    - docbook-xsl
+
+packages:
+
+  - id: attica
+    dir: attica-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/attica-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: extra
+    dir: extra-cmake-modules-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/extra-cmake-modules-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kapidox
+    dir: kapidox-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kapidox-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: karchive
+    dir: karchive-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/karchive-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kcodecs
+    dir: kcodecs-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kcodecs-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kconfig
+    dir: kconfig-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kconfig-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kcoreaddons
+    dir: kcoreaddons-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kcoreaddons-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kdbusaddons
+    dir: kdbusaddons-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kdbusaddons-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kdnssd
+    dir: kdnssd-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kdnssd-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kguiaddons
+    dir: kguiaddons-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kguiaddons-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: ki18n
+    dir: ki18n-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/ki18n-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kidletime
+    dir: kidletime-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kidletime-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kimageformats
+    dir: kimageformats-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kimageformats-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kitemmodels
+    dir: kitemmodels-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kitemmodels-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kitemviews
+    dir: kitemviews-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kitemviews-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kplotting
+    dir: kplotting-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kplotting-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kwidgetsaddons
+    dir: kwidgetsaddons-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kwidgetsaddons-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kwindowsystem
+    dir: kwindowsystem-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kwindowsystem-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: networkmanager
+    dir: networkmanager-qt-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/networkmanager-qt-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: solid
+    dir: solid-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/solid-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: sonnet
+    dir: sonnet-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/sonnet-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: threadweaver
+    dir: threadweaver-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/threadweaver-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kauth
+    dir: kauth-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kauth-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kcompletion
+    dir: kcompletion-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kcompletion-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kcrash
+    dir: kcrash-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kcrash-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kdoctools
+    dir: kdoctools-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kdoctools-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kpty
+    dir: kpty-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kpty-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kunitconversion
+    dir: kunitconversion-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kunitconversion-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kconfigwidgets
+    dir: kconfigwidgets-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kconfigwidgets-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kservice
+    dir: kservice-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kservice-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kglobalaccel
+    dir: kglobalaccel-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kglobalaccel-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kpackage
+    dir: kpackage-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kpackage-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kdesu
+    dir: kdesu-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kdesu-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kemoticons
+    dir: kemoticons-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kemoticons-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kiconthemes
+    dir: kiconthemes-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kiconthemes-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kjobwidgets
+    dir: kjobwidgets-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kjobwidgets-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: knotifications
+    dir: knotifications-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/knotifications-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: ktextwidgets
+    dir: ktextwidgets-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/ktextwidgets-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kxmlgui
+    dir: kxmlgui-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kxmlgui-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kbookmarks
+    dir: kbookmarks-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kbookmarks-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kwallet
+    dir: kwallet-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kwallet-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kded
+    dir: kded-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kded-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kio
+    dir: kio-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kio-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kdeclarative
+    dir: kdeclarative-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kdeclarative-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kcmutils
+    dir: kcmutils-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kcmutils-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kirigami2
+    dir: kirigami2-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kirigami2-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: knewstuff
+    dir: knewstuff-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/knewstuff-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: frameworkintegration
+    dir: frameworkintegration-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/frameworkintegration-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kinit
+    dir: kinit-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kinit-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kparts
+    dir: kparts-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kparts-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kactivities
+    dir: kactivities-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kactivities-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kdewebkit
+    dir: kdewebkit-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/portingAids/kdewebkit-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: syntax
+    dir: syntax-highlighting-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/syntax-highlighting-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: ktexteditor
+    dir: ktexteditor-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/ktexteditor-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kdesignerplugin
+    dir: kdesignerplugin-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kdesignerplugin-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kwayland
+    dir: kwayland-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kwayland-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: plasma
+    dir: plasma-framework-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/plasma-framework-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: modemmanager
+    dir: modemmanager-qt-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/modemmanager-qt-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kpeople
+    dir: kpeople-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kpeople-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kxmlrpcclient
+    dir: kxmlrpcclient-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kxmlrpcclient-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: bluez
+    dir: bluez-qt-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/bluez-qt-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kfilemetadata
+    dir: kfilemetadata-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kfilemetadata-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: baloo
+    dir: baloo-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/baloo-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: breeze
+    dir: breeze-icons-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/breeze-icons-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: oxygen
+    dir: oxygen-icons5-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/oxygen-icons5-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kactivities
+    dir: kactivities-stats-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kactivities-stats-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: krunner
+    dir: krunner-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/krunner-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: prison
+    dir: prison-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/prison-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: qqc2
+    dir: qqc2-desktop-style-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/qqc2-desktop-style-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kjs
+    dir: kjs-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kjs-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kdelibs4support
+    dir: kdelibs4support-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kdelibs4support-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: khtml
+    dir: khtml-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/khtml-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kjsembed
+    dir: kjsembed-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kjsembed-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kmediaplayer
+    dir: kmediaplayer-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kmediaplayer-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kross
+    dir: kross-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kross-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kholidays
+    dir: kholidays-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kholidays-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: purpose
+    dir: purpose-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/purpose-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kcalendarcore
+    dir: kcalendarcore-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kcalendarcore-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kcontacts
+    dir: kcontacts-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kcontacts-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: kquickcharts
+    dir: kquickcharts-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/kquickcharts-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: knotifyconfig
+    dir: knotifyconfig-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/knotifyconfig-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..
+
+  - id: syndication
+    dir: syndication-5.83.0
+    sources:
+      - https://download.kde.org/stable/frameworks/5.83/syndication-5.83.0.tar.xz
+    
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -DCMAKE_INSTALL_PREFIX=/usr
+          -DCMAKE_PREFIX_PATH=/usr
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev ..

@@ -11,7 +11,7 @@ depends:
     - glibc
 
 environ:
-  - SHLIB_LIBS="-L/tools/lib -lncursesw"
+  - SHLIB_LIBS="-lncursesw"
 
 packages:
   - id: lib
@@ -27,5 +27,8 @@ packages:
           --disable-static
           --with-curses
           
+      - id: compile
+        value: SHLIB_LIBS="${SHLIB_LIBS}"
+          
       - id: install
-        value: DESTDIR=${pkgupd_pkgdir}
+        value: SHLIB_LIBS="${SHLIB_LIBS}" DESTDIR=${pkgupd_pkgdir}

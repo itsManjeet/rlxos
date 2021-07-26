@@ -1,0 +1,22 @@
+id: libpwquality
+version: 1.4.4
+about: |
+  Package provides common functions for password quality checking and also scoring them based on their apparent randomness
+
+depends:
+  runtime:
+    - cracklib
+    - pam
+
+sources:
+  - https://github.com/libpwquality/libpwquality/releases/download/libpwquality-1.4.4/libpwquality-1.4.4.tar.bz2
+
+
+packages:
+  - id: lib
+    dir: libpwquality-1.4.4
+    flags:
+      - id: configure
+        value: >
+          --with-securedir=/usr/lib/security
+          --with-python-binary=python3

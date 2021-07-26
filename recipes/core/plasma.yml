@@ -1,0 +1,671 @@
+
+id: plasma
+version: 5.22.1
+about: |
+  KDE Plasa Desktop Environment
+
+clean: true
+split: false
+
+depends:
+  runtime:
+    - gconf
+    - gtk2
+    - gtk
+    - kf5
+    - libpwquality
+    - libxkbcommon
+    - mesa
+    - networkmanager
+    - qca
+    - sassc
+    - taglib
+    - xcb-util-cursor
+    - fftw
+    - gsettings-desktop-schemas
+    - libdbusmenu-qt
+    - libcanberra
+    - libinput
+    - pam
+    - lm-sensors
+    - oxygen-icons5
+    - pciutils
+    - smartmontools
+
+packages:
+
+  - id: kdecoration
+    dir: kdecoration-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/kdecoration-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: libkscreen
+    dir: libkscreen-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/libkscreen-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: libksysguard
+    dir: libksysguard-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/libksysguard-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: breeze
+    dir: breeze-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/breeze-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: breeze
+    dir: breeze-gtk-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/breeze-gtk-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: layer
+    dir: layer-shell-qt-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/layer-shell-qt-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: kscreenlocker
+    dir: kscreenlocker-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/kscreenlocker-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: oxygen
+    dir: oxygen-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/oxygen-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: kinfocenter
+    dir: kinfocenter-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/kinfocenter-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: kwayland
+    dir: kwayland-server-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/kwayland-server-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: kwin
+    dir: kwin-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/kwin-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: plasma
+    dir: plasma-workspace-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/plasma-workspace-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: plasma
+    dir: plasma-disks-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/plasma-disks-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: bluedevil
+    dir: bluedevil-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/bluedevil-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: kde
+    dir: kde-gtk-config-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/kde-gtk-config-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: khotkeys
+    dir: khotkeys-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/khotkeys-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: kmenuedit
+    dir: kmenuedit-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/kmenuedit-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: kscreen
+    dir: kscreen-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/kscreen-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: kwallet
+    dir: kwallet-pam-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/kwallet-pam-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: kwayland
+    dir: kwayland-integration-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/kwayland-integration-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: kwrited
+    dir: kwrited-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/kwrited-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: milou
+    dir: milou-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/milou-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: plasma
+    dir: plasma-nm-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/plasma-nm-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: plasma
+    dir: plasma-pa-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/plasma-pa-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: plasma
+    dir: plasma-workspace-wallpapers-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/plasma-workspace-wallpapers-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: polkit
+    dir: polkit-kde-agent-1-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/polkit-kde-agent-1-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: powerdevil
+    dir: powerdevil-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/powerdevil-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: plasma
+    dir: plasma-desktop-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/plasma-desktop-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: kdeplasma
+    dir: kdeplasma-addons-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/kdeplasma-addons-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: kgamma5
+    dir: kgamma5-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/kgamma5-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: ksshaskpass
+    dir: ksshaskpass-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/ksshaskpass-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: plasma
+    dir: plasma-sdk-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/plasma-sdk-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: sddm
+    dir: sddm-kcm-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/sddm-kcm-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: discover
+    dir: discover-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/discover-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: breeze
+    dir: breeze-grub-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/breeze-grub-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: breeze
+    dir: breeze-plymouth-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/breeze-plymouth-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: kactivitymanagerd
+    dir: kactivitymanagerd-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/kactivitymanagerd-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: plasma
+    dir: plasma-integration-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/plasma-integration-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: plasma
+    dir: plasma-tests-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/plasma-tests-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: plymouth
+    dir: plymouth-kcm-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/plymouth-kcm-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: xdg
+    dir: xdg-desktop-portal-kde-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/xdg-desktop-portal-kde-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: drkonqi
+    dir: drkonqi-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/drkonqi-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: plasma
+    dir: plasma-vault-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/plasma-vault-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: plasma
+    dir: plasma-browser-integration-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/plasma-browser-integration-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: kde
+    dir: kde-cli-tools-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/kde-cli-tools-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: systemsettings
+    dir: systemsettings-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/systemsettings-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: plasma
+    dir: plasma-thunderbolt-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/plasma-thunderbolt-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: plasma
+    dir: plasma-nano-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/plasma-nano-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: plasma
+    dir: plasma-phone-components-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/plasma-phone-components-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: plasma
+    dir: plasma-firewall-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/plasma-firewall-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: plasma
+    dir: plasma-systemmonitor-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/plasma-systemmonitor-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: qqc2
+    dir: qqc2-breeze-style-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/qqc2-breeze-style-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev
+
+  - id: ksystemstats
+    dir: ksystemstats-5.22.1.tar.xz
+    sources:
+      - https://download.kde.org/stable/plasma/5.22.1/ksystemstats-5.22.1.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -Wno-dev

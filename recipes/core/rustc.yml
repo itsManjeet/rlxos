@@ -1,0 +1,14 @@
+id: rustc
+version: 1.52.0
+about: |
+  Rust programming language is designed to be a safe, concurrent, practical language
+
+sources:
+  - https://static.rust-lang.org/dist/rust-1.52.0-x86_64-unknown-linux-gnu.tar.gz
+
+packages:
+  - id: pkg
+    dir: rust-1.52.0-x86_64-unknown-linux-gnu
+    plugin: script
+    script: |
+      ./install.sh --prefix=/usr --destdir=${pkgupd_pkgdir}

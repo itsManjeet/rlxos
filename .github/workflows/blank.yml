@@ -30,7 +30,7 @@ jobs:
         run: sudo apt install docker-compose
         
       - name: Setup Docker-compose
-        run: sudo docker-compose -f docker/docker-compose up -d
+        run: sudo docker-compose -f docker/docker-compose.yml up -d
         
       - name: Generate Packages
         run: sudo ./scripts/exec.sh pkgupd install dev.rlxos.core --compile-all

@@ -21,6 +21,7 @@ dir:
     pkgs: ${BASEDIR}/build/pkgs
     src: ${BASEDIR}/build/src
     data: ${RLXOS}/var/lib/pkgupd/data
+    work: ${BASEDIR}/build/tmp
     
 default:
     repositories:
@@ -37,5 +38,5 @@ environ:
 " > ${BASEDIR}/pkgupd.yml
 
 if [[ ! -L /tools ]] || [[ $(realpath /tools) != ${TOOLS} ]] ; then
-    sudo ln -srv ${TOOLS} /tools
+    sudo ln -sfrv ${TOOLS} /tools
 fi

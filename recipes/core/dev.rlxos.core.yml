@@ -39,10 +39,3 @@ depends:
     - linux:kernel
     - initramfs
 
-packages:
-  - id: config
-    dir: .
-    plugin: script
-    script: |
-      mkdir -p ${pkgupd_pkgdir}/usr/share/rlxos
-      echo 2209 > ${pkgupd_pkgdir}/usr/share/rlxos/version

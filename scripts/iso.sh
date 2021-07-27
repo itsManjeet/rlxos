@@ -46,7 +46,6 @@ dir:
 
 pushd ${BASEDIR}/build
 fakeroot pkgupd install dev.rlxos.core
-fakeroot pkgupd install xorg
 popd
 
 rm -f ${BASEDIR}/build/root.sfs

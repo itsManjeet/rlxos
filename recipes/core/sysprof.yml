@@ -1,0 +1,17 @@
+id: sysprof
+version: 3.40.1
+about: |
+  A statistical and system-wide profiler for Linux
+
+depends:
+  runtime:
+    - json-glib
+    - libdazzle
+    - polkit
+
+sources:
+  - https://download.gnome.org/sources/sysprof/3.40/sysprof-3.40.1.tar.xz
+
+packages:
+  - id: pkg
+    dir: sysprof-3.40.1

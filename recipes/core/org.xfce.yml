@@ -1,0 +1,137 @@
+id: org.xfce
+version: 4.16
+about: |
+  A visually appealing and user friendly desktop environment
+
+depends:
+  runtime:
+    - dev.rlxos.core
+    - xorg
+    - glib
+    - gobject-introspection
+    - gtk
+    - startup-notification
+    - libgtop
+    - libgudev
+    - hicolor-icon-theme
+    - libcanberra
+    - libxklavier
+    - libinput
+    - libnotify
+    - pcre
+    - gvfs
+    - libexif
+    - freetype
+    - gdk-pixbuf
+    - gst-plugin-base
+    - libjpeg-turbo
+    - libgsf
+    - libpng
+    - poppler
+    - cairo
+    - libwnck
+    - upower
+    - networkmanager
+    - desktop-file-utils
+    - shared-mime-info
+    - polkit-gnome
+    - libglade
+
+  buildtime:
+    - gcc
+    - linux:headers
+    - autoconf
+    - automake
+    - vala
+
+packages:
+  - id: libxfce4util
+    dir: libxfce4util-4.16.0
+    sources:
+      - https://archive.xfce.org/src/xfce/libxfce4util/4.16/libxfce4util-4.16.0.tar.bz2
+
+
+  - id: xfconf
+    dir: xfconf-4.16.0
+    sources:
+      - https://archive.xfce.org/src/xfce/xfconf/4.16/xfconf-4.16.0.tar.bz2
+
+  - id: libxfce4ui
+    dir: libxfce4ui-4.16.0
+    sources:
+      - https://archive.xfce.org/src/xfce/libxfce4util/4.16/libxfce4util-4.16.0.tar.bz2
+  
+  - id: exo
+    dir: exo-4.16.1
+    sources:
+      - https://archive.xfce.org/src/xfce/exo/4.16/exo-4.16.1.tar.bz2
+
+  - id: garcon
+    dir: garcon-4.16.1
+    sources:
+      - https://archive.xfce.org/src/xfce/exo/4.16/exo-4.16.1.tar.bz2
+
+  - id: tumbler
+    dir: tumbler-4.16.0
+    sources:
+      - https://archive.xfce.org/src/xfce/tumbler/4.16/tumbler-4.16.0.tar.bz2
+
+  - id: thunar
+    dir: thunar-4.16.6
+    sources:
+      - https://archive.xfce.org/src/xfce/thunar/4.16/thunar-4.16.6.tar.bz2
+    
+    prescript: |
+      sed -i "s/\tinstall-systemd_userDATA/\t/" Makefile.in
+  
+  - id: thunar-volman
+    dir: thunar-volman-4.16.0
+    sources:
+      - https://archive.xfce.org/src/xfce/thunar-volman/4.16/thunar-volman-4.16.0.tar.bz2
+    
+  - id: appfinder
+    dir: xfce-appfinder-4.16.1
+    sources:
+      - https://archive.xfce.org/src/xfce/xfce4-appfinder/4.16/xfce4-appfinder-4.16.1.tar.bz2
+  
+  - id: panel
+    dir: xfce4-panel-4.16.1
+    sources:
+      - https://archive.xfce.org/src/xfce/xfce4-panel/4.16/xfce4-panel-4.16.2.tar.bz2
+  
+  - id: power-manager
+    dir: xfce4-power-manager-4.16.0
+    sources:
+      - https://archive.xfce.org/src/xfce/xfce4-power-manager/4.16/xfce4-power-manager-4.16.0.tar.bz2
+
+  
+  - id: settings
+    dir: xfce4-settings
+    sources:
+      - https://archive.xfce.org/src/xfce/xfce4-settings/4.16/xfce4-settings-4.16.0.tar.bz2
+    
+    flags:
+      - id: configure
+        value: >
+          --enable-sound-settings
+          --enable-pluggable-dialogs
+    
+  - id: xfdesktop
+    dir: xfdesktop-4.16.0
+    sources:
+      - https://archive.xfce.org/src/xfce/xfdesktop/4.16/xfdesktop-4.16.0.tar.bz2
+
+  - id: xfwm4
+    dir: xfwm4-4.16.1
+    sources:
+      - https://archive.xfce.org/src/xfce/xfwm4/4.16/xfwm4-4.16.1.tar.bz2
+  
+  - id: session
+    dir: xfce4-session
+    sources:
+      - https://archive.xfce.org/src/xfce/xfce4-session/4.16/xfce4-session-4.16.0.tar.bz2
+    
+    flags:
+      - id: configure
+        value: >
+          --disable-legacy-sm

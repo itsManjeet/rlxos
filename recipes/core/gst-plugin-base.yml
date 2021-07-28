@@ -1,0 +1,37 @@
+id: gst-plugin-base
+version: 1.18.4
+about: |
+  A well-groomed and well-maintained collection of GStreamer plug-ins and elements, spanning the range of possible types of elements one would want to write for GStreamer
+
+depends:
+  runtime:
+    - gstreamer
+    - alsa-lib
+    - cdparanoia
+    - iso-codes
+    - libgudev
+    - libogg
+    - libtheora
+    - libvorbis
+    - mesa
+    - wayland
+    - xorg-lib
+
+  buildtime:
+    - gobject-introspection
+  
+sources:
+  - https://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.18.4.tar.xz
+
+packages:
+  - id: pkg
+    dir: gst-plugins-base-1.18.4
+    prescript: |
+      sed -i "s|implicit_include_directories : false||" gst-libs/gst/gl/meson.build
+    
+    flags:
+      - id: configure
+        value: >
+          -D package-origin=https://rlxos.dev
+          -D package-name="GStreamer 1.18.4"
+          --wrap-mode=nodownload

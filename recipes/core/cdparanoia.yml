@@ -1,0 +1,21 @@
+id: cdparanoia
+version: 10.2
+about: |
+  A CD audio extraction tool
+
+sources:
+  - https://downloads.xiph.org/releases/cdparanoia/cdparanoia-III-10.2.src.tgz
+  - https://www.linuxfromscratch.org/patches/blfs/svn/cdparanoia-III-10.2-gcc_fixes-1.patch
+
+packages:
+  - id: pkg
+    dir: cdparanoia-III-10.2.src
+    prescript: |
+      patch -Np1 -i ../cdparanoia-III-10.2-gcc_fixes-1.patch 
+    
+    flags:
+      - id: compile
+        value: -j1
+
+    postscript: |
+      chmod -v 755 ${pkgupd_pkgdir}/usr/lib/libcdda_*.so.0.10.2

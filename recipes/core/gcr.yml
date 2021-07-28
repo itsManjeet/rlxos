@@ -1,0 +1,26 @@
+id: gcr
+version: 3.40.0
+about: |
+  Libraries used for displaying certificates and accessing key stores
+
+depends:
+  runtime:
+    - glib
+    - libgcrypt
+    - p11-kit
+    - gnupg
+    - gtk
+    - libxslt
+
+  buildtime:
+    - gobject-introspection
+    - vala
+
+sources:
+  - https://download.gnome.org/sources/gcr/3.40/gcr-3.40.0.tar.xz
+
+packages:
+  - id: pkg
+    dir: gcr-3.40.0
+    prescript: |
+      sed -i "s:\"/desktop:\"/org:" schema/*.xml

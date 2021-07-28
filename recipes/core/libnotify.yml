@@ -1,0 +1,24 @@
+id: libnotify
+version: 0.7.9
+about: |
+  Library is used to send desktop notifications to a notification daemon
+
+depends:
+  runtime:
+    - gtk
+  
+  buildtime:
+    - gobject-introspection
+
+sources:
+  - https://download.gnome.org/sources/libnotify/0.7/libnotify-0.7.9.tar.xz
+
+packages:
+  - id: lib 
+    dir: libnotify-0.7.9
+    flags:
+      - id: configure
+        value: >
+          --buildtype=release
+          -D gtk_doc=false
+          -D man=false

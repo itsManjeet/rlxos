@@ -1,0 +1,19 @@
+id: gsettings-desktop-schemas
+version: 40.0
+about: |
+  GSettings Desktop Schemas package contains a collection of GSettings schemas for settings shared by various components of a GNOME Desktop
+
+depends:
+  runtime:
+    - glib
+    - gobject-introspection
+
+sources:
+  - https://download.gnome.org/sources/gsettings-desktop-schemas/40/gsettings-desktop-schemas-40.0.tar.xz
+
+
+packages:
+  - id: pkg
+    dir: gsettings-desktop-schemas-40.0
+    prescript: |
+      sed -i -r "s:\"(/system):\"/org/gnome\\1:g" schemas/*.in

@@ -1,0 +1,20 @@
+id: libgtop
+version: 2.40.0
+about: |
+  A library for collecting system monitoring data
+
+depends:
+  runtime:
+    - glib
+    - xorg-lib
+    # libxau
+  
+  buildtime:
+    - gobject-introspection
+
+sources:
+  - https://download.gnome.org/sources/libgtop/2.40/libgtop-2.40.0.tar.xz
+
+packages:
+  - id: lib
+    dir: libgtop-2.40.0

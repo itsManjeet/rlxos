@@ -1,0 +1,35 @@
+id: pulseaudio
+version: 14.2
+about: |
+  A sound system for POSIX OSes
+
+depends:
+  runtime:
+    - libsndfile
+    - alsa-lib
+    - dbus
+    - glib
+    - libcap
+    - xorg-lib
+
+# TODO: add bluez and -D bluez5=true
+
+runtime:
+  - https://www.freedesktop.org/software/pulseaudio/releases/pulseaudio-14.2.tar.xz
+
+prescript: |
+  cd ${PKGUPD_WORKDIR}/src/pulseaudio-14.2
+  sed "/doxygen/d" -i meson.build
+
+packages:
+  - id: pkg
+    dir: pulseaudio-14.2
+    flags:
+      - id: configure
+        value: >
+          --buildtype=release
+          -D database=gdbm
+          -D bluez5=false
+
+    postscript: |
+      rm -fv ${pkgupd_pkgdir}/etc/dbus-1/system.d/pulseaudio-system.conf

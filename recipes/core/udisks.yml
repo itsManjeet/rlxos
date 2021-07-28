@@ -1,0 +1,22 @@
+id: udisks
+version: 2.9.2
+about: |
+  A daemon, tools and libraries to access and manipulate disks and storage devices
+
+depends:
+  runtime:
+    - libatasmart
+    - libblockdev
+    - libgudev
+    - libxslt
+    - polkit
+  
+  buildtime:
+    - gobject-introspection
+
+sources:
+  - https://github.com/storaged-project/udisks/releases/download/udisks-2.9.2/udisks-2.9.2.tar.bz2
+
+packages:
+  - id: pkg
+    dir: udisks-2.9.2

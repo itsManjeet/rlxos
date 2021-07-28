@@ -1,0 +1,34 @@
+id: libsoup
+version: 2.72.0
+about: |
+  A HTTP client/server library for GNOME
+
+sources:
+  - https://download.gnome.org/sources/libsoup/2.72/libsoup-2.72.0.tar.xz
+  - https://www.linuxfromscratch.org/patches/blfs/svn/libsoup-2.72.0-testsuite_fix-1.patch
+
+prescript: |
+  cd ${PKGUPD_WORKDIR}/src/libsoup-2.72.0
+  patch -Np1 -i ../libsoup-2.72.0-testsuite_fix-1.patch
+
+depends:
+  runtime:
+    - glib-networking
+    - libpsl
+    - libxml2
+    - sqlite
+    - sysprof
+  
+  buildtime:
+    - gobject-introspection
+    - vala
+
+packages:
+  - id: lib
+    dir: libsoup-2.72.0
+    flags:
+      - id: configure
+        value: >
+          -D vapi=enabled
+          -D gssapi=disabled
+          --buildtype=release

@@ -1,0 +1,15 @@
+id: alsa-lib
+version: 1.2.5.1
+about: |
+  ALSA library to access the ALSA sound interface
+
+sources:
+  - https://www.alsa-project.org/files/pub/lib/alsa-lib-1.2.5.1.tar.bz2
+
+kernel:
+  - CONFIG_SOUND
+  - CONFIG_SND
+
+packages:
+  - id: lib
+    dir: alsa-lib-1.2.5.1

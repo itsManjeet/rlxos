@@ -1,0 +1,15 @@
+id: startup-notification
+version: 0.12
+about: |
+  Library for providing a consistent manner to notify the user through the cursor that the application is loading
+
+sources:
+  - https://www.freedesktop.org/software/startup-notification/releases/startup-notification-0.12.tar.gz
+
+depends:
+  - xorg-lib
+  - xcb-util
+
+packages:
+  - id: lib
+    dir: startup-notification-0.12

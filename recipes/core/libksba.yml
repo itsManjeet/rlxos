@@ -13,3 +13,6 @@ sources:
 packages:
   - id: lib
     dir: libksba-1.6.0
+    flags:
+      - id: configurator
+        value: configure

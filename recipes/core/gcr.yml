@@ -24,3 +24,7 @@ packages:
     dir: gcr-3.40.0
     prescript: |
       sed -i "s:\"/desktop:\"/org:" schema/*.xml
+
+    flags:
+      - id: configure
+        value: -Dgtk_doc=false

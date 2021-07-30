@@ -11,6 +11,7 @@ depends:
     - cairo
     - gobject-introspection
     - xorg-lib
+    - harfbuzz
 
 sources:
   - https://download.gnome.org/sources/pango/1.48/pango-1.48.7.tar.xz

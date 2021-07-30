@@ -6,6 +6,9 @@ about: |
 depends:
   runtime:
     - freetype
+
+  buildtime:
+    - gperf
   
 sources:
   - https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.13.1.tar.bz2

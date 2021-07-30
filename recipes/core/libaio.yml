@@ -8,7 +8,7 @@ sources:
 
 packages:
   - id: lib
-    dir: libaio_0.3.112.orig
+    dir: libaio-0.3.112
     plugin: script
     script: |
       sed -i "/install.*libaio.a/s/^/#/" src/Makefile

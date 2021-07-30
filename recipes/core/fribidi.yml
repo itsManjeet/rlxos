@@ -8,4 +8,4 @@ sources:
 
 packages:
   - id: pkg
-    dir: firbidi-1.0.9
+    dir: fribidi-1.0.9

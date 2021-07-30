@@ -35,7 +35,8 @@ packages:
                           ${pkgupd_pkgdir}/usr/share/doc/docbook-xsl-nons-1.79.2/README.txt
       install -v -m644    RELEASE-NOTES* NEWS* \
                           ${pkgupd_pkgdir}/usr/share/doc/docbook-xsl-nons-1.79.2
-
+      
+    
 postinstall: |
   _xmlcatalog() {
     xmlcatalog --noout "$@" /etc/xml/catalog

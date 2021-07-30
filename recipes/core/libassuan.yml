@@ -13,3 +13,6 @@ sources:
 packages:
   - id: lib
     dir: libassuan-2.5.5
+    flags:
+      - id: configurator
+        value: configure

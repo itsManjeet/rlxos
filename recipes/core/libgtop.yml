@@ -18,3 +18,7 @@ sources:
 packages:
   - id: lib
     dir: libgtop-2.40.0
+
+    flags:
+      - id: configurator
+        value: configure

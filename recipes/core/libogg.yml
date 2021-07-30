@@ -9,4 +9,11 @@ sources:
 packages:
   - id: lib
     dir: libogg-1.3.5
+
+    plugin: script
+
+    script: |
+      ./configure --prefix=/usr --disable-static
+      make
+      make install DESTDIR=${pkgupd_pkgdir}
     

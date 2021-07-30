@@ -14,4 +14,4 @@ packages:
   - id: lib
     dir: libpsl-0.21.1
     prescript: |
-      sed -i "s/env python/&3/" src/psl-make-dafs
+      sed -i "s/env python/&3/" src/psl-make-dafsa

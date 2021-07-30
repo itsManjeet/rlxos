@@ -10,4 +10,11 @@ packages:
   - id: lib
     dir: libyaml-0.2.5
     prescript: |
-      ../bootstrap
+      ./bootstrap
+      
+    flags:
+      - id: configurator
+        value: configure
+        
+      - id: configure
+        value: --disable-static

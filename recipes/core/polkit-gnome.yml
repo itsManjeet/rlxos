@@ -19,6 +19,10 @@ packages:
     prescript: |
       patch -Np1 -i ../polkit-gnome-0.105-consolidated_fixes-1.patch
 
+    flags:
+      - id: configurator
+        value: configure
+        
     postscript: |
       mkdir -p ${pkgupd_pkgdir}/etc/xdg/autostart
       cat > ${pkgupd_pkgdir}/etc/xdg/autostart/polkit-gnome-authentication-agent-1.desktop << "EOF"

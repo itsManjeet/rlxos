@@ -1,0 +1,23 @@
+id: glade
+version: 3.38.2
+about: |
+  User Interface Builder for GTK+ applications
+
+depends:
+  runtime:
+    - gtk
+    - libxml2
+
+  buildtime:
+    - docbook-xsl
+    - gobject-introspection
+    - itstool
+    - meson
+    - py-gobject
+
+sources:
+  - https://gitlab.gnome.org/GNOME/glade/-/archive/glade-3-38/glade-glade-3-38.tar.gz
+
+packages:
+  - id: pkg
+    dir: glade-glade-3-38

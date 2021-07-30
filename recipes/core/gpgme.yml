@@ -15,5 +15,8 @@ packages:
     dir: gpgme-1.16.0
 
     flags:
+      - id: configurator
+        value: configure
+        
       - id: configure
         value: --disable-gpg-test

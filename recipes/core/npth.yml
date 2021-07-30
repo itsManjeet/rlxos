@@ -9,3 +9,6 @@ sources:
 packages:
   - id: pkg
     dir: npth-1.6
+    flags:
+      - id: configurator
+        value: configure

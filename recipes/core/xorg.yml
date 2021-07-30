@@ -30,8 +30,13 @@ depends:
     - xinit
     - twm
     - xterm
+
+  buildtime:
+    - pkg-config
+    - llvm
     
 packages:
+
   - id: conf
     dir: .
     plugin: script

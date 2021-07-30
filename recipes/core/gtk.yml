@@ -9,13 +9,21 @@ depends:
     - gdk-pixbuf
     - libepoxy
     - pango
+    - libxkbcommon
+
+sources:
+  - https://download.gnome.org/sources/gtk+/3.24/gtk+-3.24.30.tar.xz
 
 packages:
   - id: pkg
     dir: gtk+-3.24.30
     flags:
+      - id: configurator
+        value: configure
+
       - id: configure
         value: >
           --enable-broadway-backend
           --enable-x11-backend
           --enable-wayland-backend
+          --disable-gtk-doc

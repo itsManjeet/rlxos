@@ -16,3 +16,9 @@ sources:
 packages:
   - id: lib
     dir: libsndfile-1.0.31
+
+    flags:
+      - id: configurator
+        value: configure
+      - id: configure
+        value: --disable-static

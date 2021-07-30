@@ -5,7 +5,7 @@ about: |
 
 depends:
   runtime:
-    libxml2
+    - libxml2
 
 split: false
 clean: true

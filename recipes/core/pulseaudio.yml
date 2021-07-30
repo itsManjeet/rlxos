@@ -11,25 +11,30 @@ depends:
     - glib
     - libcap
     - xorg-lib
+    - perl-xml-parser
 
 # TODO: add bluez and -D bluez5=true
 
-runtime:
+sources:
   - https://www.freedesktop.org/software/pulseaudio/releases/pulseaudio-14.2.tar.xz
 
-prescript: |
-  cd ${PKGUPD_WORKDIR}/src/pulseaudio-14.2
-  sed "/doxygen/d" -i meson.build
 
 packages:
   - id: pkg
     dir: pulseaudio-14.2
+    prescript: |
+      sed "/doxygen/d" -i meson.build
+
     flags:
+      - id: configurator
+        value: meson.build
+
       - id: configure
         value: >
           --buildtype=release
           -D database=gdbm
           -D bluez5=false
+          -D tests=false
 
     postscript: |
       rm -fv ${pkgupd_pkgdir}/etc/dbus-1/system.d/pulseaudio-system.conf

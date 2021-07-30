@@ -13,3 +13,7 @@ sources:
 packages:
   - id: pkg
     dir: vala-0.52.4
+
+    flags:
+      - id: configure
+        value: --disable-valadoc

@@ -12,6 +12,7 @@ depends:
     - libpng
     - nss
     - boost:lib
+    - openjpeg
 
   buildtime:
     - boost

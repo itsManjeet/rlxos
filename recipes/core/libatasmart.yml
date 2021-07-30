@@ -9,3 +9,6 @@ sources:
 packages:
   - id: lib
     dir: libatasmart-0.19
+    flags:
+      - id: configurator
+        value: configure

@@ -3,6 +3,9 @@ version: 4.16
 about: |
   A visually appealing and user friendly desktop environment
 
+split: false
+clean: true
+
 depends:
   runtime:
     - dev.rlxos.core
@@ -35,7 +38,9 @@ depends:
     - desktop-file-utils
     - shared-mime-info
     - polkit-gnome
-    - libglade
+    - glade
+    - vte
+    - keybinder
 
   buildtime:
     - gcc
@@ -59,7 +64,15 @@ packages:
   - id: libxfce4ui
     dir: libxfce4ui-4.16.0
     sources:
-      - https://archive.xfce.org/src/xfce/libxfce4util/4.16/libxfce4util-4.16.0.tar.bz2
+      - https://archive.xfce.org/src/xfce/libxfce4ui/4.16/libxfce4ui-4.16.0.tar.bz2
+    
+    flags:
+      - id: configure
+        value: >
+          --disable-static
+          --disable-debug
+          --with-vendor-info="rlxos"
+          --disable-vala
   
   - id: exo
     dir: exo-4.16.1
@@ -69,7 +82,7 @@ packages:
   - id: garcon
     dir: garcon-4.16.1
     sources:
-      - https://archive.xfce.org/src/xfce/exo/4.16/exo-4.16.1.tar.bz2
+      - https://archive.xfce.org/src/xfce/garcon/4.16/garcon-4.16.1.tar.bz2
 
   - id: tumbler
     dir: tumbler-4.16.0
@@ -90,14 +103,18 @@ packages:
       - https://archive.xfce.org/src/xfce/thunar-volman/4.16/thunar-volman-4.16.0.tar.bz2
     
   - id: appfinder
-    dir: xfce-appfinder-4.16.1
+    dir: xfce4-appfinder-4.16.1
     sources:
       - https://archive.xfce.org/src/xfce/xfce4-appfinder/4.16/xfce4-appfinder-4.16.1.tar.bz2
   
   - id: panel
-    dir: xfce4-panel-4.16.1
+    dir: xfce4-panel-4.16.2
     sources:
       - https://archive.xfce.org/src/xfce/xfce4-panel/4.16/xfce4-panel-4.16.2.tar.bz2
+    
+    flags:
+      - id: configure
+        value: --disable-vala
   
   - id: power-manager
     dir: xfce4-power-manager-4.16.0
@@ -106,9 +123,9 @@ packages:
 
   
   - id: settings
-    dir: xfce4-settings
+    dir: xfce4-settings-4.16.2
     sources:
-      - https://archive.xfce.org/src/xfce/xfce4-settings/4.16/xfce4-settings-4.16.0.tar.bz2
+      - https://archive.xfce.org/src/xfce/xfce4-settings/4.16/xfce4-settings-4.16.2.tar.bz2
     
     flags:
       - id: configure
@@ -127,7 +144,7 @@ packages:
       - https://archive.xfce.org/src/xfce/xfwm4/4.16/xfwm4-4.16.1.tar.bz2
   
   - id: session
-    dir: xfce4-session
+    dir: xfce4-session-4.16.0
     sources:
       - https://archive.xfce.org/src/xfce/xfce4-session/4.16/xfce4-session-4.16.0.tar.bz2
     
@@ -135,3 +152,34 @@ packages:
       - id: configure
         value: >
           --disable-legacy-sm
+
+  - id: terminal
+    dir: xfce4-terminal-0.8.10
+    sources:
+      - https://archive.xfce.org/src/apps/xfce4-terminal/0.8/xfce4-terminal-0.8.10.tar.bz2
+    
+  - id: ristretto
+    dir: ristretto-0.11.0
+    sources:
+      - https://archive.xfce.org/src/apps/ristretto/0.11/ristretto-0.11.0.tar.bz2
+    flags:
+      - id: configurator
+        value: configure
+
+  - id: notifyd
+    dir: xfce4-notifyd-0.6.2
+    sources:
+      - https://archive.xfce.org/src/apps/xfce4-notifyd/0.6/xfce4-notifyd-0.6.2.tar.bz2
+    
+    flags:
+      - id: configurator
+        value: configure
+    
+  - id: pluseaudio-plugin
+    dir: xfce4-pulseaudio-plugin-0.4.3
+    sources:
+      - https://archive.xfce.org/src/panel-plugins/xfce4-pulseaudio-plugin/0.4/xfce4-pulseaudio-plugin-0.4.3.tar.bz2
+
+    flags:
+      - id: configurator
+        value: configure

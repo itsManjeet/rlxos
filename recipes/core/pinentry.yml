@@ -17,5 +17,8 @@ packages:
   - id: pkg
     dir: pinentry-1.1.1
     flags:
+      - id: configurator
+        value: configure
+        
       - id: configure
         value: --enable-pinentry-tty

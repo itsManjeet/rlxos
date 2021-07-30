@@ -20,3 +20,7 @@ sources:
 packages:
   - id: lib
     dir: libxklavier-5.4
+
+    flags:
+      - id: configurator
+        value: configure

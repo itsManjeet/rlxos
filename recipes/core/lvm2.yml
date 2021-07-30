@@ -21,7 +21,7 @@ depends:
 
 packages:
   - id: pkg
-    dir: lvm2
+    dir: LVM2.2.03.12
     flags:
       - id: configure
         value: >

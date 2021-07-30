@@ -23,5 +23,8 @@ packages:
   - id: lib
     dir: libcanberra-0.30
     flags:
+      - id: configurator
+        value: configure
+        
       - id: configure
         value: --disable-oss

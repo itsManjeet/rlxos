@@ -45,7 +45,7 @@ dir:
 " >${BASEDIR}/build/pkgupd.yml
 
 pushd ${BASEDIR}/build
-fakeroot pkgupd install dev.rlxos.core
+fakeroot pkgupd install org.xfce.desktop
 popd
 
 rm -f ${BASEDIR}/build/root.sfs

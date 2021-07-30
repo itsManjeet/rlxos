@@ -1,0 +1,26 @@
+id: pkgupd
+version: 0.1.0
+about: |
+  An extensible package manager for rlxos
+
+depends:
+  runtime:
+    - libyaml-cpp
+    - zstd
+    - tar
+    - curl
+    - libarchive
+    - librlx
+
+  buildtime:
+    - cmake
+
+sources:
+  - pkgupd-0.1.0.tar.gz::https://github.com/rlxos/pkgupd/archive/refs/heads/main.tar.gz
+
+packages:
+  - id: pkgupd
+    dir: pkgupd-main
+
+    environ:
+      - CXXFLAGS+=" -isystem /usr/include/rlx -fpermissive"

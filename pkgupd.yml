@@ -1,0 +1,22 @@
+
+dir:
+    recipes: /home/itsmanjeet/Desktop/rlxos/recipes
+    roots: /home/itsmanjeet/Desktop/rlxos/build/rlxos.x86_64-rlxos-linux-gnu
+    pkgs: /home/itsmanjeet/Desktop/rlxos/build/pkgs
+    src: /home/itsmanjeet/Desktop/rlxos/build/src
+    data: /home/itsmanjeet/Desktop/rlxos/build/rlxos.x86_64-rlxos-linux-gnu/var/lib/pkgupd/data
+    work: /home/itsmanjeet/Desktop/rlxos/build/tmp
+    
+default:
+    repositories:
+        - toolchain
+
+environ:
+    - RLXTGT=x86_64-rlxos-linux-gnu
+    - RLXTGT32=i686-rlxos-linux-gnu
+    - RLXOS=/home/itsmanjeet/Desktop/rlxos/build/rlxos.x86_64-rlxos-linux-gnu
+    - TOOLS=/home/itsmanjeet/Desktop/rlxos/build/rlxos.x86_64-rlxos-linux-gnu/tools
+    - PATH=/home/itsmanjeet/Desktop/rlxos/build/rlxos.x86_64-rlxos-linux-gnu/tools/bin:/usr/bin:/opt/bin
+    - DESTDIR=""
+    - FILES=/home/itsmanjeet/Desktop/rlxos/files
+

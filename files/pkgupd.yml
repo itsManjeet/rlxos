@@ -1,0 +1,5 @@
+environ:
+  - CFLAGS="-O2 -pipe -march=x86-64"
+  - CXXFLAGS="${CFLAGS}"
+  - MAKEFLAGS="-j$(nproc)"
+  - FILES="/var/cache/files"

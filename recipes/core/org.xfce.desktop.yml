@@ -153,10 +153,10 @@ packages:
         value: >
           --disable-legacy-sm
 
-  - id: terminal
-    dir: xfce4-terminal-0.8.10
-    sources:
-      - https://archive.xfce.org/src/apps/xfce4-terminal/0.8/xfce4-terminal-0.8.10.tar.bz2
+  # - id: terminal
+  #   dir: xfce4-terminal-0.8.10
+  #   sources:
+  #     - https://archive.xfce.org/src/apps/xfce4-terminal/0.8/xfce4-terminal-0.8.10.tar.bz2
     
   - id: ristretto
     dir: ristretto-0.11.0
@@ -175,11 +175,11 @@ packages:
       - id: configurator
         value: configure
     
-  - id: pluseaudio-plugin
-    dir: xfce4-pulseaudio-plugin-0.4.3
-    sources:
-      - https://archive.xfce.org/src/panel-plugins/xfce4-pulseaudio-plugin/0.4/xfce4-pulseaudio-plugin-0.4.3.tar.bz2
+  # - id: pluseaudio-plugin
+  #   dir: xfce4-pulseaudio-plugin-0.4.3
+  #   sources:
+  #     - https://archive.xfce.org/src/panel-plugins/xfce4-pulseaudio-plugin/0.4/xfce4-pulseaudio-plugin-0.4.3.tar.bz2
 
-    flags:
-      - id: configurator
-        value: configure
+  #   flags:
+  #     - id: configurator
+  #       value: configure

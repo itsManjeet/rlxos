@@ -11,7 +11,7 @@ depends:
     - glibc
 
 environ:
-  - SHLIB_LIBS="-lncursesw"
+  - SHLIB_LIBS="-lncursesw"; [[ -d /tools/lib ]] && SHLIB_LIBS="-L/tools/lib ${SHLIB_LIBS}"
 
 packages:
   - id: lib

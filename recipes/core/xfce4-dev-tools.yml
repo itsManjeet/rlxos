@@ -1,0 +1,15 @@
+id: xfce4-dev-tools
+version: 4.16.0
+about: |
+  Xfce Developer tools
+
+depends:
+  runtime:
+    - glib
+    - intltool
+
+packages:
+  - id: pkg
+    dir: xfce4-dev-tools-4.16.0
+    sources:
+      - https://archive.xfce.org/src/xfce/xfce4-dev-tools/4.16/xfce4-dev-tools-4.16.0.tar.bz2

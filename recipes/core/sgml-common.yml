@@ -10,9 +10,15 @@ sources:
 packages:
   - id: pkg
     dir: sgml-common-0.6.3
+    plugin: script
     prescript: |
       patch -Np1 -i ../sgml-common-0.6.3-manpage-1.patch
       autoreconf -f -i
+
+    script: |
+      ./configure --prefix=/usr --sysconfdir=/etc
+      make
+      make install docdir=/usr/share/doc DESTDIR=${pkgupd_pkgdir}
     
     postscript: |
       mkdir -p ${pkgupd_pkgdir}/usr/share/sgml/sgml-iso-entities-8879.1986/

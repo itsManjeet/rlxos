@@ -7,5 +7,6 @@ services:
             - ../build/src:/var/cache/pkgupd/src
             - ../recipes:/var/cache/pkgupd/recipes
             - ../files:/var/cache/files
+            - ../files/pkgupd.yml:/etc/pkgupd.yml
 
         command: ["/tools/bin/sleep","infinity"]

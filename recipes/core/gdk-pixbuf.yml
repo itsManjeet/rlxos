@@ -3,7 +3,6 @@ version: 2.42.6
 about: |
   Package is a toolkit for image loading and pixel buffer manipulation
 
-# TODO: depends - gobject-introspection, librsvg
 depends:
   runtime:
     - glib
@@ -11,6 +10,10 @@ depends:
     - libpng
     - shared-mime-info
     - libtiff
+    - librsvg
+
+  buildtime:
+    - gobject-introspection
 
 sources:
   - https://download.gnome.org/sources/gdk-pixbuf/2.42/gdk-pixbuf-2.42.6.tar.xz

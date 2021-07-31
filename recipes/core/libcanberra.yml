@@ -27,4 +27,4 @@ packages:
         value: configure
         
       - id: configure
-        value: --disable-oss
+        value: --disable-oss --disable-gtk

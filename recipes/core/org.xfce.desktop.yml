@@ -41,6 +41,8 @@ depends:
     - glade
     - vte
     - keybinder
+    - fluent-icon-theme
+    - fluent-gtk-theme
 
   buildtime:
     - gcc
@@ -48,6 +50,7 @@ depends:
     - autoconf
     - automake
     - vala
+    - xfce4-dev-tools
 
 packages:
   - id: libxfce4util
@@ -153,10 +156,10 @@ packages:
         value: >
           --disable-legacy-sm
 
-  # - id: terminal
-  #   dir: xfce4-terminal-0.8.10
-  #   sources:
-  #     - https://archive.xfce.org/src/apps/xfce4-terminal/0.8/xfce4-terminal-0.8.10.tar.bz2
+  - id: terminal
+    dir: xfce4-terminal-0.8.10
+    sources:
+      - https://archive.xfce.org/src/apps/xfce4-terminal/0.8/xfce4-terminal-0.8.10.tar.bz2
     
   - id: ristretto
     dir: ristretto-0.11.0
@@ -175,11 +178,30 @@ packages:
       - id: configurator
         value: configure
     
-  # - id: pluseaudio-plugin
-  #   dir: xfce4-pulseaudio-plugin-0.4.3
-  #   sources:
-  #     - https://archive.xfce.org/src/panel-plugins/xfce4-pulseaudio-plugin/0.4/xfce4-pulseaudio-plugin-0.4.3.tar.bz2
+  - id: audio-plugin
+    dir: xfce4-pulseaudio-plugin-0.4.3
+    sources:
+      - https://archive.xfce.org/src/panel-plugins/xfce4-pulseaudio-plugin/0.4/xfce4-pulseaudio-plugin-0.4.3.tar.bz2
 
-  #   flags:
-  #     - id: configurator
-  #       value: configure
+    flags:
+      - id: configurator
+        value: configure
+
+  - id: dock-plugin
+    dir: docklike-plugin-master
+    sources:
+      - docklike-plugin-master.tar.gz::https://github.com/nsz32/docklike-plugin/archive/refs/heads/master.tar.gz
+    
+    plugin: script
+    script: |
+      ./autogen.sh --prefix=/usr
+
+      make
+      make DESTDIR=${pkgupd_pkgdir} install
+    
+  - id: menu-plugin
+    dir: xfce4-whiskermenu-plugin-2.5.3
+    sources:
+      - https://archive.be.xfce.org/src/panel-plugins/xfce4-whiskermenu-plugin/2.5/xfce4-whiskermenu-plugin-2.5.3.tar.bz2
+    
+    

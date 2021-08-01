@@ -12,8 +12,8 @@ depends:
     - libcap
     - xorg-lib
     - perl-xml-parser
-
-# TODO: add bluez and -D bluez5=true
+    - sbc
+    - bluez
 
 sources:
   - https://www.freedesktop.org/software/pulseaudio/releases/pulseaudio-14.2.tar.xz
@@ -33,7 +33,7 @@ packages:
         value: >
           --buildtype=release
           -D database=gdbm
-          -D bluez5=false
+          -D bluez5=true
           -D tests=false
 
     postscript: |

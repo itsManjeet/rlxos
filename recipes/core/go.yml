@@ -1,0 +1,43 @@
+id: go
+version: 1.16.6
+about: |
+  The Go Programming Language
+
+sources:
+  - https://storage.googleapis.com/golang/go1.4.3.linux-amd64.tar.gz
+  - https://storage.googleapis.com/golang/go1.16.6.src.tar.gz
+
+strip: false
+
+packages:
+  - id: pkg
+    dir: .
+    environ:
+      - GOROOT_BOOTSTRAP=${pkgupd_srcdir}/go1.4
+      - GOROOT_FINAL=/usr/lib/go
+      - GOOS=linux
+      - GOARCH=amd64
+      - GOCACHE=off
+    plugin: script
+    script: |
+      rm -r go
+      install -d go1.4
+      bsdtar -xf ${PKGUPD_SRCDIR}/go1.4.3.linux-amd64.tar.gz \
+        -C go1.4 --strip-components 1
+      
+      bsdtar -xf ${PKGUPD_SRCDIR}/go1.16.6.src.tar.gz
+     
+      cd go/src
+      bash make.bash --no-clean
+            
+      install -d ${pkgupd_pkgdir}/usr/lib
+      cp -r ${pkgupd_srcdir}/go ${pkgupd_pkgdir}/usr/lib/
+      
+      install -d ${pkgupd_pkgdir}/usr/bin/
+      ln -s /usr/lib/go/bin/go ${pkgupd_pkgdir}/usr/bin/
+      ln -s /usr/lib/go/bin/gofmt ${pkgupd_pkgdir}/usr/bin/
+      
+      find ${pkgupd_pkgdir} \( -name "*.a" -o -name "*.go" \) -exec chmod 644 '{}' \;
+      find ${pkgupd_pkgdir} \( -name "README*" -o -name "AUTHORS" -o -name "TODO" \) -delete
+      rm ${pkgupd_pkgdir}/usr/lib/go/src/*.bat   
+      

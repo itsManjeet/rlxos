@@ -3,3 +3,4 @@ pkgs/
 src/
 *.iso
 releases/
+scripts/sync.sh

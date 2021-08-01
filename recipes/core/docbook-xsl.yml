@@ -38,23 +38,20 @@ packages:
       
     
 postinstall: |
-  _xmlcatalog() {
-    xmlcatalog --noout "$@" /etc/xml/catalog
-  }
 
   version=1.79.2
 
-  [ -f /etc/xml/catalog ] || _xmlcatalog --create
+  [ -f /etc/xml/catalog ] || xmlcatalog --noout --create /etc/xml/catalog
 
   for ver in $version current; do
     for x in rewriteSystem rewriteURI; do
-      _xmlcatalog --add $x http://cdn.docbook.org/release/xsl/$ver \
-      /usr/share/xml/docbook/xsl-stylesheets-$version
+      xmlcatalog --noout --add $x http://cdn.docbook.org/release/xsl/$ver \
+      /usr/share/xml/docbook/xsl-stylesheets-$version /etc/xml/catalog
 
-      _xmlcatalog --add $x http://docbook.sourceforge.net/release/xsl-ns/$ver \
-      /usr/share/xml/docbook/xsl-stylesheets-$version
+      xmlcatalog --noout --add $x http://docbook.sourceforge.net/release/xsl-ns/$ver \
+      /usr/share/xml/docbook/xsl-stylesheets-$version /etc/xml/catalog
 
-      _xmlcatalog --add $x http://docbook.sourceforge.net/release/xsl/$ver \
-      /usr/share/xml/docbook/xsl-stylesheets-nons-$version
+      xmlcatalog --noout --add $x http://docbook.sourceforge.net/release/xsl/$ver \
+      /usr/share/xml/docbook/xsl-stylesheets-nons-$version /etc/xml/catalog
     done
   done

@@ -47,6 +47,9 @@ depends:
     - lightdm
     - gconf
     - fuse2
+    - gtksourceview4
+    - dconf
+    - dbus-glib
 
   buildtime:
     - gcc
@@ -181,7 +184,15 @@ packages:
     flags:
       - id: configurator
         value: configure
-    
+
+  - id: mousepad
+    dir: mousepad-0.5.5
+    sources:
+      - https://archive.xfce.org/src/apps/mousepad/0.5/mousepad-0.5.5.tar.bz2    
+    flags:
+      - id: configure
+        value: --enable-keyfile-settings
+
   - id: audio-plugin
     dir: xfce4-pulseaudio-plugin-0.4.3
     sources:

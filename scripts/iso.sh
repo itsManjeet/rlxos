@@ -2,10 +2,8 @@
 
 set -eu
 
-BASEDIR="$(dirname $(
-    cd -- "$(dirname "$0")" >/dev/null 2>&1
-    pwd -P
-))"
+BASEDIR="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )/../"
+
 
 VERSION='2209'
 
@@ -13,16 +11,16 @@ xchroot() {
     local _dir=${1}
     shift
 
-    sudo mount /dev ${_dir}/dev --bind
-    sudo mount /sys ${_dir}/sys --bind
-    sudo mount -t proc proc ${_dir}/proc
+    # mount /dev ${_dir}/dev --bind
+    # mount /sys ${_dir}/sys --bind
+    # mount -t proc proc ${_dir}/proc
 
-    sudo chroot ${_dir} $@
+    chroot ${_dir} $@
     ret=${?}
 
     sleep 1
 
-    sudo umount ${_dir}/{dev,sys,proc}
+    # umount ${_dir}/{dev,sys,proc}
 
     return $ret
 }
@@ -31,28 +29,32 @@ _build_dir=${BASEDIR}/build/squashfs
 
 [[ -d ${_build_dir} ]] && {
     echo "clearing cache"
+    for i in dev proc sys; do
+        mountpoint ${_build_dir}/$i && umount ${_build_dir}/$i
+    done
     rm -rf ${_build_dir}
 }
 
 mkdir -p ${_build_dir}
 
-echo "
-dir:
-    recipes: ${BASEDIR}/recipes
-    pkgs: ${BASEDIR}/build/pkgs
-    data: ${_build_dir}/var/lib/pkgupd/data
-    root: ${_build_dir}
-" >${BASEDIR}/build/pkgupd.yml
+pkgupd install org.xfce.desktop --skip-triggers \
+    dir.triggers=${_build_dir}/usr/share/pkgupd/triggers \
+    dir.root=${_build_dir} \
+    dir.data=${_build_dir}/var/lib/pkgupd/data
 
-pushd ${BASEDIR}/build
-fakeroot pkgupd install org.xfce.desktop
-popd
+mkdir -p ${_build_dir}/var/cache/pkgupd
+cp -a /var/cache/pkgupd/recipes ${_build_dir}/var/cache/pkgupd/
 
 rm -f ${BASEDIR}/build/root.sfs
 
-fakeroot mkdir -p ${_build_dir}/{dev,proc,sys}
+mkdir -p ${_build_dir}/{dev,proc,sys}
 
-fakeroot mksquashfs ${_build_dir} ${BASEDIR}/build/root.sfs \
+xchroot ${_build_dir} pkgupd trigger
+
+# Enable required services
+# ln -sv /usr/lib/systemd/system/lightdm.service ${_build_dir}/etc/systemd/system/display-manager.service
+
+mksquashfs ${_build_dir} ${BASEDIR}/build/root.sfs \
     -b 1048576 -comp xz -Xdict-size 100%
 if [[ $? -ne 0 ]]; then
     echo "failed to pack rootfs"
@@ -61,8 +63,7 @@ fi
 
 rm -f ${BASEDIR}/build/iso.sfs
 
-
-fakeroot mksquashfs ${BASEDIR}/overlay ${BASEDIR}/build/iso.sfs \
+mksquashfs ${BASEDIR}/overlay ${BASEDIR}/build/iso.sfs \
     -b 1048576 -comp xz -Xdict-size 100%
 if [[ $? -ne 0 ]]; then
     echo "failed to pack overlay"
@@ -113,6 +114,6 @@ menuentry 'rlxos installer [debug]' {
     initrd /boot/initrd
 }" >${_iso_dir}/boot/grub/grub.cfg
 
-grub-mkrescue -o rlxos-${VERSION}-core-$(uname -m).iso ${_iso_dir} -volid RLXOS
+grub-mkrescue -o ${BASEDIR}/releases/rlxos-${VERSION}-core-$(uname -m).iso ${_iso_dir} -volid RLXOS
 
-sudo rm -rf ${_build_dir} ${_iso_dir}
+rm -rf ${_build_dir} ${_iso_dir}

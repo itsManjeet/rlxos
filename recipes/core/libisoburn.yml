@@ -1,0 +1,23 @@
+id: libisoburn
+version: 1.5.4
+about: |
+  A frontend for libraries libburn and libisofs
+
+depends:
+  runtime:
+    - libburn
+    - libisofs
+
+
+sources:
+  - https://files.libburnia-project.org/releases/libisoburn-1.5.4.tar.gz
+
+packages:
+  - id: lib
+    dir: libisoburn-1.5.4
+    flags:
+      - id: configure
+        value: >
+          --disable-static
+          --enable-pkg-check-modules
+          CFLAGS=" -I/usr/include -L/usr/lib"

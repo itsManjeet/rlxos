@@ -38,6 +38,7 @@ depends:
     - dbus
     - linux:kernel
     - initramfs
+    - sudo
 
 packages:
   - id: conf

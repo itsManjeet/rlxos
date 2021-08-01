@@ -43,6 +43,9 @@ depends:
     - keybinder
     - fluent-icon-theme
     - fluent-gtk-theme
+    - gparted
+    - lightdm
+    - gconf
 
   buildtime:
     - gcc

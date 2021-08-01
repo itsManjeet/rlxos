@@ -1,0 +1,2 @@
+Defaults secure_path="/usr/bin:/opt/bin:/apps"
+%wheel ALL=(ALL) ALL

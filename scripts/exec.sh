@@ -6,7 +6,7 @@ composefile=${composefile:-${BASEDIR}/docker/docker-compose.yml}
 container_id=$(docker-compose -f ${composefile} ps -q)
 
 do_exec() {
-    docker exec -it ${container_id} /bin/env -i \
+    docker exec --privileged -it ${container_id} /bin/env -i \
         HOME=/root \
         TERM=$TERM \
         PS1='(docker) \u:\w\$ ' \

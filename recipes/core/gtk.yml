@@ -27,3 +27,6 @@ packages:
           --enable-x11-backend
           --enable-wayland-backend
           --disable-gtk-doc
+
+    postscript: |
+      install -v -D -m 644 ${FILES}/triggers/immodules.yml -t ${pkgupd_pkgdir}/usr/share/pkgupd/triggers/

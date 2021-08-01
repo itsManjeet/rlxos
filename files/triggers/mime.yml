@@ -1,0 +1,5 @@
+id: mime
+message: Updating MIME Database
+regex: ^\/(\w+)\/share\/mime\/$
+args: true
+exec: update-mime-database

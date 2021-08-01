@@ -27,5 +27,5 @@ packages:
           --buildtype=release
           -D gtk_doc=false
 
-postinstall: |
-  gdk-pixbuf-query-loaders --update-cache
+    postscript: |
+      install -v -D -m 644 ${FILES}/triggers/pixbuf.yml -t ${pkgupd_pkgdir}/usr/share/pkgupd/triggers/

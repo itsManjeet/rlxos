@@ -1,0 +1,31 @@
+From 43cdd6e4f17f8d77e3cd976f0aa032bae18bf677 Mon Sep 17 00:00:00 2001
+From: itsmanjeet <itsmanjeet1998@gmail.com>
+Date: Fri, 28 May 2021 18:22:05 +0530
+Subject: [PATCH] Fixed for rlxos update-grub
+
+---
+ util/grub-mkconfig.in | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/util/grub-mkconfig.in b/util/grub-mkconfig.in
+index 9f477ff05..6c2c86949 100644
+--- a/util/grub-mkconfig.in
++++ b/util/grub-mkconfig.in
+@@ -132,12 +132,12 @@ else
+ fi
+ 
+ # Device containing our userland.  Typically used for root= parameter.
+-GRUB_DEVICE="`${grub_probe} --target=device /`"
++GRUB_DEVICE=${GRUB_DEVICE:-"`${grub_probe} --target=device /`"}
+ GRUB_DEVICE_UUID="`${grub_probe} --device ${GRUB_DEVICE} --target=fs_uuid 2> /dev/null`" || true
+ GRUB_DEVICE_PARTUUID="`${grub_probe} --device ${GRUB_DEVICE} --target=partuuid 2> /dev/null`" || true
+ 
+ # Device containing our /boot partition.  Usually the same as GRUB_DEVICE.
+-GRUB_DEVICE_BOOT="`${grub_probe} --target=device /boot`"
++GRUB_DEVICE_BOOT=${GRUB_DEVICE_BOOT:-"`${grub_probe} --target=device /boot`"}
+ GRUB_DEVICE_BOOT_UUID="`${grub_probe} --device ${GRUB_DEVICE_BOOT} --target=fs_uuid 2> /dev/null`" || true
+ 
+ # Filesystem for the device containing our userland.  Used for stuff like
+-- 
+2.28.0
+

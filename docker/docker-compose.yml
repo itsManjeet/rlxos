@@ -8,5 +8,8 @@ services:
             - ../recipes:/var/cache/pkgupd/recipes
             - ../files:/var/cache/files
             - ../files/pkgupd.yml:/etc/pkgupd.yml
+            - ../scripts:/var/cache/scripts
+            - ../overlay:/var/cache/overlay
+            - ../releases:/var/cache/releases
 
         command: ["/tools/bin/sleep","infinity"]

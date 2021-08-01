@@ -20,3 +20,6 @@ packages:
           -D man=false
           -D selinux=disabled
           --buildtype=release
+
+    postscript: |
+      install -v -D -m 644 ${FILES}/triggers/{glib-schemas.yml,gio.yml} -t ${pkgupd_pkgdir}/usr/share/pkgupd/triggers/

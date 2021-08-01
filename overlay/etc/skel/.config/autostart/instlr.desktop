@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Opportunity
+Exec=/usr/bin/rlx-instlr-ui
+Icon=/usr/share/pixmaps/rlxos.png
+Comment=rlxos system installer
+X-GNOME-Autostart-enabled=true
+Terminal=false
+X-GNOME-Autostart-Delay=3
+StartupNotify=true
+Categories=GNOME;GTK;System;
+NoDisplay=true

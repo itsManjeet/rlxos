@@ -24,3 +24,6 @@ packages:
     dir: pkgupd-main
     environ:
       - CXXFLAGS+=" -isystem /usr/include/rlx/ -fpermissive"
+
+    postscript: |
+      install -v -D -m 644 ${pkgupd_srcdir}/triggers/ldconfig.yml -t ${pkgupd_pkgdir}/usr/share/pkgupd/triggers

@@ -25,3 +25,6 @@ packages:
         value: >
           --buildtype=release
           -D update-mimedb=true
+
+    postscript: |
+      install -v -D -m 644 ${FILES}/triggers/mime.yml -t ${pkgupd_pkgdir}/usr/share/pkgupd/triggers/

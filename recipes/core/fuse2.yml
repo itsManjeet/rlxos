@@ -1,0 +1,15 @@
+id: fuse2
+version: 2.9.9
+about: |
+  A simple interface for userspace programs to export a virtual filesystem to the Linux kernel
+
+sources:
+  - https://github.com/libfuse/libfuse/releases/download/fuse-2.9.9/fuse-2.9.9.tar.gz
+
+kernel:
+  - CONFIG_FUSE_FS
+  - CONFIG_CUSE
+
+packages:
+  - id: pkg
+    dir: fuse-2.9.9

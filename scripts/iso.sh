@@ -52,7 +52,7 @@ mkdir -p ${_build_dir}/{dev,proc,sys}
 xchroot ${_build_dir} pkgupd trigger
 
 # Enable required services
-# ln -sv /usr/lib/systemd/system/lightdm.service ${_build_dir}/etc/systemd/system/display-manager.service
+ln -sv /usr/lib/systemd/system/lightdm.service ${_build_dir}/etc/systemd/system/display-manager.service
 
 mksquashfs ${_build_dir} ${BASEDIR}/build/root.sfs \
     -b 1048576 -comp xz -Xdict-size 100%

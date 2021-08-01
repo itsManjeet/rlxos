@@ -46,6 +46,7 @@ depends:
     - gparted
     - lightdm
     - gconf
+    - fuse2
 
   buildtime:
     - gcc

@@ -33,8 +33,8 @@ jobs:
         run: sudo docker-compose -f docker/docker-compose.yml up -d
         
       - name: Generate Packages
-        run: sudo ./scripts/exec.sh pkgupd install dev.rlxos.core --compile-all
+        run: sudo  NONINTERACTIVE=1 ./scripts/exec.sh pkgupd install dev.rlxos.core --compile-all
 
       # Runs a set of commands using the runners shell
       - name: Generate ISO
-        run: sudo ./scripts/iso.sh
+        run: sudo  NONINTERACTIVE=1 ./scripts/exec.sh /var/cache/scripts/iso.sh

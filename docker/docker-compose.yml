@@ -1,6 +1,6 @@
 services:
     rlxos-toolchain:
-        image: rlxos.toolchain
+        image: itsmanjeet/rlxos-toolchain
 
         volumes: 
             - ../build/pkgs:/var/cache/pkgupd/pkgs

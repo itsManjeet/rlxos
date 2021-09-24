@@ -1,8 +1,5 @@
 environ:
-  - FILES=/workspaces/rlxos/files
-  - CFLAGS=-march=x86-64 -O2 -pipe
-  - CXXFLAGS=-march=x86-64 -O2 -pipe
-  - MAKEFLAGS=-j8
-
-repo-db: /workspaces/rlxos/recipes
-pkg-dir: /workspaces/rlxos/pkgs
+    - FILES=/var/cache/pkgupd/files
+    - CFLAGS=-march=x86-64 -O2 -pipe
+    - CXXFLAGS=-march=x86-64 -O2 -pipe
+    - MAKEFLAGS=-j8

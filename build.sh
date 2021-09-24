@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #
 # Generate System toolchain and packages for rlxos
@@ -15,6 +15,12 @@ PKGSDIR=${BASEDIR}/pkgs
 CFLAGS="-march=x86-64 -O2 -pipe"
 CXXFLAGS="-march=x86-64 -O2 -pipe"
 MAKEFLAGS="-j$(nproc)"
+
+if [[ -z "${NOCONTAINER}" ]] ; then
+    echo ":: Executing inside container ::"
+    docker run --env NOCONTAINER=1 -v $(realpath ${0}):/build.sh -v ${REPODB}:/var/cache/pkgupd/recipes -it itsmanjeet/rlxos-devel bash
+    exit $?
+fi
 
 echo "environ:
     - FILES=${FILES}

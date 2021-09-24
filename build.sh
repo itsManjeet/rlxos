@@ -21,17 +21,18 @@ if [[ -z "${NOCONTAINER}" ]]; then
     echo ":: Executing inside container ::"
     docker run \
         --env NOCONTAINER=1 \
+        --env DEBUG=1 \
         -v $(realpath ${0}):/build.sh \
         -v ${REPODB}:/var/cache/pkgupd/recipes \
         -v ${PKGSDIR}:/var/cache/pkgupd/pkgs \
         -v ${SRCDIR}:/var/cache/pkgupd/src \
         -v ${FILES}:/var/cache/pkgupd/files \
         -v ${BASEDIR}/pkgupd.yml:/etc/pkgupd.yml \
-        -it itsmanjeet/rlxos-devel bash build.sh
+        -it itsmanjeet/rlxos-devel bash ${1}
     exit $?
 fi
 
-mkdir -p ${PKGDIR}
+mkdir -p ${PKGSDIR}
 
 VERSION=${VERSION:-'TESTBUILD'}
 SYS_TOOLCHAIN='kernel-headers glibc binutils gcc binutils glibc'
@@ -49,13 +50,16 @@ CORESYSTEM='iana-etc kernel-headers glibc tzdata zlib bzip2 xz zstd file readlin
     groff gzip iptables iproute2 kbd libpipeline make patch tar texinfo vim py-markupsafe
     py-jinja2 lz4 systemd dbus man-db procps-ng util-linux e2fsprogs libunistring libidn2 ca-certificates curl libarchive libyaml-cpp libuv cmake pkgupd'
 
-if [[ -e /.dockerenv ]]; then
-    echo "=> Refreshing Recipes"
-    pkgupd refresh ${PKGUPD_ARGS}
-    if [[ $? != 0 ]]; then
-        echo "Error! Failed to refresh"
-        exit 1
-    fi
+echo "Installing pkgupd"
+pkgupd in /var/cache/pkgupd/pkgs/pkgupd-* --skip-depends --force
+if [[ $? != 0 ]]; then
+    echo "Error! Failed to update pkgupd ${sys}"
+    exit 1
+fi
+pkgupd in kernel-headers --force
+if [[ $? != 0 ]]; then
+    echo "Error! Failed to install kernel headers ${sys}"
+    exit 1
 fi
 
 for sys in ${SYS_TOOLCHAIN}; do

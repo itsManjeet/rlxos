@@ -1,0 +1,22 @@
+id: graphene
+version: 1.10.6
+about: |
+  A thin layer of types for graphics libraries
+
+depends:
+  runtime:
+    - glib
+  
+  buildtime:
+    - gobject-introspection
+
+sources:
+  - https://github.com/ebassi/graphene/releases/download/1.10.6/graphene-1.10.6.tar.xz
+
+packages:
+  - id: pkg
+    dir: graphene-1.10.6
+    flags:
+      - id: configure
+        value: >
+          --buildtype=release

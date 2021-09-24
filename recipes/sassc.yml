@@ -1,0 +1,29 @@
+id: sassc
+version: 3.6.2
+about: |
+  A CSS pre-processor language
+
+sources:
+  - https://github.com/sass/sassc/archive/3.6.2/sassc-3.6.2.tar.gz
+  - https://github.com/sass/libsass/archive/3.6.5/libsass-3.6.5.tar.gz
+
+split: false
+
+packages:
+  - id: lib
+    dir: libsass-3.6.5
+    plugin: script
+    script: |
+      autoreconf -fi
+      ./configure --prefix=/usr --disable-static
+      make
+      make DESTDIR=${pkgupd_pkgdir} install
+  
+  - id: pkg
+    dir: sassc-3.6.2
+    plugin: script
+    script: |
+      autoreconf -fi
+      ./configure --prefix=/usr --disable-static
+      make
+      make DESTDIR=${pkgupd_pkgdir} install

@@ -1,0 +1,11 @@
+--- org.xml	2021-09-01 16:26:56.957229679 +0530
++++ new.xml	2021-09-01 17:00:24.775652544 +0530
+@@ -80,7 +80,7 @@
+       <description>Panel positions (JSON).</description>
+     </key>
+     <key name="panel-element-positions" type="s">
+-      <default>'{}'</default>
++      <default>'{"0":[{"element":"showAppsButton","visible":true,"position":"stackedTL"},{"element":"activitiesButton","visible":false,"position":"stackedTL"},{"element":"leftBox","visible":true,"position":"stackedTL"},{"element":"taskbar","visible":true,"position":"centerMonitor"},{"element":"centerBox","visible":true,"position":"stackedBR"},{"element":"rightBox","visible":true,"position":"stackedBR"},{"element":"dateMenu","visible":true,"position":"stackedBR"},{"element":"systemMenu","visible":true,"position":"stackedBR"},{"element":"desktopButton","visible":true,"position":"stackedBR"}]}'</default>
+       <summary>Panel element positions</summary>
+       <description>Panel element positions (JSON).</description>
+     </key>

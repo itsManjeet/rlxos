@@ -1,0 +1,15 @@
+id: autoconf-archive
+version: 2019.01.06
+about: |
+  A collection of freely re-usable Autoconf macros
+
+depends:
+  runtime:
+    - autoconf
+
+sources:
+  - https://ftpmirror.gnu.org/autoconf-archive/autoconf-archive-2019.01.06.tar.xz
+
+packages:
+  - id: pkg
+    dir: autoconf-archive-2019.01.06

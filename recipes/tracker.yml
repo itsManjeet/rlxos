@@ -1,0 +1,28 @@
+id: tracker
+version: 3.1.2
+about: |
+  The file indexing and search provider used in the GNOME desktop environment
+
+sources:
+  - https://download.gnome.org/sources/tracker/3.1/tracker-3.1.2.tar.xz
+
+depends:
+  runtime:
+    - json-glib
+    - libseccomp
+    - libsoup
+    - icu
+    - sqlite
+  buildtime:
+    - vala
+    - gobject-introspection
+
+packages:
+  - id: pkg
+    dir: tracker-3.1.2
+    flags:
+      - id: configure
+        value: >
+          --buildtype=release
+          -D docs=false
+          -D man=false

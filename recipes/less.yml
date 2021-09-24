@@ -1,0 +1,20 @@
+id: less
+version: 581
+about: |
+  A text file viewer
+
+depends:
+  runtime:
+    - glibc
+    - ncurses
+
+sources:
+  - https://www.greenwoodsoftware.com/less/less-581.tar.gz
+
+packages:
+  - id: pkg
+    dir: less-581
+
+    flags:
+      - id: install
+        value: DESTDIR=${pkgupd_pkgdir}

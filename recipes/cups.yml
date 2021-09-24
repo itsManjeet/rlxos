@@ -1,0 +1,45 @@
+id: cups
+version: 2.3.3op2
+about: |
+  Common Unix Printing System (CUPS) is a print spooler and associated utilities
+
+depends:
+  runtime:
+    - gnutls
+    - colord
+    - dbus
+    - libusb
+    - pam
+    - xdg-utils
+
+groups:
+  - id: 19
+    name: lpadmin
+
+users:
+  - id: 9
+    name: lp
+    group: 19
+    about: Print Service User
+    dir: /var/spool/cups
+    shell: /bin/false
+
+sources:
+  - https://github.com/OpenPrinting/cups/releases/download/v2.3.3op2/cups-2.3.3op2-source.tar.gz
+
+packages:
+  - id: pkg
+    dir: cups-2.3.3op2
+    plugin: script
+    script: |
+      ./configure \
+        --prefix=/usr \
+        --with-system-groups=lpadmin \
+        --localstatedir=/var
+      make
+      make install DESTDIR=${pkgupd_pkgdir}
+
+    postscript: |
+      mkdir -p ${pkgupd_pkgdir}/etc/cups/
+      echo "ServerName /run/cups/cups.sock" > ${pkgupd_pkgdir}/etc/cups/client.conf
+      install -v -D -m 644 ${FILES}/pam/cups -t ${pkgupd_pkgdir}/etc/pam.d/

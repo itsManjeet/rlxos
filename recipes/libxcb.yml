@@ -1,0 +1,23 @@
+id: libxcb
+version: 1.14
+about: |
+  X11 client-side library
+
+depends:
+  runtime:
+    - libxau
+    - libxdmcp
+    - xcb-proto
+
+  buildtime:
+    - libxslt
+    - python
+    - util-macros
+    - xorgproto
+
+sources:
+  - https://www.x.org/pub/individual/lib/libxcb-1.14.tar.xz
+
+packages:
+  - id: lib
+    dir: libxcb-1.14

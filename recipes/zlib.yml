@@ -1,0 +1,20 @@
+id: zlib
+version: 1.2.11
+about: |
+  Compression and decompression routines
+
+sources:
+  - https://zlib.net/zlib-1.2.11.tar.xz
+
+packages:
+  - id: pkg
+    dir: zlib-1.2.11
+
+    flags:
+      - id: configurator
+        value: configure
+
+      - id: configure
+        only: true
+        value: >
+          --prefix=/usr

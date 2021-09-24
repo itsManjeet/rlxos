@@ -1,0 +1,33 @@
+id: gnome-initial-setup
+version: 40.2
+about: |
+  Simple, easy, and safe way to prepare a new system
+
+depends:
+  runtime:
+    - cheese
+    - gdm 
+    - gnome-online-accounts
+    - kerberos-v5
+    - libpwquality
+
+sources:
+  - http://ftp.gnome.org/pub/gnome/sources/gnome-initial-setup/40/gnome-initial-setup-40.2.tar.xz
+
+users:
+  - id: 68
+    name: gnome-initial-setup
+    about: Gnome Inital Setup
+    group: ""
+    dir: /run/gnome-initial-setup
+    shell: /bin/sh
+    
+packages:
+  - id: pkg
+    dir: gnome-initial-setup-40.2
+    flags:
+      - id: configure
+        value: --buildtype=release
+
+    postscript: |
+      install -v -d -m 0700 -o 68 ${pkgupd_pkgdir}/run/gnome/initial-setup

@@ -1,0 +1,33 @@
+id: openssl
+version: 1.1.1k
+about: |
+  Package contains management tools and libraries relating to cryptography
+
+depends:
+  runtime:
+    - glibc
+
+  buildtime:
+    - perl
+
+sources:
+  - https://www.openssl.org/source/openssl-1.1.1k.tar.gz
+
+packages:
+  - id: pkg
+    dir: openssl-1.1.1k
+    prescript: |
+      ln -sv config configure
+
+    flags:
+      - id: configure
+        value: >
+          --prefix=/usr
+          --openssldir=/etc/ssl
+          --libdir=lib
+          shared
+          zlib-dynamic
+        only: true
+
+      - id: install
+        value: DESTDIR=$pkgupd_pkgdir

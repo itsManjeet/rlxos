@@ -1,0 +1,47 @@
+id: samba
+version: 4.14.6
+about: |
+  Package provides file and print services to SMB/CIFS clients and Windows networking to Linux clients
+
+depends:
+  runtime:
+    - gnutls
+    - jansson
+    - libtirpc
+    - lmdb
+    - rpcsvc-proto
+    - fuse
+    - gpgme
+    - libtasn1
+    - libxslt
+    - pam
+    - perl-parse-yapp
+    - openldap
+    - cups
+
+sources:
+  - https://www.samba.org/ftp/samba/stable/samba-4.14.6.tar.gz
+
+packages:
+  - id: pkg
+    dir: samba-4.14.6
+    plugin: script
+    script: |
+      python3 -m venv pyenv
+      ./pyenv/bin/pip3 install cryptography pyasn1 iso8601
+      PYTHON=$PWD/pyenv/bin/python3 \
+      CPPFLAGS="-I/usr/lib/tirpc" \
+       LDFLAGS="-ltirpc" \
+      ./configure --prefix=/usr \
+          --with-piddir=/run/samba \
+          --with-pammodulesdir=/usr/lib/security \
+          --enable-fhs \
+          --without-ad-dc \
+          --enable-selftest
+
+      make
+      make DESTDIR=${pkgupd_pkgdir} install
+    
+    postscript: |
+      install -vdm 755 ${pkgupd_pkgdir}/usr/lib/cups/backend
+      ln -sf -v /usr/bin/smbspool ${pkgupd_pkgdir}/usr/lib/cups/backend/smb

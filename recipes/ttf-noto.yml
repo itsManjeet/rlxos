@@ -1,0 +1,17 @@
+id: ttf-noto
+version: 20201206
+about: |
+  Noto Fonts
+ 
+sources:
+  - https://github.com/googlefonts/noto-fonts/archive/refs/tags/v20201206-phase3.tar.gz
+
+packages:
+  - id: pkg
+    dir: noto-fonts-20201206-phase3/
+    plugin: script
+    script: |
+      install -D -m 644 unhinted/ttf/Noto*/*.tt[fc] -t ${pkgupd_pkgdir}/usr/share/fonts/noto/
+      install -D -m 644 hinted/ttf/Noto*/*.tt[fc] -t ${pkgupd_pkgdir}/usr/share/fonts/noto/
+      install -D -m 644 LICENSE -t ${pkgupd_pkgdir}/usr/share/licenses/ttf-noto
+      install -D -m 644 ${FILES}/ttf-noto/*.conf -t ${pkgupd_pkgdir}/usr/share/fontconfig/config.avail/

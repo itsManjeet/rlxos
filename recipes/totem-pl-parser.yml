@@ -1,0 +1,24 @@
+id: totem-pl-parser
+version: 3.26.6
+about: |
+  A simple GObject-based library used to parse multiple playlist formats
+
+depends:
+  runtime:
+    - libsoup
+    - libarchive
+    - libgcrypt
+  
+  buildtime:
+    - gobject-introspection
+
+sources:
+  - https://download.gnome.org/sources/totem-pl-parser/3.26/totem-pl-parser-3.26.6.tar.xz
+
+packages:
+  - id: pkg
+    dir: totem-pl-parser-3.26.6
+    flags:
+      - id: configure
+        value: >
+          --buildtype=release

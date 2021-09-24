@@ -1,0 +1,32 @@
+id: network-manager-applet
+version: 1.22.0
+about: |
+  NetworkManager Applet provides a tool and a panel applet used to configure wired and wireless network connections through GUI
+
+depends:
+  runtime:
+    - gtk
+    - libnma
+    - libnotify
+    - libsecret
+
+  buildtime:
+    - gobject-introspection
+
+sources:
+  - https://download.gnome.org/sources/network-manager-applet/1.22/network-manager-applet-1.22.0.tar.xz
+
+packages:
+  - id: pkg
+    dir: network-manager-applet-1.22.0
+
+    flags:
+      - id: configurator
+        value: meson.build
+      - id: configure
+        value: >
+          --buildtype=release
+          -D appindicator=no
+          -Dselinux=false
+          -Dteam=false
+          -Dwwan=false

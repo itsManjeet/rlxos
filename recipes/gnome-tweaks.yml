@@ -1,0 +1,22 @@
+id: gnome-tweaks
+version: 40.0
+about: |
+  A simple program used to tweak advanced GNOME settings
+
+depends:
+  runtime:
+    - gtk
+    - gsettings-desktop-schemas
+    - libhandy
+    - py-gobject
+    - sound-theme-freedesktop
+  
+sources:
+  - https://download.gnome.org/sources/gnome-tweaks/40/gnome-tweaks-40.0.tar.xz
+
+packages:
+  - id: pkg
+    dir: gnome-tweaks-40.0
+    flags:
+      - id: configure
+        value: --buildtype=release

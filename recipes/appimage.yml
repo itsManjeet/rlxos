@@ -1,0 +1,45 @@
+id: appimage
+version: 0.1.0
+about: |
+  AppImage tools
+
+depends:
+  runtime:
+    - squashfs-tools
+
+  buildtime:
+    - desktop-file-utils
+
+split: false
+
+packages:
+  - id: appimagetool
+    dir: .
+    sources:
+      - https://github.com/probonopd/go-appimage/releases/download/continuous/appimagetool-646-x86_64.AppImage
+    plugin: script
+
+    script: |
+      install -v -D -m 755 appimagetool-646-x86_64.AppImage ${pkgupd_pkgdir}/usr/bin/appimagetool
+  
+  - id: apprun
+    dir: .
+    sources:
+      - https://github.com/AppImage/AppImageKit/releases/download/13/AppRun-x86_64
+    
+    plugin: script
+    script: |
+      install -v -D -m 755 AppRun-x86_64 ${pkgupd_pkgdir}/usr/lib/appimage/AppRun
+
+
+  # - id: appimaged
+  #   dir: go-appimage-master
+  #   plugin: script
+  #   environ:
+  #     - GOPATH=${pkgupd_srcdir}/../
+  #     - GO111MODULE=auto
+
+  #   script: |
+  #     go build github.com/probonopd/go-appimage/src/appimaged
+  #     install -v -D -m 755 appimaged -t ${pkgupd_pkgdir}/usr/bin/
+  #     install -v -D -m 644 ${FILES}/appimage/appimaged.service -t ${pkgupd_pkgdir}/usr/lib/systemd/user/

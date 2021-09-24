@@ -1,0 +1,14 @@
+id: nasm
+version: 2.15.05
+about: |
+  An 80x86 assembler designed for portability and modularity
+
+sources:
+  - https://www.nasm.us/pub/nasm/releasebuilds/2.15.05/nasm-2.15.05.tar.xz
+
+packages:
+  - id: pkg
+    dir: nasm-2.15.05
+    flags:
+      - id: configurator
+        value: configure

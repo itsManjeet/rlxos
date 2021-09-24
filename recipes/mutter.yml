@@ -1,0 +1,32 @@
+id: mutter
+version: 40.3
+about: |
+  The window manager for GNOME
+
+depends:
+  runtime:
+    - gnome-settings-daemon
+    - graphene
+    - libxkbcommon
+    - pipewire
+    - zenity
+    - desktop-file-utils
+    - startup-notification
+    - sysprof
+    - libinput
+    - wayland
+    - xorg-server
+    - gtk
+  
+  buildtime:
+    - gobject-introspection
+
+sources:  
+  - https://download.gnome.org/sources/mutter/40/mutter-40.3.tar.xz
+packages:
+  - id: pkg
+    dir: mutter-40.3
+    flags:
+      - id: configure
+        value: >
+          --buildtype=debugoptimized

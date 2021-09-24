@@ -1,0 +1,41 @@
+id: gst-plugins-good
+version: 1.18.4
+about: |
+  A set of plug-ins considered by the GStreamer developers to have good quality code, correct functionality, and the preferred license (LGPL for the plug-in code, LGPL or LGPL-compatible for the supporting library). A wide range of video and audio decoders, encoders, and filters are included
+
+depends:
+  runtime:
+    - gst-plugins-base
+    - cairo
+    - flac
+    - gdk-pixbuf
+    - lame
+    - libgudev
+    - libjpeg-turbo
+    - libpng
+    - libsoup
+    - libvpx
+    - mesa
+    - mpg123
+    - xorg-lib
+    - taglib
+  
+  buildtime:
+    - nasm
+
+sources:
+  - https://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.18.4.tar.xz
+  - https://www.linuxfromscratch.org/patches/blfs/svn/gst-plugins-good-1.18.4-upstream_fixes-1.patch
+
+packages:
+  - id: pkg
+    dir: gst-plugins-good-1.18.4
+    prescript: |
+      patch -Np1 -i ../gst-plugins-good-1.18.4-upstream_fixes-1.patch
+
+    flags:
+      - id: configure
+        value: >
+          --buildtype=release
+          -D package-origin=https://rlxos.dev
+          -D package-name="GStreamer 1.18.4"

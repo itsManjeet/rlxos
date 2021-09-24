@@ -1,0 +1,93 @@
+id: xorg-drivers
+version: 7
+about: |
+  Xorg drivers
+
+split: false
+clean: true
+
+depends:
+  runtime:
+    - libevdev
+    - libinput
+    - mtdev
+    - xorg-server
+
+kernel:
+  - CONFIG_HID
+  - CONFIG_HID_WACOM
+  - CONFIG_DRM
+  - CONFIG_DRM_AMDGPU:M
+  - CONFIG_DRM_AMDGPU_SI:M
+  - CONFIG_DRM_ADMGPU_CIK:M
+  - CONFIG_DRM_RADEON:M
+
+packages:
+  - id: evdev
+    dir: xf86-input-evdev-2.10.6
+    sources:
+    - https://www.x.org/pub/individual/driver/xf86-input-evdev-2.10.6.tar.bz2
+
+  - id: input
+    dir: xf86-input-libinput-1.1.0
+    sources:
+    - https://www.x.org/pub/individual/driver/xf86-input-libinput-1.1.0.tar.bz2
+  
+  - id: synaptics
+    dir: xf86-input-synaptics-1.9.1
+    sources:
+    - https://www.x.org/pub/individual/driver/xf86-input-synaptics-1.9.1.tar.bz2
+  
+  - id: wacom
+    dir: xf86-input-wacom-0.40.0
+    sources:
+    - https://github.com/linuxwacom/xf86-input-wacom/releases/download/xf86-input-wacom-0.40.0/xf86-input-wacom-0.40.0.tar.bz2
+  
+  - id: amdgpu
+    dir: xf86-video-amdgpu-19.1.0
+    sources:
+    - https://www.x.org/pub/individual/driver/xf86-video-amdgpu-19.1.0.tar.bz2
+
+    prescript: |
+      sed -i "s/^miPointerSpriteFuncRec/extern &/" src/drmmode_display.h
+    flags:
+      - id: configure
+        value: --enable-glamor
+
+  - id: ati
+    dir: xf86-video-ati-19.1.0
+    sources:
+      - https://www.x.org/pub/individual/driver/xf86-video-ati-19.1.0.tar.bz2
+  
+    prescript: |
+      sed -e "s/miPointer/extern &/" -i src/drmmode_display.h
+
+  - id: fbdev
+    dir: xf86-video-fbdev-0.5.0
+    sources:
+      - https://www.x.org/pub/individual/driver/xf86-video-fbdev-0.5.0.tar.bz2
+  
+  - id: intel
+    dir: xf86-video-intel-20210222
+    sources:
+      - https://anduin.linuxfromscratch.org/BLFS/xf86-video-intel/xf86-video-intel-20210222.tar.xz
+    
+    flags:
+      - id: configure
+        value: >
+          --enable-kms-only
+          --enable-uxa
+          --with-default-dri=3
+  
+  - id: nouveau
+    dir: xf86-video-nouveau-1.0.17
+    sources:
+      - https://www.x.org/pub/individual/driver/xf86-video-nouveau-1.0.17.tar.bz2
+
+  - id: vmware
+    dir: xf86-video-vmware-13.3.0
+    sources:
+      - https://www.x.org/pub/individual/driver/xf86-video-vmware-13.3.0.tar.bz2
+
+    
+    

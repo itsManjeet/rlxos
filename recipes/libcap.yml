@@ -1,0 +1,23 @@
+id: libcap
+version: 2.51
+about: |
+  User-space interfaces to the POSIX 1003.1e capabilities available in Linux kernels
+
+sources:
+  - https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-2.51.tar.xz
+  
+depends:
+  runtime:
+    - glibc
+    - acl
+
+packages:
+  - id: pkg
+    dir: libcap-2.51
+    plugin: script
+    script: |
+      sed -i "/install -m.*STA/d" libcap/Makefile
+      make KERNEL_HEADERS='/usr/include' prefix=/usr lib=lib
+
+      make DESTDIR=${pkgupd_pkgdir} RAISE_SETFCAP='no' lib='lib' prefix='/usr' install
+      chmod -v 755 ${pkgupd_pkgdir}/usr/lib/lib{cap,psx}.so.2.51

@@ -1,0 +1,16 @@
+id: libmng
+version: 2.0.3
+about: |
+  Programs wanting to read and write Multiple-image Network Graphics (MNG) files
+
+depends:
+  runtime:
+    - libjpeg-turbo
+    - lcms
+  
+sources:
+  - https://downloads.sourceforge.net/libmng/libmng-2.0.3.tar.xz
+
+packages:
+  - id: lib
+    dir: libmng-2.0.3

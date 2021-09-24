@@ -1,0 +1,23 @@
+id: gstreamer
+version: 1.18.4
+about: |
+  A streaming media framework that enables applications to share a common set of plugins for tasks such as video encoding and decoding, audio encoding and decoding, audio and video filters, audio visualisation, web streaming and anything else that streams in real-time or otherwise.
+
+depends:
+  runtime:
+    - glib
+    - gobject-introspection
+
+sources:
+  - https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.18.4.tar.xz
+
+packages:
+  - id: pkg
+    dir: gstreamer-1.18.4
+    flags:
+      - id: configure
+        value: >
+          -Dgst_debug=false
+          --buildtype=release
+          -Dpackage-origin=https://rlxos.dev
+          -Dpackage-name="GStramer 1.18.4"

@@ -1,0 +1,42 @@
+id: xorg-fonts
+version: 7
+about: |
+  Packages provide some scalable fonts and supporting packages for Xorg applications
+
+depends:
+  runtime:
+    - xcursor-themes
+
+split: false
+clean: true
+
+packages:
+  - id: font-util
+    dir: font-util-1.3.2
+    sources:
+      - https://www.x.org/pub/individual/font/font-util-1.3.2.tar.bz2
+
+  - id: encodings
+    dir: encodings-1.0.5
+    sources:
+      - https://www.x.org/pub/individual/font/encodings-1.0.5.tar.bz2
+
+  - id: font-alias
+    dir: font-alias-1.0.4
+    sources:
+      - https://www.x.org/pub/individual/font/font-alias-1.0.4.tar.bz2
+  
+  - id: font-bh-ttf
+    dir: font-bh-ttf-1.0.3
+    sources:
+      - https://www.x.org/pub/individual/font/font-bh-ttf-1.0.3.tar.bz2
+
+  - id: font-bh-type1
+    dir: font-bh-type1-1.0.3
+    sources:
+      - https://www.x.org/pub/individual/font/font-bh-type1-1.0.3.tar.bz2
+  
+  - id: font-ibm-type1
+    dir: font-ibm-type1-1.0.3
+    sources:
+      - https://www.x.org/pub/individual/font/font-ibm-type1-1.0.3.tar.bz2

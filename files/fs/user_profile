@@ -1,0 +1,5 @@
+# export LANG=<ll>_<CC>.<charmap><@modifiers>
+
+if [ -d "$HOME/Applications" ] ; then
+  PATH="$HOME/Applications:${PATH}"
+fi

@@ -1,0 +1,15 @@
+id: xcb-util-keysyms
+version: 0.4.0
+about: |
+  Additional extensions to the XCB library
+
+depends:
+  runtime:
+    - libxcb
+
+sources:
+  - https://xcb.freedesktop.org/dist/xcb-util-keysyms-0.4.0.tar.bz2
+
+packages:
+  - id: configure
+    dir: xcb-util-keysyms-0.4.0

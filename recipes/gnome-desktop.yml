@@ -1,0 +1,28 @@
+id: gnome-desktop
+version: 40.3
+about: |
+  A library that provides an API shared by several applications on the GNOME Desktop
+
+depends:
+  runtime:
+    - gsettings-desktop-schemas
+    - gtk
+    - iso-codes
+    - itstool
+    - libseccomp
+    - libxml2
+    - xkeyboardconfig
+    - bubblewrap
+    - gobject-introspection
+  
+sources:
+  - https://download.gnome.org/sources/gnome-desktop/40/gnome-desktop-40.3.tar.xz
+
+packages:
+  - id: pkg
+    dir: gnome-desktop-40.3
+    flags:
+      - id: configure
+        value: >
+          --buildtype=release
+          -D gnome_distributor="rlxos"

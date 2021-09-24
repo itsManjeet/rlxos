@@ -1,0 +1,14 @@
+id: libmtp
+version: 1.1.18
+about: |
+  Library implementation of the Media Transfer Protocol
+
+sources:
+  - https://downloads.sourceforge.net/libmtp/libmtp-1.1.18.tar.gz
+depends:
+  runtime:
+    - libusb
+
+packages:
+  - id: lib
+    dir: libmtp-1.1.18

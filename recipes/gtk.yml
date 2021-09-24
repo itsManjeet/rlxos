@@ -1,0 +1,32 @@
+id: gtk
+version: 3.24.30
+about: |
+  Libraries used for creating graphical user interfaces for applications
+
+depends:
+  runtime:
+    - at-spi2-atk
+    - gdk-pixbuf
+    - libepoxy
+    - pango
+    - libxkbcommon
+
+sources:
+  - https://download.gnome.org/sources/gtk+/3.24/gtk+-3.24.30.tar.xz
+
+packages:
+  - id: pkg
+    dir: gtk+-3.24.30
+    flags:
+      - id: configurator
+        value: configure
+
+      - id: configure
+        value: >
+          --enable-broadway-backend
+          --enable-x11-backend
+          --enable-wayland-backend
+          --disable-gtk-doc
+
+    postscript: |
+      install -v -D -m 644 ${FILES}/triggers/immodules.yml -t ${pkgupd_pkgdir}/usr/share/pkgupd/triggers/

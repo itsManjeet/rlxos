@@ -1,0 +1,11 @@
+id: libndp
+version: 1.8
+about: |
+  Library provides a wrapper for IPv6 Neighbor Discovery Protocol
+
+sources:
+  - http://libndp.org/files/libndp-1.8.tar.gz
+  
+packages:
+  - id: lib
+    dir: libndp-1.8

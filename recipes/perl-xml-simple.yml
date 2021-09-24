@@ -1,0 +1,20 @@
+id: perl-xml-simple
+version: 2.25
+about: |
+  An easy API to read and write XML (especially config files)
+
+depends:
+  runtime:
+    - perl
+
+sources:
+  - https://www.cpan.org/authors/id/G/GR/GRANTM/XML-Simple-2.25.tar.gz
+
+packages:
+  - id: pkg
+    dir: XML-Simple-2.25
+    plugin: script
+    script: |
+      perl Makefile.PL
+      make
+      make install DESTDIR=${pkgupd_pkgdir}

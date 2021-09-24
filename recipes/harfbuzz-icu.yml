@@ -1,0 +1,35 @@
+id: harfbuzz-icu
+version: 2.8.2
+about: |
+  OpenType text shaping engine
+
+depends:
+  runtime:
+    - harfbuzz
+    - icu
+  
+sources:
+  - https://github.com/harfbuzz/harfbuzz/releases/download/2.8.2/harfbuzz-2.8.2.tar.xz
+
+packages:
+  - id: pkg
+    dir: harfbuzz-2.8.2
+    environ:
+      - DESTDIR=${pkgupd_srcdir}/dest
+    flags:
+      - id: configurator
+        value: meson.build
+        
+      - id: configure
+        value: >
+          --buildtype=release
+          -D graphite=enabled
+          -D benchmark=disabled
+          -D docs=disabled
+          -D icu=enabled
+
+    postscript: |
+      mkdir -p ${pkgupd_pkgdir}/usr/lib/pkgconfig ${pkgupd_pkgdir}/usr/include/harfbuzz
+      mv ${pkgupd_srcdir}/dest/usr/include/harfbuzz/hb-icu.h ${pkgupd_pkgdir}/usr/include/harfbuzz/
+      mv ${pkgupd_srcdir}/dest/usr/lib/libharfbuzz-icu* ${pkgupd_pkgdir}/usr/lib/
+      mv ${pkgupd_srcdir}/dest/usr/lib/pkgconfig/harfbuzz-icu.pc ${pkgupd_pkgdir}/usr/lib/pkgconfig/

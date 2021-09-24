@@ -1,0 +1,24 @@
+id: konsole
+version: 21.04.2
+about: |
+  KF5 based terminal emulator
+
+depends:
+  runtime:
+    - kf5
+
+sources:
+  - https://download.kde.org/stable/release-service/21.04.2/src/konsole-21.04.2.tar.xz
+  - https://www.linuxfromscratch.org/patches/blfs/svn/konsole-21.04.2-scrollbar-1.patch
+
+packages:
+  - id: pkg
+    dir: konsole-21.04.2
+    prescript: |
+      patch -Np1 -i ../konsole-21.04.2-scrollbar-1.patch
+    
+    flags:
+      - id: configure
+        value: >
+          -DBUILD_TESTING=OFF
+          -Wno-dev

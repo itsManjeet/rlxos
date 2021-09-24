@@ -1,0 +1,28 @@
+id: grilo
+version: 0.3.13
+about: |
+  A framework focused on making media discovery and browsing easy for applications and application developers
+
+depends:
+  runtime:
+    - glib
+    - libxml2
+    - gtk
+    - libsoup
+    - totem-pl-parser
+  
+  buildtime:
+    - gobject-introspection
+    - vala
+
+sources:
+  - https://download.gnome.org/sources/grilo/0.3/grilo-0.3.13.tar.xz
+
+packages:
+  - id: pkg
+    dir: grilo-0.3.13
+    flags:
+      - id: configure
+        value: >
+          --buildtype=release
+          -D enable-gtk-doc=false

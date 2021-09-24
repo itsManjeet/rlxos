@@ -1,0 +1,29 @@
+id: pipewire
+version: 0.3.33
+about: |
+  A server and user-space API to handle multimedia pipelines
+
+depends:
+  runtime:
+    - bluez
+    - ffmpeg
+    - gstreamer
+    - gst-plugins-base
+    - libva
+    - pulseaudio
+    - sbc
+    - sdl
+    - v4l-utils
+
+sources:
+  - https://github.com/PipeWire/pipewire/archive/0.3.33/pipewire-0.3.33.tar.gz
+
+packages:
+  - id: pkg
+    dir: pipewire-0.3.33
+    flags:
+      - id: configurator
+        value: meson.build
+      - id: configure
+        value: >
+          --buildtype=release

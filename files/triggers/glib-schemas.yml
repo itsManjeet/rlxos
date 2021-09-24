@@ -1,0 +1,5 @@
+id: glib-schemas
+message: Compiling glib schemas
+regex: ^\/(\w+)\/share\/glib-\d+\.\d+\/schemas\/$
+args: true
+exec: glib-compile-schemas

@@ -1,0 +1,20 @@
+id: giflib
+version: 5.2.1
+about: |
+  Libraries for reading and writing GIFs as well as programs for converting and working with GIF files
+
+depends:
+  buildtime:
+    - xmlto
+
+sources:
+  - giflib-5.2.1.tar.gz::https://github.com/nesbox/giflib/archive/refs/tags/5.2.1.tar.gz
+
+packages:
+  - id: lib
+    dir: giflib-5.2.1
+    plugin: script
+    script: |
+      make
+      make PREFIX=/usr DESTDIR=${pkgupd_pkgdir} install
+      

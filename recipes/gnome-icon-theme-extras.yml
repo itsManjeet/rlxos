@@ -1,0 +1,16 @@
+id: gnome-icon-theme-extras
+version: 3.12.0
+about: |
+  GNOME Icon Theme Extras package
+
+depends:
+  runtime:
+    - gnome-icon-theme
+
+sources:
+  - https://download.gnome.org/sources/gnome-icon-theme-extras/3.12/gnome-icon-theme-extras-3.12.0.tar.xz
+
+packages:
+  - id: pkg
+    dir: gnome-icon-theme-extras-3.12.0
+    

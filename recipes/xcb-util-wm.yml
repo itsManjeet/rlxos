@@ -1,0 +1,15 @@
+id: xcb-util-wm
+version: 0.4.1
+about: |
+  Additional extensions to the XCB library
+
+depends:
+  runtime:
+    - libxcb
+
+sources:
+  - https://xcb.freedesktop.org/dist/xcb-util-wm-0.4.1.tar.bz2
+
+packages:
+  - id: configure
+    dir: xcb-util-wm-0.4.1

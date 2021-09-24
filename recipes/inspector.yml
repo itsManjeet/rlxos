@@ -1,0 +1,23 @@
+id: inspector
+version: 0.1.0
+about: |
+  Inspect on Application directory for changes
+
+depends:
+  runtime:
+    - libappimage
+    - libnotify
+  
+  buildtime:
+    - cmake
+
+sources:
+  - inspector-main.tar.gz::https://github.com/rlxos/inspector/archive/refs/heads/main.tar.gz
+
+packages:
+  - id: pkg
+    dir: inspector-main
+
+    postscript: |
+      sed "3iAfter=gnome.target" -i ${pkgupd_pkgdir}/usr/lib/systemd/user/inspector.service
+      echo -e "\nWantedBy=default.target" >> ${pkgupd_pkgdir}/usr/lib/systemd/user/inspector.service

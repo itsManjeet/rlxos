@@ -1,0 +1,39 @@
+id: gnome-control-center
+version: 40.0
+about: |
+  Control Center package contains the GNOME settings manager
+
+depends:
+  runtime:
+    - accountsservice
+    - clutter-gtk
+    - colord-gtk
+    - gnome-online-accounts
+    - gnome-settings-daemon
+    - grilo
+    - gsound
+    - libgtop
+    - libpwquality
+    - shared-mime-info
+    - kerberos-v5
+    - udisks
+    - cheese
+    - cups
+    - samba
+    - gnome-bluetooth
+    - ibus
+    - libhandy
+    - libnma
+    - modemmanager
+
+sources:
+  - https://download.gnome.org/sources/gnome-control-center/40/gnome-control-center-40.0.tar.xz
+
+packages:
+  - id: pkg
+    dir: gnome-control-center-40.0
+    prescript: |
+      sed -i "s|gnome-logo|rlxos-logo|g" ${pkgupd_srcdir}/panels/info-overview/cc-info-overview-panel.c
+    flags:
+      - id: configure
+        value: --buildtype=release

@@ -1,0 +1,17 @@
+id: automake
+version: 1.16.3
+about: |
+  Programs for generating Makefiles for use with Autoconf
+
+depends:
+  runtime:
+    - bash
+    - perl
+    - autoconf
+
+sources:
+  - https://ftp.gnu.org/gnu/automake/automake-1.16.3.tar.xz
+
+packages:
+  - id: pkg
+    dir: automake-1.16.3

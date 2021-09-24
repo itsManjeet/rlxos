@@ -1,0 +1,7 @@
+if [ -f "$HOME/.bashrc" ] ; then
+  source $HOME/.bashrc
+fi
+
+if [ -d "$HOME/Applications" ] ; then
+  PATH="$HOME/Applications:${PATH}"
+fi

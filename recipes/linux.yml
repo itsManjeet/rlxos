@@ -1,0 +1,32 @@
+id: linux
+version: 5.12.10
+about: |
+  Linux kernel, modules and headers
+
+sources:
+  - https://www.kernel.org/pub/linux/kernel/v5.x/linux-5.12.10.tar.xz
+
+packages:
+  - id: pkg
+    dir: linux-5.12.10
+    sources:
+      - https://raw.githubusercontent.com/rlxos/kernel-config/main/config.x86_64
+
+    plugin: script
+    script: |
+      make mrproper
+
+      cp ${pkgupd_srcdir}/../config.x86_64 ./.config
+
+      make olddefconfig
+
+      make bzImage modules
+      make INSTALL_MOD_PATH=${pkgupd_pkgdir} modules_install
+
+      mkdir -p ${pkgupd_pkgdir}/boot
+      cp arch/x86/boot/bzImage ${pkgupd_pkgdir}/boot/vmlinuz
+      
+      rm ${pkgupd_pkgdir}/lib/modules/5.12.10-rlxos/{build,source}
+
+      mkdir -p ${pkgupd_pkgdir}/usr
+      mv ${pkgupd_pkgdir}/lib ${pkgupd_pkgdir}/usr/

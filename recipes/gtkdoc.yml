@@ -1,0 +1,19 @@
+id: gtk-doc
+version: 1.33.2
+about: |
+  Package contains a code documenter
+
+depends:
+  runtime:
+    - docbook-xml
+    - docbook-xsl
+    - itstool
+    - libxslt
+
+sources:
+  - https://download.gnome.org/sources/gtk-doc/1.33/gtk-doc-1.33.2.tar.xz
+
+packages:
+  - id: pkg
+    dir: gtk-doc-1.33.2
+    

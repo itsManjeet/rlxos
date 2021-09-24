@@ -1,0 +1,14 @@
+id: wget
+version: 1.21.1
+about: |
+  A utility useful for non-interactive downloading of files from the Web
+
+sources:
+  - https://ftp.gnu.org/gnu/wget/wget-1.21.1.tar.gz
+
+packages:
+  - id: pkg
+    dir: wget-1.21.1
+    flags:
+      - id: configure
+        value: --with-ssl=openssl

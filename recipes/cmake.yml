@@ -1,0 +1,33 @@
+id: cmake
+version: 3.18.1
+about: Modern toolset used for generating Makefiles
+
+depends:
+  runtime:
+    - libuv
+    - curl
+    - libarchive
+
+sources:
+  - https://cmake.org/files/v3.20/cmake-3.20.5.tar.gz
+
+prescript: |
+  cd ${PKGUPD_WORKDIR}/src/cmake-3.20.5
+  sed -i "/lib64/s/64//" Modules/GNUInstallDirs.cmake
+
+packages:
+  - id: cmake
+    dir: cmake-3.20.5
+    flags:
+      - id: configurator
+        value: configure
+
+      - id: configure
+        only: true
+        value: >
+          --prefix=/usr
+          --system-libs
+          --mandir=/share/man
+          --no-system-jsoncpp
+          --no-system-librhash
+          --docdir=/share/doc/cmake

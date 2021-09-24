@@ -1,0 +1,21 @@
+id: pango
+version: 1.48.7
+about: |
+  Library for laying out and rendering text
+
+depends:
+  runtime:
+    - fontconfig
+    - fribidi
+    - glib
+    - cairo
+    - gobject-introspection
+    - xorg-lib
+    - harfbuzz
+
+sources:
+  - https://download.gnome.org/sources/pango/1.48/pango-1.48.7.tar.xz
+
+packages:
+  - id: pkg
+    dir: pango-1.48.7

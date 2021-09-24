@@ -1,0 +1,6 @@
+This favicon was generated using the following font:
+
+- Font Title: Nova Round
+- Font Author: http://scripts.sil.org/OFL
+- Font Source: http://fonts.gstatic.com/s/novaround/v14/flU9Rqquw5UhEnlwTJYTYYfeeetYEBc.ttf
+- Font License: SIL Open Font License, 1.1 (http://scripts.sil.org/OFL)

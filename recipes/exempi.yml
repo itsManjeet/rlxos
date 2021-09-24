@@ -1,0 +1,19 @@
+id: exempi
+version: 2.5.2
+about: |
+  An implementation of XMP (Adobe's Extensible Metadata Platform)
+
+depends:
+  buildtime:
+    - boost
+
+sources:
+  - https://libopenraw.freedesktop.org/download/exempi-2.5.2.tar.bz2
+
+packages:
+  - id: pkg
+    dir: exempi-2.5.2
+    flags:
+      - id: configure
+        value: >
+          --disable-static

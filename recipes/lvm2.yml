@@ -1,0 +1,33 @@
+id: lvm2
+version: 2.03.12
+about: |
+  A set of tools that manage logical partitions
+
+sources:
+  - https://sourceware.org/ftp/lvm2/LVM2.2.03.12.tgz
+
+kernel:
+  - CONFIG_MD
+  - CONFIG_BLK_DEV_DM
+  - CONFIG_DM_CRYPT
+  - CONFIG_DM_SNAPSHOT
+  - CONFIG_DM_THIN_PROVISIONING
+  - CONFIG_DM_MIRROR
+  - CONFIG_MAGIC_SYSRQ
+
+depends:
+  runtime:
+    - libaio
+
+packages:
+  - id: pkg
+    dir: LVM2.2.03.12
+    flags:
+      - id: configure
+        value: >
+          --enable-cmdline
+          --enable-pkgconfig
+          --enable-udev_sync
+      
+      - id: install
+        value: install_systemd_units

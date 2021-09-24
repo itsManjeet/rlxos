@@ -1,0 +1,15 @@
+id: dbus-glib
+version: 0.112
+about: |
+  Package contains GLib interfaces to the D-Bus API
+
+depends:
+  runtime:
+    - dbus
+    - glib
+
+sources:
+  - https://dbus.freedesktop.org/releases/dbus-glib/dbus-glib-0.112.tar.gz
+packages:
+  - id: pkg
+    dir: dbus-glib-0.112

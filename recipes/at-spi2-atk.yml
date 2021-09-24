@@ -1,0 +1,16 @@
+id: at-spi2-atk
+version: 2.38.0
+about: |
+  Library that bridges ATK to At-Spi2 D-Bus service
+
+depends:
+  runtime:
+    - at-spi2-core
+    - atk
+
+sources:
+  - https://download.gnome.org/sources/at-spi2-atk/2.38/at-spi2-atk-2.38.0.tar.xz
+
+packages:
+  - id: pkg
+    dir: at-spi2-atk-2.38.0

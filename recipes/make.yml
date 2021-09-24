@@ -1,0 +1,16 @@
+id: make
+version: 4.3
+about: |
+  A program for controlling the generation of executables and other non-source files of a package from source files
+
+depends:
+  runtime:
+    - glibc
+
+sources:
+  - https://ftp.gnu.org/gnu/make/make-4.3.tar.gz
+
+packages:
+  - id: pkg
+    dir: make-4.3
+    

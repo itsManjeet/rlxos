@@ -1,0 +1,22 @@
+id: kernel-headers
+version: 5.12.10
+about: |
+  Linux kernel, modules and headers
+
+sources:
+  - https://www.kernel.org/pub/linux/kernel/v5.x/linux-5.12.10.tar.xz
+
+packages:
+  - id: pkg
+    dir: linux-5.12.10
+
+    plugin: script
+    script: |
+      make mrproper
+      make headers
+
+      find usr/include -name ".*" -delete
+      rm usr/include/Makefile
+      mkdir -p ${pkgupd_pkgdir}/usr/include
+
+      cp -rv usr/include/* ${pkgupd_pkgdir}/usr/include

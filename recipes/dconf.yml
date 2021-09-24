@@ -1,0 +1,33 @@
+id: dconf
+version: 0.40.0
+about: |
+  A low-level configuration system
+
+depends:
+  runtime:
+    - dbus
+    - glib
+    - gtk
+    - libxml2
+    - libxslt
+
+  buildtime:
+    - vala
+
+split: false
+
+sources:
+  - https://download.gnome.org/sources/dconf/0.40/dconf-0.40.0.tar.xz
+  - https://download.gnome.org/sources/dconf-editor/3.38/dconf-editor-3.38.3.tar.xz
+
+packages:
+  - id: pkg
+    dir: dconf-0.40.0
+
+    flags:
+      - id: configure
+        value: -D bash_completion=false
+
+  - id: editor
+    dir: dconf-editor-3.38.3
+

@@ -1,0 +1,17 @@
+id: twm
+version: 1.0.11
+about: |
+  A very minimal window manager
+
+depends:
+  runtime:
+    - xorg-server
+
+sources:
+  - https://www.x.org/pub/individual/app/twm-1.0.11.tar.xz
+
+packages:
+  - id: pkg
+    dir: twm-1.0.11
+    prescript: |
+      sed -i -e "/^rcdir =/s,^\(rcdir = \).*,\1/etc/X11/app-defaults," src/Makefile.in

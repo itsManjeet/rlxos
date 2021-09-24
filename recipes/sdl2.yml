@@ -1,0 +1,19 @@
+id: sdl2
+version: 2.0.14
+about: |
+  Simple DirectMedia Layer Version 2
+
+depends:
+  runtime:
+    - libxkbcommon
+    - wayland
+    - xorg-lib
+    - alsa-lib
+    - pulseaudio
+
+sources:
+  - https://www.libsdl.org/release/SDL2-2.0.14.tar.gz
+
+packages:
+  - id: pkg
+    dir: SDL2-2.0.14

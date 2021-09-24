@@ -1,0 +1,26 @@
+id: v4l-utils
+version: 1.20.0
+about: |
+  A series of utilities for media devices
+
+depends:
+  runtime:
+    - alsa-lib
+    - glu
+    - libjpeg-turbo
+    # - qt
+  buildtime:
+    - llvm
+
+sources:
+  - https://www.linuxtv.org/downloads/v4l-utils/v4l-utils-1.20.0.tar.bz2
+  # - https://www.linuxfromscratch.org/patches/blfs/svn/v4l-utils-1.20.0-upstream_fixes-1.patch
+
+packages:
+  - id: pkg
+    dir: v4l-utils-1.20.0
+    # prescript: |
+    #   patch -Np1 -i ../v4l-utils-1.20.0-upstream_fixes-1.patch
+    flags:
+      - id: install
+        value: -j1

@@ -1,0 +1,23 @@
+id: xorgproto
+version: 2021.4
+about: |
+  combined X.Org X11 Protocol headers
+
+depends:
+  buildtime:
+    - meson
+    - util-macros
+
+sources:
+  - https://xorg.freedesktop.org/archive/individual/proto/xorgproto-2021.4.tar.bz2
+
+packages:
+  - id: pkg
+    dir: xorgproto-2021.4
+    flags:
+      - id: configurator
+        value: meson.build
+
+      - id: configure
+        value: >
+          -Dlegacy=true

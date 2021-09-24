@@ -1,0 +1,30 @@
+id: devel
+version: 2110
+about: |
+  Development tools collection for rlxos
+
+depends:
+  runtime:
+    - core
+    - gcc
+    - binutils
+    - linux:headers
+    - flex
+    - bison
+    - m4
+    - automake
+    - make
+    - meson
+    - autoconf
+    - patch
+    - libtool
+    - pkg-config
+    - texinfo
+
+packages:
+  - id: conf
+    dir: .
+    plugin: script
+    script: |
+      mkdir -p ${pkgupd_pkgdir}/usr/share/devel/
+      echo "2110" > ${pkgupd_pkgdir}/usr/share/devel/version

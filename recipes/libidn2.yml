@@ -1,0 +1,16 @@
+id: libidn2
+version: 2.3.1
+about: |
+  Internationalized string handling based on standards from the Internet Engineering Task Force (IETF)'s IDN working group, designed for internationalized domain names
+
+depends:
+  runtime:
+    - libunistring
+
+sources:
+  - https://ftp.gnu.org/gnu/libidn/libidn2-2.3.1.tar.gz
+
+packages:
+  - id: pkg
+    dir: libidn2-2.3.1
+    

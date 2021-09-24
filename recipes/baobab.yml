@@ -1,0 +1,23 @@
+id: baobab
+version: 40.0
+about: |
+  A graphical directory tree analyzer
+
+depends:
+  runtime:
+    - adwaita-icon-theme
+    - gtk
+    - itstool
+    - libhandy
+  buildtime:
+    - vala
+
+sources:
+  - https://download.gnome.org/sources/baobab/40/baobab-40.0.tar.xz
+
+packages:
+  - id: pkg
+    dir: baobab-40.0
+    flags:
+      - id: configure
+        value: --buildtype=release

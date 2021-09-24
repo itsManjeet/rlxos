@@ -1,0 +1,84 @@
+id: glibc
+version: 2.33
+about: GNU C Library
+
+
+depends:
+  runtime:
+    - filesystem
+    - attr
+    
+  buildtime:
+    - linux:headers
+
+packages:
+  - id: pkg
+    dir: glibc-2.33
+    sources:
+      - https://ftp.gnu.org/gnu/glibc/glibc-2.33.tar.xz
+
+    skipstrip:
+    - lib.*/ld-.*\.so$
+    - lib.*/libc-.*\.so$
+    - lib.*/libpthread-.*\.so$
+    - lib.*/libthread_db-.*\.so$
+
+    prescript: |
+      patch -Np1 -i ${FILES}/glibc/glibc-2.33-fhs-1.patch
+      sed -e "402a\      *result = local->data.services[database_index];" -i nss/nss_database.c
+      sed "s/amx_/amx-/" -i sysdeps/x86/tst-cpu-features-supports.c
+
+    environ:
+      - CC="gcc -ffile-prefix-map=/tools=/usr"
+      - M4=m4
+
+    flags:
+      - id: configure
+        value: >
+          --disable-werror
+          --enable-kernel=3.2
+          --enable-stack-protector=strong
+          --with-headers=/usr/include
+          --enable-multi-arch
+          libc_cv_slibdir=/usr/lib
+
+    postscript: |
+      sed "/RTLDLIST=/s@/usr@@g" -i ${pkgupd_pkgdir}/usr/bin/ldd
+
+  
+  # - id: lib32
+  #   dir: glibc-2.33
+  #   sources:
+  #     - https://ftp.gnu.org/gnu/glibc/glibc-2.33.tar.xz
+
+  #   prescript: |
+  #     patch -Np1 -i ${FILES}/glibc/glibc-2.33-fhs-1.patch
+  #     sed -e "402a\      *result = local->data.services[database_index];" -i nss/nss_database.c
+  #     sed "s/amx_/amx-/" -i sysdeps/x86/tst-cpu-features-supports.c
+
+  #   environ:
+  #     - CC="gcc -m32"
+  #     - CXX="g++ -m32"
+  #     - DESTDIR=${pkgupd_srcdir}/DESTDIR
+  #     - M4=m4
+
+  #   flags:
+  #     - id: configure
+  #       force: true
+  #       value: >
+  #         --prefix=/usr
+  #         --disable-werror
+  #         --enable-kernel=3.2
+  #         --enable-stack-protector=strong
+  #         --enable-multi-arch
+  #         --libdir=/usr/lib32
+  #         --libexecdir=/usr/lib32
+  #         libc_cv_slibdir=/usr/lib32
+  #         i686-pc-linux-gnu
+        
+  #   postscript: |
+  #     mkdir -p ${pkgupd_pkgdir}/usr/{lib,include/gnu}
+  #     cp -a ${pkgupd_srcdir}/DESTDIR/usr/lib32 ${pkgupd_pkgdir}/usr/
+  #     install -vm644 ${pkgupd_srcdir}/DESTDIR/usr/include/gnu/{lib-names,stubs}-32.h \
+  #             ${pkgupd_pkgdir}/usr/include/gnu/
+  #     ln -svf ../lib32/ld-linux.so.2 ${pkgupd_pkgdir}/usr/lib/ld-linux.so.2

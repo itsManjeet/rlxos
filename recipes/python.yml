@@ -1,0 +1,38 @@
+id: python
+version: 3.9.7
+about: |
+  Python development environment
+
+depends:  
+  runtime:
+    - bzip2
+    - expat
+    - gdbm
+    - libffi
+    - openssl
+    - zlib
+
+sources:
+  - https://www.python.org/ftp/python/3.9.7/Python-3.9.7.tar.xz
+
+environ:
+  - CFLAGS=" -O3 -pipe -march=x86-64 -fno-semantic-interposition"
+  - LDFLAGS=" -fno-semantic-interposition"
+packages:
+  - id: pkg
+    dir: Python-3.9.7
+    flags:
+      - id: configure
+        value: >
+          --enable-shared
+          --with-system-expat
+          --with-system-ffi
+          --with-ensurepip=yes
+          --enable-optimizations
+          --with-lto
+          --enable-ipv6
+          --with-tzpath=/usr/share/zoneinfo
+          --enable-loadable-sqlite-extensions
+
+    postscript: |
+      ln -sfv python3 ${pkgupd_pkgdir}/usr/bin/python

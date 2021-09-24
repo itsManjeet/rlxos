@@ -1,0 +1,31 @@
+id: elf
+version: 0.185
+about: |
+  Executable and Linkable Format utilities
+
+depends:
+  runtime:
+    - gcc
+    - xz
+    - zlib
+    - zstd
+
+sources:
+  - https://sourceware.org/ftp/elfutils/0.185/elfutils-0.185.tar.bz2
+
+packages:
+  - id: lib
+    dir: elfutils-0.185
+
+    flags:
+      - id: configure
+        value: >
+          --disable-debuginfod
+          --enable-libdebuginfod=dummy
+
+      - id: install
+        value: -C libelf
+
+    postscript: |
+      install -v -m 644 -D pkgupd_build_libelf/config/libelf.pc -t ${pkgupd_pkgdir}/usr/lib/pkgconfig/
+      rm ${pkgupd_pkgdir}/usr/lib/libelf.a

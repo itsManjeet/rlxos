@@ -1,0 +1,22 @@
+[Unit]
+Description=AppImage system integration daemon
+After=syslog.target network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/appimaged
+
+LimitNOFILE=65536
+
+RestartSec=3
+Restart=always
+
+StandardOutput=syslog
+StandardError=syslog
+
+SyslogIdentifier=appimaged
+
+Environment=LAUNCHED_BY_SYSTEMD=1
+
+[Install]
+Alias=appimaged.service

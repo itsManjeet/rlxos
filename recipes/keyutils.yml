@@ -1,0 +1,22 @@
+id: keyutils
+version: 1.6.3
+about: |
+  Linux key management utilities
+
+depends:
+  runtime:
+    - glibc
+
+sources:
+  - https://people.redhat.com/~dhowells/keyutils/keyutils-1.6.1.tar.bz2
+
+packages:
+  - id: pkg
+    dir: keyutils-1.6.1
+    prescript: |
+      sed -i "s:\$(LIBDIR)/\$(PKGCONFIG_DIR):/usr/lib/pkgconfig:" Makefile
+    
+    plugin: script
+    script: |
+      make
+      make DESTDIR=${pkgupd_pkgdir} NO_ARLIB=1 LIBDIR=/usr/lib BINDIR=/usr/bin SBINDIR=/usr/bin install

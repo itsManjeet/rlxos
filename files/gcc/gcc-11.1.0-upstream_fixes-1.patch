@@ -1,0 +1,495 @@
+Submitted By: Ken Moffat <ken at linuxfromscratch dot org>
+Date: 2021-06-29
+Initial Package Version: 11.1.0.
+Upstream Status: Applied
+Origin: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100102,
+        https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100379,
+        https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100489,
+        https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100644
+
+Description: Three regression fixes - two for Internal Compiler
+Exceptions, one to allow recent firefox to be compiled.  Also a
+fix for a change in the kernel headers (the broken cyclades driver
+was removed, causing libsanitizer to fail to build and gcc's
+bootstrap to fail).
+
+From 5357ab75dedef403b0eebf9277d61d1cbeb5898f Mon Sep 17 00:00:00 2001
+From: Patrick Palka <ppalka@redhat.com>
+Date: Fri, 4 Jun 2021 13:46:53 -0400
+Subject: [PATCH] c++: tsubst_function_decl and excess arg levels [PR100102]
+
+Here, when instantiating the dependent alias template
+duration::__is_harmonic with args={{T,U},{int}}, we find ourselves
+substituting the function decl _S_gcd.  Since we have more arg levels
+than _S_gcd has parm levels, an old special case in tsubst_function_decl
+causes us to unwantedly reduce args to its innermost level, yielding
+args={int}, which leads to a nonsensical substitution into the decl
+context and eventually a crash.
+
+The comment for this special case refers to three examples for which we
+ought to see more arg levels than parm levels here, but none of the
+examples actually demonstrate this.  In the first example, when
+defining S<int>::f(U) parms_depth is 2 and args_depth is 1, and
+later when instantiating say S<int>::f<char> both depths are 2.  In the
+second example, when substituting the template friend declaration
+parms_depth is 2 and args_depth is 1, and later when instantiating f
+both depths are 1.  Finally, the third example is invalid since we can't
+specialize a member template of an unspecialized class template like
+that.
+
+Given that this reduction code seems no longer relevant for its
+documented purpose and that it causes problems as in the PR, this patch
+just removes it.  Note that as far as bootstrap/regtest is concerned,
+this code is dead; the below two tests would be the first to reach it.
+
+	PR c++/100102
+
+gcc/cp/ChangeLog:
+
+	* pt.c (tsubst_function_decl): Remove old code for reducing
+	args when it has excess levels.
+
+gcc/testsuite/ChangeLog:
+
+	* g++.dg/cpp0x/alias-decl-72.C: New test.
+	* g++.dg/cpp0x/alias-decl-72a.C: New test.
+---
+ gcc/cp/pt.c                                 | 39 ---------------------
+ gcc/testsuite/g++.dg/cpp0x/alias-decl-72.C  |  9 +++++
+ gcc/testsuite/g++.dg/cpp0x/alias-decl-72a.C |  9 +++++
+ 3 files changed, 18 insertions(+), 39 deletions(-)
+ create mode 100644 gcc/testsuite/g++.dg/cpp0x/alias-decl-72.C
+ create mode 100644 gcc/testsuite/g++.dg/cpp0x/alias-decl-72a.C
+
+diff --git a/gcc/cp/pt.c b/gcc/cp/pt.c
+index 7211bdc5bbc..744461ed8cb 100644
+--- a/gcc/cp/pt.c
++++ b/gcc/cp/pt.c
+@@ -13905,45 +13905,6 @@ tsubst_function_decl (tree t, tree args, tsubst_flags_t complain,
+ 	  if (tree spec = retrieve_specialization (gen_tmpl, argvec, hash))
+ 	    return spec;
+ 	}
+-
+-      /* We can see more levels of arguments than parameters if
+-	 there was a specialization of a member template, like
+-	 this:
+-
+-	 template <class T> struct S { template <class U> void f(); }
+-	 template <> template <class U> void S<int>::f(U);
+-
+-	 Here, we'll be substituting into the specialization,
+-	 because that's where we can find the code we actually
+-	 want to generate, but we'll have enough arguments for
+-	 the most general template.
+-
+-	 We also deal with the peculiar case:
+-
+-	 template <class T> struct S {
+-	   template <class U> friend void f();
+-	 };
+-	 template <class U> void f() {}
+-	 template S<int>;
+-	 template void f<double>();
+-
+-	 Here, the ARGS for the instantiation of will be {int,
+-	 double}.  But, we only need as many ARGS as there are
+-	 levels of template parameters in CODE_PATTERN.  We are
+-	 careful not to get fooled into reducing the ARGS in
+-	 situations like:
+-
+-	 template <class T> struct S { template <class U> void f(U); }
+-	 template <class T> template <> void S<T>::f(int) {}
+-
+-	 which we can spot because the pattern will be a
+-	 specialization in this case.  */
+-      int args_depth = TMPL_ARGS_DEPTH (args);
+-      int parms_depth =
+-	TMPL_PARMS_DEPTH (DECL_TEMPLATE_PARMS (DECL_TI_TEMPLATE (t)));
+-
+-      if (args_depth > parms_depth && !DECL_TEMPLATE_SPECIALIZATION (t))
+-	args = get_innermost_template_args (args, parms_depth);
+     }
+   else
+     {
+diff --git a/gcc/testsuite/g++.dg/cpp0x/alias-decl-72.C b/gcc/testsuite/g++.dg/cpp0x/alias-decl-72.C
+new file mode 100644
+index 00000000000..8009756dcba
+--- /dev/null
++++ b/gcc/testsuite/g++.dg/cpp0x/alias-decl-72.C
+@@ -0,0 +1,9 @@
++// PR c++/100102
++// { dg-do compile { target c++11 } }
++
++template<int()> struct ratio;
++template<class T, class U> struct duration {
++  static constexpr int _S_gcd();
++  template<class> using __is_harmonic = ratio<_S_gcd>;
++  using type = __is_harmonic<int>;
++};
+diff --git a/gcc/testsuite/g++.dg/cpp0x/alias-decl-72a.C b/gcc/testsuite/g++.dg/cpp0x/alias-decl-72a.C
+new file mode 100644
+index 00000000000..a4443e18f9d
+--- /dev/null
++++ b/gcc/testsuite/g++.dg/cpp0x/alias-decl-72a.C
+@@ -0,0 +1,9 @@
++// PR c++/100102
++// { dg-do compile { target c++11 } }
++
++template<int> struct ratio;
++template<class T> struct duration {
++  static constexpr int _S_gcd();
++  template<class> using __is_harmonic = ratio<(duration::_S_gcd)()>;
++  using type = __is_harmonic<int>;
++};
+-- 
+2.27.0
+
+From 2bf34b9f4e446bf9be7f04458058dd5319fb396e Mon Sep 17 00:00:00 2001
+From: Tamar Christina <tamar.christina@arm.com>
+Date: Fri, 21 May 2021 10:30:59 +0100
+Subject: [PATCH] libsanitizer: Remove cyclades from libsanitizer
+
+The Linux kernel has removed the interface to cyclades from
+the latest kernel headers[1] due to them being orphaned for the
+past 13 years.
+
+libsanitizer uses this header when compiling against glibc, but
+glibcs itself doesn't seem to have any references to cyclades.
+
+Further more it seems that the driver is broken in the kernel and
+the firmware doesn't seem to be available anymore.
+
+As such since this is breaking the build of libsanitizer (and so the
+GCC bootstrap[2]) I propose to remove this.
+
+[1] https://lkml.org/lkml/2021/3/2/153
+[2] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100379
+
+libsanitizer/ChangeLog:
+
+	PR sanitizer/100379
+	* sanitizer_common/sanitizer_common_interceptors_ioctl.inc: Cherry-pick
+	llvm-project revision f7c5351552387bd43f6ca3631016d7f0dfe0f135.
+	* sanitizer_common/sanitizer_platform_limits_posix.cpp: Likewise.
+	* sanitizer_common/sanitizer_platform_limits_posix.h: Likewise.
+
+(cherry picked from commit 745dae5923aba02982563481d75a21595df22ff8)
+---
+ .../sanitizer_common_interceptors_ioctl.inc           |  9 ---------
+ .../sanitizer_platform_limits_posix.cpp               | 11 -----------
+ .../sanitizer_platform_limits_posix.h                 | 10 ----------
+ 3 files changed, 30 deletions(-)
+
+diff --git a/libsanitizer/sanitizer_common/sanitizer_common_interceptors_ioctl.inc b/libsanitizer/sanitizer_common/sanitizer_common_interceptors_ioctl.inc
+index 490a04b2181..42e43a04441 100644
+--- a/libsanitizer/sanitizer_common/sanitizer_common_interceptors_ioctl.inc
++++ b/libsanitizer/sanitizer_common/sanitizer_common_interceptors_ioctl.inc
+@@ -366,15 +366,6 @@ static void ioctl_table_fill() {
+ 
+ #if SANITIZER_LINUX && !SANITIZER_ANDROID
+   // _(SIOCDEVPLIP, WRITE, struct_ifreq_sz); // the same as EQL_ENSLAVE
+-  _(CYGETDEFTHRESH, WRITE, sizeof(int));
+-  _(CYGETDEFTIMEOUT, WRITE, sizeof(int));
+-  _(CYGETMON, WRITE, struct_cyclades_monitor_sz);
+-  _(CYGETTHRESH, WRITE, sizeof(int));
+-  _(CYGETTIMEOUT, WRITE, sizeof(int));
+-  _(CYSETDEFTHRESH, NONE, 0);
+-  _(CYSETDEFTIMEOUT, NONE, 0);
+-  _(CYSETTHRESH, NONE, 0);
+-  _(CYSETTIMEOUT, NONE, 0);
+   _(EQL_EMANCIPATE, WRITE, struct_ifreq_sz);
+   _(EQL_ENSLAVE, WRITE, struct_ifreq_sz);
+   _(EQL_GETMASTRCFG, WRITE, struct_ifreq_sz);
+diff --git a/libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cpp b/libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cpp
+index 1427cec48c4..025e575b5bc 100644
+--- a/libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cpp
++++ b/libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cpp
+@@ -131,7 +131,6 @@ typedef struct user_fpregs elf_fpregset_t;
+ # include <sys/procfs.h>
+ #endif
+ #include <sys/user.h>
+-#include <linux/cyclades.h>
+ #include <linux/if_eql.h>
+ #include <linux/if_plip.h>
+ #include <linux/lp.h>
+@@ -449,7 +448,6 @@ unsigned struct_ElfW_Phdr_sz = sizeof(Elf_Phdr);
+ 
+ #if SANITIZER_LINUX && !SANITIZER_ANDROID
+   unsigned struct_ax25_parms_struct_sz = sizeof(struct ax25_parms_struct);
+-  unsigned struct_cyclades_monitor_sz = sizeof(struct cyclades_monitor);
+ #if EV_VERSION > (0x010000)
+   unsigned struct_input_keymap_entry_sz = sizeof(struct input_keymap_entry);
+ #else
+@@ -815,15 +813,6 @@ unsigned struct_ElfW_Phdr_sz = sizeof(Elf_Phdr);
+ #endif // SANITIZER_LINUX
+ 
+ #if SANITIZER_LINUX && !SANITIZER_ANDROID
+-  unsigned IOCTL_CYGETDEFTHRESH = CYGETDEFTHRESH;
+-  unsigned IOCTL_CYGETDEFTIMEOUT = CYGETDEFTIMEOUT;
+-  unsigned IOCTL_CYGETMON = CYGETMON;
+-  unsigned IOCTL_CYGETTHRESH = CYGETTHRESH;
+-  unsigned IOCTL_CYGETTIMEOUT = CYGETTIMEOUT;
+-  unsigned IOCTL_CYSETDEFTHRESH = CYSETDEFTHRESH;
+-  unsigned IOCTL_CYSETDEFTIMEOUT = CYSETDEFTIMEOUT;
+-  unsigned IOCTL_CYSETTHRESH = CYSETTHRESH;
+-  unsigned IOCTL_CYSETTIMEOUT = CYSETTIMEOUT;
+   unsigned IOCTL_EQL_EMANCIPATE = EQL_EMANCIPATE;
+   unsigned IOCTL_EQL_ENSLAVE = EQL_ENSLAVE;
+   unsigned IOCTL_EQL_GETMASTRCFG = EQL_GETMASTRCFG;
+diff --git a/libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.h b/libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.h
+index 0812039b038..83861105a50 100644
+--- a/libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.h
++++ b/libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.h
+@@ -981,7 +981,6 @@ extern unsigned struct_vt_mode_sz;
+ 
+ #if SANITIZER_LINUX && !SANITIZER_ANDROID
+ extern unsigned struct_ax25_parms_struct_sz;
+-extern unsigned struct_cyclades_monitor_sz;
+ extern unsigned struct_input_keymap_entry_sz;
+ extern unsigned struct_ipx_config_data_sz;
+ extern unsigned struct_kbdiacrs_sz;
+@@ -1326,15 +1325,6 @@ extern unsigned IOCTL_VT_WAITACTIVE;
+ #endif  // SANITIZER_LINUX
+ 
+ #if SANITIZER_LINUX && !SANITIZER_ANDROID
+-extern unsigned IOCTL_CYGETDEFTHRESH;
+-extern unsigned IOCTL_CYGETDEFTIMEOUT;
+-extern unsigned IOCTL_CYGETMON;
+-extern unsigned IOCTL_CYGETTHRESH;
+-extern unsigned IOCTL_CYGETTIMEOUT;
+-extern unsigned IOCTL_CYSETDEFTHRESH;
+-extern unsigned IOCTL_CYSETDEFTIMEOUT;
+-extern unsigned IOCTL_CYSETTHRESH;
+-extern unsigned IOCTL_CYSETTIMEOUT;
+ extern unsigned IOCTL_EQL_EMANCIPATE;
+ extern unsigned IOCTL_EQL_ENSLAVE;
+ extern unsigned IOCTL_EQL_GETMASTRCFG;
+-- 
+2.27.0
+
+From 84fd1b5dff70cd74aee7e8b18f66959d8b8e1ce7 Mon Sep 17 00:00:00 2001
+From: Jason Merrill <jason@redhat.com>
+Date: Wed, 19 May 2021 21:12:45 -0400
+Subject: [PATCH] c++: designated init with anonymous union [PR100489]
+
+My patch for PR98463 added an assert that tripped on this testcase, because
+we ended up with a U CONSTRUCTOR with an initializer for a, which is not a
+member of U.  We need to wrap the a initializer in another CONSTRUCTOR for
+the anonymous union.
+
+There was already support for this in process_init_constructor_record, but
+not in process_init_constructor_union.  But since this is about brace
+elision, it really belongs under reshape_init rather than digest_init, so
+this patch moves the handling to reshape_init_class, which also handles
+unions.
+
+	PR c++/100489
+
+gcc/cp/ChangeLog:
+
+	* decl.c (reshape_init_class): Handle designator for
+	member of anonymous aggregate here.
+	* typeck2.c (process_init_constructor_record): Not here.
+
+gcc/testsuite/ChangeLog:
+
+	* g++.dg/cpp2a/desig18.C: New test.
+---
+ gcc/cp/decl.c                        | 33 ++++++++++++++++++++++++----
+ gcc/cp/typeck2.c                     | 26 ----------------------
+ gcc/testsuite/g++.dg/cpp2a/desig18.C | 17 ++++++++++++++
+ 3 files changed, 46 insertions(+), 30 deletions(-)
+ create mode 100644 gcc/testsuite/g++.dg/cpp2a/desig18.C
+
+diff --git a/gcc/cp/decl.c b/gcc/cp/decl.c
+index 7c32f09cf0e..6107b553cb4 100644
+--- a/gcc/cp/decl.c
++++ b/gcc/cp/decl.c
+@@ -6418,10 +6418,9 @@ reshape_init_class (tree type, reshape_iter *d, bool first_initializer_p,
+ 	      /* We already reshaped this.  */
+ 	      if (field != d->cur->index)
+ 		{
+-		  tree id = DECL_NAME (d->cur->index);
+-		  gcc_assert (id);
+-		  gcc_checking_assert (d->cur->index
+-				       == get_class_binding (type, id));
++		  if (tree id = DECL_NAME (d->cur->index))
++		    gcc_checking_assert (d->cur->index
++					 == get_class_binding (type, id));
+ 		  field = d->cur->index;
+ 		}
+ 	    }
+@@ -6442,6 +6441,32 @@ reshape_init_class (tree type, reshape_iter *d, bool first_initializer_p,
+ 		       d->cur->index);
+ 	      return error_mark_node;
+ 	    }
++
++	  /* If the element is an anonymous union object and the initializer
++	     list is a designated-initializer-list, the anonymous union object
++	     is initialized by the designated-initializer-list { D }, where D
++	     is the designated-initializer-clause naming a member of the
++	     anonymous union object.  */
++	  tree ictx = DECL_CONTEXT (field);
++	  if (!same_type_ignoring_top_level_qualifiers_p (ictx, type))
++	    {
++	      gcc_assert (ANON_AGGR_TYPE_P (ictx));
++	      /* Find the anon aggr that is a direct member of TYPE.  */
++	      while (true)
++		{
++		  tree cctx = TYPE_CONTEXT (ictx);
++		  if (same_type_ignoring_top_level_qualifiers_p (cctx, type))
++		    break;
++		  ictx = cctx;
++		}
++	      /* And then the TYPE member with that anon aggr type.  */
++	      tree aafield = TYPE_FIELDS (type);
++	      for (; aafield; aafield = TREE_CHAIN (aafield))
++		if (TREE_TYPE (aafield) == ictx)
++		  break;
++	      gcc_assert (aafield);
++	      field = aafield;
++	    }
+ 	}
+ 
+       /* If we processed all the member of the class, we are done.  */
+diff --git a/gcc/cp/typeck2.c b/gcc/cp/typeck2.c
+index ce3016c780d..5a7219dec65 100644
+--- a/gcc/cp/typeck2.c
++++ b/gcc/cp/typeck2.c
+@@ -1517,19 +1517,6 @@ process_init_constructor_record (tree type, tree init, int nested, int flags,
+ 			  || identifier_p (ce->index));
+ 	      if (ce->index == field || ce->index == DECL_NAME (field))
+ 		next = ce->value;
+-	      else if (ANON_AGGR_TYPE_P (fldtype)
+-		       && search_anon_aggr (fldtype,
+-					    TREE_CODE (ce->index) == FIELD_DECL
+-					    ? DECL_NAME (ce->index)
+-					    : ce->index))
+-		/* If the element is an anonymous union object and the
+-		   initializer list is a designated-initializer-list, the
+-		   anonymous union object is initialized by the
+-		   designated-initializer-list { D }, where D is the
+-		   designated-initializer-clause naming a member of the
+-		   anonymous union object.  */
+-		next = build_constructor_single (init_list_type_node,
+-						 ce->index, ce->value);
+ 	      else
+ 		{
+ 		  ce = NULL;
+@@ -1675,19 +1662,6 @@ process_init_constructor_record (tree type, tree init, int nested, int flags,
+ 
+ 		  if (ce->index == field || ce->index == DECL_NAME (field))
+ 		    break;
+-		  if (ANON_AGGR_TYPE_P (TREE_TYPE (field)))
+-		    {
+-		      tree t
+-			= search_anon_aggr (TREE_TYPE (field),
+-					    TREE_CODE (ce->index) == FIELD_DECL
+-					    ? DECL_NAME (ce->index)
+-					    : ce->index);
+-		      if (t)
+-			{
+-			  field = t;
+-			  break;
+-			}
+-		    }
+ 		}
+ 	    }
+ 	  if (field)
+diff --git a/gcc/testsuite/g++.dg/cpp2a/desig18.C b/gcc/testsuite/g++.dg/cpp2a/desig18.C
+new file mode 100644
+index 00000000000..4851579b7c7
+--- /dev/null
++++ b/gcc/testsuite/g++.dg/cpp2a/desig18.C
+@@ -0,0 +1,17 @@
++// PR c++/100489
++// { dg-options "" }
++
++union U
++{
++  union
++  {
++    unsigned char a;
++  };
++
++  unsigned char b[1];
++};
++
++void f(unsigned char a)
++{
++  union U u = { .a = a };
++}
+-- 
+2.27.0
+
+From f71ca97def69b8aeb046d716eaea2367736f505e Mon Sep 17 00:00:00 2001
+From: Jason Merrill <jason@redhat.com>
+Date: Tue, 18 May 2021 12:06:36 -0400
+Subject: [PATCH] c++: "perfect" implicitly deleted move [PR100644]
+
+Here we were ignoring the template constructor because the implicit move
+constructor had all perfect conversions.  But CWG1402 says that an
+implicitly deleted move constructor is ignored by overload resolution; we
+implement that instead by preferring any other candidate in joust, to get
+better diagnostics, but that means we need to handle that case here as well.
+
+gcc/cp/ChangeLog:
+
+	PR c++/100644
+	* call.c (perfect_candidate_p): An implicitly deleted move
+	is not perfect.
+
+gcc/testsuite/ChangeLog:
+
+	* g++.dg/cpp0x/implicit-delete1.C: New test.
+---
+ gcc/cp/call.c                                 |  5 +++++
+ gcc/testsuite/g++.dg/cpp0x/implicit-delete1.C | 20 +++++++++++++++++++
+ 2 files changed, 25 insertions(+)
+ create mode 100644 gcc/testsuite/g++.dg/cpp0x/implicit-delete1.C
+
+diff --git a/gcc/cp/call.c b/gcc/cp/call.c
+index 1e2d1d43184..4a59b97c110 100644
+--- a/gcc/cp/call.c
++++ b/gcc/cp/call.c
+@@ -5890,6 +5890,11 @@ perfect_candidate_p (z_candidate *cand)
+ {
+   if (cand->viable < 1)
+     return false;
++  /* CWG1402 makes an implicitly deleted move op worse than other
++     candidates.  */
++  if (DECL_DELETED_FN (cand->fn) && DECL_DEFAULTED_FN (cand->fn)
++      && move_fn_p (cand->fn))
++    return false;
+   int len = cand->num_convs;
+   for (int i = 0; i < len; ++i)
+     if (!perfect_conversion_p (cand->convs[i]))
+diff --git a/gcc/testsuite/g++.dg/cpp0x/implicit-delete1.C b/gcc/testsuite/g++.dg/cpp0x/implicit-delete1.C
+new file mode 100644
+index 00000000000..6dcced4fb2d
+--- /dev/null
++++ b/gcc/testsuite/g++.dg/cpp0x/implicit-delete1.C
+@@ -0,0 +1,20 @@
++// PR c++/100644
++// { dg-do compile { target c++11 } }
++
++struct NonMovable {
++  NonMovable(NonMovable&&) = delete;
++};
++
++template <class T>
++struct Maybe {
++  NonMovable mMember;
++
++  template <typename U>
++  Maybe(Maybe<U>&&);
++};
++
++void foo(Maybe<int>);
++
++void unlucky(Maybe<int>&& x) {
++  Maybe<int> var{(Maybe<int>&&)x};
++}
+-- 
+2.27.0
+

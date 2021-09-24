@@ -1,0 +1,39 @@
+id: binutils
+version: 2.36.1
+about: |
+  A linker, an assembler, and other tools for handling object files
+
+depends:
+  runtime:
+    - zlib
+    
+
+packages:
+  - id: pkg
+    dir: binutils-2.36.1
+    sources:
+      - https://ftp.gnu.org/gnu/binutils/binutils-2.36.1.tar.xz
+
+    prescript: |
+      sed -i "/@\tincremental_copy/d" gold/testsuite/Makefile.in
+    flags:
+      - id: configure
+        value: >
+          --enable-gold
+          --enable-ld=default
+          --enable-plugins
+          --enable-shared
+          --disable-werror
+          --enable-64-bit-bfd
+          --with-system-zlib
+          --enable-multilib
+          --with-lib-path=/usr/lib:/opt/lib
+
+      - id: compile
+        value: tooldir=/usr
+      
+      - id: install
+        value: tooldir=/usr -j1
+
+    postscript: |
+      rm -fv ${pkgupd_pkgdir}/usr/lib/lib{bfd,ctf,ctf-nobfd,opcodes}.a

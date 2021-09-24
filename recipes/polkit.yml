@@ -1,0 +1,43 @@
+id: polkit
+version: 0.119
+about: |
+  Toolkit for defining and handling authorizations
+
+depends:
+  runtime:
+    - glib
+    - js78
+    - pam
+    - systemd
+    - intltool
+
+groups:
+  - id: 27
+    name: polkitd
+
+users:
+  - id: 27
+    name: polkitd
+    about: PolicyKit Daemon Owner
+    dir: /etc/polkit-1
+    group: 27
+    shell: /bin/false
+
+sources:
+  - https://www.freedesktop.org/software/polkit/releases/polkit-0.119.tar.gz
+
+packages:
+  - id: pkg
+    dir: polkit-0.119
+    flags:
+      - id: configure
+        value: >
+          --disable-static
+          --with-os-type=LFS
+    prescript: |
+      sed -i "s:/sys/fs/cgroup/systemd/:/sys:g" configure
+
+    postscript: |
+      install -v -D -m 644 ${FILES}/pam/polkit-1 ${pkgupd_pkgdir}/etc/pam.d/polkit-1
+      install -v -d -m 0750 -o 27 ${pkgupd_pkgdir}/{etc,usr/share}/polkit-1/rules.d
+      

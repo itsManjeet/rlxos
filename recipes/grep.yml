@@ -1,0 +1,15 @@
+id: grep
+version: 3.6
+about: |
+  Programs for searching through the contents of files
+
+depends:
+  runtime:
+    - glibc
+
+sources:
+  - https://ftp.gnu.org/gnu/grep/grep-3.6.tar.xz
+
+packages:
+  - id: pkg
+    dir: grep-3.6

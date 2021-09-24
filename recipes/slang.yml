@@ -1,0 +1,20 @@
+id: slang
+version: 2.3.2
+about: |
+  An interpreted language that may be embedded into an application to make the application extensible
+
+sources:
+  - https://www.jedsoft.org/releases/slang/slang-2.3.2.tar.bz2
+
+packages:
+  - id: pkg
+    dir: slang-2.3.2
+    plugin: script
+    script: |
+      ./configure --prefix=/usr
+      make -j1
+      make -j1 install-all DESTDIR=${pkgupd_pkgdir}
+
+    postscript: |
+      chmod -v 755 ${pkgupd_pkgdir}/usr/lib/libslang.so.2.3.2 \
+        ${pkgupd_pkgdir}/usr/lib/slang/v2/modules/*.so

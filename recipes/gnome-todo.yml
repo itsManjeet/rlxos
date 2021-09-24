@@ -1,0 +1,21 @@
+id: gnome-todo
+version: 40.1
+about: |
+  Task manager for GNOME
+depends:
+  runtime:
+    - evolution-data-server
+    - gtk4
+    - libpeas
+    - libportal
+    - python
+  buildtime:
+    - gobject-introspection
+    - meson
+
+sources:
+  - https://download.gnome.org/sources/gnome-todo/40/gnome-todo-40.1.tar.xz
+
+packages:
+  - id: pkg
+    dir: gnome-todo-40.1

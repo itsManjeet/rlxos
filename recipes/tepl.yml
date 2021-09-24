@@ -1,0 +1,21 @@
+id: tepl
+version: 6.00.0
+about: |
+  A library that eases the development of GtkSourceView-based text editors and IDE
+
+depends:
+  runtime:
+    - amtk
+    - gtksourceview4
+    - icu
+    - uchardet
+
+sources:
+  - https://download.gnome.org/sources/tepl/6.00/tepl-6.00.0.tar.xz
+
+packages:
+  - id: pkg
+    dir: tepl-6.00.0
+    flags:
+      - id: configure
+        value: --buildtype=release

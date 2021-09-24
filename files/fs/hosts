@@ -1,0 +1,6 @@
+#
+# /etc/hosts: File to translate hostname/domain names to IP address
+#
+
+127.0.0.1 localhost
+::1       localhost

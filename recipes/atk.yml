@@ -1,0 +1,16 @@
+id: atk
+version: 2.36.0
+about: |
+  The set of accessibility interfaces that are implemented by other toolkits and applications
+
+depends:
+  runtime:
+    - glib
+    - gobject-introspection
+
+sources:
+  - https://download.gnome.org/sources/atk/2.36/atk-2.36.0.tar.xz
+
+packages:
+  - id: pkg
+    dir: atk-2.36.0

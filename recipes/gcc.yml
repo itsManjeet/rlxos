@@ -1,0 +1,51 @@
+id: gcc
+version: 11.1.0
+about: |
+  The GNU compiler collection, which includes the C and C++ compilers
+  
+depends:
+  runtime:
+    - zlib
+    - libmpc
+    - libmpfr
+    - libgmp
+  
+  buildtime:
+    - binutils
+    - gcc
+
+packages:
+  - id: pkg
+    dir: gcc-11.1.0
+    sources:
+      - https://ftp.gnu.org/gnu/gcc/gcc-11.1.0/gcc-11.1.0.tar.xz
+
+    prescript: |
+      patch -Np1 -i ${FILES}/gcc/gcc-11.1.0-upstream_fixes-1.patch
+      sed -e "/m64=/s/lib64/lib/" \
+          -e "/m32=/s/m32=.*/m32=..\/lib32\$(call if_multiarch,:i386-linux-gnu)/" \
+          -i.orig gcc/config/i386/t-linux64
+          
+    
+    flags:
+      - id: configure
+        value: >
+          LD=ld 
+          --libdir=/usr/lib
+          --libexecdir=/usr/lib
+          --enable-languages=c,c++
+          --enable-multilib
+          --with-multilib-list=m64,m32
+          --disable-bootstrap
+          --with-system-zlib
+        
+    postscript: |
+      [[ -d ${pkgupd_pkgdir}/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixes/bits/ ]] && \
+      rm -r ${pkgupd_pkgdir}/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixes/bits/
+    
+      mkdir -p ${pkgupd_pkgdir}/usr/lib/bfd-plugins/
+      ln -sv ../bin/cpp ${pkgupd_pkgdir}/usr/lib/
+      ln -sfv ../../lib/gcc/x86_64-pc-linux-gnu/11.1.0/liblto_plugin.so \
+        ${pkgupd_pkgdir}/usr/lib/bfd-plugins/
+      
+      ln -sv gcc ${pkgupd_pkgdir}/usr/bin/cc

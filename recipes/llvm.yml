@@ -1,0 +1,46 @@
+id: llvm
+version: 12.0.1
+about: |
+  A collection of modular and reusable compiler and toolchain technologies
+
+depends:
+  buildtime:
+    - cmake
+
+sources:
+  - https://github.com/llvm/llvm-project/releases/download/llvmorg-12.0.1/llvm-12.0.1.src.tar.xz
+  - https://github.com/llvm/llvm-project/releases/download/llvmorg-12.0.1/clang-12.0.1.src.tar.xz
+  - https://github.com/llvm/llvm-project/releases/download/llvmorg-12.0.1/compiler-rt-12.0.1.src.tar.xz
+
+packages:
+  - id: pkg
+    dir: llvm-12.0.1.src
+    prescript: |
+      ls ../
+      mv ../clang-12.0.1.src tools/clang
+      mv ../compiler-rt-12.0.1.src projects/compiler-rt
+
+      grep -rl "#!.*python" | xargs sed -i "1s/python$/python3/"
+
+    flags:
+      - id: configure
+        value: >
+          -DLLVM_ENABLE_FFI=ON
+          -DCMAKE_BUILD_TYPE=Release
+          -DLLVM_BUILD_LLVM_DYLIB=ON
+          -DLLVM_LINK_LLVM_DYLIB=ON
+          -DLLVM_ENABLE_RTTI=ON
+          -DLLVM_TARGETS_TO_BUILD=X86;AMDGPU;BPF
+          -DLLVM_BUILD_TESTS=ON
+          -DLLVM_BINUTILS_INCDIR=/usr/include
+          -Wno-dev -G Ninja
+
+    postscript: |
+      mkdir -p ${pkgupd_pkgdir}/../lib/usr/lib/clang/12.0.1/lib/linux
+      mv ${pkgupd_pkgdir}/usr/lib/*.so* ${pkgupd_pkgdir}/../lib/usr/lib/
+      mv ${pkgupd_pkgdir}/usr/lib/clang/12.0.1/lib/linux/*.so \
+        ${pkgupd_pkgdir}/../lib/usr/lib/clang/12.0.1/lib/linux/
+
+  - id: lib
+    dir: .
+    plugin: skip

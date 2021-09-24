@@ -1,0 +1,19 @@
+id: json-glib
+version: 1.6.2
+about: |
+  A library providing serialization and deserialization support for the JavaScript Object Notation (JSON) format described by RFC 4627
+
+depends:
+  runtime:
+    - glib
+  
+  buildtime:
+    - gobject-introspection
+
+sources:
+  - https://download.gnome.org/sources/json-glib/1.6/json-glib-1.6.2.tar.xz
+
+packages:
+  - id: pkg
+    dir: json-glib-1.6.2
+    

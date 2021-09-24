@@ -1,0 +1,22 @@
+id: bogofilter
+version: 1.2.5
+about: |
+  A mail filter that classifies mail as spam or ham (non-spam) by a statistical analysis of the message's header and content (body)
+
+depends:
+  runtime:
+    - berkeley-db
+    - gsl
+    - libxml2
+
+sources:
+  - https://downloads.sourceforge.net/bogofilter/bogofilter-1.2.5.tar.xz
+
+packages:
+  - id: pkg
+    dir: bogofilter-1.2.5
+    flags:
+      - id: configurator
+        value: configure
+      - id: configure
+        value: --sysconfdir=/etc/bogofilter

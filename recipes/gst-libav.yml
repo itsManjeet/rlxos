@@ -1,0 +1,25 @@
+id: gst-libav
+version: 1.18.4
+about: |
+  GStreamer plugins for Libav
+
+depends:
+  runtime:
+   - ffmpeg
+   - gst-plugins-base
+  
+  buildtime:
+    - yasm
+
+sources:
+  - https://gstreamer.freedesktop.org/src/gst-libav/gst-libav-1.18.4.tar.xz
+
+packages:
+  - id: pkg
+    dir: gst-libav-1.18.4
+    flags:
+      - id: configure
+        value: >
+          -D package-origin=https://rlxos.dev
+          -D package-name="GStreamer 1.18.4"
+          --buildtype=release

@@ -1,0 +1,20 @@
+id: chatbot
+version: alpha
+about: |
+  A untrained personal chatbot for rlxos
+
+depends:
+  runtime:
+    - gtkmm
+    - dbus-cxx
+    - libnotify
+  buildtime:
+    - cmake
+
+sources:
+  - chatbot-main.tar.gz::https://github.com/rlxos/chatbot/archive/refs/heads/main.tar.gz
+
+packages:
+  - id: pkg
+    dir: chatbot-main
+    

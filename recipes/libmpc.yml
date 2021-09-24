@@ -1,0 +1,19 @@
+id: libmpc
+version: 1.2.1
+about: |
+  Library for the arithmetic of complex numbers with arbitrarily high precision and correct rounding of the result
+
+sources:
+  - https://ftp.gnu.org/gnu/mpc/mpc-1.2.1.tar.gz
+
+depends:
+  runtime:
+    - libmpfr
+  
+packages:
+  - id: pkg
+    dir: mpc-1.2.1
+    flags:
+      - id: configure
+        value: >
+          --disable-static

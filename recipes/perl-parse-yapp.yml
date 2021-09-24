@@ -1,0 +1,20 @@
+id: perl-parse-yapp
+version: 1.21
+about: |
+  Perl extension for generating and using LALR parsers
+
+depends:
+  runtime:
+    - perl
+
+sources:
+  - https://www.cpan.org/authors/id/W/WB/WBRASWELL/Parse-Yapp-1.21.tar.gz
+
+packages:
+  - id: pkg
+    dir: Parse-Yapp-1.21
+    plugin: script
+    script: |
+      perl Makefile.PL
+      make
+      make DESTDIR=${pkgupd_pkgdir} install

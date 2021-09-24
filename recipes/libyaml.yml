@@ -1,0 +1,20 @@
+id: libyaml
+version: 0.2.5
+about: |
+  A C library for parsing and emitting YAML (YAML Ain't Markup Language) code
+
+sources:
+  - https://github.com/yaml/libyaml/archive/0.2.5/libyaml-0.2.5.tar.gz
+
+packages:
+  - id: lib
+    dir: libyaml-0.2.5
+    prescript: |
+      ./bootstrap
+      
+    flags:
+      - id: configurator
+        value: configure
+        
+      - id: configure
+        value: --disable-static

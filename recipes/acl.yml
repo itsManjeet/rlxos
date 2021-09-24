@@ -1,0 +1,21 @@
+id: acl
+version: 2.3.1
+about: |
+  Utilities to administer Access Control Lists
+
+sources:
+  - https://download.savannah.gnu.org/releases/acl/acl-2.3.1.tar.xz
+
+depends:
+  runtime:
+    - attr
+
+    
+packages:
+  - id: pkg
+    dir: acl-2.3.1
+
+    flags:
+      - id: configure
+        value: >
+          --disable-static

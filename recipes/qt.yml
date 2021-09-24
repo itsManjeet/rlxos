@@ -1,0 +1,90 @@
+id: qt
+version: 5.15.2
+about: |
+  Cross-platform application framework
+
+depends:
+  runtime:
+    - dbus
+    - openssl
+    - gdk-pixbuf
+    - libepoxy
+    - libmng
+    - libxkbcommon
+    - harfbuzz
+    - xcb-util-wm
+    - xcb-util-image
+    - xcb-util-keysyms
+    - xcb-util-renderutil
+    - libxcb
+    - sqlite
+    - fontconfig
+
+sources:
+  - https://download.qt.io/archive/qt/5.15/5.15.2/single/qt-everywhere-src-5.15.2.tar.xz
+
+prescript: |
+  cd ${PKGUPD_WORKDIR}/src/qt-everywhere-src-5.15.2
+  patch -Np1 -i ${FILES}/qt/qt-everywhere-src-5.15.2-CVE-2021-3481-1.patch
+
+  sed -i "/utility/a #include <limits>"     qtbase/src/corelib/global/qglobal.h
+  sed -i "/string/a #include <limits>"      qtbase/src/corelib/global/qfloat16.h
+  sed -i "/qbytearray/a #include <limits>"  qtbase/src/corelib/text/qbytearraymatcher.h
+  sed -i "/type_traits/a #include <limits>" qtdeclarative/src/qmldebug/qqmlprofilerevent_p.h
+
+packages:
+  - id: pkg
+    dir: qt-everywhere-src-5.15.2
+
+    flags:
+      - id: configure
+        only: true
+        value: >
+          -prefix /usr
+          -sysconfdir /etc/xdg
+          -archdatadir /usr/lib/qt5
+          -bindir /usr/lib/qt5/bin
+          -plugindir /usr/lib/qt5/plugins
+          -importdir /usr/lib/qt5/imports
+          -headerdir /usr/include/qt5
+          -datadir /usr/share/qt5
+          -docdir /usr/share/doc/qt5
+          -translationdir /usr/share/qt5/transl
+          -examplesdir /usr/share/doc/qt5/examples
+          -confirm-license
+          -opensource
+          -dbus-linked
+          -openssl-linked
+          -system-harfbuzz
+          -system-sqlite
+          -nomake examples
+          -no-rpath
+          -skip qtwebengine
+
+      - id: install
+        value: INSTALL_ROOT=${pkgupd_pkgdir}
+
+    postscript: |
+      find ${pkgupd_pkgdir}/ -name \*.prl \
+        -exec sed -i -e "/^QMAKE_PRL_BUILD_DIR/d" {} \;
+
+      cd ${pkgupd_srcdir}
+      install -v -D -m 644 qttools/src/assistant/assistant/images/assistant-128.png \
+        $pkgupd_pkgdir/usr/share/pixmaps/assistant-qt5.png
+      
+      install -v -D -m 644 qttools/src/designer/src/designer/images/designer.png \
+        $pkgupd_pkgdir/usr/share/pixmaps/designer-qt5.png
+      
+      install -v -Dm644 qttools/src/linguist/linguist/images/icons/linguist-128-32.png \
+                  ${pkgupd_pkgdir}/usr/share/pixmaps/linguist-qt5.png
+      
+      install -v -Dm644 qttools/src/qdbus/qdbusviewer/images/qdbusviewer-128.png \
+                  ${pkgupd_pkgdir}/usr/share/pixmaps/qdbusviewer-qt5.png
+    
+      install -v -D ${FILES}/qt/*.desktop -t ${pkgupd_pkgdir}/usr/share/applications/
+
+      mkdir -p ${pkgupd_pkgdir}/usr/bin
+      for i in ${pkgupd_pkgdir}/usr/lib/qt5/bin/* ; do
+        ln -sv /usr/lib/qt5/bin/$(basename $i) ${pkgupd_pkgdir}/usr/bin/$(basename $i)
+        ln -sv /usr/lib/qt5/bin/$(basename $i) ${pkgupd_pkgdir}/usr/bin/$(basename $i)-qt5
+      done

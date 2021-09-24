@@ -1,0 +1,38 @@
+id: openssh
+version: 8.6p1
+about: |
+  ssh clients and the sshd daemon
+
+sources:
+  - https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-8.6p1.tar.gz
+
+groups:
+  - id: 50
+    name: sshd
+  
+users:
+  - id: 50
+    name: sshd
+    group: 50
+    about: sshd PrivSep
+    dir: /var/lib/sshd
+    shell: /bin/false
+
+packages:
+  - id: pkg
+    dir: openssh-8.6p1
+
+    flags:
+      - id: configure
+        value: >
+          --with-md5-passwords
+          --sysconfdir=/etc/ssh
+          --with-privsep-path=/var/lib/sshd
+          --with-default-path=/usr/bin
+          --with-pid-dir=/run
+      - id: install
+        value: DESTDIR=${pkgupd_pkgdir}
+
+    postscript: |
+      install -v -D -m 755 ${pkgupd_srcdir}/contrib/ssh-copy-id -t ${pkgupd_pkgdir}/usr/bin
+      

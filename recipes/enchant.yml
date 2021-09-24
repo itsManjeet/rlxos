@@ -1,0 +1,19 @@
+id: enchant
+version: 2.3.0
+about: |
+  A generic interface into various existing spell checking libraries
+
+depends:
+  runtime:
+    - glib
+
+sources:
+  - https://github.com/AbiWord/enchant/releases/download/v2.3.0/enchant-2.3.0.tar.gz
+
+packages:
+  - id: pkg
+    dir: enchant-2.3.0
+    flags:
+      - id: configure
+        value: >
+          --disable-static

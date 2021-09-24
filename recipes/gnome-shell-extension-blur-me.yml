@@ -1,0 +1,20 @@
+id: gnome-shell-extension-blur-me
+version: v7
+about: |
+  Extension that adds a blur look to applications and to different parts of the GNOME Shell, including the top panel, dash and overview 
+
+depends:
+  runtime:
+    - gnome-shell
+
+
+sources:
+  - blur-me-v7.tar.gz::https://github.com/ckissane/blur-me/archive/refs/tags/v7.tar.gz
+
+packages:
+  - id: pkg
+    dir: blur-me-7
+    plugin: script
+    script: |
+      sed -i "s|\$(HOME)/.local/|\$(DESTDIR)/usr/|" Makefile
+      make DESTDIR=${pkgupd_pkgdir} install

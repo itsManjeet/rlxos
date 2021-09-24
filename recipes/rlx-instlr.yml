@@ -1,0 +1,35 @@
+id: rlx-instlr
+version: 0.1.0
+about: |
+  rlxos Installer framework
+
+depends:
+  runtime:
+    - gtk
+    - librlx
+    - libyaml-cpp
+  buildtime:
+    - cmake
+
+sources:
+  - rlx-instlr.tar.gz::https://github.com/rlxos/rlx-instlr/archive/refs/heads/main.tar.gz
+  - rlx-instlr-ui.tar.gz::https://github.com/rlxos/rlx-instlr-ui/archive/refs/heads/main.tar.gz
+
+packages:
+  - id: cli
+    dir: rlx-instlr-main
+    prescript: |
+      sed -i "s|instlr rlx|instlr yaml-cpp|" CMakeLists.txt
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_CXX_FLAGS=" -isystem /usr/include/rlx -fpermissive"
+
+  - id: gui
+    dir: rlx-instlr-ui-main
+    prescript: |
+      sed -i "s|instlr rlx|instlr yaml-cpp|" CMakeLists.txt
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_CXX_FLAGS=" -isystem /usr/include/rlx -fpermissive"

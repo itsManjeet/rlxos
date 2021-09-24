@@ -1,0 +1,25 @@
+id: glib
+version: 2.68.3
+about: |
+  Package contains low-level libraries useful for providing data structure handling for C, portability wrappers and interfaces for such runtime functionality as an event loop, threads, dynamic loading and an object system
+
+depends:
+  runtime:
+    - libxslt
+    - pcre
+
+sources:
+  - https://download.gnome.org/sources/glib/2.68/glib-2.68.3.tar.xz
+
+packages:
+  - id: pkg
+    dir: glib-2.68.3
+    flags:
+      - id: configure
+        value: >
+          -D man=false
+          -D selinux=disabled
+          --buildtype=release
+
+    postscript: |
+      install -v -D -m 644 ${FILES}/triggers/{glib-schemas.yml,gio.yml} -t ${pkgupd_pkgdir}/usr/share/pkgupd/triggers/

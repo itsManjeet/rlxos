@@ -1,0 +1,22 @@
+id: gnome-characters
+version: 40.0
+about: |
+  A character map application
+
+depends:
+  runtime:
+    - gjs
+    - gnome-desktop
+    - gtk
+    - libhandy
+    - libunistring
+  buildtime:
+    - gobject-introspection
+    - gperf
+
+sources:
+  - https://download.gnome.org/sources/gnome-characters/40/gnome-characters-40.0.tar.xz
+
+packages:
+  - id: pkg
+    dir: gnome-characters-40.0

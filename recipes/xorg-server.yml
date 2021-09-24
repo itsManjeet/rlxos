@@ -1,0 +1,32 @@
+id: xorg-server
+version: 1.20.12
+about: |
+  Core of the X Window system
+
+depends:
+  runtime:
+    - pixman
+    - xorg-fonts
+    - xkeyboardconfig
+    - libepoxy
+    - wayland
+    - systemd
+    - xcb-util-keysyms
+    - xcb-util-image
+    - xcb-util-renderutil
+    - xcb-util-wm
+
+sources:
+  - https://www.x.org/pub/individual/xserver/xorg-server-1.20.12.tar.xz
+
+packages:
+  - id: pkg
+    dir: xorg-server-1.20.12
+    flags:
+      - id: configure
+        value: >
+          --enable-glamor
+          --enable-suid-wrapper
+          --with-xkb-output=/var/lib/xkb
+          --enable-dmx
+          --enable-kdrive

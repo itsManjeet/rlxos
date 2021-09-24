@@ -1,0 +1,21 @@
+id: gnome-shell-extension-dash-to-panel
+version: 43
+about: |
+  Extension for GNOME shell to combine the dash and main panel
+
+depends:
+  runtime:
+    - gnome-shell
+
+
+sources:
+  - dash-to-panel-43.tar.gz::https://github.com/home-sweet-gnome/dash-to-panel/archive/v43.tar.gz
+
+packages:
+  - id: pkg
+    dir: dash-to-panel-43
+    plugin: script
+    script: |
+      patch schemas/org.gnome.shell.extensions.dash-to-panel.gschema.xml < ${FILES}/gnome-shell-extension-dash-to-panel/elements.patch
+      make VERSION="43" _build
+      make DESTDIR=${pkgupd_pkgdir} install

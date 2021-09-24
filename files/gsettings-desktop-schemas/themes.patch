@@ -1,0 +1,19 @@
+--- background.orig.xml	2021-09-01 14:50:33.806931647 +0530
++++ background.xml	2021-09-01 14:51:32.888845381 +0530
+@@ -84,14 +84,14 @@
+       </description>
+     </key>
+     <key name="icon-theme" type="s">
+-      <default>'Adwaita'</default>
++      <default>'Fluent'</default>
+       <summary>Icon Theme</summary>
+       <description>
+         Icon theme to use for the panel, nautilus etc.
+       </description>
+     </key>
+     <key name="gtk-theme" type="s">
+-      <default>'Adwaita'</default>
++      <default>'Fluent-light'</default>
+       <summary>Gtk+ Theme</summary>
+       <description>
+         Basename of the default theme used by gtk+.

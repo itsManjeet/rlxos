@@ -1,0 +1,17 @@
+id: fluent-icon-theme
+version: 2021-08-15
+about: |
+  A Fluent design icon theme
+
+strip: false
+
+sources:
+  - fluent-icon-theme-2021-08-15.tar.gz::https://github.com/vinceliuice/Fluent-icon-theme/archive/refs/tags/2021-08-15.tar.gz
+
+packages:
+  - id: pkg
+    dir: Fluent-icon-theme-2021-08-15
+    plugin: script
+    script: |
+      install -d ${pkgupd_pkgdir}/usr/share/icons
+      ./install.sh -a -d ${pkgupd_pkgdir}/usr/share/icons/

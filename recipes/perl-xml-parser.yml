@@ -1,0 +1,21 @@
+id: perl-xml-parser
+version: 2.46
+about: |
+  Module is a Perl interface to James Clark's XML parser, Expat
+
+depends:
+  runtime:
+    - perl
+
+sources:
+  - https://cpan.metacpan.org/authors/id/T/TO/TODDR/XML-Parser-2.46.tar.gz
+
+packages:
+  - id: pkg
+    dir: XML-Parser-2.46
+
+    plugin: script
+    script: |
+      perl Makefile.PL
+      make
+      make install DESTDIR=${pkgupd_pkgdir}

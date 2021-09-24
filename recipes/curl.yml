@@ -1,0 +1,27 @@
+id: curl
+version: 7.77.0
+about: Utility and a library used for transferring files
+depends:
+  runtime:
+    - openssl
+    - zlib
+    - zstd
+    - libidn2
+    - ca-certificates
+
+sources:
+  - https://curl.haxx.se/download/curl-7.77.0.tar.xz
+
+packages:
+  - id: pkg
+    dir: curl-7.77.0
+
+    flags:
+      - id: configurator
+        value: configure
+
+      - id: configure
+        value: >
+          --enable-threaded-resolver
+          --with-ca-bundle=/etc/ssl/cert.pem
+          --with-openssl

@@ -1,0 +1,20 @@
+id: dosfstools
+version: 4.2
+about: |
+  Package contains various utilities for use with the FAT family of file systems
+
+sources:
+  - https://github.com/dosfstools/dosfstools/releases/download/v4.2/dosfstools-4.2.tar.gz
+
+packages:
+  - id: pkg
+    dir: dosfstools-4.2
+    flags:
+      - id: configurator
+        value: configure
+        
+      - id: configure
+        value: >
+          --enable-compat-symlinks
+          --mandir=/usr/share/man
+          --docdir=/usr/share/doc/dosfstools

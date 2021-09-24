@@ -1,0 +1,40 @@
+id: boost
+version: 1.76.0
+about: |
+  A set of free peer-reviewed portable C++ source libraries
+
+depends:
+  runtime:
+    - which
+
+sources:
+  - https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.bz2
+
+packages:
+  - id: pkg
+    dir: boost_1_76_0
+    plugin: script
+    script: |
+      ./bootstrap.sh --with-icu --with-python=python3 --prefix=/usr
+      ./b2 -j $(nproc) \
+        threading=multi \
+        variant=release debug-symbols=off \
+        runtime-link=shared \
+        link=shared,static \
+        toolset=gcc \
+        --layout=system \
+        --prefix=${pkgupd_pkgdir} install
+        
+      install -vdm755 ${pkgupd_pkgdir}/usr
+      cp -a "${pkgupd_pkgdir}"/include "${pkgupd_pkgdir}"/usr
+
+      mkdir -p ${pkgupd_pkgdir}/../lib/usr/
+      mv ${pkgupd_pkgdir}/lib ${pkgupd_pkgdir}/../lib/usr/
+
+      mkdir -p ${pkgupd_pkgdir}/usr/lib/
+      mv ${pkgupd_pkgdir}/../lib/usr/lib/*.a ${pkgupd_pkgdir}/usr/lib/
+      mv ${pkgupd_pkgdir}/../lib/usr/lib/cmake ${pkgupd_pkgdir}/usr/lib/
+
+  - id: lib
+    dir: .
+    plugin: skip

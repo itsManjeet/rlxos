@@ -1,0 +1,14 @@
+id: libatasmart
+version: 0.19
+about: |
+  A disk reporting library
+
+sources:
+  - http://0pointer.de/public/libatasmart-0.19.tar.xz
+
+packages:
+  - id: lib
+    dir: libatasmart-0.19
+    flags:
+      - id: configurator
+        value: configure

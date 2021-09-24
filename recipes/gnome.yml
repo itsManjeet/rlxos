@@ -1,0 +1,72 @@
+id: gnome
+version: 3.40
+about: |
+  Gnome Desktop Environment
+
+depends:
+  runtime:
+    - core
+    - xorg
+    - baobab
+    - cheese
+    - eog
+    - epiphany
+    - file-roller
+    - gdm
+    - gedit
+    - gnome-backgrounds
+  #  - gnome-boxes
+    - gnome-calculator
+    - gnome-calendar
+    - gnome-characters
+    - gnome-clocks
+    - gnome-color-manager
+    - gnome-control-center
+    - gnome-disk-utility
+    # - gnome-documents
+    # - gnome-font-viewer
+    - gnome-initial-setup
+    - gnome-icon-theme
+    - gnome-icon-theme-extras
+    - gnome-icon-theme-symbolic
+    - gnome-keyring
+    - gnome-logs
+    - gnome-menus
+    # - gnome-music
+    - gnome-power-manager
+    - gnome-screenshot
+    - gnome-shell
+    - gnome-shell-extensions
+    - gnome-shell-extension-dash-to-panel
+    - gnome-shell-extension-blur-me
+    - gnome-session
+    - gnome-system-monitor
+    - gnome-terminal
+    # - gnome-theme-extra
+    - gnome-tweaks
+    - gnome-todo
+    # - gnome-user-docs
+    # - gnome-user-share
+    # - gnome-usage
+    - gnome-weather
+    - nautilus
+    # - remmina
+    # - simple-scan
+    # - totem
+    - xdg-user-dirs
+    # - xdg-user-dirs-gtk
+    # - yelp
+    - gnome
+    - ttf-noto
+    - ttf-opensans
+    - rlx-instlr
+    - evolution
+
+packages:
+  - id: conf
+    dir: .
+    plugin: script
+    script: |
+
+      mkdir -p ${pkgupd_pkgdir}/usr/share/gnome
+      echo "3.40" > ${pkgupd_pkgdir}/usr/share/gnome/version

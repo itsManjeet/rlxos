@@ -1,0 +1,41 @@
+id: gnome-shell
+version: 40.3
+about: |
+  Core user interface for GNOME Desktop Environment
+
+depends:
+  runtime:
+    - evolution-data-server
+    - gjs
+    - gtk4
+    - mutter
+    - sassc
+    - startup-notification
+    - systemd
+    - desktop-file-utils
+    - gnome-bluetooth
+    - gst-plugins-base
+    - networkmanager
+    - gdm
+    - dconf
+    - ibus
+    - gnome-autoar
+    - libnma
+    # - gnome-menus
+    # - telepathy-mission-control
+
+sources:
+  - https://download.gnome.org/sources/gnome-shell/40/gnome-shell-40.3.tar.xz
+
+packages:
+  - id: pkg
+    dir: gnome-shell-40.3
+
+    prescript: |
+      patch data/org.gnome.shell.gschema.xml.in < ${FILES}/gnome-shell/config.patch
+
+    flags:
+      - id: configure
+        value: >
+          --buildtype=release
+

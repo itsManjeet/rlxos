@@ -14,5 +14,5 @@ sources:
   - https://www.x.org/pub/individual/lib/libXau-1.0.9.tar.bz2
 
 packages:
-  - id: lib
+  - id: pkg
     dir: libXau-1.0.9

@@ -11,5 +11,5 @@ kernel:
   - CONFIG_SND
 
 packages:
-  - id: lib
+  - id: pkg
     dir: alsa-lib-1.2.5.1

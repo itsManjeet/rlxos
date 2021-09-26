@@ -7,7 +7,7 @@ sources:
   - http://xmlsoft.org/sources/libxml2-2.9.12.tar.gz
 
 packages:
-  - id: lib
+  - id: pkg
     dir: libxml2-2.9.12
     flags:
       - id: configurator

@@ -19,5 +19,5 @@ sources:
   - https://www.x.org/pub/individual/lib/libxcb-1.14.tar.xz
 
 packages:
-  - id: lib
+  - id: pkg
     dir: libxcb-1.14

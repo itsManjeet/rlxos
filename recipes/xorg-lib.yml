@@ -17,15 +17,6 @@ packages:
     sources:
       - https://www.x.org/pub/individual/lib/xtrans-1.4.0.tar.bz2
 
-  - id: libx11
-    dir: libX11-1.7.2
-    sources:
-      - https://www.x.org/pub/individual/lib/libX11-1.7.2.tar.bz2
-
-  - id: libxext
-    dir: libXext-1.3.4
-    sources:
-      - https://www.x.org/pub/individual/lib/libXext-1.3.4.tar.bz2
 
   - id: libfs
     dir: libFS-1.0.8
@@ -77,11 +68,7 @@ packages:
     sources:
       - https://www.x.org/pub/individual/lib/libXaw-1.0.14.tar.bz2
   
-  - id: libXfixes
-    dir: libXfixes-6.0.0
-    sources:
-      - https://www.x.org/pub/individual/lib/libXfixes-6.0.0.tar.bz2
-
+    
   - id: libXcomposite
     dir: libXcomposite-0.4.5
     sources:
@@ -122,10 +109,6 @@ packages:
     sources:
       - https://www.x.org/pub/individual/lib/libXft-2.3.3.tar.bz2
   
-  - id: libXi
-    dir: libXi-1.7.10
-    sources:
-      - https://www.x.org/pub/individual/lib/libXi-1.7.10.tar.bz2
 
   - id: libXinerama
     dir: libXinerama-1.1.4
@@ -141,11 +124,7 @@ packages:
     dir: libXres-1.2.1
     sources:
       - https://www.x.org/pub/individual/lib/libXres-1.2.1.tar.bz2
-  
-  - id: libXtst
-    dir: libXtst-1.2.3
-    sources:
-      - https://www.x.org/pub/individual/lib/libXtst-1.2.3.tar.bz2
+
 
   - id: libXv
     dir: libXv-1.0.11

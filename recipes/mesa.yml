@@ -5,13 +5,28 @@ about: |
 
 depends:
   runtime:
-    - xorg-lib
+    # - libunwind
+    - libxdamage
+    - libxshmfence
+    - libxxf86vm
+    - libllvm
     - libdrm
+    - libelf
     - wayland
     - libxml2
 
   buildtime:
     - py-mako
+    - cmake
+    - libva
+    - libvdpau
+    - libx11
+    - libxdamage
+    - libxml2
+    - libxrandr
+    - libxshmfence
+    - libxxf86vm
+    - xorgproto
     - llvm
     - flex
     - bison

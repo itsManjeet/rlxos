@@ -11,5 +11,5 @@ sources:
   - https://download.osgeo.org/libtiff/tiff-4.3.0.tar.gz
 
 packages:
-  - id: lib
+  - id: pkg
     dir: tiff-4.3.0

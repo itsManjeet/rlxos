@@ -7,7 +7,7 @@ depends:
   runtime:
     - dbus
     - glib
-    - xorg-lib
+    - libxtst
     - gobject-introspection
 
 sources:

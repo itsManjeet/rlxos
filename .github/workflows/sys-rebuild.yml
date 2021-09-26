@@ -30,3 +30,9 @@ jobs:
           export PKGUPD_NO_PROGRESS=1
           export VERSION=2110
           ./build.sh sys-rebuild
+
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          files: |
+            build/*.rootfs

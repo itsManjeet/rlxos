@@ -22,11 +22,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
-      # Runs a single command using the runners shell
-      - name: PreRequisties
-        run: sudo apt -y install containerd docker.io && sudo systemctl enable docker --now
-
+      - uses: docker-practice/actions-setup-docker@master
+      
       # Runs a set of commands using the runners shell
       - name: Build
         run: |

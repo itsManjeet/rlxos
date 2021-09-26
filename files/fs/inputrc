@@ -1,4 +1,4 @@
- Begin /etc/inputrc
+# Begin /etc/inputrc
 # Modified by Chris Lynn <roryo@roryo.dynup.net>
 
 # Allow the command prompt to wrap to the next line

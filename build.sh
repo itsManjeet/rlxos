@@ -17,16 +17,19 @@ CFLAGS="-march=x86-64 -O2 -pipe"
 CXXFLAGS="-march=x86-64 -O2 -pipe"
 MAKEFLAGS="-j$(nproc)"
 
+BUILDDIR=${BUILDDIR:-"/var/cache/pkgupd/build"}
+
 if [[ -z "${NOCONTAINER}" ]]; then
     echo ":: Executing inside container ::"
     docker run \
         --env NOCONTAINER=1 \
         --env DEBUG=1 \
-        -v $(realpath ${0}):/build.sh \
+        -v $(realpath ${0}):/bin/sys-rebuild \
         -v ${REPODB}:/var/cache/pkgupd/recipes \
         -v ${PKGSDIR}:/var/cache/pkgupd/pkgs \
         -v ${SRCDIR}:/var/cache/pkgupd/src \
         -v ${FILES}:/var/cache/pkgupd/files \
+        -v ${BASEDIR}/build:${BUILDDIR} \
         -v ${BASEDIR}/pkgupd.yml:/etc/pkgupd.yml \
         -it itsmanjeet/rlxos-devel bash ${1}
     exit $?
@@ -36,7 +39,6 @@ mkdir -p ${PKGSDIR}
 
 VERSION=${VERSION:-'TESTBUILD'}
 SYS_TOOLCHAIN='kernel-headers glibc binutils gcc binutils glibc'
-BUILDDIR=${BUILDDIR:-"${BASEDIR}/build"}
 OUTPUT=${OUTPUT:-"${BUILDDIR}/rlxos-${VERSION}.rootfs"}
 SYSROOT=${BUILDDIR}/sysroot
 DATADIR=${SYSROOT}/var/lib/pkgupd/data
@@ -48,14 +50,15 @@ CORESYSTEM='iana-etc kernel-headers glibc tzdata zlib bzip2 xz zstd file readlin
     inetutils less perl perl-xml-parser intltool autoconf automake kmod libelf
     libffi openssl python ninja meson coreutils diffutils gawk findutils
     groff gzip iptables iproute2 kbd libpipeline make patch tar texinfo vim py-markupsafe
-    py-jinja2 lz4 systemd dbus man-db procps-ng util-linux e2fsprogs libunistring libidn2 ca-certificates curl libarchive libyaml-cpp libuv cmake pkgupd'
+    py-jinja2 lz4 systemd dbus man-db procps-ng util-linux e2fsprogs libunistring libidn2 ca-certificates curl libarchive libuv cmake libyaml-cpp pkgupd'
 
-echo "Installing pkgupd"
+echo "=> updating pkgupd"
 pkgupd in /var/cache/pkgupd/pkgs/pkgupd-* --skip-depends --force
 if [[ $? != 0 ]]; then
     echo "Error! Failed to update pkgupd ${sys}"
     exit 1
 fi
+
 pkgupd in kernel-headers --force
 if [[ $? != 0 ]]; then
     echo "Error! Failed to install kernel headers ${sys}"

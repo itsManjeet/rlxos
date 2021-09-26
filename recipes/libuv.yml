@@ -10,7 +10,7 @@ sources:
   - https://dist.libuv.org/dist/v1.41.1/libuv-v1.41.1.tar.gz
 
 packages:
-  - id: lib
+  - id: pkg
     dir: libuv-v1.41.1
 
     prescript: |

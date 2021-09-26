@@ -27,4 +27,6 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Build
         run: |
+          export PKGUPD_NO_PROGRESS=1
+          export VERSION=2110
           ./build.sh sys-rebuild

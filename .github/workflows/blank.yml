@@ -25,7 +25,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: PreRequisties
-        run: apt -y install docker.io && systemctl enable docker --now
+        run: sudo apt -y install docker.io && sudo systemctl enable docker --now
 
       # Runs a set of commands using the runners shell
       - name: Build

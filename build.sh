@@ -24,13 +24,13 @@ if [[ -z "${NOCONTAINER}" ]]; then
     docker run \
         --env NOCONTAINER=1 \
         --env DEBUG=1 \
-        -v $(realpath ${0}):/bin/sys-rebuild \
-        -v ${REPODB}:/var/cache/pkgupd/recipes \
-        -v ${PKGSDIR}:/var/cache/pkgupd/pkgs \
-        -v ${SRCDIR}:/var/cache/pkgupd/src \
-        -v ${FILES}:/var/cache/pkgupd/files \
-        -v ${BASEDIR}/build:${BUILDDIR} \
-        -v ${BASEDIR}/pkgupd.yml:/etc/pkgupd.yml \
+        -v "$(realpath ${0}):/bin/sys-rebuild" \
+        -v "${REPODB}:/var/cache/pkgupd/recipes" \
+        -v "${PKGSDIR}:/var/cache/pkgupd/pkgs" \
+        -v "${SRCDIR}:/var/cache/pkgupd/src" \
+        -v "${FILES}:/var/cache/pkgupd/files" \
+        -v "${BASEDIR}/build:${BUILDDIR}" \
+        -v "${BASEDIR}/pkgupd.yml:/etc/pkgupd.yml" \
         -it itsmanjeet/rlxos-devel:2110 bash ${1}
     exit $?
 fi

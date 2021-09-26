@@ -52,18 +52,6 @@ CORESYSTEM='iana-etc kernel-headers glibc tzdata zlib bzip2 xz zstd file readlin
     groff gzip iptables iproute2 kbd libpipeline make patch tar texinfo vim py-markupsafe
     py-jinja2 lz4 systemd dbus man-db procps-ng util-linux e2fsprogs libunistring libidn2 ca-certificates curl libarchive libuv cmake libyaml-cpp pkgupd'
 
-echo "=> updating pkgupd"
-pkgupd in /var/cache/pkgupd/pkgs/pkgupd-* --skip-depends --force
-if [[ $? != 0 ]]; then
-    echo "Error! Failed to update pkgupd ${sys}"
-    exit 1
-fi
-
-pkgupd in kernel-headers --force
-if [[ $? != 0 ]]; then
-    echo "Error! Failed to install kernel headers ${sys}"
-    exit 1
-fi
 
 for sys in ${SYS_TOOLCHAIN}; do
     echo "=> Generating Toolchain package ${sys}"

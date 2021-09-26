@@ -31,7 +31,7 @@ if [[ -z "${NOCONTAINER}" ]]; then
         -v ${FILES}:/var/cache/pkgupd/files \
         -v ${BASEDIR}/build:${BUILDDIR} \
         -v ${BASEDIR}/pkgupd.yml:/etc/pkgupd.yml \
-        -it itsmanjeet/rlxos-devel bash ${1}
+        -it itsmanjeet/rlxos-devel:2110 bash ${1}
     exit $?
 fi
 

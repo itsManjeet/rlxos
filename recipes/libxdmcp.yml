@@ -15,5 +15,5 @@ sources:
   - https://www.x.org/pub/individual/lib/libXdmcp-1.1.3.tar.bz2
 
 packages:
-  - id: lib
+  - id: pkg
     dir: libXdmcp-1.1.3

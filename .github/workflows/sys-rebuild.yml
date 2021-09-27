@@ -31,8 +31,9 @@ jobs:
           export VERSION=2110
           ./build.sh sys-rebuild
 
-      - uses: "marvinpinto/action-automatic-releases@latest"
+      - uses: marvinpinto/action-automatic-releases@latest
         with:
+          automatic_release_tag: "latest"
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           files: |
             build/*.rootfs

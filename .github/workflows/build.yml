@@ -23,17 +23,22 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - uses: docker-practice/actions-setup-docker@master
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+
       
       # Runs a set of commands using the runners shell
       - name: Build
         run: |
           export PKGUPD_NO_PROGRESS=1
           export VERSION=2110
-          ./build.sh sys-rebuild
+          ./build.sh sys-rebuild -r ${GITHUB_REF##*/}
 
       - uses: marvinpinto/action-automatic-releases@latest
         with:
-          automatic_release_tag: "latest"
+          automatic_release_tag: "${{ steps.extract_branch.outputs.branch }}"
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           files: |
             build/*.rootfs

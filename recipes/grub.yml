@@ -40,6 +40,7 @@ packages:
           --with-platform=pc
           --target=i386
           --disable-nls
+          --sysconfdir=/etc
           CFLAGS="-Os"
           CXXFLAGS="${CFLAGS}"
         
@@ -63,7 +64,8 @@ packages:
           --enable-grub-mkfont
           --with-platform=efi
           --target=x86_64
-          --with-bootdir=/run/initramfs/boot/
+          --sysconfdir=/etc
+          --with-bootdir=/boot/
           CFLAGS="-Os"
           CXXFLAGS="${CFLAGS}"
 

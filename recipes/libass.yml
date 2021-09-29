@@ -15,7 +15,7 @@ depends:
 sources:
   - https://github.com/libass/libass/releases/download/0.15.1/libass-0.15.1.tar.xz
 packages:
-  - id: lib
+  - id: pkg
     dir: libass-0.15.1
     flags:
       - id: configure

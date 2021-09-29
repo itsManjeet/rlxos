@@ -20,7 +20,7 @@ prescript: |
   patch -Np1 -i ../libcanberra-0.30-wayland-1.patch
 
 packages:
-  - id: lib
+  - id: pkg
     dir: libcanberra-0.30
     flags:
       - id: configurator

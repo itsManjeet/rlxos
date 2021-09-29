@@ -17,5 +17,6 @@ packages:
     flags:
       - id: configure
         value: >
+          --libexecdir=/usr/lib
           --buildtype=release
           -D enable-docs=false

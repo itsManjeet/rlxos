@@ -9,7 +9,7 @@ depends:
     - tzdata
     - file
     - readline
-    - libgcc
+    - gcc
     - shadow
     - bash
     - grep
@@ -35,10 +35,6 @@ depends:
     - pkgupd
     - systemd
     - dbus
-    - linux-kernel
-    - firmware
-    - initramfs
-    - grub
     - sudo
 
 packages:

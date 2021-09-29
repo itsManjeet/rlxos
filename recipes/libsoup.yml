@@ -24,7 +24,7 @@ depends:
     - vala
 
 packages:
-  - id: lib
+  - id: pkg
     dir: libsoup-2.72.0
     flags:
       - id: configure

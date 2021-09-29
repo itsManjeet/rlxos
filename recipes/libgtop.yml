@@ -6,8 +6,7 @@ about: |
 depends:
   runtime:
     - glib
-    - xorg-lib
-    # libxau
+    - libxau
   
   buildtime:
     - gobject-introspection
@@ -16,7 +15,7 @@ sources:
   - https://download.gnome.org/sources/libgtop/2.40/libgtop-2.40.0.tar.xz
 
 packages:
-  - id: lib
+  - id: pkg
     dir: libgtop-2.40.0
 
     flags:

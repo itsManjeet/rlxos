@@ -16,5 +16,5 @@ sources:
   - https://download.gnome.org/sources/libgsf/1.14/libgsf-1.14.47.tar.xz
 
 packages:
-  - id: lib
+  - id: pkg
     dir: libgsf-1.14.47

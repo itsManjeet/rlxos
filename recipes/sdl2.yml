@@ -7,7 +7,9 @@ depends:
   runtime:
     - libxkbcommon
     - wayland
-    - xorg-lib
+    - libxcursor
+    - libx11
+    - libxrender
     - alsa-lib
     - pulseaudio
 

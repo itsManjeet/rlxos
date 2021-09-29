@@ -12,3 +12,4 @@ packages:
     plugin: script
     script: |
       ./install.sh --prefix=/usr --destdir=${pkgupd_pkgdir}
+      rm -rf ${pkgupd_pkgdir}/usr/etc

@@ -17,3 +17,4 @@ packages:
       - id: configure
         value: >
           --localstatedir=/var/lib/locate
+          --libexecdir=/usr/lib

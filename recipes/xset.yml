@@ -1,0 +1,14 @@
+id: xset
+version: 1.2.4
+about: User preference utility for X
+depends:
+  runtime:
+    - libxmu
+  buildtime:
+    - util-macros
+sources:
+  - https://www.x.org/pub/individual/app/xset-1.2.4.tar.bz2
+
+packages:
+  - id: pkg
+    dir: xset-1.2.4

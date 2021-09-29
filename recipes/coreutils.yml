@@ -39,3 +39,4 @@ packages:
         value: >
           --enable-no-install-program=kill,uptime
           --with-openssl
+          --libexecdir=/usr/lib

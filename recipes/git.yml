@@ -18,6 +18,7 @@ packages:
     script: |
       ./configure --prefix=/usr \
         --with-gitconfig=/etc/gitconfig \
+        --libexecdir=/usr/lib \
         --with-python=python3
        
       make

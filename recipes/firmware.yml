@@ -9,6 +9,6 @@ sources:
 packages:
   - id: pkg
     dir: linux-firmware-20210818
-    plugin: script
+    strip: false
     script: |
       make DESTDIR=${pkgupd_pkgdir} FIRMWARE=/usr/lib/firmware install

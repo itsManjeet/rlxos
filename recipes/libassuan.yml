@@ -11,7 +11,7 @@ sources:
   - https://www.gnupg.org/ftp/gcrypt/libassuan/libassuan-2.5.5.tar.bz2
 
 packages:
-  - id: lib
+  - id: pkg
     dir: libassuan-2.5.5
     flags:
       - id: configurator

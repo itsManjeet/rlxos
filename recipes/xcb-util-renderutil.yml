@@ -11,5 +11,8 @@ sources:
   - https://xcb.freedesktop.org/dist/xcb-util-renderutil-0.3.9.tar.bz2
 
 packages:
-  - id: configure
+  - id: pkg
     dir: xcb-util-renderutil-0.3.9
+    flags:
+      - id: configurator
+        value: configure

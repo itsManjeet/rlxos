@@ -5,7 +5,12 @@ about: |
 
 depends:
   runtime:
-    - xorg-lib
+    - libx11
+    - xauth
+    - xmodmap
+    - xrdb
+  buildtime:
+    - util-macros
 
 sources:
   - https://www.x.org/pub/individual/app/xinit-1.4.1.tar.bz2
@@ -13,3 +18,8 @@ sources:
 packages:
   - id: pkg
     dir: xinit-1.4.1
+    flags:
+      - id: configurator
+        value: configure
+      - id: configure
+        value: --sysconfdir=/etc

@@ -1,0 +1,17 @@
+id: xprop
+version: 1.2.5
+about: Property displayer for X
+depends:
+  runtime:
+    - libx11
+  buildtime:
+    - util-macros
+sources:
+  - https://www.x.org/pub/individual/app/xprop-1.2.5.tar.bz2
+
+packages:
+  - id: pkg
+    dir: xprop-1.2.5
+    flags:
+      - id: configurator
+        value: configure

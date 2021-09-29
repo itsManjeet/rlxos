@@ -1,0 +1,15 @@
+id: libxrandr
+version: 1.5.2
+about: X11 randr extension library
+depends:
+  runtime:
+    - libxext
+    - libxrender
+  buildtime:
+    - util-macros
+    - xorgproto
+sources:
+  - https://www.x.org/pub/individual/lib/libXrandr-1.5.2.tar.bz2
+packages:
+  - id: pkg
+    dir: libXrandr-1.5.2

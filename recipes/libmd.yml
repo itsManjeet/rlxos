@@ -11,5 +11,5 @@ sources:
   - https://libbsd.freedesktop.org/releases/libmd-1.0.3.tar.xz
 
 packages:
-  - id: lib
+  - id: pkg
     dir: libmd-1.0.3

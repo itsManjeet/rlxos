@@ -21,6 +21,7 @@ packages:
     flags:
       - id: configure
         value: >
+          --sysconfdir=/etc
           --disable-setuid
           --enable-cache-owner=bin
 

@@ -23,6 +23,7 @@ packages:
 
       - id: configure
         value: >
+          --sysconfdir=/etc
           --disable-static
           --disable-doxygen-docs
           --disable-xml-docs

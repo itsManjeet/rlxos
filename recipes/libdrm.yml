@@ -14,7 +14,7 @@ sources:
   - https://dri.freedesktop.org/libdrm/libdrm-2.4.107.tar.xz
 
 packages:
-  - id: lib
+  - id: pkg
     dir: libdrm-2.4.107
 
     flags:

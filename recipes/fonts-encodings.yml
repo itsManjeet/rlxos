@@ -1,0 +1,13 @@
+id: fonts-encodings
+version: 1.0.5
+about: X.org font encoding files
+depends:
+  buildtime:
+    - font-util
+    - mkfontscale
+    - util-macros
+packages:
+  - id: pkg
+    dir: encodings-1.0.5
+    sources:
+      - https://www.x.org/pub/individual/font/encodings-1.0.5.tar.bz2

@@ -1,0 +1,22 @@
+id: libice
+version: 1.0.10
+about: |
+  X11 Inter-Client exchange library
+
+depends:
+  runtime:
+    - glibc
+  buildtime:
+    - util-macros
+    - xorgproto
+    - xtrans
+sources:
+  - https://www.x.org/pub/individual/lib/libICE-1.0.10.tar.bz2
+
+packages:
+  - id: pkg
+    dir: libICE-1.0.10
+    flags:
+      - id: configure
+        value: >
+          ICE_LIBS=-lpthread

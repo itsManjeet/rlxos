@@ -7,7 +7,7 @@ depends:
   runtime:
     - libx11
   buildtime:
-    - xorg-util-macros
+    - util-macros
     - xorgproto
 
 packages:

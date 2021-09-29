@@ -11,7 +11,7 @@ sources:
   - https://www.gnupg.org/ftp/gcrypt/libksba/libksba-1.6.0.tar.bz2
 
 packages:
-  - id: lib
+  - id: pkg
     dir: libksba-1.6.0
     flags:
       - id: configurator

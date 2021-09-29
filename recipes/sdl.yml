@@ -5,8 +5,12 @@ about: |
 
 depends:
   runtime:
-    - xorg-lib
+    - libx11
+    - libxext
+    - libxrender
     - pulseaudio
+  buildtime:
+    - mesa
 
 sources:
   - https://www.libsdl.org/release/SDL-1.2.15.tar.gz

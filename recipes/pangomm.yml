@@ -13,7 +13,7 @@ sources:
   - https://download.gnome.org/sources/pangomm/2.46/pangomm-2.46.1.tar.xz
 
 packages:
-  - id: lib
+  - id: pkg
     dir: pangomm-2.46.1
     
     prescript: rm autogen.sh

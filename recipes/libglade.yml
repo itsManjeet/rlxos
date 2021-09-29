@@ -12,7 +12,7 @@ sources:
   - https://download.gnome.org/sources/libglade/2.6/libglade-2.6.4.tar.bz2
 
 packages:
-  - id: lib
+  - id: pkg
     dir: libglade-2.6.4
     prescript: |
       sed -i "/DG_DISABLE_DEPRECATED/d" glade/Makefile.in

@@ -6,10 +6,9 @@ about: |
 depends:
   runtime:
     - libxext
-
   buildtime:
     - libxfixes
-    - xorg-util-macros
+    - util-macros
     - xorgproto
 
 packages:

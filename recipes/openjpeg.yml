@@ -7,7 +7,7 @@ sources:
   - https://github.com/uclouvain/openjpeg/archive/v2.4.0/openjpeg-2.4.0.tar.gz
 
 packages:
-  - id: lib
+  - id: pkg
     dir: openjpeg-2.4.0
     flags:
       - id: configure

@@ -17,7 +17,8 @@ depends:
     - libvpx
     - mesa
     - mpg123
-    - xorg-lib
+    - libxcb
+    - libsndfile
     - taglib
   
   buildtime:

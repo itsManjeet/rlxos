@@ -1,0 +1,15 @@
+id: libxdg-basedir
+version: 1.2.3
+about: An implementation of XDG base directory specifications
+depends:
+  runtime:
+    - glibc
+sources:
+  - https://github.com/devnev/libxdg-basedir/archive/libxdg-basedir-1.2.3.tar.gz
+packages:
+  - id: pkg
+    dir: libxdg-basedir-libxdg-basedir-1.2.3
+    prescript: ./autogen.sh
+    flags:
+      - id: configurator
+        value: configure

@@ -16,3 +16,6 @@ environ:
 packages:
   - id: pkg
     dir: tar-1.34
+    flags:
+      - id: configure
+        value: --libexecdir=/usr/lib

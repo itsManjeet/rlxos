@@ -12,6 +12,6 @@ sources:
   - https://download.gnome.org/sources/atkmm/2.28/atkmm-2.28.2.tar.xz
 
 packages:
-  - id: lib
+  - id: pkg
     dir: atkmm-2.28.2
     prescript: rm autogen.sh

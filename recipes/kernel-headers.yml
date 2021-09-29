@@ -12,8 +12,9 @@ packages:
 
     plugin: script
     script: |
+      make clean
       make mrproper
-      make headers
+      make headers V=1
 
       find usr/include -name ".*" -delete
       rm usr/include/Makefile

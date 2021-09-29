@@ -9,7 +9,13 @@ depends:
     - pixman
     - fontconfig
     - glib
-    - xorg-lib
+    - libx11
+    - libxcb
+    - libxext
+    - libxrender
+    - lzo
+  buildtime:
+    - meson
 
 sources:
   - https://www.cairographics.org/snapshots/cairo-1.17.4.tar.xz
@@ -19,10 +25,10 @@ packages:
     dir: cairo-1.17.4
     flags:
       - id: configurator
-        value: configure
+        value: meson.build
         
       - id: configure
         value: >
-          --enable-tee
-          --enable-gl
-          --enable-xlib-xcb
+          -D spectre=disabled
+          -D tee=enabled
+          -D test=disabled

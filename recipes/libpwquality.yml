@@ -13,7 +13,7 @@ sources:
 
 
 packages:
-  - id: lib
+  - id: pkg
     dir: libpwquality-1.4.4
     plugin: script
     script: |

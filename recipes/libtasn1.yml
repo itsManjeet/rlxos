@@ -7,5 +7,5 @@ sources:
   - https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.17.0.tar.gz
 
 packages:
-  - id: lib
+  - id: pkg
     dir: libtasn1-4.17.0

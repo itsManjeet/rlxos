@@ -9,7 +9,7 @@ depends:
     - libxdamage
     - libxshmfence
     - libxxf86vm
-    - libllvm
+    - llvm
     - libdrm
     - libelf
     - wayland
@@ -27,7 +27,6 @@ depends:
     - libxshmfence
     - libxxf86vm
     - xorgproto
-    - llvm
     - flex
     - bison
 

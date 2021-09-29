@@ -11,5 +11,5 @@ depends:
 sources:
   - https://libbsd.freedesktop.org/releases/libbsd-0.11.3.tar.xz
 packages:
-  - id: lib
+  - id: pkg
     dir: libbsd-0.11.3

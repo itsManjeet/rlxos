@@ -18,6 +18,7 @@ packages:
     flags:
       - id: configure
         value: >
+          --sysconfdir=/etc
           --disable-manpages
           --enable-library
     postscript: |

@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: SystemBuild
 
 # Controls when the workflow will run
 on:
@@ -34,7 +34,7 @@ jobs:
         run: |
           export PKGUPD_NO_PROGRESS=1
           export VERSION=2110
-          ./build.sh sys-rebuild -r ${GITHUB_REF##*/}
+          ./build.sh -r ${GITHUB_REF##*/}
 
       - uses: marvinpinto/action-automatic-releases@latest
         with:

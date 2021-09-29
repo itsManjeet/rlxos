@@ -19,7 +19,7 @@ MAKEFLAGS="-j$(nproc)"
 
 BUILDDIR=${BUILDDIR:-"/var/cache/pkgupd/build"}
 
-[[ -e /dev/tty ]] && INTERACTIVE='-i'
+[[ -t 1 ]] && INTERACTIVE='-i'
 if [[ -z "${NOCONTAINER}" ]]; then
     echo ":: Executing inside container ::"
     docker run \

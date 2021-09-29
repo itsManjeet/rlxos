@@ -17,3 +17,6 @@ sources:
 packages:
   - id: pkg
     dir: libXdmcp-1.1.3
+    flags:
+      - id: configurator
+        value: configure

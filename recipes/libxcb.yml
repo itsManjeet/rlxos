@@ -21,3 +21,6 @@ sources:
 packages:
   - id: pkg
     dir: libxcb-1.14
+    flags:
+      - id: configurator
+        value: configure

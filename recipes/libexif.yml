@@ -8,7 +8,7 @@ sources:
   - https://www.linuxfromscratch.org/patches/blfs/svn/libexif-0.6.22-security_fixes-1.patch
 
 packages:
-  - id: lib
+  - id: pkg
     dir: libexif-0.6.22
     prescript: |
       patch -Np1 -i ../libexif-0.6.22-security_fixes-1.patch

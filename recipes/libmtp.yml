@@ -10,5 +10,5 @@ depends:
     - libusb
 
 packages:
-  - id: lib
+  - id: pkg
     dir: libmtp-1.1.18

@@ -5,11 +5,15 @@ about: |
 
 depends:
   runtime:
-    - xmlto
-    - xorg-apps
+    - xprop
+    - xset
     - dbus
+    - file
+    - which
+    - bash
   
   buildtime:
+    - xmlto
     - lynx
 
 sources:

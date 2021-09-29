@@ -14,7 +14,7 @@ sources:
   - https://download.gnome.org/sources/libnotify/0.7/libnotify-0.7.9.tar.xz
 
 packages:
-  - id: lib 
+  - id: pkg
     dir: libnotify-0.7.9
     flags:
       - id: configure

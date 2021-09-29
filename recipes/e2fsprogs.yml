@@ -19,6 +19,7 @@ packages:
     flags:
       - id: configure
         value: >
+          --sysconfdir=/etc
           --enable-elf-shlibs
           --disable-libblkid
           --disable-libuuid

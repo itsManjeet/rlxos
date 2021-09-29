@@ -12,6 +12,6 @@ sources:
   - https://download.gnome.org/sources/glibmm/2.66/glibmm-2.66.1.tar.xz
 
 packages:
-  - id: lib
+  - id: pkg
     dir: glibmm-2.66.1
     prescript: rm autogen.sh

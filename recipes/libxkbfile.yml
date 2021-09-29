@@ -1,0 +1,13 @@
+id: libxkbfile
+version: 1.1.0
+about: X11 keyboard file manipulation library
+depends:
+  runtime:
+    - libx11
+  buildtime:
+    - util-macros
+packages:
+  - id: pkg
+    dir: libxkbfile-1.1.0
+    sources:
+      - https://www.x.org/pub/individual/lib/libxkbfile-1.1.0.tar.bz2

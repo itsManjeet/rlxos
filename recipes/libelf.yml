@@ -1,4 +1,4 @@
-id: elf
+id: libelf
 version: 0.185
 about: |
   Executable and Linkable Format utilities
@@ -14,7 +14,7 @@ sources:
   - https://sourceware.org/ftp/elfutils/0.185/elfutils-0.185.tar.bz2
 
 packages:
-  - id: lib
+  - id: pkg
     dir: elfutils-0.185
 
     flags:

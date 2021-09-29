@@ -5,12 +5,12 @@ about: |
 
 depends:
   runtime:
-    - xorg-lib
+    - libxext
     - mesa
 
 sources:
   - https://gitlab.freedesktop.org/vdpau/libvdpau/-/archive/1.4/libvdpau-1.4.tar.bz2
 
 packages:
-  - id: lib
+  - id: pkg
     dir: libvdpau-1.4

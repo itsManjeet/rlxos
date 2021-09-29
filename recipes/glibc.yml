@@ -35,6 +35,7 @@ packages:
     flags:
       - id: configure
         value: >
+          --libexecdir=/usr/lib
           --disable-werror
           --enable-kernel=3.2
           --enable-stack-protector=strong

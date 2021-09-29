@@ -7,8 +7,6 @@ depends:
   runtime:
     - libxml2
 
-split: false
-clean: true
 
 packages:
   - id: pkg
@@ -21,8 +19,3 @@ packages:
         value: >
           --disable-static
           --disable-documentation
-
-  - id: protocols
-    dir: wayland-protocols-1.21
-    sources:
-      - https://wayland.freedesktop.org/releases/wayland-protocols-1.21.tar.xz

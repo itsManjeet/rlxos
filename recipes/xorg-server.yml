@@ -6,15 +6,31 @@ about: |
 depends:
   runtime:
     - pixman
-    - xorg-fonts
-    - xkeyboardconfig
+    - xkeyboard-config
     - libepoxy
-    - wayland
+    - wayland-protocols
     - systemd
     - xcb-util-keysyms
     - xcb-util-image
     - xcb-util-renderutil
     - xcb-util-wm
+    - libxfont2
+    - libxshmfence
+    - nettle
+    - libpciaccess
+
+  buildtime:
+    - libx11
+    - libxaw
+    - libxi
+    - libxkbfile
+    - libxmu
+    - libxrender
+    - libxres
+    - libxtst
+    - libxv
+    - mesa
+    - meson
 
 sources:
   - https://www.x.org/pub/individual/xserver/xorg-server-1.20.12.tar.xz
@@ -23,10 +39,11 @@ packages:
   - id: pkg
     dir: xorg-server-1.20.12
     flags:
+      - id: configurator
+        value: configure
       - id: configure
         value: >
           --enable-glamor
           --enable-suid-wrapper
+          --localstatedir=/var
           --with-xkb-output=/var/lib/xkb
-          --enable-dmx
-          --enable-kdrive

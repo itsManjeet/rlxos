@@ -1,0 +1,15 @@
+id: wayland-protocols
+version: 1.19.0
+about: |
+  Project to define a protocol for a compositor to talk to its clients as well as a library implementation of the protocol
+
+depends:
+  runtime:
+    - libxml2
+    - wayland
+
+packages:
+  - id: pkg
+    dir: wayland-protocols-1.21
+    sources:
+      - https://wayland.freedesktop.org/releases/wayland-protocols-1.21.tar.xz

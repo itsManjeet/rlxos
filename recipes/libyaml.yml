@@ -7,7 +7,7 @@ sources:
   - https://github.com/yaml/libyaml/archive/0.2.5/libyaml-0.2.5.tar.gz
 
 packages:
-  - id: lib
+  - id: pkg
     dir: libyaml-0.2.5
     prescript: |
       ./bootstrap

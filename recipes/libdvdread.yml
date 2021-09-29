@@ -7,7 +7,7 @@ sources:
   - https://get.videolan.org/libdvdread/6.1.2/libdvdread-6.1.2.tar.bz2
 
 packages:
-  - id: lib
+  - id: pkg
     dir: libdvdread-6.1.2
     flags:
       - id: configure

@@ -13,5 +13,5 @@ kernel:
   - CONFIG_INPUT_UINPUT
   
 packages:
-  - id: lib
+  - id: pkg
     dir: libevdev-1.11.0

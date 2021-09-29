@@ -1,0 +1,19 @@
+id: libsm
+version: 1.2.3
+about: |
+  X11 Session Management library
+
+depends:
+  runtime:
+    - libice
+    - util-linux
+  buildtime:
+    - util-macros
+    - xorgproto
+    - xtrans
+
+sources:
+  - https://www.x.org/pub/individual/lib/libSM-1.2.3.tar.bz2
+packages:
+  - id: pkg
+    dir: libSM-1.2.3

@@ -7,5 +7,5 @@ sources:
   - https://www.cairographics.org/releases/pixman-0.40.0.tar.gz
 
 packages:
-  - id: pixman
+  - id: pkg
     dir: pixman-0.40.0

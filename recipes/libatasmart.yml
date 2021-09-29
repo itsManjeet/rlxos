@@ -7,7 +7,7 @@ sources:
   - http://0pointer.de/public/libatasmart-0.19.tar.xz
 
 packages:
-  - id: lib
+  - id: pkg
     dir: libatasmart-0.19
     flags:
       - id: configurator

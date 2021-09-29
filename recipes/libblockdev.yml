@@ -15,7 +15,7 @@ sources:
   - https://github.com/storaged-project/libblockdev/releases/download/2.25-1/libblockdev-2.25.tar.gz
 
 packages:
-  - id: lib
+  - id: pkg
     dir: libblockdev-2.25
     prescript: |
       sed "s/g_memdup/&2/" -i src/lib/plugin_apis/vdo.{c,api} src/plugins/vdo.c

@@ -16,9 +16,8 @@ depends:
 
 
 packages:
-  - id: conf
+  - id: pkg
     dir: .
-    plugin: script
     script: |
 
       mkdir -p ${pkgupd_pkgdir}/usr/share/desktop

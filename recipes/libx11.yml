@@ -6,7 +6,6 @@ depends:
   runtime:
     - libxcb
     - xorgproto
-
   buildtime:
     - util-macros
     - xtrans

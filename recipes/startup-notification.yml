@@ -7,9 +7,10 @@ sources:
   - https://www.freedesktop.org/software/startup-notification/releases/startup-notification-0.12.tar.gz
 
 depends:
-  - xorg-lib
-  - xcb-util
+  buildtime:
+    - libx11
+    - xcb-util
 
 packages:
-  - id: lib
+  - id: pkg
     dir: startup-notification-0.12

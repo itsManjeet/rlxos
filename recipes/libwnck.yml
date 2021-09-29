@@ -13,5 +13,5 @@ sources:
   - https://download.gnome.org/sources/libwnck/40/libwnck-40.0.tar.xz
 
 packages:
-  - id: lib
+  - id: pkg
     dir: libwnck-40.0

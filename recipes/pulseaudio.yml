@@ -10,7 +10,9 @@ depends:
     - dbus
     - glib
     - libcap
-    - xorg-lib
+    - libxtst
+    - libsndfile
+    - libsm
     - perl-xml-parser
     - sbc
     - bluez
@@ -31,6 +33,7 @@ packages:
 
       - id: configure
         value: >
+          --libexecdir=/usr/lib
           --buildtype=release
           -D database=gdbm
           -D bluez5=true

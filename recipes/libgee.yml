@@ -14,5 +14,5 @@ sources:
   - https://download.gnome.org/sources/libgee/0.20/libgee-0.20.4.tar.xz
 
 packages:
-  - id: lib
+  - id: pkg
     dir: libgee-0.20.4 

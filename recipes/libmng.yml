@@ -12,5 +12,5 @@ sources:
   - https://downloads.sourceforge.net/libmng/libmng-2.0.3.tar.xz
 
 packages:
-  - id: lib
+  - id: pkg
     dir: libmng-2.0.3

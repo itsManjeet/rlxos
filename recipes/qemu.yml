@@ -6,7 +6,10 @@ about: |
 depends:
   runtime:
    - glib
-   - xorg
+   - fuse
+   - gnutls
+   - curl
+   - libpng
    - alsa-lib
 
 sources:

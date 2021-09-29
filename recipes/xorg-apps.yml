@@ -27,11 +27,6 @@ packages:
     prescript: |
       sed -i -e "/D_XOPEN/s/5/6/" configure
 
-  - id: mkfontscale
-    dir: mkfontscale-1.2.1
-    sources:
-      - https://www.x.org/pub/individual/app/mkfontscale-1.2.1.tar.bz2
-
   - id: sessreg
     dir: sessreg-1.1.2
     sources:
@@ -52,10 +47,6 @@ packages:
     sources:
       - https://www.x.org/pub/individual/app/x11perf-1.6.1.tar.bz2
 
-  - id: xauth
-    dir: xauth-1.1
-    sources:
-      - https://www.x.org/pub/individual/app/xauth-1.1.tar.bz2
 
   - id: xbacklight
     dir: xbacklight-1.2.3
@@ -137,40 +128,23 @@ packages:
     sources:
       - https://www.x.org/pub/individual/app/xmessage-1.0.5.tar.bz2
 
-  - id: xmodmap
-    dir: xmodmap-1.0.10
-    sources:
-      - https://www.x.org/pub/individual/app/xmodmap-1.0.10.tar.bz2
 
   - id: xpr
     dir: xpr-1.0.5
     sources:
       - https://www.x.org/pub/individual/app/xpr-1.0.5.tar.bz2
 
-  - id: xprop
-    dir: xprop-1.2.5
-    sources:
-      - https://www.x.org/pub/individual/app/xprop-1.2.5.tar.bz2
 
   - id: xrandr
     dir: xrandr-1.5.1
     sources:
       - https://www.x.org/pub/individual/app/xrandr-1.5.1.tar.xz
 
-  - id: xrdb
-    dir: xrdb-1.2.0
-    sources:
-      - https://www.x.org/pub/individual/app/xrdb-1.2.0.tar.bz2
-
   - id: xrefresh
     dir: xrefresh-1.0.6
     sources:
       - https://www.x.org/pub/individual/app/xrefresh-1.0.6.tar.bz2
 
-  - id: xset
-    dir: xset-1.2.4
-    sources:
-      - https://www.x.org/pub/individual/app/xset-1.2.4.tar.bz2
 
   - id: xsetroot
     dir: xsetroot-1.1.2

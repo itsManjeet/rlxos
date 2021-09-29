@@ -5,8 +5,6 @@ about: |
 
 depends:
   runtime:
-    - core
-    - xorg
     - baobab
     - cheese
     - eog
@@ -59,13 +57,11 @@ depends:
     - gnome
     - ttf-noto
     - ttf-opensans
-    - rlx-instlr
     - evolution
 
 packages:
-  - id: conf
+  - id: pkg
     dir: .
-    plugin: script
     script: |
 
       mkdir -p ${pkgupd_pkgdir}/usr/share/gnome

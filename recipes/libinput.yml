@@ -15,11 +15,12 @@ kernel:
   - CONFIG_INPUT_UINPUT
 
 packages:
-  - id: lib
+  - id: pkg
     dir: libinput-1.18.0
     flags:
       - id: configure
         value: >
+          --libexecdir=/usr/lib
           -D debug-gui=false
           --buildtype=release
           -D tests=false

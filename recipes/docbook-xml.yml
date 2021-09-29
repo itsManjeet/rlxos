@@ -7,6 +7,8 @@ depends:
   runtime:
     - libxml2
     - sgml-common
+  buildtime:
+    - unzip
 
 sources:
   - https://www.docbook.org/xml/4.5/docbook-xml-4.5.zip

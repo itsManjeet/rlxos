@@ -65,7 +65,7 @@ packages:
   - id: fbdev
     dir: xf86-video-fbdev-0.5.0
     sources:
-      - https://www.x.org/pub/individual/driver/xf86-video-fbdev-0.5.0.tar.bz2
+      - 
   
   - id: intel
     dir: xf86-video-intel-20210222

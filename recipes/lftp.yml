@@ -6,7 +6,7 @@ about: |
 depends:
   runtime:
     - expat
-    - libgcc
+    - gcc
     - openssl
     - readline
 

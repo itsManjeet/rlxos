@@ -9,3 +9,6 @@ sources:
 packages:
   - id: pkg
     dir: fribidi-1.0.9
+    flags:
+      - id: configurator
+        value: configure

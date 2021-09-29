@@ -13,6 +13,6 @@ sources:
   - https://download.gnome.org/sources/gtkmm/3.24/gtkmm-3.24.5.tar.xz
 
 packages:
-  - id: lib
+  - id: pkg
     dir: gtkmm-3.24.5
     prescript: rm autogen.sh

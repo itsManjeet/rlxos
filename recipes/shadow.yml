@@ -31,6 +31,7 @@ packages:
     flags:
       - id: configure
         value: >
+          --sysconfdir=/etc
           --libdir=/usr/lib
           --sbindir=/usr/bin
           --with-libpam

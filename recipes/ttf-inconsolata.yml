@@ -6,7 +6,7 @@ about: |
 sources:
   - https://github.com/googlefonts/Inconsolata/archive/v3.000/ttf-inconsolata-3.000.tar.gz
 packages:
-  - id: font
+  - id: pkg
     dir: .
     plugin: script
     script: |

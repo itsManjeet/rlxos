@@ -6,6 +6,7 @@ about: |
 depends:
   runtime:
     py-markupsafe
+    py-setuptools
 
 sources:
   - https://files.pythonhosted.org/packages/source/M/Mako/Mako-1.1.4.tar.gz

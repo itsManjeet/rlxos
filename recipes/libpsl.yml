@@ -11,7 +11,7 @@ sources:
   - https://github.com/rockdaboot/libpsl/releases/download/0.21.1/libpsl-0.21.1.tar.gz
 
 packages:
-  - id: lib
+  - id: pkg
     dir: libpsl-0.21.1
     prescript: |
       sed -i "s/env python/&3/" src/psl-make-dafsa

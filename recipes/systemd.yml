@@ -51,6 +51,7 @@ packages:
 
       - id: configure
         value: 
+          --sysconfdir=/etc
           -D blkid=true
           -D default-dnssec=no
           -D firstboot=false

@@ -7,7 +7,7 @@ sources:
   - http://0pointer.de/lennart/projects/libdaemon/libdaemon-0.14.tar.gz
 
 packages:
-  - id: lib
+  - id: pkg
     dir: libdaemon-0.14
     flags:
       - id: configure

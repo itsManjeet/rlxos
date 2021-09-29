@@ -17,3 +17,6 @@ packages:
 
     prescript: |
       sed -i 's/extras//' Makefile.in
+    flags:
+      - id: configure
+        value: --libexecdir=/usr/lib

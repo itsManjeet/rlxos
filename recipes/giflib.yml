@@ -11,7 +11,7 @@ sources:
   - giflib-5.2.1.tar.gz::https://github.com/nesbox/giflib/archive/refs/tags/5.2.1.tar.gz
 
 packages:
-  - id: lib
+  - id: pkg
     dir: giflib-5.2.1
     plugin: script
     script: |

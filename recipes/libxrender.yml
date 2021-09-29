@@ -1,0 +1,17 @@
+id: libxrender
+version: 0.9.10
+about: |
+  X rendering extension client library
+
+depends:
+  runtime:
+    - libx11
+  buildtime:
+    - xorgproto
+
+sources:
+  - https://www.x.org/pub/individual/lib/libXrender-0.9.10.tar.bz2
+
+packages:
+  - id: pkg
+    dir: libXrender-0.9.10

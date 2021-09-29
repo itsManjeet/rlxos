@@ -2,21 +2,12 @@ id: libva
 version: 2.12.0
 about: |
   Package contains a library which provides access to hardware accelerated video processing
-
-split: false
-
 depends:
   runtime:
     - libdrm
     - mesa
-
 sources:
   - https://github.com/intel/libva/releases/download/2.12.0/libva-2.12.0.tar.bz2
-  - https://github.com/intel/intel-vaapi-driver/releases/download/2.4.1/intel-vaapi-driver-2.4.1.tar.bz2
-
 packages:
-  - id: lib
+  - id: pkg
     dir: libva-2.12.0
-
-  - id: vaapi-driver
-    dir: intel-vaapi-driver-2.4.1

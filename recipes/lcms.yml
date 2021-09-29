@@ -9,3 +9,6 @@ sources:
 packages:
   - id: pkg
     dir: lcms2-2.12
+    flags:
+      - id: configurator
+        value: configure

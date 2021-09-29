@@ -17,4 +17,5 @@ packages:
     flags:
       - id: configure
         value: >
+          --sysconfdir=/etc
           --disable-static

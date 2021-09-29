@@ -25,6 +25,7 @@ packages:
       - id: configure
         value: >
           --buildtype=release
+          --libexecdir=/usr/lib
           -D gtk_doc=false
 
     postscript: |

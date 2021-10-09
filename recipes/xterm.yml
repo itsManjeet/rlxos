@@ -5,7 +5,7 @@ about: |
 
 depends:
   runtime:
-    - xorg-apps
+    - xorg-server
 
 sources:
   - https://invisible-mirror.net/archives/xterm/xterm-368.tgz

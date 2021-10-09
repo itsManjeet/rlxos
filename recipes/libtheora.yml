@@ -17,3 +17,7 @@ packages:
 
     prescript: |
       sed -i "s/png_\(sizeof\)/\1/g" examples/png2theora.c
+    
+    flags:
+      - id: configurator
+        value: configure

@@ -1,0 +1,47 @@
+From e0663bcaddb66149d7f15d21faafa8ab4f9ebd35 Mon Sep 17 00:00:00 2001
+From: itsmanjeet <itsmanjeet1998@gmail.com>
+Date: Wed, 6 Oct 2021 12:47:35 +0530
+Subject: [PATCH] fixed meson and cmake build error
+
+---
+ libpkgupd/compiler.cc | 21 ++++++++++-----------
+ 1 file changed, 10 insertions(+), 11 deletions(-)
+
+diff --git a/libpkgupd/compiler.cc b/libpkgupd/compiler.cc
+index fc41d24..22642b3 100644
+--- a/libpkgupd/compiler.cc
++++ b/libpkgupd/compiler.cc
+@@ -103,20 +103,19 @@ bool compiler::compile(std::string const &srcdir, std::string const &destdir) {
+                                      " --bindir=/usr/bin"
+                                      " --sbindir=/usr/bin"
+                                      " --localstatedir=/var"
+-                                     " --datadir=/usr/share") +
+-                  " " + builddir;
++                                     " --datadir=/usr/share");
+             break;
+ 
+         case configurator::CMAKE:
+-            cmd = "cmake -S " + srcdir + " -B " + builddir + " " + getargs("configure",
+-                                                                           "-DCMAKE_INSTALL_PREFIX=/usr "
+-                                                                           " -DCMAKE_INSTALL_SYSCONFDIR=/etc"
+-                                                                           " -DCMAKE_INSTALL_LIBDIR=/usr/lib"
+-                                                                           " -DCMAKE_INSTALL_LIBEXECDIR=/usr/lib"
+-                                                                           " -DCMAKE_INSTALL_BINDIR=/usr/bin"
+-                                                                           " -DCMAKE_INSTALL_SBINDIR=/usr/bin"
+-                                                                           " -DCMAKE_INSTALL_DATADIR=/usr/share"
+-                                                                           " -DCMAKE_INSTALL_LOCALSTATEDIR=/var");
++            cmd = "cmake -S " + srcdir + " " + getargs("configure",
++                                                       "-DCMAKE_INSTALL_PREFIX=/usr "
++                                                       " -DCMAKE_INSTALL_SYSCONFDIR=/etc"
++                                                       " -DCMAKE_INSTALL_LIBDIR=/usr/lib"
++                                                       " -DCMAKE_INSTALL_LIBEXECDIR=/usr/lib"
++                                                       " -DCMAKE_INSTALL_BINDIR=/usr/bin"
++                                                       " -DCMAKE_INSTALL_SBINDIR=/usr/bin"
++                                                       " -DCMAKE_INSTALL_DATADIR=/usr/share"
++                                                       " -DCMAKE_INSTALL_LOCALSTATEDIR=/var");
+ 
+             break;
+ 
+-- 
+2.30.2
+

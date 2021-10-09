@@ -11,20 +11,19 @@ depends:
     - libxdmcp
     - xcb-proto
     - libxcb
-    - xorg-lib
+    - xorg-libs
     - xcb-util
     - xcb-util-image
     - xcb-util-keysyms
     - xcb-util-renderutil
     - xcb-util-wm
     - xcb-util-cursor
-    - llvm:lib
     - mesa
     - xbitmaps
     - xorg-apps
     - xcursor-themes
     - xorg-fonts
-    - xkeyboardconfig
+    - xkeyboard-config
     - xorg-server
     - xorg-drivers
     - xinit
@@ -37,7 +36,7 @@ depends:
     
 packages:
 
-  - id: conf
+  - id: pkg
     dir: .
     plugin: script
     script: |

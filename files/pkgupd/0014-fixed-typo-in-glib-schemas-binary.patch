@@ -1,0 +1,25 @@
+From f22cb269fb59380b78f1849e8c8a027c5ac42e92 Mon Sep 17 00:00:00 2001
+From: itsmanjeet <itsmanjeet1998@gmail.com>
+Date: Sat, 9 Oct 2021 16:06:44 +0530
+Subject: [PATCH] fixed typo in glib-schemas binary
+
+---
+ libpkgupd/triggerer.cc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/libpkgupd/triggerer.cc b/libpkgupd/triggerer.cc
+index a609cf7..cf2c9dc 100644
+--- a/libpkgupd/triggerer.cc
++++ b/libpkgupd/triggerer.cc
+@@ -46,7 +46,7 @@ bool triggerer::_exec(type t) {
+             break;
+ 
+         case type::GLIB_SCHEMAS:
+-            cmd = "glib-compile-scheams /usr/share/glib-2.0/schemas";
++            cmd = "glib-compile-schemas /usr/share/glib-2.0/schemas";
+             break;
+ 
+         case type::GIO_MODULES:
+-- 
+2.33.0
+

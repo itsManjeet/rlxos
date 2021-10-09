@@ -5,6 +5,10 @@ about: |
 sources:
   - fluent-gtk-theme-2021-07-30.tar.gz::https://github.com/vinceliuice/Fluent-gtk-theme/archive/refs/heads/master.tar.gz
 
+depends:
+  runtime:
+    - librsvg
+
 packages:
   - id: pkg
     dir: Fluent-gtk-theme-master

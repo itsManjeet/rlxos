@@ -1,0 +1,40 @@
+From 137792ea9a28f453693151ad758f74692ef6337d Mon Sep 17 00:00:00 2001
+From: itsmanjeet <itsmanjeet1998@gmail.com>
+Date: Sat, 9 Oct 2021 16:11:40 +0530
+Subject: [PATCH] fixed exceptions on triggers
+
+---
+ libpkgupd/triggerer.cc | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/libpkgupd/triggerer.cc b/libpkgupd/triggerer.cc
+index cf2c9dc..2bb9ef3 100644
+--- a/libpkgupd/triggerer.cc
++++ b/libpkgupd/triggerer.cc
+@@ -26,7 +26,7 @@ bool triggerer::_exec(type t) {
+ 
+     switch (t) {
+         case type::MIME:
+-            cmd = "update-mime-database + /usr/share/mime";
++            cmd = "update-mime-database /usr/share/mime";
+             break;
+ 
+         case type::DESKTOP:
+@@ -265,8 +265,12 @@ bool triggerer::trigger() {
+              type::FONTS_CACHE,
+          }) {
+         PROCESS(_mesg(i));
+-        if (!_exec(i)) {
+-            ERROR(_error);
++        try {
++            if (!_exec(i)) {
++                ERROR(_error);
++            }
++        } catch (std::exception &e) {
++            ERROR(e.what());
+         }
+     }
+ 
+-- 
+2.33.0
+

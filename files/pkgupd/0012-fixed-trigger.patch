@@ -1,0 +1,86 @@
+From 2e45b79f2fb721847ea81e1843f78e6b5d9e56b5 Mon Sep 17 00:00:00 2001
+From: itsmanjeet <itsmanjeet1998@gmail.com>
+Date: Sat, 9 Oct 2021 15:51:11 +0530
+Subject: [PATCH] fixed trigger
+
+---
+ libpkgupd/triggerer.cc | 25 +++++++++++++++++++++++++
+ libpkgupd/triggerer.hh |  2 ++
+ pkgupd/PKGUPD.cc       |  8 +-------
+ 3 files changed, 28 insertions(+), 7 deletions(-)
+
+diff --git a/libpkgupd/triggerer.cc b/libpkgupd/triggerer.cc
+index 1c684ac..a1c0fb2 100644
+--- a/libpkgupd/triggerer.cc
++++ b/libpkgupd/triggerer.cc
+@@ -249,4 +249,29 @@ bool triggerer::trigger(std::vector<std::vector<std::string>> const &fileslist)
+     }
+     return status;
+ }
++
++bool triggerer::trigger() {
++    for (auto i : {
++             type::INVALID,
++             type::MIME,
++             type::DESKTOP,
++             type::FONTS_SCALE,
++             type::HARDWARE,
++             type::UDEV,
++             type::ICONS,
++             type::GTK3_INPUT_MODULES,
++             type::GTK2_INPUT_MODULES,
++             type::GLIB_SCHEMAS,
++             type::GIO_MODULES,
++             type::GDK_PIXBUF,
++             type::FONTS_CACHE,
++         }) {
++        PROCESS(_mesg(i));
++        if (!_exec(i)) {
++            ERROR(_error);
++        }
++    }
++
++    return true;
++}
+ }  // namespace rlxos::libpkgupd
+\ No newline at end of file
+diff --git a/libpkgupd/triggerer.hh b/libpkgupd/triggerer.hh
+index 97771dc..5913388 100644
+--- a/libpkgupd/triggerer.hh
++++ b/libpkgupd/triggerer.hh
+@@ -39,6 +39,8 @@ class triggerer : public object {
+     bool trigger(std::vector<std::vector<std::string>> const &fileslist);
+ 
+     bool trigger(std::vector<std::shared_ptr<pkginfo>> const &pkgs);
++
++    bool trigger();
+ };
+ }  // namespace rlxos::libpkgupd
+ 
+diff --git a/pkgupd/PKGUPD.cc b/pkgupd/PKGUPD.cc
+index 05b94e2..fb4e156 100644
+--- a/pkgupd/PKGUPD.cc
++++ b/pkgupd/PKGUPD.cc
+@@ -382,18 +382,12 @@ int PKGUPD::exec(int ac, char **av) {
+                 return 2;
+             }
+ 
+-            std::vector<std::vector<std::string>> files;
+             auto triggerer_ = triggerer();
+ 
+-            for (auto const &i : pkgs) {
+-                std::shared_ptr<sysdb::package> pkg = std::dynamic_pointer_cast<sysdb::package>(i);
+-                files.push_back(pkg->files());
+-            }
+-
+             int status = 0;
+ 
+             PROCESS("executing triggers");
+-            if (!triggerer_.trigger(files)) {
++            if (!triggerer_.trigger()) {
+                 ERROR(triggerer_.error());
+                 status = 2;
+             }
+-- 
+2.33.0
+

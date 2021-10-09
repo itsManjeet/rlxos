@@ -3,7 +3,7 @@ version: 1.30.0
 about: |
   A lightweight display manager based upon GTK
 
-split: false
+split: true
 
 depends:
   runtime:
@@ -20,7 +20,6 @@ depends:
 sources:
   - https://github.com/CanonicalLtd/lightdm/releases/download/1.30.0/lightdm-1.30.0.tar.xz
   - https://github.com/Xubuntu/lightdm-gtk-greeter/releases/download/lightdm-gtk-greeter-2.0.8/lightdm-gtk-greeter-2.0.8.tar.gz
-  - https://github.com/Xubuntu/lightdm-gtk-greeter-settings/releases/download/lightdm-gtk-greeter-settings-1.2.2/lightdm-gtk-greeter-settings-1.2.2.tar.gz
 
 groups:
   - id: 65
@@ -51,7 +50,7 @@ packages:
           --with-greeter-session=lightdm-gtk-greeter
     
     postscript: |
-      install -v -D -m 755 ${pkgupd_srcdir}/tests/src/lightdm-session -t ${pkgupd_pkgdir}/usr/bin/
+      install -v -D -m 755 tests/src/lightdm-session -t ${pkgupd_pkgdir}/usr/bin/
       sed -i "1 s/sh/bash --login/" ${pkgupd_pkgdir}/usr/bin/lightdm-session
       rm -rf ${pkgupd_pkgdir}/etc/init
       install -v -d -m 755 -o 65 -g 65 ${pkgupd_pkgdir}/var/lib/lightdm
@@ -60,25 +59,3 @@ packages:
       install -v -d -m 755 -o 65 -g 65 ${pkgupd_pkgdir}/var/log/lightdm
 
       install -v -D -m 644 ${FILES}/lightdm/lightdm.service -t ${pkgupd_pkgdir}/usr/lib/systemd/system
-
-  - id: greeter
-    dir: lightdm-gtk-greeter-2.0.8
-
-    flags:
-      - id: configure
-        value: >
-          --libexecdir=/usr/lib/lightdm
-          --with-libxklavier
-          --enable-kill-on-sigterm
-          --disable-libido
-          --disable-libindicator
-          --disable-static
-          --disable-maintainer-mode
-
-  - id: greeter-setting
-    dir: lightdm-gtk-greeter-settings-1.2.2
-    plugin: script
-
-    script: |
-      python3 setup.py build
-      python3 setup.py install --root=${pkgupd_pkgdir} --optimize=1 --xfce-integration

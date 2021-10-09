@@ -13,6 +13,6 @@ sources:
 packages:
   - id: pkg
     dir: desktop-file-utils-0.26
-    
-    postscript: |
-      install -v -D -m 644 ${FILES}/triggers/desktop.yml -t ${pkgupd_pkgdir}/usr/share/pkgupd/triggers/
+    flags:
+      - id: configurator
+        value: meson.build

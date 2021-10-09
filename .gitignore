@@ -2,3 +2,5 @@
 /pkgs
 /Dockerfile
 /src
+/tmp
+/disk.qcow2

@@ -5,6 +5,10 @@ about: |
 
 strip: false
 
+depends:
+  runtime:
+    - librsvg
+
 sources:
   - fluent-icon-theme-2021-08-15.tar.gz::https://github.com/vinceliuice/Fluent-icon-theme/archive/refs/tags/2021-08-15.tar.gz
 

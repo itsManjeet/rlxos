@@ -5,10 +5,11 @@ about: |
 
 depends:
   runtime:
+    - pcre2
     - glib
     - libxml2
     - gdk-pixbuf
-    
+  
   buildtime:
     - gobject-introspection
 

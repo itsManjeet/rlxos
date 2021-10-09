@@ -10,6 +10,8 @@ depends:
     - pam
     - systemd
     - intltool
+  buildtime:
+    - docbook-xsl
 
 groups:
   - id: 27
@@ -20,7 +22,7 @@ users:
     name: polkitd
     about: PolicyKit Daemon Owner
     dir: /etc/polkit-1
-    group: 27
+    group: polkitd
     shell: /bin/false
 
 sources:

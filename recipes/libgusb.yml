@@ -8,6 +8,7 @@ depends:
     - libusb
   buildtime:
     - vala
+    - py-setuptools
 
 sources:
   - https://github.com/hughsie/libgusb/archive/0.3.7/libgusb-0.3.7.tar.gz

@@ -3,10 +3,6 @@ version: 1.0.6
 about: |
   Package contains the redglass and whiteglass animated cursor themes
 
-depends:
-  runtime:
-    - xcursorgen
-
 sources:
   - https://www.x.org/pub/individual/data/xcursor-themes-1.0.6.tar.bz2
 

@@ -27,14 +27,3 @@ packages:
         
       install -vdm755 ${pkgupd_pkgdir}/usr
       cp -a "${pkgupd_pkgdir}"/include "${pkgupd_pkgdir}"/usr
-
-      mkdir -p ${pkgupd_pkgdir}/../lib/usr/
-      mv ${pkgupd_pkgdir}/lib ${pkgupd_pkgdir}/../lib/usr/
-
-      mkdir -p ${pkgupd_pkgdir}/usr/lib/
-      mv ${pkgupd_pkgdir}/../lib/usr/lib/*.a ${pkgupd_pkgdir}/usr/lib/
-      mv ${pkgupd_pkgdir}/../lib/usr/lib/cmake ${pkgupd_pkgdir}/usr/lib/
-
-  - id: lib
-    dir: .
-    plugin: skip

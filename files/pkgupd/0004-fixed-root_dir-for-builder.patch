@@ -1,0 +1,24 @@
+From fd59f7a6f0d07d69b96800e45fb1def9665392f0 Mon Sep 17 00:00:00 2001
+From: itsmanjeet <itsmanjeet1998@gmail.com>
+Date: Tue, 5 Oct 2021 16:02:52 +0530
+Subject: [PATCH] fixed root_dir for builder
+
+---
+ libpkgupd/builder.hh | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/libpkgupd/builder.hh b/libpkgupd/builder.hh
+index 11140ad..74c7b64 100644
+--- a/libpkgupd/builder.hh
++++ b/libpkgupd/builder.hh
+@@ -37,6 +37,7 @@ class builder : public object {
+         : _work_dir{wdir},
+           _pkgs_dir{pdir},
+           _src_dir{sdir},
++          _root_dir{root_dir},
+           _force{force},
+           _skip_triggers{triggers},
+           _installer{_installer} {}
+-- 
+2.30.2
+

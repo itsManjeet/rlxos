@@ -12,7 +12,7 @@ depends:
     - libsoup
     - gcr
     - gtk
-    - libcdio
+    - libcdio-paranoia
     - libgudev
     - systemd
     - udisks

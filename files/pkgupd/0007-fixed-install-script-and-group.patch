@@ -1,0 +1,55 @@
+From 7f77489b1e3ee70e62cfe0876959fd95afcb254f Mon Sep 17 00:00:00 2001
+From: itsmanjeet <itsmanjeet1998@gmail.com>
+Date: Tue, 5 Oct 2021 23:13:32 +0530
+Subject: [PATCH] fixed install script and group
+
+---
+ libpkgupd/pkginfo.hh | 1 +
+ libpkgupd/recipe.hh  | 7 +++----
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/libpkgupd/pkginfo.hh b/libpkgupd/pkginfo.hh
+index 4be6546..ea61a44 100644
+--- a/libpkgupd/pkginfo.hh
++++ b/libpkgupd/pkginfo.hh
+@@ -56,6 +56,7 @@ class pkginfo {
+             os << " - id: " << _id << "\n"
+                << "   name: " << _name << "\n"
+                << "   about: " << _about << "\n"
++               << "   group: " << _group << "\n"
+                << "   dir: " << _dir << "\n"
+                << "   shell: " << _shell << std::endl;
+         }
+diff --git a/libpkgupd/recipe.hh b/libpkgupd/recipe.hh
+index e87e611..6576570 100644
+--- a/libpkgupd/recipe.hh
++++ b/libpkgupd/recipe.hh
+@@ -46,7 +46,6 @@ class recipe : public std::enable_shared_from_this<recipe> {
+ 
+         std::string _script;
+         std::string _prescript, _postscript;
+-        std::string _install_script;
+ 
+         std::vector<std::shared_ptr<flag>> _flags;
+ 
+@@ -68,14 +67,14 @@ class recipe : public std::enable_shared_from_this<recipe> {
+         std::vector<std::string> sources() const;
+ 
+         std::vector<std::shared_ptr<pkginfo::user>> users() const { return _parent->_users; }
+-        
++
+         std::vector<std::shared_ptr<pkginfo::group>> groups() const { return _parent->_groups; }
+ 
+         GET_METHOD(std::string, script);
++
+         GET_METHOD(std::string, prescript);
+-        GET_METHOD(std::string, postscript);
+ 
+-        GET_METHOD(std::string, install_script);
++        GET_METHOD(std::string, postscript);
+ 
+         GET_METHOD(std::vector<std::shared_ptr<flag>>, flags);
+ 
+-- 
+2.30.2
+

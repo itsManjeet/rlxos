@@ -1,0 +1,15 @@
+id: xfdesktop
+version: 4.16.0
+about: Xfce desktop manager
+depends:
+  runtime:
+    - exo
+    - libwnck
+    - libnotify
+    - startup-notification
+    - thunar
+sources:
+  - https://archive.xfce.org/src/xfce/xfdesktop/4.16/xfdesktop-4.16.0.tar.bz2
+packages:
+  - id: pkg
+    dir: xfdesktop-4.16.0

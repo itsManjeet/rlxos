@@ -1,0 +1,13 @@
+id: xfwm4
+version: 4.16.1
+about: xfce window manager
+depends:
+  runtime:
+    - libwnck
+    - libxfce4ui
+    - startup-notification
+sources:
+  - https://archive.xfce.org/src/xfce/xfwm4/4.16/xfwm4-4.16.1.tar.bz2
+packages:
+  - id: pkg
+    dir: xfwm4-4.16.1

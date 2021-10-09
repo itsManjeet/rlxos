@@ -1,14 +1,14 @@
 id: libexif
-version: 0.6.22
+version: 0.6.23
 about: |
   A library for parsing, editing, and saving EXIF data
 
 sources:
-  - https://github.com/libexif/libexif/releases/download/libexif-0_6_22-release/libexif-0.6.22.tar.xz
-  - https://www.linuxfromscratch.org/patches/blfs/svn/libexif-0.6.22-security_fixes-1.patch
+  - https://github.com/libexif/libexif/releases/download/v0.6.23/libexif-0.6.23.tar.xz
 
 packages:
   - id: pkg
-    dir: libexif-0.6.22
-    prescript: |
-      patch -Np1 -i ../libexif-0.6.22-security_fixes-1.patch
+    dir: libexif-0.6.23
+    flags:
+      - id: configure
+        value: --disable-static

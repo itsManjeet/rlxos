@@ -3,8 +3,7 @@ version: 7
 about: |
   Xorg drivers
 
-split: false
-clean: true
+split: true
 
 depends:
   runtime:
@@ -23,6 +22,24 @@ kernel:
   - CONFIG_DRM_RADEON:M
 
 packages:
+  - id: pkg
+    dir: .
+    depends:
+      runtime:
+        - xorg-drivers-evdev
+        - xorg-drivers-input
+        - xorg-drivers-synaptics
+        - xorg-drivers-wacom
+        - xorg-drivers-amdgpu
+        - xorg-drivers-ati
+        - xorg-drivers-fbdev
+        - xorg-drivers-intel
+        - xorg-drivers-nouveau
+        - xorg-drivers-vmware
+    script: |
+      install -v -d -m 0755 ${pkgupd_pkgdir}/usr/share/xorg-drivers
+      echo "7" ${pkgupd_pkgdir}/usr/share/xorg-drivers/version
+
   - id: evdev
     dir: xf86-input-evdev-2.10.6
     sources:
@@ -61,18 +78,20 @@ packages:
   
     prescript: |
       sed -e "s/miPointer/extern &/" -i src/drmmode_display.h
-
   - id: fbdev
     dir: xf86-video-fbdev-0.5.0
     sources:
-      - 
+      - https://www.x.org/pub/individual/driver/xf86-video-fbdev-0.5.0.tar.bz2
   
   - id: intel
     dir: xf86-video-intel-20210222
     sources:
       - https://anduin.linuxfromscratch.org/BLFS/xf86-video-intel/xf86-video-intel-20210222.tar.xz
-    
+
+    prescript: ln -sv autogen.sh configure
     flags:
+      - id: configurator
+        value: configure
       - id: configure
         value: >
           --enable-kms-only
@@ -88,6 +107,3 @@ packages:
     dir: xf86-video-vmware-13.3.0
     sources:
       - https://www.x.org/pub/individual/driver/xf86-video-vmware-13.3.0.tar.bz2
-
-    
-    

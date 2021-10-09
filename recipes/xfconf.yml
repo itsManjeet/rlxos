@@ -1,0 +1,13 @@
+id: xfconf
+version: 4.16.0
+about: Xfce configuration storage system
+depends:
+  runtime:
+    - libxfce4util
+  buildtime:
+    - vala
+sources:
+  - https://archive.xfce.org/src/xfce/xfconf/4.16/xfconf-4.16.0.tar.bz2
+packages:
+  - id: pkg
+    dir: xfconf-4.16.0

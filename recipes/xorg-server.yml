@@ -17,18 +17,19 @@ depends:
     - libxfont2
     - libxshmfence
     - nettle
+    - xorg-libs
     - libpciaccess
 
   buildtime:
-    - libx11
-    - libxaw
-    - libxi
-    - libxkbfile
-    - libxmu
-    - libxrender
-    - libxres
-    - libxtst
-    - libxv
+    #    - libx11
+      #i    - libxaw
+#    - libxi
+      #    - libxkbfile
+      #    - libxmu
+      #    - libxrender
+      #    - libxres
+      #    - libxtst
+       #    - libxv
     - mesa
     - meson
 

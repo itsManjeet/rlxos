@@ -11,6 +11,7 @@ depends:
     - readline
     - gcc
     - shadow
+    - pam-config
     - bash
     - grep
     - sed

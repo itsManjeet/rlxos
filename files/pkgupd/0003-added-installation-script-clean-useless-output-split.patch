@@ -1,0 +1,221 @@
+From 41d9a34add54c5843d7a54a670d56959c065203c Mon Sep 17 00:00:00 2001
+From: itsmanjeet <itsmanjeet1998@gmail.com>
+Date: Tue, 5 Oct 2021 14:13:02 +0530
+Subject: [PATCH 3/3] added installation script, clean useless output, split
+ packages
+
+---
+ libpkgupd/archive.hh   |  4 ++++
+ libpkgupd/builder.cc   |  9 ++++++++-
+ libpkgupd/builder.hh   | 18 ++++++++++++++----
+ libpkgupd/installer.cc | 12 ++++++++++++
+ libpkgupd/recipe.cc    |  5 +++--
+ libpkgupd/recipe.hh    |  7 ++++++-
+ pkgupd/PKGUPD.cc       |  8 +++++++-
+ 7 files changed, 54 insertions(+), 9 deletions(-)
+
+diff --git a/libpkgupd/archive.hh b/libpkgupd/archive.hh
+index fcde145..2b60850 100644
+--- a/libpkgupd/archive.hh
++++ b/libpkgupd/archive.hh
+@@ -18,6 +18,8 @@ class archive : public object {
+         std::string _id, _version,
+             _about;
+ 
++        std::string _script;
++
+         std::vector<std::string> _depends;
+ 
+        public:
+@@ -27,6 +29,8 @@ class archive : public object {
+         std::string version() const { return _version; }
+         std::string about() const { return _about; }
+         std::vector<std::string> depends(bool) const { return _depends; }
++
++        std::string const &script() const { return _script; }
+     };
+ 
+    private:
+diff --git a/libpkgupd/builder.cc b/libpkgupd/builder.cc
+index de2330f..85f2876 100644
+--- a/libpkgupd/builder.cc
++++ b/libpkgupd/builder.cc
+@@ -168,7 +168,14 @@ bool builder::_build(std::shared_ptr<recipe::package> package) {
+ 
+         INFO("Package generated at " + pkgfile)
+ 
+-        _archive_list.push_back(pkgfile);
++        if (package->parent()->split()) {
++            if (!_installer.install({pkgfile}, _root_dir, _skip_triggers, _force)) {
++                _error = _installer.error();
++                return false;
++            }
++        } else {
++            _archive_list.push_back(pkgfile);
++        }
+     }
+ 
+     return true;
+diff --git a/libpkgupd/builder.hh b/libpkgupd/builder.hh
+index 3d9ac24..11140ad 100644
+--- a/libpkgupd/builder.hh
++++ b/libpkgupd/builder.hh
+@@ -1,6 +1,7 @@
+ #ifndef _LIBPKGUPD_BUILDER_HH_
+ #define _LIBPKGUPD_BUILDER_HH_
+ 
++#include "installer.hh"
+ #include "recipe.hh"
+ 
+ namespace rlxos::libpkgupd {
+@@ -9,11 +10,15 @@ class builder : public object {
+     std::vector<std::shared_ptr<recipe::package>> _packages;
+     std::vector<std::string> _archive_list;
+ 
++    installer &_installer;
++
+     std::string _work_dir,
+         _pkgs_dir,
+-        _src_dir;
++        _src_dir,
++        _root_dir;
+ 
+-    bool _force = false;
++    bool _force;
++    bool _skip_triggers;
+ 
+     bool _prepare(std::vector<std::string> const &sources, std::string const &srcdir);
+ 
+@@ -25,11 +30,16 @@ class builder : public object {
+     builder(std::string const &wdir,
+             std::string const &pdir,
+             std::string const &sdir,
+-            bool force)
++            std::string const &root_dir,
++            installer &_installer,
++            bool force = false,
++            bool triggers = false)
+         : _work_dir{wdir},
+           _pkgs_dir{pdir},
+           _src_dir{sdir},
+-          _force{force} {}
++          _force{force},
++          _skip_triggers{triggers},
++          _installer{_installer} {}
+ 
+     ~builder() {
+         std::filesystem::remove_all(_work_dir);
+diff --git a/libpkgupd/installer.cc b/libpkgupd/installer.cc
+index 2f72645..0c2c201 100644
+--- a/libpkgupd/installer.cc
++++ b/libpkgupd/installer.cc
+@@ -4,6 +4,7 @@
+ #include <iostream>
+ 
+ #include "archive.hh"
++#include "exec.hh"
+ #include "triggerer.hh"
+ 
+ namespace rlxos::libpkgupd {
+@@ -53,6 +54,17 @@ bool installer::_install(std::vector<std::string> const &pkgs,
+             _error = _sysdb.error();
+             return false;
+         }
++
++        if (!skip_triggers) {
++            std::string script_ = std::dynamic_pointer_cast<archive::package>(pkginfo_list[i])->script();
++            PROCESS("executing install script");
++            if (script_.size()) {
++                if (int status = exec().execute(script_); status != 0) {
++                    _error = "install script failed to exit code: " + std::to_string(status);
++                    return false;
++                }
++            }
++        }
+     }
+ 
+     if (skip_triggers) {
+diff --git a/libpkgupd/recipe.cc b/libpkgupd/recipe.cc
+index a863fdc..ebf1875 100644
+--- a/libpkgupd/recipe.cc
++++ b/libpkgupd/recipe.cc
+@@ -25,6 +25,8 @@ recipe::recipe(YAML::Node const &data, std::string const &file) {
+     READ_OBJECT_LIST(user, users);
+     READ_OBJECT_LIST(group, groups);
+ 
++    OPTIONAL_VALUE(bool, split, false);
++
+     READ_OBJECT_LIST(package, packages);
+ }
+ 
+@@ -37,8 +39,7 @@ recipe::package::package(YAML::Node const &data, std::string const &file) {
+     OPTIONAL_VALUE(string, prescript, "");
+     OPTIONAL_VALUE(string, postscript, "");
+     OPTIONAL_VALUE(string, script, "");
+-    OPTIONAL_VALUE(string, preinstall, "");
+-    OPTIONAL_VALUE(string, postscript, "");
++    OPTIONAL_VALUE(string, install_script, "");
+ 
+     OPTIONAL_VALUE(string, pack, "rlx");
+ 
+diff --git a/libpkgupd/recipe.hh b/libpkgupd/recipe.hh
+index aefaec5..d461fee 100644
+--- a/libpkgupd/recipe.hh
++++ b/libpkgupd/recipe.hh
+@@ -91,7 +91,7 @@ class recipe : public std::enable_shared_from_this<recipe> {
+ 
+         std::string _script;
+         std::string _prescript, _postscript;
+-        std::string _preinstall, _postinstall;
++        std::string _install_script;
+ 
+         std::vector<std::shared_ptr<flag>> _flags;
+ 
+@@ -116,6 +116,8 @@ class recipe : public std::enable_shared_from_this<recipe> {
+         GET_METHOD(std::string, prescript);
+         GET_METHOD(std::string, postscript);
+ 
++        GET_METHOD(std::string, install_script);
++
+         GET_METHOD(std::vector<std::shared_ptr<flag>>, flags);
+ 
+         GET_METHOD(std::string, pack);
+@@ -154,6 +156,8 @@ class recipe : public std::enable_shared_from_this<recipe> {
+ 
+     std::vector<std::shared_ptr<package>> _packages;
+ 
++    bool _split = false;
++
+    public:
+     recipe(YAML::Node const &node, std::string const &file);
+ 
+@@ -177,6 +181,7 @@ class recipe : public std::enable_shared_from_this<recipe> {
+ 
+     GET_METHOD(std::vector<std::shared_ptr<package>>, packages);
+     GET_METHOD(std::string, id);
++    GET_METHOD(bool, split);
+ 
+     friend class recipe::package;
+ };
+diff --git a/pkgupd/PKGUPD.cc b/pkgupd/PKGUPD.cc
+index 516d5bd..e20d1ca 100644
+--- a/pkgupd/PKGUPD.cc
++++ b/pkgupd/PKGUPD.cc
+@@ -211,7 +211,13 @@ int PKGUPD::exec(int ac, char **av) {
+ 
+                 recipe_ = std::dynamic_pointer_cast<recipe::package>(pkg)->parent();
+             }
+-            auto builder_ = builder(_get_value("work-dir", "/tmp"), _get_value(PKG_DIR, DEFAULT_PKGS_DIR), _get_value(SRC_DIR, DEFAULT_SRC_DIR), _is_flag(flag::FORCE));
++            auto builder_ = builder(_get_value("work-dir", "/tmp"),
++                                    _get_value(PKG_DIR, DEFAULT_PKGS_DIR),
++                                    _get_value(SRC_DIR, DEFAULT_SRC_DIR),
++                                    _get_value(ROOT_DIR, "/"),
++                                    installer_,
++                                    _is_flag(flag::FORCE),
++                                    _is_flag(flag::SKIP_TRIGGER));
+ 
+             if (!builder_.build(recipe_)) {
+                 ERROR(builder_.error());
+-- 
+2.30.2
+

@@ -34,5 +34,5 @@ packages:
         value: DESTDIR=${pkgupd_pkgdir}
 
     postscript: |
-      install -v -D -m 755 ${pkgupd_srcdir}/contrib/ssh-copy-id -t ${pkgupd_pkgdir}/usr/bin
+      install -v -D -m 755 contrib/ssh-copy-id -t ${pkgupd_pkgdir}/usr/bin
       

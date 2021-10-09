@@ -9,6 +9,7 @@ depends:
     - xauth
     - xmodmap
     - xrdb
+    - xorg-server
   buildtime:
     - util-macros
 

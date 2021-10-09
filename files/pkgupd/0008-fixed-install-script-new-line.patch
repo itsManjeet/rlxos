@@ -1,0 +1,39 @@
+From e56cfac63e857b6c19021e1844e0154b5ef95cd7 Mon Sep 17 00:00:00 2001
+From: itsmanjeet <itsmanjeet1998@gmail.com>
+Date: Tue, 5 Oct 2021 23:17:43 +0530
+Subject: [PATCH] fixed install script new line
+
+---
+ libpkgupd/archive.cc | 2 +-
+ libpkgupd/sysdb.cc   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/libpkgupd/archive.cc b/libpkgupd/archive.cc
+index 5f550fa..3f59681 100644
+--- a/libpkgupd/archive.cc
++++ b/libpkgupd/archive.cc
+@@ -114,7 +114,7 @@ bool archive::compress(std::string const &srcdir, std::shared_ptr<pkginfo> const
+         std::stringstream ss(info->install_script());
+         std::string line;
+         while (std::getline(ss, line, '\n'))
+-            fileptr << "  " << line;
++            fileptr << "  " << line << std::endl;
+     }
+ 
+     fileptr.close();
+diff --git a/libpkgupd/sysdb.cc b/libpkgupd/sysdb.cc
+index d608497..f2214b7 100644
+--- a/libpkgupd/sysdb.cc
++++ b/libpkgupd/sysdb.cc
+@@ -130,7 +130,7 @@ bool sysdb::add(std::shared_ptr<pkginfo> const &pkginfo, std::vector<std::string
+         std::stringstream ss(pkginfo->install_script());
+         std::string line;
+         while (std::getline(ss, line, '\n'))
+-            fileptr << "  " << line;
++            fileptr << "  " << line << std::endl;
+     }
+ 
+     std::time_t t = std::time(0);
+-- 
+2.30.2
+

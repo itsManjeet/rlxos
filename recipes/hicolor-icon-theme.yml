@@ -9,3 +9,6 @@ sources:
 packages:
   - id: pkg
     dir: hicolor-icon-theme-0.17
+    flags:
+      - id: configurator
+        value: configure

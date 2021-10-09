@@ -1,0 +1,34 @@
+From b2388c89068acb2edddec9df4778989bba1c11c0 Mon Sep 17 00:00:00 2001
+From: itsmanjeet <itsmanjeet1998@gmail.com>
+Date: Sat, 9 Oct 2021 16:19:28 +0530
+Subject: [PATCH] fixed xfont-scale trigger exception
+
+---
+ libpkgupd/triggerer.cc | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/libpkgupd/triggerer.cc b/libpkgupd/triggerer.cc
+index 2bb9ef3..2f4500c 100644
+--- a/libpkgupd/triggerer.cc
++++ b/libpkgupd/triggerer.cc
+@@ -64,12 +64,13 @@ bool triggerer::_exec(type t) {
+         case type::FONTS_SCALE: {
+             bool status = true;
+             for (auto const &i : std::filesystem::directory_iterator("/usr/share/fonts")) {
+-                std::filesystem::remove(i.path() / "fonts.scale");
+-                std::filesystem::remove(i.path() / "fonts.dir");
+-                std::filesystem::remove(i.path() / ".uuid");
++                std::error_code ee;
++                std::filesystem::remove(i.path() / "fonts.scale", ee);
++                std::filesystem::remove(i.path() / "fonts.dir", ee);
++                std::filesystem::remove(i.path() / ".uuid", ee);
+ 
+                 if (std::filesystem::is_empty(i.path()))
+-                    std::filesystem::remove(i.path());
++                    std::filesystem::remove(i.path(), ee);
+ 
+                 if (int status = exec().execute("mkfontdir " + i.path().string()); status != 0) {
+                     _error += "mkfontdir failed with exit code: " + std::to_string(status);
+-- 
+2.33.0
+

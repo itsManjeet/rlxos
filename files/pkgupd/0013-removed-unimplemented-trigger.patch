@@ -1,0 +1,28 @@
+From ba694701d602b289ad59f2310fb002a8f18fb5e7 Mon Sep 17 00:00:00 2001
+From: itsmanjeet <itsmanjeet1998@gmail.com>
+Date: Sat, 9 Oct 2021 16:00:27 +0530
+Subject: [PATCH] removed unimplemented trigger
+
+---
+ libpkgupd/triggerer.cc | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/libpkgupd/triggerer.cc b/libpkgupd/triggerer.cc
+index a1c0fb2..a609cf7 100644
+--- a/libpkgupd/triggerer.cc
++++ b/libpkgupd/triggerer.cc
+@@ -252,11 +252,9 @@ bool triggerer::trigger(std::vector<std::vector<std::string>> const &fileslist)
+ 
+ bool triggerer::trigger() {
+     for (auto i : {
+-             type::INVALID,
+              type::MIME,
+              type::DESKTOP,
+              type::FONTS_SCALE,
+-             type::HARDWARE,
+              type::UDEV,
+              type::ICONS,
+              type::GTK3_INPUT_MODULES,
+-- 
+2.33.0
+

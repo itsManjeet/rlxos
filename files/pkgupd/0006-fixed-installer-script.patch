@@ -1,0 +1,140 @@
+From 5297deed87d09671efde8c9a756d803bbf8c132e Mon Sep 17 00:00:00 2001
+From: itsmanjeet <itsmanjeet1998@gmail.com>
+Date: Tue, 5 Oct 2021 23:02:56 +0530
+Subject: [PATCH] fixed installer script
+
+---
+ libpkgupd/archive.cc   | 10 ++++++++++
+ libpkgupd/archive.hh   |  2 --
+ libpkgupd/installer.cc |  7 +++----
+ libpkgupd/pkginfo.hh   |  3 +++
+ libpkgupd/recipe.hh    |  4 ++++
+ libpkgupd/sysdb.cc     | 10 ++++++++++
+ 6 files changed, 30 insertions(+), 6 deletions(-)
+
+diff --git a/libpkgupd/archive.cc b/libpkgupd/archive.cc
+index 5f24901..5f550fa 100644
+--- a/libpkgupd/archive.cc
++++ b/libpkgupd/archive.cc
+@@ -14,6 +14,8 @@ archive::package::package(YAML::Node const &data, std::string const &file) {
+ 
+     READ_OBJECT_LIST(pkginfo::user, users);
+     READ_OBJECT_LIST(pkginfo::group, groups);
++
++    OPTIONAL_VALUE(std::string, install_script, "");
+ }
+ 
+ std::tuple<int, std::string> archive::getdata(std::string const &filepath) {
+@@ -107,6 +109,14 @@ bool archive::compress(std::string const &srcdir, std::shared_ptr<pkginfo> const
+         }
+     }
+ 
++    if (info->install_script().size()) {
++        fileptr << "install_script: | " << std::endl;
++        std::stringstream ss(info->install_script());
++        std::string line;
++        while (std::getline(ss, line, '\n'))
++            fileptr << "  " << line;
++    }
++
+     fileptr.close();
+ 
+     std::string command = _archive_tool;
+diff --git a/libpkgupd/archive.hh b/libpkgupd/archive.hh
+index 2b60850..1422917 100644
+--- a/libpkgupd/archive.hh
++++ b/libpkgupd/archive.hh
+@@ -29,8 +29,6 @@ class archive : public object {
+         std::string version() const { return _version; }
+         std::string about() const { return _about; }
+         std::vector<std::string> depends(bool) const { return _depends; }
+-
+-        std::string const &script() const { return _script; }
+     };
+ 
+    private:
+diff --git a/libpkgupd/installer.cc b/libpkgupd/installer.cc
+index 30e2357..06316de 100644
+--- a/libpkgupd/installer.cc
++++ b/libpkgupd/installer.cc
+@@ -56,10 +56,9 @@ bool installer::_install(std::vector<std::string> const &pkgs,
+         }
+ 
+         if (!skip_triggers) {
+-            std::string script_ = std::dynamic_pointer_cast<archive::package>(pkginfo_list[i])->script();
+-            PROCESS("executing install script");
+-            if (script_.size()) {
+-                if (int status = exec().execute(script_); status != 0) {
++            if (pkginfo_list[i]->install_script().size()) {
++                PROCESS("executing install script");
++                if (int status = exec().execute(pkginfo_list[i]->install_script()); status != 0) {
+                     _error = "install script failed to exit code: " + std::to_string(status);
+                     return false;
+                 }
+diff --git a/libpkgupd/pkginfo.hh b/libpkgupd/pkginfo.hh
+index a1f1764..4be6546 100644
+--- a/libpkgupd/pkginfo.hh
++++ b/libpkgupd/pkginfo.hh
+@@ -96,6 +96,7 @@ class pkginfo {
+    protected:
+     std::vector<std::shared_ptr<pkginfo::user>> _users;
+     std::vector<std::shared_ptr<pkginfo::group>> _groups;
++    std::string _install_script;
+ 
+    public:
+     virtual std::string id() const = 0;
+@@ -110,6 +111,8 @@ class pkginfo {
+     }
+ 
+     virtual std::vector<std::string> depends(bool) const = 0;
++
++    std::string const &install_script() const { return _install_script; };
+ };
+ }  // namespace rlxos::libpkgupd
+ 
+diff --git a/libpkgupd/recipe.hh b/libpkgupd/recipe.hh
+index f18298a..e87e611 100644
+--- a/libpkgupd/recipe.hh
++++ b/libpkgupd/recipe.hh
+@@ -67,6 +67,10 @@ class recipe : public std::enable_shared_from_this<recipe> {
+ 
+         std::vector<std::string> sources() const;
+ 
++        std::vector<std::shared_ptr<pkginfo::user>> users() const { return _parent->_users; }
++        
++        std::vector<std::shared_ptr<pkginfo::group>> groups() const { return _parent->_groups; }
++
+         GET_METHOD(std::string, script);
+         GET_METHOD(std::string, prescript);
+         GET_METHOD(std::string, postscript);
+diff --git a/libpkgupd/sysdb.cc b/libpkgupd/sysdb.cc
+index 9343574..d608497 100644
+--- a/libpkgupd/sysdb.cc
++++ b/libpkgupd/sysdb.cc
+@@ -20,6 +20,8 @@ sysdb::package::package(YAML::Node const &data, std::string const &file) {
+ 
+     READ_OBJECT_LIST(pkginfo::user, users);
+     READ_OBJECT_LIST(pkginfo::group, groups);
++
++    OPTIONAL_VALUE(std::string, install_script, "");
+ }
+ 
+ std::shared_ptr<pkginfo> sysdb::operator[](std::string const &pkgid) {
+@@ -123,6 +125,14 @@ bool sysdb::add(std::shared_ptr<pkginfo> const &pkginfo, std::vector<std::string
+         }
+     }
+ 
++    if (pkginfo->install_script().size()) {
++        fileptr << "install_script: | " << std::endl;
++        std::stringstream ss(pkginfo->install_script());
++        std::string line;
++        while (std::getline(ss, line, '\n'))
++            fileptr << "  " << line;
++    }
++
+     std::time_t t = std::time(0);
+     std::tm *now = std::localtime(&t);
+ 
+-- 
+2.30.2
+

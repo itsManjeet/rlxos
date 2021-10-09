@@ -12,7 +12,7 @@ depends:
     - llvm
     - libdrm
     - libelf
-    - wayland
+    - wayland-protocols
     - libxml2
 
   buildtime:

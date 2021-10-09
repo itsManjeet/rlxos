@@ -1,0 +1,26 @@
+id: xfce4
+version: 4.16
+about: Xfce4 desktop environment
+depends:
+  runtime:
+    - libxfce4util
+    - exo
+    - garcon
+    - libxfce4ui
+    - xfce4-panel
+    - thunar
+    - thunar-volman
+    - xfce4-appfinder
+    - xfce4-power-manager
+    - xfce4-settings
+    - xfconf
+    - xfdesktop
+    - xfwm4
+    - xfce4-session
+
+packages:
+  - id: pkg
+    dir: .
+    script: |
+      install -v -d -m 0755 ${pkgupd_pkgdir}/usr/share/xfce4
+      echo "4.16" > ${pkgupd_pkgdir}/usr/share/xfce4/version

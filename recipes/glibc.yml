@@ -9,7 +9,7 @@ depends:
     - attr
     
   buildtime:
-    - linux:headers
+    - kernel-headers
 
 packages:
   - id: pkg

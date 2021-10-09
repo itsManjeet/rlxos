@@ -3,6 +3,8 @@ version: 2.06
 about: |
   GRand Unified Bootloader
 
+split: true
+
 depends:
   runtime:
     - gettext

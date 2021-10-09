@@ -1,0 +1,14 @@
+id: libxfce4util
+version: 4.16.0
+about: Xfce4 basic utility library
+sources:
+  - https://archive.xfce.org/src/xfce/libxfce4util/4.16/libxfce4util-4.16.0.tar.bz2
+depends:
+  runtime:
+    - glib
+  buildtime:
+    - gobject-introspection
+    - vala
+packages:
+  - id: pkg
+    dir: libxfce4util-4.16.0

@@ -3,10 +3,6 @@ version: 4.16
 about: Xfce4 desktop environment
 depends:
   runtime:
-    - libxfce4util
-    - exo
-    - garcon
-    - libxfce4ui
     - xfce4-panel
     - thunar
     - thunar-volman
@@ -17,6 +13,15 @@ depends:
     - xfdesktop
     - xfwm4
     - xfce4-session
+    - mousepad
+    - xfce4-terminal
+    - parole
+    - ristretto
+    - xfce4-taskmanager
+    - xfce4-whiskermenu-plugin
+    - xfce4-xkb-plugin
+    - xfce4-docklike-plugin
+    - xfce4-notifyd
 
 packages:
   - id: pkg

@@ -7,10 +7,6 @@ depends:
   runtime:
     - glib
     - gobject-introspection
-    - fonts-cantarell
-    - fluent-icon-theme
-    - fluent-gtk-theme
-    - fluent-wallpaper
 
 sources:
   - https://download.gnome.org/sources/gsettings-desktop-schemas/40/gsettings-desktop-schemas-40.0.tar.xz

@@ -1,0 +1,14 @@
+id: xfce4-taskmanager
+version: 1.4.2
+about: Easy to use task manager
+depends:
+  runtime:
+    - libwnck
+    - xorg-libs
+  buildtime:
+    - intltool
+sources:
+  - https://archive.xfce.org/src/apps/xfce4-taskmanager/1.4/xfce4-taskmanager-1.4.2.tar.bz2
+packages:
+  - id: pkg
+    dir: xfce4-taskmanager-1.4.2

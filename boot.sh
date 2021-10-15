@@ -8,6 +8,8 @@ shift
 qemu-system-x86_64 -m 4G \
     -vga virtio \
     -display default \
+    -net user,hostfwd=tcp::7777-:80 \
+    -net nic \
     -usb \
     -device usb-tablet \
     -smp 2 \

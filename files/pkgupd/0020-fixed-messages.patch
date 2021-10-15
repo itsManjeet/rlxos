@@ -1,0 +1,102 @@
+From 4ad3a50f2dc15dba68a21caeb5a1405357c9aa53 Mon Sep 17 00:00:00 2001
+From: itsmanjeet <itsmanjeet1998@gmail.com>
+Date: Thu, 14 Oct 2021 23:25:33 +0530
+Subject: [PATCH 3/3] fixed messages
+
+---
+ libpkgupd/downloader.cc |  4 ++--
+ libpkgupd/installer.cc  | 27 ++++++++++++++++++++++-----
+ 2 files changed, 24 insertions(+), 7 deletions(-)
+
+diff --git a/libpkgupd/downloader.cc b/libpkgupd/downloader.cc
+index 6d71978..ccc0ff8 100644
+--- a/libpkgupd/downloader.cc
++++ b/libpkgupd/downloader.cc
+@@ -44,7 +44,7 @@ bool downloader::download(std::string const &url, std::string const &outfile) {
+     CURLcode res;
+     FILE *fptr;
+ 
+-    PROCESS("download " << url);
++    DEBUG("download " << url);
+ 
+     curl = curl_easy_init();
+     if (!curl) {
+@@ -128,7 +128,7 @@ bool downloader::get(std::string const &file, std::string const &outdir) {
+     }
+ 
+     for (auto const &url : _urls) {
+-        PROCESS("checking " << url << " " << file);
++        DEBUG("checking " << url << " " << file);
+ 
+         std::string fileurl = url + "/" + file;
+ 
+diff --git a/libpkgupd/installer.cc b/libpkgupd/installer.cc
+index 06316de..2ee5f00 100644
+--- a/libpkgupd/installer.cc
++++ b/libpkgupd/installer.cc
+@@ -19,7 +19,7 @@ bool installer::_install(std::vector<std::string> const &pkgs,
+     for (auto const &i : pkgs) {
+         auto archive_ = archive(i);
+ 
+-        PROCESS("Getting information from " << std::filesystem::path(i).filename().string());
++        DEBUG("getting information from " << std::filesystem::path(i).filename().string());
+ 
+         auto info = archive_.info();
+         if (info == nullptr) {
+@@ -37,7 +37,12 @@ bool installer::_install(std::vector<std::string> const &pkgs,
+         } catch (...) {
+         }
+ 
+-        PROCESS("extracting " << info->id() << " into " << root_dir);
++        if (root_dir == "/") {
++            PROCESS("installing " << BLUE(info->id()));
++        } else {
++            PROCESS("installing " << BLUE(info->id()) << " into " << RED(root_dir));
++        }
++
+         if (!archive_.extract(root_dir)) {
+             _error = archive_.error();
+             return false;
+@@ -48,8 +53,15 @@ bool installer::_install(std::vector<std::string> const &pkgs,
+ 
+     assert(all_pkgs_fileslist.size() == pkginfo_list.size());
+ 
++    bool _with_pkgname = pkginfo_list.size() != 1;
++
+     for (int i = 0; i < pkginfo_list.size(); i++) {
+-        PROCESS("Registering " << pkginfo_list[i]->id() << " into system database");
++        if (_with_pkgname) {
++            PROCESS("registering into database " << BLUE(pkginfo_list[i]->id()));
++        } else {
++            PROCESS("registering into database");
++        }
++
+         if (!_sysdb.add(pkginfo_list[i], all_pkgs_fileslist[i], root_dir, force)) {
+             _error = _sysdb.error();
+             return false;
+@@ -57,7 +69,12 @@ bool installer::_install(std::vector<std::string> const &pkgs,
+ 
+         if (!skip_triggers) {
+             if (pkginfo_list[i]->install_script().size()) {
+-                PROCESS("executing install script");
++                if (_with_pkgname) {
++                    PROCESS("post install script " << BLUE(pkginfo_list[i]->id()));
++                } else {
++                    PROCESS("post installation script");
++                }
++
+                 if (int status = exec().execute(pkginfo_list[i]->install_script()); status != 0) {
+                     _error = "install script failed to exit code: " + std::to_string(status);
+                     return false;
+@@ -67,7 +84,7 @@ bool installer::_install(std::vector<std::string> const &pkgs,
+     }
+ 
+     if (skip_triggers) {
+-        INFO("Skipping Triggers")
++        INFO("skipping triggers")
+     } else {
+         auto triggerer_ = triggerer();
+         if (!triggerer_.trigger(all_pkgs_fileslist)) {
+-- 
+2.33.0
+

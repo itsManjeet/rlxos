@@ -33,7 +33,7 @@ packages:
   - id: pkg
     dir: gnome-control-center-40.0
     prescript: |
-      sed -i "s|gnome-logo|rlxos-logo|g" ${pkgupd_srcdir}/panels/info-overview/cc-info-overview-panel.c
+      sed -i "s|gnome-logo|rlxos-logo|g" panels/info-overview/cc-info-overview-panel.c
     flags:
       - id: configure
         value: --buildtype=release

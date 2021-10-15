@@ -18,6 +18,7 @@ CXXFLAGS="-march=x86-64 -O2 -pipe"
 MAKEFLAGS="-j$(nproc)"
 
 BUILDDIR=${BUILDDIR:-"/var/cache/pkgupd/build"}
+PROFILE=${PROFILE:-'desktop.profile'}
 
 [[ -t 1 ]] && INTERACTIVE='-i'
 if [[ -z "${NOCONTAINER}" ]]; then
@@ -33,7 +34,7 @@ if [[ -z "${NOCONTAINER}" ]]; then
         -v "${FILES}:/var/cache/pkgupd/files" \
         -v "${BASEDIR}/build:${BUILDDIR}" \
         -v "${BASEDIR}/pkgupd.yml:/etc/pkgupd.yml" \
-        -v "${BASEDIR}/.profile:/profile" \
+        -v "${PROFILE}:/profile" \
         ${INTERACTIVE} --privileged \
         -t itsmanjeet/rlxos-devel:2110 /usr/bin/env -i \
             HOME=/root \
@@ -47,16 +48,10 @@ fi
 
 mkdir -p ${PKGSDIR}
 
-RELEASE='continuous'
-
 ARGS=()
 while [[ $# -gt 0 ]]; do
     key="${1}"
-    case ${key} in
-    -r | --release)
-        RELEASE="${2}"
-        shift
-        ;;
+    case ${key} in    
     --rebuild)
         REBUILD=1
         shift
@@ -74,8 +69,10 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
+RELEASE="$(echo $(awk -F '=' '/release/ {print $2}' /profile))"
+ID="$(echo $(awk -F '=' '/id/ {print $2}' /profile))"
 SYS_TOOLCHAIN='kernel-headers glibc binutils gcc binutils glibc'
-OUTPUT=${OUTPUT:-"${BUILDDIR}/rlxos-${RELEASE}"}
+OUTPUT=${OUTPUT:-"${BUILDDIR}/rlxos-${ID}-${RELEASE}-$(uname -m)"}
 SYSROOT=${BUILDDIR}/sysroot
 DATADIR=${SYSROOT}/var/lib/pkgupd/data
 
@@ -132,10 +129,28 @@ echo "inside root"
 chroot ${SYSROOT} bash <<"EOT"
 pwconv
 grpconv
-echo -e "rlxos\nrlxos" | passwd
 
 pkgupd trigger
+echo -e "rlxos\nrlxos" | passwd 
 EOT
+
+echo ":: Generating locales ::"
+mkdir -p ${SYSROOT}/usr/lib/locale/
+_LOCALE=${SYSROOT}/usr/share/i18n/locales
+while read locale charset ; do
+    if [[ -f ${_LOCALE}/${locale} ]] ; then
+        _inp=${locale}
+    else
+        _inp=`echo ${locale} | sed 's/\([^.]*\)[^@]*\(.*\)/\1\2/'`
+    fi
+    echo -n "${locale} "
+    localedef -i ${_inp} -c -f ${charset} -A ${SYSROOT}/usr/share/locale/locale.alias ${locale} --prefix=${SYSROOT}
+done < /var/cache/pkgupd/files/supported_locales 
+echo "done..."
+
+install -v -d -m 0755 -o 62 -g 999 ${SYSROOT}/var/rlxos-sys/.config
+install -v -d -m 0755 -o 62 -g 999 ${SYSROOT}/var/rlxos-sys/.config/autostart
+install -v -D -m 0755 -o 62 -g 999 /var/cache/pkgupd/files/installer.desktop -t ${SYSROOT}/var/rlxos-sys/.config/autostart/
 
 echo ":: Generating tar package ::"
 tar --zstd -caf ${OUTPUT}.rootfs -C ${SYSROOT} .
@@ -145,11 +160,18 @@ if [[ $? != 0 ]]; then
 fi
 
 rm ${OUTPUT}.sys
-
 echo ":: Generating System Image ::"
 mksquashfs ${SYSROOT}/* ${OUTPUT}.sys
 if [[ $? != 0 ]]; then
     echo "Error! failed to generate system Image"
+    exit 1
+fi
+
+rm ${OUTPUT}-iso.sys
+echo ":: Generating Overlay Image ::"
+mksquashfs /var/cache/pkgupd/files/overlay/* ${OUTPUT}-iso.sys
+if [[ $? != 0 ]]; then
+    echo "Error! failed to generate overlay system Image"
     exit 1
 fi
 
@@ -159,7 +181,7 @@ mkdir -p ${_iso_dir}/boot/grub
 echo "default='rlxos installer'
 timeout=5
 menuentry 'rlxos installer' {
-    linux /boot/vmlinuz iso=1 root=LABEL=RLXOS system=${VERSION}
+    linux /boot/vmlinuz iso=1 root=LABEL=RLXOS system=${VERSION} iso=1
     initrd /boot/initrd
 }" >${_iso_dir}/boot/grub/grub.cfg
 
@@ -167,6 +189,7 @@ cp /boot/vmlinuz ${_iso_dir}/boot/vmlinuz
 
 mkinitramfs -k=$(ls /lib/modules) -o=${_iso_dir}/boot/initrd
 cp ${OUTPUT}.sys ${_iso_dir}/rootfs.img
+cp ${OUTPUT}-iso.sys ${_iso_dir}/iso.img
 
 grub-mkrescue -volid RLXOS ${_iso_dir} -o ${OUTPUT}.iso
 

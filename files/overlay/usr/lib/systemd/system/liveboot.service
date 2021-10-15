@@ -1,0 +1,13 @@
+[Unit]
+Description=rlxos live boot configurations
+DefaultDependencies=no
+Before=sysinit.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/liveboot-setup
+TimeoutSec=0
+RemainAfterExit=yes
+
+[Install]
+WantedBy=sysinit.target

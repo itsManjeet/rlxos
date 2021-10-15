@@ -1,0 +1,43 @@
+id: apr
+version: 1.7.0
+about: Apache portable runtime library
+depends:
+  runtime:
+    - util-linux
+    - expat
+    - gdbm
+    - sqlite
+split: true
+packages:
+  - id: pkg
+    sources:
+      - http://www.apache.org/dist/apr/apr-1.7.0.tar.bz2
+    dir: apr-1.7.0
+    flags:
+      - id: configurator
+        value: configure
+
+      - id: configure
+        value: --with-installbuilddir=/usr/share/apr-1
+    postscript: |
+      sed -i -r "/^APR_(SOURCE|BUILD)/s|=.*|=|" ${pkgupd_pkgdir}/usr/bin/apr-1-config
+
+  - id: util
+    depends:
+      runtime:
+        - apr
+    sources:
+      - http://www.apache.org/dist/apr/apr-util-1.6.1.tar.bz2
+    dir: apr-util-1.6.1
+    flags:
+      - id: configurator
+        value: configure
+      - id: configure
+        value: >
+          --with-apr=/usr
+          --with-expat=/usr
+          --with-gdbm=/usr
+          --with-sqlite3=/usr
+          --disable-util-dso
+    postscript: |
+      sed -i -r "/^APR_(SOURCE|BUILD)/s|=.*|=|" ${pkgupd_pkgdir}/usr/bin/apu-1-config

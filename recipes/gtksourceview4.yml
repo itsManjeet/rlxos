@@ -1,5 +1,5 @@
 id: gtksourceview4
-version: 4.8.1
+version: 4.8.2
 about: |
   Libraries used for extending the GTK+ text functions to include syntax highlighting
 
@@ -11,14 +11,10 @@ depends:
     - gobject-introspection
 
 sources:
-  - https://download.gnome.org/sources/gtksourceview/4.8/gtksourceview-4.8.1.tar.xz
-  - https://www.linuxfromscratch.org/patches/blfs/svn/gtksourceview4-4.8.1-buildfix-1.patch
+  - https://download.gnome.org/sources/gtksourceview/4.8/gtksourceview-4.8.2.tar.xz
 
 packages:
   - id: pkg
-    dir: gtksourceview-4.8.1
-
-    prescript: |
-      patch -Np1 -i ../gtksourceview4-4.8.1-buildfix-1.patch
+    dir: gtksourceview-4.8.2
 
 

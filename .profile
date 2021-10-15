@@ -1,1 +1,0 @@
-packages = core linux firmware initramfs grub grub-legacy xorg xfce4 lightdm lightdm-gtk-greeter

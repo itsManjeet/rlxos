@@ -1,0 +1,41 @@
+From 9e6a32717bacb9dd453a4f55efc5d1beb29f3598 Mon Sep 17 00:00:00 2001
+From: itsmanjeet <itsmanjeet1998@gmail.com>
+Date: Thu, 14 Oct 2021 23:18:18 +0530
+Subject: [PATCH 2/3] now create database directory if not exists
+
+---
+ libpkgupd/db.hh  | 5 +++++
+ pkgupd/PKGUPD.cc | 1 +
+ 2 files changed, 6 insertions(+)
+
+diff --git a/libpkgupd/db.hh b/libpkgupd/db.hh
+index b1549d1..94d1535 100644
+--- a/libpkgupd/db.hh
++++ b/libpkgupd/db.hh
+@@ -12,6 +12,11 @@ class db : public object {
+    public:
+     db(std::string const &datadir)
+         : _data_dir{datadir} {
++        if (!std::filesystem::exists(_data_dir)) {
++            std::error_code ec;
++            DEBUG("Creating database directory " << _data_dir);
++            std::filesystem::create_directories(_data_dir, ec);
++        }
+     }
+ 
+     GET_METHOD(std::string, data_dir);
+diff --git a/pkgupd/PKGUPD.cc b/pkgupd/PKGUPD.cc
+index da18aca..8b03a09 100644
+--- a/pkgupd/PKGUPD.cc
++++ b/pkgupd/PKGUPD.cc
+@@ -410,6 +410,7 @@ int PKGUPD::exec(int ac, char **av) {
+ 
+         default:
+             ERROR("invalid task");
++            _print_help(av[0]);
+     }
+ 
+     return 2;
+-- 
+2.33.0
+

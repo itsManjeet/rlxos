@@ -1,0 +1,16 @@
+id: mousepad
+version: 0.5.7
+about: Simple text editor for xfve
+depends:
+  runtime:
+    - desktop-file-utils
+    - gtksourceview4
+    - hicolor-icon-theme
+    
+  buildtime:
+    - intltool
+sources:
+  - https://archive.xfce.org/src/apps/mousepad/0.5/mousepad-0.5.7.tar.bz2
+packages:
+  - id: pkg
+    dir: mousepad-0.5.7

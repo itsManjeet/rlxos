@@ -57,4 +57,4 @@ packages:
 
     postscript: |
       # enable qt-faststart
-      gcc ${pkgupd_srcdir}/tools/qt-faststart.c -o ${pkgupd_pkgdir}/usr/bin/qt-faststart
+      gcc tools/qt-faststart.c -o ${pkgupd_pkgdir}/usr/bin/qt-faststart

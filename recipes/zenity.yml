@@ -10,6 +10,7 @@ depends:
     - libnotify
     - libxslt
     - webkitgtk
+    - enchant
 
 sources:
   - https://download.gnome.org/sources/zenity/3.32/zenity-3.32.0.tar.xz

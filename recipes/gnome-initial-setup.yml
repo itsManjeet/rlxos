@@ -18,7 +18,7 @@ users:
   - id: 68
     name: gnome-initial-setup
     about: Gnome Inital Setup
-    group: ""
+    group: root
     dir: /run/gnome-initial-setup
     shell: /bin/sh
     

@@ -1,0 +1,3 @@
+id = server
+packages = core linux firmware initramfs lvm2 grub grub-legacy networkmanager apache
+release = 2110

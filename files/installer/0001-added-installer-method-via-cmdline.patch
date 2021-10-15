@@ -1,0 +1,40 @@
+From 92182c703c274ec8f8a175727a231cfec9ffb3c1 Mon Sep 17 00:00:00 2001
+From: itsmanjeet <itsmanjeet1998@gmail.com>
+Date: Tue, 12 Oct 2021 15:10:49 +0530
+Subject: [PATCH] added installer method via cmdline
+
+---
+ main.go | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/main.go b/main.go
+index 4bb1da5..19b9499 100644
+--- a/main.go
++++ b/main.go
+@@ -1,9 +1,11 @@
+ package main
+ 
+ import (
++	"io/ioutil"
+ 	"log"
+ 	"os"
+ 	"os/exec"
++	"strings"
+ 
+ 	"github.com/gotk3/gotk3/glib"
+ 	"github.com/gotk3/gotk3/gtk"
+@@ -31,7 +33,10 @@ func main() {
+ 		builder, err := gtk.BuilderNewFromString(app.UI)
+ 		checkError(err)
+ 
+-		if len(os.Getenv("INSTALLER")) == 0 {
++		cmdline, err := ioutil.ReadFile("/proc/cmdline")
++		checkError(err)
++
++		if !strings.Contains(string(cmdline), "iso=1") {
+ 			app := setup.Init(builder)
+ 			app.Window.ShowAll()
+ 			application.AddWindow(app.Window)
+-- 
+2.33.0
+

@@ -14,8 +14,6 @@ sources:
 packages:
   - id: pkg
     dir: harfbuzz-2.8.2
-    environ:
-      - DESTDIR=${pkgupd_srcdir}/dest
     flags:
       - id: configurator
         value: meson.build
@@ -29,7 +27,8 @@ packages:
           -D icu=enabled
 
     postscript: |
+      mv ${pkgupd_pkgdir} "${pkgupd_pkgdir}_old"
       mkdir -p ${pkgupd_pkgdir}/usr/lib/pkgconfig ${pkgupd_pkgdir}/usr/include/harfbuzz
-      mv ${pkgupd_srcdir}/dest/usr/include/harfbuzz/hb-icu.h ${pkgupd_pkgdir}/usr/include/harfbuzz/
-      mv ${pkgupd_srcdir}/dest/usr/lib/libharfbuzz-icu* ${pkgupd_pkgdir}/usr/lib/
-      mv ${pkgupd_srcdir}/dest/usr/lib/pkgconfig/harfbuzz-icu.pc ${pkgupd_pkgdir}/usr/lib/pkgconfig/
+      mv "${pkgupd_pkgdir}_old"/usr/include/harfbuzz/hb-icu.h ${pkgupd_pkgdir}/usr/include/harfbuzz/
+      mv "${pkgupd_pkgdir}_old"/usr/lib/libharfbuzz-icu* ${pkgupd_pkgdir}/usr/lib/
+      mv "${pkgupd_pkgdir}_old"/usr/lib/pkgconfig/harfbuzz-icu.pc ${pkgupd_pkgdir}/usr/lib/pkgconfig/

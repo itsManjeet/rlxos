@@ -1,0 +1,15 @@
+id: xfce4-terminal
+version: 0.8.10
+about: A modern terminal emulator primarily for Xfce4
+depends:
+  runtime:
+    - hicolor-icon-theme
+    - libxfce4ui
+    - vte
+  buildtime:
+    - intltool
+sources:
+  - https://archive.xfce.org/src/apps/xfce4-terminal/0.8/xfce4-terminal-0.8.10.tar.bz2
+packages:
+  - id: pkg
+    dir: xfce4-terminal-0.8.10

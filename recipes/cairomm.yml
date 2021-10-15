@@ -7,7 +7,7 @@ depends:
   runtime:
     - cairo
     - libsigc++
-    - libboost
+    - boost
   
 sources:
   - https://www.cairographics.org/releases/cairomm-1.14.0.tar.xz

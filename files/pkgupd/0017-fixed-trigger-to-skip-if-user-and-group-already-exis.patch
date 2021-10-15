@@ -1,0 +1,43 @@
+From 5971da2e2a1df6a90b5d3a2b510c9a0b4f5ca5ea Mon Sep 17 00:00:00 2001
+From: itsmanjeet <itsmanjeet1998@gmail.com>
+Date: Thu, 14 Oct 2021 19:35:35 +0530
+Subject: [PATCH] fixed trigger to skip if user and group already exist
+
+---
+ libpkgupd/triggerer.cc | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/libpkgupd/triggerer.cc b/libpkgupd/triggerer.cc
+index 2f4500c..828e331 100644
+--- a/libpkgupd/triggerer.cc
++++ b/libpkgupd/triggerer.cc
+@@ -208,16 +208,20 @@ bool triggerer::trigger(std::vector<std::shared_ptr<pkginfo>> const &pkgs) {
+     for (auto const &i : pkgs) {
+         for (auto const &grp : i->groups()) {
+             PROCESS("creating group " + grp->name());
+-            if (!grp->create()) {
+-                ERROR("failed to create " + grp->name() + " group");
+-                status = false;
++            if (!grp->exists()) {
++                if (!grp->create()) {
++                    ERROR("failed to create " + grp->name() + " group");
++                    status = false;
++                }
+             }
+         }
+         for (auto const &usr : i->users()) {
+             PROCESS("creating user " + usr->name());
+-            if (!usr->create()) {
+-                ERROR("failed to create " + usr->name() + " user");
+-                status = false;
++            if (!usr->exists()) {
++                if (!usr->create()) {
++                    ERROR("failed to create " + usr->name() + " user");
++                    status = false;
++                }
+             }
+         }
+     }
+-- 
+2.33.0
+

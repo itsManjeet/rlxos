@@ -25,13 +25,13 @@ depends:
 
 sources:
   - https://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.18.4.tar.xz
-  - https://www.linuxfromscratch.org/patches/blfs/svn/gst-plugins-good-1.18.4-upstream_fixes-1.patch
+  # - https://www.linuxfromscratch.org/patches/blfs/svn/gst-plugins-good-1.18.4-upstream_fixes-1.patch
 
 packages:
   - id: pkg
     dir: gst-plugins-good-1.18.4
-    prescript: |
-      patch -Np1 -i ../gst-plugins-good-1.18.4-upstream_fixes-1.patch
+    # prescript: |
+    #   patch -Np1 -i ../gst-plugins-good-1.18.4-upstream_fixes-1.patch
 
     flags:
       - id: configure

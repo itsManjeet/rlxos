@@ -1,0 +1,104 @@
+#!/bin/sh
+#
+#!/bin/bash
+
+# Taken for kaellinux
+# Author: https://github.com/emmett1
+# URL: https://github.com/venomlinux/scratchpkg/blob/master/xchroot
+#
+
+printhelp() {
+	cat << EOF
+
+Usage:
+  $(basename $0) <chroot-dir> [command]
+  
+If 'command' is unspecified, ${0##*/} will launch /bin/sh.
+  
+EOF
+}
+
+msgerr() {
+	echo "ERROR: $*"
+}
+
+unmount() {
+	while true; do
+		mountpoint -q $1 || break
+		umount $1 2>/dev/null
+	done
+}
+	
+[ "$(id -u)" = "0" ] || {
+	msgerr "$(basename $0) need root access!"
+	printhelp
+	exit 1
+}
+
+TARGET=$1
+
+[ "$1" ] || {
+	msgerr "Please set directory for chroot!"
+	printhelp
+	exit 1
+}
+
+[ -d "$TARGET" ] || {
+	msgerr "Directory '$TARGET' not exist!"
+	printhelp
+	exit 1
+}
+
+shift
+
+if [ ! "$1" ]; then
+	CMD="/bin/sh"
+else
+	CMD=$*
+fi
+
+if [ -e /sys/firmware/efi/systab ]; then
+	EFI_SYSTEM=1
+fi
+
+mount --bind /dev $TARGET/dev
+mount -t devpts devpts $TARGET/dev/pts -o gid=5,mode=620
+mount -t proc proc $TARGET/proc
+mount -t sysfs sysfs $TARGET/sys
+if [ -n "$EFI_SYSTEM" ]; then
+	mount --bind /sys/firmware/efi/efivars $TARGET/sys/firmware/efi/efivars
+fi
+mount -t tmpfs tmpfs $TARGET/run
+
+if [ -h $TARGET/dev/shm ]; then
+  mkdir -p $TARGET/$(readlink $TARGET/dev/shm)
+fi
+
+[ -f $TARGET/etc/resolv.conf ] && {
+	backupresolvconf=1
+	mv $TARGET/etc/resolv.conf $TARGET/etc/resolv.conf.tmp
+}
+cp -L /etc/resolv.conf $TARGET/etc
+
+chroot "$TARGET" /usr/bin/env -i \
+HOME=/root \
+TERM="$TERM" \
+PS1='\u:\w\$ ' \
+PATH=/bin:/usr/bin:/sbin:/usr/sbin $CMD
+
+retval=$?
+
+[ "$backupresolvconf" = 1 ] && {
+	mv $TARGET/etc/resolv.conf.tmp $TARGET/etc/resolv.conf
+}
+
+unmount $TARGET/dev/pts
+unmount $TARGET/dev
+unmount $TARGET/run
+unmount $TARGET/proc
+if [ -n "$EFI_SYSTEM" ]; then
+	unmount $TARGET/sys/firmware/efi/efivars
+fi
+unmount $TARGET/sys
+
+exit $retval

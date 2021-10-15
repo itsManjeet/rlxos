@@ -14,4 +14,3 @@ packages:
       install -D -m 644 unhinted/ttf/Noto*/*.tt[fc] -t ${pkgupd_pkgdir}/usr/share/fonts/noto/
       install -D -m 644 hinted/ttf/Noto*/*.tt[fc] -t ${pkgupd_pkgdir}/usr/share/fonts/noto/
       install -D -m 644 LICENSE -t ${pkgupd_pkgdir}/usr/share/licenses/ttf-noto
-      install -D -m 644 ${FILES}/ttf-noto/*.conf -t ${pkgupd_pkgdir}/usr/share/fontconfig/config.avail/

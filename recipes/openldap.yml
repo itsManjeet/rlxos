@@ -1,5 +1,5 @@
 id: openldap
-version: 2.5.6
+version: 2.5.8
 about: |
   Open source implementation of the Lightweight Directory Access Protocol
 
@@ -19,14 +19,14 @@ users:
     shell: /bin/false
   
 sources:
-  - https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-2.5.6.tgz
-  - https://www.linuxfromscratch.org/patches/blfs/svn/openldap-2.5.6-consolidated-1.patch
+  - https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-2.5.8.tgz
+  - https://www.linuxfromscratch.org/patches/blfs/svn/openldap-2.5.8-consolidated-1.patch
 
 packages:
   - id: pkg
-    dir: openldap-2.5.6
+    dir: openldap-2.5.8
     prescript: |
-      patch -Np1 -i ../openldap-2.5.6-consolidated-1.patch
+      patch -Np1 -i ../openldap-2.5.8-consolidated-1.patch
       autoconf
     
     flags:

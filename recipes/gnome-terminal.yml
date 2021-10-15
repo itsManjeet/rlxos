@@ -9,6 +9,7 @@ depends:
     - gnome-shell
     - gsettings-desktop-schemas
     - itstool
+    - nautilus
     - pcre2
     - vte
 

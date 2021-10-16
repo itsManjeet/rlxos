@@ -10,6 +10,7 @@ depends:
     - gdbm
     - libffi
     - openssl
+    - sqlite
     - zlib
 
 sources:
@@ -27,7 +28,7 @@ packages:
           --enable-shared
           --with-system-expat
           --with-system-ffi
-          --with-ensurepip=yes
+          --without-ensurepip
           --enable-optimizations
           --with-lto
           --enable-ipv6
@@ -36,3 +37,4 @@ packages:
 
     postscript: |
       ln -sfv python3 ${pkgupd_pkgdir}/usr/bin/python
+      ln -sfv python3 ${pkgupd_pkgdir}/usr/bin/py

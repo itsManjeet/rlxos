@@ -1,9 +1,0 @@
-id: xtrans
-version: 1.4.0
-about: X transport library
-
-packages:
-  - id: pkg
-    dir: xtrans-1.4.0
-    sources:
-      - https://www.x.org/pub/individual/lib/xtrans-1.4.0.tar.bz2

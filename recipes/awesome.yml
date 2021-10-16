@@ -19,7 +19,7 @@ depends:
     - xcb-util-keysyms
     - xcb-util-wm
     - xcb-util-xrm
-    - xmessage
+    - xorg-apps
   buildtime:
     - cmake
     - imagemagick

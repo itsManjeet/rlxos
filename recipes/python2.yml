@@ -29,8 +29,10 @@ packages:
           --enable-shared
           --with-system-expat
           --with-system-ffi
-          --with-ensurepip=yes
+          --without-ensurepip
           --enable-optimization
           --with-lto
           --with-tzpath=/usr/share/zoneinfo
           --enable-loadable-sqlite-extensions
+    postscript: |
+      rm ${pkgupd_pkgdir}/usr/bin/python

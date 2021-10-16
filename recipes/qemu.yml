@@ -11,6 +11,15 @@ depends:
    - curl
    - libpng
    - alsa-lib
+   - xorg
+   - gtk
+   - gtk2
+   - ncurses
+   - sdl2
+   - cairo
+   - samba
+  buildtime:
+   - pkg-config
 
 sources:
   - https://download.qemu-project.org/qemu-6.0.0.tar.xz
@@ -23,6 +32,10 @@ packages:
         value: >
           --target-list=x86_64-softmmu
           --audio-drv-list=alsa
+          --smbd=/usr/bin/smbd
+          --enable-modules
+          --enable-sdl
+          --enable-gtk
     
     postscript: |
       install -v -D -m 644 ${FILES}/qemu/65-kvm.rules -t ${pkgupd_pkgdir}/usr/lib/udev/rules.d/

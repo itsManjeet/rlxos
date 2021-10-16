@@ -6,7 +6,7 @@ depends:
     - fontconfig
     - lcms
     - libpng
-    - libxext
+    - xorg-libs
     - librsvg
     - libwebp
     - libxml2

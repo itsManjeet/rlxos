@@ -10,7 +10,7 @@ depends:
     - glib
     - cairo
     - gobject-introspection
-    - libxft
+    - xorg-libs
     - harfbuzz
 
 sources:

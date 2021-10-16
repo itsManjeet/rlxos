@@ -21,10 +21,3 @@ sources:
 packages:
   - id: pkg
     dir: pkgupd-main
-    prescript: |
-      for i in ${FILES}/pkgupd/*.patch ; do
-        echo "applying patch ${i}"
-        patch -Np1 -i ${i}
-      done
-    prescript: |
-      sed -i "s|set_target_properties(pkgupd PROPERTIES SUFFIX \"-new\")||" CMakeLists.txt

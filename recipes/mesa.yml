@@ -6,9 +6,7 @@ about: |
 depends:
   runtime:
     # - libunwind
-    - libxdamage
-    - libxshmfence
-    - libxxf86vm
+    - xorg-libs
     - llvm
     - libdrm
     - libelf
@@ -20,12 +18,7 @@ depends:
     - cmake
     - libva
     - libvdpau
-    - libx11
-    - libxdamage
     - libxml2
-    - libxrandr
-    - libxshmfence
-    - libxxf86vm
     - xorgproto
     - flex
     - bison

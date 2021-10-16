@@ -14,11 +14,8 @@ depends:
     - xcb-util-image
     - xcb-util-renderutil
     - xcb-util-wm
-    - libxfont2
-    - libxshmfence
     - nettle
     - xorg-libs
-    - libpciaccess
 
   buildtime:
     #    - libx11

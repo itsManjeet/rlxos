@@ -8,7 +8,7 @@ depends:
     - cairo
     - fuse
     - wget
-    - libboost
+    - boost
     - libarchive
     - librsvg
     - fuse2

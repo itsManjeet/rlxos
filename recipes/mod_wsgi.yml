@@ -1,0 +1,24 @@
+id: mod_wsgi
+version: 4.9.0
+about: Python WSGI adapter module for apache
+depends:
+  runtime:
+    - apache
+    - python
+license:
+  - Apache
+sources:
+  - mod_wsgi-4.9.0.tar.gz::https://github.com/GrahamDumpleton/mod_wsgi/archive/refs/tags/4.9.0.tar.gz
+packages:
+  - id: pkg
+    dir: mod_wsgi-4.9.0
+    environment:
+      - CFLAGS="${CFLAGS} -I/usr/include/python3.9"
+    script: |
+      ./configure --prefix=/usr \
+        --with-python=/usr/bin/python \
+        --with-apxs=/usr/bin/apxs
+      
+      make
+
+      make DESTDIR=${pkgupd_pkgdir} install

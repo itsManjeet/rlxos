@@ -10,9 +10,7 @@ depends:
     - dbus
     - glib
     - libcap
-    - libxtst
-    - libsndfile
-    - libsm
+    - xorg-libs
     - perl-xml-parser
     - sbc
     - bluez

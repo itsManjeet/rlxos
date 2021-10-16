@@ -8,7 +8,7 @@ sources:
 
 depends:
   buildtime:
-    - libx11
+    - xorg-libs
     - xcb-util
 
 packages:

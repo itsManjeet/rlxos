@@ -9,10 +9,7 @@ depends:
     - pixman
     - fontconfig
     - glib
-    - libx11
-    - libxcb
-    - libxext
-    - libxrender
+    - xorg-libs
     - lzo
   buildtime:
     - meson

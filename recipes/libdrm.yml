@@ -5,7 +5,7 @@ about: |
 
 depends:
   runtime:
-    - libpciaccess
+    - xorg-libs
   
   buildtime:
     - meson

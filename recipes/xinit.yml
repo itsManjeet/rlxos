@@ -5,10 +5,8 @@ about: |
 
 depends:
   runtime:
-    - libx11
-    - xauth
-    - xmodmap
-    - xrdb
+    - xorg-apps
+    - xorg-libs
     - xorg-server
   buildtime:
     - util-macros

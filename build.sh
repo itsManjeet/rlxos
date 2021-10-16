@@ -18,31 +18,30 @@ CXXFLAGS="-march=x86-64 -O2 -pipe"
 MAKEFLAGS="-j$(nproc)"
 
 BUILDDIR=${BUILDDIR:-"/var/cache/pkgupd/build"}
-PROFILE=${PROFILE:-'desktop.profile'}
 
 [[ -t 1 ]] && INTERACTIVE='-i'
 if [[ -z "${NOCONTAINER}" ]]; then
     echo ":: Initializing Container ::"
     docker run \
         --rm \
-	--network host \
+        --network host \
         -v "$(realpath ${0}):/build.sh" \
-	-v "${BASEDIR}/tmp:/tmp" \
+        -v "${BASEDIR}/tmp:/tmp" \
         -v "${REPODB}:/var/cache/pkgupd/recipes" \
         -v "${PKGSDIR}:/var/cache/pkgupd/pkgs" \
         -v "${SRCDIR}:/var/cache/pkgupd/src" \
         -v "${FILES}:/var/cache/pkgupd/files" \
         -v "${BASEDIR}/build:${BUILDDIR}" \
         -v "${BASEDIR}/pkgupd.yml:/etc/pkgupd.yml" \
-        -v "${PROFILE}:/profile" \
+        -v "${BASEDIR}/profiles:/profiles" \
         ${INTERACTIVE} --privileged \
         -t itsmanjeet/rlxos-devel:2110 /usr/bin/env -i \
-            HOME=/root \
-            TERM=${TERM} \
-            PS1='(rlxos chroot) \u:\w\$ ' \
-            PATH='/usr/bin:/opt/bin' \
-            NOCONTAINER=1 \
-            /bin/bash /build.sh ${@}
+        HOME=/root \
+        TERM=${TERM} \
+        PS1='(rlxos chroot) \u:\w\$ ' \
+        PATH='/usr/bin:/opt/bin' \
+        NOCONTAINER=1 \
+        /bin/bash /build.sh ${@}
     exit $?
 fi
 
@@ -51,16 +50,35 @@ mkdir -p ${PKGSDIR}
 ARGS=()
 while [[ $# -gt 0 ]]; do
     key="${1}"
-    case ${key} in    
+    case ${key} in
     --rebuild)
         REBUILD=1
-        shift
         ;;
 
     --exec)
         EXECUTE="${2}"
         shift
         ;;
+
+    --profile | -p)
+        if [[ ! -e /profiles/${2} ]]; then
+            echo "Invalid profile ${2}"
+            ls /profiles
+            exit 1
+        fi
+        PROFILE="/profiles/${2}"
+        shift
+        ;;
+
+    --all)
+        BUILD_ALL=1
+        ;;
+
+    --build)
+        BUILD="${2}"
+        shift
+        ;;
+
     *)
         echo "Error! invalid argument ${key}"
         exit 1
@@ -69,12 +87,46 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
-RELEASE="$(echo $(awk -F '=' '/release/ {print $2}' /profile))"
-ID="$(echo $(awk -F '=' '/id/ {print $2}' /profile))"
-SYS_TOOLCHAIN='kernel-headers glibc binutils gcc binutils glibc'
-OUTPUT=${OUTPUT:-"${BUILDDIR}/rlxos-${ID}-${RELEASE}-$(uname -m)"}
-SYSROOT=${BUILDDIR}/sysroot
-DATADIR=${SYSROOT}/var/lib/pkgupd/data
+echo "=> Reinstalling pkgupd"
+pkgupd in pkgupd --force --skip-depends
+if [[ $? != 0 ]]; then
+    echo "Error! Failed to reinstall pkgupd"
+    exit 1
+fi
+
+#
+# BUILD missing all packages
+#
+if [[ -n ${BUILD_ALL} ]]; then
+    echo "building all missings"
+    all_pkgs="$(pkgupd deptest $(ls /var/cache/pkgupd/recipes | sed 's|.yml||') --force)"
+
+    for pkg in ${all_pkgs}; do
+        pkgupd co ${pkg}
+        if [[ $? != 0 ]]; then
+            echo "Error! Failed to install ${pkg}"
+            exit 1
+        fi
+    done
+
+    exit 0
+fi
+
+if [[ -n ${BUILD} ]]; then
+    echo "compiling ${BUILD}"
+    pkgs="$(pkgupd deptest ${BUILD} --force)"
+    echo "Packages: ${pkgs}"
+
+    for pkg in ${pkgs}; do
+        pkgupd co ${pkg}
+        if [[ $? != 0 ]]; then
+            echo "Error! Failed to install ${pkg}"
+            exit 1
+        fi
+    done
+
+    exit 0
+fi
 
 if [[ -n ${EXECUTE} ]]; then
     echo "Executing: ${EXECUTE}"
@@ -82,12 +134,13 @@ if [[ -n ${EXECUTE} ]]; then
     exit $?
 fi
 
-echo "=> Reinstalling pkgupd"
-pkgupd in pkgupd --force --skip-depends
-if [[ $? != 0 ]]; then
-    echo "Error! Failed to reinstall pkgupd"
-    exit 1
-fi
+RELEASE="$(echo $(awk -F '=' '/release/ {print $2}' ${PROFILE}))"
+ID="$(echo $(awk -F '=' '/id/ {print $2}' ${PROFILE}))"
+SYS_TOOLCHAIN='kernel-headers glibc binutils gcc binutils glibc'
+OUTPUT=${OUTPUT:-"${BUILDDIR}/rlxos-${ID}-${RELEASE}-$(uname -m)"}
+SYSROOT=${BUILDDIR}/sysroot
+DATADIR=${SYSROOT}/var/lib/pkgupd/data
+
 
 if [[ ${REBUILD} -eq 1 ]]; then
     for sys in ${SYS_TOOLCHAIN}; do
@@ -102,9 +155,9 @@ fi
 
 [[ ${REBUILD} ]] && FORCE='--force'
 
-PACKAGES=$(awk -F '=' '/packages/ {print $2}' /profile)
+PACKAGES=$(awk -F '=' '/packages/ {print $2}' ${PROFILE})
 rm /var/lib/pkgupd/data/*
-for pkg in $(pkgupd deptest ${PACKAGES} squashfs-tools mtools grub --force ) ;  do
+for pkg in $(pkgupd deptest ${PACKAGES} squashfs-tools mtools grub --force); do
     echo "=> Compiling ${pkg}"
     pkgupd co ${pkg} ${FORCE}
     if [[ $? != 0 ]]; then
@@ -131,33 +184,34 @@ pwconv
 grpconv
 
 pkgupd trigger
-echo -e "rlxos\nrlxos" | passwd 
+echo -e "rlxos\nrlxos" | passwd
+echo 'LANG=en_IN.UTF-8' > /etc/locale.conf
+echo 'workstation' > /etc/hostname
+ln -sfv /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
+
+systemctl enable inspector --global
+make-ca -C /etc/ssl/certdata.txt
+
 EOT
 
 echo ":: Generating locales ::"
 mkdir -p ${SYSROOT}/usr/lib/locale/
 _LOCALE=${SYSROOT}/usr/share/i18n/locales
-while read locale charset ; do
-    if [[ -f ${_LOCALE}/${locale} ]] ; then
+while read locale charset; do
+    if [[ -f ${_LOCALE}/${locale} ]]; then
         _inp=${locale}
     else
-        _inp=`echo ${locale} | sed 's/\([^.]*\)[^@]*\(.*\)/\1\2/'`
+        _inp=$(echo ${locale} | sed 's/\([^.]*\)[^@]*\(.*\)/\1\2/')
     fi
     echo -n "${locale} "
     localedef -i ${_inp} -c -f ${charset} -A ${SYSROOT}/usr/share/locale/locale.alias ${locale} --prefix=${SYSROOT}
-done < /var/cache/pkgupd/files/supported_locales 
+done </var/cache/pkgupd/files/supported_locales
 echo "done..."
 
 install -v -d -m 0755 -o 62 -g 999 ${SYSROOT}/var/rlxos-sys/.config
 install -v -d -m 0755 -o 62 -g 999 ${SYSROOT}/var/rlxos-sys/.config/autostart
 install -v -D -m 0755 -o 62 -g 999 /var/cache/pkgupd/files/installer.desktop -t ${SYSROOT}/var/rlxos-sys/.config/autostart/
 
-echo ":: Generating tar package ::"
-tar --zstd -caf ${OUTPUT}.rootfs -C ${SYSROOT} .
-if [[ $? != 0 ]]; then
-    echo "Error! failed to generate tar archive"
-    exit 1
-fi
 
 rm ${OUTPUT}.sys
 echo ":: Generating System Image ::"
@@ -193,4 +247,4 @@ cp ${OUTPUT}-iso.sys ${_iso_dir}/iso.img
 
 grub-mkrescue -volid RLXOS ${_iso_dir} -o ${OUTPUT}.iso
 
-rm -rf ${SYSROOT} ${DATADIR}
+rm -rf ${SYSROOT} ${DATADIR} ${OUTPUT}.sys

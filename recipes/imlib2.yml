@@ -10,7 +10,7 @@ depends:
     - libjpeg-turbo
     - libpng
     - libwebp
-    - libxext
+    - xorg-libs
 sources:
   - https://downloads.sourceforge.net/enlightenment/imlib2-1.7.4.tar.bz2
 

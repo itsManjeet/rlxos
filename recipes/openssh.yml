@@ -35,4 +35,5 @@ packages:
 
     postscript: |
       install -v -D -m 755 contrib/ssh-copy-id -t ${pkgupd_pkgdir}/usr/bin
+      install -v -D -m 0644 ${FILES}/openssh/* -t ${pkgupd_pkgdir}/usr/lib/systemd/system/
       

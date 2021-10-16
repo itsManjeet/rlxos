@@ -5,8 +5,7 @@ about: |
 
 depends:
   runtime:
-    - xprop
-    - xset
+    - xorg-apps
     - dbus
     - file
     - which

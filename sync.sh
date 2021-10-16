@@ -9,7 +9,7 @@ done
 
 source ./secure/storage
 
-lftp -f "
+lftp -e "
 set ftp:ssl-allow no
 open ${STORAGE_URL}
 user ${STORAGE_USERNAME} ${STORAGE_PASSWORD}

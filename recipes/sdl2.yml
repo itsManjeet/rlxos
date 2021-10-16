@@ -5,11 +5,7 @@ about: |
 
 depends:
   runtime:
-    - libxkbcommon
-    - wayland
-    - libxcursor
-    - libx11
-    - libxrender
+    - xorg-libs
     - alsa-lib
     - pulseaudio
 

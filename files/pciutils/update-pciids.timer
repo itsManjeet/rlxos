@@ -1,0 +1,9 @@
+[Unit]
+Description=Update pci.ids file weekly
+
+[Timer]
+OnCalendar=Sun 02:30:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

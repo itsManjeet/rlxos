@@ -21,3 +21,6 @@ sources:
 packages:
   - id: pkg
     dir: pkgupd-main
+    postscript: |
+    	install -v -D -m 0644 ${FILES}/pkgupd/pkgupd.desktop -t ${pkgupd_pkgdir}/usr/share/applications/
+    	install -v -D -m 0755 ${FILES}/pkgupd/pkgupd-url -t ${pkgupd_pkgdir}/usr/bin/

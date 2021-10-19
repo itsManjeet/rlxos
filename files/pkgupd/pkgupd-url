@@ -1,0 +1,7 @@
+#!/bin/sh
+pkgid=${1#pkgupd://}
+echo "Installing ${pkgid}"
+sudo pkgupd in ${pkgid}
+
+echo "Press any key to continue"
+read

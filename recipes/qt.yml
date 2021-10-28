@@ -20,42 +20,35 @@ depends:
     - sqlite
     - fontconfig
 
-sources:
-  - https://download.qt.io/archive/qt/5.15/5.15.2/single/qt-everywhere-src-5.15.2.tar.xz
-
-prescript: |
-  cd ${PKGUPD_WORKDIR}/src/qt-everywhere-src-5.15.2
-  patch -Np1 -i ${FILES}/qt/qt-everywhere-src-5.15.2-CVE-2021-3481-1.patch
-
-  sed -i "/utility/a #include <limits>"     qtbase/src/corelib/global/qglobal.h
-  sed -i "/string/a #include <limits>"      qtbase/src/corelib/global/qfloat16.h
-  sed -i "/qbytearray/a #include <limits>"  qtbase/src/corelib/text/qbytearraymatcher.h
-  sed -i "/type_traits/a #include <limits>" qtdeclarative/src/qmldebug/qqmlprofilerevent_p.h
-
 packages:
   - id: pkg
     dir: qt-everywhere-src-5.15.2
+    sources:
+      - https://download.qt.io/archive/qt/5.15/5.15.2/single/qt-everywhere-src-5.15.2.tar.xz
+    script: |
+      patch -Np1 -i ${FILES}/qt/qt-everywhere-src-5.15.2-CVE-2021-3481-1.patch
 
-    flags:
-      - id: configure
-        only: true
-        value: >
-          -prefix /usr
-          -sysconfdir /etc/xdg
-          -confirm-license -opensource
-          -dbus-linked
-          -openssl-linked
-          -system-harfbuzz
-          -system-sqlite
-          -nomake examples
-          -no-rpath
-          -syslog
-          -skip qtwebengine
+      sed -i "/utility/a #include <limits>"     qtbase/src/corelib/global/qglobal.h
+      sed -i "/string/a #include <limits>"      qtbase/src/corelib/global/qfloat16.h
+      sed -i "/qbytearray/a #include <limits>"  qtbase/src/corelib/text/qbytearraymatcher.h
+      sed -i "/type_traits/a #include <limits>" qtdeclarative/src/qmldebug/qqmlprofilerevent_p.h
 
-      - id: install
-        value: INSTALL_ROOT=${pkgupd_pkgdir}
+      ./configure -prefix /usr \
+        -sysconfdir /etc/xdg \
+        -confirm-license -opensource \
+        -dbus-linked \
+        -openssl-linked \
+        -system-harfbuzz \
+        -system-sqlite \
+        -nomake examples \
+        -no-rpath \
+        -journald \
+        -skip qtwebengine
 
-    postscript: |
+      make
+
+      make install INSTALL_ROOT=${pkgupd_pkgdir}
+    
       find ${pkgupd_pkgdir}/ -name \*.prl \
         -exec sed -i -e "/^QMAKE_PRL_BUILD_DIR/d" {} \;
 

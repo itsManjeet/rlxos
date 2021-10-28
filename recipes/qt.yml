@@ -42,23 +42,14 @@ packages:
         value: >
           -prefix /usr
           -sysconfdir /etc/xdg
-          -archdatadir /usr/lib/qt5
-          -bindir /usr/lib/qt5/bin
-          -plugindir /usr/lib/qt5/plugins
-          -importdir /usr/lib/qt5/imports
-          -headerdir /usr/include/qt5
-          -datadir /usr/share/qt5
-          -docdir /usr/share/doc/qt5
-          -translationdir /usr/share/qt5/transl
-          -examplesdir /usr/share/doc/qt5/examples
-          -confirm-license
-          -opensource
+          -confirm-license -opensource
           -dbus-linked
           -openssl-linked
           -system-harfbuzz
           -system-sqlite
           -nomake examples
           -no-rpath
+          -syslog
           -skip qtwebengine
 
       - id: install

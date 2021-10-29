@@ -19,6 +19,14 @@ depends:
     - libxcb
     - sqlite
     - fontconfig
+    - which
+    - nodejs
+    - nss
+    - python
+    - alsa-lib
+    - pulseaudio
+    - ffmpeg
+    - icu
 
 packages:
   - id: pkg
@@ -42,8 +50,7 @@ packages:
         -system-sqlite \
         -nomake examples \
         -no-rpath \
-        -journald \
-        -skip qtwebengine
+        -journald
 
       make
 

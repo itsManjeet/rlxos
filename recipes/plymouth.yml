@@ -1,0 +1,36 @@
+id: plymouth
+version: 0.9.5
+about: A graphical boot splash screen with KMS
+license: GPL
+depends:
+  runtime:
+    - libdrm
+    - pango
+    - systemd
+    - xf86-video-fbdev
+packages:
+  - id: pkg
+    dir: plymouth-0.9.5
+    sources:
+      - https://gitlab.freedesktop.org/plymouth/plymouth/-/archive/0.9.5/plymouth-0.9.5.tar.gz
+    environ:
+      - LDFLAGS+=" -ludev"
+    
+    script: |
+      ./autogen.sh \
+        --enable-systemd-integration \
+        --enable-drm \
+        --enable-tracing \
+        --enable-pango \
+        --enable-gtk=no \
+        --with-release-file=/etc/os-release \
+        --with-background-color=0x000000 \
+        --with-background-start-color-stop=0x000000 \
+        --with-background-end-color-stop=0x4D4D4D \
+        --without-rhgb-compat-link \
+        --without-system-root-install \
+        --with-runtimedir=/run
+      
+      make
+
+      make DESTDIR="${pkgupd_pkgdir}" install

@@ -1,0 +1,13 @@
+id: fishui
+version: 0.4
+about: Cutefish gui library
+depends:
+  runtime:
+    - qt
+    - cutefish-core
+packages:
+  - id: pkg
+    dir: fishui-0.4
+    sources:
+      - fishui-0.4.tar.gz::https://github.com/cutefishos/fishui/archive/refs/tags/0.4.tar.gz
+

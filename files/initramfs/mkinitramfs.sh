@@ -30,11 +30,12 @@ BINARIES="sh bash cat cp dd ls mkdir mknod mount \
          blkid dmesg findfs tail head \
          switch_root losetup touch install chroot agetty \
          truncate df awk mkfs.ext4 mkfs mkfs.ext2 mkfs.ext3
-         udevadm killall"
+         udevadm killall cut md5sum"
 
 INITRD_DIR=$(mktemp -d /tmp/initramfs.XXXXXXXXXX)
 INIT_IN=${INIT_IN:-'/usr/share/initramfs/init.in'}
 KERNEL=${KERNEL:-$(uname -r)}
+PASSWORD='rlxos'
 unsorted=$(mktemp /tmp/unsorted.XXXXXXXXXX)
 AOUT=${AOUT:-"/boot/initrd"}
 
@@ -134,10 +135,15 @@ parse_args() {
         -i=* | --init=*)
             INIT_IN=${p#*=}
             ;;
-        
+
         -o=* | --out=*)
             AOUT=${p#*=}
             ;;
+
+        -p=* | --password=*)
+            PASSWORD=${p#*=}
+            ;;
+
         esac
     done
 }
@@ -172,7 +178,7 @@ prepare_structure() {
 install_udev() {
 
     copy /lib/systemd/systemd-udevd
-    
+
     for i in ata_id scsi_id cdrom_id mtd_probe v4l_id; do
         install_binary /usr/lib/udev/${i}
     done
@@ -180,7 +186,6 @@ install_udev() {
     for i in /usr/lib/udev/rules.d/*.rules; do
         copy $i
     done
-
 
 }
 
@@ -200,6 +205,12 @@ install_modules() {
     for i in /usr/lib/modules/$KERNEL/modules.*; do
         copy $i
     done
+}
+
+# install password file
+# generate password md5sum
+install_password() {
+    echo "${PASSWORD}" | md5sum  | cut -d ' ' -f1 > ${INITRD_DIR}/.secure
 }
 
 # compress_initrd
@@ -226,7 +237,7 @@ function main() {
 
     install_udev
     install_modules
-
+    install_password
     compress_initrd
 
     cleanup

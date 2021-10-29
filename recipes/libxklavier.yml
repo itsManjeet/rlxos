@@ -8,8 +8,7 @@ depends:
     - glib
     - iso-codes
     - libxml2
-    - libxkbfile
-    - libxi
+    - xorg-libs
     - xkeyboard-config
   
   buildtime:

@@ -66,9 +66,3 @@ packages:
                   ${pkgupd_pkgdir}/usr/share/pixmaps/qdbusviewer-qt5.png
     
       install -v -D ${FILES}/qt/*.desktop -t ${pkgupd_pkgdir}/usr/share/applications/
-
-      mkdir -p ${pkgupd_pkgdir}/usr/bin
-      for i in ${pkgupd_pkgdir}/usr/lib/qt5/bin/* ; do
-        ln -sv /usr/lib/qt5/bin/$(basename $i) ${pkgupd_pkgdir}/usr/bin/$(basename $i)
-        ln -sv /usr/lib/qt5/bin/$(basename $i) ${pkgupd_pkgdir}/usr/bin/$(basename $i)-qt5
-      done

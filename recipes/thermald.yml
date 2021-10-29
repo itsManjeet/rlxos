@@ -20,7 +20,14 @@ sources:
 packages:
   - id: pkg
     dir: thermal_daemon-2.4.6
-    flags:
-      - id: configure
-        value: >
-          --with-dbus-sys-dir=/usr/share/dbus-1/system.d
+    script: |
+      ./autogen.sh
+      ./configure --prefix=/usr \
+        --sysconfdir=/etc \
+        --with-dbus-sys-dir=/usr/share/dbus-1/system.d \
+        --localstatedir=/var \
+        --sbindir=/usr/bin
+
+      make 
+      make DESTDIR=${pkgupd_pkgdir} install
+      

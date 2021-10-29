@@ -1,0 +1,61 @@
+id: firefox
+version: 93.0
+about: Mozilla Firefox or simply Firefox, is a free and open-source web browser developed by the Mozilla Foundation and its subsidiary, the Mozilla Corporation. Firefox uses the Gecko rendering engine to display web pages, which implements current and anticipated web standards
+depends:
+  buildtime:
+    - gtk
+    - dbus-glib
+
+packages:
+  - id: pkg
+    sources:
+      - http://ftp.mozilla.org/pub/firefox/releases/93.0/linux-x86_64/en-US/firefox-93.0.tar.bz2
+    dir: .
+    pack: app
+    script: |
+      cp -a firefox ${pkgupd_pkgdir}
+      cp ${pkgupd_pkgdir}/browser/chrome/icons/default/default128.png ${pkgupd_pkgdir}/firefox.png
+      mkdir -p ${pkgupd_pkgdir}/lib/
+      ldd firefox/firefox
+
+AppRun: |
+  #!/bin/sh
+
+  export SNAP_NAME="firefox"
+  export MOZ_LEGACY_PROFILES=1
+  THIS="$0"
+  args=("$@")
+  NUMBER_OF_ARGS="$#"
+
+  if [ -z "$APPDIR" ] ; then
+    path="$(dirname "$(readlink -f "${THIS}")")"
+    while [[ "$path" != "" && ! -e "$path/$1" ]]; do
+      path=${path%/*}
+    done
+    export APPDIR="$path"
+  fi
+  path="$(dirname "$(readlink -f "${THIS}")")"
+  export APPDIR="$path"
+  echo $APPDIR
+
+  export PATH="${APPDIR}:${APPDIR}bin:${PATH}"
+  export XDG_DATA_DIRS="./share/:/usr/share/gnome:/usr/local/share/:/usr/share/:${XDG_DATA_DIRS}"
+  export LD_LIBRARY_PATH="${APPDIR}/usr/lib:${APPDIR}/lib:${LD_LIBRARY_PATH}"
+  export XDG_DATA_DIRS="${APPDIR}"/usr/share/:"${XDG_DATA_DIRS}":/usr/share/gnome/:/usr/local/share/:/usr/share/
+  export GSETTINGS_SCHEMA_DIR="${APPDIR}/usr/share/glib-2.0/schemas:${GSETTINGS_SCHEMA_DIR}"
+  BIN="${APPDIR}/firefox"
+
+  exec ${BIN} "${args[@]}"
+
+Desktopfile: |
+  [Desktop Entry]
+  Name=Firefox
+  Name[en_US]=Firefox
+  GenericName=Web Browser
+  GenericName[en_US]=Web Browser
+  Comment=Free web browser from Mozilla
+  Exec=firefox %U
+  Terminal=false
+  Type=Application
+  Icon=firefox
+  Categories=Network;

@@ -30,6 +30,53 @@ CYAN='\033[1;36m'
 WHITE='\033[1;37m'
 BBOLD='\033[1m'
 
+generate_hash() {
+    echo "${1}" | md5sum | cut -d ' ' -f1
+}
+
+# end_with_error 'message'
+# Display error message and exit
+end_with_error() {
+    echo -e "${RED}: ${1}${RESET}"
+    sleep 99999
+    exit
+}
+
+# verify_access
+# verify if secure action is valid
+verify_access() {
+    debug "Verifying security key"
+
+    if [[ -z "${SECURE}" ]]; then
+        end_with_error "Need security key to access rescue shell"
+    fi
+
+    if [[ ! -e '/.secure' ]]; then
+        end_with_error "No security key found"
+    fi
+
+    SECURE_HASHSUM="$(cat /.secure)"
+
+    if [[ ${SECURE_HASHSUM} != "$(generate_hash ${SECURE})" ]]; then
+        end_with_error "Security key check failed"
+    fi
+
+    echo -e "${GREEN} Verification Pass ${RESET}"
+}
+
+# reset_system
+# reset system delete cache
+reset_system() {
+    verify_access
+
+    debug "clearing cache directory"
+    mkdir -p /run/_root
+    mount -o rw ${root} /run/_root
+
+    rm -rvf /run/_root/rlxos/cache
+    umount /run/_root
+}
+
 # rescue_shell 'fail message'
 # drop the boot process into rescue mode for debug
 rescue_shell() {
@@ -203,8 +250,16 @@ parse_cmdline_args() {
             system="${p#*=}"
             ;;
 
+        secure=*)
+            SECURE="${p#*=}"
+            ;;
+
         debug)
             DEBUG=1
+            ;;
+
+        RESET)
+            SYSTEM_RESET=1
             ;;
 
         rescue)
@@ -241,6 +296,12 @@ function main() {
         debug "activating iso mode"
         prepare_cdrom
     elif [[ "${system}" ]]; then
+
+        if [[ ! -z "${SYSTEM_RESET}" ]]; then
+            debug "resetting system"
+            reset_system
+        fi
+
         debug "activating overlay mode"
         mount_root_system
     else

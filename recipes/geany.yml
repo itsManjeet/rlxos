@@ -1,0 +1,16 @@
+id: geany
+version: 1.38
+about: A fast and lightweight IDE
+depends:
+  runtime:
+    - gtk3
+    - vte
+  buildtime:
+    - intltool
+packages:
+  - id: pkg
+    dir: geany-1.38
+    environ:
+      - MAKEFLAFS="-j$(nproc)"
+    sources:
+      - https://github.com/geany/geany/releases/download/1.38.0/geany-1.38.tar.gz

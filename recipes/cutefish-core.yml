@@ -1,0 +1,15 @@
+id: cutefish-core
+version: 0.4
+about: System components and backend of cutefish
+depends:
+  runtime:
+    - qt
+    - polkit-qt
+  buildtime:
+    - extra-cmake-modules
+    - ninja
+packages:
+  - id: pkg
+    dir: core-0.4
+    sources:
+      - https://github.com/cutefishos/core/archive/0.4/cutefish-core-0.4.tar.gz

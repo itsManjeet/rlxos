@@ -9,7 +9,6 @@ depends:
     - shared-mime-info
     - polkit-gnome
     - xfdesktop
-    - xkbcomp
     - xinit
 sources:
   - https://archive.xfce.org/src/xfce/xfce4-session/4.16/xfce4-session-4.16.0.tar.bz2

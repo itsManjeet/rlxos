@@ -11,4 +11,4 @@ packages:
     sources:
       - https://pypi.org/packages/source/P/Pygments/Pygments-2.10.0.tar.gz
     script: |
-      py setup.py install --root=${pkgupd_pkgdir} -O1
+      python3 setup.py install --root=${pkgupd_pkgdir} -O1

@@ -8,6 +8,7 @@ depends:
     - docbook-xml
     - docbook-xsl
     - itstool
+    - py-pygments
     - libxslt
 
 sources:

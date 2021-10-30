@@ -34,11 +34,10 @@ packages:
           --libdir=/usr/lib
           --libexecdir=/usr/lib
           --enable-languages=c,c++
-          --enable-multilib
-          --with-multilib-list=m64,m32
+          --disable-multilib
           --disable-bootstrap
           --with-system-zlib
-        
+      
     postscript: |
       [[ -d ${pkgupd_pkgdir}/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixes/bits/ ]] && \
       rm -r ${pkgupd_pkgdir}/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixes/bits/
@@ -49,3 +48,17 @@ packages:
         ${pkgupd_pkgdir}/usr/lib/bfd-plugins/
       
       ln -sv gcc ${pkgupd_pkgdir}/usr/bin/cc
+      
+      _libgcc_dir=${pkgupd_pkgdir}/../../lib
+      mkdir -p ${pkgupd_pkgdir}/../../lib/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/plugin
+
+      mv ${pkgupd_pkgdir}/usr/lib/*.so* "${_libgcc_dir}"/usr/lib/
+      mv ${pkgupd_pkgdir}/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/*.so* \
+        ${_libgcc_dir}/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/
+      
+      mv ${pkgupd_pkgdir}usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/plugin/*.so* \
+        ${_libgcc_dir}usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/plugin/  
+
+  - id: lib
+    dir: gcc-11.1.0
+    script: true

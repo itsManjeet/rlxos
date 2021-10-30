@@ -12,7 +12,7 @@ depends:
     - autoconf-archive
   
   buildtime:
-    - gtkdoc
+    - gtk-doc
 
 sources:
   - https://github.com/intel/thermal_daemon/archive/v2.4.6/thermald-2.4.6.tar.gz

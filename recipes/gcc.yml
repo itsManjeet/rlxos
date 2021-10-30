@@ -56,8 +56,8 @@ packages:
       mv ${pkgupd_pkgdir}/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/*.so* \
         ${_libgcc_dir}/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/
       
-      mv ${pkgupd_pkgdir}usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/plugin/*.so* \
-        ${_libgcc_dir}usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/plugin/  
+      mv ${pkgupd_pkgdir}/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/plugin/*.so* \
+        ${_libgcc_dir}/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/plugin/  
 
   - id: lib
     dir: gcc-11.1.0

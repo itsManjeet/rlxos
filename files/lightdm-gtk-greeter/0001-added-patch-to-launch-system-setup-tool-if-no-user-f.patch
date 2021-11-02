@@ -1,0 +1,45 @@
+From c1fab0e34f4a4cdd64b226ed3a82be3421b8c50d Mon Sep 17 00:00:00 2001
+From: itsmanjeet <itsmanjeet1998@gmail.com>
+Date: Tue, 2 Nov 2021 21:55:42 +0530
+Subject: [PATCH] added patch to launch system-setup tool if no user found
+
+---
+ src/lightdm-gtk-greeter.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/src/lightdm-gtk-greeter.c b/src/lightdm-gtk-greeter.c
+index cefa348..770d47d 100644
+--- a/src/lightdm-gtk-greeter.c
++++ b/src/lightdm-gtk-greeter.c
+@@ -2707,6 +2707,8 @@ load_user_list (void)
+     const gchar  *selected_user;
+     gchar        *last_user;
+     gboolean      logged_in = FALSE;
++    gboolean      no_users  = TRUE;
++    GError       *error;
+ 
+     g_signal_connect (lightdm_user_list_get_instance (), "user-added", G_CALLBACK (user_added_cb), greeter);
+     g_signal_connect (lightdm_user_list_get_instance (), "user-changed", G_CALLBACK (user_changed_cb), greeter);
+@@ -2724,7 +2726,19 @@ load_user_list (void)
+                             1, lightdm_user_get_display_name (user),
+                             2, logged_in ? PANGO_WEIGHT_BOLD : PANGO_WEIGHT_NORMAL,
+                             -1);
++        no_users = FALSE;
+     }
++
++    if (no_users)
++    {
++        char* args[] = {"/bin/pkexec","/bin/sys-setup", NULL};
++        while (!g_spawn_async("/", args, NULL, G_SPAWN_DEFAULT, NULL, NULL, NULL, &error))
++        {
++            g_printerr("Failed to load system setup: %s\n",error->message);
++            sleep(2);
++        }
++    }
++
+     if (lightdm_greeter_get_has_guest_account_hint (greeter))
+     {
+         gtk_list_store_append (GTK_LIST_STORE (model), &iter);
+-- 
+2.32.0
+

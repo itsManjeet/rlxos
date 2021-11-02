@@ -1,0 +1,19 @@
+id: qogir-gtk-theme
+version: 2021-08-02
+about: A flat design theme for GTK
+tags:
+  - theme
+  - flat
+category: customization
+depends:
+  runtime:
+    - gtk
+packages:
+  - id: pkg
+    dir: Qogir-theme-2021-08-02
+    sources:
+      - qogir-gtk-theme-2021-08-02.tar.gz::https://github.com/vinceliuice/Qogir-theme/archive/refs/tags/2021-08-02.tar.gz
+    strip: false
+    script: |
+      install -d -m 0755 ${pkgupd_pkgdir}/usr/share/themes
+      ./install.sh -w -t standard -d ${pkgupd_pkgdir}/usr/share/themes

@@ -10,7 +10,10 @@ sources:
 packages:
   - id: pkg
     dir: lightdm-gtk-greeter-2.0.8
-
+    prescript: |
+      for i in ${FILES}/lightdm-gtk-greeter/*.patch ; do
+          patch -Np1 -i ${i}
+      done
     flags:
       - id: configure
         value: >

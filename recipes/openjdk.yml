@@ -1,0 +1,21 @@
+id: openjdk
+version: 16.0.2
+about: Java programming language
+depends:
+    runtime:
+        - alas-lib
+        - cups
+        - giflib
+        - xorg-libs
+
+packages:
+    - id: pkg
+      dir: .
+      sources:
+        - https://anduin.linuxfromscratch.org/BLFS/OpenJDK/OpenJDK-16.0.2/openjdk-16.0.2_linux-x64_bin.tar.gz
+      script: |
+        install -v -d -m 0755 ${pkgupd_pkgdir}/opt/openjdk-16.0.2
+        mv -v jdk-16.0.2
+        /* ${pkgupd_pkgdir}/opt/openjdk-16.0.2/
+        chown -R root:root ${pkgupd_pkgdir}/opt/openjdk-16.0.2
+        ln -sfv openjdk-16.0.2 ${pkgupd_pkgdir}/opt/jdk

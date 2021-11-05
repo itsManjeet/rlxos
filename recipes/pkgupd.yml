@@ -21,6 +21,10 @@ sources:
 packages:
   - id: pkg
     dir: pkgupd-main
+    prescript: |
+      for i in ${FILES}/pkgupd/*.patch ; do
+      patch -Np1 -i ${i}
+      done
     postscript: |
       install -v -D -m 0644 ${FILES}/pkgupd/pkgupd.desktop -t ${pkgupd_pkgdir}/usr/share/applications/
       install -v -D -m 0755 ${FILES}/pkgupd/pkgupd-url -t ${pkgupd_pkgdir}/usr/bin/

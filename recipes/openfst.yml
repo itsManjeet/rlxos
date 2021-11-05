@@ -30,6 +30,6 @@ packages:
           --enable-ngram-fsts
           --enable-pdt
           --enable-python PYTHON=python
-    postscript: |
-      install -d ${pkgupd_pkgdir}/etc/ld.so.conf.d
-      echo '/usr/lib/fst' > ${pkgupd_pkgdir}/etc/ld.so.cond.d/openfst.conf
+          #   postscript: |
+          #      install -d ${pkgupd_pkgdir}/etc/ld.so.conf.d
+          #      echo '/usr/lib/fst' > ${pkgupd_pkgdir}/etc/ld.so.cond.d/openfst.conf

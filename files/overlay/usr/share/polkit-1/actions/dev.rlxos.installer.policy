@@ -12,7 +12,7 @@
       <allow_inactive>yes</allow_inactive>
       <allow_active>yes</allow_active>
     </defaults>
-    <annotate key="org.freedesktop.policykit.exec.path">/bin/installer</annotate>
+    <annotate key="org.freedesktop.policykit.exec.path">/bin/sys-setup</annotate>
     <annotate key="org.freedesktop.policykit.exec.allow_gui">true</annotate>
   </action>
 

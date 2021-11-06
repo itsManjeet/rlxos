@@ -1,1 +1,12 @@
-- rebuilder xfce4, installer for dependencies
+PKGUPD
+- Add new mode entry in recipe for build packages in different modes  
+  Modes: Simple (default)
+         Split - sample package is split into multiple packages, package id = recipe_id-(package_id)
+               - use intermediate stage dir for DESTDIR
+         Merge - All packages in recipe are combined in same binary package, package id = recipe_id
+               - use intermediate stage dir for DESTDIR and use LD_LIBRARY_DIR, PATH, and other variables for work
+         Toolchain - current default
+         
+
+FACTORY
+- update build.sh to compile recipe files variables @version@, @name@

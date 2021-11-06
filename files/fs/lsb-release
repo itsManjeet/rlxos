@@ -1,4 +1,4 @@
 DISTRIB_ID="rlxos"
-DISTRIB_RELEASE="2110"
-DISTRIB_CODENAME="initial"
-DISTRIB_DESCRIPTION="rlxos 2117 initial"
+DISTRIB_RELEASE="@version@"
+DISTRIB_CODENAME="@codename@"
+DISTRIB_DESCRIPTION="rlxos @version@ @codename@"

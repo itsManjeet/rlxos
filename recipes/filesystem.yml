@@ -1,5 +1,6 @@
 id: filesystem
-version: 2110
+version: 2200
+codename: dark-dracula
 about: |
   rlxos filesystem
 
@@ -35,9 +36,13 @@ packages:
       ln -sv /run ${pkgupd_pkgdir}/var/run
 
       for i in fstab group inputrc \
-        issue lsb-release nsswitch.conf os-release \
+        issue nsswitch.conf \
         passwd profile shells ; do
         install -v -D -m 644 ${FILES}/fs/$i ${pkgupd_pkgdir}/etc/$i
+      done
+
+      for i in lsb-release os-release ; do
+        sed 's|@codename@|{{codename}}|' | sed 's|@version@|{{version}}|' > ${pkgupd_pkgdir}/etc/$i
       done
 
       install -v -d -m 0750 ${pkgupd_pkgdir}/root

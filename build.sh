@@ -10,7 +10,7 @@ BASEDIR="$(
 )"
 
 FILES=${BASEDIR}/files
-REPODB=${BASEDIR}/recipes
+REPODB=${BASEDIR}/build/recipes
 PKGSDIR=${BASEDIR}/pkgs
 SRCDIR=${BASEDIR}/src
 CFLAGS="-march=x86-64 -O2 -pipe"

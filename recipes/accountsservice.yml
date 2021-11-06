@@ -17,11 +17,11 @@ depends:
     - gobject-introspection
 
 sources:
-  - https://www.freedesktop.org/software/accountsservice/accountsservice-0.6.55.tar.xz
+  - https://www.freedesktop.org/software/accountsservice/accountsservice-{{version}}.tar.xz
 
 packages:
   - id: pkg
-    dir: accountsservice-0.6.55
+    dir: accountsservice-{{version}}
 
     flags:
       - id: configure

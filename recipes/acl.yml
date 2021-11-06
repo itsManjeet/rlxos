@@ -4,7 +4,7 @@ about: |
   Utilities to administer Access Control Lists
 
 sources:
-  - https://download.savannah.gnu.org/releases/acl/acl-2.3.1.tar.xz
+  - https://download.savannah.gnu.org/releases/acl/acl-{{version}}.tar.xz
 
 depends:
   runtime:
@@ -13,7 +13,7 @@ depends:
     
 packages:
   - id: pkg
-    dir: acl-2.3.1
+    dir: acl-{{version}}
 
     flags:
       - id: configure

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo -e "version: 0.1.0\nrecipes: " > pkgs/recipe
-for i in recipes/*.yml ; do 
+for i in build/recipes/*.yml ; do 
     echo "  - $(head -n1 ${i})" >> pkgs/recipe
     tail -n +2 $i | sed 's/^/    /' >> pkgs/recipe
     echo -e "\n" >> pkgs/recipe

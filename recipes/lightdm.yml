@@ -31,7 +31,7 @@ users:
     group: 65
     about: Lightdm Daemon
     dir: /var/lib/lightdm
-    shell: /bin/false
+    shell: /bin/sh
 
 packages:
   - id: pkg

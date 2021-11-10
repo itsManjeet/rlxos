@@ -1,4 +1,4 @@
-id: installer
+id: sys-setup
 version: 0.1.0
 about: |
   A Simple System Installer for rlxos
@@ -13,10 +13,12 @@ depends:
     - go
 
 sources:
-  - installer-0.1.0.tar.gz::https://github.com/rlxos/installer/archive/refs/heads/main.tar.gz
+  - sys-setup-0.1.0.tar.gz::https://github.com/rlxos/installer/archive/refs/heads/main.tar.gz
 
 packages:
   - id: pkg
     dir: installer-main
     script: |
       DESTDIR=${pkgupd_pkgdir} ./scripts/install.sh
+      go build -o ${pkgupd_pkgdir}/usr/bin/sys-setup
+

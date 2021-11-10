@@ -9,3 +9,7 @@ sources:
 packages:
   - id: pkg
     dir: xfce4-appfinder-4.16.1
+    prescript: |
+      for i in ${FILES}/xfce4-appfinder/*.patch ; do
+        patch -Np1 -i ${i}
+      done

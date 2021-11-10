@@ -6,7 +6,17 @@ PKGUPD
          Merge - All packages in recipe are combined in same binary package, package id = recipe_id
                - use intermediate stage dir for DESTDIR and use LD_LIBRARY_DIR, PATH, and other variables for work
          Toolchain - current default
-         
+         App   - package with dependencies in DESTDIR
 
 FACTORY
-- update build.sh to compile recipe files variables @version@, @name@
+- Fixed issues in 2200 drak dracula
+- Split:
+   - gcc, libgcc
+   - llvm, libllvm
+- image test utility (currently only test broken symlinks, and dependencies)
+
+SERVER
+- update server as per requirements of bazaar appimages
+
+INSTALLER
+- rlxos/app framework from gtk.Application to gtk.Assistant

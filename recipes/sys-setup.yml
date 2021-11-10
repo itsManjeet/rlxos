@@ -19,9 +19,4 @@ packages:
   - id: pkg
     dir: installer-main
     script: |
-      for i in ${FILES}/installer/*.patch ; do
-        echo "applying ${i}"
-        patch -Np1 -i ${i}
-      done
-      install -v -d ${pkgupd_pkgdir}/usr/bin/
-      go build -o ${pkgupd_pkgdir}/usr/bin/installer
+      DESTDIR=${pkgupd_pkgdir} ./scripts/install.sh

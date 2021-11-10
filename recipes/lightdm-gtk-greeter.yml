@@ -4,6 +4,8 @@ about: Lightdm Gtk Greeter
 depends:
   runtime:
     - lightdm
+    - gtk
+    - sys-setup
 sources:
   - https://github.com/Xubuntu/lightdm-gtk-greeter/releases/download/lightdm-gtk-greeter-2.0.8/lightdm-gtk-greeter-2.0.8.tar.gz
 

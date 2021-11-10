@@ -34,10 +34,11 @@ packages:
           --libdir=/usr/lib
           --libexecdir=/usr/lib
           --enable-languages=c,c++
-          --disable-multilib
+          --enable-multilib
+          --with-multilib-list=m64,m32
           --disable-bootstrap
           --with-system-zlib
-      
+        
     postscript: |
       [[ -d ${pkgupd_pkgdir}/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixes/bits/ ]] && \
       rm -r ${pkgupd_pkgdir}/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixes/bits/

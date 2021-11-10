@@ -1,0 +1,21 @@
+id: jq
+version: 1.6
+about: cmdline json parser
+depends:
+  runtime:
+    - glibc
+  buildtime:
+    - autoconf
+    - automake
+    - bison
+    - flex
+    - python
+packages:
+  - id: pkg
+    dir: jq-1.6
+    sources:
+      - https://github.com/stedolan/jq/releases/download/jq-1.6/jq-1.6.tar.gz
+    script: |
+      ./configure --prefix=/usr --with-oniguruma=builtin --disable-maintainer-mode
+      make
+      make install prefix=/usr DESTDIR=${pkgupd_pkgdir}

@@ -5,7 +5,7 @@ fi
 
 ISO="${1}"
 shift
-qemu-system-x86_64 -m 4G \
+qemu-system-x86_64 -m 2G \
     -vga virtio \
     -display default \
     -net user,hostfwd=tcp::7777-:80 \
@@ -15,4 +15,5 @@ qemu-system-x86_64 -m 4G \
     -smp 2 \
     -cdrom ${ISO} \
     -drive file=disk.qcow2,if=virtio \
+    -net nic -net user,smb=shared_dir \
     -cpu host -enable-kvm ${@}

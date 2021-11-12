@@ -208,11 +208,10 @@ while read locale charset; do
 done </var/cache/pkgupd/files/supported_locales
 echo "done..."
 
-install -v -D -m 0644 -o root -g root /var/cache/pkgupd/files/lightdm/auto-login.conf -t ${SYSROOT}/etc/lightdm/lightdm.conf.d/
-install -v -D -m 0644 -o 200 -g users /var/cache/pkgupd/files/sys-setup/sys-setup.desktop -t ${SYSROOT}/var/lib/sys-setup/.config/autostart/
-install -v -d -m 0755 -o 62 -g 999 ${SYSROOT}/var/rlxos-sys/.config
-install -v -d -m 0755 -o 62 -g 999 ${SYSROOT}/var/rlxos-sys/.config/autostart
-install -v -D -m 0755 -o 62 -g 999 /var/cache/pkgupd/files/installer.desktop -t ${SYSROOT}/var/rlxos-sys/.config/autostart/
+#install -v -D -m 0644 -o 200 -g users /var/cache/pkgupd/files/sys-setup/sys-setup.desktop -t ${SYSROOT}/var/lib/sys-setup/.config/autostart/
+#install -v -d -m 0755 -o 62 -g 999 ${SYSROOT}/var/rlxos-sys/.config
+#install -v -d -m 0755 -o 62 -g 999 ${SYSROOT}/var/rlxos-sys/.config/autostart
+#install -v -D -m 0755 -o 62 -g 999 /var/cache/pkgupd/files/installer.desktop -t ${SYSROOT}/var/rlxos-sys/.config/autostart/
 
 
 rm ${OUTPUT}.sys

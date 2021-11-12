@@ -20,5 +20,7 @@ packages:
     dir: installer-main
     script: |
       DESTDIR=${pkgupd_pkgdir} ./scripts/install.sh
-      go build -o ${pkgupd_pkgdir}/usr/bin/sys-setup
+      go build -o ${pkgupd_pkgdir}/usr/bin/sys-setup-usr
+      install -v -D -m 0644 perm/dev.rlxos.system-setup.policy -t ${pkgupd_pkgdir}/usr/share/polkit-1/actions/
+      sed -i 's|sys-setup|sys-setup-usr|g' ${pkgupd_pkgdir}/usr/share/polkit-1/actions/dev.rlxos.system-setup.policy
 

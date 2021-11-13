@@ -189,6 +189,7 @@ echo 'LANG=en_IN.UTF-8' > /etc/locale.conf
 echo 'workstation' > /etc/hostname
 ln -sfv /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
 useradd -m -g users -G adm -u 200 -s /bin/sh -d /var/lib/sys-setup sys-setup
+echo -e "rlxos\nrlxos" | passwd sys-setup
 systemctl enable inspector --global
 make-ca -C /etc/ssl/certdata.txt
 

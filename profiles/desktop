@@ -1,3 +1,3 @@
 id = desktop
-packages = core linux firmware initramfs grub grub-legacy gparted xorg xfce4 lightdm lightdm-gtk-greeter fonts-cantarell qogir-gtk-theme qogir-icon-theme inspector fuse2 libbsd zenity sys-setup
+packages = core linux firmware initramfs grub grub-legacy gparted xorg gnome fonts-cantarell fluent-icon-theme fluent-gtk-theme fluent-wallpaper inspector fuse2 libbs
 release = 2200

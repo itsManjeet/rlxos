@@ -12,6 +12,8 @@ sources:
 packages:
   - id: pkg
     dir: xfce4-panel-4.16.3
+    prescript: |
+      patch migrate/default.xml.in < ${FILES}/xfce4-panel/rlxos-panel-configuration.patch
     flags:
       - id: configure
         value: --enable-vala=no

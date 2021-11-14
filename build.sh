@@ -19,9 +19,9 @@ MAKEFLAGS="-j$(nproc)"
 
 BUILDDIR=${BUILDDIR:-"/var/cache/pkgupd/build"}
 
-${BASEDIR}/configure.py
 [[ -t 1 ]] && INTERACTIVE='-i'
 if [[ -z "${NOCONTAINER}" ]]; then
+    ./configure.py
     echo ":: Initializing Container ::"
     docker run \
         --rm \

@@ -16,6 +16,8 @@ sources:
 packages:
   - id: pkg
     dir: xfce4-settings-4.16.2
+    prescript: |
+      patch xfsettingsd/xsettings.xml < ${FILES}/xfce4-settings/rlxos-theming.patch
     flags:
       - id: configure
         value: >

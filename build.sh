@@ -197,7 +197,10 @@ make-ca -C /etc/ssl/certdata.txt
 EOT
 
 install -v -D -m 0644 /var/cache/pkgupd/files/lightdm/10-auto-login.conf -t ${SYSROOT}/etc/lightdm/lightdm.conf.d/
-install -v -D -m 0644 -o 200 /var/cache/files/sys-setup/sys-setup.desktop -t ${SYSROOT}/var/lib/sys-setup/.config/autostart/
+install -v -d -m 0644 -o 200 -g 0 ${SYSROOT}/var/lib/sys-setup/
+install -v -d -m 0644 -o 200 -g 0 ${SYSROOT}/var/lib/sys-setup/.config
+install -v -d -m 0644 -o 200 -g 0 ${SYSROOT}/var/lib/sys-setup/.config/autostart
+install -v -D -m 0644 -o 200 -g 0 /var/cache/pkgupd/files/sys-setup/sys-setup.desktop -t ${SYSROOT}/var/lib/sys-setup/.config/autostart/
 
 echo ":: Generating locales ::"
 mkdir -p ${SYSROOT}/usr/lib/locale/

@@ -1,6 +1,0 @@
-polkit.addRule(function(action, subject) {
-    if (action.id == "dev.rlxos.installer" &&
-        subject.isInGroup("adm")) {
-        return polkit.Result.YES;
-    }
-});

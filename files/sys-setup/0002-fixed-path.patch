@@ -1,0 +1,54 @@
+From f27e2da143aaa47dd2bcdc54b23be95a063ccbd3 Mon Sep 17 00:00:00 2001
+From: itsmanjeet <itsmanjeet1998@gmail.com>
+Date: Mon, 15 Nov 2021 15:43:33 +0530
+Subject: [PATCH] fixed path
+
+---
+ perm/dev.rlxos.system-setup.policy | 2 +-
+ scripts/genui.sh                   | 8 --------
+ scripts/install.sh                 | 2 +-
+ 3 files changed, 2 insertions(+), 10 deletions(-)
+ delete mode 100755 scripts/genui.sh
+
+diff --git a/perm/dev.rlxos.system-setup.policy b/perm/dev.rlxos.system-setup.policy
+index df70b3e..642e4ba 100644
+--- a/perm/dev.rlxos.system-setup.policy
++++ b/perm/dev.rlxos.system-setup.policy
+@@ -12,7 +12,7 @@
+       <allow_inactive>yes</allow_inactive>
+       <allow_active>yes</allow_active>
+     </defaults>
+-    <annotate key="org.freedesktop.policykit.exec.path">/bin/sys-setup</annotate>
++    <annotate key="org.freedesktop.policykit.exec.path">/bin/sys-setup-usr</annotate>
+     <annotate key="org.freedesktop.policykit.exec.allow_gui">true</annotate>
+   </action>
+ 
+diff --git a/scripts/genui.sh b/scripts/genui.sh
+deleted file mode 100755
+index 791188e..0000000
+--- a/scripts/genui.sh
++++ /dev/null
+@@ -1,8 +0,0 @@
+-#!/bin/sh
+-
+-_UI="$(cat ${1})"
+-
+-echo "package app
+-
+-const UI = \`${_UI}\`" > app/ui.go
+-
+diff --git a/scripts/install.sh b/scripts/install.sh
+index 7f9fb8d..002b78f 100755
+--- a/scripts/install.sh
++++ b/scripts/install.sh
+@@ -4,6 +4,6 @@ DESTDIR=${DESTDIR:-"/"}
+ VERSION=${VERSION:-'2110'}
+ 
+ install -v -d -m 0755 cmd ${DESTDIR}/usr/bin/
+-go build -o ${DESTDIR}/usr/bin/sys-setup cmd/main.go
++go build -o ${DESTDIR}/usr/bin/sys-setup-usr cmd/main.go
+ 
+ install -v -D -m 0644 perm/dev.rlxos.system-setup.policy -t ${DESTDIR}/usr/share/polkit-1/actions/
+-- 
+2.32.0
+

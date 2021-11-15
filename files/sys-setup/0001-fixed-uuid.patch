@@ -1,0 +1,39 @@
+From 0c7957e243f5070d3a2afe3d024f824d34a6008a Mon Sep 17 00:00:00 2001
+From: itsmanjeet <itsmanjeet1998@gmail.com>
+Date: Mon, 15 Nov 2021 19:54:44 +0530
+Subject: [PATCH] fixed uuid
+
+---
+ installer/install.go               | 2 +-
+ perm/dev.rlxos.system-setup.policy | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/installer/install.go b/installer/install.go
+index 8f9b878..bde0a8c 100644
+--- a/installer/install.go
++++ b/installer/install.go
+@@ -100,7 +100,7 @@ default='rlxos initial setup'
+ menuentry 'rlxos initial setup' {
+ 	insmod gzio
+ 	insmod ext2
+-	linux /boot/vmlinuz root=` + PartitionUUID + " system=" + VERSION + `
++	linux /boot/vmlinuz root=UUID=` + PartitionUUID + " system=" + VERSION + `
+ 	initrd /boot/initrd	
+ }`
+ 
+diff --git a/perm/dev.rlxos.system-setup.policy b/perm/dev.rlxos.system-setup.policy
+index 642e4ba..df70b3e 100644
+--- a/perm/dev.rlxos.system-setup.policy
++++ b/perm/dev.rlxos.system-setup.policy
+@@ -12,7 +12,7 @@
+       <allow_inactive>yes</allow_inactive>
+       <allow_active>yes</allow_active>
+     </defaults>
+-    <annotate key="org.freedesktop.policykit.exec.path">/bin/sys-setup-usr</annotate>
++    <annotate key="org.freedesktop.policykit.exec.path">/bin/sys-setup</annotate>
+     <annotate key="org.freedesktop.policykit.exec.allow_gui">true</annotate>
+   </action>
+ 
+-- 
+2.32.0
+

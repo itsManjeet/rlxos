@@ -5,7 +5,7 @@ fi
 
 ISO="${1}"
 shift
-qemu-system-x86_64 -m 2G \
+qemu-system-x86_64 -m 3G \
     -vga virtio \
     -display default \
     -net user,hostfwd=tcp::7777-:80 \

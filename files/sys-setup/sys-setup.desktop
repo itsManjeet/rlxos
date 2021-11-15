@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name=System Setup
-Exec=/bin/sys-setup
+Exec=pkexec /bin/sys-setup-usr
 Icon=download
 Comment=rlxos System setup tool
 StartupNotify=false

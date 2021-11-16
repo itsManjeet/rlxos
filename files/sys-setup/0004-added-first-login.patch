@@ -1,0 +1,499 @@
+From d6dee01b6daa7f3e58612a84f7bb6253d0c51247 Mon Sep 17 00:00:00 2001
+From: itsmanjeet <itsmanjeet1998@gmail.com>
+Date: Tue, 16 Nov 2021 14:26:05 +0530
+Subject: [PATCH] added first login
+
+---
+ app/app.go             |  89 +++++++++++++++++++++++
+ firstlogin/data.go     |  12 +++
+ firstlogin/locale.go   |  11 +++
+ firstlogin/setup.go    | 161 +++++++++++++++++++++++++++++++++++++++++
+ firstlogin/timezone.go |  29 ++++++++
+ firstlogin/user.go     |  71 ++++++++++++++++++
+ main.go                |  25 ++++++-
+ 7 files changed, 396 insertions(+), 2 deletions(-)
+ create mode 100644 firstlogin/data.go
+ create mode 100644 firstlogin/locale.go
+ create mode 100644 firstlogin/setup.go
+ create mode 100644 firstlogin/timezone.go
+ create mode 100644 firstlogin/user.go
+
+diff --git a/app/app.go b/app/app.go
+index 292a58f..6eacd48 100644
+--- a/app/app.go
++++ b/app/app.go
+@@ -1,6 +1,7 @@
+ package app
+ 
+ import (
++	"errors"
+ 	"log"
+ 	"os"
+ 
+@@ -99,3 +100,91 @@ func (app *App) IsDebug(appID string) bool {
+ 	log.Println("Debug is enabled")
+ 	return true
+ }
++
++func (app *App) CreateList(list *gtk.ListBox) (*gtk.ScrolledWindow, error) {
++	scrolledWidth, err := gtk.ScrolledWindowNew(nil, nil)
++	if err != nil {
++		return nil, err
++	}
++	scrolledWidth.SetMarginStart(185)
++	scrolledWidth.SetMarginEnd(185)
++
++	viewPort, err := gtk.ViewportNew(nil, nil)
++	if err != nil {
++		return nil, err
++	}
++	scrolledWidth.Add(viewPort)
++	viewPort.Add(list)
++
++	return scrolledWidth, nil
++}
++
++func (app *App) UpdateListText(list *gtk.ListBox, data ...string) error {
++
++	widgets := []*gtk.Widget{}
++	for _, a := range data {
++		wid, err := gtk.LabelNew(a)
++		if err != nil {
++			return err
++		}
++		wid.SetHAlign(gtk.ALIGN_CENTER)
++		wid.SetHExpand(true)
++		widgets = append(widgets, &wid.Widget)
++		wid.ShowAll()
++	}
++
++	return app.UpdateList(list, widgets...)
++}
++
++func (app *App) UpdateList(list *gtk.ListBox, data ...*gtk.Widget) error {
++
++	list.GetChildren().Foreach(func(f interface{}) {
++		list.Remove(f.(gtk.IWidget))
++	})
++
++	list.SetHeaderFunc(func(row, before *gtk.ListBoxRow) {
++		if before != nil {
++			sep, _ := gtk.SeparatorNew(gtk.ORIENTATION_HORIZONTAL)
++			sep.Show()
++			row.SetHeader(sep)
++		}
++	})
++
++	for pos, i := range data {
++		box, err := gtk.BoxNew(gtk.ORIENTATION_HORIZONTAL, 0)
++		if err != nil {
++			return err
++		}
++		row, err := gtk.ListBoxRowNew()
++		if err != nil {
++			return err
++		}
++		box.SetBorderWidth(16)
++		box.Add(i)
++		row.Add(box)
++
++		list.Insert(row, pos)
++	}
++
++	return nil
++}
++
++func (app *App) GetListText(row *gtk.ListBoxRow) (string, error) {
++	box, err := row.GetChild()
++	if err != nil {
++		return "", err
++	}
++	boxWidget, ok := box.(*gtk.Box)
++	if !ok {
++		return "", errors.New("not a box widget")
++	}
++
++	labelWidget, ok := (boxWidget.GetChildren().First().Data().(*gtk.Widget))
++	if !ok {
++		return "", errors.New("not a label widget")
++	}
++
++	label := &gtk.Label{Widget: *labelWidget}
++
++	return label.GetText()
++}
+diff --git a/firstlogin/data.go b/firstlogin/data.go
+new file mode 100644
+index 0000000..2911d98
+--- /dev/null
++++ b/firstlogin/data.go
+@@ -0,0 +1,12 @@
++package firstlogin
++
++var (
++	SelectedLocale   string
++	SelectedTimeZone string
++)
++
++const (
++	APPID        = "FIRSTLOGIN"
++	LOCALE_DIR   = "/usr/share/locale/"
++	TIMEZONE_DIR = "/usr/share/zoneinfo/"
++)
+diff --git a/firstlogin/locale.go b/firstlogin/locale.go
+new file mode 100644
+index 0000000..6fa4d19
+--- /dev/null
++++ b/firstlogin/locale.go
+@@ -0,0 +1,11 @@
++package firstlogin
++
++import "io/ioutil"
++
++// #include <locale.h>
++import "C"
++
++func (f *FirstLogin) generateLocale(locale string) error {
++	C.setlocale(0, C.CString(locale))
++	return ioutil.WriteFile("/etc/locale.conf", []byte("LANG="+locale), 0644)
++}
+diff --git a/firstlogin/setup.go b/firstlogin/setup.go
+new file mode 100644
+index 0000000..c2705e4
+--- /dev/null
++++ b/firstlogin/setup.go
+@@ -0,0 +1,161 @@
++package firstlogin
++
++import (
++	"log"
++	"os"
++	"os/exec"
++	"path"
++
++	"github.com/gotk3/gotk3/gtk"
++	"github.com/rlxos/installer/app"
++)
++
++type FirstLogin struct {
++	*app.App
++
++	WelcomePage *app.Page
++	langList    *gtk.ListBox
++
++	TimeZonePage *app.Page
++	timeZoneList *gtk.ListBox
++
++	UserAccountPage *app.Page
++	FinishedPage    *app.Page
++}
++
++func Setup(win *gtk.Assistant) error {
++
++	f := &FirstLogin{}
++	var err error
++
++	f.App, err = app.Setup(win)
++	if err != nil {
++		return err
++	}
++
++	f.WelcomePage, err = f.NewPage("Welcome!", "Thanks for choosing rlxos", "rlxos", nil)
++	if err != nil {
++		return err
++	}
++	f.langList, err = gtk.ListBoxNew()
++	if err != nil {
++		return err
++	}
++
++	f.UpdateListText(f.langList, "en_IN.UTF-8", "en_US.UTF-8")
++	f.langList.Connect("row-activated", func(list *gtk.ListBox, row *gtk.ListBoxRow) {
++		SelectedLocale, _ = f.GetListText(row)
++		log.Println("Selected Locale: ", SelectedLocale)
++		go f.generateLocale(SelectedLocale)
++		win.SetPageComplete(f.WelcomePage, true)
++	})
++	wid, err := f.CreateList(f.langList)
++	if err != nil {
++		return err
++	}
++	f.WelcomePage.Box.PackStart(wid, true, true, 0)
++
++	win.AppendPage(f.WelcomePage)
++	win.SetPageType(f.WelcomePage, gtk.ASSISTANT_PAGE_INTRO)
++
++	//
++	// Timezone
++	//
++	f.TimeZonePage, err = f.NewPage("TimeZone", "Select your timezone", "time", nil)
++	if err != nil {
++		return err
++	}
++	f.timeZoneList, err = gtk.ListBoxNew()
++	if err != nil {
++		return err
++	}
++	f.UpdateListText(f.timeZoneList, f.getTimeZoneList()...)
++	f.timeZoneList.Connect("row-activated", func(list *gtk.ListBox, row *gtk.ListBoxRow) {
++
++	})
++	timeZoneListWidget, err := f.CreateList(f.timeZoneList)
++	if err != nil {
++		return err
++	}
++	f.TimeZonePage.Box.PackStart(timeZoneListWidget, true, true, 0)
++	f.timeZoneList.Connect("row-activated", func(list *gtk.ListBox, row *gtk.ListBoxRow) {
++		SelectedTimeZone, _ = f.GetListText(row)
++		log.Println("Selected Timezone: ", SelectedTimeZone)
++		go os.Link(path.Join(TIMEZONE_DIR, SelectedTimeZone), "/etc/localtime")
++		win.SetPageComplete(f.TimeZonePage, true)
++	})
++
++	win.AppendPage(f.TimeZonePage)
++	win.SetPageType(f.TimeZonePage, gtk.ASSISTANT_PAGE_CONTENT)
++
++	//
++	// User Account
++	//
++	f.UserAccountPage, err = f.NewTitledPage("UserAccount", "Create Primary user", "im-user", nil)
++	if err != nil {
++		return err
++	}
++	win.AppendPage(f.UserAccountPage)
++	win.SetPageType(f.UserAccountPage, gtk.ASSISTANT_PAGE_CONTENT)
++	useridBox, _ := gtk.EntryNew()
++	useridBox.SetPlaceholderText("Username")
++	useridBox.SetMarginStart(178)
++	useridBox.SetMarginEnd(178)
++	useridBox.SetMarginBottom(12)
++	f.UserAccountPage.Box.PackStart(useridBox, false, false, 0)
++
++	passwdBox, _ := gtk.EntryNew()
++	passwdBox.SetPlaceholderText("Password")
++	passwdBox.SetMarginBottom(16)
++	passwdBox.SetMarginStart(178)
++	passwdBox.SetMarginEnd(178)
++	passwdBox.SetVisibility(false)
++	passwdBox.SetIconFromIconName(gtk.ENTRY_ICON_SECONDARY, "view-hidden")
++	passwdBox.Connect("icon-press", func(entry *gtk.Entry, iconType gtk.EntryIconPosition) {
++		passwdBox.SetVisibility(!passwdBox.GetVisibility())
++		if passwdBox.GetVisibility() {
++			passwdBox.SetIconFromIconName(gtk.ENTRY_ICON_SECONDARY, "image-red-eye")
++		} else {
++			passwdBox.SetIconFromIconName(gtk.ENTRY_ICON_SECONDARY, "view-hidden")
++		}
++	})
++	f.UserAccountPage.Box.PackStart(passwdBox, false, false, 0)
++
++	createUserBtn, _ := gtk.ButtonNewWithLabel("Create")
++	createUserBtn.SetHAlign(gtk.ALIGN_CENTER)
++	f.UserAccountPage.PackStart(createUserBtn, false, false, 0)
++	createUserBtn.Connect("clicked", func() {
++
++		userid, _ := useridBox.GetText()
++		passwd, _ := passwdBox.GetText()
++
++		go f.createUser(userid, passwd)
++	})
++
++	//
++	// Finished Page
++	//
++	f.FinishedPage, err = f.NewTitledPage("Success", "First login tasks done successfully, Enjoy", "emblem-checked", nil)
++	if err != nil {
++		return err
++	}
++	finishedBtn, err := gtk.ButtonNewWithLabel("Done")
++	if err != nil {
++		return err
++	}
++	f.FinishedPage.Box.PackStart(finishedBtn, false, false, 0)
++	finishedBtn.SetHAlign(gtk.ALIGN_CENTER)
++	finishedBtn.Connect("clicked", func() {
++		if !f.IsDebug(APPID) {
++			exec.Command("xfce4-session-logout", "--logout").Run()
++		} else {
++			app, _ := win.GetApplication()
++			app.Quit()
++		}
++	})
++	win.AppendPage(f.FinishedPage)
++	win.SetPageType(f.FinishedPage, gtk.ASSISTANT_PAGE_CUSTOM)
++
++	return nil
++
++}
+diff --git a/firstlogin/timezone.go b/firstlogin/timezone.go
+new file mode 100644
+index 0000000..521db49
+--- /dev/null
++++ b/firstlogin/timezone.go
+@@ -0,0 +1,29 @@
++package firstlogin
++
++import (
++	"io/ioutil"
++	"path"
++)
++
++func (f *FirstLogin) getTimeZoneList() []string {
++	dir, err := ioutil.ReadDir(TIMEZONE_DIR)
++	if err != nil {
++		return nil
++	}
++
++	list := []string{}
++
++	for _, cont := range dir {
++		if cont.IsDir() {
++			place_dir, err := ioutil.ReadDir(path.Join(TIMEZONE_DIR, cont.Name()))
++			if err != nil {
++				return nil
++			}
++			for _, pla := range place_dir {
++				list = append(list, cont.Name()+"/"+pla.Name())
++			}
++		}
++	}
++
++	return list
++}
+diff --git a/firstlogin/user.go b/firstlogin/user.go
+new file mode 100644
+index 0000000..4bdf787
+--- /dev/null
++++ b/firstlogin/user.go
+@@ -0,0 +1,71 @@
++package firstlogin
++
++import (
++	"log"
++	"os/exec"
++	"strings"
++	"unicode"
++
++	"github.com/gotk3/gotk3/glib"
++	"github.com/gotk3/gotk3/gtk"
++)
++
++func (f *FirstLogin) createUser(userid, passwd string) {
++
++	showError := func(mesg string) {
++		glib.IdleAdd(func() {
++			f.Window.SetPageComplete(f.UserAccountPage, false)
++
++			dialog := gtk.MessageDialogNew(f.Window, gtk.DIALOG_DESTROY_WITH_PARENT|gtk.DIALOG_MODAL, gtk.MESSAGE_ERROR, gtk.BUTTONS_CLOSE, mesg)
++			dialog.Run()
++			dialog.Destroy()
++		})
++	}
++
++	checkEntry := func(data string, entry string) bool {
++		if len(data) == 0 {
++			showError("Please Input value in " + entry)
++			return false
++		}
++
++		if strings.ContainsRune(data, ' ') {
++			showError(entry + " should not contain any spaces")
++			return false
++		}
++
++		if entry == "username" {
++			if unicode.IsDigit(rune(data[0])) {
++				showError(entry + " should not starts with digit")
++				return false
++			}
++		}
++
++		return true
++	}
++
++	if !checkEntry(userid, "username") {
++		return
++	}
++
++	if !checkEntry(passwd, "password") {
++		return
++	}
++
++	if !f.IsDebug(APPID) {
++		if err := exec.Command("useradd", "-G", "adm", "-g", "user", "-m", userid).Run(); err != nil {
++			showError(err.Error())
++			return
++		}
++		if err := exec.Command("sh", "-c", "echo "+passwd+"\n"+passwd+" | passwd").Run(); err != nil {
++			showError(err.Error())
++			return
++		}
++	} else {
++		log.Println("creating user: ", userid)
++	}
++
++	glib.IdleAdd(func() {
++		f.Window.SetPageComplete(f.UserAccountPage, true)
++	})
++
++}
+diff --git a/main.go b/main.go
+index ac0bb97..4e8ddc2 100644
+--- a/main.go
++++ b/main.go
+@@ -5,9 +5,12 @@ import (
+ 	"log"
+ 	"os"
+ 	"os/exec"
++	"strings"
+ 
++	"github.com/gotk3/gotk3/gdk"
+ 	"github.com/gotk3/gotk3/glib"
+ 	"github.com/gotk3/gotk3/gtk"
++	"github.com/rlxos/installer/firstlogin"
+ 	"github.com/rlxos/installer/installer"
+ )
+ 
+@@ -28,6 +31,7 @@ func main() {
+ 		_cmdline, err := ioutil.ReadFile("/proc/cmdline")
+ 		commandLine = string(_cmdline)
+ 		checkError(err)
++
+ 		/// TODO pre configurations
+ 	})
+ 
+@@ -39,13 +43,30 @@ func main() {
+ 
+ 		window.SetDefaultSize(800, 600)
+ 
+-		if err := installer.Setup(window); err != nil {
+-			checkError(err)
++		if strings.Contains(commandLine, "iso") || os.Getenv("SYS_SETUP_MODE") == "installer" {
++			if err := installer.Setup(window); err != nil {
++				checkError(err)
++			}
++		} else {
++			if err := firstlogin.Setup(window); err != nil {
++				checkError(err)
++			}
+ 		}
+ 
+ 		window.ShowAll()
+ 		application.AddWindow(window)
+ 
++		provider, err := gtk.CssProviderNew()
++		checkError(err)
++
++		if err := provider.LoadFromData("entry { padding: 18px; }"); err != nil {
++			checkError(err)
++		}
++
++		screen, err := gdk.ScreenGetDefault()
++		checkError(err)
++		gtk.AddProviderForScreen(screen, provider, 1)
++
+ 	})
+ 
+ 	application.Connect("shutdown", func() {
+-- 
+2.32.0
+

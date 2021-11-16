@@ -11,3 +11,5 @@ sources:
 packages:
   - id: pkg
     dir: xfwm4-4.16.1
+    prescript: |
+      patch defaults/defaults < ${FILES}/xfwm4/rlxos-config.patch

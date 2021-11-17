@@ -13,3 +13,4 @@ packages:
     dir: xfwm4-4.16.1
     prescript: |
       patch defaults/defaults < ${FILES}/xfwm4/rlxos-config.patch
+      patch settings-dialogs/workspace-settings.c < ${FILES}/xfce4/remove-workspace-title.patch

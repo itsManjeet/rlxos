@@ -196,7 +196,7 @@ make-ca -C /etc/ssl/certdata.txt
 
 EOT
 
-install -v -D -m 0644 /var/cache/pkgupd/files/logo/logo.png ${SYSROOT}/usr/share/pixmap/rlxos.png
+install -v -D -m 0644 /var/cache/pkgupd/files/logo/logo.png ${SYSROOT}/usr/share/pixmaps/rlxos.png
 install -v -D -m 0644 /var/cache/pkgupd/files/lightdm/10-auto-login.conf -t ${SYSROOT}/etc/lightdm/lightdm.conf.d/
 install -v -d -m 0750 -o 200 -g 0 ${SYSROOT}/var/lib/sys-setup/
 install -v -d -m 0750 -o 200 -g 0 ${SYSROOT}/var/lib/sys-setup/.config

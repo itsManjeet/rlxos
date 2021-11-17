@@ -1,0 +1,127 @@
+From b5494cad6501d0efe91977a26ecbfb2de518f1ca Mon Sep 17 00:00:00 2001
+From: itsmanjeet <itsmanjeet1998@gmail.com>
+Date: Wed, 17 Nov 2021 22:20:39 +0530
+Subject: [PATCH] added post configuration page
+
+---
+ firstlogin/post.go  | 35 +++++++++++++++++++++++++++++++++++
+ firstlogin/setup.go | 34 ++++++++++++++++++++++++----------
+ firstlogin/user.go  |  1 +
+ 3 files changed, 60 insertions(+), 10 deletions(-)
+ create mode 100644 firstlogin/post.go
+
+diff --git a/firstlogin/post.go b/firstlogin/post.go
+new file mode 100644
+index 0000000..9dbb050
+--- /dev/null
++++ b/firstlogin/post.go
+@@ -0,0 +1,35 @@
++package firstlogin
++
++import (
++	"log"
++	"os/exec"
++	"time"
++
++	"github.com/gotk3/gotk3/glib"
++)
++
++func (f *FirstLogin) startPost() {
++
++	updateProgress := func(mesg string, prog float64) {
++		glib.IdleAdd(func() {
++
++			f.postProgress.SetText(mesg)
++			f.postProgress.SetFraction(prog)
++		})
++
++		time.Sleep(time.Millisecond * 150)
++	}
++	updateProgress("Executing post process", 0.1)
++
++	updateProgress("Updating grub configurations", 0.25)
++	if err := exec.Command("update-grub").Run(); err != nil {
++		log.Println("Failed to update grub, error: ", err)
++	}
++
++	updateProgress("Complete configurations", 1.0)
++
++	glib.IdleAdd(func() {
++		f.Window.SetPageComplete(f.ProcessPage, true)
++		f.Window.SetCurrentPage(4)
++	})
++}
+diff --git a/firstlogin/setup.go b/firstlogin/setup.go
+index cebbed7..6d5ecfb 100644
+--- a/firstlogin/setup.go
++++ b/firstlogin/setup.go
+@@ -20,7 +20,11 @@ type FirstLogin struct {
+ 	timeZoneList *gtk.ListBox
+ 
+ 	UserAccountPage *app.Page
+-	FinishedPage    *app.Page
++
++	ProcessPage  *app.Page
++	postProgress *gtk.ProgressBar
++
++	FinishedPage *app.Page
+ }
+ 
+ func Setup(win *gtk.Assistant) error {
+@@ -137,6 +141,22 @@ func Setup(win *gtk.Assistant) error {
+ 		go f.createUser(userid, passwd)
+ 	})
+ 
++	//
++	// Process Page
++	//
++	f.ProcessPage, err = f.NewPage("Post Install", "Executing post setup configurations", "configure", nil)
++	if err != nil {
++		return err
++	}
++	f.postProgress, err = gtk.ProgressBarNew()
++	if err != nil {
++		return err
++	}
++	f.postProgress.SetShowText(true)
++	f.ProcessPage.PackStart(f.postProgress, true, true, 0)
++	win.AppendPage(f.ProcessPage)
++	win.SetPageType(f.ProcessPage, gtk.ASSISTANT_PAGE_PROGRESS)
++
+ 	//
+ 	// Finished Page
+ 	//
+@@ -156,15 +176,9 @@ func Setup(win *gtk.Assistant) error {
+ 			if err != nil {
+ 				log.Println("Failed to remove autologin file, ", err.Error())
+ 			}
+-			pkexecUid := os.Getenv("PKEXEC_UID")
+-			if len(pkexecUid) == 0 {
+-				if err := exec.Command("xfce4-session-logout", "--logout").Run(); err != nil {
+-					log.Println("Failed to do execute logout, ", err)
+-				}
+-			} else {
+-				if err := f.ExecAsUser(pkexecUid, "xfce4-session-logout", "--logout"); err != nil {
+-					log.Println("Failed to execute logout", err)
+-				}
++
++			if err := exec.Command("reboot").Run(); err != nil {
++				log.Println("Failed to reboot, ", err)
+ 			}
+ 
+ 		} else {
+diff --git a/firstlogin/user.go b/firstlogin/user.go
+index e9c05fc..67a155b 100644
+--- a/firstlogin/user.go
++++ b/firstlogin/user.go
+@@ -67,6 +67,7 @@ func (f *FirstLogin) createUser(userid, passwd string) {
+ 	glib.IdleAdd(func() {
+ 		f.Window.SetPageComplete(f.UserAccountPage, true)
+ 		f.Window.SetCurrentPage(3)
++		go f.startPost()
+ 	})
+ 
+ }
+-- 
+2.32.0
+

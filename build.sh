@@ -197,7 +197,7 @@ make-ca -C /etc/ssl/certdata.txt
 EOT
 
 mkdir -p ${SYSROOT}/etc/skel/.config/xfce4
-cp -a /var/cache/pkgupd/files/xfce4/config/* ${SYSROOT}/etc/skel/.config/xfce4/
+cp -rv /var/cache/pkgupd/files/xfce4/config/* ${SYSROOT}/etc/skel/.config/xfce4/
 install -v -D -m 0644 /var/cache/pkgupd/files/backgrounds/* -t ${SYSROOT}/usr/share/backgrounds/
 install -v -D -m 0644 /var/cache/pkgupd/files/logo/logo.png ${SYSROOT}/usr/share/pixmaps/rlxos.png
 install -v -D -m 0644 /var/cache/pkgupd/files/lightdm/10-auto-login.conf -t ${SYSROOT}/etc/lightdm/lightdm.conf.d/

@@ -1,6 +1,6 @@
---- old	2021-11-16 14:37:24.940582827 +0530
-+++ new	2021-11-16 14:38:12.589039614 +0530
-@@ -11,95 +11,116 @@
+--- old	2021-11-18 13:17:14.969358423 +0530
++++ new	2021-11-18 13:18:57.144455744 +0530
+@@ -11,95 +11,103 @@
        <property name="length" type="uint" value="100"/>
        <property name="position-locked" type="bool" value="true"/>
        <property name="icon-size" type="uint" value="16"/>
@@ -76,7 +76,7 @@
 -    <property name="plugin-4" type="string" value="pager"/>
 +    <property name="plugin-4" type="string" value="pager">
 +      <property name="rows" type="uint" value="4"/>
-+      <property name="miniature-view" type="bool" value="false"/>
++      <property name="miniature-view" type="bool" value="true"/>
 +    </property>
      <property name="plugin-5" type="string" value="separator">
 -        <property name="style" type="uint" value="0"/>
@@ -117,38 +117,23 @@
 +      <property name="appearance" type="uint" value="0"/>
        <property name="items" type="array">
 -        <value type="string" value="xfce4-terminal-emulator.desktop"/>
--      </property>
--    </property>
++        <value type="string" value="+logout"/>
+       </property>
+     </property>
 -    <property name="plugin-18" type="string" value="launcher">
 -      <property name="items" type="array">
 -        <value type="string" value="xfce4-file-manager.desktop"/>
 -      </property>
-+        <value type="string" value="-lock-screen"/>
-+        <value type="string" value="-switch-user"/>
-+        <value type="string" value="-separator"/>
-+        <value type="string" value="-suspend"/>
-+        <value type="string" value="-hibernate"/>
-+        <value type="string" value="-hybrid-sleep"/>
-+        <value type="string" value="-separator"/>
-+        <value type="string" value="-shutdown"/>
-+        <value type="string" value="-restart"/>
-+        <value type="string" value="-separator"/>
-+        <value type="string" value="+logout"/>
-+        <value type="string" value="-logout-dialog"/>
-+      </property>
-+    </property>
 +    <property name="plugin-7" type="string" value="whiskermenu"/>
 +    <property name="plugin-8" type="string" value="docklike"/>
 +    <property name="plugin-1" type="string" value="pulseaudio">
 +      <property name="enable-keyboard-shortcuts" type="bool" value="true"/>
-+      <property name="mpris-players" type="string" value="firefox.instance2253;firefox.instance300113;firefox.instance303061"/>
      </property>
 -    <property name="plugin-19" type="string" value="launcher">
 -      <property name="items" type="array">
 -        <value type="string" value="xfce4-web-browser.desktop"/>
 -      </property>
 +    <property name="plugin-2" type="string" value="directorymenu">
-+      <property name="base-directory" type="string" value="/home/itsmanjeet"/>
      </property>
 -    <property name="plugin-20" type="string" value="launcher">
 -      <property name="items" type="array">

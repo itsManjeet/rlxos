@@ -13,3 +13,5 @@ sources:
 packages:
   - id: pkg
     dir: xfdesktop-4.16.0
+    postscript: |
+      install -v -D -m 0644 ${FILES}/xfdesktop/xfce4-desktop.yml -t ${pkgupd_pkgdir}/etc/xdg/xfce4/xfconf/xfce-perchannel-xml/

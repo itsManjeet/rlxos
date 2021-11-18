@@ -42,7 +42,7 @@ packages:
       done
 
       for i in lsb-release os-release ; do
-        sed 's|@codename@|{{codename}}|' | sed 's|@version@|{{version}}|' > ${pkgupd_pkgdir}/etc/$i
+        sed 's|@codename@|{{codename}}|' ${i} | sed 's|@version@|{{version}}|' > ${pkgupd_pkgdir}/etc/$i
       done
 
       install -v -d -m 0750 ${pkgupd_pkgdir}/root

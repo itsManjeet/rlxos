@@ -20,7 +20,8 @@ packages:
     dir: installer-main
     script: |
       for i in ${FILES}/sys-setup/*.patch ; do
-          patch -Np1 ${i}
+          patch -Np1 -i ${i}
       done
       DESTDIR=${pkgupd_pkgdir} ./scripts/install.sh
+      go build -o ${pkgupd_pkgdir}/usr/bin/sys-setup main.go
 

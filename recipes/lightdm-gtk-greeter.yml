@@ -22,5 +22,5 @@ packages:
           --disable-libindicator
           --disable-static
           --disable-maintainer-mode
-    postinstall: |
+    postscript: |
       install -v -D ${FILES}/lightdm-gtk-greeter/lightdm-gtk-greeter.conf -t ${pkgupd_pkgdir}/etc/lightdm/

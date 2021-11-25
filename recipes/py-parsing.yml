@@ -1,0 +1,18 @@
+id: py-parsing
+version: 2.4.7
+about: General parsing module for python
+
+depends:
+  runtime:
+    - py-setuptools
+
+sources:
+  - https://github.com/pyparsing/pyparsing/releases/download/pyparsing_2.4.7/pyparsing-2.4.7.tar.gz
+
+packages:
+  - id: pkg
+    dir: pyparsing-2.4.7
+    plugin: script
+    script: |
+      python3 setup.py build
+      python3 setup.py install --root=${pkgupd_pkgdir} --optimize=1

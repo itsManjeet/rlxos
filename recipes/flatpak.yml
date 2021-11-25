@@ -1,0 +1,40 @@
+id: flatpak
+version: 1.12.2
+about: Linux application sandboxing and distribution framework
+depends:
+  runtime:
+    - appstream-glib
+    - bubblewrap
+    - dbus
+    - glib
+    - json-glib
+    - libarchive
+    - libsoup
+    - xorg-libs
+    - ostree
+    - polkit
+    - python
+    - systemd
+    - py-parsing
+    
+packages:
+  - id: pkg
+    dir: flatpak-1.12.2
+    sources:
+      - https://github.com/flatpak/flatpak/releases/download/1.12.2/flatpak-1.12.2.tar.xz
+      - https://dl.flathub.org/repo/flathub.flatpakrepo
+
+    flags:
+      - id: configure
+        value: >
+          --disable-static
+          --enable-gtk-doc
+          --with-system-bubblewrap
+          --with-system-dbus-proxy
+          --with-privileged-group=adm
+          --with-dbus-config-dir=/usr/share/dbus-1/system.d
+          
+    postscript: |
+      install -v -D -t ${pkgupd_pkgdir}/etc/profile.d/ ${FILES}/flatpak/flatpak.sh
+      install -v -D -t ${pkgupd_pkgdir}/etc/flatpak/remotes.d ../flathub.flatpakrepo
+      

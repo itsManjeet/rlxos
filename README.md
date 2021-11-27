@@ -31,7 +31,7 @@
     <img src="files/logo/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">rlxos</h3>
+  <h3 align="center">rlxos GNU/Linux</h3>
 
   <p align="center">
     A immutable, independent general-purpose distribution with primary focus on single file per application

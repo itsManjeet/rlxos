@@ -3,6 +3,6 @@ Encoding=UTF-8
 Version=1.0
 Type=Application
 Terminal=false
-Exec=/bin/installer
+Exec=/bin/pkexec /bin/installer
 Name=System Installer
 Icon=drive-harddisk

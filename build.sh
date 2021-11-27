@@ -191,7 +191,7 @@ echo 'workstation' > /etc/hostname
 ln -sfv /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
 systemctl enable inspector --global
 make-ca -C /etc/ssl/certdata.txt
-
+mkdir -p /var/cache/pkgupd/pkgs
 EOT
 
 install -v -D -m 0644 /var/cache/pkgupd/files/logo/logo.png ${SYSROOT}/usr/share/pixmaps/rlxos.png

@@ -3,7 +3,7 @@ version: 3.3.08
 about: Full featured cli system information tool
 depends:
   runtime:
-    - coreutil
+    - coreutils
     - pciutils
     - perl
     - procps-ng

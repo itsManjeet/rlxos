@@ -1,7 +1,7 @@
 #!/bin/python
 
 from yaml import safe_load, YAMLError
-from os import listdir, path
+from os import listdir, path, system
 
 
 def readRecipe(filepath: str) -> dict:
@@ -43,5 +43,5 @@ for recipeFile in listdir('recipes'):
             MISSING_PKGS.add(recipe['id'])
             print('MISSING %s from %s' % (pkg, recipe['id']))
 
-with open('missing.profile','w') as stream:
-    stream.writelines(['id = missing\n', 'packages = %s\n' % ' '.join(MISSING_PKGS), 'release = 2110\n'])
+for i in MISSING_PKGS:
+    system("./build.sh --build {} | tee logs/{}.log", i)

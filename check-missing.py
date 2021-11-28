@@ -44,4 +44,4 @@ for recipeFile in listdir('recipes'):
             print('MISSING %s from %s' % (pkg, recipe['id']))
 
 for i in MISSING_PKGS:
-    system("./build.sh --build {} | tee logs/{}.log", i)
+    system("./build.sh --build {} | tee logs/{}.log".format(i))

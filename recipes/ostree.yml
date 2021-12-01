@@ -8,7 +8,6 @@ depends:
     - libarchive
     - avahi
     - libgpg-error
-    - libsodium
     - openssl
     - util-linux
     - xz

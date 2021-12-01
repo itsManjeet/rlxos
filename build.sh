@@ -88,12 +88,14 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
-echo "=> Reinstalling pkgupd"
-pkgupd in pkgupd --force --skip-depends
-if [[ $? != 0 ]]; then
-    echo "Error! Failed to reinstall pkgupd"
-    exit 1
-fi
+ls /var/cache/pkgupd/pkgs/pkgupd* && {
+    echo "=> Reinstalling pkgupd"
+    pkgupd in pkgupd --force --skip-depends
+    if [[ $? != 0 ]]; then
+        echo "Error! Failed to reinstall pkgupd"
+        exit 1
+    fi
+}
 
 #
 # BUILD missing all packages

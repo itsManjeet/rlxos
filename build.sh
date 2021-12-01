@@ -194,9 +194,21 @@ ln -sfv /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
 systemctl enable inspector --global
 make-ca -C /etc/ssl/certdata.txt
 mkdir -p /var/cache/pkgupd/pkgs
+
+useradd -m -g users -G adm -u 200 -s /bin/sh -d /var/lib/sys-setup sys-setup
+echo -e "rlxos\nrlxos" | passwd sys-setup
+
 EOT
 
+mkdir -p ${SYSROOT}/etc/skel/.config/xfce4
+cp -rv /var/cache/pkgupd/files/xfce/config/* ${SYSROOT}/etc/skel/.config/xfce4/
+install -v -D -m 0644 /var/cache/pkgupd/files/backgrounds/* -t ${SYSROOT}/usr/share/backgrounds/
 install -v -D -m 0644 /var/cache/pkgupd/files/logo/logo.png ${SYSROOT}/usr/share/pixmaps/rlxos.png
+install -v -D -m 0644 /var/cache/pkgupd/files/lightdm/10-auto-login.conf -t ${SYSROOT}/etc/lightdm/lightdm.conf.d/
+install -v -d -m 0750 -o 200 -g 0 ${SYSROOT}/var/lib/sys-setup/
+install -v -d -m 0750 -o 200 -g 0 ${SYSROOT}/var/lib/sys-setup/.config
+install -v -d -m 0750 -o 200 -g 0 ${SYSROOT}/var/lib/sys-setup/.config/autostart
+install -v -D -m 0644 -o 200 -g 0 /var/cache/pkgupd/files/sys-setup/sys-setup.desktop -t ${SYSROOT}/var/lib/sys-setup/.config/autostart/
 
 echo ":: Generating locales ::"
 mkdir -p ${SYSROOT}/usr/lib/locale/

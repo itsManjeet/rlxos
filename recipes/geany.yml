@@ -3,7 +3,7 @@ version: 1.38
 about: A fast and lightweight IDE
 depends:
   runtime:
-    - gtk3
+    - gtk
     - vte
   buildtime:
     - intltool

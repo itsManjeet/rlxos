@@ -21,6 +21,12 @@ fi
 echo "Dependencies: ${DEPS}"
 
 for i in /var/cache/pkgupd/recipes/*.yml ; do
+    id=$(head -n1 ${i} | awk '{print $2}')
+    version=$(head -n2 ${i} | tail -n1 | awk '{print $2}')
+    if [[ -e /var/cache/pkgupd/pkgs/${id}-${version}.rlx ]] ; then
+        echo "Skipping ${i}"
+        continue
+    fi
     echo "Compiling $(basename ${i})"
-    pkgupd co ${i}
+    pkgupd co ${i} | tee /logs/${id}-build-$(date '+%Y-%m-%d-%H').log
 done

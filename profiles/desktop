@@ -1,3 +1,1 @@
-id = desktop
-packages = core linux firmware initramfs grub-legacy grub gparted xorg xfce4 lightdm lightdm-gtk-greeter fonts-cantarell dracula-gtk-theme tela-icon-theme ttf-noto inspector fuse2 libbsd xfce4-pulseaudio-plugin network-manager-applet xdg-user-dirs
-release = 2200
+core linux firmware initramfs grub-legacy grub gparted xorg xfce4 lightdm lightdm-gtk-greeter fonts-cantarell dracula-gtk-theme tela-icon-theme ttf-noto inspector fuse2 libbsd xfce4-pulseaudio-plugin network-manager-applet xdg-user-dirs

@@ -3,8 +3,6 @@ version: 1.4.0
 about: Linux advanced power management
 depends:
   runtime:
-    - hdparam
-    - iw
     - pciutils
     - perl
     - systemd

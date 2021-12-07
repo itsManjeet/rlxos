@@ -3,7 +3,7 @@ version: 16.0.2
 about: Java programming language
 depends:
     runtime:
-        - alas-lib
+        - alsa-lib
         - cups
         - giflib
         - xorg-libs

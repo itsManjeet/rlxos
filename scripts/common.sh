@@ -5,7 +5,15 @@ BASEDIR="$(
     pwd -P
 )/../"
 
+CONTAINER_VERSION='2110'
+
 if [[ -z "${NOCONTAINER}" ]]; then
+    
+    if [[ ! -e ${BASEDIR}/.version ]] ; then
+        echo "Error! no version specified"
+        exit 1
+    fi
+
     VERSION=$(cat ${BASEDIR}/.version)
 
     echo "Starting container"
@@ -15,11 +23,14 @@ if [[ -z "${NOCONTAINER}" ]]; then
         -v "${BASEDIR}/scripts:/scripts" \
         -v "${BASEDIR}/build/${VERSION}/recipes:/var/cache/pkgupd/recipes" \
         -v "${BASEDIR}/build/${VERSION}/pkgs:/var/cache/pkgupd/pkgs" \
+        -v "${BASEDIR}/sources:/var/cache/pkgupd/src" \
         -v "${BASEDIR}/build/${VERSION}/logs:/logs" \
+        -v "${BASEDIR}/build/${VERSION}/releases:/releases" \
         -v "${BASEDIR}/files:/var/cache/pkgupd/files" \
         -v "${BASEDIR}/profiles:/profiles" \
+        -v "${BASEDIR}/pkgupd.yml:/etc/pkgupd.yml" \
         -i --privileged \
-        -t itsmanjeet/rlxos-devel:${VERSION} /usr/bin/env -i \
+        -t itsmanjeet/rlxos-devel:${CONTAINER_VERSION} /usr/bin/env -i \
         HOME=/root \
         TERM=${TERM} \
         PS1='(container) \u:\w$ ' \

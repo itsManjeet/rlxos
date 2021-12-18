@@ -1,0 +1,50 @@
+id: slack
+version: 4.22.0
+about: Slack is a proprietary business communication platform developed by American software company Slack Technologies and now owned by Salesforce. Slack offers many IRC-style features, including persistent chat rooms organized by topic, private groups, and direct messaging
+
+depends:
+  runtime:
+    - gtk
+    - libsecret
+    - libxss
+    - nss
+    - xdg-utils
+
+packages:
+  - id: pkg
+    dir: .
+    pack: app
+    flags:
+      - id: lib
+        value: no
+
+    sources:
+      - https://downloads.slack-edge.com/releases/linux/4.22.0/prod/x64/slack-4.22.0-0.1.fc21.x86_64.rpm
+
+    script: |
+      bsdtar -xf slack-4.22.0-0.1.fc21.x86_64.rpm
+      cp -a usr/lib/slack ${pkgupd_pkgdir}
+      cp usr/share/pixmaps/slack.png ${pkgupd_pkgdir}/slack.png
+
+      ls ${pkgupd_pkgdir}
+      echo ${pkgupd_pkgdir}
+
+AppRun: |
+  #!/bin/sh
+  PATH=${APPDIR}:${PATH}
+  export PATH=${PATH}
+  LD_LIBRARY_PATH=${APPDIR}:${LD_LIBRARY_PATH}
+  exec ${APPDIR}/slack ${@}
+
+Desktopfile: |
+  [Desktop Entry]
+  Name=Slack
+  StartupWMClass=Slack
+  Comment=Slack Desktop
+  GenericName=Slack Client for Linux
+  Exec=slack %U
+  Icon=slack
+  Type=Application
+  StartupNotify=true
+  Categories=GNOME;GTK;Network;InstantMessaging;
+  MimeType=x-scheme-handler/slack;

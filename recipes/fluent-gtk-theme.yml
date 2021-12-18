@@ -1,9 +1,9 @@
 id: fluent-gtk-theme
-version: 2021-07-30
+version: 2021-11-23
 about: |
   A Fluent design theme for GNOME/GTK based desktop environment
 sources:
-  - fluent-gtk-theme-2021-07-30.tar.gz::https://github.com/vinceliuice/Fluent-gtk-theme/archive/refs/heads/master.tar.gz
+  - fluent-gtk-theme-2021-11-23.tar.gz::https://github.com/vinceliuice/Fluent-gtk-theme/archive/refs/tags/2021-11-23.tar.gz
 
 depends:
   runtime:
@@ -11,8 +11,9 @@ depends:
 
 packages:
   - id: pkg
-    dir: Fluent-gtk-theme-master
+    strip: false
+    dir: Fluent-gtk-theme-2021-11-23
     plugin: script
     script: |
       install -d ${pkgupd_pkgdir}/usr/share/themes
-      ./install.sh -i gnome -d ${pkgupd_pkgdir}/usr/share/themes
+      ./install.sh -i simple -d ${pkgupd_pkgdir}/usr/share/themes

@@ -1,0 +1,119 @@
+id: inkscape
+version: 1.1.1
+about: Inkscape is a free and open-source vector graphics editor used to create vector images, primarily in Scalable Vector Graphics format. Other formats can be imported and exported. Inkscape can render primitive vector shapes and text
+depends:
+  runtime: xorg
+packages:
+  - id: pkg
+    dir: .
+    pack: app
+    strip: false
+    flags:
+      - id: lib
+        value: no
+    sources:
+      - inkscape-1.0.1.app::https://inkscape.org/gallery/item/29256/Inkscape-3bf5ae0-x86_64.AppImage
+    script: |
+      chmod +x inkscape-1.0.1.app
+      ./inkscape-1.0.1.app --appimage-extract
+      cp squashfs-root ${pkgupd_pkgdir} -r
+      rm ${pkgupd_pkgdir}/org.inkscape.Inkscape.desktop
+      mv ${pkgupd_pkgdir}/org.inkscape.Inkscape.png ${pkgupd_pkgdir}/inkscape.png
+      cat ${pkgupd_pkgdir}/AppRun
+
+AppRun: |
+  #!/bin/bash
+
+  HERE="$(dirname "$(readlink -f "${0}")")"
+
+  # Temporary workaround for broken libgc
+  if [ -z "$_INKSCAPE_GC" ] ; then
+      echo "Setting _INKSCAPE_GC=disable as a workaround for broken libgc" >&2
+      export _INKSCAPE_GC=disable
+  fi
+
+  # Custom AppRun script for Inkscape
+  # by Simon Peter
+
+  ############################################################################################
+  # Allow AppRun or the AppImage to be symlinked to, e.g.,
+  # /usr/local/bin/inkview
+  # or to be called with ./Inkscape*.AppImage inkview
+  ############################################################################################
+
+  if [ ! -z $APPIMAGE ] ; then
+    BINARY_NAME=$(basename "$ARGV0")
+  else
+    BINARY_NAME=$(basename "$0")
+  fi
+  if [ ! -z "$1" ] && [ -e "$HERE/usr/bin/$1" ] ; then
+    MAIN="$HERE/usr/bin/$1" ; shift
+  elif [ -e "$HERE/usr/bin/$BINARY_NAME" ] ; then
+    MAIN="$HERE/usr/bin/$BINARY_NAME"
+  else
+    MAIN="$HERE/usr/bin/inkscape"
+  fi
+
+  ############################################################################################
+  # Prefer to run the bundled executables (e.g., Python)
+  ############################################################################################
+
+  export PATH="${HERE}/usr/bin:${PATH}"
+
+  ############################################################################################
+  # Run experimental bundle that bundles everything if a private ld-linux-x86-64.so.2 is there
+  ############################################################################################
+
+  PLATFORM=x86_64-linux-gnu
+
+  # Glib/Gtk environment
+  export GCONV_PATH="$HERE/usr/lib/$PLATFORM/gconv"
+  export FONTCONFIG_FILE="$HERE/etc/fonts/fonts.conf"
+  export GTK_EXE_PREFIX="$HERE/usr"
+  export GDK_PIXBUF_MODULEDIR=$(readlink -f "$HERE"/usr/lib/$PLATFORM/gdk-pixbuf-*/*/loaders/ )
+  export GDK_PIXBUF_MODULE_FILE=$(readlink -f "$HERE"/usr/lib/$PLATFORM/gdk-pixbuf-*/*/loaders.cache ) # Patched to contain no paths
+  export GI_TYPELIB_PATH="$HERE/usr/lib/$PLATFORM/girepository-1.0"
+
+  # For bundled themes
+  export XDG_DATA_DIRS="$HERE/usr/share:${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
+
+  # Shared library path
+  LIBRARY_PATH="$HERE/lib/$PLATFORM"
+  LIBRARY_PATH+=":$HERE/usr/lib/$PLATFORM"
+  LIBRARY_PATH+=":$HERE/usr/lib"
+  LIBRARY_PATH+=":$GDK_PIXBUF_MODULEDIR" # Otherwise getting "Unable to load image-loading module"
+
+  # Otherwise getting "Unable to load image-loading module" when opening extension manager
+  export LD_LIBRARY_PATH="$GDK_PIXBUF_MODULEDIR"
+
+  exec "$HERE/lib/$PLATFORM/ld-linux-x86-64.so.2" --inhibit-cache --library-path "$LIBRARY_PATH" "$MAIN" "$@"
+
+Desktopfile: |
+  [Desktop Entry]
+  Version=1.0
+  Name=Inkscape
+  GenericName=Vector Graphics Editor
+  X-GNOME-FullName=Inkscape Vector Graphics Editor
+  Comment=Create and edit Scalable Vector Graphics images
+  Keywords=image;editor;vector;drawing;
+  Type=Application
+  Categories=Graphics;VectorGraphics;GTK;
+  MimeType=image/svg+xml;image/svg+xml-compressed;application/vnd.corel-draw;application/pdf;application/postscript;image/x-eps;application/illustrator;image/cgm;image/x-wmf;application/x-xccx;application/x-xcgm;application/x-xcdt;application/x-xsk1;application/x-xcmx;image/x-xcdr;application/visio;application/x-visio;application/vnd.visio;application/visio.drawing;application/vsd;application/x-vsd;image/x-vsd;
+  Exec=inkscape %F
+  TryExec=inkscape
+  Terminal=false
+  StartupNotify=true
+  Icon=inkscape
+  X-Ayatana-Desktop-Shortcuts=Drawing
+  Actions=new-window;
+
+  X-AppImage-Version=3bf5ae0
+
+  [X-Drawing Shortcut Group]
+  Name=New Drawing
+  Exec=inkscape
+  TargetEnvironment=Unity
+
+  [Desktop Action new-window]
+  Name=Open a New Window
+  Exec=inkscape

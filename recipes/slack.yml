@@ -6,7 +6,6 @@ depends:
   runtime:
     - gtk
     - libsecret
-    - libxss
     - nss
     - xdg-utils
 

@@ -14,15 +14,20 @@ if os.path.exists(RECIPE_DIR):
 
 os.makedirs(RECIPE_DIR)
 
+FAILED = []
+
 for file in os.listdir('recipes/'):
     if file.endswith('.yml'):
         with open('recipes/{}'.format(file)) as f:
             data = f.read()
             obj = yaml.full_load(data)
-            print('creating %s' % obj['id'])
             try:
+                print('creating %s' % obj['id'])
                 data = Environment().from_string(data).render(obj)
                 with open('{}/{}'.format(RECIPE_DIR,file),'w') as fw:
                     fw.write(data)
             except Exception as e:
                 print(str(e), file)
+                FAILED.append(file)
+
+print("failed", FAILED)

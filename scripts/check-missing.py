@@ -32,16 +32,22 @@ def listPackages(recipe: dict) -> list:
 
 MISSING_PKGS = set()
 
-for recipeFile in listdir('recipes'):
-    recipe = readRecipe(path.join('recipes', recipeFile))
+with open('.version') as f:
+    VERSION = f.read()
+
+PKGDIR = path.join("build",VERSION, "pkgs")
+RECIPEDIR = path.join("build",VERSION, "recipes")
+
+for recipeFile in listdir(RECIPEDIR):
+    recipe = readRecipe(path.join(RECIPEDIR, recipeFile))
     if recipe is None:
         continue
 
     pkgs = listPackages(recipe)
     for pkg in pkgs:
-        if not path.exists('pkgs/%s' % pkg):
+        if not path.exists('%s/%s' % (PKGDIR,pkg)):
             MISSING_PKGS.add(recipe['id'])
             print('MISSING %s from %s' % (pkg, recipe['id']))
 
 for i in MISSING_PKGS:
-    system("./build.sh --build {} | tee logs/{}.log".format(i))
+    print(i)

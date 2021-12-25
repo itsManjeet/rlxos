@@ -20,7 +20,7 @@ if [[ ! -e ${PROFILE} ]] ; then
 fi
 
 PKGS=$(cat ${PROFILE})
-if [[ -z ${PKG} ]] ; then
+if [[ -z ${PKGS} ]] ; then
     echo "Error! no package found in ${PROFILE}"
     exit 1
 fi
@@ -35,11 +35,12 @@ fi
 
 ISODIR=/tmp/rlxos-iso
 
+pkgupd in grub-legacy grub squashfs-tools lvm2 initramfs mtools linux 
 mkdir -p ${ISODIR}/boot/grub/
 
 mksquashfs ${ROOTFS}/* ${ISODIR}/rootfs.img
 cp ${ROOTFS}/boot/vmlinuz ${ISODIR}/boot/
-mkinitramfs -g -k=$(ls /lib/modules) -o=${ISODIR}/boot/initrd
+mkinitramfs -g -k=$(ls ${ROOTFS}/lib/modules) -o=${ISODIR}/boot/initrd
 
 echo "default='rlxos installer'
 timeout=5

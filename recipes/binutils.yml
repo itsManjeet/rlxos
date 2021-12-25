@@ -26,14 +26,8 @@ packages:
           --disable-werror
           --enable-64-bit-bfd
           --with-system-zlib
-          --enable-multilib
+          --disable-multilib
           --with-lib-path=/usr/lib:/opt/lib
-
-      - id: compile
-        value: tooldir=/usr
-      
-      - id: install
-        value: tooldir=/usr -j1
 
     postscript: |
       rm -fv ${pkgupd_pkgdir}/usr/lib/lib{bfd,ctf,ctf-nobfd,opcodes}.a

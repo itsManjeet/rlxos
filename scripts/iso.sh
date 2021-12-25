@@ -7,6 +7,11 @@ BASEDIR="$(
 
 . ${BASEDIR}/common.sh
 
+if [[ -z ${1} ]]; then
+    echo "Error! no profile specified"
+    exit 1
+fi
+
 PROFILE="/profiles/${VERSION}/${1}"
 
 if [[ ! -e ${PROFILE} ]] ; then

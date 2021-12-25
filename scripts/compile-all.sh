@@ -18,6 +18,9 @@ if [[ $? != 0 ]] ; then
     exit 1
 fi
 
+# TODO: must be in bootstrap
+pkgupd in patch cmake meson
+
 echo "Dependencies: ${DEPS}"
 
 for i in /var/cache/pkgupd/recipes/*.yml ; do

@@ -1,14 +1,14 @@
 id: firmware
-version: 20210818
+version: 20211027
 about: |
   Firmware files for Linux
 
 sources:
-  - https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-20210818.tar.gz
+  - https://kernel.googlesource.com/pub/scm/linux/kernel/git/firmware/linux-firmware.git/+archive/1d00989a65968d3d8fb2f6f727582f91b1cfa885.tar.gz
 
 packages:
   - id: pkg
-    dir: linux-firmware-20210818
+    dir: .
     strip: false
     script: |
       make DESTDIR=${pkgupd_pkgdir} FIRMWARE=/usr/lib/firmware install

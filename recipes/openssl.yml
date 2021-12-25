@@ -27,7 +27,7 @@ packages:
           --libdir=lib
           shared
           zlib-dynamic
-        only: true
+        force: true
 
       - id: install
         value: DESTDIR=$pkgupd_pkgdir

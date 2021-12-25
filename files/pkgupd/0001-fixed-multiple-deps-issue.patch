@@ -1,0 +1,34 @@
+From 5b6dd4e6d382887230a205065c00506d18da6f5d Mon Sep 17 00:00:00 2001
+From: itsmanjeet <itsmanjeet1998@gmail.com>
+Date: Fri, 24 Dec 2021 12:51:20 +0530
+Subject: [PATCH] fixed multiple deps issue
+
+---
+ pkgupd/PKGUPD.cc | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/pkgupd/PKGUPD.cc b/pkgupd/PKGUPD.cc
+index bef8269..2d0ee6c 100644
+--- a/pkgupd/PKGUPD.cc
++++ b/pkgupd/PKGUPD.cc
+@@ -268,15 +268,14 @@ int PKGUPD::exec(int ac, char **av) {
+         to_install = {_args[0]};
+       } else if (!_is_flag(flag::SKIP_DEPENDS)) {
+         DEBUG("resolving dependencies")
++        auto resolver_ = resolver(repodb_, sysdb_);
+         for (auto const &i : _args) {
+-          auto resolver_ = resolver(repodb_, sysdb_);
+           if (!resolver_.resolve(i)) {
+             ERROR(resolver_.error());
+             return 2;
+           }
+-          to_install.insert(to_install.end(), resolver_.data().begin(),
+-                            resolver_.data().end());
+         }
++        to_install = resolver_.data();
+       } else {
+         to_install = _args;
+       }
+-- 
+2.32.0
+

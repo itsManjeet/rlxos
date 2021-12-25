@@ -1,5 +1,5 @@
 id: pkgupd
-version: 0.1.0
+version: 2200
 about: |
   An Extensible package manager for rlxos
 
@@ -16,15 +16,16 @@ depends:
     - cmake
 
 sources:
-  - pkgupd-0.1.0.tar.gz::https://github.com/rlxos/pkgupd/archive/refs/heads/main.tar.gz
+  - pkgupd-2200.tar.gz::https://github.com/rlxos/pkgupd/archive/refs/heads/2200.tar.gz
 
 packages:
   - id: pkg
-    dir: pkgupd-main
+    dir: pkgupd-2200
     prescript: |
       for i in ${FILES}/pkgupd/*.patch ; do
-      patch -Np1 -i ${i}
+        patch -Np1 -i ${i}
       done
+      
     postscript: |
       install -v -D -m 0644 ${FILES}/pkgupd/pkgupd.desktop -t ${pkgupd_pkgdir}/usr/share/applications/
       install -v -D -m 0755 ${FILES}/pkgupd/pkgupd-url -t ${pkgupd_pkgdir}/usr/bin/

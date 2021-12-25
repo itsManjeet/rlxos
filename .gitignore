@@ -6,3 +6,5 @@
 /disk.qcow2
 /secure
 /*.iso
+/sources
+/.version

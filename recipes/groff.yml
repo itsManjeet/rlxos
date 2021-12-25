@@ -22,4 +22,4 @@ packages:
     flags:
       - id: compile
         value: -j1
-        only: true
+        force: true

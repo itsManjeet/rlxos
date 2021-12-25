@@ -5,7 +5,7 @@ BASEDIR="$(
     pwd -P
 )/../"
 
-CONTAINER_VERSION='2110'
+CONTAINER_VERSION='2200'
 
 if [[ -z "${NOCONTAINER}" ]]; then
     
@@ -30,7 +30,7 @@ if [[ -z "${NOCONTAINER}" ]]; then
         -v "${BASEDIR}/profiles:/profiles" \
         -v "${BASEDIR}/pkgupd.yml:/etc/pkgupd.yml" \
         -i --privileged \
-        -t itsmanjeet/rlxos-devel:${CONTAINER_VERSION} /usr/bin/env -i \
+        -t itsmanjeet/rlxos-sys:${CONTAINER_VERSION} /usr/bin/env -i \
         HOME=/root \
         TERM=${TERM} \
         PS1='(container) \u:\w$ ' \

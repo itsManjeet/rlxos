@@ -22,7 +22,7 @@ packages:
         value: configure
 
       - id: configure
-        only: true
+        force: true
         value: >
           --prefix=/usr
           --system-libs

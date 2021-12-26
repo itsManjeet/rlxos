@@ -15,6 +15,8 @@ if [[ -z ${1} ]]; then
     exit 1
 fi
 
+pkgupd in kernel-headers cmake binutils flex bison autoconf automake make patch pkg-config
+
 DEPS=$(pkgupd deptest ${PKG})
 if [[ ${?} != 0 ]]; then
     echo "Error! failed to calculate depends"

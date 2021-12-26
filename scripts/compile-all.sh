@@ -5,31 +5,17 @@ BASEDIR="$(
     pwd -P
 )"
 
-. ${BASEDIR}/common.sh
+VERSION=$(cat ${BASEDIR}/.version)
 
-echo "Version: ${VERSION}"
+PKGS=$(ls ${BASEDIR}/build/${VERSION}/recipes/ | sed 's|.yml||g')
 
-PKGS=$(ls /var/cache/pkgupd/recipes/ | sed 's|.yml||g')
-
-echo "Generating package dependency tree"
-DEPS=$(pkgupd deptest ${PKGS})
-if [[ $? != 0 ]] ; then
-    echo "${DEPS}"
-    exit 1
-fi
-
-# TODO: must be in bootstrap
-pkgupd in patch cmake meson
-
-echo "Dependencies: ${DEPS}"
-
-for i in /var/cache/pkgupd/recipes/*.yml ; do
-    id=$(head -n1 ${i} | awk '{print $2}')
-    version=$(head -n2 ${i} | tail -n1 | awk '{print $2}')
-    if [[ -e /var/cache/pkgupd/pkgs/${id}-${version}.rlx ]] ; then
-        echo "Skipping ${i}"
-        continue
+for pkg in ${PKGS}; do
+    echo "compiling for ${pkg}"
+    LOGFILE="${BASEDIR}/build/${VERSION}/logs/${pkg}.log"
+    ${BASEDIR}/compile.sh ${pkg} | tee ${LOGFILE}
+    if [[ ${?} != 0 ]]; then
+        echo "Failed to compile ${pkg}"
+        mv "${LOGFILE}" "${LOGFILE}.failed"
+        exit 1
     fi
-    echo "Compiling $(basename ${i})"
-    pkgupd co ${i} | tee /logs/${id}-build-$(date '+%Y-%m-%d-%H').log
 done

@@ -16,6 +16,5 @@ for pkg in ${PKGS}; do
     if [[ ${?} != 0 ]]; then
         echo "Failed to compile ${pkg}"
         mv "${LOGFILE}" "${LOGFILE}.failed"
-        exit 1
     fi
 done

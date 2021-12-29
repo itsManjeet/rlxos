@@ -9,6 +9,7 @@ depends:
     - gtk
     - libsoup
     - libxml2
+    - py-gobject
   
   buildtime:
     - vala

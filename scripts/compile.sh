@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 
 BASEDIR="$(
     cd -- "$(dirname "$0")" >/dev/null 2>&1
@@ -15,9 +15,9 @@ if [[ -z ${1} ]]; then
     exit 1
 fi
 
-pkgupd in kernel-headers cmake binutils flex bison autoconf automake make patch pkg-config
+pkgupd in kernel-headers cmake binutils flex bison autoconf automake make patch pkg-config gperf
 
-DEPS=$(pkgupd deptest ${PKG})
+DEPS=$(pkgupd deptest ${PKG} --force)
 if [[ ${?} != 0 ]]; then
     echo "Error! failed to calculate depends"
     exit 1

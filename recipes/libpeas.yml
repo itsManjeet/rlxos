@@ -10,6 +10,8 @@ depends:
     - py-gobject
   buildtime:
     - gobject-introspection
+    - vala
+    - glade
 
 sources:
   - https://download.gnome.org/sources/libpeas/1.30/libpeas-1.30.0.tar.xz

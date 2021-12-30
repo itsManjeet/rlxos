@@ -30,8 +30,11 @@ packages:
       - id: configure
         value: >
           -D trust_paths=/etc/pki/anchors
+          --buildtype=release
 
     postscript: |
       ln -sfv /usr/lib/p11-kit/trust-extract-compact \
         ${pkgupd_pkgdir}/usr/bin/update-ca-certificates
+
+      ln -sfv ./pkcs11/p11-kit-trust.so ${pkgupd_pkgdir}/usr/lib/libnssckbi.so
       

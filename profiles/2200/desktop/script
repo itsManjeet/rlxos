@@ -3,5 +3,10 @@
 # generate ca cache
 make-ca -C /etc/ssl/certdata.txt
 
-# set default localtime
-ln -sfv /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
+# PKGUPD fix
+mkdir -p /var/cache/pkgupd/pkgs
+
+# generating supported locals
+mkdir -p /usr/lib/locale/
+localedef -i en_IN -f UTF-8 en_IN.UTF-8
+localedef -i en_US -f UTF-8 en_US.UTF-8

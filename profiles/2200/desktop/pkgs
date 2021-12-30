@@ -1,1 +1,1 @@
-core linux firmware grub-legacy grub initramfs gnome make-ca
+core linux firmware initramfs grub-legacy grub gparted xorg gnome fonts-cantarell fluent-icon-theme fluent-gtk-theme fluent-wallpaper inspector fuse2 libbsd

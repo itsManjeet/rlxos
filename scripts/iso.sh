@@ -41,10 +41,24 @@ chroot ${ROOTFS} bash -e << "EOT"
 pwconv
 grpconv
 
+# executing pkgupd triggers
 pkgupd trigger
+
+# setting up root password
 echo -e "rlxos\nrlxos" | passwd
+
+# set default localtime
+ln -sfv /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
+
+# setting up hostname
+echo 'workstation' > /etc/hostname
+
+# executing local script
 ${SCRIPT}
 EOT
+
+# installing logo
+install -v -D -m 0644 "/var/cache/pkgupd/files/logo/logo.png" ${ROOTFS}/usr/share/pixmaps/rlxos.png
 
 ISODIR=/tmp/rlxos-iso
 
@@ -61,6 +75,9 @@ menuentry 'rlxos installer' {
     linux /boot/vmlinuz iso=1 root=LABEL=RLXOS system=${VERSION} iso=1
     initrd /boot/initrd
 }" > ${ISODIR}/boot/grub/grub.cfg
+
+
+mksquashfs ${PROFILE}/overlay/* ${ISODIR}/iso.img
 
 ISOFILE="/releases/rlxos-$(basename ${PROFILE})-${VERSION}.iso"
 grub-mkrescue -volid RLXOS ${ISODIR} -o ${ISOFILE}

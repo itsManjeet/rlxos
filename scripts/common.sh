@@ -13,7 +13,6 @@ if [[ -z "${NOCONTAINER}" ]]; then
         echo "Error! no version specified"
         exit 1
     fi
-
     VERSION=$(cat ${BASEDIR}/.version)
 
     echo "Starting container"

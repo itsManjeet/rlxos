@@ -14,6 +14,4 @@ qemu-system-x86_64 -m 3G \
     -device usb-tablet \
     -smp 2 \
     -cdrom ${ISO} \
-    -drive file=disk.qcow2,if=virtio \
-    -net nic -net user,smb=shared_dir \
-    -cpu host -enable-kvm ${@}
+    -drive file=disk.qcow2,if=virtio  ${@}

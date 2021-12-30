@@ -14,12 +14,14 @@ fi
 
 PROFILE="/profiles/${VERSION}/${1}"
 
-if [[ ! -e ${PROFILE} ]] ; then
+if [[ ! -d ${PROFILE} ]] ; then
     echo "Error! '${PROFILE}' profile not exists"
     exit 1
 fi
 
-PKGS=$(cat ${PROFILE})
+BoltSendMesg "Generating ISO for ${VERSION} with $(basename ${PROFILE})"
+
+PKGS=$(cat ${PROFILE}/pkgs)
 if [[ -z ${PKGS} ]] ; then
     echo "Error! no package found in ${PROFILE}"
     exit 1
@@ -32,6 +34,17 @@ if [[ $? -ne 0 ]] ; then
   echo "rootfs build failed ${?}"
   exit 1
 fi
+
+SCRIPT=$(cat ${PROFILE}/script)
+
+chroot ${ROOTFS} bash -e << "EOT"
+pwconv
+grpconv
+
+pkgupd trigger
+echo -e "rlxos\nrlxos" | passwd
+${SCRIPT}
+EOT
 
 ISODIR=/tmp/rlxos-iso
 
@@ -49,7 +62,7 @@ menuentry 'rlxos installer' {
     initrd /boot/initrd
 }" > ${ISODIR}/boot/grub/grub.cfg
 
-grub-mkrescue -volid RLXOS ${ISODIR} -o /releases/rlxos-$(basename ${PROFILE})-${VERSION}.iso
+ISOFILE="/releases/rlxos-$(basename ${PROFILE})-${VERSION}.iso"
+grub-mkrescue -volid RLXOS ${ISODIR} -o ${ISOFILE}
 
-
-
+BoltSendMesg "[TESTING ISO] generated at ${SERVER_URL}/${VERSION}${ISOFILE}" > /bolt

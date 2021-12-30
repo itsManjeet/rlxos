@@ -25,6 +25,7 @@ for file in os.listdir('recipes/'):
                 print('creating %s' % obj['id'])
                 data = Environment().from_string(data).render(obj)
                 with open('{}/{}'.format(RECIPE_DIR,file),'w') as fw:
+                    print(data)
                     fw.write(data)
             except Exception as e:
                 print(str(e), file)

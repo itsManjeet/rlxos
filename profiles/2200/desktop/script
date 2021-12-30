@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# generate ca cache
+make-ca -C /etc/ssl/certdata.txt
+
+# set default localtime
+ln -sfv /usr/share/zoneinfo/Asia/Kolkata /etc/localtime

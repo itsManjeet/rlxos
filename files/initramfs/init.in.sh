@@ -269,6 +269,11 @@ parse_cmdline_args() {
     done
 }
 
+function mount_kernel_modules() {
+    mount --bind /boot/modules ${rootpoint}/usr/lib/modules &&
+        mount --bind /boot/firmware ${rootpoint}/usr/lib/firmware
+}
+
 function main() {
 
     # Default variables
@@ -288,6 +293,8 @@ function main() {
 
     debug "loading modules"
     load_modules
+
+    sleep 5
 
     debug "searching roots"
     search_roots
@@ -315,6 +322,9 @@ function main() {
     check_resume
 
     [[ -z $RESCUE ]] || rescue_shell
+
+    debug "mounting kernel modules"
+    mount_kernel_modules || rescue_shell "failed to install kernel modules"
 
     exec switch_root "${rootpoint}" "${init}" || rescue_shell "failed to switch roots"
 }

@@ -48,9 +48,11 @@ function GenerateRootfs() {
 }
 
 function BoltSendMesg() {
-    if [[ -z "${NOCONTAINER}" ]]; then
-        echo "${@}" >${BASEDIR}/discord-bolt
-    else
-        echo ${@} >/bolt
-    fi
+    # if [[ -z "${NOCONTAINER}" ]]; then
+    #     echo "${@}" >${BASEDIR}/discord-bolt
+    # else
+    #     echo ${@} >/bolt
+    # fi
+
+    echo "${@}"
 }

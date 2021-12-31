@@ -13,6 +13,7 @@ depends:
   
   buildtime:
     - pkg-config
+    - patch
 
 sources:
   - https://www.kernel.org/pub/linux/utils/kernel/kmod/kmod-29.tar.xz
@@ -20,6 +21,10 @@ sources:
 packages:
   - id: pkg
     dir: kmod-29
+    prescript: |
+      for p in ${FILES}/kmod/*.patch ; do
+        patch -Np1 -i ${p}
+      done
     flags:
       - id: configure
         value: >

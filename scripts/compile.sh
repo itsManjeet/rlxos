@@ -23,10 +23,16 @@ if [[ ${?} != 0 ]]; then
     exit 1
 fi
 
+if [[ -z "${DEPS}" ]]; then
+    DEPS="${PKG} "
+fi
+
 echo "Compiling dependencies ${DEPS}"
-for i in ${DEPS} ; do
+for i in ${DEPS}; do
     echo "compiling ${i}"
-    pkgupd co ${i}
+    [[ ${i} == "${PKG}" ]] && PKGUPD_FLAG="--force"
+    echo "pkgupd co ${i} ${PKGUPD_FLAG}"
+    pkgupd co ${i} ${PKGUPD_FLAG}
     if [[ ${?} != 0 ]]; then
         echo "Error! failed to compile ${i}"
         exit 1

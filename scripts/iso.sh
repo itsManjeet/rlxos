@@ -22,6 +22,13 @@ if [[ ! -d ${PROFILE} ]]; then
     exit 1
 fi
 
+function checkProcess() {
+    if [[ $? != 0 ]]; then
+        BoltSendMesg "Error! while building ISO (${VERSION}:${PROFILE}) at ${@}"
+        exit 1
+    fi
+}
+
 BoltSendMesg "[$(date)]: generating [TEST] ISO for ${VERSION} with $(basename ${PROFILE})"
 
 PKGS=$(cat ${PROFILE}/pkgs)
@@ -30,15 +37,27 @@ if [[ -z ${PKGS} ]]; then
     exit 1
 fi
 
+pkgupd in grub-legacy grub squashfs-tools lvm2 initramfs mtools linux
+checkProcess "InstallingTools"
+
+
+# Temporary KMOD reinstallations
+pkgupd in kmod --force --skip-depends
+checkProcess "InstallKmod"
+
 echo "preparing ISO ${PROFILE}"
 export ROOTFS=/tmp/rlxos-rootfs
 GenerateRootfs ${PKGS}
-if [[ $? -ne 0 ]]; then
-    echo "rootfs build failed ${?}"
-    exit 1
-fi
+checkProcess "GenerateRootfs()"
 
 SCRIPT=$(cat ${PROFILE}/script)
+checkProcess "checkLocalScript"
+
+
+echo ":: installing fstab"
+echo "
+/run/initramfs/boot /boot   none defaults,bind  0   0
+" > ${ROOTFS}/etc/fstab
 
 chroot ${ROOTFS} bash -e <<"EOT"
 pwconv
@@ -55,32 +74,35 @@ ln -sfv /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
 
 # setting up hostname
 echo 'workstation' > /etc/hostname
-
-# executing local script
-${SCRIPT}
 EOT
+checkProcess "PostExecutionScript"
+
+echo ":: executing local script"
+chroot ${ROOTFS} bash -ec "${SCRIPT}"
+checkProcess "LocalScript"
 
 # installing logo
 install -v -D -m 0644 "/var/cache/pkgupd/files/logo/logo.png" ${ROOTFS}/usr/share/pixmaps/rlxos.png
+checkProcess "LogoInstall"
 
 ISODIR=/tmp/rlxos-iso
 TEMPDIR=/tmp/work
 mkdir -p ${TEMPDIR}
 
-pkgupd in grub-legacy grub squashfs-tools lvm2 initramfs mtools linux
 mkdir -p ${ISODIR}/boot/grub/
 
 mksquashfs ${ROOTFS}/* ${ISODIR}/rootfs.img
+checkProcess "PackingSquash:root"
 
 echo ":: installing kernel"
-tar -xaf /var/lib/pkgupd/pkgs/linux-${KERNEL}.rlx -C ${TEMPDIR}
-mv ${TEMPDIR}/usr/lib/modules ${ISODIR}/boot/
-mv ${TEMPDIR}/boot/vmlinuz ${ISODIR}/boot/vmlinuz-${KERNEL}
+tar -xaf /var/cache/pkgupd/pkgs/linux-${KERNEL}.rlx -C ${TEMPDIR} &&
+    mv ${TEMPDIR}/usr/lib/modules ${ISODIR}/boot/ &&
+    mv ${TEMPDIR}/boot/vmlinuz ${ISODIR}/boot/vmlinuz-${KERNEL}
+checkProcess "InstallKernel"
 
-tar -xaf /var/lib/pkgupd/pkgs/firmware-${FIRMWARE}.rlx -C ${TEMPDIR}
-mv ${TEMPDIR}/lib/firmware ${ISODIR}/boot/
-
-mkinitramfs -u -k=$(ls ${ROOTFS}/lib/modules) -o=${ISODIR}/boot/initrd-${KERNEL}
+echo "installing initrd Kernel=${KERNEL} Modules=${ISODIR}/boot/modules"
+mkinitramfs -u -k=${KERNEL}-rlxos -m="${ISODIR}/boot/modules/" -o=${ISODIR}/boot/initrd-${KERNEL}
+checkProcess "GeneratingInitrd"
 
 echo "default='rlxos installer'
 timeout=5
@@ -89,11 +111,15 @@ menuentry 'rlxos installer' {
     initrd /boot/initrd-${KERNEL}
 }" >${ISODIR}/boot/grub/grub.cfg
 
+
 mksquashfs ${PROFILE}/overlay/* ${ISODIR}/iso.img
+checkProcess "PackingSquash:iso"
 
 ISOFILE="/releases/rlxos-$(basename ${PROFILE})-${VERSION}.iso"
 grub-mkrescue -volid RLXOS ${ISODIR} -o ${ISOFILE}
+checkProcess "GenIso"
 
-md5sum ${ISOFILE} ${ISOFILE}.md5
+md5sum ${ISOFILE} > ${ISOFILE}.md5
+checkProcess "GenMD5"
 
 BoltSendMesg "$(date) generated [TEST] iso at ${SERVER_URL}/${VERSION}${ISOFILE}, $(cat ${ISOFILE}.md5)" >/bolt

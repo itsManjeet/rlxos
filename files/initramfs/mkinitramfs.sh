@@ -38,6 +38,7 @@ KERNEL=${KERNEL:-$(uname -r)}
 PASSWORD='rlxos'
 unsorted=$(mktemp /tmp/unsorted.XXXXXXXXXX)
 AOUT=${AOUT:-"/boot/initrd"}
+MODULES_DIR='/boot/modules'
 
 export LC_ALL=C
 
@@ -130,22 +131,31 @@ parse_args() {
         case "${p}" in
         -k=* | --kernel=*)
             KERNEL=${p#*=}
+            echo ":: using kernel ${KERNEL}"
             ;;
 
         -i=* | --init=*)
             INIT_IN=${p#*=}
+            echo ":: using init ${INIT_IN}"
             ;;
 
         -o=* | --out=*)
             AOUT=${p#*=}
+            echo ":: output ${AOUT}"
             ;;
 
         -p=* | --password=*)
             PASSWORD=${p#*=}
             ;;
 
+        -m=* | --modules-dir=*)
+            MODULES_DIR=${p#*=}
+            echo ":: using modules dir ${MODULES_DIR}"
+            ;;
+
         -u)
             UNIVERSAL=1
+            echo ":: generating universal initrd"
             ;;
 
         esac
@@ -155,7 +165,7 @@ parse_args() {
 # prepare_structure
 # prepare required dirs, files and nodes
 prepare_structure() {
-    mkdir -p -- "${INITRD_DIR}/"{dev,etc,mnt/root,proc,sys,run}
+    mkdir -p -- "${INITRD_DIR}/"{dev,boot/modules,etc,mnt/root,proc,sys,run}
     mkdir -p -- "${INITRD_DIR}/"usr/{bin,lib,share}
 
     ln -s usr/bin ${INITRD_DIR}/bin
@@ -201,34 +211,40 @@ install_modules() {
     local DRIVERS="block ata md firewire input scsi message pcmcia virtio hid usb/host usb/storage"
 
     for mod in ${REQMODULES}; do
-        FTGT="${FTGT} /usr/lib/modules/${KERNEL}/kernel/${mod}"
+        FTGT="${FTGT} ${MODULES_DIR}/${KERNEL}/kernel/${mod}"
     done
     for driver in ${DRIVERS}; do
-        FTGT="${FTGT} /usr/lib/modules/${KERNEL}/kernel/drivers/${driver}"
+        FTGT="${FTGT} ${MODULES_DIR}/${KERNEL}/kernel/drivers/${driver}"
     done
 
-    # mkdir -p $INITRD_DIR/usr/lib/modules/$KERNEL/
+    mkdir -p $INITRD_DIR/boot/modules/$KERNEL/
+
+    copy_module() {
+        local _src_path=${1}
+        local _dest_path=$(echo ${1} | sed "s|${MODULES_DIR}|/boot/modules|g")
+        copy ${_src_path} ${_dest_path}
+    }
 
     local loaded_module=$(lsmod | tail -n+2 | awk '{print $1}')
     for module in $(find ${FTGT} -type f -name "*.ko*" 2>/dev/null); do
         if [[ -z ${UNIVERSAL} ]]; then
             if [[ ${loaded_module} =~ $(basename ${module%*.ko*}) ]]; then
-                copy ${module}
+                copy_module ${module}
             fi
         else
-            copy ${module}
+            copy_module ${module}
         fi
     done
 
-    copy /usr/lib/modules/$KERNEL/kernel/fs/isofs/isofs.ko.xz
-    copy /usr/lib/modules/$KERNEL/kernel/drivers/cdrom/cdrom.ko.xz
-    copy /usr/lib/modules/$KERNEL/kernel/drivers/scsi/sr_mod.ko.xz
-    copy /usr/lib/modules/$KERNEL/kernel/fs/overlayfs/overlay.ko.xz
-    copy /usr/lib/modules/$KERNEL/kernel/fs/hfsplus/hfsplus.ko.xz
-    copy /usr/lib/modules/$KERNEL/kernel/drivers/parport/parport.ko.xz
+    copy_module ${MODULES_DIR}/$KERNEL/kernel/fs/isofs/isofs.ko.xz
+    copy_module ${MODULES_DIR}/$KERNEL/kernel/drivers/cdrom/cdrom.ko.xz
+    copy_module ${MODULES_DIR}/$KERNEL/kernel/drivers/scsi/sr_mod.ko.xz
+    copy_module ${MODULES_DIR}/$KERNEL/kernel/fs/overlayfs/overlay.ko.xz
+    copy_module ${MODULES_DIR}/$KERNEL/kernel/fs/hfsplus/hfsplus.ko.xz
+    copy_module ${MODULES_DIR}/$KERNEL/kernel/drivers/parport/parport.ko.xz
 
-    for i in /usr/lib/modules/$KERNEL/modules.*; do
-        copy $i
+    for i in ${MODULES_DIR}/$KERNEL/modules.*; do
+        copy_module $i
     done
 }
 
@@ -268,7 +284,4 @@ function main() {
     cleanup
 }
 
-# main $@
-
-KERNEL="5.4.0-86-generic"
-install_modules
+main $@

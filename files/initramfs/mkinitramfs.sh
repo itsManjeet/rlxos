@@ -144,6 +144,10 @@ parse_args() {
             PASSWORD=${p#*=}
             ;;
 
+        -u)
+            UNIVERSAL=1
+            ;;
+
         esac
     done
 }
@@ -193,7 +197,28 @@ install_udev() {
 # install extra kernel modules
 install_modules() {
 
-    mkdir -p $INITRD_DIR/usr/lib/modules/$KERNEL/
+    local REQMODULES="crypto fs lib"
+    local DRIVERS="block ata md firewire input scsi message pcmcia virtio hid usb/host usb/storage"
+
+    for mod in ${REQMODULES}; do
+        FTGT="${FTGT} /usr/lib/modules/${KERNEL}/kernel/${mod}"
+    done
+    for driver in ${DRIVERS}; do
+        FTGT="${FTGT} /usr/lib/modules/${KERNEL}/kernel/drivers/${driver}"
+    done
+
+    # mkdir -p $INITRD_DIR/usr/lib/modules/$KERNEL/
+
+    local loaded_module=$(lsmod | tail -n+2 | awk '{print $1}')
+    for module in $(find ${FTGT} -type f -name "*.ko*" 2>/dev/null); do
+        if [[ -z ${UNIVERSAL} ]]; then
+            if [[ ${loaded_module} =~ $(basename ${module%*.ko*}) ]]; then
+                copy ${module}
+            fi
+        else
+            copy ${module}
+        fi
+    done
 
     copy /usr/lib/modules/$KERNEL/kernel/fs/isofs/isofs.ko.xz
     copy /usr/lib/modules/$KERNEL/kernel/drivers/cdrom/cdrom.ko.xz
@@ -210,7 +235,7 @@ install_modules() {
 # install password file
 # generate password md5sum
 install_password() {
-    echo "${PASSWORD}" | md5sum  | cut -d ' ' -f1 > ${INITRD_DIR}/.secure
+    echo "${PASSWORD}" | md5sum | cut -d ' ' -f1 >${INITRD_DIR}/.secure
 }
 
 # compress_initrd
@@ -243,4 +268,7 @@ function main() {
     cleanup
 }
 
-main $@
+# main $@
+
+KERNEL="5.4.0-86-generic"
+install_modules

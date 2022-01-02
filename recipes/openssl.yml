@@ -1,5 +1,5 @@
 id: openssl
-version: 1.1.1k
+version: 1.1.1m
 about: |
   Package contains management tools and libraries relating to cryptography
 
@@ -11,11 +11,11 @@ depends:
     - perl
 
 sources:
-  - https://www.openssl.org/source/openssl-1.1.1k.tar.gz
+  - https://www.openssl.org/source/openssl-1.1.1m.tar.gz
 
 packages:
   - id: pkg
-    dir: openssl-1.1.1k
+    dir: openssl-1.1.1m
     prescript: |
       ln -sv config configure
 

@@ -26,17 +26,6 @@ depends:
 sources:
   - https://github.com/systemd/systemd/archive/v249/systemd-249.tar.gz
 
-prescript: |
-  cd ${PKGUPD_WORKDIR}/src/systemd-249
-   sed -i -e "s/GROUP=\"render\"/GROUP=\"video\"/" -e "s/GROUP=\"sgx\", //" rules.d/50-udev-default.rules.in
-   
-  if [[ -d /tools/bin/ ]] ; then
-    ln -sf /tools/bin/true /usr/bin/xsltproc
-    for f in /tools/lib/lib{blkid,mount,uuid}.so* ; do
-      [[ ! -e /usr/lib/${f} ]] && ln -sf ${f} /usr/lib/
-    done
-  fi
-
 environ:
   - LANG=en_IN.UTF-8
   - PKG_CONFIG_PATH="/usr/lib/pkgconfig:/tools/lib/pkgconfig"
@@ -44,6 +33,10 @@ environ:
 packages:
   - id: pkg
     dir: systemd-249
+
+    prescript: |
+      sed -i -e "s/GROUP=\"render\"/GROUP=\"video\"/" -e "s/GROUP=\"sgx\", //" rules.d/50-udev-default.rules.in
+
 
     flags:
       - id: configurator
@@ -68,12 +61,15 @@ packages:
           -D mount-path=/usr/bin/mount
           -D umount-path=/usr/bin/umount
           -D sulogin-path=/usr/bin/sulogin
+    
+    postscript: |
+      patch ${pkgupd_pkgdir}/usr/lib/systemd/system/systemd-udevd.service < ${FILES}/systemd/run-after-rlxos-boot.patch
 
-postinstall: |
-  systemd-machine-id-setup
-  
-  journalctl --update-catalog
+    postinstall: |
+      systemd-machine-id-setup
+      
+      journalctl --update-catalog
 
-  systemctl enable \
-    getty@tty1.service \
-    remote-fs.target
+      systemctl enable \
+        getty@tty1.service \
+        remote-fs.target

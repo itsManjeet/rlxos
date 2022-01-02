@@ -7,7 +7,7 @@ BASEDIR="$(
 
 . ${BASEDIR}/common.sh
 
-KERNEL='5.12.10'
+KERNEL='5.12.10-rlxos'
 FIRMWARE='20211027'
 
 if [[ -z ${1} ]]; then
@@ -40,7 +40,6 @@ fi
 pkgupd in grub-legacy grub squashfs-tools lvm2 initramfs mtools linux
 checkProcess "InstallingTools"
 
-
 # Temporary KMOD reinstallations
 pkgupd in kmod --force --skip-depends
 checkProcess "InstallKmod"
@@ -53,11 +52,10 @@ checkProcess "GenerateRootfs()"
 SCRIPT=$(cat ${PROFILE}/script)
 checkProcess "checkLocalScript"
 
-
 echo ":: installing fstab"
 echo "
 /run/initramfs/boot /boot   none defaults,bind  0   0
-" > ${ROOTFS}/etc/fstab
+" >${ROOTFS}/etc/fstab
 
 chroot ${ROOTFS} bash -e <<"EOT"
 pwconv
@@ -94,14 +92,15 @@ mkdir -p ${ISODIR}/boot/grub/
 mksquashfs ${ROOTFS}/* ${ISODIR}/rootfs.img
 checkProcess "PackingSquash:root"
 
+KERNEL_VERSION=$(echo ${KERNEL} | sed 's|-rlxos||g')
 echo ":: installing kernel"
-tar -xaf /var/cache/pkgupd/pkgs/linux-${KERNEL}.rlx -C ${TEMPDIR} &&
+tar -xaf /var/cache/pkgupd/pkgs/linux-${KERNEL_VERSION}.rlx -C ${TEMPDIR} &&
     mv ${TEMPDIR}/usr/lib/modules ${ISODIR}/boot/ &&
     mv ${TEMPDIR}/boot/vmlinuz ${ISODIR}/boot/vmlinuz-${KERNEL}
 checkProcess "InstallKernel"
 
 echo "installing initrd Kernel=${KERNEL} Modules=${ISODIR}/boot/modules"
-mkinitramfs -u -k=${KERNEL}-rlxos -m="${ISODIR}/boot/modules/" -o=${ISODIR}/boot/initrd-${KERNEL}
+mkinitramfs -u -k=${KERNEL} -m="${ISODIR}/boot/modules/" -o=${ISODIR}/boot/initrd-${KERNEL}
 checkProcess "GeneratingInitrd"
 
 echo "default='rlxos installer'
@@ -111,15 +110,23 @@ menuentry 'rlxos installer' {
     initrd /boot/initrd-${KERNEL}
 }" >${ISODIR}/boot/grub/grub.cfg
 
+cp -a ${PROFILE}/overlay ${TEMPDIR}/
+sudo chown root:root ${TEMPDIR}/overlay -R
+install -v -D /var/cache/pkgupd/files/systemd/rlxos-boot.mount -t ${TEMPDIR}/overlay/usr/lib/systemd/system
 
-mksquashfs ${PROFILE}/overlay/* ${ISODIR}/iso.img
+
+mkdir -p ${TEMPDIR}/overlay/etc
+echo "
+/run/iso/boot   /boot   none    defauts,bind    0   0" > ${TEMPDIR}/overlay/etc/fstab
+
+mksquashfs ${TEMPDIR}/overlay/* ${ISODIR}/iso.img
 checkProcess "PackingSquash:iso"
 
 ISOFILE="/releases/rlxos-$(basename ${PROFILE})-${VERSION}.iso"
 grub-mkrescue -volid RLXOS ${ISODIR} -o ${ISOFILE}
 checkProcess "GenIso"
 
-md5sum ${ISOFILE} > ${ISOFILE}.md5
+md5sum ${ISOFILE} >${ISOFILE}.md5
 checkProcess "GenMD5"
 
 BoltSendMesg "$(date) generated [TEST] iso at ${SERVER_URL}/${VERSION}${ISOFILE}, $(cat ${ISOFILE}.md5)" >/bolt

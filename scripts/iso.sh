@@ -80,7 +80,8 @@ chroot ${ROOTFS} bash -ec "${SCRIPT}"
 checkProcess "LocalScript"
 
 # installing logo
-install -v -D -m 0644 "/var/cache/pkgupd/files/logo/logo.png" ${ROOTFS}/usr/share/pixmaps/rlxos.png
+install -v -D -m 0644 "/var/cache/pkgupd/files/logo/logo.png" -o root -g root ${ROOTFS}/usr/share/pixmaps/rlxos.png
+install -v -D -m 0644 "/var/cache/pkgupd/files/backgrounds/default.png" -o root -g root ${ROOTFS}/usr/share/backgrounds/default.png
 checkProcess "LogoInstall"
 
 ISODIR=/tmp/rlxos-iso

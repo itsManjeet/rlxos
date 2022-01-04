@@ -15,10 +15,15 @@ if [[ -z "${NOCONTAINER}" ]]; then
     fi
     VERSION=$(cat ${BASEDIR}/.version)
 
+    ${BASEDIR}/scripts/configure.py
+
     echo "Starting container"
     docker run \
         --rm \
         --network host \
+        --device /dev/fuse \
+        --cap-add SYS_ADMIN \
+        --security-opt apparmor:unconfined \
         -v "${BASEDIR}/scripts:/scripts" \
         -v "${BASEDIR}/build/${VERSION}/recipes:/var/cache/pkgupd/recipes" \
         -v "${BASEDIR}/build/${VERSION}/pkgs:/var/cache/pkgupd/pkgs" \

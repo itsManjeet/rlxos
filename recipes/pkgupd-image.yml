@@ -1,0 +1,15 @@
+id: pkgupd-image
+version: main
+about: pkgupd helper tool to generate debian roots packages for appimages
+depends:
+  buildtime:
+    - go
+
+packages:
+  - id: pkg
+    sources:
+      - pkgupd-image-{{version}}.tar.gz::https://github.com/itsManjeet/pkgupd-image/archive/refs/heads/{{version}}.tar.gz
+    dir: pkgupd-image-{{version}}
+    script: |
+      go build main.go
+      install -v -D -m 0755 main ${pkgupd_pkgdir}/usr/bin/pkgupd-image

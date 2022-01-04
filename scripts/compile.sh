@@ -15,8 +15,11 @@ if [[ -z ${1} ]]; then
     exit 1
 fi
 
-pkgupd in kernel-headers cmake binutils flex bison autoconf automake make patch pkg-config gperf
+pkgupd in pkgupd --force --skip-depends
 
+pkgupd in kernel-headers cmake binutils flex bison autoconf automake make patch pkg-config gperf appimagetool fuse fuse2
+
+mkdir -p /apps
 DEPS=$(pkgupd deptest ${PKG} --force)
 if [[ ${?} != 0 ]]; then
     echo "Error! failed to calculate depends"

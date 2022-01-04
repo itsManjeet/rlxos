@@ -22,13 +22,10 @@ for file in os.listdir('recipes/'):
             data = f.read()
             obj = yaml.full_load(data)
             try:
-                print('creating %s' % obj['id'])
                 data = Environment().from_string(data).render(obj)
                 with open('{}/{}'.format(RECIPE_DIR,file),'w') as fw:
-                    print(data)
                     fw.write(data)
             except Exception as e:
-                print(str(e), file)
                 FAILED.append(file)
 
 print("failed", FAILED)

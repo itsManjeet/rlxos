@@ -16,5 +16,7 @@ packages:
     strip: false
     script: |
       install -d ${pkgupd_pkgdir}/usr/share/icons
+
+      sed -i "s|THEME_VARIANTS=('' '-ubuntu' '-manjaro')|THEME_VARIANTS=('')|" install.sh
       ./install.sh -d ${pkgupd_pkgdir}/usr/share/icons
     

@@ -5,7 +5,7 @@
    <schema id="org.gnome.shell.extensions.user-theme" path="/org/gnome/shell/extensions/user-theme/">
      <key name="name" type="s">
 -      <default>""</default>
-+      <default>"Fluent-light"</default>
++      <default>"Qogir-light"</default>
        <summary>Theme name</summary>
        <description>The name of the theme, to be loaded from ~/.themes/name/gnome-shell</description>
      </key>

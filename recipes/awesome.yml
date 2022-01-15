@@ -20,6 +20,7 @@ depends:
     - xcb-util-wm
     - xcb-util-xrm
     - xorg-apps
+    - libpng
   buildtime:
     - cmake
     - imagemagick
@@ -29,6 +30,8 @@ sources:
 packages:
   - id: pkg
     dir: awesome-4.3
+    environ:
+      - CFLAGS+=' -fcommon'
     flags:
       - id: configure
         value: >

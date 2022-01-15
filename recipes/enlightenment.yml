@@ -1,0 +1,36 @@
+id: enlightenment
+version: 0.25.1
+about: Enlightenment window manager
+license: BSD
+
+packages:
+  - id: pkg
+    depends:
+      runtime:
+        - bc
+        - bluez
+        - efl
+        - hicolor-icon-theme
+        - libexif
+        - pam
+        - pulseaudio
+        - ttf-noto
+        - udisks
+        - wayland
+        - xcb-util-keysyms
+        - xorg
+
+      builtime:
+        - meson
+        - ninja
+    
+    environ:
+      - CFLAGS+=' -fcommon -fvisibility=hidden'
+    
+    sources:
+      - https://download.enlightenment.org/rel/apps/enlightenment/enlightenment-{{version}}.tar.xz
+    
+    dir: enlightenment-{{version}}
+    flags:
+      - id: configure
+        value: -Dwl=true

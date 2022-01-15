@@ -5,9 +5,8 @@ about: |
 
 depends:
   runtime:
-    # - libunwind
     - xorg-libs
-    - llvm
+    - libllvm
     - libdrm
     - libelf
     - wayland-protocols
@@ -22,6 +21,7 @@ depends:
     - xorgproto
     - flex
     - bison
+    - llvm
 
 sources:
   - https://mesa.freedesktop.org/archive/mesa-21.1.5.tar.xz

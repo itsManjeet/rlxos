@@ -10,7 +10,6 @@ depends:
     - libpng
     - shared-mime-info
     - libtiff
-      #    - librsvg
 
   buildtime:
     - gobject-introspection

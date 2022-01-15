@@ -34,6 +34,7 @@ packages:
     script: |
       ./configure \
         --prefix=/usr \
+        --sysconfdir=/etc \
         --with-system-groups=lpadmin \
         --localstatedir=/var
       make

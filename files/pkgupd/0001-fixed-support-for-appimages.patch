@@ -1,0 +1,220 @@
+From c2525f208d79fe460ba0fd007db45d7d0796bdd0 Mon Sep 17 00:00:00 2001
+From: "manjeet.singh1" <manjeet.singh@bobble.ai>
+Date: Wed, 5 Jan 2022 13:41:31 +0530
+Subject: [PATCH] fixed support for appimages
+
+---
+ libpkgupd/archive.cc |  5 +++++
+ libpkgupd/archive.hh |  3 ++-
+ libpkgupd/builder.cc |  2 +-
+ libpkgupd/image.cc   |  4 ++--
+ libpkgupd/pkginfo.hh | 33 ++++++++++++++++++++++++++++++++-
+ libpkgupd/recipe.cc  |  8 ++++++++
+ libpkgupd/recipe.hh  |  2 ++
+ libpkgupd/sysdb.cc   |  8 +++++++-
+ libpkgupd/sysdb.hh   |  2 ++
+ 9 files changed, 61 insertions(+), 6 deletions(-)
+
+diff --git a/libpkgupd/archive.cc b/libpkgupd/archive.cc
+index 8be8658..1ae5e70 100644
+--- a/libpkgupd/archive.cc
++++ b/libpkgupd/archive.cc
+@@ -15,6 +15,11 @@ archive::package::package(YAML::Node const &data, std::string const &file) {
+   READ_OBJECT_LIST(pkginfo::user, users);
+   READ_OBJECT_LIST(pkginfo::group, groups);
+ 
++  _type = pkgtype::RLX;
++  if (data["type"]) {
++    _type = pkginfo::str2pkgtype(data["type"].as<std::string>());
++  }
++
+   OPTIONAL_VALUE(std::string, install_script, "");
+ }
+ 
+diff --git a/libpkgupd/archive.hh b/libpkgupd/archive.hh
+index a6360d3..8180069 100644
+--- a/libpkgupd/archive.hh
++++ b/libpkgupd/archive.hh
+@@ -17,8 +17,8 @@ class archive : public object {
+   class package : public pkginfo {
+    private:
+     std::string _id, _version, _about;
+-
+     std::string _script;
++    pkgtype _type;
+ 
+     std::vector<std::string> _depends;
+ 
+@@ -28,6 +28,7 @@ class archive : public object {
+     std::string id() const { return _id; }
+     std::string version() const { return _version; }
+     std::string about() const { return _about; }
++    pkgtype type() const { return _type; }
+     std::vector<std::string> depends(bool) const { return _depends; }
+   };
+ 
+diff --git a/libpkgupd/builder.cc b/libpkgupd/builder.cc
+index 6e5d268..96c7085 100644
+--- a/libpkgupd/builder.cc
++++ b/libpkgupd/builder.cc
+@@ -102,7 +102,7 @@ bool builder::_build(std::shared_ptr<recipe::package> package) {
+   std::string pkg_src_dir = pkg_work_dir + "/src";
+   std::string pkg_pkg_dir = pkg_work_dir + "/pkg";
+ 
+-  std::string pkgfile = _pkgs_dir + "/" + package->packagefile(package->pack());
++  std::string pkgfile = _pkgs_dir + "/" + package->packagefile();
+   if (std::filesystem::exists(pkgfile) && !_force) {
+     std::cout << "Found in cache, skipping" << std::endl;
+     if (package->pack() != "none") {
+diff --git a/libpkgupd/image.cc b/libpkgupd/image.cc
+index b351635..8d91451 100644
+--- a/libpkgupd/image.cc
++++ b/libpkgupd/image.cc
+@@ -240,9 +240,9 @@ bool image::install_desktopfile(std::string const& outdir) {
+     if (line.find("Exec=", 0) == 0) {
+       auto del_index = line.find_first_of(' ');
+       if (del_index == std::string::npos) {
+-        line = "Exec=/apps/" + _package->packagefile("app");
++        line = "Exec=/apps/" + _package->packagefile();
+       } else {
+-        line = "Exec=/apps/" + _package->packagefile("app") +
++        line = "Exec=/apps/" + _package->packagefile() +
+                line.substr(del_index, line.length() - del_index);
+       }
+     } else if (line.find("Icon=", 0) == 0) {
+diff --git a/libpkgupd/pkginfo.hh b/libpkgupd/pkginfo.hh
+index fe97f90..28321cc 100644
+--- a/libpkgupd/pkginfo.hh
++++ b/libpkgupd/pkginfo.hh
+@@ -13,6 +13,11 @@
+ namespace rlxos::libpkgupd {
+ class pkginfo {
+  public:
++  enum class pkgtype : int {
++    APP,
++    RLX,
++    PKG,
++  };
+   class user {
+    private:
+     unsigned int _id;
+@@ -95,11 +100,37 @@ class pkginfo {
+   virtual std::string id() const = 0;
+   virtual std::string version() const = 0;
+   virtual std::string about() const = 0;
++  virtual pkgtype type() const = 0;
+ 
+   virtual std::vector<std::shared_ptr<user>> users() const { return _users; }
+   virtual std::vector<std::shared_ptr<group>> groups() const { return _groups; }
+ 
+-  virtual std::string packagefile(std::string ext = DEFAULT_EXTENSION) const {
++  static pkgtype str2pkgtype(std::string const &t) {
++    if (t == "app") {
++      return pkgtype::APP;
++    } else if (t == "rlx") {
++      return pkgtype::RLX;
++    } else if (t == "pkg") {
++      return pkgtype::PKG;
++    } else {
++      throw std::runtime_error("invalid pkgtype " + t + " specified");
++    }
++  }
++
++  static std::string pkgtype2str(pkgtype t) {
++    switch (t) {
++      case pkgtype::APP:
++        return "app";
++      case pkgtype::PKG:
++        return "pkg";
++      case pkgtype::RLX:
++        return "rlx";
++      default:
++        throw std::runtime_error("invalid pkgtype specified");
++    }
++  }
++  virtual std::string packagefile() const {
++    std::string ext = pkgtype2str(type());
+     return id() + "-" + version() + "." + ext;
+   }
+ 
+diff --git a/libpkgupd/recipe.cc b/libpkgupd/recipe.cc
+index e9072b1..7a1f613 100644
+--- a/libpkgupd/recipe.cc
++++ b/libpkgupd/recipe.cc
+@@ -72,6 +72,14 @@ std::string recipe::package::version() const { return _parent->_version; }
+ 
+ std::string recipe::package::about() const { return _parent->_about; }
+ 
++pkginfo::pkgtype recipe::package::type() const { 
++  if (_pack == "app") {
++    return pkgtype::APP;
++  } else {
++    return pkgtype::PKG;
++  }
++}
++
+ std::vector<std::string> recipe::package::depends(bool all) const {
+   std::vector<string> depends = _runtime_depends;
+   depends.insert(depends.end(), _parent->_runtime_depends.begin(),
+diff --git a/libpkgupd/recipe.hh b/libpkgupd/recipe.hh
+index e6dcce1..b8c43c9 100644
+--- a/libpkgupd/recipe.hh
++++ b/libpkgupd/recipe.hh
+@@ -62,6 +62,8 @@ class recipe : public std::enable_shared_from_this<recipe> {
+ 
+     std::string about() const;
+ 
++    pkgtype type() const;
++
+     std::vector<std::string> depends(bool all) const;
+ 
+     std::vector<std::string> sources() const;
+diff --git a/libpkgupd/sysdb.cc b/libpkgupd/sysdb.cc
+index bfa59ae..7ff78fe 100644
+--- a/libpkgupd/sysdb.cc
++++ b/libpkgupd/sysdb.cc
+@@ -18,6 +18,11 @@ sysdb::package::package(YAML::Node const &data, std::string const &file) {
+   READ_LIST(std::string, depends);
+   READ_LIST(std::string, files);
+ 
++  _type = pkgtype::RLX;
++  if (data["type"]) {
++    _type = pkginfo::str2pkgtype(data["type"].as<std::string>());
++  }
++
+   READ_OBJECT_LIST(pkginfo::user, users);
+   READ_OBJECT_LIST(pkginfo::group, groups);
+ 
+@@ -104,7 +109,8 @@ bool sysdb::add(std::shared_ptr<pkginfo> const &pkginfo,
+ 
+   fileptr << "id: " << pkginfo->id() << std::endl
+           << "version: " << pkginfo->version() << std::endl
+-          << "about: " << pkginfo->about() << std::endl;
++          << "about: " << pkginfo->about() << std::endl
++          << "type: " << pkginfo::pkgtype2str(pkginfo->type()) << std::endl;
+ 
+   if (pkginfo->depends(false).size()) {
+     fileptr << "depends:" << std::endl;
+diff --git a/libpkgupd/sysdb.hh b/libpkgupd/sysdb.hh
+index 0a1e93f..910f0aa 100644
+--- a/libpkgupd/sysdb.hh
++++ b/libpkgupd/sysdb.hh
+@@ -14,6 +14,7 @@ class sysdb : public db {
+     std::string _id;
+     std::string _version;
+     std::string _about;
++    pkgtype _type;
+ 
+     std::vector<std::string> _depends, _files;
+ 
+@@ -27,6 +28,7 @@ class sysdb : public db {
+     std::string id() const { return _id; }
+     std::string version() const { return _version; }
+     std::string about() const { return _about; }
++    pkgtype type() const { return _type; }
+     std::vector<std::string> depends(bool) const { return _depends; }
+ 
+     GET_METHOD(std::vector<std::string>, files);
+-- 
+2.32.0
+

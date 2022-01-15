@@ -1,10 +1,2 @@
-
-if [ -n "$XDG_DATA_HOME" ] && [ -d "$XDG_DATA_HOME/flatpak/exports/bin" ]; then
-  append_path "$XDG_DATA_HOME/flatpak/exports/bin"
-elif [ -n "$HOME" ] && [ -d "$HOME/.local/share/flatpak/exports/bin" ]; then
-  append_path "$HOME/.local/share/flatpak/exports/bin"
-fi
-
-if [ -d /var/lib/flatpak/exports/bin ]; then
-  append_path /var/lib/flatpak/exports/bin
-fi
+PATH="$XDG_DATA_HOME/flatpak/exports/bin:$HOME/.local/share/flatpak/exports/bin:/var/lib/flatpak/exports/bin:${PATH}"
+XDG_DATA_DIR="${XDG_DATA_DIR}:/var/lib/flatpak/exports/share:${HOME}/.local/share/flatpak/exports/share/"

@@ -2,6 +2,9 @@ id: pkgupd-image
 version: main
 about: pkgupd helper tool to generate debian roots packages for appimages
 depends:
+  runtime:
+    - appimagetool
+    
   buildtime:
     - go
 

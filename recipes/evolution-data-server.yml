@@ -38,3 +38,5 @@ packages:
           -DWITH_KRB5=OFF
           -DENABLE_INTROSPECTION=ON
           -DENABLE_GTK_DOC=OFF
+          -DLIBEXEC_INSTALL_DIR=/usr/lib
+          -DSYSCONF_INSTALL_DIR=/etc

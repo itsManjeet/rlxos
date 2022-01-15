@@ -18,20 +18,12 @@ depends:
     - xorg-libs
 
   buildtime:
-    #    - libx11
-      #i    - libxaw
-#    - libxi
-      #    - libxkbfile
-      #    - libxmu
-      #    - libxrender
-      #    - libxres
-      #    - libxtst
-       #    - libxv
     - mesa
     - meson
 
 sources:
   - https://www.x.org/pub/individual/xserver/xorg-server-1.20.12.tar.xz
+
 
 packages:
   - id: pkg
@@ -42,6 +34,7 @@ packages:
       - id: configure
         value: >
           --enable-glamor
+          --enable-kdrive
           --enable-suid-wrapper
           --localstatedir=/var
           --with-xkb-output=/var/lib/xkb

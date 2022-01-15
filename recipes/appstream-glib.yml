@@ -5,6 +5,9 @@ depends:
   runtime:
     - gtk
     - libsoup
+    - libyaml
+    - librsvg
+    - curl
 packages:
   - id: pkg
     dir: appstream-glib-appstream_glib_0_7_18

@@ -7,11 +7,12 @@ depends:
   runtime:
     - cairo
     - fuse
-    - wget
-    - boost
+    - libboost
     - libarchive
     - librsvg
     - fuse2
+    - desktop-file-utils
+    - gdk-pixbuf
 
 
   buildtime:
@@ -19,6 +20,7 @@ depends:
     - cmake
     - libtool
     - git
+    - wget
     - boost
 
 sources:

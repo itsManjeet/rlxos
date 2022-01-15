@@ -5,9 +5,11 @@ depends:
   runtime:
     - qt
     - libyaml-cpp
+    - libllvm
+    - python
+  buildtime:
     - llvm
     - cmake
-    - python
 packages:
   - id: pkg
     dir: qt-creator-opensource-src-5.0.2

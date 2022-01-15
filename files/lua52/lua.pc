@@ -1,0 +1,20 @@
+V=5.2
+R=5.2.4
+
+prefix=/usr
+INSTALL_BIN=${prefix}/bin
+INSTALL_INC=${prefix}/include
+INSTALL_LIB=${prefix}/lib
+INSTALL_MAN=${prefix}/share/man/man1
+INSTALL_LMOD=${prefix}/share/lua/${V}
+INSTALL_CMOD=${prefix}/lib/lua/${V}
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include/lua5.2
+
+Name: Lua
+Description: An Extensible Extension Language
+Version: ${R}
+Requires:
+Libs: -L${libdir} -llua5.2 -lm -ldl
+Cflags: -I${includedir}

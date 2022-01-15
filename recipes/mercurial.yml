@@ -1,0 +1,35 @@
+id: mercurial
+version: 6.0
+about: A scalable distributed SCM tools
+license: GPL
+packages:
+  - id: pkg
+    sources:
+      - https://www.mercurial-scm.org/release/mercurial-{{version}}.tar.gz
+    dir: mercurial-{{version}}
+
+    depends:
+      buildtime:
+        - py-pip
+
+    script: |
+      make
+      make -C contrib/chg
+
+      pip install docutils
+
+      python setup.py install --root=$pkgupd_pkgdir --optimize=1
+      make DESTDIR="${pkgupd_pkgdir}" PREFIX=/usr install
+
+      make -C contrib/chg DESTDIR=${pkgupd_pkgdir} PREFIX=/usr install
+      install -m 755 contrib/hg-ssh ${pkgupd_pkgdir}/usr/bin/
+      install -m 755 contrib/hgk ${pkgupd_pkgdir}/usr/bin/
+
+      install -m 0755 -d ${pkgupd_pkgdir}/etc/profile.d
+      echo "export HG=/usr/bin/hg" ${pkgupd_pkgdir}/etc/profile.d/mercurial.sh
+
+      install -m 755 -d ${pkgupd_pkgdir}/etc/mercurial
+      cat <<-EOF > ${pkgupd_pkgdir}/etc/mercurial/hgrc
+        [web]
+        cacerts = /etc/ssl/certs/ca-certificates.crt
+        EOF

@@ -21,6 +21,7 @@ depends:
   
   buildtime:
     - gobject-introspection
+    - git
 
 sources:
   - https://download.gnome.org/sources/gtk/4.2/gtk-4.2.1.tar.xz

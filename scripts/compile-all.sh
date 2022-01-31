@@ -10,11 +10,11 @@ VERSION=$(cat ${BASEDIR}/.version)
 PKGS=$(ls ${BASEDIR}/build/${VERSION}/recipes/ | sed 's|.yml||g')
 
 for pkg in ${PKGS}; do
-    echo "compiling for ${pkg}"
+    BoltSendMesg "compiling for ${pkg}"
     LOGFILE="${BASEDIR}/build/${VERSION}/logs/${pkg}.log"
     ${BASEDIR}/scripts/compile.sh ${pkg} | tee ${LOGFILE}
     if [[ ${?} != 0 ]]; then
-        echo "Failed to compile ${pkg}"
+        BoltSendMesg "Failed to compile ${pkg}"
         mv "${LOGFILE}" "${LOGFILE}.failed"
     fi
 done

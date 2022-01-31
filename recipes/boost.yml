@@ -10,10 +10,12 @@ depends:
 sources:
   - https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.bz2
 
+environ:
+    - PKGUPD_COMMON=/tmp/boost_split
+    
 packages:
   - id: pkg
     dir: boost_1_76_0
-    plugin: script
     script: |
       ./bootstrap.sh --with-icu --with-python=python3 --prefix=/usr
       ./b2 -j $(nproc) \
@@ -23,7 +25,19 @@ packages:
         link=shared,static \
         toolset=gcc \
         --layout=system \
-        --prefix=${pkgupd_pkgdir} install
-        
-      install -vdm755 ${pkgupd_pkgdir}/usr
-      cp -a "${pkgupd_pkgdir}"/include "${pkgupd_pkgdir}"/usr
+        --prefix=${PKGUPD_COMMON}/fakeinstall install
+
+      install -d "${pkgupd_pkgdir}/usr/lib"
+      cp -a ${PKGUPD_COMMON}/fakeinstall/lib/*.a ${pkgupd_pkgdir}/usr/lib
+      cp -a ${PKGUPD_COMMON}/fakeinstall/lib/cmake ${pkgupd_pkgdir}/usr/lib/
+      for i in bin share include ; do
+        if [[ -e ${PKGUPD_COMMON}/fakeinstall/${i} ]] ; then
+          cp -a ${PKGUPD_COMMON}/fakeinstall/${i} ${pkgupd_pkgdir}/usr/
+        fi
+      done
+
+  - id: lib
+    dir: .
+    script: |
+      install -d ${pkgupd_pkgdir}/usr/lib
+      cp -a ${PKGUPD_COMMON}/fakeinstall/lib/*.so* ${pkgupd_pkgdir}/usr/lib/

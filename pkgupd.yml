@@ -1,5 +1,5 @@
 environ:
     - FILES=/var/cache/pkgupd/files
-    - CFLAGS=-march=x86-64 -O2 -pipe
-    - CXXFLAGS=-march=x86-64 -O2 -pipe
-    - MAKEFLAGS=-j8
+    - CFLAGS=-march=x86-64 -O2
+    - CXXFLAGS=-march=x86-64 -O2
+    - MAKEFLAGS=-j$(nproc)

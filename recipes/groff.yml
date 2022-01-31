@@ -5,7 +5,7 @@ about: |
 
 depends:
   runtime:
-    - gcc
+    - libgcc
     - perl
     - texinfo
 

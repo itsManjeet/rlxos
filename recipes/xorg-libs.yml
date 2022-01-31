@@ -45,6 +45,8 @@ packages:
         - xorg-libs-libpciaccess
         - xorg-libs-libxkbfile
         - xorg-libs-libxshmfence
+      buildtime:
+        - xcb-proto
     dir: .
     script: |
       install -v -d -m 0755 ${pkgupd_pkgdir}/usr/share/xorg-libs/

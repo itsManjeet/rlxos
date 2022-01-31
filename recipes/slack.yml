@@ -1,46 +1,32 @@
 id: slack
-version: 4.22.0
+version: 4.23.0
 about: Slack is a proprietary business communication platform developed by American software company Slack Technologies and now owned by Salesforce. Slack offers many IRC-style features, including persistent chat rooms organized by topic, private groups, and direct messaging
-
-depends:
-  runtime:
-    - gtk
-    - libsecret
-    - nss
-    - xdg-utils
 
 packages:
   - id: pkg
-    dir: .
     pack: app
-    flags:
-      - id: lib
-        value: no
-
     sources:
-      - https://downloads.slack-edge.com/releases/linux/4.22.0/prod/x64/slack-4.22.0-0.1.fc21.x86_64.rpm
+      - https://downloads.slack-edge.com/releases/linux/4.23.0/prod/x64/slack-4.23.0-0.1.fc21.x86_64.rpm
 
+    dir: .
     script: |
-      bsdtar -xf slack-4.22.0-0.1.fc21.x86_64.rpm
-      cp -a usr/lib/slack ${pkgupd_pkgdir}
-      cp usr/share/pixmaps/slack.png ${pkgupd_pkgdir}/slack.png
+      bsdtar -xf slack-4.23.0-0.1.fc21.x86_64.rpm
 
-      ls ${pkgupd_pkgdir}
-      echo ${pkgupd_pkgdir}
+      mv usr/lib/slack ${pkgupd_pkgdir}
+      mv usr/share/pixmaps/slack.png ${pkgupd_pkgdir}
 
 AppRun: |
   #!/bin/sh
-  PATH=${APPDIR}:${PATH}
-  export PATH=${PATH}
-  LD_LIBRARY_PATH=${APPDIR}:${LD_LIBRARY_PATH}
-  exec ${APPDIR}/slack ${@}
+  HERE="$(dirname "$(readlink -f "${0}")")"
+  EXEC=${HERE}/slack
+  exec ${EXEC} "$@"
 
 Desktopfile: |
   [Desktop Entry]
   Name=Slack
   StartupWMClass=Slack
   Comment=Slack Desktop
-  GenericName=Slack Client for Linux
+  GenericName=Slack client for linux
   Exec=slack %U
   Icon=slack
   Type=Application

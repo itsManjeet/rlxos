@@ -2,8 +2,7 @@ id: libconfig
 version: 1.7.3
 about: C/C++ configuration file library
 depends:
-  runtime:
-    - gcc
+  buildtime:
     - texinfo
 packages:
   - id: pkg

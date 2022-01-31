@@ -5,12 +5,13 @@ tags:
   - theme
   - flat
 category: customization
-depends:
-  runtime:
-    - gtk
 packages:
   - id: pkg
     dir: Qogir-theme-2021-11-17
+    depends:
+      buildtime:
+        - sassc
+        - libsassc
     sources:
       - qogir-gtk-theme-2021-11-17.tar.gz::https://github.com/vinceliuice/Qogir-theme/archive/refs/tags/2021-11-17.tar.gz
     strip: false

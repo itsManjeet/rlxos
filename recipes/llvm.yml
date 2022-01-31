@@ -12,6 +12,8 @@ sources:
   - https://github.com/llvm/llvm-project/releases/download/llvmorg-12.0.1/clang-12.0.1.src.tar.xz
   - https://github.com/llvm/llvm-project/releases/download/llvmorg-12.0.1/compiler-rt-12.0.1.src.tar.xz
 
+environ:
+  - PKGUPD_COMMON=/tmp/llvm_split
 packages:
   - id: pkg
     dir: llvm-12.0.1.src
@@ -35,3 +37,15 @@ packages:
           -DLLVM_BUILD_TESTS=ON
           -DLLVM_BINUTILS_INCDIR=/usr/include
           -Wno-dev -G Ninja
+    postscript: |
+      mkdir -p ${PKGUPD_COMMON}/usr/lib/clang/{{version}}/lib/linux
+      mv ${pkgupd_pkgdir}/usr/lib/*.so* ${PKGUPD_COMMON}/usr/lib/
+      
+      mv ${pkgupd_pkgdir}/usr/lib/clang/{{version}}/lib/linux/*.so \
+        ${PKGUPD_COMMON}/usr/lib/clang/{{version}}/lib/linux/
+
+    
+  - id: lib
+    dir: .
+    script: |
+      mv ${PKGUPD_COMMON} ${pkgupd_pkgdir}

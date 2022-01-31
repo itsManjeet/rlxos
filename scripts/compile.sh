@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash
 
 BASEDIR="$(
     cd -- "$(dirname "$0")" >/dev/null 2>&1
@@ -15,18 +15,27 @@ if [[ -z ${1} ]]; then
     exit 1
 fi
 
-pkgupd in kernel-headers cmake binutils flex bison autoconf automake make patch pkg-config
+pkgupd in pkgupd --force --skip-depends
 
-DEPS=$(pkgupd deptest ${PKG})
+pkgupd in kernel-headers cmake binutils flex bison autoconf automake make patch pkg-config gperf appimagetool fuse fuse2
+
+mkdir -p /apps
+DEPS=$(pkgupd deptest ${PKG} --force)
 if [[ ${?} != 0 ]]; then
     echo "Error! failed to calculate depends"
     exit 1
 fi
 
+if [[ -z "${DEPS}" ]]; then
+    DEPS="${PKG} "
+fi
+
 echo "Compiling dependencies ${DEPS}"
-for i in ${DEPS} ; do
+for i in ${DEPS}; do
     echo "compiling ${i}"
-    pkgupd co ${i}
+    [[ ${i} == "${PKG}" ]] && PKGUPD_FLAG="--force"
+    echo "pkgupd co ${i} ${PKGUPD_FLAG}"
+    pkgupd co ${i} ${PKGUPD_FLAG}
     if [[ ${?} != 0 ]]; then
         echo "Error! failed to compile ${i}"
         exit 1

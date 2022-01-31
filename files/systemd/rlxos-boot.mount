@@ -1,0 +1,9 @@
+[Unit]
+Description=rlxos boot directory mount
+Before=systemd-udevd.service
+
+[Mount]
+What=/run/initramfs/boot
+Where=/boot
+Type=none
+Options=defaults,none

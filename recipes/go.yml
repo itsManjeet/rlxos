@@ -1,32 +1,30 @@
 id: go
-version: 1.16.6
+version: 1.17.5
 about: |
   The Go Programming Language
 
 sources:
-  - https://storage.googleapis.com/golang/go1.4.3.linux-amd64.tar.gz
-  - https://storage.googleapis.com/golang/go1.16.6.src.tar.gz
+  - https://golang.org/dl/go{{version}}.src.tar.gz
+  - https://golang.org/dl/go{{version}}.linux-amd64.tar.gz
 
 packages:
   - id: pkg
     dir: .
     strip: false
     environ:
-      - GOROOT_BOOTSTRAP=${pkgupd_srcdir}/go1.4
+      - GOROOT_BOOTSTRAP=${pkgupd_srcdir}/go{{version}}
       - GOROOT_FINAL=/usr/lib/go
-      - GOOS=linux
-      - GOARCH=amd64
-      - GOCACHE=off
+      - GOCACHE=${pkgupd_srcdir}/go-build
     script: |
       rm -r go
-      install -d go1.4
-      bsdtar -xf ${PKGUPD_SRCDIR}/go1.4.3.linux-amd64.tar.gz \
-        -C go1.4 --strip-components 1
+      install -d go{{version}}
+      tar -xaf ${PKGUPD_SRCDIR}/go{{version}}.linux-amd64.tar.gz \
+        -C go{{version}} --strip-components 1
       
-      bsdtar -xf ${PKGUPD_SRCDIR}/go1.16.6.src.tar.gz
+      tar -xaf ${PKGUPD_SRCDIR}/go{{version}}.src.tar.gz
      
       cd go/src
-      bash make.bash --no-clean
+      bash make.bash
             
       install -d ${pkgupd_pkgdir}/usr/lib
       cp -r ${pkgupd_srcdir}/go ${pkgupd_pkgdir}/usr/lib/

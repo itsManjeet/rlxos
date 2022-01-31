@@ -3,7 +3,6 @@ version: 0.6.3
 about: YAML parser and emitter in c++
 depends:
   runtime:
-    - gcc
     - glibc
 
   buildtime:

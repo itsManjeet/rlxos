@@ -289,6 +289,8 @@ function main() {
     debug "loading modules"
     load_modules
 
+    sleep 5
+
     debug "searching roots"
     search_roots
 

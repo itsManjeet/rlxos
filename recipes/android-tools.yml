@@ -1,0 +1,26 @@
+id: android-tools
+version: 31.0.3
+about: Android platform tools
+license: Apache MIT
+packages:
+  - id: pkg
+    depends:
+      runtime:
+        - android-udev
+        - libusb
+        - zstd
+        - protobuf
+      buildtime:
+        - cmake
+        - git
+        - go
+        - ninja
+        - pcre
+    sources:
+      - https://github.com/nmeum/android-tools/releases/download/31.0.3p1/android-tools-31.0.3p1.tar.xz
+    
+    dir: android-tools-31.0.3p1
+    flags:
+      - id: configure
+        value: >
+          -DCMAKE_BUILD_TYPE=Release

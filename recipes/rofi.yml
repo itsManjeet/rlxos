@@ -1,0 +1,21 @@
+id: rofi
+version: 1.7.2
+about: A window switcher, application launcher and dmenu replacement
+license: MIT
+packages:
+  - id: pkg
+    depends:
+      runtime:
+        - librsvg
+        - libxdg-basedir
+        - libxkbcommon
+        - startup-notification
+        - xcb-util-cursor
+        - xcb-util-wm
+        - xcb-util-xrm
+    sources:
+      - https://github.com/davatorium/rofi/releases/download/1.7.2/rofi-1.7.2.tar.gz
+    
+    dir: rofi-1.7.2
+    prescript: |
+      autoreconf -i

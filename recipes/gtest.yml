@@ -1,0 +1,18 @@
+id: gtest
+version: 1.11.0
+about: Google Test C++ testing utility
+license: BSD
+packages:
+  - id: pkg
+    depends:
+      buildtime:
+        - cmake
+        - python
+    sources:
+      - https://github.com/google/googletest/archive/refs/tags/release-1.11.0.tar.gz
+    dir: googletest-release-1.11.0
+    
+    flags:
+      - id: configure
+        value: >
+          -DBUILD_SHARED_LIBS=ON

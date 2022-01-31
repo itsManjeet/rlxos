@@ -1,0 +1,15 @@
+id: gnome-shell-extension-arc-menu
+version: v20
+about: Application Menu extension for GNOME
+license: GPL2
+packages:
+  - id: pkg
+    depends:
+      runtime: gnome-menus
+    
+    sources:
+      - https://gitlab.com/arcmenu/ArcMenu/-/archive/v20/ArcMenu-v20.tar.gz
+    
+    dir: ArcMenu-v20
+    script: |
+      make install DESTDIR=${pkgupd_pkgdir}

@@ -1,0 +1,22 @@
+id: usbutils
+version: 014
+about: A collection of USB tools to query connected USB devices
+license: GPL2, GPL3
+packages:
+  - id: pkg
+    depends:
+      runtime:
+        - glibc
+        - systemd
+        - coreutils
+        - python
+      buildtime:
+        - libusb
+
+    sources:
+      - https://www.kernel.org/pub/linux/utils/usb/usbutils/usbutils-014.tar.xz
+    dir: usbutils-014
+    flags:
+      - id: configure
+        value: >
+          --datadir=/usr/share/hwdata

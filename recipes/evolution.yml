@@ -36,9 +36,13 @@ packages:
   - id: pkg
     dir: evolution-3.40.2
     flags:
+      - id: configurator
+        value: CMakeLists.txt
+
       - id: configure
         value: >
           -DENABLE_INSTALLED_TESTS=ON
-          -DENABLE_PST_IMPORT=OFF
+          -DENABLE_SMIME=ON
           -DENABLE_YTNEF=OFF
-          -DENABLE_CONTACT_MAPS=OFF
+          -DLIBEXEC_INSTALL_DIR=/usr/lib
+          -DSYSCONF_INSTALL_DIR=/etc

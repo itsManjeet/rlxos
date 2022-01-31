@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 BASEDIR="$(
     cd -- "$(dirname "$0")" >/dev/null 2>&1
@@ -7,17 +7,23 @@ BASEDIR="$(
 
 VERSION=$(cat ${BASEDIR}/.version)
 PKGDIR="${BASEDIR}/build/${VERSION}/pkgs"
+RECIPEDIR="${BASEDIR}/build/${VERSION}/recipes"
+
+${BASEDIR}/scripts/configure.py
 echo "version: ${VERSION}
-recipes:" > ${PKGDIR}/recipe
-for i in ${PKGDIR}/*.rlx ; do
-    RCP="- $(tar -xf ${i} ./info -O)"
-    if [[ ${?} -ne 0 ]] ; then
+recipes:" >${PKGDIR}/recipe
+for i in ${RECIPEDIR}/*.yml; do
+    head -n1 ${i} | sed 's/^/  - /' >>${PKGDIR}/recipe
+    tail -n+2 ${i} | sed 's/^/    /' >>${PKGDIR}/recipe
+    if [[ ${?} -ne 0 ]]; then
         echo "Error! failed to register ${i}"
         continue
     fi
-    echo ${RCP} | sed 's/^/  /' >> ${PKGDIR}/recipe
+    echo "" >> ${PKGDIR}/recipe
 done
 source ./secure/storage
+
+rm -rf ${RECIPEDIR}
 
 lftp -e "
 set ftp:ssl-allow no

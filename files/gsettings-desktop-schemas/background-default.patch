@@ -5,7 +5,7 @@
      </key>
      <key name="picture-uri" type="s">
 -      <default>'file://@datadir@/backgrounds/gnome/adwaita-timed.xml'</default>
-+      <default>'file://@datadir@/backgrounds/Fluent-mountain-day.png'</default>
++      <default>'file://@datadir@/backgrounds/default.png'</default>
        <summary>Picture URI</summary>
        <description>
          URI to use for the background image. Note that the backend only supports

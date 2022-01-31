@@ -1,0 +1,11 @@
+--- old	2022-01-01 12:06:35.906155953 +0530
++++ new	2022-01-01 12:06:56.175907243 +0530
+@@ -11,7 +11,7 @@
+ Description=Rule-based Manager for Device Events and Files
+ Documentation=man:systemd-udevd.service(8) man:udev(7)
+ DefaultDependencies=no
+-After=systemd-sysusers.service systemd-hwdb-update.service
++After=systemd-sysusers.service systemd-hwdb-update.service boot.mount
+ Before=sysinit.target
+ ConditionPathIsReadWrite=/sys
+ 

@@ -16,11 +16,11 @@ depends:
     - cmake
 
 sources:
-  - pkgupd-2200.tar.gz::https://github.com/rlxos/pkgupd/archive/refs/heads/2200.tar.gz
+  - pkgupd-{{version}}.tar.gz::https://github.com/rlxos/pkgupd/archive/refs/heads/{{version}}.tar.gz
 
 packages:
   - id: pkg
-    dir: pkgupd-2200
+    dir: pkgupd-{{version}}
     prescript: |
       for i in ${FILES}/pkgupd/*.patch ; do
         patch -Np1 -i ${i}

@@ -4,6 +4,8 @@ about: Support library for xfce
 depends:
   runtime:
     - libxfce4ui
+  buildtime:
+    - intltool
 sources:
   - https://archive.xfce.org/src/xfce/exo/4.16/exo-4.16.2.tar.bz2
 packages:

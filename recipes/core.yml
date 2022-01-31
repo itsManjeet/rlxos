@@ -9,7 +9,7 @@ depends:
     - tzdata
     - file
     - readline
-    - gcc
+    - libgcc
     - shadow
     - pam-config
     - bash

@@ -73,22 +73,18 @@
 Build tool is a pkgupd based infrastructure for rlxos to generate reproducible system images, bootable ISO, and package updates.
 
 ### Prerequisites
-- docker-compose
+- docker
 - pkgupd (if building toolchain)
-### Installation
 
-1. Clone the repo
-   ```sh
-   git clone https://github.com/itsmanjeet/rlxos.git
-   ```
-2. Build rlxos iso
-   ```sh
-   ./build.sh -p desktop
-   ```
-3. Build specific package
-   ```sh
-   ./build.sh --build [package-id]
-   ```
+### Usage
+
+| Script         | Description                    | Example Usage                       |
+| -------------- | ------------------------------ | ----------------------------------- |
+| bootstrap.hs   | bootstrap rlxos base           | ./scripts/bootstrap.sh              |
+| chroot.sh      | chroot into rlxos docker image | ./scripts/chroot.sh                 |
+| compile-all.sh | compile all packages           | ./scripts/compile-all.sh            |
+| compile.sh     | compile specific package       | ./scripts/compile.sh [package-name] |
+| iso.sh         | build rlxos distributable ISO  | ./scripts/iso.sh [profile]          |
 
 <!-- ROADMAP -->
 ## Roadmap

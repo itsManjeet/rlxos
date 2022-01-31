@@ -1,0 +1,24 @@
+id: gnome-shell-extension-x11gestures
+version: 13
+about: Enable GNOME shell multi-touch gesture on X11
+license: GPL
+
+packages:
+  - id: pkg
+    depends:
+      runtime:
+        - gnome-shell
+        - touchegg
+    
+    sources:
+      - https://github.com/JoseExposito/gnome-shell-extension-x11gestures/releases/download/{{version}}/x11gestures@joseexposito.github.io.zip
+
+    dir: .
+    
+    script: |
+      bsdtar -xf ${PKGUPD_PKGDIR}/x11gestures@joseexposito.github.io.zip \
+        -C ${pkgupd_pkgdir} \
+        -s ":^:usr/share/gnome-shell/extensions/x11gestures@joseexposito.github.io/:"
+
+      find "${pkgupd_pkgdir}" -type d -exec chmod 755 '{}' +
+      find "${pkgupd_pkgdir}" -type f -exec chmod 644 '{}' +

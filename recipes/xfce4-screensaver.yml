@@ -1,0 +1,26 @@
+id: xfce4-screensaver
+version: 4.16.0
+about: Xfce ScreenSaver
+license: GPL2
+packages:
+  - id: pkg
+    depends:
+      runtime:
+        - libxklavier
+        - libwnck
+        - garcon
+        - dbus-glib
+        - python
+        - py-gobject
+      buildtime:
+        - intltool
+    
+    sources:
+      - https://archive.xfce.org/src/apps/xfce4-screensaver/4.16/xfce4-screensaver-{{version}}.tar.bz2
+    
+    dir: xfce4-screensaver-{{version}}
+    flags:
+      - id: configure
+        value: >
+          --disable-static
+          --disable-debug

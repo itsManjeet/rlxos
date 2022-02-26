@@ -6,6 +6,8 @@ about: |
 depends:
   runtime:
     - lzo
+  buildtime:
+    - py-setuptools
 
 sources:
   - https://www.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/btrfs-progs-v5.13.tar.xz

@@ -27,6 +27,8 @@ GRUB_TERMINAL_INPUT=console
 # you can see them in real GRUB with the command `vbeinfo'
 GRUB_GFXMODE=auto
 
+GRUB_DISABLE_OS_PROBER=false
+
 # Uncomment to allow the kernel use the same resolution used by grub
 GRUB_GFXPAYLOAD_LINUX=keep
 

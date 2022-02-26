@@ -16,6 +16,7 @@ depends:
     - xcb-util-image
     - xcb-util-keysyms
     - xcb-util-renderutil
+    - desktop-file-utils
     - libxcb
     - sqlite
     - fontconfig
@@ -28,48 +29,46 @@ depends:
     - ffmpeg
     - icu
 
-packages:
-  - id: pkg
-    dir: qt-everywhere-src-5.15.2
-    sources:
-      - https://download.qt.io/archive/qt/5.15/5.15.2/single/qt-everywhere-src-5.15.2.tar.xz
-    script: |
-      patch -Np1 -i ${FILES}/qt/qt-everywhere-src-5.15.2-CVE-2021-3481-1.patch
+build-dir: qt-everywhere-src-{{version}}
+sources:
+  - https://download.qt.io/archive/qt/5.15/{{version}}/single/qt-everywhere-src-{{version}}.tar.xz
+script: |
+  patch -Np1 -i ${FILES}/qt/qt-everywhere-src-{{version}}-CVE-2021-3481-1.patch
 
-      sed -i "/utility/a #include <limits>"     qtbase/src/corelib/global/qglobal.h
-      sed -i "/string/a #include <limits>"      qtbase/src/corelib/global/qfloat16.h
-      sed -i "/qbytearray/a #include <limits>"  qtbase/src/corelib/text/qbytearraymatcher.h
-      sed -i "/type_traits/a #include <limits>" qtdeclarative/src/qmldebug/qqmlprofilerevent_p.h
+  sed -i "/utility/a #include <limits>"     qtbase/src/corelib/global/qglobal.h
+  sed -i "/string/a #include <limits>"      qtbase/src/corelib/global/qfloat16.h
+  sed -i "/qbytearray/a #include <limits>"  qtbase/src/corelib/text/qbytearraymatcher.h
+  sed -i "/type_traits/a #include <limits>" qtdeclarative/src/qmldebug/qqmlprofilerevent_p.h
 
-      ./configure -prefix /usr \
-        -sysconfdir /etc/xdg \
-        -confirm-license -opensource \
-        -dbus-linked \
-        -openssl-linked \
-        -system-harfbuzz \
-        -system-sqlite \
-        -nomake examples \
-        -no-rpath \
-        -journald
+  ./configure -prefix /usr \
+    -sysconfdir /etc/xdg \
+    -confirm-license -opensource \
+    -dbus-linked \
+    -openssl-linked \
+    -system-harfbuzz \
+    -system-sqlite \
+    -nomake examples \
+    -no-rpath \
+    -syslog \
+    -journald
 
-      make
+  make
 
-      make install INSTALL_ROOT=${pkgupd_pkgdir}
-    
-      find ${pkgupd_pkgdir}/ -name \*.prl \
-        -exec sed -i -e "/^QMAKE_PRL_BUILD_DIR/d" {} \;
+  make install INSTALL_ROOT=${pkgupd_pkgdir}
 
-      cd ${pkgupd_srcdir}
-      install -v -D -m 644 qttools/src/assistant/assistant/images/assistant-128.png \
-        $pkgupd_pkgdir/usr/share/pixmaps/assistant-qt5.png
-      
-      install -v -D -m 644 qttools/src/designer/src/designer/images/designer.png \
-        $pkgupd_pkgdir/usr/share/pixmaps/designer-qt5.png
-      
-      install -v -Dm644 qttools/src/linguist/linguist/images/icons/linguist-128-32.png \
-                  ${pkgupd_pkgdir}/usr/share/pixmaps/linguist-qt5.png
-      
-      install -v -Dm644 qttools/src/qdbus/qdbusviewer/images/qdbusviewer-128.png \
-                  ${pkgupd_pkgdir}/usr/share/pixmaps/qdbusviewer-qt5.png
-    
-      install -v -D ${FILES}/qt/*.desktop -t ${pkgupd_pkgdir}/usr/share/applications/
+  find ${pkgupd_pkgdir}/ -name \*.prl \
+    -exec sed -i -e "/^QMAKE_PRL_BUILD_DIR/d" {} \;
+
+  install -v -D -m 644 qttools/src/assistant/assistant/images/assistant-128.png \
+    $pkgupd_pkgdir/usr/share/pixmaps/assistant-qt5.png
+  
+  install -v -D -m 644 qttools/src/designer/src/designer/images/designer.png \
+    $pkgupd_pkgdir/usr/share/pixmaps/designer-qt5.png
+  
+  install -v -Dm644 qttools/src/linguist/linguist/images/icons/linguist-128-32.png \
+              ${pkgupd_pkgdir}/usr/share/pixmaps/linguist-qt5.png
+  
+  install -v -Dm644 qttools/src/qdbus/qdbusviewer/images/qdbusviewer-128.png \
+              ${pkgupd_pkgdir}/usr/share/pixmaps/qdbusviewer-qt5.png
+
+  install -v -D ${FILES}/qt/*.desktop -t ${pkgupd_pkgdir}/usr/share/applications/

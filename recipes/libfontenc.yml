@@ -1,0 +1,6 @@
+id: libfontenc
+version: '7'
+about: xorg library libfontenc
+build-dir: libfontenc-1.1.4
+sources:
+- https://www.x.org/pub/individual/lib/libfontenc-1.1.4.tar.bz2

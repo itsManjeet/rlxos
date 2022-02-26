@@ -10,6 +10,7 @@ depends:
     - pam
     - systemd
     - intltool
+    - gobject-introspection
   buildtime:
     - docbook-xsl
 
@@ -26,20 +27,23 @@ users:
     shell: /bin/false
 
 sources:
-  - https://www.freedesktop.org/software/polkit/releases/polkit-0.119.tar.gz
+  - https://www.freedesktop.org/software/polkit/releases/polkit-{{version}}.tar.gz
 
-packages:
-  - id: pkg
-    dir: polkit-0.119
-    flags:
-      - id: configure
-        value: >
-          --disable-static
-          --with-os-type=LFS
-    prescript: |
-      sed -i "s:/sys/fs/cgroup/systemd/:/sys:g" configure
+build-dir: polkit-{{version}}
+build-type: autoconf
 
-    postscript: |
-      install -v -D -m 644 ${FILES}/pam/polkit-1 ${pkgupd_pkgdir}/etc/pam.d/polkit-1
-      install -v -d -m 0750 -o 27 ${pkgupd_pkgdir}/{etc,usr/share}/polkit-1/rules.d
+configure: >
+  --disable-static
+  --with-os-type=LFS
+  --disable-man-pages
+
+pre-script: |
+  sed -i "s:/sys/fs/cgroup/systemd/:/sys:g" configure
+
+post-script: |
+  install -v -D -m 644 ${FILES}/pam/polkit-1 ${pkgupd_pkgdir}/etc/pam.d/polkit-1
+  install -v -d -m 0750 -o 27 ${pkgupd_pkgdir}/{etc,usr/share}/polkit-1/rules.d
+
+  # set adm as default polkit admin
+  sed -i 's|wheel|adm|' ${pkgupd_pkgdir}/etc/polkit-1/rules.d/50-default.rules
       

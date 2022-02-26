@@ -1,0 +1,6 @@
+id: xorg-drivers-fbdev
+version: '7'
+about: xorg fonts xorg-drivers-fbdev
+build-dir: xf86-video-fbdev-0.5.0
+sources:
+- https://www.x.org/pub/individual/driver/xf86-video-fbdev-0.5.0.tar.bz2

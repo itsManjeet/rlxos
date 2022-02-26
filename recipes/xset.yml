@@ -1,0 +1,6 @@
+id: xset
+version: '7'
+about: xorg apps xset
+build-dir: xset-1.2.4
+sources:
+- https://www.x.org/pub/individual/app/xset-1.2.4.tar.bz2

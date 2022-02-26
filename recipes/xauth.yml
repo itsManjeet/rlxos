@@ -1,0 +1,6 @@
+id: xauth
+version: '7'
+about: xorg apps xauth
+build-dir: xauth-1.1
+sources:
+- https://www.x.org/pub/individual/app/xauth-1.1.tar.bz2

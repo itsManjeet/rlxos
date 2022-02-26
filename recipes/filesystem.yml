@@ -26,13 +26,14 @@ packages:
 
      
 
-      mkdir -p ${pkgupd_pkgdir}/{boot,home,mnt,srv,opt}
+      mkdir -p ${pkgupd_pkgdir}/{home,mnt,srv,opt}
       mkdir -p ${pkgupd_pkgdir}/etc/{opt,sysconfig}
       mkdir -p ${pkgupd_pkgdir}/usr/share/{color,dict,doc,info,locale,man,misc,terminfo,zoneinfo}
       mkdir -p ${pkgupd_pkgdir}/usr/share/man/man{1..8}
       mkdir -p ${pkgupd_pkgdir}/var/{cache,local,log,mail,opt,spool}
       mkdir -p ${pkgupd_pkgdir}/var/lib/{color,misc,locate}
 
+      ln -sv /run/initramfs/boot ${pkgupd_pkgdir}/boot
       ln -sv /run ${pkgupd_pkgdir}/var/run
 
       for i in fstab group inputrc \
@@ -42,7 +43,7 @@ packages:
       done
 
       for i in lsb-release os-release ; do
-        sed 's|@codename@|{{codename}}|' ${i} | sed 's|@version@|{{version}}|' > ${pkgupd_pkgdir}/etc/$i
+        sed 's|@codename@|{{codename}}|' ${FILES}/fs/${i} | sed 's|@version@|{{version}}|' > ${pkgupd_pkgdir}/etc/$i
       done
 
       install -v -d -m 0750 ${pkgupd_pkgdir}/root

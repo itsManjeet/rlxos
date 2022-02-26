@@ -1,0 +1,6 @@
+id: libXmu
+version: '7'
+about: xorg library libXmu
+build-dir: libXmu-1.1.3
+sources:
+- https://www.x.org/pub/individual/lib/libXmu-1.1.3.tar.bz2

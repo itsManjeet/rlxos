@@ -6,6 +6,8 @@ depends:
     - libwnck
     - libxfce4ui
     - startup-notification
+  buildtime:
+    - intltool
 sources:
   - https://archive.xfce.org/src/xfce/xfwm4/4.16/xfwm4-4.16.1.tar.bz2
 packages:

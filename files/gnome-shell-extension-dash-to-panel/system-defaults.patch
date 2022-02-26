@@ -1,0 +1,41 @@
+--- org.gnome.shell.extensions.dash-to-panel.gschema.xml	2022-01-04 17:38:02.000000000 +0530
++++ org.gnome.shell.extensions.dash-to-panel.gschema_new.xml	2022-02-26 16:37:34.059145691 +0530
+@@ -430,7 +430,7 @@
+       <description>Window fade animation time when showing the destop</description>
+     </key>
+     <key type="b" name="show-appmenu">
+-      <default>false</default>
++      <default>true</default>
+       <summary>Show appMenu button</summary>
+       <description>Show appMenu on the right hand side of the panel</description>
+     </key>
+@@ -545,17 +545,17 @@
+       <description>The window previews immediately hide when an application icon is clicked.</description>
+     </key>
+     <key type="b" name="isolate-workspaces">
+-      <default>false</default>
++      <default>true</default>
+       <summary>Provide workspace isolation</summary>
+       <description>Dash shows only windows from the current workspace</description>
+     </key>
+      <key type="b" name="overview-click-to-exit">
+-      <default>false</default>
++      <default>true</default>
+       <summary>Close overview by clicking in empty space</summary>
+       <description>Close overview or app grid by clicking in empty space</description>
+     </key>
+     <key type="b" name="hide-overview-on-startup">
+-      <default>false</default>
++      <default>true</default>
+       <summary>Hide overview on startup</summary>
+       <description>Hide overview on startup, which would be shown by default at gnome startup.</description>
+     </key>
+@@ -620,7 +620,7 @@
+      <description>Available gnome-shell (Mutter) monitors, internal use</description>
+     </key>
+     <key type="b" name="isolate-monitors">
+-      <default>false</default>
++      <default>true</default>
+       <summary>Provide monitor isolation</summary>
+       <description>Dash shows only windows from the current monitor</description>
+     </key>

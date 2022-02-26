@@ -1,0 +1,6 @@
+id: mkfontscale
+version: '7'
+about: xorg apps mkfontscale
+build-dir: mkfontscale-1.2.1
+sources:
+- https://www.x.org/pub/individual/app/mkfontscale-1.2.1.tar.bz2

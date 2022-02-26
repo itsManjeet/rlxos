@@ -16,4 +16,4 @@ packages:
     plugin: script
     script: |
       install -v -D -m 0644 ${FILES}/certdata.txt -t ${pkgupd_pkgdir}/etc/ssl/
-      make install DESTDIR=${pkgupd_pkgdir}
+      make install LIBEXECDIR=/usr/lib SBINDIR=/usr/bin DESTDIR=${pkgupd_pkgdir}

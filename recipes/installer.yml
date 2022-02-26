@@ -1,0 +1,13 @@
+id: installer
+version: 2200
+about: rlxos System Installer
+
+depends:
+  buildtime:
+    - gtkmm
+    - cmake
+
+sources:
+  - installer-{{version}}.tar.gz::https://github.com/itsManjeet/installer/archive/refs/heads/master.tar.gz
+
+build-dir: installer-master

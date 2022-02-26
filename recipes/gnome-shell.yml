@@ -27,15 +27,9 @@ depends:
 sources:
   - https://download.gnome.org/sources/gnome-shell/40/gnome-shell-40.3.tar.xz
 
-packages:
-  - id: pkg
-    dir: gnome-shell-40.3
+build-dir: gnome-shell-40.3
+pre-script: |
+  patch data/org.gnome.shell.gschema.xml.in < ${FILES}/gnome-shell/config.patch
 
-    prescript: |
-      patch data/org.gnome.shell.gschema.xml.in < ${FILES}/gnome-shell/config.patch
-
-    flags:
-      - id: configure
-        value: >
-          --buildtype=release
+configure: --buildtype=release
 

@@ -1,0 +1,6 @@
+id: libXfont2
+version: '7'
+about: xorg library libXfont2
+build-dir: libXfont2-2.0.4
+sources:
+- https://www.x.org/pub/individual/lib/libXfont2-2.0.4.tar.bz2

@@ -1,0 +1,8 @@
+[Configuration]
+MiscMenubarDefault=FALSE
+ScrollingOnOutput=FALSE
+ScrollingBar=TERMINAL_SCROLLBAR_NONE
+BackgroundMode=TERMINAL_BACKGROUND_TRANSPARENT
+BackgroundDarkness=0.850000
+FontUseSystem=TRUE
+

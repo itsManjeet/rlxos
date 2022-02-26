@@ -1,0 +1,6 @@
+id: xkbcomp
+version: '7'
+about: xorg apps xkbcomp
+build-dir: xkbcomp-1.4.5
+sources:
+- https://www.x.org/pub/individual/app/xkbcomp-1.4.5.tar.bz2

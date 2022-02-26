@@ -1,0 +1,14 @@
+id: libsass
+version: 3.6.2
+about: |
+  A CSS pre-processor language
+
+sources:
+  - https://github.com/sass/libsass/archive/3.6.2/libsass-3.6.2.tar.gz
+
+build-dir: libsass-3.6.2
+script: |
+  autoreconf -fi
+  ./configure --prefix=/usr --disable-static
+  make
+  make DESTDIR=${pkgupd_pkgdir} install

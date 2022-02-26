@@ -43,6 +43,7 @@ packages:
         value: >
           -DENABLE_INSTALLED_TESTS=ON
           -DENABLE_SMIME=ON
+          -DENABLE_PST_IMPORT=OFF
           -DENABLE_YTNEF=OFF
           -DLIBEXEC_INSTALL_DIR=/usr/lib
           -DSYSCONF_INSTALL_DIR=/etc

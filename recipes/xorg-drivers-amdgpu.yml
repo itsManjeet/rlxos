@@ -1,0 +1,8 @@
+id: xorg-drivers-amdgpu
+version: '7'
+about: xorg fonts xorg-drivers-amdgpu
+build-dir: xf86-video-amdgpu-19.1.0
+sources:
+- https://www.x.org/pub/individual/driver/xf86-video-amdgpu-19.1.0.tar.bz2
+pre-script: sed -i 's/^miPointerSpriteFuncRec/extern &/' src/drmmode_display.h
+

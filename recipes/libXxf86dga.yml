@@ -1,0 +1,6 @@
+id: libXxf86dga
+version: '7'
+about: xorg library libXxf86dga
+build-dir: libXxf86dga-1.1.5
+sources:
+- https://www.x.org/pub/individual/lib/libXxf86dga-1.1.5.tar.bz2

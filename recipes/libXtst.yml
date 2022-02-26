@@ -1,0 +1,6 @@
+id: libXtst
+version: '7'
+about: xorg library libXtst
+build-dir: libXtst-1.2.3
+sources:
+- https://www.x.org/pub/individual/lib/libXtst-1.2.3.tar.bz2

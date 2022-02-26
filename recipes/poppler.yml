@@ -19,19 +19,7 @@ depends:
 
 sources:
   - https://poppler.freedesktop.org/poppler-21.07.0.tar.xz
-  - https://poppler.freedesktop.org/poppler-data-0.4.10.tar.gz
 
-packages:
-  - id: pkg
-    dir: poppler-21.07.0
-
-    flags:
-      - id: configure
-        value: >
-          -DENABLE_UNSTABLE_API_ABI_HEADERS=ON
-
-  - id: data
-    dir: poppler-data-0.4.10
-    plugin: script
-    script: |
-      make prefix=/usr DESTDIR=${pkgupd_pkgdir} install
+build-dir: poppler-21.07.0
+configure: >
+  -DENABLE_UNSTABLE_API_ABI_HEADERS=ON

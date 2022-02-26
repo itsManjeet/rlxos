@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# installing default autologin rlxos to sys-setup
+install -d -m 0755 -o root -g root ${SYSROOT}/etc/lightdm/lightdm.conf.d
+install -D -m 0644 -o root -g root ${FILES}/lightdm/10-auto-login.conf -t ${SYSROOT}/etc/lightdm/lightdm.conf.d/
+
+# sys-setup auto configure
+install -d -m 0755 -o 200 -g 0 ${SYSROOT}/var/lib/sys-setup
+install -d -m 0755 -o 200 -g 0 ${SYSROOT}/var/lib/sys-setup/.config
+install -d -m 0755 -o 200 -g 0 ${SYSROOT}/var/lib/sys-setup/.config/autostart
+install -D -m 0644 -o 200 -g 0 ${FILES}/sys-setup/sys-setup.desktop -t ${SYSROOT}/var/lib/sys-setup/.config/autostart/

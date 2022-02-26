@@ -12,6 +12,7 @@ packages:
     dir: unzip60
     prescript: |
       patch -Np1 -i ../unzip-6.0-consolidated_fixes-1.patch
+      sed -i "/MANDIR =/s#)/#)/share/#" unix/Makefile
     
     plugin: script
 

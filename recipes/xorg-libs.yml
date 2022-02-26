@@ -6,224 +6,41 @@ depends:
   runtime:
     - fontconfig
     - libxcb
-  
-split: true
+    - xtrans
+    - libx11
+    - libxext
+    - libfs
+    - libice
+    - libsm
+    - libxscrnsaver
+    - libxt
+    - libXmu
+    - libXpm
+    - libXaw
+    - libXfixes
+    - libXcomposite
+    - libXrender
+    - libXcursor
+    - libXdamage
+    - libfontenc
+    - libXfont2
+    - libXft
+    - libXi
+    - libXinerama
+    - libXrandr
+    - libXres
+    - libXtst
+    - libXv
+    - libXvMC
+    - libXxf86dga
+    - libXxf86vm
+    - libdmx
+    - libpciaccess
+    - libxkbfile
+    - libxshmfence
+  buildtime:
+    - xorgproto
+    - xcb-proto
 
-packages:
-  - id: pkg
-    depends:
-      runtime:
-        - xorg-libs-xtrans
-        - xorg-libs-libx11
-        - xorg-libs-libxext
-        - xorg-libs-libfs
-        - xorg-libs-libice
-        - xorg-libs-libsm
-        - xorg-libs-libxscrnsaver
-        - xorg-libs-libxt
-        - xorg-libs-libXmu
-        - xorg-libs-libXpm
-        - xorg-libs-libXaw
-        - xorg-libs-libXfixes
-        - xorg-libs-libXcomposite
-        - xorg-libs-libXrender
-        - xorg-libs-libXcursor
-        - xorg-libs-libXdamage
-        - xorg-libs-libfontenc
-        - xorg-libs-libXfont2
-        - xorg-libs-libXft
-        - xorg-libs-libXi
-        - xorg-libs-libXinerama
-        - xorg-libs-libXrandr
-        - xorg-libs-libXres
-        - xorg-libs-libXtst
-        - xorg-libs-libXv
-        - xorg-libs-libXvMC
-        - xorg-libs-libXxf86dga
-        - xorg-libs-libXxf86vm
-        - xorg-libs-libdmx
-        - xorg-libs-libpciaccess
-        - xorg-libs-libxkbfile
-        - xorg-libs-libxshmfence
-      buildtime:
-        - xcb-proto
-    dir: .
-    script: |
-      install -v -d -m 0755 ${pkgupd_pkgdir}/usr/share/xorg-libs/
-      echo "7" > ${pkgupd_pkgdir}/usr/share/xorg-libs/version
-      
-  - id: xtrans
-    dir: xtrans-1.4.0
-    sources:
-      - https://www.x.org/pub/individual/lib/xtrans-1.4.0.tar.bz2
-
-  - id: libx11
-    dir: libX11-1.7.2
-    sources:
-      - https://www.x.org/pub/individual/lib/libX11-1.7.2.tar.bz2
-
-  - id: libxext
-    dir: libXext-1.3.4
-    sources:
-      - https://www.x.org/pub/individual/lib/libXext-1.3.4.tar.bz2
-
-  - id: libfs
-    dir: libFS-1.0.8
-    sources:
-      - https://www.x.org/pub/individual/lib/libFS-1.0.8.tar.bz2
-
-  - id: libice
-    dir: libICE-1.0.10
-    sources:
-      - https://www.x.org/pub/individual/lib/libICE-1.0.10.tar.bz2
-
-    flags:
-      - id: configure
-        value: >
-          ICE_LIBS=-lpthread
-  - id: libsm
-    dir: libSM-1.2.3
-    sources:
-      - https://www.x.org/pub/individual/lib/libSM-1.2.3.tar.bz2
-
-  - id: libxscrnsaver
-    dir: libXScrnSaver-1.2.3
-    sources:
-      - https://www.x.org/pub/individual/lib/libXScrnSaver-1.2.3.tar.bz2
-    
-  - id: libxt
-    dir: libXt-1.2.1
-    sources:
-      - https://www.x.org/pub/individual/lib/libXt-1.2.1.tar.bz2
-
-    flags:
-      - id: configure
-        value: >
-          --with-appdefaultdir=/etc/X11/app-defaults
-  - id: libXmu
-    dir: libXmu-1.1.3
-    sources:
-      - https://www.x.org/pub/individual/lib/libXmu-1.1.3.tar.bz2
-
-  - id: libXpm
-    dir: libXpm-3.5.13
-    sources:
-      - https://www.x.org/pub/individual/lib/libXpm-3.5.13.tar.bz2
-
-  - id: libXaw
-    dir: libXaw-1.0.14
-    sources:
-      - https://www.x.org/pub/individual/lib/libXaw-1.0.14.tar.bz2
-    flags:
-      - id: configurator
-        value: configure
-  
-  - id: libXfixes
-    dir: libXfixes-6.0.0
-    sources:
-      - https://www.x.org/pub/individual/lib/libXfixes-6.0.0.tar.bz2
-
-  - id: libXcomposite
-    dir: libXcomposite-0.4.5
-    sources:
-      - https://www.x.org/pub/individual/lib/libXcomposite-0.4.5.tar.bz2
-
-  - id: libXrender
-    dir: libXrender-0.9.10
-    sources:
-      - https://www.x.org/pub/individual/lib/libXrender-0.9.10.tar.bz2
-
-  - id: libXcursor
-    dir: libXcursor-1.2.0
-    sources:
-      - https://www.x.org/pub/individual/lib/libXcursor-1.2.0.tar.bz2
-
-  - id: libXdamage
-    dir: libXdamage-1.1.5
-    sources:
-      - https://www.x.org/pub/individual/lib/libXdamage-1.1.5.tar.bz2
-
-  - id: libfontenc
-    dir: libfontenc-1.1.4
-    sources:
-      - https://www.x.org/pub/individual/lib/libfontenc-1.1.4.tar.bz2
-
-  - id: libXfont2
-    dir: libXfont2-2.0.4
-    sources:
-      - https://www.x.org/pub/individual/lib/libXfont2-2.0.4.tar.bz2
-    
-    flags:
-      - id: configure
-        value: >
-          --disable-devel-docs
-  
-  - id: libXft
-    dir: libXft-2.3.3
-    sources:
-      - https://www.x.org/pub/individual/lib/libXft-2.3.3.tar.bz2
-  
-  - id: libXi
-    dir: libXi-1.7.10
-    sources:
-      - https://www.x.org/pub/individual/lib/libXi-1.7.10.tar.bz2
-
-  - id: libXinerama
-    dir: libXinerama-1.1.4
-    sources:
-      - https://www.x.org/pub/individual/lib/libXinerama-1.1.4.tar.bz2
-
-  - id: libXrandr
-    dir: libXrandr-1.5.2
-    sources:
-      - https://www.x.org/pub/individual/lib/libXrandr-1.5.2.tar.bz2
-
-  - id: libXres
-    dir: libXres-1.2.1
-    sources:
-      - https://www.x.org/pub/individual/lib/libXres-1.2.1.tar.bz2
-  
-  - id: libXtst
-    dir: libXtst-1.2.3
-    sources:
-      - https://www.x.org/pub/individual/lib/libXtst-1.2.3.tar.bz2
-
-  - id: libXv
-    dir: libXv-1.0.11
-    sources:
-      - https://www.x.org/pub/individual/lib/libXv-1.0.11.tar.bz2
-  
-  - id: libXvMC
-    dir: libXvMC-1.0.12
-    sources:
-      - https://www.x.org/pub/individual/lib/libXvMC-1.0.12.tar.bz2
-
-  - id: libXxf86dga
-    dir: libXxf86dga-1.1.5
-    sources:
-      - https://www.x.org/pub/individual/lib/libXxf86dga-1.1.5.tar.bz2
-  
-  - id: libXxf86vm
-    dir: libXxf86vm-1.1.4
-    sources:
-      - https://www.x.org/pub/individual/lib/libXxf86vm-1.1.4.tar.bz2
-
-  - id: libdmx
-    dir: libdmx-1.1.4
-    sources:
-      - https://www.x.org/pub/individual/lib/libdmx-1.1.4.tar.bz2
-
-  - id: libpciaccess
-    dir: libpciaccess-0.16
-    sources:
-      - https://www.x.org/pub/individual/lib/libpciaccess-0.16.tar.bz2
-
-  - id: libxkbfile
-    dir: libxkbfile-1.1.0
-    sources:
-      - https://www.x.org/pub/individual/lib/libxkbfile-1.1.0.tar.bz2
-
-  - id: libxshmfence
-    dir: libxshmfence-1.3
-    sources:
-      - https://www.x.org/pub/individual/lib/libxshmfence-1.3.tar.bz2
+script: |
+  install -v -d -m 0755 ${pkgupd_pkgdir}/usr

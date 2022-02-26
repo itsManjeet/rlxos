@@ -2,7 +2,6 @@ id: ttf-noto
 version: 20201206
 about: |
   Noto Fonts
- 
 sources:
   - https://github.com/googlefonts/noto-fonts/archive/refs/tags/v20201206-phase3.tar.gz
 

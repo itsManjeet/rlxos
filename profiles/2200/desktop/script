@@ -13,3 +13,6 @@ localedef -i en_US -f UTF-8 en_US.UTF-8
 
 echo 'LANG=en_IN.UTF-8' > /etc/locale.conf
 ln -sfv /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
+
+# install inspector globally
+systemctl enable inspector --global

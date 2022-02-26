@@ -1,0 +1,6 @@
+id: libXrender
+version: '7'
+about: xorg library libXrender
+build-dir: libXrender-0.9.10
+sources:
+- https://www.x.org/pub/individual/lib/libXrender-0.9.10.tar.bz2

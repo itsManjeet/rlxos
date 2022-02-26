@@ -120,7 +120,7 @@ echo "Version: ${VERSION}"
 # libisofs
 # libisoburn
 # dosfstools
-#  grub-legacy grub"
+#  grub-i386 grub"
 # echo "Dependencies: ${DEPS}"
 
 # for i in ${DEPS} ; do

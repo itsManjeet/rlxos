@@ -1,0 +1,6 @@
+id: xorg-fonts-util
+version: '7'
+about: xorg fonts xorg-fonts-util
+build-dir: font-util-1.3.2
+sources:
+- https://www.x.org/pub/individual/font/font-util-1.3.2.tar.bz2

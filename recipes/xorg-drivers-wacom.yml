@@ -1,0 +1,6 @@
+id: xorg-drivers-wacom
+version: '7'
+about: xorg fonts xorg-drivers-wacom
+build-dir: xf86-input-wacom-0.40.0
+sources:
+- https://github.com/linuxwacom/xf86-input-wacom/releases/download/xf86-input-wacom-0.40.0/xf86-input-wacom-0.40.0.tar.bz2

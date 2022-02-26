@@ -5,7 +5,7 @@
      </key>
      <key name="icon-theme" type="s">
 -      <default>'Adwaita'</default>
-+      <default>'Qogir'</default>
++      <default>'Fluent'</default>
        <summary>Icon Theme</summary>
        <description>
          Icon theme to use for the panel, nautilus etc.
@@ -13,7 +13,7 @@
      </key>
      <key name="gtk-theme" type="s">
 -      <default>'Adwaita'</default>
-+      <default>'Qogir-light'</default>
++      <default>'Fluent-light'</default>
        <summary>Gtk+ Theme</summary>
        <description>
          Basename of the default theme used by gtk+.

@@ -11,4 +11,4 @@ packages:
       - https://github.com/jinfeihan57/p7zip/archive/v17.04/p7zip-v17.04.tar.gz
     script: |
       make 7z 7zr 7za
-      make install DESTDIR=${pkgupd_pkgdir} DEST_HOME=/usr
+      make install DEST_DIR=${pkgupd_pkgdir} DEST_HOME=/usr DEST_MAN=/usr/share/man

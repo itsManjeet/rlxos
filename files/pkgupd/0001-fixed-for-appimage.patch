@@ -1,0 +1,53 @@
+From 79c22f332022574b77f55a4eadfd683d24641566 Mon Sep 17 00:00:00 2001
+From: itsmanjeet <itsmanjeet1998@gmail.com>
+Date: Wed, 2 Feb 2022 20:37:32 +0530
+Subject: [PATCH] fixed for appimage
+
+---
+ libpkgupd/image.cc   | 6 +++---
+ libpkgupd/pkginfo.hh | 4 ++++
+ 2 files changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/libpkgupd/image.cc b/libpkgupd/image.cc
+index 45305db..88b3356 100644
+--- a/libpkgupd/image.cc
++++ b/libpkgupd/image.cc
+@@ -244,9 +244,9 @@ bool image::install_desktopfile(std::string const& outdir) {
+     if (line.find("Exec=", 0) == 0) {
+       auto del_index = line.find_first_of(' ');
+       if (del_index == std::string::npos) {
+-        line = "Exec=/apps/" + _package->packagefile();
++        line = "Exec=/apps/" + _package->packagefile("app");
+       } else {
+-        line = "Exec=/apps/" + _package->packagefile() +
++        line = "Exec=/apps/" + _package->packagefile("app") +
+                line.substr(del_index, line.length() - del_index);
+       }
+     } else if (line.find("Icon=", 0) == 0) {
+@@ -268,7 +268,7 @@ bool image::extract(std::string const& outdir) {
+     _error = "failed to create apps directory";
+     return false;
+   }
+-  
++
+   std::filesystem::copy(
+       _pkgfile,
+       outdir + "/apps/" + std::filesystem::path(_pkgfile).filename().string(),
+diff --git a/libpkgupd/pkginfo.hh b/libpkgupd/pkginfo.hh
+index 1910196..527b2b6 100644
+--- a/libpkgupd/pkginfo.hh
++++ b/libpkgupd/pkginfo.hh
+@@ -129,6 +129,10 @@ class pkginfo {
+     return id() + "-" + version() + "." + ext;
+   }
+ 
++  virtual std::string packagefile(std::string const &ext) const {
++    return id() + "-" + version() + "." + ext;
++  }
++
+   virtual std::vector<std::string> depends(bool) const = 0;
+ 
+   std::string const &install_script() const { return _install_script; };
+-- 
+2.32.0
+

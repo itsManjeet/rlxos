@@ -1,0 +1,14 @@
+id: src
+version: 0.0.1
+about: Source Programming Language
+
+packages:
+  - id: pkg
+    depends:
+      buildtime:
+        - cmake
+        - boost
+    sources:
+      - src-{{version}}.tar.gz::https://github.com/itsManjeet/src/archive/refs/tags/0.0.1.tar.gz
+
+    dir: src-{{version}}

@@ -17,5 +17,6 @@ packages:
     plugin: script
     script: |
       patch schemas/org.gnome.shell.extensions.dash-to-panel.gschema.xml < ${FILES}/gnome-shell-extension-dash-to-panel/elements.patch
+      patch schemas/org.gnome.shell.extensions.dash-to-panel.gschema.xml < ${FILES}/gnome-shell-extension-dash-to-panel/system-defaults.patch
       make VERSION="43" _build
       make DESTDIR=${pkgupd_pkgdir} install

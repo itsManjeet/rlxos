@@ -1,0 +1,6 @@
+id: xwd
+version: '7'
+about: xorg apps xwd
+build-dir: xwd-1.0.7
+sources:
+- https://www.x.org/pub/individual/app/xwd-1.0.7.tar.bz2

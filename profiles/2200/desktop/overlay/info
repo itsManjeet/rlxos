@@ -1,0 +1,4 @@
+id: installer
+version: 2200
+about: rlxos System Installer
+type: pkg

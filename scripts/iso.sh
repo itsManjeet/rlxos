@@ -37,12 +37,11 @@ if [[ -z ${PKGS} ]]; then
     exit 1
 fi
 
-pkgupd in grub-legacy grub squashfs-tools lvm2 initramfs mtools linux
-checkProcess "InstallingTools"
+pkgupd in pkgupd --force --skip-depends
 
-# Temporary KMOD reinstallations
-pkgupd in kmod --force --skip-depends
-checkProcess "InstallKmod"
+pkgupd in grub-i386 grub squashfs-tools lvm2 initramfs mtools linux --no-ask
+checkProcess "Installing Tools"
+
 
 echo "preparing ISO ${PROFILE}"
 export ROOTFS=/tmp/rlxos-rootfs
@@ -51,11 +50,6 @@ checkProcess "GenerateRootfs()"
 
 SCRIPT=$(cat ${PROFILE}/script)
 checkProcess "checkLocalScript"
-
-echo ":: installing fstab"
-echo "
-/run/initramfs/boot /boot   none defaults,bind  0   0
-" >${ROOTFS}/etc/fstab
 
 chroot ${ROOTFS} bash -e <<"EOT"
 pwconv
@@ -75,12 +69,25 @@ echo 'workstation' > /etc/hostname
 EOT
 checkProcess "PostExecutionScript"
 
+# install PROFILE specific root files
+if [[ -d ${PROFILE}/root ]] ; then
+    cp -a ${PROFILE}/root/* ${ROOTFS}/
+fi
+
+if [[ -e ${PROFILE}/prescript ]] ; then
+    echo ":: executing pre script"
+    SYSROOT=${ROOTFS} \
+    FILES='/var/cache/pkgupd/files' \
+    bash -ec ${PROFILE}/prescript
+    checkProcess "LocalPreScript"
+fi
+
 echo ":: executing local script"
 chroot ${ROOTFS} bash -ec "${SCRIPT}"
 checkProcess "LocalScript"
 
 # installing logo
-install -v -D -m 0644 "/var/cache/pkgupd/files/logo/logo.png" -o root -g root ${ROOTFS}/usr/share/pixmaps/rlxos.png
+install -v -D -m 0644 "/var/cache/pkgupd/files/logo/logo.svg" -o root -g root ${ROOTFS}/usr/share/pixmaps/rlxos.svg
 install -v -D -m 0644 "/var/cache/pkgupd/files/backgrounds/default.png" -o root -g root ${ROOTFS}/usr/share/backgrounds/default.png
 checkProcess "LogoInstall"
 
@@ -112,17 +119,14 @@ menuentry 'rlxos installer' {
 }" >${ISODIR}/boot/grub/grub.cfg
 
 cp -a ${PROFILE}/overlay ${TEMPDIR}/
-sudo chown root:root ${TEMPDIR}/overlay -R
-install -v -D /var/cache/pkgupd/files/systemd/rlxos-boot.mount -t ${TEMPDIR}/overlay/usr/lib/systemd/system
+chown root:root ${TEMPDIR}/overlay -R
 
-
-mkdir -p ${TEMPDIR}/overlay/etc
-echo "
-/run/iso/boot   /boot   none    defauts,bind    0   0" > ${TEMPDIR}/overlay/etc/fstab
+ln -sv /run/iso/boot ${TEMPDIR}/overlay/boot
 
 mksquashfs ${TEMPDIR}/overlay/* ${ISODIR}/iso.img
 checkProcess "PackingSquash:iso"
 
+echo "${VERSION}" > ${ISODIR}/version
 ISOFILE="/releases/rlxos-$(basename ${PROFILE})-${VERSION}.iso"
 grub-mkrescue -volid RLXOS ${ISODIR} -o ${ISOFILE}
 checkProcess "GenIso"

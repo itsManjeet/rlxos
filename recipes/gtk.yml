@@ -9,6 +9,7 @@ depends:
     - gdk-pixbuf
     - libepoxy
     - pango
+    - desktop-file-utils
     - libxkbcommon
     - wayland-protocols
 

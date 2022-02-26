@@ -37,7 +37,6 @@ INIT_IN=${INIT_IN:-'/usr/share/initramfs/init.in'}
 KERNEL=${KERNEL:-$(uname -r)}
 PASSWORD='rlxos'
 unsorted=$(mktemp /tmp/unsorted.XXXXXXXXXX)
-AOUT=${AOUT:-"/boot/initrd"}
 MODULES_DIR='/boot/modules'
 
 export LC_ALL=C
@@ -261,7 +260,9 @@ install_password() {
 compress_initrd() {
 
     install_libraries
-
+    
+    AOUT=${AOUT:-"/boot/initrd-${KERNEL}"}
+    
     (
         cd "${INITRD_DIR}"
         find . | LANG=C cpio -o -H newc --quiet | gzip -9

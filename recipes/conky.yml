@@ -11,8 +11,10 @@ depends:
     - xorg-libs
     - lua
     - ncurses
+    - desktop-file-utils
   buildtime:
     - cmake
+    - git
 packages:
   - id: pkg
     dir: conky-1.12.2
@@ -31,6 +33,7 @@ packages:
           -D BUILD_WEATHER_METAR=ON
           -D BUILD_PULSEAUDIO=ON
           -D BUILD_JOURNAL=ON
+          -D CMAKE_BUILD_TYPE=Release
           -Wno-dev
           
     postscript: |

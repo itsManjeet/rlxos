@@ -1,0 +1,6 @@
+id: xorg-drivers-synaptics
+version: '7'
+about: xorg fonts xorg-drivers-synaptics
+build-dir: xf86-input-synaptics-1.9.1
+sources:
+- https://www.x.org/pub/individual/driver/xf86-input-synaptics-1.9.1.tar.bz2

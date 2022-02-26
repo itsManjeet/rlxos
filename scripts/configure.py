@@ -22,6 +22,8 @@ for file in os.listdir('recipes/'):
             data = f.read()
             obj = yaml.full_load(data)
             try:
+                if 'packages' in obj and len(obj['packages']) != 1:
+                    FAILED.append(file)
                 data = Environment().from_string(data).render(obj)
                 with open('{}/{}'.format(RECIPE_DIR,file),'w') as fw:
                     fw.write(data)

@@ -1,0 +1,26 @@
+--- org.gnome.shell.extensions.blur-me.gschema.xml	2022-01-04 11:54:13.000000000 +0530
++++ org.gnome.shell.extensions.blur-me.gschema_new.xml	2022-02-26 16:13:31.257353694 +0530
+@@ -39,12 +39,12 @@
+         </key>
+         <!-- BLUR APPLICATIONS -->
+         <key type="b" name="blur-applications">
+-            <default>true</default>
++            <default>false</default>
+             <summary>Boolean, whether to blur applications or not</summary>
+             <description />
+         </key>
+         <key type="b" name="toggle-app-blur">
+-            <default>true</default>
++            <default>false</default>
+             <summary>Boolean, whether to show toggle application blur button in panel</summary>
+             <description />
+         </key>
+@@ -54,7 +54,7 @@
+             <description />
+         </key>
+         <key type="b" name="blur-other">
+-            <default>true</default>
++            <default>false</default>
+             <summary>Boolean, whether to blur things like onscreen keyboard, notifications section, etc.</summary>
+             <description />
+         </key>

@@ -1,0 +1,6 @@
+id: xhost
+version: '7'
+about: xorg apps xhost
+build-dir: xhost-1.0.8
+sources:
+- https://www.x.org/pub/individual/app/xhost-1.0.8.tar.bz2

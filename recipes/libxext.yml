@@ -1,0 +1,6 @@
+id: libxext
+version: '7'
+about: xorg library libxext
+build-dir: libXext-1.3.4
+sources:
+- https://www.x.org/pub/individual/lib/libXext-1.3.4.tar.bz2

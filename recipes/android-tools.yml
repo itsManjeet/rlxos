@@ -9,13 +9,16 @@ packages:
         - android-udev
         - libusb
         - zstd
+        - brotli
         - protobuf
+        - pcre2
       buildtime:
         - cmake
         - git
         - go
         - ninja
         - pcre
+        - gtest
     sources:
       - https://github.com/nmeum/android-tools/releases/download/31.0.3p1/android-tools-31.0.3p1.tar.xz
     

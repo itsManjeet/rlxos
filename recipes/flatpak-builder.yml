@@ -1,0 +1,25 @@
+id: flatpak-builder
+version: 1.0.10 
+about: Tool to build flatpaks from source
+type: app
+depends:
+  buildtime:
+    - rsync
+script: |
+  mkdir -p AppDir
+  pkgupd-image generate flatpak-builder
+  pkgupd-image patch
+  pkgupd-image cleanup
+
+  mv AppDir ${pkgupd_pkgdir}
+  cp ${FILES}/flatpak/logo.png ${pkgupd_pkgdir}/flatpak-builder.png
+
+DesktopFile: |
+  [Desktop Entry]
+  Version=1.0
+  Type=Application
+  Terminal=true
+  Exec=flatpak-builder
+  Name=Flatpak Builder
+  Icon=flatpak-builder
+  Categories=Development;

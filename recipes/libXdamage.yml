@@ -1,0 +1,6 @@
+id: libXdamage
+version: '7'
+about: xorg library libXdamage
+build-dir: libXdamage-1.1.5
+sources:
+- https://www.x.org/pub/individual/lib/libXdamage-1.1.5.tar.bz2

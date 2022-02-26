@@ -8,6 +8,8 @@ packages:
       runtime:
         - libmtp
         - systemd
+      buildtime:
+        - unzip
     sources:
       - android-udev-20220102.zip::https://github.com/M0Rf30/android-udev-rules/archive/20220102.zip
     dir: android-udev-rules-20220102

@@ -1,0 +1,6 @@
+id: libxt
+version: '7'
+about: xorg library libxt
+build-dir: libXt-1.2.1
+sources:
+- https://www.x.org/pub/individual/lib/libXt-1.2.1.tar.bz2

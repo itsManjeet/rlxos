@@ -11,7 +11,7 @@ packages:
     dir: slang-2.3.2
     plugin: script
     script: |
-      ./configure --prefix=/usr
+      ./configure --prefix=/usr --sysconfdir=/etc
       make -j1
       make -j1 install-all DESTDIR=${pkgupd_pkgdir}
 

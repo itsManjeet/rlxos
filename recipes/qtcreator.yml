@@ -10,15 +10,14 @@ depends:
   buildtime:
     - llvm
     - cmake
-packages:
-  - id: pkg
-    dir: qt-creator-opensource-src-5.0.2
-    sources:
-      - https://download.qt.io/official_releases/qtcreator/5.0/5.0.2/qt-creator-opensource-src-5.0.2.tar.xz
-    flags:
-      - id: configure
-        value: >
-          -DWITH_DOCS=ON
-          -DBUILD_DEVELOPER_DOCS=ON
-          -DQTC_CLANG_BUILDMODE_MATCH=ON
-          -DBUILD_HELVIEWERBACKEND_QTWEBENGINE=ON
+build-dir: qt-creator-opensource-src-{{version}}
+sources:
+  - https://download.qt.io/official_releases/qtcreator/5.0/{{version}}/qt-creator-opensource-src-{{version}}.tar.xz
+
+configure: >
+  -DCMAKE_INSTALL_PREFIX=/usr
+  -DCMAKE_INSTALL_LIBEXECDIR=lib
+  -DWITH_DOCS=ON
+  -DWITH_DEVELOPER_DOCS=ON
+  -DQTC_CLANG_BUILDMODE_MATCH=ON
+  -DBUILD_HELVIEWERBACKEND_QTWEBENGINE=ON

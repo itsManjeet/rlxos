@@ -1,0 +1,6 @@
+id: xkbevd
+version: '7'
+about: xorg apps xkbevd
+build-dir: xkbevd-1.1.4
+sources:
+- https://www.x.org/pub/individual/app/xkbevd-1.1.4.tar.bz2

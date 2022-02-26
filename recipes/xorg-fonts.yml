@@ -6,49 +6,13 @@ depends:
   runtime:
     - xcursor-themes
 
-split: true
-
-packages:
-  - id: pkg
-    dir: .
-    depends:
-      runtime:
-        - xorg-fonts-util
-        - xorg-fonts-encodings
-        - xorg-fonts-alias
-        - xorg-fonts-bhttf
-        - xorg-fonts-bhtype1
-        - xorg-fonts-ibmtype1
-    script: |
-      install -v -d -m 0755 ${pkgupd_pkgdir}/usr/share/xorg-fonts/
-      echo "7" > ${pkgupd_pkgdir}/usr/share/xorg-fonts/version
-
-  - id: util
-    dir: font-util-1.3.2
-    sources:
-      - https://www.x.org/pub/individual/font/font-util-1.3.2.tar.bz2
-
-  - id: encodings
-    dir: encodings-1.0.5
-    sources:
-      - https://www.x.org/pub/individual/font/encodings-1.0.5.tar.bz2
-
-  - id: alias
-    dir: font-alias-1.0.4
-    sources:
-      - https://www.x.org/pub/individual/font/font-alias-1.0.4.tar.bz2
-  
-  - id: bhttf
-    dir: font-bh-ttf-1.0.3
-    sources:
-      - https://www.x.org/pub/individual/font/font-bh-ttf-1.0.3.tar.bz2
-
-  - id: bhtype1
-    dir: font-bh-type1-1.0.3
-    sources:
-      - https://www.x.org/pub/individual/font/font-bh-type1-1.0.3.tar.bz2
-  
-  - id: ibmtype1
-    dir: font-ibm-type1-1.0.3
-    sources:
-      - https://www.x.org/pub/individual/font/font-ibm-type1-1.0.3.tar.bz2
+depends:
+  runtime:
+    - xorg-fonts-util
+    - xorg-fonts-encodings
+    - xorg-fonts-alias
+    - xorg-fonts-bhttf
+    - xorg-fonts-bhtype1
+    - xorg-fonts-ibmtype1
+script: |
+  install -v -d -m 0755 ${pkgupd_pkgdir}/usr/

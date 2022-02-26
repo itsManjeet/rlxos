@@ -1,0 +1,6 @@
+id: libXpm
+version: '7'
+about: xorg library libXpm
+build-dir: libXpm-3.5.13
+sources:
+- https://www.x.org/pub/individual/lib/libXpm-3.5.13.tar.bz2

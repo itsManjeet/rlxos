@@ -1,0 +1,6 @@
+id: xwud
+version: '7'
+about: xorg apps xwud
+build-dir: xwud-1.0.5
+sources:
+- https://www.x.org/pub/individual/app/xwud-1.0.5.tar.bz2

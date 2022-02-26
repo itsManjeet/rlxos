@@ -1,0 +1,6 @@
+id: sessreg
+version: '7'
+about: xorg apps sessreg
+build-dir: sessreg-1.1.2
+sources:
+- https://www.x.org/pub/individual/app/sessreg-1.1.2.tar.bz2

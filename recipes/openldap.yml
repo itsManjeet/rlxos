@@ -1,5 +1,5 @@
 id: openldap
-version: 2.6.0
+version: 2.6.1
 about: |
   Open source implementation of the Lightweight Directory Access Protocol
 
@@ -19,38 +19,35 @@ users:
     shell: /bin/false
   
 sources:
-  - https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-2.6.0.tgz
-  - https://www.linuxfromscratch.org/patches/blfs/svn/openldap-2.6.0-consolidated-1.patch
+  - https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-{{version}}.tgz
+  - https://www.linuxfromscratch.org/patches/blfs/svn/openldap-{{version}}-consolidated-2.patch
 
-packages:
-  - id: pkg
-    dir: openldap-2.6.0
-    prescript: |
-      patch -Np1 -i ../openldap-2.6.0-consolidated-1.patch
-      autoconf
+build-dir: openldap-{{version}}
+pre-script: |
+  patch -Np1 -i ../openldap-{{version}}-consolidated-2.patch
+  sed -i -e "s|EnvironmentFile.*|EnvironmentFile=-/etc/conf.d/slapd|" -e "s/slapd -d 0/\0 -u ldap -g ldap/" servers/slapd/slapd.service
+  autoconf
     
-    flags:
-      - id: configure
-        value: >
-          --disable-static
-          --enable-versioning
-          --with-tls=openssl
-          --with-cyrus=sasl
-          --enable-dynamic
-          --enable-crypt
-          --enable-spasswd
-          --enable-slapd
-          --enable-modules
-          --enable-rlookups
-          --enable-backends=mod
-          --disable-ndb
-          --disable-sql
-          --disable-wt
-          --enable-overlays=mod
+configure: >
+  --disable-static
+  --enable-versioning
+  --with-tls=openssl
+  --with-cyrus=sasl
+  --enable-dynamic
+  --enable-crypt
+  --enable-spasswd
+  --enable-slapd
+  --enable-modules
+  --enable-rlookups
+  --enable-backends=mod
+  --disable-ndb
+  --disable-sql
+  --disable-wt
+  --enable-overlays=mod
 
-    postscript: |
-      sed -e "s/\.la/.so/" -i ${pkgupd_pkgdir}/etc/openldap/slapd.{conf,ldif}{,.default}
-      install -v -dm700 -o 83 -g 83 ${pkgupd_pkgdir}/var/lib/openldap
-      install -v -dm700 -o 83 -g 83 ${pkgupd_pkgdir}/etc/openldap/slapd.d
-      chmod -v 640 ${pkgupd_pkgdir}/etc/openldap/slapd.{conf,ldif}
-      chown -v root:83 ${pkgupd_pkgdir}/etc/openldap/slapd.{conf,ldif}
+post-script: |
+  sed -e "s/\.la/.so/" -i ${pkgupd_pkgdir}/etc/openldap/slapd.{conf,ldif}{,.default}
+  install -v -dm700 -o 83 -g 83 ${pkgupd_pkgdir}/var/lib/openldap
+  install -v -dm700 -o 83 -g 83 ${pkgupd_pkgdir}/etc/openldap/slapd.d
+  chmod -v 640 ${pkgupd_pkgdir}/etc/openldap/slapd.{conf,ldif}
+  chown -v root:83 ${pkgupd_pkgdir}/etc/openldap/slapd.{conf,ldif}

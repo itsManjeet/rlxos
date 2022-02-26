@@ -22,6 +22,7 @@ packages:
       - id: configure
         value: >
           --sysconfdir=/etc
+          --libexecdir=/usr/lib
           --disable-setuid
           --enable-cache-owner=bin
 

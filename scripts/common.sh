@@ -49,7 +49,14 @@ fi
 # GenerateRootfs <pkgs>
 # Generate root filesystem ${ROOTFS} using installed all <pkgs>
 function GenerateRootfs() {
-    pkgupd in ${@} root-dir=${ROOTFS} sys-db=${ROOTFS}/var/lib/pkgupd/data --skip-triggers
+    temp_config=$(mktemp /tmp/pkgupd.XXXXXX)
+    echo "RootDir: ${ROOTFS}
+SystemDatabase: ${ROOTFS}/var/lib/pkgupd/data" > ${temp_config}
+    pkgupd in ${@} --config ${temp_config} --no-ask --no-triggers
+    ret=${?}
+    rm ${temp_config}
+    
+    return ${ret}
 }
 
 function BoltSendMesg() {

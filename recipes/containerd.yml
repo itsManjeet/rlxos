@@ -14,7 +14,7 @@ depends:
     - git
 
 sources:
-  - http://jaeger.morpheus.net/linux/crux/files/containerd-1.5.2.tar.xz
+  - https://github.com/containerd/containerd/releases/download/v1.5.2/containerd-1.5.2-linux-amd64.tar.gz
 
 packages:
   - id: pkg
@@ -25,11 +25,13 @@ packages:
     
     plugin: script
     script: |
-      mkdir -p src/github.com/containerd
-      pushd src/github.com/containerd
-      ln -s ${pkgupd_srcdir}/containerd-1.5.2 containerd
+      mkdir -p ${pkgupd_pkgdir}/usr
+      cp -a bin ${pkgupd_pkgdir}/usr/
+            #      mkdir -p src/github.com/containerd
+            #      pushd src/github.com/containerd
+            #      ln -s ${pkgupd_srcdir}/containerd-1.5.2 containerd
       
-      cd containerd
-      make GIT_COMMIT=36cc874494a56a253cd181a1a685b44b58a2e34a
+            #      cd containerd-1.5.2
+            #      make GIT_COMMIT=36cc874494a56a253cd181a1a685b44b58a2e34a
 
-      install -v -D -m 0755 bin/* -t ${pkgupd_pkgdir}/usr/bin/
+            #      install -v -D -m 0755 bin/* -t ${pkgupd_pkgdir}/usr/bin/

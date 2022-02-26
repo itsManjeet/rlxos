@@ -1,0 +1,22 @@
+id: apr-utils
+version: 1.7.0
+about: Apache portable runtime utils
+depends:
+  runtime:
+    - util-linux
+    - expat
+    - gdbm
+    - sqlite
+    - apr
+sources:
+  - http://www.apache.org/dist/apr/apr-util-1.6.1.tar.bz2
+build-dir: apr-util-1.6.1
+build-type: autoconf
+configure: >
+  --with-apr=/usr
+  --with-expat=/usr
+  --with-gdbm=/usr
+  --with-sqlite3=/usr
+  --disable-util-dso
+post-script: |
+  sed -i -r "/^APR_(SOURCE|BUILD)/s|=.*|=|" ${pkgupd_pkgdir}/usr/bin/apu-1-config

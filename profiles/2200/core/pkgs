@@ -1,1 +1,1 @@
-core initramfs firmware grub-legacy grub cifs-utils
+core initramfs firmware grub-i386 grub cifs-utils

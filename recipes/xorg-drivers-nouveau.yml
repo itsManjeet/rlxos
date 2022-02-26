@@ -1,0 +1,6 @@
+id: xorg-drivers-nouveau
+version: '7'
+about: xorg fonts xorg-drivers-nouveau
+build-dir: xf86-video-nouveau-1.0.17
+sources:
+- https://www.x.org/pub/individual/driver/xf86-video-nouveau-1.0.17.tar.bz2

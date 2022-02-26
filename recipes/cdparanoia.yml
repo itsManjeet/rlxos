@@ -15,9 +15,9 @@ packages:
     
     plugin: script
     script: |
-      ./configure --prefix=/usr
+      ./configure --prefix=/usr --mandir=/usr/share/man
       make -j1
-      make install prefix=${pkgupd_pkgdir}/usr
+      make install prefix=${pkgupd_pkgdir}/usr MANDIR=${pkgupd_pkgdir}/usr/share/man
 
     postscript: |
       chmod -v 755 ${pkgupd_pkgdir}/usr/lib/libcdda_*.so.0.10.2

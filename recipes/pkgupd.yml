@@ -1,5 +1,6 @@
 id: pkgupd
-version: 2200
+version: 2201
+release: 1
 about: |
   An Extensible package manager for rlxos
 
@@ -21,11 +22,3 @@ sources:
 packages:
   - id: pkg
     dir: pkgupd-{{version}}
-    prescript: |
-      for i in ${FILES}/pkgupd/*.patch ; do
-        patch -Np1 -i ${i}
-      done
-      
-    postscript: |
-      install -v -D -m 0644 ${FILES}/pkgupd/pkgupd.desktop -t ${pkgupd_pkgdir}/usr/share/applications/
-      install -v -D -m 0755 ${FILES}/pkgupd/pkgupd-url -t ${pkgupd_pkgdir}/usr/bin/

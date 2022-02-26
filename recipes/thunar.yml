@@ -18,8 +18,3 @@ packages:
     sources:
       - https://archive.xfce.org/src/xfce/thunar/4.16/thunar-4.16.10.tar.bz2
     dir: thunar-4.16.10
-
-  - id: volman
-    sources:
-      - https://archive.xfce.org/src/xfce/thunar-volman/4.16/thunar-volman-4.16.0.tar.bz2
-    dir: thunar-volman-4.16.0

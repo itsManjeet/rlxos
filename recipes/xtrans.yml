@@ -1,0 +1,6 @@
+id: xtrans
+version: '7'
+about: xorg library xtrans
+build-dir: xtrans-1.4.0
+sources:
+- https://www.x.org/pub/individual/lib/xtrans-1.4.0.tar.bz2

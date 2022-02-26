@@ -14,8 +14,8 @@ fi
 export HISTSIZE=1000
 export HISTIGNORE="&:[bf]g:exit"
 
-export XDG_DATA_DIRS=${XDG_DATA_DIRS:-/usr/share:/opt/share}
-export XDG_CONFIG_DIRS=${XDG_CONFIG_DIRS:-/etc/xdg:/opt/xdg}
+export XDG_DATA_DIRS="/usr/share:/opt/share:/apps/share"
+export XDG_CONFIG_DIRS="/etc/xdg:/opt/etc/xdg:/apps/etc/xdg"
 export XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR:-/tmp/xdg-$USER}
 export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/opt/lib/pkgconfig"
 

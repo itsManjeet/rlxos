@@ -13,4 +13,5 @@ packages:
     plugin: script
     script: |
       sed -i '4d' install-wallpapers.sh
-      WALLPAPER_DIR=${pkgupd_pkgdir}/usr/share/backgrounds ./install-wallpapers.sh -t mountain 
+      WALLPAPER_DIR=${pkgupd_pkgdir}/usr/share/backgrounds ./install-wallpapers.sh -t building
+      WALLPAPER_DIR=${pkgupd_pkgdir}/usr/share/backgrounds ./install-wallpapers.sh -t mountain

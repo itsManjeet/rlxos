@@ -1,1 +1,7 @@
-core initramfs grub-legacy grub gparted xorg gnome fonts-cantarell qogir-gtk-theme qogir-icon-theme inspector fuse2 libbsd cifs-utils
+core initramfs firmware grub-i386 grub xorg
+gnome
+pam-config poppler-data
+fonts-cantarell adobe-source-code-pro-fonts ttf-noto ttf-noto-cjk ttf-noto-emoji 
+fluent-gtk-theme fluent-icon-theme fluent-wallpaper
+fuse2 libbsd cifs-utils
+inspector flatpak gparted welcome

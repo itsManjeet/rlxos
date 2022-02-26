@@ -1,4 +1,4 @@
-#!/bin/python
+#!/bin/env python3
 
 from yaml import safe_load, YAMLError
 from os import listdir, path, system

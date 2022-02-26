@@ -24,7 +24,7 @@
  snap_width=10
  sync_to_vblank=false
 -theme=Default
-+theme=Dracula
++theme=Qogir-light
  tile_on_move=true
  title_alignment=center
 -title_font=Sans Bold 9

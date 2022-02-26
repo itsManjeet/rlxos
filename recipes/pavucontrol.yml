@@ -9,6 +9,8 @@ depends:
     - libcanberra
     - libsigc++
     - pulseaudio
+  buildtime:
+    - intltool
 
 sources:
   - https://freedesktop.org/software/pulseaudio/pavucontrol/pavucontrol-4.0.tar.xz

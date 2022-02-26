@@ -6,8 +6,8 @@
    <property name="Net" type="empty">
 -    <property name="ThemeName" type="empty"/>
 -    <property name="IconThemeName" type="empty"/>
-+    <property name="ThemeName" type="string" value="Dracula"/>
-+    <property name="IconThemeName" type="string" value="Tela-dark"/>
++    <property name="ThemeName" type="string" value="Qogir-light"/>
++    <property name="IconThemeName" type="string" value="Qogir"/>
      <property name="DoubleClickTime" type="int" value="400"/>
      <property name="DoubleClickDistance" type="int" value="5"/>
      <property name="DndDragThreshold" type="int" value="8"/>
@@ -28,7 +28,7 @@
 -    <property name="FontName" type="string" value="Sans 10"/>
 -    <property name="MonospaceFontName" type="string" value="Monospace 10"/>
 +    <property name="FontName" type="string" value="Cantarell 10"/>
-+    <property name="MonospaceFontName" type="string" value="Noto Sans Mono 10"/>
++    <property name="MonospaceFontName" type="string" value="Source Code Pro 10"/>
      <property name="IconSizes" type="string" value=""/>
      <property name="KeyThemeName" type="string" value=""/>
      <property name="ToolbarStyle" type="string" value="icons"/>

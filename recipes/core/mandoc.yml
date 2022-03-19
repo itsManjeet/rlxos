@@ -1,0 +1,18 @@
+id: mandoc
+version: 1.14.6
+about: An utility to format manual pages
+license: ISC
+categories:
+  - Development
+sources:
+  - https://mandoc.bsd.lv/snapshots/mandoc-{{version}}.tar.gz
+depends:
+  runtime:
+    - zlib
+
+script: |
+  ./configure
+  make mandoc
+
+  install -v -D -m 0755 mandoc -t ${pkgupd_pkgdir}/usr/bin/
+  install -v -D -m 0644 mandoc.1 -t ${pkgupd_pkgdir}/usr/share/man/man1

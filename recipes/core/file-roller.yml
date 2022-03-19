@@ -16,13 +16,7 @@ depends:
 sources:
   - https://download.gnome.org/sources/file-roller/3.40/file-roller-3.40.0.tar.xz
 
-packages:
-  - id: pkg
-    dir: file-roller-3.40.0
-    flags:
-      - id: configure
-        value: >
-          --buildtype=release
-          -D packagekit=false
-    postscript: |
-      chmod -v 0755 ${pkgupd_pkgdir}/usr/lib/file-roller/isoinfo.sh
+build-dir: file-roller-3.40.0
+configure: --buildtype=release -D packagekit=false
+post-script: |
+  chmod -v 0755 ${pkgupd_pkgdir}/usr/lib/file-roller/isoinfo.sh

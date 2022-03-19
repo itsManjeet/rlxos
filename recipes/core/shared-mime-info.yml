@@ -17,14 +17,10 @@ sources:
 
 environ:
   - XML_CATALOG_FILES=/etc/xml/catalog
-packages:
-  - id: pkg
-    dir: shared-mime-info-2.1
-    flags:
-      - id: configure
-        value: >
-          --buildtype=release
-          -D update-mimedb=true
 
-    postscript: |
-      install -v -D -m 644 ${FILES}/triggers/mime.yml -t ${pkgupd_pkgdir}/usr/share/pkgupd/triggers/
+build-dir: shared-mime-info-2.1
+
+configure: --buildtype=release -Dupdate-mimedb=true
+
+post-script: |
+  install -v -D -m 644 ${FILES}/triggers/mime.yml -t ${pkgupd_pkgdir}/usr/share/pkgupd/triggers/

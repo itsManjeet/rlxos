@@ -30,16 +30,8 @@ users:
     dir: /var/lib/gdm
     shell: /bin/false
 
-packages:
-  - id: pkg
-    dir: gdm-40.1
-    flags:
-      - id: configure
-        value: >
-          --buildtype=release
-          -D gdm-xsession=true
-          -D default-pam-config=lfs
- 
-    postscript: |
-      install -v -d -o 21 -g 21 ${pkgupd_pkgdir}/var/lib/gdm
-      sed -e "/user = gdm/ s/^#*/#/" -i ${pkgupd_pkgdir}/etc/pam.d/gdm-launch-environment
+build-dir: gdm-40.1
+configure: --buildtype=release -D gdm-xsession=true -D default-pam-config=lfs
+post-script: |
+  install -v -d -o 21 -g 21 ${pkgupd_pkgdir}/var/lib/gdm
+  sed -e "/user = gdm/ s/^#*/#/" -i ${pkgupd_pkgdir}/etc/pam.d/gdm-launch-environment

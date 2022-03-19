@@ -22,10 +22,7 @@ packages:
     dir: gdk-pixbuf-2.42.6
     flags:
       - id: configure
-        value: >
-          --buildtype=release
-          --libexecdir=/usr/lib
-          -D gtk_doc=false
+        value: --buildtype=release --libexecdir=/usr/lib -D gtk_doc=false
 
     postscript: |
       install -v -D -m 644 ${FILES}/triggers/pixbuf.yml -t ${pkgupd_pkgdir}/usr/share/pkgupd/triggers/

@@ -25,32 +25,15 @@ kernel:
   - CONFIG_NET_TEAM
 
 sources:
-  - https://download.gnome.org/sources/NetworkManager/1.32/NetworkManager-1.32.4.tar.xz
+  - https://download.gnome.org/sources/NetworkManager/1.32/NetworkManager-{{version}}.tar.xz
 
 
 groups:
   - id: 86
     name: netdev
+build-type: meson
 
-packages:
-  - id: pkg
-    dir: NetworkManager-1.32.4
-
-    flags:
-      - id: configurator
-        value: meson.build
-      - id: configure
-        value: >
-          -Dlibaudit=no
-          -Dlibpsl=false
-          -Dnmtui=true
-          -Dovs=false
-          -Dppp=false
-          -Dselinux=false
-          -Dqt=false
-          -Dsession_tracking=systemd
-          -Dmodem_manager=false
-
-    postscript: |
-      install -v -D -m 644 ${FILES}/networkmanager/org.freedesktop.NetworkManager.rules -t \
-        ${pkgupd_pkgdir}/usr/share/polkit-1/rules.d/
+configure: -Dlibaudit=no -Dlibpsl=false -Dnmtui=true -Dovs=false -Dppp=false -Dselinux=false -Dqt=false -Dsession_tracking=systemd -Dmodem_manager=false
+post-script: |
+  install -v -D -m 644 ${FILES}/networkmanager/org.freedesktop.NetworkManager.rules -t \
+    ${pkgupd_pkgdir}/usr/share/polkit-1/rules.d/

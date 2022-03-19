@@ -1,4 +1,4 @@
-id: thunar
+id: thunar-volman
 version: 4.16.10
 about: Xfce file manager
 depends:
@@ -9,8 +9,6 @@ depends:
     - libnotify
     - gvfs
     - thunar
-packages:
-  - id: pkg
-    sources:
-      - https://archive.xfce.org/src/xfce/thunar-volman/4.16/thunar-volman-4.16.0.tar.bz2
-    dir: thunar-volman-4.16.0
+sources:
+  - https://archive.xfce.org/src/xfce/thunar-volman/4.16/thunar-volman-4.16.0.tar.bz2
+build-dir: thunar-volman-4.16.0

@@ -21,17 +21,10 @@ depends:
 
 sources:
   - https://download.gnome.org/sources/cheese/3.38/cheese-3.38.0.tar.xz
-  - https://www.linuxfromscratch.org/patches/blfs/svn/cheese-3.38.0-upstream_fixes-1.patch
 
-packages:
-  - id: pkg
-    dir: cheese-3.38.0
-    prescript: |
-      sed -i "s/&version;/3.38.0/" docs/reference/cheese{,-docs}.xml
-      patch -Np1 -i ../cheese-3.38.0-upstream_fixes-1.patch
+build-dir: cheese-3.38.0
+pre-script: |
+  patch -Np1 -i ${FILES}/cheese/vala.patch
+  sed -i "s/&version;/3.38.0/" docs/reference/cheese{,-docs}.xml
 
-    flags:
-      - id: configure
-        value: >
-          --buildtype=release
-          -D gtk_doc=false
+configure: --buildtype=release -D gtk_doc=false

@@ -12,6 +12,6 @@ depends:
 build-dir: sassc-3.6.2
 script: |
   autoreconf -fi
-  ./configure --prefix=/usr --disable-static
+  ./configure --prefix=/usr
   make
   make DESTDIR=${pkgupd_pkgdir} install

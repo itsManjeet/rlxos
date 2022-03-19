@@ -15,11 +15,11 @@ depends:
     - zstd
 
 sources:
-  - https://github.com/libarchive/libarchive/releases/download/3.5.1/libarchive-3.5.1.tar.xz
+  - https://github.com/libarchive/libarchive/releases/download/v{{version}}/libarchive-{{version}}.tar.xz
 
 packages:
   - id: pkg
-    dir: libarchive-3.5.1
+    dir: libarchive-{{version}}
 
     flags:
       - id: configurator

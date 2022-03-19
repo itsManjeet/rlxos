@@ -23,8 +23,7 @@ packages:
     dir: gjs-1.68.1
     flags:
       - id: configure
-        value: >
-          --buildtype=release
+        value: --buildtype=release
     
     postscript: |
       ln -sfv gjs-console ${pkgupd_pkgdir}/usr/bin/gjs

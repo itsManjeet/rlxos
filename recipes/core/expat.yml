@@ -1,5 +1,5 @@
 id: expat
-version: 2.4.1
+version: 2.4.7
 about: |
   A stream oriented C library for parsing XML
 
@@ -8,11 +8,11 @@ depends:
     - glibc
 
 sources:
-  - https://prdownloads.sourceforge.net/expat/expat-2.4.1.tar.xz
+  - https://prdownloads.sourceforge.net/expat/expat-{{version}}.tar.xz
 
 packages:
   - id: pkg
-    dir: expat-2.4.1
+    dir: expat-{{version}}
 
     flags:
       - id: configurator

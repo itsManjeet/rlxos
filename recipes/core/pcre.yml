@@ -4,11 +4,11 @@ about: |
   Perl Compatible Regular Expression libraries
 
 sources:
-  - https://ftp.pcre.org/pub/pcre/pcre-8.45.tar.bz2
+  - https://sourceforge.net/projects/pcre/files/pcre/{{version}}/pcre-{{version}}.tar.bz2
 
 packages:
   - id: pkg
-    dir: pcre-8.45
+    dir: pcre-{{version}}
     flags:
       - id: configurator
         value: configure

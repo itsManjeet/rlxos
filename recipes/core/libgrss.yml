@@ -9,14 +9,9 @@ depends:
   
 sources:
   - https://download.gnome.org/sources/libgrss/0.7/libgrss-0.7.0.tar.xz
-  - https://www.linuxfromscratch.org/patches/blfs/svn/libgrss-0.7.0-bugfixes-1.patch
 
-packages:
-  - id: pkg
-    dir: libgrss-0.7.0
-    prescript: |
-      patch -Np1 -i ../libgrss-0.7.0-bugfixes-1.patch
-      autoreconf -fv
-    flags:
-      - id: configure
-        value: --disable-static
+build-dir: libgrss-0.7.0
+pre-script: |
+  patch -Np1 -i ${FILES}/libgrss/libgrss-0.7.0-bugfixes-2.patch
+  autoreconf -fv
+configure: --disable-static

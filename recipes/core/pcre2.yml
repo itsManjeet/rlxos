@@ -2,23 +2,14 @@ id: pcre2
 version: 10.37
 about: |
   Perl Compatible Regular Expression libraries
-
 sources:
-  - https://ftp.pcre.org/pub/pcre/pcre2-10.37.tar.bz2
-
-packages:
-  - id: pkg
-    dir: pcre2-10.37
-    flags:
-      - id: configurator
-        value: configure
-        
-      - id: configure
-        value: >
-          --enable-unicode
-          --enable-jit
-          --enable-pcre2-16
-          --enable-pcre2-32
-          --enable-pcre2grep-libz
-          --enable-pcre2grep-libbz2
-          --enable-pcre2test-libreadline
+  - https://github.com/PhilipHazel/pcre2/releases/download/pcre2-{{version}}/pcre2-{{version}}.tar.bz2
+build-type: autoconf
+configure:
+  --enable-unicode
+  --enable-jit
+  --enable-pcre2-16
+  --enable-pcre2-32
+  --enable-pcre2grep-libz
+  --enable-pcre2grep-libbz2
+  --enable-pcre2test-libreadline

@@ -5,7 +5,7 @@ about: |
 depends:
   runtime:
     - apr
-    - apr-util
+    - apr-utils
     - pcre
     - openssl
     - libxml2

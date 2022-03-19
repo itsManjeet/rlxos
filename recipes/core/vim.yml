@@ -20,6 +20,8 @@ packages:
 
     plugin: script
     script: |
-      ./configure --prefix=/usr --enable-multibyte --disable-gui
+      ./configure --prefix=/usr --enable-multibyte --disable-gui --with-x=no
       make
       make DESTDIR=${pkgupd_pkgdir} install
+
+      rm ${pkgupd_pkgdir}/usr/share/applications/ -r

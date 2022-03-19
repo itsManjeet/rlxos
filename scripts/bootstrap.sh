@@ -112,7 +112,7 @@ function generate_tar() {
   fi
 
   echo ":: compressing system ::"
-  tar -caf rlxos-${VERSION}-${BUILD_ID}.tar -C ${TEMPDIR} .
+  tar -caf /releases/rlxos-${VERSION}-${BUILD_ID}.tar -C ${TEMPDIR} .
   ret=${?}
   rm -rf ${TEMPDIR}
 

@@ -37,6 +37,7 @@ jobs:
 
       - id: release
         name: releasing build
+        uses: marvinpinto/action-automatic-releases@latest
         with:
           title: rlxos ${{ steps.branch-extract.outputs.branch }}  ${{ github.GITHUB_RUN_NUMBER }}
           automatic_release_tag: rlxos-${{ steps.branch-extract.outputs.branch }}-${{ github.GITHUB_RUN_NUMBER }}

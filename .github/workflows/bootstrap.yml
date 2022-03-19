@@ -18,7 +18,7 @@ jobs:
       - id: bootstrap
         name: bootstrapping packages
         run: |
-          VERSION="${{ steps.branch-extract.outputs.branch }}" ./scripts/bootstrap.sh --bootstrap --rebuild --tar --update-pkgupd --build-id ${{ github.GITHUB_RUN_NUMBER }}
+          VERSION="${{ steps.branch-extract.outputs.branch }}" NO_INPUT=1 ./scripts/bootstrap.sh --bootstrap --rebuild --tar --update-pkgupd --build-id ${{ github.GITHUB_RUN_NUMBER }}
           mv build/releases/rlxos-${{ steps.branch-extract.outputs.branch }}-${{ github.GITHUB_RUN_NUMBER }}.img rlxos-${{ steps.branch-extract.outputs.branch }}-${{ github.GITHUB_RUN_NUMBER }}
 
       - id: packing

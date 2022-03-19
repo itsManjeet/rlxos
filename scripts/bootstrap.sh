@@ -112,7 +112,7 @@ function generate_tar() {
   fi
 
   echo ":: compressing system ::"
-  tar -caf /releases/rlxos-${VERSION}-${BUILD_ID}.tar -C ${TEMPDIR} .
+  mksquashfs ${TEMPDIR} /releases/rlxos-${VERSION}-${BUILD_ID}.sfs -comp zstd -Xcompression-level 22
   ret=${?}
   rm -rf ${TEMPDIR}
 

@@ -1,0 +1,48 @@
+name: bootstrap
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - id: branch-extract
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+
+      - id: configure
+        name: configuring recipe files
+        run: VERSION="${{ steps.branch-extract.outputs.branch }}" ./scripts/configure.py
+
+      - id: bootstrap
+        name: bootstrapping packages
+        run: |
+          VERSION="${{ steps.branch-extract.outputs.branch }}" ./scripts/bootstrap.sh --bootstrap --rebuild --tar --update-pkgupd --build-id ${{ github.GITHUB_RUN_NUMBER }}
+          mv build/releases/rlxos-${{ steps.branch-extract.outputs.branch }}-${{ github.GITHUB_RUN_NUMBER }}.img rlxos-${{ steps.branch-extract.outputs.branch }}-${{ github.GITHUB_RUN_NUMBER }}
+
+      - id: packing
+        name: packing build directory
+        run: |
+          tar -I 'zstd -19' -caf rlxos-${{ steps.branch-extract.outputs.branch }}-${{ github.GITHUB_RUN_NUMBER }}-build.tar.zstd -C build .
+
+      - id: upload
+        name: uploading artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: rlxos ${{ steps.branch-extract.outputs.branch }}  ${{ github.GITHUB_RUN_NUMBER }}
+          path: |
+            rlxos-${{ steps.branch-extract.outputs.branch }}-${{ github.GITHUB_RUN_NUMBER }}
+            rlxos-${{ steps.branch-extract.outputs.branch }}-${{ github.GITHUB_RUN_NUMBER }}-build.tar.zstd
+
+      - id: release
+        name: releasing build
+        with:
+          title: rlxos ${{ steps.branch-extract.outputs.branch }}  ${{ github.GITHUB_RUN_NUMBER }}
+          automatic_release_tag: rlxos-${{ steps.branch-extract.outputs.branch }}-${{ github.GITHUB_RUN_NUMBER }}
+          prerelease: false
+          draft: false
+          files: |
+            rlxos-${{ steps.branch-extract.outputs.branch }}-${{ github.GITHUB_RUN_NUMBER }}
+            rlxos-${{ steps.branch-extract.outputs.branch }}-${{ github.GITHUB_RUN_NUMBER }}-build.tar.zstd
+          repo_token: ${{ secrets.GITHUB_TOKEN }}

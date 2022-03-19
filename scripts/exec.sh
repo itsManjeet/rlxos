@@ -7,4 +7,4 @@ BASEDIR="$(
 
 . ${BASEDIR}/common.sh
 
-/bin/bash 
+$@

@@ -30,12 +30,7 @@ packages:
         value: meson.build
 
       - id: configure
-        value: >
-          --libexecdir=/usr/lib
-          --buildtype=release
-          -D database=gdbm
-          -D bluez5=true
-          -D tests=false
+        value: --libexecdir=/usr/lib --buildtype=release -D database=gdbm -D bluez5=true -D tests=false
 
     postscript: |
       rm -fv ${pkgupd_pkgdir}/etc/dbus-1/system.d/pulseaudio-system.conf

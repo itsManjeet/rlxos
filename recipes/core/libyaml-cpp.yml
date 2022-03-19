@@ -10,15 +10,11 @@ depends:
     - gcc
 
 sources:
-  - https://github.com/jbeder/yaml-cpp/archive/yaml-cpp-0.6.3.tar.gz
+  - https://github.com/jbeder/yaml-cpp/archive/yaml-cpp-{{version}}.tar.gz
 
-packages:
-  - id: pkg
-    dir: yaml-cpp-yaml-cpp-0.6.3
-
-    flags:
-      - id: configure
-        value: >
-          -DBUILD_SHARED_LIBS=ON
-          -DYAML_BUILD_SHARED_LIBS=ON
-          -DCMAKE_BUILD_TYPE=Release
+configure: >
+  -DBUILD_SHARED_LIBS=ON
+  -DYAML_BUILD_SHARED_LIBS=ON
+  -DCMAKE_BUILD_TYPE=Release
+  -DYAML_CPP_BUILD_TESTS=OFF
+  -DYAML_CPP_BUILD_TOOLS=OFF

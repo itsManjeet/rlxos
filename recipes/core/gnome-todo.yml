@@ -14,8 +14,6 @@ depends:
     - meson
 
 sources:
-  - https://download.gnome.org/sources/gnome-todo/40/gnome-todo-40.1.tar.xz
+  - https://download.gnome.org/sources/gnome-todo/40/gnome-todo-{{version}}.tar.xz
 
-packages:
-  - id: pkg
-    dir: gnome-todo-40.1
+build-dir: gnome-todo-{{version}}

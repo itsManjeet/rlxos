@@ -9,17 +9,10 @@ depends:
     - pcre
 
 sources:
-  - https://download.gnome.org/sources/glib/2.68/glib-2.68.3.tar.xz
+  - https://download.gnome.org/sources/glib/{{version}}/glib-{{version}}.tar.xz
 
-packages:
-  - id: pkg
-    dir: glib-2.68.3
-    flags:
-      - id: configure
-        value: >
-          -D man=false
-          -D selinux=disabled
-          --buildtype=release
+build-dir: glib-{{version}}
+configure: -D man=false -D selinux=disabled --buildtype=release
 
-    postscript: |
-      install -v -D -m 644 ${FILES}/triggers/{glib-schemas.yml,gio.yml} -t ${pkgupd_pkgdir}/usr/share/pkgupd/triggers/
+post-script: |
+  install -v -D -m 644 ${FILES}/triggers/{glib-schemas.yml,gio.yml} -t ${pkgupd_pkgdir}/usr/share/pkgupd/triggers/

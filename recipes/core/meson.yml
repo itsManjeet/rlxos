@@ -6,6 +6,8 @@ about: |
 depends:
   runtime:
     - ninja
+  buildtime:
+    - py-setuptools
 
 sources:
   - https://github.com/mesonbuild/meson/releases/download/0.58.1/meson-0.58.1.tar.gz

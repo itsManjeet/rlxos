@@ -4,14 +4,16 @@ about: |
   Common functions for Xorg input drivers
 
 sources:
-  - https://www.freedesktop.org/software/libevdev/libevdev-1.11.0.tar.xz
-
+  - https://www.freedesktop.org/software/libevdev/libevdev-{{version}}.tar.xz
+depends:
+  buildtime:
+    - check
 kernel:
   - CONFIG_INPUT
   - CONFIG_INPUT_EUDEV
   - CONFIG_INPUT_MISC
   - CONFIG_INPUT_UINPUT
   
-packages:
-  - id: pkg
-    dir: libevdev-1.11.0
+build-dir: libevdev-{{version}}
+configure: >
+  -D documentation=disabled

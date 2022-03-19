@@ -7,33 +7,30 @@ sources:
   - https://golang.org/dl/go{{version}}.src.tar.gz
   - https://golang.org/dl/go{{version}}.linux-amd64.tar.gz
 
-packages:
-  - id: pkg
-    dir: .
-    strip: false
-    environ:
-      - GOROOT_BOOTSTRAP=${pkgupd_srcdir}/go{{version}}
-      - GOROOT_FINAL=/usr/lib/go
-      - GOCACHE=${pkgupd_srcdir}/go-build
-    script: |
-      rm -r go
-      install -d go{{version}}
-      tar -xaf ${PKGUPD_SRCDIR}/go{{version}}.linux-amd64.tar.gz \
-        -C go{{version}} --strip-components 1
-      
-      tar -xaf ${PKGUPD_SRCDIR}/go{{version}}.src.tar.gz
-     
-      cd go/src
-      bash make.bash
-            
-      install -d ${pkgupd_pkgdir}/usr/lib
-      cp -r ${pkgupd_srcdir}/go ${pkgupd_pkgdir}/usr/lib/
-      
-      install -d ${pkgupd_pkgdir}/usr/bin/
-      ln -s /usr/lib/go/bin/go ${pkgupd_pkgdir}/usr/bin/
-      ln -s /usr/lib/go/bin/gofmt ${pkgupd_pkgdir}/usr/bin/
-      
-      find ${pkgupd_pkgdir} \( -name "*.a" -o -name "*.go" \) -exec chmod 644 '{}' \;
-      find ${pkgupd_pkgdir} \( -name "README*" -o -name "AUTHORS" -o -name "TODO" \) -delete
-      rm ${pkgupd_pkgdir}/usr/lib/go/src/*.bat   
-      
+build-dir: .
+strip: false
+script: |
+  export GOROOT_BOOTSTRAP=${pkgupd_srcdir}/go{{version}}
+  GOROOT_FINAL=/usr/lib/go
+  GOCACHE=${pkgupd_srcdir}/go-build
+  rm -r go
+  install -d go{{version}}
+  tar -xaf ${PKGUPD_SRCDIR}/go{{version}}.linux-amd64.tar.gz \
+    -C go{{version}} --strip-components 1
+  
+  tar -xaf ${PKGUPD_SRCDIR}/go{{version}}.src.tar.gz
+  
+  cd go/src
+  bash make.bash
+        
+  install -d ${pkgupd_pkgdir}/usr/lib
+  cp -r ${pkgupd_srcdir}/go ${pkgupd_pkgdir}/usr/lib/
+  
+  install -d ${pkgupd_pkgdir}/usr/bin/
+  ln -s /usr/lib/go/bin/go ${pkgupd_pkgdir}/usr/bin/
+  ln -s /usr/lib/go/bin/gofmt ${pkgupd_pkgdir}/usr/bin/
+  
+  find ${pkgupd_pkgdir} \( -name "*.a" -o -name "*.go" \) -exec chmod 644 '{}' \;
+  find ${pkgupd_pkgdir} \( -name "README*" -o -name "AUTHORS" -o -name "TODO" \) -delete
+  rm ${pkgupd_pkgdir}/usr/lib/go/src/*.bat   
+  

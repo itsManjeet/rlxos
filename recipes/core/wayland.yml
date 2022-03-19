@@ -17,5 +17,5 @@ packages:
     flags:
       - id: configure
         value: >
-          --disable-static
-          --disable-documentation
+          -D documentation=false
+          --buildtype=release

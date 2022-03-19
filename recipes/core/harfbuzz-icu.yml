@@ -9,26 +9,13 @@ depends:
     - icu
   
 sources:
-  - https://github.com/harfbuzz/harfbuzz/releases/download/2.8.2/harfbuzz-2.8.2.tar.xz
+  - https://github.com/harfbuzz/harfbuzz/releases/download/{{version}}/harfbuzz-{{version}}.tar.xz
+build-type: meson
+configure: --buildtype=release -D graphite=enabled -D benchmark=disabled -D docs=disabled -D icu=enabled
 
-packages:
-  - id: pkg
-    dir: harfbuzz-2.8.2
-    flags:
-      - id: configurator
-        value: meson.build
-        
-      - id: configure
-        value: >
-          --buildtype=release
-          -D graphite=enabled
-          -D benchmark=disabled
-          -D docs=disabled
-          -D icu=enabled
-
-    postscript: |
-      mv ${pkgupd_pkgdir} "${pkgupd_pkgdir}_old"
-      mkdir -p ${pkgupd_pkgdir}/usr/lib/pkgconfig ${pkgupd_pkgdir}/usr/include/harfbuzz
-      mv "${pkgupd_pkgdir}_old"/usr/include/harfbuzz/hb-icu.h ${pkgupd_pkgdir}/usr/include/harfbuzz/
-      mv "${pkgupd_pkgdir}_old"/usr/lib/libharfbuzz-icu* ${pkgupd_pkgdir}/usr/lib/
-      mv "${pkgupd_pkgdir}_old"/usr/lib/pkgconfig/harfbuzz-icu.pc ${pkgupd_pkgdir}/usr/lib/pkgconfig/
+post-script: |
+  mv ${pkgupd_pkgdir} "${pkgupd_pkgdir}_old"
+  mkdir -p ${pkgupd_pkgdir}/usr/lib/pkgconfig ${pkgupd_pkgdir}/usr/include/harfbuzz
+  mv "${pkgupd_pkgdir}_old"/usr/include/harfbuzz/hb-icu.h ${pkgupd_pkgdir}/usr/include/harfbuzz/
+  mv "${pkgupd_pkgdir}_old"/usr/lib/libharfbuzz-icu* ${pkgupd_pkgdir}/usr/lib/
+  mv "${pkgupd_pkgdir}_old"/usr/lib/pkgconfig/harfbuzz-icu.pc ${pkgupd_pkgdir}/usr/lib/pkgconfig/

@@ -12,23 +12,11 @@ depends:
     - sassc
     - gnome-shell
 
-packages:
-  - id: pkg
-    strip: false
-    dir: Fluent-gtk-theme-{{version}}
-    plugin: script
-    script: |
-      install -d ${pkgupd_pkgdir}/usr/share/themes
-      ./install.sh -i simple \
-        --tweaks float \
-        --tweaks blur \
-        --tweaks square \
-        --name Fluent-blur \
-        -d ${pkgupd_pkgdir}/usr/share/themes
-
-      install -d ${pkgupd_pkgdir}/usr/share/themes
-      ./install.sh -i simple \
-        --tweaks float \
-        --tweaks square \
-        --name Fluent \
-        -d ${pkgupd_pkgdir}/usr/share/themes
+build-dir: Fluent-gtk-theme-{{version}}
+script: |
+  install -d ${pkgupd_pkgdir}/usr/share/themes
+  ./install.sh -i simple \
+    --tweaks float \
+    --tweaks square \
+    --name Fluent \
+    -d ${pkgupd_pkgdir}/usr/share/themes

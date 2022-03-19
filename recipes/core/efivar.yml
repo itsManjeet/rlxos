@@ -1,28 +1,28 @@
 id: efivar
-version: 37
+version: 38
 about: |
   Package provides tools and libraries to manipulate EFI variables
 
+depends:
+  buildtime:
+    - mandoc
 sources:
-  - https://github.com/rhboot/efivar/releases/download/37/efivar-37.tar.bz2
-  - https://www.linuxfromscratch.org/patches/blfs/svn/efivar-37-gcc_9-1.patch
+  - https://github.com/rhboot/efivar/releases/download/{{version}}/efivar-{{version}}.tar.bz2
+  - efivar-{{version}}.patch::https://github.com/rhboot/efivar/pull/201/commits/197a0874ea4010061b98b4b55eff65b33b1cd741.patch
 
-packages:
-  - id: pkg
-    dir: efivar-37
-    prescript: |
-      patch -Np1 -i ../efivar-37-gcc_9-1.patch
+build-dir: efivar-{{version}}
+script: |
 
-    plugin: script
-    script: |
-      make CFLAGS="-O2 -Wno-stringop-truncation" \
-        libdir=/usr/lib \
-        bindir=/usr/bin \
-        mandir=/usr/share/man \
-        includedir=/usr/include 
+  # fix issues with linker scripts: https://github.com/rhboot/efivar/pull/201
+  patch -Np1 -i ../efivar-{{version}}.patch
+  
+  # disable -Werror
+  make ERRORS='' all
 
-      make install DESTDIR=${pkgupd_pkgdir} \
-        libdir=/usr/lib \
-        bindir=/usr/bin \
-        mandir=/usr/share/man \
-        includedir=/usr/include -j1 V=1
+  make install DESTDIR=${pkgupd_pkgdir} \
+    libdir=/usr/lib \
+    bindir=/usr/bin \
+    mandir=/usr/share/man \
+    includedir=/usr/include -j1 V=1
+
+  install -v -D -m 0644 README.md TODO -t ${pkgupd_pkgdir}/usr/share/doc/efivar

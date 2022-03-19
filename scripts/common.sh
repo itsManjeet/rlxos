@@ -5,7 +5,7 @@ BASEDIR="$(
     pwd -P
 )/../"
 
-CONTAINER_VERSION='2200-0317221121'
+CONTAINER_VERSION='2200-031722164'
 SERVER_URL='https://apps.rlxos.dev'
 
 if [[ -z "${NOCONTAINER}" ]]; then
@@ -13,11 +13,10 @@ if [[ -z "${NOCONTAINER}" ]]; then
         echo "Error! no version specified"
         exit 1
     fi
+    if [[ -z ${NO_INPUT} ]] ; then
+        EXTRA_FLAGS='-i'
+    fi
     VERSION=$(cat ${BASEDIR}/.version)
-
-    ${BASEDIR}/scripts/configure.py
-
-    echo "Starting container"
     docker run \
         --rm \
         --network host \
@@ -34,7 +33,7 @@ if [[ -z "${NOCONTAINER}" ]]; then
         -v "${BASEDIR}/profiles:/profiles" \
         -v "${BASEDIR}/pkgupd.yml:/etc/pkgupd.yml" \
         -v "${BASEDIR}/discord-bolt:/bolt" \
-        -i --privileged \
+        ${EXTRA_FLAGS} --privileged \
         -t itsmanjeet/rlxos-devel:${CONTAINER_VERSION} /usr/bin/env -i \
         HOME=/root \
         TERM=${TERM} \

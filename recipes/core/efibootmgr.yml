@@ -17,6 +17,10 @@ packages:
     plugin: script
     script: |
       sed -e "/extern int efi_set_verbose/d" -i src/efibootmgr.c
+      
+      # efivar-38 or later
+      sed 's/-Werror//' -i Make.defaults
+      
       make EFIDIR=rlxos \
         libdir=/usr/lib \
         sbindir=/usr/bin -j1

@@ -42,7 +42,7 @@ depends:
     - gnome-terminal
     # - gnome-theme-extra
     - gnome-tweaks
-    - gnome-todo
+    # - gnome-todo
     # - gnome-user-docs
     # - gnome-user-share
     # - gnome-usage

@@ -1,6 +1,9 @@
 name: bootstrap
 on: workflow_dispatch
 
+env:
+  BUILD_ID: ${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
+
 jobs:
   build:
     runs-on: self-hosted
@@ -19,32 +22,32 @@ jobs:
       - id: bootstrap
         name: bootstrapping packages
         run: |
-          VERSION="${{ steps.branch-extract.outputs.branch }}" NO_INPUT=1 ./scripts/bootstrap.sh --bootstrap --rebuild --tar --update-pkgupd --build-id ${{ github.GITHUB_RUN_NUMBER }}
-          mv build/releases/rlxos-${{ steps.branch-extract.outputs.branch }}-${{ github.GITHUB_RUN_NUMBER }}.img rlxos-${{ steps.branch-extract.outputs.branch }}-${{ github.GITHUB_RUN_NUMBER }}
+          VERSION="${{ steps.branch-extract.outputs.branch }}" NO_INPUT=1 ./scripts/bootstrap.sh --bootstrap --rebuild --tar --update-pkgupd --build-id ${{ env.BUILD_ID }}
+          mv build/releases/rlxos-${{ steps.branch-extract.outputs.branch }}-${{ env.BUILD_ID }}.sfs rlxos-${{ steps.branch-extract.outputs.branch }}-${{ env.BUILD_ID }}
 
       - id: packing
         name: packing build directory
         run: |
-          tar -I 'zstd -19' -caf rlxos-${{ steps.branch-extract.outputs.branch }}-${{ github.GITHUB_RUN_NUMBER }}-build.tar.zstd -C build .
+          tar -I 'zstd -19' -caf rlxos-${{ steps.branch-extract.outputs.branch }}-${{ env.BUILD_ID }}-build.tar.zstd -C build .
 
       - id: upload
         name: uploading artifact
         uses: actions/upload-artifact@v1
         with:
-          name: rlxos ${{ steps.branch-extract.outputs.branch }}  ${{ github.GITHUB_RUN_NUMBER }}
+          name: rlxos ${{ steps.branch-extract.outputs.branch }}  ${{ env.BUILD_ID }}
           path: |
-            rlxos-${{ steps.branch-extract.outputs.branch }}-${{ github.GITHUB_RUN_NUMBER }}
-            rlxos-${{ steps.branch-extract.outputs.branch }}-${{ github.GITHUB_RUN_NUMBER }}-build.tar.zstd
+            rlxos-${{ steps.branch-extract.outputs.branch }}-${{ env.BUILD_ID }}
+            rlxos-${{ steps.branch-extract.outputs.branch }}-${{ env.BUILD_ID }}-build.tar.zstd
 
       - id: release
         name: releasing build
         uses: marvinpinto/action-automatic-releases@latest
         with:
-          title: rlxos ${{ steps.branch-extract.outputs.branch }}  ${{ github.GITHUB_RUN_NUMBER }}
-          automatic_release_tag: rlxos-${{ steps.branch-extract.outputs.branch }}-${{ github.GITHUB_RUN_NUMBER }}
+          title: rlxos ${{ steps.branch-extract.outputs.branch }}  ${{ env.BUILD_ID }}
+          automatic_release_tag: rlxos-${{ steps.branch-extract.outputs.branch }}-${{ env.BUILD_ID }}
           prerelease: false
           draft: false
           files: |
-            rlxos-${{ steps.branch-extract.outputs.branch }}-${{ github.GITHUB_RUN_NUMBER }}
-            rlxos-${{ steps.branch-extract.outputs.branch }}-${{ github.GITHUB_RUN_NUMBER }}-build.tar.zstd
+            rlxos-${{ steps.branch-extract.outputs.branch }}-${{ env.BUILD_ID }}
+            rlxos-${{ steps.branch-extract.outputs.branch }}-${{ env.BUILD_ID }}-build.tar.zstd
           repo_token: ${{ secrets.GITHUB_TOKEN }}

@@ -23,7 +23,7 @@ jobs:
         name: bootstrapping packages
         run: |
           VERSION="${{ steps.branch-extract.outputs.branch }}" NO_INPUT=1 ./scripts/bootstrap.sh --bootstrap --rebuild --tar --update-pkgupd --build-id ${{ env.BUILD_ID }}
-          mv build/releases/rlxos-${{ steps.branch-extract.outputs.branch }}-${{ env.BUILD_ID }}.sfs rlxos-${{ steps.branch-extract.outputs.branch }}-${{ env.BUILD_ID }}
+          mv build/${{ steps.branch-extract.outputs.branch }}/releases/rlxos-${{ steps.branch-extract.outputs.branch }}-${{ env.BUILD_ID }}.sfs rlxos-${{ steps.branch-extract.outputs.branch }}-${{ env.BUILD_ID }}
 
       - id: packing
         name: packing build directory

@@ -2,7 +2,7 @@ name: bootstrap
 on: workflow_dispatch
 
 env:
-  BUILD_ID: ${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
+  BUILD_ID: ${GITHUB_RUN_NUMBER}
 
 jobs:
   build:
@@ -18,6 +18,15 @@ jobs:
       - id: configure
         name: configuring recipe files
         run: VERSION="${{ steps.branch-extract.outputs.branch }}" ./scripts/configure.py
+        
+      - id: sources
+        name: copying source files
+        run: |
+          if [[ ! -d sources ]] ; then
+            mkdir -p sources
+          fi
+          
+          mountpoint ./sources || mount --bind /apps.rlxos.dev/sources ./sources
 
       - id: bootstrap
         name: bootstrapping packages
@@ -32,7 +41,7 @@ jobs:
 
       - id: upload
         name: uploading artifact
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v3
         with:
           name: rlxos ${{ steps.branch-extract.outputs.branch }}  ${{ env.BUILD_ID }}
           path: |
@@ -51,3 +60,9 @@ jobs:
             rlxos-${{ steps.branch-extract.outputs.branch }}-${{ env.BUILD_ID }}
             rlxos-${{ steps.branch-extract.outputs.branch }}-${{ env.BUILD_ID }}-build.tar.zstd
           repo_token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - id: cleanup
+        name: cleaning repository
+        if: always()
+        run: |
+          mountpoint ./sources && umount ./sources

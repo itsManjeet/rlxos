@@ -19,5 +19,18 @@ jobs:
         with:
           name: test release
           path: |
-            ./first.txt
-            ./second.txt
+            first.txt
+            second.txt
+            
+      - id: release
+        name: releasing build
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          title: test release
+          automatic_release_tag: test-release
+          prerelease: false
+          draft: false
+          files: |
+            first.txt
+            second.txt
+          repo_token: ${{ secrets.GITHUB_TOKEN }}

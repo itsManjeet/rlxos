@@ -1,0 +1,23 @@
+name: bootstrap
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - id: create-test-data
+        run: |
+          echo "I am first" > first.txt
+          echo "I am second" > second.txt
+      
+      - id: upload
+        name: uploading artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: test release
+          path: |
+            first.txt
+            second.txt

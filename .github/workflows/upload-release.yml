@@ -3,7 +3,7 @@ on: workflow_dispatch
 
 jobs:
   build:
-    runs-on: ubuntu
+    runs-on: self-hossted
 
     steps:
       - uses: actions/checkout@v2

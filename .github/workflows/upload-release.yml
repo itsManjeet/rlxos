@@ -1,4 +1,4 @@
-name: bootstrap
+name: upload test
 on: workflow_dispatch
 
 jobs:

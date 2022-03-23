@@ -106,6 +106,28 @@ function generate_tar() {
     exit 1
   fi
 
+  chroot ${ROOTFS} bash -e << "EOT"
+pwconv
+grpconv
+
+# executing pkgupd triggers
+pkgupd trigger
+
+# settings up default root password
+echo -e "rlxos\nrlxos" | passwd
+
+# set default localtime
+ln -sfv /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
+
+# setting up hostname
+echo 'workstation' > /etc/hostname
+EOT
+  if [[ $? != 0 ]] ; then
+    rm -rf ${TEMPDIR}
+    echo ":: ERROR :: failed to execute essentails"
+    exit 1
+  fi
+
   if [[ -e /profiles/${VERSION}/${PROFILE}/script ]] ; then    
     echo ":: patching root filesystem ::"
     SCRIPT=$(cat /profiles/${VERSION}/${PROFILE}/script)

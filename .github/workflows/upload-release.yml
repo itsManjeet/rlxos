@@ -3,7 +3,7 @@ on: workflow_dispatch
 
 jobs:
   build:
-    runs-on: self-hossted
+    runs-on: self-hosted
 
     steps:
       - uses: actions/checkout@v2

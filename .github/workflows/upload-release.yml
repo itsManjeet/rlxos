@@ -15,7 +15,7 @@ jobs:
       
       - id: upload
         name: uploading artifact
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v3
         with:
           name: test release
           path: |

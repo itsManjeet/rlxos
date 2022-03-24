@@ -31,36 +31,13 @@ jobs:
       - id: bootstrap
         name: bootstrapping packages
         run: |
-          VERSION="${{ steps.branch-extract.outputs.branch }}" NO_INPUT=1 ./scripts/bootstrap.sh --bootstrap --rebuild --tar --update-pkgupd --build-id ${{ env.BUILD_ID }}
-          mv build/${{ steps.branch-extract.outputs.branch }}/releases/rlxos-${{ steps.branch-extract.outputs.branch }}-${{ env.BUILD_ID }}.sfs rlxos-${{ steps.branch-extract.outputs.branch }}-${{ env.BUILD_ID }}
+          VERSION="${{ steps.branch-extract.outputs.branch }}" NO_INPUT=1 ./scripts/bootstrap.sh --bootstrap --rebuild --iso --update-pkgupd --build-id ${{ env.BUILD_ID }}
 
-      - id: packing
-        name: packing build directory
+      - id: releasing
+        name: uploading release
         run: |
-          tar -I 'zstd -19' -caf rlxos-${{ steps.branch-extract.outputs.branch }}-${{ env.BUILD_ID }}-build.tar.zstd -C build .
+          install -v -D -m 0644 build/${{ steps.branch-extract.outputs.branch }}/releases/rlxos-${{ steps.branch-extract.outputs.branch }}-${{ env.BUILD_ID }}.iso -t /apps.rlxos.dev/${{ steps.branch-extract.outputs.branch }}/releases/
 
-      - id: upload
-        name: uploading artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: rlxos ${{ steps.branch-extract.outputs.branch }}  ${{ env.BUILD_ID }}
-          path: |
-            rlxos-${{ steps.branch-extract.outputs.branch }}-${{ env.BUILD_ID }}
-            rlxos-${{ steps.branch-extract.outputs.branch }}-${{ env.BUILD_ID }}-build.tar.zstd
-
-      - id: release
-        name: releasing build
-        uses: marvinpinto/action-automatic-releases@latest
-        with:
-          title: rlxos ${{ steps.branch-extract.outputs.branch }}  ${{ env.BUILD_ID }}
-          automatic_release_tag: rlxos-${{ steps.branch-extract.outputs.branch }}-${{ env.BUILD_ID }}
-          prerelease: false
-          draft: false
-          files: |
-            rlxos-${{ steps.branch-extract.outputs.branch }}-${{ env.BUILD_ID }}
-            rlxos-${{ steps.branch-extract.outputs.branch }}-${{ env.BUILD_ID }}-build.tar.zstd
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-      
       - id: cleanup
         name: cleaning repository
         if: always()

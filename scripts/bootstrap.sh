@@ -86,8 +86,8 @@ SystemDatabase: ${ROOTFS}/var/lib/pkgupd/data" > ${temp_config}
     return ${ret}
 }
 
-function generate_tar() {
-  echo ":: generating tarball ::"
+function generate_iso() {
+  echo ":: generating iso ::"
   TEMPDIR=$(mktemp -d)
 
   echo ":: install required tools ::"
@@ -145,12 +145,106 @@ EOT
   rm -rf ${TEMPDIR}
 
   if [[ ${ret} != 0 ]] ; then
-    rm -rf ${TEMPDIR}
     echo ":: ERROR :: failed to compress rootfilesystem"
     exit 1
   fi
 
-  echo ":: generate tarball success ::"
+  ISODIR=$(mktemp -d)
+  TEMPDIR=$(mktemp -d)
+
+  mkdir -p ${ISODIR}/boot/grub
+
+  echo ":: installing rootfs.img"
+  cp /releases/rlxos-${VERSION}-${BUILD_ID}.sfs ${ISODIR}/rootfs.img
+
+  KERNEL_VERSION=$(pkgupd info linux | grep version: | awk '{print $2}')
+  if [[ $? != 0 ]] || [[ -z ${KERNEL_VERSION} ]] ; then
+    rm -rf ${ISODIR} ${TEMPDIR}
+    echo ":: ERROR :: failed to get kernel version"
+    exit 1
+  fi
+
+  PKGUPD_CONFIG=$(mktemp)
+  echo "Version: ${VERSION}
+SystemDatabase: /tmp
+RootDir: ${ISODIR}" > ${PKGUPD_CONFIG}
+  pkgupd install --config ${PKGUPD_CONFIG} linux --force --no-depends
+  if [[ $? != 0 ]] ; then
+    rm -rf ${ISODIR} ${TEMPDIR} ${PKGUPD_CONFIG}
+    echo ":: ERROR :: failed to calculate dependency tree"
+    exit 1
+  fi
+  rm ${PKGUPD_CONFIG}
+
+  # TODO: temporary fix, to be done in linux package itself
+  mv ${ISODIR}/boot/vmlinuz ${ISODIR}/boot/vmlinuz-${KERNEL_VERSION}-rlxos && \
+  mv ${ISODIR}/usr/lib/modules ${ISODIR}/boot/ && \
+  rm -rf ${ISODIR}/usr/lib
+  if [[ $? != 0 ]] ; then
+    rm -rf ${ISODIR} ${TEMPDIR}
+    echo ":: ERROR :: failed to install linux kernel"
+    exit 1
+  fi
+
+  echo ":: installing initrd kernel=${KERNEL_VERSION}-rlxos Modules=${ISODIR}/boot/modules"
+  mkinitramfs -u -k=${KERNEL_VERSION}-rlxos -m=${ISODIR}/boot/modules -o=${ISODIR}/boot/initramfs-${KERNEL_VERSION}-rlxos
+  if [[ $? != 0 ]] ; then
+    rm -rf ${ISODIR} ${TEMPDIR}
+    echo ":: ERROR :: failed to install initramfs"
+    exit 1
+  fi
+
+  echo "default='rlxos GNU/Linux [${VERSION}] Installer'
+  timeout=5
+  
+  insmod all_video
+  menuentry 'rlxos GNU/Linux [${VERSION}] Installer' {
+    linux /boot/vmlinuz-${KERNEL_VERSION}-rlxos iso=1 root=LABEL=RLXOS system=${VERSION}
+    initrd /boot/initramfs-${KERNEL_VERSION}-rlxos
+  }" > ${ISODIR}/boot/grub/grub.cfg
+
+  cp -a /profiles/${VERSION}/${PROFILE}/overlay ${TEMPDIR}/
+  if [[ $? != 0 ]] ; then
+    rm -rf ${ISODIR} ${TEMPDIR}
+    echo ":: ERROR :: failed to install iso overlay files"
+    exit 1
+  fi
+
+  chown root:root ${TEMPDIR}/overlay -R
+  if [[ $? != 0 ]] ; then
+    rm -rf ${ISODIR} ${TEMPDIR}
+    echo ":: ERROR :: failed to change overlay file permissions"
+    exit 1
+  fi
+
+  ln -sv /run/iso/boot ${TEMPDIR}/overlay/boot
+  if [[ $? != 0 ]] ; then
+    rm -rf ${ISODIR} ${TEMPDIR}
+    echo ":: ERROR :: failed to create boot symlink"
+    exit 1
+  fi
+
+  mksquashfs ${TEMPDIR}/overlay/* ${ISODIR}/iso.img
+  if [[ $? != 0 ]] ; then
+    rm -rf ${ISODIR} ${TEMPDIR}
+    echo ":: ERROR :: failed to install overlay image"
+    exit 1
+  fi
+
+  # Injecting release version
+  echo "${VERSION}" > ${ISODIR}/version
+
+  ISOFILE="/releases/rlxos-${PROFILE}-${VERSION}.iso"
+  grub-mkrescue -volid RLXOS ${ISODIR} -o ${ISOFILE}
+  if [[ $? != 0 ]] ; then
+    rm -rf ${ISODIR} ${TEMPDIR}
+    echo ":: ERROR :: failed to install overlay image"
+    exit 1
+  fi
+
+  md5sum ${ISOFILE} > ${ISOFILE}.md5
+
+  echo ":: generating iso success ::"
 }
 
 function parse_args() {
@@ -164,8 +258,8 @@ function parse_args() {
         REBUILD=1
         ;;
 
-      --tar)
-        GENERATE_TAR=1
+      --iso)
+        GENERATE_ISO=1
         ;;
 
       --profile)
@@ -275,7 +369,7 @@ SystemDatabase: /tmp" > ${PKGUPD_CONFIG}
   fi
 
   [[ -n ${REBUILD}        ]] && rebuild
-  [[ -n ${GENERATE_TAR}   ]] && generate_tar
+  [[ -n ${GENERATE_ISO}   ]] && generate_iso
 }
 
 main ${@}

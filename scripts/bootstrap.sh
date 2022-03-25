@@ -285,6 +285,10 @@ function parse_args() {
         shift
         ;;
 
+      --compile-all)
+        COMPILE_ALL=1
+        ;;
+
       -*|--*)
         echo ":: ERROR :: invalid option ${1}"
         exit 1
@@ -336,22 +340,50 @@ function continue_build() {
 
 }
 
+function compile_all() {
+  local TotalPackagesToBuild=()
+  local TotalBuildSuccess=()
+  local TotalBuildFailed=()
 
-function main() {
-  parse_args ${@}
+  for pkg in ${PKGS};  do
+    echo ":: compiling ${pkg}"
+    if [[ -f /logs/${pkg}.log ]] ; then
+      echo ":: skipping ${pkg}, already compiled"
+      continue
+    fi
+    pkgupd co ${pkg} 2>&1 | sed -r 's/\x1b\[[0-9;]*m//g' | tee /logs/${pkg}.log
+    if [[ ${PIPESTATUS[0]} != 0 ]] ; then
+        echo ":: ERROR :: failed to build ${pkg}"
+        mv /logs/${pkg}.{log,failed}
+        TotalBuildFailed+=(${pkg})
+        continue
+    else
+        TotalBuildSuccess+=(${pkg})
+    fi
+  done
 
-  PROFILE_PKGS=$(cat /profiles/${VERSION}/${PROFILE}/pkgs)
-  echo ":: calculating dependencies ::"
+  echo "
+------- Report ----------
+  Total Packages    : ${#PKGS[@]}
+  Successful Builds : ${#TotalBuildSuccess[@]}
+  Failed builds     : ${#TotalBuildFailed[@]}
+" > /logs/report-$(date +"%m%d%y%H%M")
+}
 
+function calculatePackages() {
   PKGUPD_CONFIG=$(mktemp)
   echo "Version: ${VERSION}
 SystemDatabase: /tmp" > ${PKGUPD_CONFIG}
-  PKGS=$(pkgupd depends --config ${PKGUPD_CONFIG} ${PROFILE_PKGS} --force)
+  PKGS=$(pkgupd depends --config ${PKGUPD_CONFIG} ${@} --force)
   if [[ $? != 0 ]] ; then
     echo ":: ERROR :: failed to calculate dependency tree"
     exit 1
   fi
   rm ${PKGUPD_CONFIG}
+}
+
+function main() {
+  parse_args ${@}
 
   # TODO: fix shadow usrbin split
   # patch for shadow
@@ -359,7 +391,16 @@ SystemDatabase: /tmp" > ${PKGUPD_CONFIG}
   rm /var/lib/pkgupd/data/procps-ng
   rm /var/lib/pkgupd/data/util-linux
   rm /var/lib/pkgupd/data/e2fsprogs
-  rm /var/lib/pkgupd/data/iptables
+  
+  if [[ -n ${CONTINUE_BUILD} ]] || [[ -n ${BOOTSTRAP} ]] ; then
+    PROFILE_PKGS=$(cat /profiles/${VERSION}/${PROFILE}/pkgs)
+    echo ":: calculating dependencies ::"
+    calculatePackages ${PROFILE_PKGS}
+  elif [[ -n ${COMPILE_ALL} ]] ; then
+    echo ":: ordering all packages in dependency order"
+    PROFILE_PKGS=$(ls /var/cache/pkgupd/recipes/core/ | sed 's|.yml||g')
+    calculatePackages ${PROFILE_PKGS}
+  fi
 
   if [[ -n ${CONTINUE_BUILD} ]] ; then 
     continue_build
@@ -370,6 +411,8 @@ SystemDatabase: /tmp" > ${PKGUPD_CONFIG}
 
   [[ -n ${REBUILD}        ]] && rebuild
   [[ -n ${GENERATE_ISO}   ]] && generate_iso
+
+  [[ -n ${COMPILE_ALL}    ]] && compile_all
 }
 
 main ${@}

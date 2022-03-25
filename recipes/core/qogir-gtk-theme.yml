@@ -5,16 +5,13 @@ tags:
   - theme
   - flat
 category: customization
-packages:
-  - id: pkg
-    dir: Qogir-theme-2021-11-17
-    depends:
-      buildtime:
-        - sassc
-        - libsassc
-    sources:
-      - qogir-gtk-theme-2021-11-17.tar.gz::https://github.com/vinceliuice/Qogir-theme/archive/refs/tags/2021-11-17.tar.gz
-    strip: false
-    script: |
-      install -d -m 0755 ${pkgupd_pkgdir}/usr/share/themes
-      ./install.sh -g -d ${pkgupd_pkgdir}/usr/share/themes --tweaks image square
+build-dir: Qogir-theme-2021-11-17
+depends:
+  buildtime:
+    - sassc
+sources:
+  - qogir-gtk-theme-2021-11-17.tar.gz::https://github.com/vinceliuice/Qogir-theme/archive/refs/tags/2021-11-17.tar.gz
+strip: false
+script: |
+  install -d -m 0755 ${pkgupd_pkgdir}/usr/share/themes
+  ./install.sh -g -d ${pkgupd_pkgdir}/usr/share/themes --tweaks image square

@@ -21,17 +21,9 @@ packages:
     dir: .
     environ:
       - GO111MODULE=auto
-      - GOPATH=${pkgupd_srcdir}
     
     plugin: script
     script: |
+      export GOPATH=${pkgupd_srcdir}
       mkdir -p ${pkgupd_pkgdir}/usr
       cp -a bin ${pkgupd_pkgdir}/usr/
-            #      mkdir -p src/github.com/containerd
-            #      pushd src/github.com/containerd
-            #      ln -s ${pkgupd_srcdir}/containerd-1.5.2 containerd
-      
-            #      cd containerd-1.5.2
-            #      make GIT_COMMIT=36cc874494a56a253cd181a1a685b44b58a2e34a
-
-            #      install -v -D -m 0755 bin/* -t ${pkgupd_pkgdir}/usr/bin/

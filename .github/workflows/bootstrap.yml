@@ -36,7 +36,7 @@ jobs:
       - id: releasing
         name: uploading release
         run: |
-          install -v -D -m 0644 build/${{ steps.branch-extract.outputs.branch }}/releases/rlxos-${{ steps.branch-extract.outputs.branch }}-${{ env.BUILD_ID }}.iso -t /apps.rlxos.dev/${{ steps.branch-extract.outputs.branch }}/releases/
+          install -v -D -m 0644 build/${{ steps.branch-extract.outputs.branch }}/releases/rlxos-desktop-${{ steps.branch-extract.outputs.branch }}-${{ env.BUILD_ID }}.iso -t /apps.rlxos.dev/${{ steps.branch-extract.outputs.branch }}/releases/
 
       - id: cleanup
         name: cleaning repository

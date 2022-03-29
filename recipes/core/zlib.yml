@@ -4,7 +4,7 @@ about: |
   Compression and decompression routines
 
 sources:
-  - https://apps.rlxos.dev/zlib-{{version}}.tar.xz
+  - https://apps.rlxos.dev/sources/zlib-{{version}}.tar.xz
 
 build-dir: zlib-{{version}}
 build-type: autoconf

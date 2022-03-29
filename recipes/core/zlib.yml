@@ -1,20 +1,15 @@
 id: zlib
-version: 1.2.11
+version: 1.2.12
 about: |
   Compression and decompression routines
 
 sources:
-  - https://zlib.net/zlib-1.2.11.tar.xz
+  - https://zlib.net/zlib-{{version}}.tar.xz
 
-packages:
-  - id: pkg
-    dir: zlib-1.2.11
+build-dir: zlib-{{version}}
+build-tool: autoconf
 
-    flags:
-      - id: configurator
-        value: configure
-
-      - id: configure
-        force: true
-        value: >
-          --prefix=/usr
+environ:
+  - CFLAGS+=' -ffat-lto-objectss'
+configure: >
+  --prefix=/usr 

@@ -382,6 +382,7 @@ function main() {
   rm /var/lib/pkgupd/data/procps-ng
   rm /var/lib/pkgupd/data/util-linux
   rm /var/lib/pkgupd/data/e2fsprogs
+  rm /var/lib/pkgupd/data/iptables
   
   if [[ -n ${CONTINUE_BUILD} ]] || [[ -n ${BOOTSTRAP} ]] ; then
     PROFILE_PKGS=$(cat /profiles/${VERSION}/${PROFILE}/pkgs)

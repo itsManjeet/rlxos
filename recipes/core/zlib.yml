@@ -1,15 +1,13 @@
 id: zlib
-version: 1.2.12
+version: 1.2.11
 about: |
   Compression and decompression routines
 
 sources:
-  - https://zlib.net/zlib-{{version}}.tar.xz
+  - https://apps.rlxos.dev/zlib-{{version}}.tar.xz
 
 build-dir: zlib-{{version}}
 build-type: autoconf
 
-environ:
-  - CFLAGS+=' -ffat-lto-objectss'
 configure: >
   --prefix=/usr 

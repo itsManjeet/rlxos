@@ -1,0 +1,19 @@
+id: graphviz
+version: 2.44.1
+about: Graph visualization software
+license:
+  - EPL
+depends:
+  runtime:
+    - pango
+    - cairo
+    - fontconfig
+    - gtk2
+    - poppler
+    - librsvg
+sources:
+  - https://www2.graphviz.org/Packages/stable/portable_source/graphviz-{{version}}.tar.gz
+
+environ:
+  - LIBPOSTFIX=/
+autoconf-dir: true

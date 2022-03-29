@@ -1,0 +1,5 @@
+id: installer
+version: 2200
+about: rlxos System Installer
+repository: core
+type: pkg

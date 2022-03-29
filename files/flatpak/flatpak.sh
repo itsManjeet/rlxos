@@ -1,2 +1,2 @@
 PATH="$XDG_DATA_HOME/flatpak/exports/bin:$HOME/.local/share/flatpak/exports/bin:/var/lib/flatpak/exports/bin:${PATH}"
-XDG_DATA_DIR="${XDG_DATA_DIR}:/var/lib/flatpak/exports/share:${HOME}/.local/share/flatpak/exports/share/"
+XDG_DATA_DIRS="${XDG_DATA_DIRS}:/var/lib/flatpak/exports/share:${HOME}/.local/share/flatpak/exports/share/"

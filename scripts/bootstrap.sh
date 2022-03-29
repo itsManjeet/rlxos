@@ -5,8 +5,8 @@ BASEDIR="$(
     pwd -P
 )"
 
-echo ":: starting container ${VERSION} ::"
 . ${BASEDIR}/common.sh
+echo ":: starting container ${VERSION} ::"
 
 ARGS=()
 PROFILE='desktop'
@@ -99,7 +99,7 @@ function generate_iso() {
 
   echo ":: generating rootfs ::"
   ROOTFS=${TEMPDIR}
-  generating_rootfs ${PKGS}  
+  generating_rootfs ${PKGS}
   if [[ $? != 0 ]] ; then
     rm -rf ${TEMPDIR}
     echo ":: ERROR :: failed to generate rootfilesystem"
@@ -176,21 +176,12 @@ RootDir: ${ISODIR}" > ${PKGUPD_CONFIG}
   fi
   rm ${PKGUPD_CONFIG}
 
-  # TODO: temporary fix, to be done in linux package itself
-  mv ${ISODIR}/boot/vmlinuz ${ISODIR}/boot/vmlinuz-${KERNEL_VERSION}-rlxos && \
-  mv ${ISODIR}/usr/lib/modules ${ISODIR}/boot/ && \
-  rm -rf ${ISODIR}/usr/lib
-  if [[ $? != 0 ]] ; then
-    rm -rf ${ISODIR} ${TEMPDIR}
-    echo ":: ERROR :: failed to install linux kernel"
-    exit 1
-  fi
 
   echo ":: installing initrd kernel=${KERNEL_VERSION}-rlxos Modules=${ISODIR}/boot/modules"
-  mkinitramfs -u -k=${KERNEL_VERSION}-rlxos -m=${ISODIR}/boot/modules -o=${ISODIR}/boot/initramfs-${KERNEL_VERSION}-rlxos
+  mkinitramfs -u -k=${KERNEL_VERSION}-rlxos -m=${ISODIR}/boot/modules -o=${ISODIR}/boot/initrd-${KERNEL_VERSION}-rlxos
   if [[ $? != 0 ]] ; then
     rm -rf ${ISODIR} ${TEMPDIR}
-    echo ":: ERROR :: failed to install initramfs"
+    echo ":: ERROR :: failed to install initrd"
     exit 1
   fi
 
@@ -200,7 +191,7 @@ RootDir: ${ISODIR}" > ${PKGUPD_CONFIG}
   insmod all_video
   menuentry 'rlxos GNU/Linux [${VERSION}] Installer' {
     linux /boot/vmlinuz-${KERNEL_VERSION}-rlxos iso=1 root=LABEL=RLXOS system=${VERSION}
-    initrd /boot/initramfs-${KERNEL_VERSION}-rlxos
+    initrd /boot/initrd-${KERNEL_VERSION}-rlxos
   }" > ${ISODIR}/boot/grub/grub.cfg
 
   cp -a /profiles/${VERSION}/${PROFILE}/overlay ${TEMPDIR}/
@@ -234,7 +225,7 @@ RootDir: ${ISODIR}" > ${PKGUPD_CONFIG}
   # Injecting release version
   echo "${VERSION}" > ${ISODIR}/version
 
-  ISOFILE="/releases/rlxos-${PROFILE}-${VERSION}.iso"
+  ISOFILE="/releases/rlxos-${PROFILE}-${VERSION}-${BUILD_ID}.iso"
   grub-mkrescue -volid RLXOS ${ISODIR} -o ${ISOFILE}
   if [[ $? != 0 ]] ; then
     rm -rf ${ISODIR} ${TEMPDIR}
@@ -374,7 +365,7 @@ function calculatePackages() {
   PKGUPD_CONFIG=$(mktemp)
   echo "Version: ${VERSION}
 SystemDatabase: /tmp" > ${PKGUPD_CONFIG}
-  PKGS=$(pkgupd depends --config ${PKGUPD_CONFIG} ${@} --force)
+  PKGS=$(pkgupd depends --config ${PKGUPD_CONFIG} ${@})
   if [[ $? != 0 ]] ; then
     echo ":: ERROR :: failed to calculate dependency tree"
     exit 1
@@ -395,11 +386,11 @@ function main() {
   if [[ -n ${CONTINUE_BUILD} ]] || [[ -n ${BOOTSTRAP} ]] ; then
     PROFILE_PKGS=$(cat /profiles/${VERSION}/${PROFILE}/pkgs)
     echo ":: calculating dependencies ::"
-    calculatePackages ${PROFILE_PKGS}
+    calculatePackages --force ${PROFILE_PKGS}
   elif [[ -n ${COMPILE_ALL} ]] ; then
     echo ":: ordering all packages in dependency order"
     PROFILE_PKGS=$(ls /var/cache/pkgupd/recipes/core/ | sed 's|.yml||g')
-    calculatePackages ${PROFILE_PKGS}
+    calculatePackages --force ${PROFILE_PKGS}
   fi
 
   if [[ -n ${CONTINUE_BUILD} ]] ; then 
@@ -410,9 +401,15 @@ function main() {
   fi
 
   [[ -n ${REBUILD}        ]] && rebuild
-  [[ -n ${GENERATE_ISO}   ]] && generate_iso
 
   [[ -n ${COMPILE_ALL}    ]] && compile_all
+
+  [[ -n ${GENERATE_ISO}   ]] && {
+    PROFILE_PKGS=$(cat /profiles/${VERSION}/${PROFILE}/pkgs)
+    echo ":: listing required packages ::"
+    calculatePackages ${PROFILE_PKGS}
+    generate_iso
+  }
 }
 
 main ${@}

@@ -1,0 +1,23 @@
+id: grilo-plugins
+version: 0.3.14
+about: A collection of plugins for the Grilo framework
+depends:
+  runtime:
+    - chromapaint
+    - gmime
+    - gom
+    - grilo
+    - gst-plugins-bad
+    - libdmapsharing
+    - libgdata
+    - libmediaart
+    - lua
+    - tracker
+    - dleyna-server
+    - tracker-miners
+  buildtime:
+    - gperf
+    - meson
+    - py-gobject
+
+configure: -D enable-tracker=no

@@ -3,23 +3,22 @@ version: 1.50
 about: Multi-lingual software speech synthesizer
 license: GPL3
 
-packages:
-  - id: pkg
-    depends:
-      runtime:
-        - pcaudiolib
-    
-    sources:
-      - https://github.com/espeak-ng/espeak-ng/archive/1.50/espeak-ng-1.50.tar.gz
-      - espeak-ng-fix-699.patch::https://github.com/espeak-ng/espeak-ng/commit/e11cd42b03d1628f7a0cf45c9406123282e25c63.patch
+depends:
+  runtime:
+    - pcaudiolib
 
-    dir: espeak-ng-1.50
-    script: |
-      ./autogen.sh
+sources:
+  - https://github.com/espeak-ng/espeak-ng/archive/1.50/espeak-ng-1.50.tar.gz
+  - espeak-ng-fix-699.patch::https://github.com/espeak-ng/espeak-ng/commit/e11cd42b03d1628f7a0cf45c9406123282e25c63.patch
 
-      patch --forward --strip=1 --input=../espeak-ng-fix-699.patch
+build-dir: espeak-ng-1.50
+script: |
+  ./autogen.sh
 
-      ./configure --prefix=/usr \
-        --with-extdict-{ru,zh,zhy}
-      make
-      make install DESTDIR=${pkgupd_pkgdir}
+  patch --forward --strip=1 --input=../espeak-ng-fix-699.patch
+
+  ./configure --prefix=/usr \
+    --with-extdict-{ru,zh,zhy}
+  make src/espeak-ng src/speak-ng
+  make -j1
+  make install DESTDIR=${pkgupd_pkgdir}

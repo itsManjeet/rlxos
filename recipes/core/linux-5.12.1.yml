@@ -1,0 +1,22 @@
+id: linux-5.12.1
+version: 5.12.1
+about: |
+  Linux kernel, modules and headers
+
+sources:
+  - https://www.kernel.org/pub/linux/kernel/v5.x/linux-{{version}}.tar.xz
+
+build-dir: linux-{{version}}
+script: |
+  make mrproper
+  cp ${FILES}/linux/config-{{version}} ./.config
+  make olddefconfig
+
+  make bzImage modules
+  make INSTALL_MOD_PATH=${pkgupd_pkgdir} modules_install
+
+  cp ./.config ${FILES}/linux/config-{{version}}
+  mkdir -p ${pkgupd_pkgdir}/boot
+  cp arch/x86/boot/bzImage ${pkgupd_pkgdir}/boot/vmlinuz-{{version}}-rlxos
+  rm ${pkgupd_pkgdir}/lib/modules/{{version}}-rlxos/{build,source}
+  mv ${pkgupd_pkgdir}/lib ${pkgupd_pkgdir}/boot/

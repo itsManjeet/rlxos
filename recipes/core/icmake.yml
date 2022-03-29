@@ -1,0 +1,28 @@
+id: icmake
+version: 9.03.01
+about: A program maintenance (make) utility using a C like grammar
+license: GPL3
+categories:
+  - documentation
+  - development
+
+sources:
+  - https://gitlab.com/fbb-git/icmake/-/archive/{{version}}/icmake-{{version}}.tar.gz
+
+script: |
+  cd icmake
+
+  ./icm_prepare /
+  ./icm_bootstrap /
+
+  ./icm_install all ${pkgupd_pkgdir}
+  cp ${FILES}/icons/package.svg icmake.png
+
+DesktopFile: |
+  [Desktop Entry]
+  Name=icmake
+  Version=1.0
+  Type=Application
+  Comment=make utility using a C-line grammar
+  Category=Development;
+  Icon=icmake

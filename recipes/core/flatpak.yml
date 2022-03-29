@@ -1,44 +1,52 @@
 id: flatpak
-version: 1.12.2
+version: 1.12.7
+release: 1
 about: Linux application sandboxing and distribution framework    
-packages:
-  - id: pkg
-    dir: flatpak-1.12.2
-    depends:
-      runtime:
-        - appstream-glib
-        - bubblewrap
-        - dbus
-        - glib
-        - json-glib
-        - libarchive
-        - libsoup
-        - xorg-libs
-        - ostree
-        - polkit
-        - python
-        - systemd
-        - py-parsing
-        - xdg-dbus-proxy
-        - libseccomp
+build-dir: flatpak-{{version}}
+depends:
+  runtime:
+    - appstream-glib
+    - bubblewrap
+    - dbus
+    - glib
+    - json-glib
+    - libarchive
+    - libsoup
+    - xorg-libs
+    - ostree
+    - polkit
+    - python
+    - systemd
+    - py-parsing
+    - xdg-dbus-proxy
+    - xdg-desktop-portal
+    - libseccomp
 
-      buildtime:
-        - gtk-doc
-    sources:
-      - https://github.com/flatpak/flatpak/releases/download/1.12.2/flatpak-1.12.2.tar.xz
-      - https://dl.flathub.org/repo/flathub.flatpakrepo
+  buildtime:
+    - gtk-doc
+sources:
+  - https://github.com/flatpak/flatpak/releases/download/{{version}}/flatpak-{{version}}.tar.xz
+  - https://dl.flathub.org/repo/flathub.flatpakrepo
 
-    flags:
-      - id: configure
-        value: >
-          --disable-static
-          --enable-gtk-doc
-          --with-system-bubblewrap
-          --with-system-dbus-proxy
-          --with-privileged-group=adm
-          --with-dbus-config-dir=/usr/share/dbus-1/system.d
+configure: >
+  --disable-static
+  --enable-gtk-doc
+  --with-system-bubblewrap
+  --with-system-dbus-proxy
+  --with-dbus-config-dir=/usr/share/dbus-1/system.d
           
-    postscript: |
-      install -v -D -t ${pkgupd_pkgdir}/etc/profile.d/ ${FILES}/flatpak/flatpak.sh
-      install -v -D -t ${pkgupd_pkgdir}/etc/flatpak/remotes.d ../flathub.flatpakrepo
-      
+groups:
+  - id: 93
+    name: flatpak
+
+users:
+  - id: 93
+    about: Flatpak User
+    name: flatpak
+    group: flatpak
+    dir: /var/empty
+    shell: /bin/false
+post-script: |
+  install -v -D -t ${pkgupd_pkgdir}/etc/profile.d/ ${FILES}/flatpak/flatpak.sh
+  install -v -D -t ${pkgupd_pkgdir}/etc/flatpak/remotes.d ../flathub.flatpakrepo
+  

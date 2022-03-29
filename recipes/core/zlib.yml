@@ -7,7 +7,7 @@ sources:
   - https://zlib.net/zlib-{{version}}.tar.xz
 
 build-dir: zlib-{{version}}
-build-tool: autoconf
+build-type: autoconf
 
 environ:
   - CFLAGS+=' -ffat-lto-objectss'

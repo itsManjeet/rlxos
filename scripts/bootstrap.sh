@@ -388,10 +388,14 @@ function main() {
     PROFILE_PKGS=$(cat /profiles/${VERSION}/${PROFILE}/pkgs)
     echo ":: calculating dependencies ::"
     calculatePackages --force ${PROFILE_PKGS}
+
+    echo "Packages: ${PKGS}"
   elif [[ -n ${COMPILE_ALL} ]] ; then
     echo ":: ordering all packages in dependency order"
     PROFILE_PKGS=$(ls /var/cache/pkgupd/recipes/core/ | sed 's|.yml||g')
     calculatePackages --force ${PROFILE_PKGS}
+    
+    echo "Packages: ${PKGS}"
   fi
 
   if [[ -n ${CONTINUE_BUILD} ]] ; then 

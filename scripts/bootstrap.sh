@@ -31,12 +31,6 @@ function bootstrap() {
 function rebuild() {
   echo ":: rebuilding packages ::"
   for pkg in ${PKGS} ; do
-    if [[ -e /logs/${pkg}.log ]] ; then
-      case ${pkg} in
-        libgcc|gcc|libllvm|llvm|libboost|boost)
-          continue
-      esac
-    fi
     if [[ -n ${CONTINUE_BUILD} ]] && [[ -e /logs/${pkg}.log ]] ; then
       pkgupd in ${pkg} --no-depends --force
       if [[ ${PIPESTATUS[0]} != 0 ]] ; then
@@ -45,6 +39,12 @@ function rebuild() {
         exit 1
       fi
     else
+      if [[ -e /logs/${pkg}.log ]] ; then
+        case ${pkg} in
+          libgcc|gcc|libllvm|llvm|libboost|boost)
+            continue
+        esac
+      fi
       echo ":: compiling ${pkg}"
       NO_DEPENDS=1 pkgupd co ${pkg} --force 2>&1 | sed -r 's/\x1b\[[0-9;]*m//g' | tee /logs/${pkg}.log
       if [[ ${PIPESTATUS[0]} != 0 ]] ; then
@@ -394,7 +394,7 @@ function main() {
     echo ":: ordering all packages in dependency order"
     PROFILE_PKGS=$(ls /var/cache/pkgupd/recipes/core/ | sed 's|.yml||g')
     calculatePackages --force ${PROFILE_PKGS}
-    
+
     echo "Packages: ${PKGS}"
   fi
 

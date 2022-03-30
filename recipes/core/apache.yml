@@ -1,5 +1,5 @@
 id: apache
-version: 2.4.48
+version: 2.4.53
 about: |
   Apache HTTP server version 2.4.x
 depends:
@@ -10,7 +10,7 @@ depends:
     - openssl
     - libxml2
 sources:
-  - http://www.apache.org/dist/httpd/httpd-2.4.48.tar.bz2
+  - https://downloads.apache.org/httpd/httpd-{{version}}.tar.gz
 
 groups:
   - id: 25
@@ -23,39 +23,32 @@ users:
     dir: /srv/www
     shell: /bin/false
 
-packages:
-  - id: pkg
-    dir: httpd-2.4.48
-    prescript: |
-      patch -Np1 -i ${FILES}/apache/layout.patch
-      sed '/dir.*CFG_PREFIX/s@^@#@' -i support/apxs.in
+build-dir: httpd-{{version}}
+pre-script: |
+  patch -Np1 -i ${FILES}/apache/layout-{{version}}.patch
+  sed '/dir.*CFG_PREFIX/s@^@#@' -i support/apxs.in
 
-    flags:
-      - id: configurator
-        value: configure
+build-type: autoconf
+configure: >
+  --enable-authz-fcgi
+  --enable-layout=RLXOS
+  --enable-mods-shared="all cgi"
+  --enable-mpms-shared=all
+  --enable-suexec=shared
+  --with-apr=/usr/bin/apr-1-config
+  --with-apr-util=/usr/bin/apu-1-config
+  --with-suexec-bin=/usr/lib/httpd/suexec
+  --with-suexec-caller=apache
+  --with-suexec-docroot=/srv/www
+  --with-suexec-logfile=/var/log/httpd/suexec.log
+  --with-suexec-uidmin=100
+  --with-suexec-userdir=public_html
 
-      - id: configure
-        force: true
-        value: >
-          --enable-authz-fcgi
-          --enable-layout=RLXOS
-          --enable-mods-shared="all cgi"
-          --enable-mpms-shared=all
-          --enable-suexec=shared
-          --with-apr=/usr/bin/apr-1-config
-          --with-apr-util=/usr/bin/apu-1-config
-          --with-suexec-bin=/usr/lib/httpd/suexec
-          --with-suexec-caller=apache
-          --with-suexec-docroot=/src/www
-          --with-suexec-logfile=/var/log/httpd/suexec.log
-          --with-suexec-uidmin=100
-          --with-suexec-userdir=public_html
-
-    postscript: |
-      install -v -d -m 0755 ${pkgupd_pkgdir}/run/httpd
-      mv -v ${pkgupd_pkgdir}/usr/bin/suexec ${pkgupd_pkgdir}/usr/lib/httpd/suexec
-      chgrp 25 ${pkgupd_pkgdir}/usr/lib/httpd/suexec
-      chmod 4754 ${pkgupd_pkgdir}/usr/lib/httpd/suexec
-      install -v -d -m 0755 -o 25 -g 25 ${pkgupd_pkgdir}/src/www
-      install -v -D -m 0644 ${FILES}/apache/service ${pkgupd_pkgdir}/usr/lib/systemd/system/httpd.service
+post-script: |
+  install -v -d -m 0755 ${pkgupd_pkgdir}/run/httpd
+  mv -v ${pkgupd_pkgdir}/usr/bin/suexec ${pkgupd_pkgdir}/usr/lib/httpd/suexec
+  chgrp 25 ${pkgupd_pkgdir}/usr/lib/httpd/suexec
+  chmod 4754 ${pkgupd_pkgdir}/usr/lib/httpd/suexec
+  install -v -d -m 0755 -o 25 -g 25 ${pkgupd_pkgdir}/srv/www
+  install -v -D -m 0644 ${FILES}/apache/service ${pkgupd_pkgdir}/usr/lib/systemd/system/httpd.service
       

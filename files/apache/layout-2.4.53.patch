@@ -1,22 +1,3 @@
-Submitted By:            Pierre Labastie <pierre dot labastie at neuf dot fr>
-Date:                    2022-03-19
-Initial Package Version: 2.4.53
-Comment:                 This patch has been done initially by
-                         Armin K. <krejzi at email dot com> on
-                         2013-04-17, for version 2.4.4, and rediffed
-                         several times since then by various persons:
-                         Fernando de Oliveira for 2.4.10, thomas for
-                         2.4.34, renodr for 2.4.52.
-                         The present version removes the ownership changes
-                         at install time, and removes the -p flag from
-                         cp commands at install time, so that ownership
-                         is set to that of the installing user.
-Upstream Status:         Not applicable
-Origin:                  Self
-Description:             Patches the build system to install stuff into BLFS
-                         specific paths, and adjusts proper permissions
-                         on installed files and directories.
-
 diff -Naur a/config.layout b/config.layout
 --- a/config.layout	2020-02-21 01:39:22.000000000 +0100
 +++ b/config.layout	2022-03-19 10:58:09.199098421 +0100
@@ -24,11 +5,11 @@ diff -Naur a/config.layout b/config.layout
  ##    (This may become a configurable parameter at some point.)
  ##
  
-+<Layout BLFS>
++<Layout RLXOS>
 +    prefix:       
 +    exec_prefix:  ${prefix}/usr
 +    bindir:       ${exec_prefix}/bin
-+    sbindir:      ${exec_prefix}/sbin
++    sbindir:      ${exec_prefix}/bin
 +    libdir:       ${exec_prefix}/lib
 +    libexecdir:   ${exec_prefix}/lib/httpd/modules
 +    mandir:       ${exec_prefix}/share/man
@@ -36,7 +17,7 @@ diff -Naur a/config.layout b/config.layout
 +    datadir:      ${exec_prefix}/share/httpd
 +    iconsdir:     ${datadir}/icons
 +    htdocsdir:    ${prefix}/srv/www
-+    manualdir:    ${datadir}/manual
++    manualdir:    ${datadir}/apache/manual
 +    cgidir:       ${exec_prefix}/lib/httpd/cgi-bin
 +    includedir:   ${exec_prefix}/include/httpd
 +    localstatedir: ${prefix}/var/lock/httpd
@@ -44,8 +25,8 @@ diff -Naur a/config.layout b/config.layout
 +    logfiledir:   ${prefix}/var/log/httpd
 +    proxycachedir: ${prefix}/var/cache/httpd/proxy
 +    infodir:      ${exec_prefix}/share/info
-+    installbuilddir: ${datadir}/build
-+    errordir:     ${datadir}/error
++    installbuilddir: ${datadir}/apache/build
++    errordir:     ${datadir}/apache/error
 +</Layout>
 +
  #   Classical Apache path layout.

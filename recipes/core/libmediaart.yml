@@ -1,0 +1,14 @@
+id: libmediaart
+version: 1.9.5
+about: Library tasked with managing, extracting and handling media art caches
+license:
+  - LGPL
+depends:
+  runtime:
+    - gdk-pixbuf
+  buildtime:
+    - gobject-introspection
+    - meson
+    - vala
+sources:
+  - https://gitlab.gnome.org/GNOME/libmediaart/-/archive/{{version}}/libmediaart-{{version}}.tar.gz

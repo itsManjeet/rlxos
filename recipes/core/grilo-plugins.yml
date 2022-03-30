@@ -13,7 +13,6 @@ depends:
     - libmediaart
     - lua
     - tracker
-    - dleyna-server
     - tracker-miners
   buildtime:
     - gperf

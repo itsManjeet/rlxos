@@ -73,6 +73,7 @@ function rebuild() {
   done
   
   echo ":: rebuilding success ::"
+  return 0
 }
 
 function generating_rootfs() {
@@ -236,6 +237,7 @@ RootDir: ${ISODIR}" > ${PKGUPD_CONFIG}
   md5sum ${ISOFILE} > ${ISOFILE}.md5
 
   echo ":: generating iso success ::"
+  return 0
 }
 
 function parse_args() {
@@ -365,9 +367,9 @@ function calculatePackages() {
   PKGUPD_CONFIG=$(mktemp)
   echo "Version: ${VERSION}
 SystemDatabase: /tmp" > ${PKGUPD_CONFIG}
-  PKGS=$(pkgupd depends --config ${PKGUPD_CONFIG} ${@})
+  PKGS=$(pkgupd depends --config ${PKGUPD_CONFIG} ${@} 2>&1)
   if [[ $? != 0 ]] ; then
-    echo ":: ERROR :: failed to calculate dependency tree"
+    echo ":: ERROR :: failed to calculate dependency tree: ${PKGS}"
     exit 1
   fi
   rm ${PKGUPD_CONFIG}

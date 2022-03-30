@@ -1,0 +1,29 @@
+id: gnome-music
+version: 40.1.1
+about: Music player and management application
+license:
+  - GPL
+depends:
+  runtime:
+    - grilo
+    - grilo-plugins
+    - gst-plugins-base
+    - gtk
+    - gvfs
+    - libdazzle
+    - libdmapsharing
+    - libhandy
+    - libmediaart
+    - py-cairo
+    - py-gobject
+    - tracker-miners
+    - gst-libav
+    - gst-plugins-bad
+    - gst-plugins-good
+
+  buildtime:
+    - gobject-introspection
+    - appstream-glib
+
+sources:
+  - https://gitlab.gnome.org/GNOME/gnome-music/-/archive/{{version}}/gnome-music-{{version}}.tar.gz

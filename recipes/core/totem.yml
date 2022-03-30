@@ -22,7 +22,6 @@ depends:
     - totem-pl-parser
     - grilo-plugins
     - gst-libav
-    - gst-plugins-ugly
     - py-dbus
   buildtime:
     - appstream-glib

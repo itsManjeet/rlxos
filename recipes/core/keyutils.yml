@@ -8,7 +8,7 @@ depends:
     - glibc
 
 sources:
-  - https://people.redhat.com/~dhowells/keyutils/keyutils-1.6.1.tar.bz2
+  - https://apps.rlxos.dev/sources/keyutils-1.6.1.tar.bz2
 
 packages:
   - id: pkg

@@ -10,12 +10,7 @@ depends:
   runtime:
     - glibc
 
-packages:
-  - id: pkg
-    dir: attr-2.5.1
-
-    flags:
-      - id: configure
-        value: >
-          --sysconfdir=/etc
-          --disable-static
+build-dir: attr-2.5.1
+configure: >
+  --sysconfdir=/etc
+  --disable-static

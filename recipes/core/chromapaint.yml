@@ -1,0 +1,18 @@
+id: chromapaint
+version: 1.5.1
+about: Library for extracting fingerprints from any audio source
+depends:
+  runtime:
+    - libgcc
+    - glibc
+    - ffmpeg
+  buildtime:
+    - cmake
+license:
+  - LGPL2.1
+  - MIT
+configure: >
+  -DCMAKE_BUILD_TYPE='None'
+  -DBUILD_TESTS=ON
+  -DBUILD_TOOLS=ON
+  -Wno-dev

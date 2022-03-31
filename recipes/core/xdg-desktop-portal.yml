@@ -1,15 +1,13 @@
 id: xdg-desktop-portal
-version: 1.10.1
+version: 1.14.1
 about: Desktop integration portals for sandboxed apps
 depends:
   runtime:
-    - fuse2
+    - fuse
     - glib
     - pipewire
     - libportal
     - geoclue
-packages:
-  - id: pkg
-    dir: xdg-desktop-portal-1.10.1
-    sources:
-      - https://github.com/flatpak/xdg-desktop-portal/releases/download/1.10.1/xdg-desktop-portal-1.10.1.tar.xz
+build-dir: xdg-desktop-portal-{{version}}
+sources:
+  - https://github.com/flatpak/xdg-desktop-portal/releases/download/{{version}}/xdg-desktop-portal-{{version}}.tar.xz

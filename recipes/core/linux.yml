@@ -14,6 +14,9 @@ packages:
 
       cp ${FILES}/kernel.config ./.config
 
+      mkdir -p ${pkgupd_pkgdir}/{boot,lib}
+      ln -sv ../lib/modules ${pkgupd_pkgdir}/boot/modules
+
       make olddefconfig
 
       make bzImage modules
@@ -21,10 +24,9 @@ packages:
 
       cp ./.config ${FILES}/kernel.config
 
-      mkdir -p ${pkgupd_pkgdir}/boot
-      cp arch/x86/boot/bzImage ${pkgupd_pkgdir}/boot/vmlinuz
+      cp arch/x86/boot/bzImage ${pkgupd_pkgdir}/boot/vmlinuz-{{version}}-rlxos      
       
-      rm ${pkgupd_pkgdir}/lib/modules/5.12.10-rlxos/{build,source}
-
-      mkdir -p ${pkgupd_pkgdir}/usr
-      mv ${pkgupd_pkgdir}/lib ${pkgupd_pkgdir}/usr/
+      rm ${pkgupd_pkgdir}/boot/modules/5.12.10-rlxos/{build,source}
+      rm ${pkgupd_pkgdir}/boot/modules
+      mv ${pkgupd_pkgdir}/{lib,boot}/modules
+      rmdir ${pkgupd_pkgdir}/lib

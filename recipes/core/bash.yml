@@ -12,20 +12,13 @@ depends:
 sources:
   - https://ftp.gnu.org/gnu/bash/bash-5.1.8.tar.gz
 
-packages:
-  - id: pkg
-    dir: bash-5.1.8
-    flags:
-      - id: configure
-        value: >
-          --without-bash-malloc
-          --with-installed-readline
+build-dir: bash-5.1.8
+configure: >
+  --without-bash-malloc
+  --with-installed-readline
 
-      - id: install
-        value: DESTDIR=${pkgupd_pkgdir}
-
-    postscript: |
-      ln -sv bash ${pkgupd_pkgdir}/usr/bin/sh
-      install -v -D -m 0644 ${FILES}/bash/bashrc ${pkgupd_pkgdir}/etc/bashrc
-      install -v -D -m 0644 ${FILES}/bash/user_bashrc ${pkgupd_pkgdir}/etc/skel/.bashrc
-      install -v -D -m 0644 ${FILES}/bash/user_bash_profile ${pkgupd_pkgdir}/etc/skel/.bash_profile
+post-script: |
+  ln -sv bash ${pkgupd_pkgdir}/usr/bin/sh
+  install -v -D -m 0644 ${FILES}/bash/bashrc ${pkgupd_pkgdir}/etc/bashrc
+  install -v -D -m 0644 ${FILES}/bash/user_bashrc ${pkgupd_pkgdir}/etc/skel/.bashrc
+  install -v -D -m 0644 ${FILES}/bash/user_bash_profile ${pkgupd_pkgdir}/etc/skel/.bash_profile

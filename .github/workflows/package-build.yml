@@ -34,6 +34,5 @@ jobs:
             VERSION="${{ steps.branch-extract.outputs.branch }}" \
             NO_INPUT=1 \
             STORAGE_DIR=/storage \
-            BASEDIR=/root/server/rlxos/ \
             ./scripts/exec.sh pkgupd co ${pkgid} --force
           done

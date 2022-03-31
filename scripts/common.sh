@@ -1,9 +1,6 @@
 #!/bin/sh
 
-BASEDIR="${BASEDIR:-$(
-    cd -- "$(dirname "$0")" >/dev/null 2>&1
-    pwd -P
-)/../}"
+BASEDIR="/root/server/rlxos"
 
 CONTAINER_VERSION='2200-031722164'
 SERVER_URL='https://apps.rlxos.dev'

@@ -26,6 +26,8 @@ jobs:
         uses: jitterbit/get-changed-files@v1
       
       - id: build-packages
+        env:
+          NO_INPUT=1
         run: |
           for changed_file in ${{ steps.getting-files.outputs.all }}; do
             [[ ${changed_file} =~ "recipes/" ]] || continue

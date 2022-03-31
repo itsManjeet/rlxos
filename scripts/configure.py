@@ -20,7 +20,7 @@ for repository in os.listdir('recipes'):
     for file in os.listdir('recipes/{}/'.format(repository)):
         if file.endswith('.yml'):
             try:
-                with open('recipes/{}/{}'.format(repository, file)) as f:
+                with open('recipes/{}/{}'.format(repository, file), 'r+', encoding="utf-8") as f:
                     data = f.read()
                     obj = yaml.full_load(data)
                     try:

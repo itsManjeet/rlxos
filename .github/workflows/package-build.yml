@@ -31,5 +31,9 @@ jobs:
             [[ ${changed_file} =~ "recipes/" ]] || continue
             pkgid=$(basename $(echo $changed_file | sed 's|.yml||g'))
             echo "compiling ${pkgid}"
-            VERSION="${{ steps.extract_branch.outputs.branch }}" NO_INPUT=1 STORAGE_DIR=/storage ./scripts/exec.sh pkgupd co ${pkgid} --force
+            VERSION="${{ steps.extract_branch.outputs.branch }}" \
+            NO_INPUT=1 \
+            STORAGE_DIR=/storage \
+            BASEDIR=/root/server/rlxos/ \
+            ./scripts/exec.sh pkgupd co ${pkgid} --force
           done

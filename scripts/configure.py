@@ -8,7 +8,7 @@ from jinja2 import Environment
 with open('.version') as f:
     VERSION = f.read()
 
-RECIPE_DIR = 'build/{}/recipes'.format(VERSION)
+RECIPE_DIR = '{}/{}/recipes'.format(os.environ.get('STORAGE_DIR', 'build'),VERSION)
 if os.path.exists(RECIPE_DIR):
     shutil.rmtree(RECIPE_DIR)
 

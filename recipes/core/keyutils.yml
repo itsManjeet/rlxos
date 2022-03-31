@@ -8,11 +8,11 @@ depends:
     - glibc
 
 sources:
-  - https://apps.rlxos.dev/sources/keyutils-1.6.1.tar.bz2
+  - http://rlxos.cloudtb.online/sources/keyutils-{{version}}.tar.gz
 
 packages:
   - id: pkg
-    dir: keyutils-1.6.1
+    dir: keyutils-{{version}}
     prescript: |
       sed -i "s:\$(LIBDIR)/\$(PKGCONFIG_DIR):/usr/lib/pkgconfig:" Makefile
     

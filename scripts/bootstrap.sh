@@ -5,8 +5,8 @@ BASEDIR="$(
     pwd -P
 )"
 
-echo ":: starting container ${VERSION} ::"
 . ${BASEDIR}/common.sh
+echo ":: starting container ${VERSION} ::"
 
 ARGS=()
 PROFILE='desktop'
@@ -31,12 +31,6 @@ function bootstrap() {
 function rebuild() {
   echo ":: rebuilding packages ::"
   for pkg in ${PKGS} ; do
-    if [[ -e /logs/${pkg}.log ]] ; then
-      case ${pkg} in
-        libgcc|gcc|libllvm|llvm|libboost|boost)
-          continue
-      esac
-    fi
     if [[ -n ${CONTINUE_BUILD} ]] && [[ -e /logs/${pkg}.log ]] ; then
       pkgupd in ${pkg} --no-depends --force
       if [[ ${PIPESTATUS[0]} != 0 ]] ; then
@@ -45,6 +39,12 @@ function rebuild() {
         exit 1
       fi
     else
+      if [[ -e /logs/${pkg}.log ]] ; then
+        case ${pkg} in
+          libgcc|gcc|libllvm|llvm|libboost|boost)
+            continue
+        esac
+      fi
       echo ":: compiling ${pkg}"
       NO_DEPENDS=1 pkgupd co ${pkg} --force 2>&1 | sed -r 's/\x1b\[[0-9;]*m//g' | tee /logs/${pkg}.log
       if [[ ${PIPESTATUS[0]} != 0 ]] ; then
@@ -73,6 +73,7 @@ function rebuild() {
   done
   
   echo ":: rebuilding success ::"
+  return 0
 }
 
 function generating_rootfs() {
@@ -99,7 +100,7 @@ function generate_iso() {
 
   echo ":: generating rootfs ::"
   ROOTFS=${TEMPDIR}
-  generating_rootfs ${PKGS}  
+  generating_rootfs ${PKGS}
   if [[ $? != 0 ]] ; then
     rm -rf ${TEMPDIR}
     echo ":: ERROR :: failed to generate rootfilesystem"
@@ -176,21 +177,12 @@ RootDir: ${ISODIR}" > ${PKGUPD_CONFIG}
   fi
   rm ${PKGUPD_CONFIG}
 
-  # TODO: temporary fix, to be done in linux package itself
-  mv ${ISODIR}/boot/vmlinuz ${ISODIR}/boot/vmlinuz-${KERNEL_VERSION}-rlxos && \
-  mv ${ISODIR}/usr/lib/modules ${ISODIR}/boot/ && \
-  rm -rf ${ISODIR}/usr/lib
-  if [[ $? != 0 ]] ; then
-    rm -rf ${ISODIR} ${TEMPDIR}
-    echo ":: ERROR :: failed to install linux kernel"
-    exit 1
-  fi
 
   echo ":: installing initrd kernel=${KERNEL_VERSION}-rlxos Modules=${ISODIR}/boot/modules"
-  mkinitramfs -u -k=${KERNEL_VERSION}-rlxos -m=${ISODIR}/boot/modules -o=${ISODIR}/boot/initramfs-${KERNEL_VERSION}-rlxos
+  mkinitramfs -u -k=${KERNEL_VERSION}-rlxos -m=${ISODIR}/boot/modules -o=${ISODIR}/boot/initrd-${KERNEL_VERSION}-rlxos
   if [[ $? != 0 ]] ; then
     rm -rf ${ISODIR} ${TEMPDIR}
-    echo ":: ERROR :: failed to install initramfs"
+    echo ":: ERROR :: failed to install initrd"
     exit 1
   fi
 
@@ -200,7 +192,7 @@ RootDir: ${ISODIR}" > ${PKGUPD_CONFIG}
   insmod all_video
   menuentry 'rlxos GNU/Linux [${VERSION}] Installer' {
     linux /boot/vmlinuz-${KERNEL_VERSION}-rlxos iso=1 root=LABEL=RLXOS system=${VERSION}
-    initrd /boot/initramfs-${KERNEL_VERSION}-rlxos
+    initrd /boot/initrd-${KERNEL_VERSION}-rlxos
   }" > ${ISODIR}/boot/grub/grub.cfg
 
   cp -a /profiles/${VERSION}/${PROFILE}/overlay ${TEMPDIR}/
@@ -234,7 +226,7 @@ RootDir: ${ISODIR}" > ${PKGUPD_CONFIG}
   # Injecting release version
   echo "${VERSION}" > ${ISODIR}/version
 
-  ISOFILE="/releases/rlxos-${PROFILE}-${VERSION}.iso"
+  ISOFILE="/releases/rlxos-${PROFILE}-${VERSION}-${BUILD_ID}.iso"
   grub-mkrescue -volid RLXOS ${ISODIR} -o ${ISOFILE}
   if [[ $? != 0 ]] ; then
     rm -rf ${ISODIR} ${TEMPDIR}
@@ -245,6 +237,7 @@ RootDir: ${ISODIR}" > ${PKGUPD_CONFIG}
   md5sum ${ISOFILE} > ${ISOFILE}.md5
 
   echo ":: generating iso success ::"
+  return 0
 }
 
 function parse_args() {
@@ -283,6 +276,10 @@ function parse_args() {
       --continue-build)
         CONTINUE_BUILD=1
         shift
+        ;;
+
+      --compile-all)
+        COMPILE_ALL=1
         ;;
 
       -*|--*)
@@ -336,22 +333,50 @@ function continue_build() {
 
 }
 
+function compile_all() {
+  local TotalPackagesToBuild=()
+  local TotalBuildSuccess=()
+  local TotalBuildFailed=()
 
-function main() {
-  parse_args ${@}
+  for pkg in ${PKGS};  do
+    echo ":: compiling ${pkg}"
+    if [[ -f /logs/${pkg}.log ]] ; then
+      echo ":: skipping ${pkg}, already compiled"
+      continue
+    fi
+    pkgupd co ${pkg} 2>&1 | sed -r 's/\x1b\[[0-9;]*m//g' | tee /logs/${pkg}.log
+    if [[ ${PIPESTATUS[0]} != 0 ]] ; then
+        echo ":: ERROR :: failed to build ${pkg}"
+        mv /logs/${pkg}.{log,failed}
+        TotalBuildFailed+=(${pkg})
+        continue
+    else
+        TotalBuildSuccess+=(${pkg})
+    fi
+  done
 
-  PROFILE_PKGS=$(cat /profiles/${VERSION}/${PROFILE}/pkgs)
-  echo ":: calculating dependencies ::"
+  echo "
+------- Report ----------
+  Total Packages    : ${#PKGS[@]}
+  Successful Builds : ${#TotalBuildSuccess[@]}
+  Failed builds     : ${#TotalBuildFailed[@]}
+" > /logs/report-$(date +"%m%d%y%H%M")
+}
 
+function calculatePackages() {
   PKGUPD_CONFIG=$(mktemp)
   echo "Version: ${VERSION}
 SystemDatabase: /tmp" > ${PKGUPD_CONFIG}
-  PKGS=$(pkgupd depends --config ${PKGUPD_CONFIG} ${PROFILE_PKGS} --force)
+  PKGS=$(pkgupd depends --config ${PKGUPD_CONFIG} ${@} 2>&1)
   if [[ $? != 0 ]] ; then
-    echo ":: ERROR :: failed to calculate dependency tree"
+    echo ":: ERROR :: failed to calculate dependency tree: ${PKGS}"
     exit 1
   fi
   rm ${PKGUPD_CONFIG}
+}
+
+function main() {
+  parse_args ${@}
 
   # TODO: fix shadow usrbin split
   # patch for shadow
@@ -360,6 +385,20 @@ SystemDatabase: /tmp" > ${PKGUPD_CONFIG}
   rm /var/lib/pkgupd/data/util-linux
   rm /var/lib/pkgupd/data/e2fsprogs
   rm /var/lib/pkgupd/data/iptables
+  
+  if [[ -n ${CONTINUE_BUILD} ]] || [[ -n ${BOOTSTRAP} ]] ; then
+    PROFILE_PKGS=$(cat /profiles/${VERSION}/${PROFILE}/pkgs)
+    echo ":: calculating dependencies ::"
+    calculatePackages --force ${PROFILE_PKGS}
+
+    echo "Packages: ${PKGS}"
+  elif [[ -n ${COMPILE_ALL} ]] ; then
+    echo ":: ordering all packages in dependency order"
+    PROFILE_PKGS=$(ls /var/cache/pkgupd/recipes/core/ | sed 's|.yml||g')
+    calculatePackages --force ${PROFILE_PKGS}
+
+    echo "Packages: ${PKGS}"
+  fi
 
   if [[ -n ${CONTINUE_BUILD} ]] ; then 
     continue_build
@@ -369,7 +408,15 @@ SystemDatabase: /tmp" > ${PKGUPD_CONFIG}
   fi
 
   [[ -n ${REBUILD}        ]] && rebuild
-  [[ -n ${GENERATE_ISO}   ]] && generate_iso
+
+  [[ -n ${COMPILE_ALL}    ]] && compile_all
+
+  [[ -n ${GENERATE_ISO}   ]] && {
+    PROFILE_PKGS=$(cat /profiles/${VERSION}/${PROFILE}/pkgs)
+    echo ":: listing required packages ::"
+    calculatePackages ${PROFILE_PKGS}
+    generate_iso
+  }
 }
 
 main ${@}

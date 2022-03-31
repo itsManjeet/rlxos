@@ -4,17 +4,10 @@ about: |
   Compression and decompression routines
 
 sources:
-  - https://zlib.net/zlib-1.2.11.tar.xz
+  - https://apps.rlxos.dev/sources/zlib-{{version}}.tar.xz
 
-packages:
-  - id: pkg
-    dir: zlib-1.2.11
+build-dir: zlib-{{version}}
+build-type: autoconf
 
-    flags:
-      - id: configurator
-        value: configure
-
-      - id: configure
-        force: true
-        value: >
-          --prefix=/usr
+configure: >
+  --prefix=/usr 

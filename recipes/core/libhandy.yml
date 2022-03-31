@@ -1,5 +1,6 @@
 id: libhandy
 version: 1.2.3
+release: 1
 about: |
   Provides additional GTK UI widgets for use in developing user interfaces
 
@@ -8,14 +9,12 @@ depends:
     - gtk
   buildtime:
     - vala
+    - glade
+    - gobject-introspection
+    - meson
 
 sources:
   - https://download.gnome.org/sources/libhandy/1.2/libhandy-1.2.3.tar.xz
 
-packages:
-  - id: pkg
-    dir: libhandy-1.2.3
-    flags:
-      - id: configure
-        value: >
-          --buildtype=release
+build-dir: libhandy-1.2.3
+configure: --buildtype=release

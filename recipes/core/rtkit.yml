@@ -1,0 +1,25 @@
+id: rtkit
+version: 0.13
+release: 4
+about: Realtime Policy and watchdog daemon
+depends:
+  runtime:
+    - dbus
+    - polkit
+    - systemd
+  buildtime:
+    - meson
+    - vim
+sources:
+  - https://github.com/heftig/rtkit/releases/download/v{{version}}/rtkit-{{version}}.tar.xz
+users:
+  - id: 133
+    name: rtkit
+    about: RealtimeKit
+    dir: /proc
+    shell: /bin/false
+    group: rtkit
+
+groups:
+  - id: 133
+    name: rtkit

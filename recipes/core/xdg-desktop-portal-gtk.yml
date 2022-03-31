@@ -1,0 +1,13 @@
+id: xdg-desktop-portal-gtk
+version: 1.14.0
+about: A backend implementation of xdg-desktop-portal using GTK
+depends:
+  runtim:
+    - gsettings-desktop-schemas
+    - gtk
+  buildtime:
+    - python
+    - xdg-desktop-portal
+
+sources:
+  - https://github.com/flatpak/xdg-desktop-portal-gtk/releases/download/{{version}}/xdg-desktop-portal-gtk-{{version}}.tar.xz

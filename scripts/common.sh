@@ -24,7 +24,7 @@ if [[ -z "${NOCONTAINER}" ]]; then
         --device /dev/fuse \
         --cap-add SYS_ADMIN \
         --security-opt apparmor:unconfined \
-        -v "${BASEDIR}/scripts:/scripts" \
+        -v "scripts:/scripts" \
         -v "${STORAGE_DIR}/${VERSION}/recipes:/var/cache/pkgupd/recipes" \
         -v "${STORAGE_DIR}/${VERSION}/pkgs:/var/cache/pkgupd/pkgs" \
         -v "${STORAGE_DIR}/sources:/var/cache/pkgupd/src" \

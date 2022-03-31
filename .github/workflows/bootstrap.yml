@@ -25,7 +25,7 @@ jobs:
           export STORAGE_DIR=/root/server/storage
           export PKGUPD_NO_PROGRESS=1
 
-          if [[ -d ${STORAGE_DIR}/${VERSION}/pkgs ]] ; then
+          if [[ -d /storage/${VERSION}/pkgs ]] ; then
             ./scripts/bootstrap.sh --bootstrap --rebuild  --update-pkgupd --continue-build
           else
             ./scripts/bootstrap.sh --bootstrap --rebuild  --update-pkgupd

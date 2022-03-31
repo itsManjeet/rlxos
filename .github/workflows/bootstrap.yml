@@ -23,4 +23,5 @@ jobs:
           VERSION="${{ steps.branch-extract.outputs.branch }}" \
           NO_INPUT=1 \
           STORAGE_DIR=/root/server/storage \
+          PKGUPD_NO_PROGRESS=1 \
           ./scripts/bootstrap.sh --bootstrap --rebuild  --update-pkgupd

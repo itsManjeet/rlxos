@@ -1,0 +1,27 @@
+name: bootstrap
+on:
+  push:
+    paths:
+      - "recipes/**"
+    branches-ignore:
+      - master
+env:
+  BUILD_ID: ${{ github.run_number }}
+jobs:
+  build:
+    runs-on: self-hosted
+    timeout-minutes: 43800
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - id: branch-extract
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+
+      - id: configure
+        name: configuring recipe files
+        run: VERSION="${{ steps.branch-extract.outputs.branch }}" STORAGE_DIR=/storage ./scripts/configure.py
+
+      - id: bootstrap
+        run: |
+          VERSION="${{ steps.extract_branch.outputs.branch }}" NO_INPUT=1 STORAGE_DIR=/storage ./scripts/bootstrap.sh --bootstrap --rebuild  --update-pkgupd

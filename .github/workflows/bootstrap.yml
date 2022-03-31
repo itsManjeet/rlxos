@@ -20,7 +20,7 @@ jobs:
 
       - id: bootstrap
         run: |
-          VERSION="${{ steps.extract_branch.outputs.branch }}" \
+          VERSION="${{ steps.branch-extract.outputs.branch }}" \
           NO_INPUT=1 \
           STORAGE_DIR=/storage \
           BASEDIR=/root/server/rlxos/ \

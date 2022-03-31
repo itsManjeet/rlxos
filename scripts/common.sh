@@ -7,7 +7,6 @@ BASEDIR="$(
 
 CONTAINER_VERSION='2200-031722164'
 SERVER_URL='https://apps.rlxos.dev'
-STORAGE_DIR=${STORAGE_DIR:-${BASEDIR}/build}
 
 if [[ -z "${NOCONTAINER}" ]]; then
     if [[ ! -e ${BASEDIR}/.version ]]; then
@@ -17,6 +16,7 @@ if [[ -z "${NOCONTAINER}" ]]; then
     if [[ -z ${NO_INPUT} ]] ; then
         EXTRA_FLAGS='-i'
     fi
+    STORAGE_DIR=${STORAGE_DIR:-${BASEDIR}/build}
     VERSION=$(cat ${BASEDIR}/.version)
     docker run \
         --rm \
@@ -25,11 +25,11 @@ if [[ -z "${NOCONTAINER}" ]]; then
         --cap-add SYS_ADMIN \
         --security-opt apparmor:unconfined \
         -v "${BASEDIR}/scripts:/scripts" \
-        -v "${STORGAE}/${VERSION}/recipes:/var/cache/pkgupd/recipes" \
-        -v "${STORGAE}/${VERSION}/pkgs:/var/cache/pkgupd/pkgs" \
-        -v "${STORGAE}/sources:/var/cache/pkgupd/src" \
-        -v "${STORGAE}/${VERSION}/logs:/logs" \
-        -v "${STORGAE}/${VERSION}/releases:/releases" \
+        -v "${STORAGE_DIR}/${VERSION}/recipes:/var/cache/pkgupd/recipes" \
+        -v "${STORAGE_DIR}/${VERSION}/pkgs:/var/cache/pkgupd/pkgs" \
+        -v "${STORAGE_DIR}/sources:/var/cache/pkgupd/src" \
+        -v "${STORAGE_DIR}/${VERSION}/logs:/logs" \
+        -v "${STORAGE_DIR}/${VERSION}/releases:/releases" \
         -v "${BASEDIR}/files:/var/cache/pkgupd/files" \
         -v "${BASEDIR}/profiles:/profiles" \
         -v "${BASEDIR}/pkgupd.yml:/etc/pkgupd.yml" \

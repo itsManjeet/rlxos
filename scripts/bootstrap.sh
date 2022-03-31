@@ -417,6 +417,8 @@ function main() {
     calculatePackages ${PROFILE_PKGS}
     generate_iso
   }
+
+  return 0
 }
 
 main ${@}

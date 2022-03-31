@@ -1,15 +1,15 @@
 #!/bin/sh
 
-BASEDIR="$(
+BASEDIR="${BASEDIR:-$(
     cd -- "$(dirname "$0")" >/dev/null 2>&1
     pwd -P
-)/../"
+)/../}"
 
 CONTAINER_VERSION='2200-031722164'
 SERVER_URL='https://apps.rlxos.dev'
 
 if [[ -z "${NOCONTAINER}" ]]; then
-    if [[ ! -e ${BASEDIR}/.version ]]; then
+    if [[ ! -e ${BASEDIR}/.version ]] && [[ -z ${VERSION} ]]; then
         echo "Error! no version specified"
         exit 1
     fi
@@ -17,14 +17,14 @@ if [[ -z "${NOCONTAINER}" ]]; then
         EXTRA_FLAGS='-i'
     fi
     STORAGE_DIR=${STORAGE_DIR:-${BASEDIR}/build}
-    VERSION=$(cat ${BASEDIR}/.version)
+    VERSION=${VERSION:-$(cat ${BASEDIR}/.version)}
     docker run \
         --rm \
         --network host \
         --device /dev/fuse \
         --cap-add SYS_ADMIN \
         --security-opt apparmor:unconfined \
-        -v "scripts:/scripts" \
+        -v "${BASEDIR}/scripts:/scripts" \
         -v "${STORAGE_DIR}/${VERSION}/recipes:/var/cache/pkgupd/recipes" \
         -v "${STORAGE_DIR}/${VERSION}/pkgs:/var/cache/pkgupd/pkgs" \
         -v "${STORAGE_DIR}/sources:/var/cache/pkgupd/src" \
@@ -42,7 +42,7 @@ if [[ -z "${NOCONTAINER}" ]]; then
         PATH='/usr/bin:/opt/bin:/apps' \
         NOCONTAINER=1 \
         SERVER_URL=${SERVER_URL} \
-        VERSION=${VERSION} ls -al scripts
+        VERSION=${VERSION} "/scripts/$(basename ${0})" ${@}
     exit $?
 fi
 

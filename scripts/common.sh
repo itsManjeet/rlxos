@@ -42,7 +42,7 @@ if [[ -z "${NOCONTAINER}" ]]; then
         PATH='/usr/bin:/opt/bin:/apps' \
         NOCONTAINER=1 \
         SERVER_URL=${SERVER_URL} \
-        VERSION=${VERSION} "/scripts/$(basename ${0})" ${@}
+        VERSION=${VERSION} ls -al
     exit $?
 fi
 

@@ -18,7 +18,7 @@ depends:
     - libcap
 
 sources:
-  - https://apps.rlxos.dev/sources/iptables-{{version}}.tar.bz2
+  - http://rlxos.cloudtb.online/sources/iptables-{{version}}.tar.bz2
 
 packages:
   - id: pkg

@@ -33,6 +33,7 @@ if [[ -z "${NOCONTAINER}" ]]; then
         -v "${BASEDIR}/files:/var/cache/pkgupd/files" \
         -v "${BASEDIR}/profiles:/profiles" \
         -v "${BASEDIR}/pkgupd.yml:/etc/pkgupd.yml" \
+        -v /var/run/docker.sock:/var/run/docker.sock \
         ${EXTRA_FLAGS} --privileged \
         -t itsmanjeet/rlxos-devel:${CONTAINER_VERSION} /usr/bin/env -i \
         HOME=/root \

@@ -1,4 +1,4 @@
-name: Release
+name: World
 on: workflow_dispatch
 
 env:
@@ -18,7 +18,7 @@ jobs:
         name: configuring recipe files
         run: VERSION="${{ steps.branch-extract.outputs.branch }}" STORAGE_DIR=/storage ./scripts/configure.py
 
-      - id: release
+      - id: world
         run: |
           export VERSION="${{ steps.branch-extract.outputs.branch }}"
           export NO_INPUT=1

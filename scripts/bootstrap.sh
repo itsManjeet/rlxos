@@ -87,6 +87,71 @@ SystemDatabase: ${ROOTFS}/var/lib/pkgupd/data" > ${temp_config}
     return ${ret}
 }
 
+function generate_docker() {
+  echo ":: generating docker ::"
+  TEMPDIR=$(mktemp -d)
+
+  echo ":: install required tools ::"
+  pkgupd in docker --no-ask
+  if [[ $? != 0 ]] ; then
+    echo ":: ERROR :: failed to install required tools"
+    exit 1
+  fi
+
+  echo ":: generating rootfs ::"
+  ROOTFS=${TEMPDIR}
+  generating_rootfs ${PKGS}
+  if [[ $? != 0 ]] ; then
+    rm -rf ${TEMPDIR}
+    echo ":: ERROR :: failed to generate rootfilesystem"
+    exit 1
+  fi
+
+  chroot ${ROOTFS} bash -e << "EOT"
+pwconv
+grpconv
+
+# executing pkgupd triggers
+pkgupd trigger
+
+# settings up default root password
+echo -e "rlxos\nrlxos" | passwd
+
+# set default localtime
+ln -sfv /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
+
+# setting up hostname
+echo 'workstation' > /etc/hostname
+EOT
+  if [[ $? != 0 ]] ; then
+    rm -rf ${TEMPDIR}
+    echo ":: ERROR :: failed to execute essentails"
+    exit 1
+  fi
+
+  if [[ -e /profiles/${VERSION}/${PROFILE}/script ]] ; then    
+    echo ":: patching root filesystem ::"
+    SCRIPT=$(cat /profiles/${VERSION}/${PROFILE}/script)
+    chroot ${ROOTFS} bash -ec "${SCRIPT}"
+    if [[ ${?} != 0 ]] ; then
+      rm -rf ${TEMPDIR}
+      echo ":: ERROR :: failed to execute pre patch script"
+      exit 1
+    fi
+  fi
+
+  echo ":: compressing system ::"
+  tar -caf /releases/rlxos-${VERSION}-${BUILD_ID}.tar -C ${TEMPDIR} .
+  ret=${?}
+  rm -rf ${TEMPDIR}
+
+  echo ":: generating docker image ::"
+  cat /releases/rlxos-${VERSION}-${BUILD_ID}.tar | docker import - itsmanjeet/rlxos-devel:${VERSION}-${BUILD_ID}
+
+  echo ":: generating docker success ::"
+  return 0
+}
+
 function generate_iso() {
   echo ":: generating iso ::"
   TEMPDIR=$(mktemp -d)
@@ -255,6 +320,10 @@ function parse_args() {
         GENERATE_ISO=1
         ;;
 
+      --docker)
+        GENERATE_DOCKER=1
+        ;;
+
       --profile)
         PROFILE=${2}
         shift
@@ -416,6 +485,13 @@ function main() {
     echo ":: listing required packages ::"
     calculatePackages ${PROFILE_PKGS}
     generate_iso
+  }
+
+  [[ -n ${GENERATE_DOCKER}   ]] && {
+    PROFILE_PKGS=$(cat /profiles/${VERSION}/${PROFILE}/pkgs)
+    echo ":: listing required packages ::"
+    calculatePackages ${PROFILE_PKGS} --force
+    generate_docker
   }
 }
 

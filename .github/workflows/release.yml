@@ -24,4 +24,4 @@ jobs:
           export NO_INPUT=1
           export STORAGE_DIR=/root/server/storage
           export PKGUPD_NO_PROGRESS=1
-          ./scripts/bootstrap.sh --iso --docker --build-id=${{ env.BUILD_ID }}
+          ./scripts/bootstrap.sh --iso --docker --build-id ${{ env.BUILD_ID }}

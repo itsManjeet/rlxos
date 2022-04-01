@@ -493,6 +493,7 @@ function main() {
     calculatePackages ${PROFILE_PKGS} --force
     generate_docker
   }
+  return 0
 }
 
 main ${@}

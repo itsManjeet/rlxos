@@ -1,0 +1,12 @@
+id: thunderbird
+version: 91.7.0
+about: Mozilla Thunderbird is a free and open-source cross-platform email client, personal information manager, news client, RSS and chat client developed by the Mozilla Foundation and operated by subsidiary MZLA Technologies Corporation.
+license: GPL MPL LGPL
+tags:
+  - email
+category: internet
+strip: false
+depends:
+  runtime:
+    - appimagetool
+type: app

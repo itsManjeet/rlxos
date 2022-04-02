@@ -10,3 +10,34 @@ depends:
   runtime:
     - appimagetool
 type: app
+sources:
+  - https://archive.mozilla.org/pub/thunderbird/releases/{{version}}/linux-x86_64/en-US/thunderbird-{{version}}.tar.bz2
+
+build-dir: .
+script: |
+  mv thunderbird ${pkgupd_pkgdir}
+  cp ${pkgupd_pkgdir}/chrome/icon/default/default256.png thunderbird.png
+
+
+DesktopFile: |
+  [Desktop Entry]
+  Encoding=UTF-8
+  Version=1.0
+  Name=Thunderbird
+  Comment=Send and reveive mail with thunderbird
+  Exec=thunderbird %u
+  Icon=thunderbird
+  Terminal=false
+  Type=Application
+  Categories=Network;Email;
+  MimeType=message/rfc822;x-scheme-handler/mailto;application/x-xpinstall;
+  StartupNotify=true
+  Actions=ComposeMessage;OpenAddressBook;
+
+  [Desktop Action ComposeMessage]
+  Name=Write new message
+  Exec=thunderbird -compose
+
+  [Desktop Action OpenAddressBook]
+  Name=Open address book
+  Exec=/usr/bin/thunderbird -addressbook

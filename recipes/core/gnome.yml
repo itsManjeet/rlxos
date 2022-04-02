@@ -37,6 +37,7 @@ depends:
     - gnome-shell-extensions
     - gnome-shell-extension-dash-to-panel
     - gnome-shell-extension-blur-me
+    - gnome-shell-extension-nightmode
     - gnome-session
     - gnome-system-monitor
     - gnome-terminal

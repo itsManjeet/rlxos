@@ -20,7 +20,7 @@ sources:
 build-dir: .
 script: |
   install -D -m 0755 Telegram/Telegram ${pkgupd_pkgdir}/telegram
-  chrpath --delete ${pkgupd_pkgdir}/telegram
+  # chrpath --delete ${pkgupd_pkgdir}/telegram
   install -D -m 0644 icon128.png ${pkgupd_pkgdir}/telegram.png
 
 DesktopFile: |

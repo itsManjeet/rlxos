@@ -27,7 +27,7 @@ AppRun: |
   EXEC=${HERE}/firefox
   exec ${EXEC} "$@"
 
-Desktopfile: |
+DesktopFile: |
   [Desktop Entry]
   Version=1.0
   Name=Firefox

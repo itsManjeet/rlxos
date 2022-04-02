@@ -22,3 +22,6 @@ configure: >
   -Wno-dev
 sources:
   - https://github.com/acoustid/chromaprint/archive/v{{version}}/chromaprint-{{version}}.tar.gz
+
+precript: |
+  patch -Np1 -i ${FILES}/chromaprint/ffmpeg5.patch

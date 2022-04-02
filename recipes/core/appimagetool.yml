@@ -1,6 +1,9 @@
 id: appimagetool
 version: 13
 about: used to generate an AppImage from an existing AppDir
+depends:
+  runtime:
+    - fuse2
 packages:
   - id: pkg
     sources:

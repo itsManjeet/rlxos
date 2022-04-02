@@ -1,0 +1,20 @@
+id: discord
+version: 0.0.17
+about: |
+  <h3>**Unofficial release**</h3>
+  Discord is a VoIP, instant messaging and digital distribution platform. Users communicate with voice calls, video calls, text messaging, media and files in private chats or as part of communities called "servers".
+url: https://discordapp.com/
+license: custom
+tags:
+  - game
+  - chat
+category: internet
+strip: false
+
+sources:
+  - https://dl.discordapp.net/apps/linux/{{version}}/discord-{{version}}.tar.gz
+
+build-dir: .
+script: |
+  mv Discord ${pkgup_pkgdir}
+  rm ${pkgupd_pkgdir}/postinst.sh

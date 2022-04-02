@@ -16,7 +16,7 @@ sources:
 build-dir: .
 script: |
   mv thunderbird ${pkgupd_pkgdir}
-  cp ${pkgupd_pkgdir}/chrome/icons/default/default256.png thunderbird.png
+  cp ${pkgupd_pkgdir}/chrome/icons/default/default256.png ${pkgupd_pkgdir}/thunderbird.png
 
 
 DesktopFile: |

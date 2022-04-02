@@ -7,6 +7,7 @@ depends:
     
 sources:
   - https://gitlab.com/arcmenu/ArcMenu/-/archive/{{version}}/ArcMenu-{{version}}.tar.gz
-    
+
+build-dir: ArcMenu-{{version}}
 script: |
   make install DESTDIR=${pkgupd_pkgdir}

@@ -16,6 +16,7 @@ depends:
     - libffi
   buildtime:
     - boost
+    - appimagetool
 
 sources:
   - https://github.com/itsManjeet/src/archive/{{release}}.tar.gz

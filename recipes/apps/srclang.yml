@@ -1,6 +1,6 @@
 id: srclang
 version: 2200
-release: 6c310006
+release: af7a75
 about: A Simple and easy to learn programming language
 type: app
 license: GPL
@@ -16,7 +16,7 @@ depends:
     - libffi
 
 sources:
-  - https://github.com/itsManjeet/src/archive/6c310006309e3136474239c95dede45feffa8eb7.tar.gz
+  - https://github.com/itsManjeet/src/archive/{{release}}.tar.gz
 post-script: |
   install -v -D -m 0644 assets/logo.svg ${pkgupd_pkgdir}/src.png
 

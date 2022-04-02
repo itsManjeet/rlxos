@@ -1,5 +1,6 @@
 id: shadow
 version: 4.8.1
+release: 1
 about: |
   Programs for handling passwords in a secure way
 
@@ -49,3 +50,7 @@ packages:
         install -v -D -m 644 ${FILES}/pam/chage ${pkgupd_pkgdir}/etc/pam.d/${extra}
         sed -i "s/chage/${extra}/" ${pkgupd_pkgdir}/etc/pam.d/${extra}
       done
+
+      mkdir -p ${pkgupd_pkgdir}/run/initramfs/rlxos/config
+      mv ${pkgupd_pkgdir}/etc/shadow ${pkgupd_pkgdir}/run/initramfs/rlxos/config/
+      ln -sv ../run/initramfs/rlxos/config/shadow ${pkgupd_pkgdir}/etc/

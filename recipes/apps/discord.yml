@@ -20,5 +20,5 @@ depends:
 type: app
 build-dir: .
 script: |
-  mv Discord ${pkgup_pkgdir}
+  mv Discord ${pkgupd_pkgdir}
   rm ${pkgupd_pkgdir}/postinst.sh

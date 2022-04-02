@@ -4,6 +4,7 @@ about: used to generate an AppImage from an existing AppDir
 depends:
   runtime:
     - fuse2
+    - desktop-file-utils
 packages:
   - id: pkg
     sources:

@@ -1,0 +1,41 @@
+id: srclang
+version: 2200
+release: 6c310006
+about: A Simple and easy to learn programming language
+type: app
+license: GPL
+tags:
+  - development
+  - language
+  - programming
+category: development
+
+depends:
+  runtime:
+    - curl
+    - libffi
+
+sources:
+  - https://github.com/itsManjeet/src/archive/6c310006309e3136474239c95dede45feffa8eb7.tar.gz
+post-script: |
+  install -v -D -m 0644 assets/logo.svg ${pkgupd_pkgdir}/src.png
+
+DesktopFile: |
+  [Desktop Entry]
+  Name=Source
+  Comment=Source Programming Language
+  GenericName=Programming Language
+  Exec=src
+  Icon=src
+  Type=Application
+  Terminal=true
+  Categories=Development;
+
+AppRun: |
+  #!/bin/sh
+  SELF=$(readlink -f "$0")
+  HERE=${SELF%/*}
+  export PATH=${HERE}/usr/bin:${PATH}
+  export LD_LIBRARY_PATH=${HERE}/usr/lib:${LD_LIBRARY_PATH}
+  export SRCPATH=${HERE}/usr/lib/src:${HERE}/usr/lib:${HOME}/src
+  exec src $@

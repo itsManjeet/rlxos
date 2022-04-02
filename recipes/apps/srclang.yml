@@ -29,7 +29,7 @@ DesktopFile: |
   Comment=Source Programming Language
   GenericName=Programming Language
   Exec=src
-  Icon=src
+  Icon=srclang
   Type=Application
   Terminal=true
   Categories=Development;

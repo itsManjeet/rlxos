@@ -1,7 +1,10 @@
-id: chromapaint
+id: chromaprint
 version: 1.5.1
 release: 1
 about: Library for extracting fingerprints from any audio source
+license:
+  - LGPL2.1
+  - MIT
 depends:
   runtime:
     - libgcc
@@ -17,3 +20,5 @@ configure: >
   -DBUILD_TESTS=ON
   -DBUILD_TOOLS=ON
   -Wno-dev
+sources:
+  - https://github.com/acoustid/chromaprint/archive/v{{version}}/chromaprint-{{version}}.tar.gz

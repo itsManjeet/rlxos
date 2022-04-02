@@ -1,5 +1,6 @@
 id: filesystem
 version: 2200
+release: 2
 codename: begin
 about: |
   rlxos filesystem
@@ -39,7 +40,8 @@ packages:
       for i in fstab group inputrc \
         issue nsswitch.conf \
         passwd profile shells ; do
-        install -v -D -m 644 ${FILES}/fs/$i ${pkgupd_pkgdir}/etc/$i
+        install -v -D -m 644 ${FILES}/fs/$i ${pkgupd_pkgdir}/run/initramfs/rlxos/config/$i
+        ln -sv ../run/initramfs/rlxos/config/${i} ${pkgupd_pkgdir}/etc/
       done
 
       for i in lsb-release os-release ; do

@@ -1,5 +1,6 @@
 id: chromapaint
 version: 1.5.1
+release: 1
 about: Library for extracting fingerprints from any audio source
 depends:
   runtime:

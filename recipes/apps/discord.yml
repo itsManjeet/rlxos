@@ -14,6 +14,10 @@ strip: false
 sources:
   - https://dl.discordapp.net/apps/linux/{{version}}/discord-{{version}}.tar.gz
 
+depends:
+  buildtime:
+    - appimagetool
+type: app
 build-dir: .
 script: |
   mv Discord ${pkgup_pkgdir}

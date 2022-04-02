@@ -21,7 +21,7 @@ depends:
 sources:
   - https://github.com/itsManjeet/src/archive/{{release}}.tar.gz
 post-script: |
-  install -v -D -m 0644 assets/logo.svg ${pkgupd_pkgdir}/src.png
+  install -v -D -m 0644 assets/logo.svg ${pkgupd_pkgdir}/srclang.png
 
 DesktopFile: |
   [Desktop Entry]

@@ -11,6 +11,9 @@ type: app
 category: internet
 strip: false
 
+depends:
+  buildtime:
+    - appimagetool
 sources:
   - http://ftp.mozilla.org/pub/firefox/releases/{{version}}/linux-x86_64/en-US/firefox-{{version}}.tar.bz2
 

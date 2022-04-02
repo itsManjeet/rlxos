@@ -1,0 +1,39 @@
+id: telegram
+version: 3.6.1
+about:
+license: GPL3
+tags:
+  - chat
+  - messsaging
+
+category: internet
+strip: false
+depends:
+  runtime:
+    - appimagetool
+type: app
+
+sources:
+  - https://github.com/telegramdesktop/tdesktop/releases/download/v{{version}}/tsetup.{{version}}.tar.xz
+  - https://github.com/telegramdesktop/tdesktop/raw/dev/Telegram/Resources/art/icon128.png
+
+build-dir: .
+script: |
+  install -D -m 0755 Telegram/Telegram ${pkgupd_pkgdir}/telegram
+  chrpath --delete ${pkgupd_pkgdir}/telegram
+  install -D -m 0644 icon128.png ${pkgupd_pkgdir}/telegram.png
+
+DesktopFile: |
+  [Desktop Entry]
+  Encoding=UTF-8
+  Version=1.0
+  Name=Telegram Desktop
+  Comment=Official desktop version of Telegram messaging app
+  Exec=telegram -- %u
+  StartupWMClass=telegram-desktop
+  Icon=telegram
+  Terminal=false
+  Type=Application
+  Categories=Network;
+  MimeType=application/x-xdg-protocol-tg;x-scheme-handler/tg;
+  X-Desktop-File-Install-Version=0.22

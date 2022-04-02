@@ -1,5 +1,6 @@
 id: gnome-shell-extension-nightmode
 version: 51
+release: 1
 about: Support for night mode and theme switching
 depends:
   runtime:

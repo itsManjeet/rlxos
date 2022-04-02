@@ -10,6 +10,7 @@ depends:
 sources:
   - nightmode-{{version}}::https://extensions.gnome.org/extension-data/nightthemeswitcherromainvigier.fr.v{{version}}.shell-extension.zip
 
+build-dir: .
 script: |
   mkdir -p ${pkgupd_pkgdir}/usr/share/gnome-shell/extensions/nightthemeswitcher@romainvigier.fr
   unzip nightmode-{{version}} -d ${pkgupd_pkgdir}/usr/share/gnome-shell/extensions/nightthemeswitcher@romainvigier.fr

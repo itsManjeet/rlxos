@@ -19,4 +19,3 @@ pre-script: |
 
 configure: >
   --with-mdns=avahi
-  --enable-gtk-doc

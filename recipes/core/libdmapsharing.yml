@@ -10,6 +10,7 @@ depends:
     - libsoup
   buildtime:
     - gobject-introspection
+    - gtk-doc
 
 sources:
   - https://gitlab.gnome.org/GNOME/libdmapsharing/-/archive/LIBDMAPSHARING_2_9_39/libdmapsharing-LIBDMAPSHARING_2_9_39.tar.gz
@@ -19,3 +20,4 @@ pre-script: |
 
 configure: >
   --with-mdns=avahi
+  --enable-gtk-doc

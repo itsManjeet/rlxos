@@ -7,6 +7,9 @@ tags:
   - editor
   - ide
 category: development
+depends:
+  buildtime:
+    - appimagetool
 
 packages:
   - id: pkg

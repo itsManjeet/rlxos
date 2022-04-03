@@ -4,7 +4,9 @@ about: Slack is a proprietary business communication platform developed by Ameri
 type: app
 sources:
   - https://downloads.slack-edge.com/releases/linux/4.23.0/prod/x64/slack-4.23.0-0.1.fc21.x86_64.rpm
-
+depends:
+  buildtime:
+    - appimagetool
 build-dir: .
 script: |
   bsdtar -xf slack-4.23.0-0.1.fc21.x86_64.rpm

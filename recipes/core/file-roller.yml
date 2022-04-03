@@ -2,9 +2,10 @@ id: file-roller
 version: 3.40.0
 about: |
   An archive manager for GNOME with support for tar, bzip2, gzip, zip, jar, compress, lzop, zstd, and many other archive formats
-
+type: app
+bundle: true
 depends:
-  runtime:
+  buildtime:
     - gtk
     - itstool
     - cpio
@@ -12,6 +13,7 @@ depends:
     - json-glib
     - libarchive
     - libnotify
+    - appimagetool
   
 sources:
   - https://download.gnome.org/sources/file-roller/3.40/file-roller-3.40.0.tar.xz
@@ -20,3 +22,20 @@ build-dir: file-roller-3.40.0
 configure: --buildtype=release -D packagekit=false
 post-script: |
   chmod -v 0755 ${pkgupd_pkgdir}/usr/lib/file-roller/isoinfo.sh
+  cp ${pkgupd_pkgdir}/usr/share/icons/hicolor/scalable/apps/org.gnome.ArchiveManager.svg ${pkgupd_pkgdir}/file-roller.png
+  cp ${pkgupd_pkgdir}/usr/share/applications/org.gnome.FileRoller.desktop ${pkgupd_pkgdir}/file-roller.desktop
+
+  glib-compile-schemas ${pkgupd_pkgdir}/usr/share/glib-2.0/schemas/
+
+  rm ${pkgupd_pkgdir}/usr/share/help -r
+  rm ${pkgupd_pkgdir}/usr/share/metainfo/ -r
+
+AppRun: |
+  #!/bin/sh
+  SELF=$(readlink -f "$0")
+  HERE=${SELF%/*}
+  export LD_LIBRARY_PATH=${HERE}/usr/lib:${LD_LIBRARY_PATH}
+  export PATH=${HERE}/usr/bin:${PATH}
+  export GSETTINGS_SCHEMA_DIR=${HERE}/usr/share/glib-2.0/schemas/:${GSETTINGS_SCHEMA_DIR}
+
+  exec ${HERE}/usr/bin/file-roller $@

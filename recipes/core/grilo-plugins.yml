@@ -3,7 +3,7 @@ version: 0.3.14
 about: A collection of plugins for the Grilo framework
 depends:
   runtime:
-    - chromapaint
+    - chromaprint
     - gmime
     - gom
     - grilo

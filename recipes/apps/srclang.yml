@@ -3,6 +3,7 @@ version: 2200
 release: af7a75
 about: A Simple and easy to learn programming language
 type: app
+bundle: true
 license: GPL
 tags:
   - development

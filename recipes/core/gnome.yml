@@ -9,7 +9,6 @@ depends:
     - cheese
     - eog
     - epiphany
-    - file-roller
     - gdm
     - gedit
     - gnome-backgrounds

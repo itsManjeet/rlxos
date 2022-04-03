@@ -17,9 +17,6 @@ depends:
     - bison
     - flex
 
-packages:
-  - id: pkg
-    dir: .
-    script: |
-      mkdir -p ${pkgupd_pkgdir}/usr/rlxos/kits/
-      echo {{version}} > ${pkgupd_pkgdir}/usr/rlxos/kits/devel
+script: |
+  mkdir -p ${pkgupd_pkgdir}/usr/rlxos/kits/
+  echo {{version}} > ${pkgupd_pkgdir}/usr/rlxos/kits/devel

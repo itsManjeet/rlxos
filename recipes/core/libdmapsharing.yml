@@ -1,5 +1,6 @@
 id: libdmapsharing
 version: 2.9.39
+release: 1
 about: A library that implements that DMAP family of protocols
 depends:
   runtime:

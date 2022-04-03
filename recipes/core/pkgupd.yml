@@ -1,6 +1,6 @@
 id: pkgupd
 version: 2201
-release: 9
+release: 78fbea98b0486be744a9bdb2628f94a74d00a7e6
 about: |
   An Extensible package manager for rlxos
 
@@ -17,9 +17,9 @@ depends:
     - cmake
 
 sources:
-  - pkgupd-{{version}}.tar.gz::https://github.com/rlxos/pkgupd/archive/refs/heads/{{version}}.tar.gz
+  - pkgupd-{{version}}-{{release}}.tar.gz::https://github.com/rlxos/pkgupd/archive/{{release}}.tar.gz
 
-build-dir: pkgupd-{{version}}
+build-dir: pkgupd-{{release}}
 post-script: |
   install -v -D -m 0755 _pkgupd_builddir/pkgupd-build ${pkgupd_pkgdir}/usr/bin/pkgupd-builder
   install -v -D -m 0644 _pkgupd_builddir/liblibpkgupd.a ${pkgupd_pkgdir}/usr/lib/libpkgupd.a

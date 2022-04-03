@@ -10,6 +10,7 @@ depends:
     - pcre2
     - cmake
     - libtorrent-rasterbar
+    - appimagetool
 
 license: GPL CUSTOM
 category: internet

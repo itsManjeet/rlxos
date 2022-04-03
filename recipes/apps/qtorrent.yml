@@ -1,0 +1,29 @@
+id: qbittorrent
+version: 4.4.2
+about: An advanced BitTorrent client programmed in C++, based on Qt toolkit and libtorrent-rasterbar
+depends:
+  buildtime:
+    - hicolor-icon-theme
+    - qt
+    - python
+    - boost
+    - cmake
+    - libtorrent-rasterbar
+
+license: GPL CUSTOM
+category: internet
+tags:
+  - torrent
+  - download
+
+type: app
+bundle: true
+sources:
+  - https://downloads.sourceforge.net/sourceforge/qbittorrent/qbittorrent-{{version}}.tar.xz
+
+post-script: |
+  cp ${pkgupd_pkgdir}/usr/share/applications/org.qbittorrent.qBittorrent.desktop ${pkgupd_pkgdir}/qbittorrent.desktop
+  cp ${pkgupd_pkgdir}/usr/share/icons/hicolor/128x128/apps/qbittorrent.png ${pkgupd_pkgdir}/qbittorrent.png
+  rm ${pkgupd_pkgdir}/usr/share/metainfo -r
+
+  sed -i 's|Icon=.*|Icon=qbittorrent|' ${pkgupd_pkgdir}/qbittorrent.desktop

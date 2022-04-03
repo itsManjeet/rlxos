@@ -25,6 +25,7 @@ post-script: |
   cp ${pkgupd_pkgdir}/usr/share/icons/hicolor/scalable/apps/org.gnome.ArchiveManager.svg ${pkgupd_pkgdir}/file-roller.png
   cp ${pkgupd_pkgdir}/usr/share/applications/org.gnome.FileRoller.desktop ${pkgupd_pkgdir}/file-roller.desktop
 
+  sed -i 's|Icon=.*|Icon=file-roller|' ${pkgupd_pkgdir}/file-roller.desktop
   glib-compile-schemas ${pkgupd_pkgdir}/usr/share/glib-2.0/schemas/
 
   rm ${pkgupd_pkgdir}/usr/share/help -r

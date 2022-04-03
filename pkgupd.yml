@@ -6,3 +6,4 @@ EnvironmentVariables:
 Repositories:
     - core
     - apps
+    - extra

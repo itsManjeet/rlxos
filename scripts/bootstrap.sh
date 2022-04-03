@@ -488,9 +488,8 @@ function main() {
   }
 
   [[ -n ${GENERATE_DOCKER}   ]] && {
-    PROFILE_PKGS=$(cat /profiles/${VERSION}/${PROFILE}/pkgs)
     echo ":: listing required packages ::"
-    calculatePackages ${PROFILE_PKGS} --force
+    calculatePackages core devel --force
     generate_docker
   }
   return 0

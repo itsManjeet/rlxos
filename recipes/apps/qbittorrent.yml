@@ -11,6 +11,7 @@ depends:
     - cmake
     - libtorrent-rasterbar
     - appimagetool
+    - mesa
 
 license: GPL CUSTOM
 category: internet

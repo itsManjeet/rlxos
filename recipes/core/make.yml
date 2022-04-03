@@ -9,8 +9,3 @@ depends:
 
 sources:
   - https://ftp.gnu.org/gnu/make/make-4.3.tar.gz
-
-packages:
-  - id: pkg
-    dir: make-4.3
-    

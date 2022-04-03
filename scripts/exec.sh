@@ -7,4 +7,7 @@ BASEDIR="$(
 
 . ${BASEDIR}/common.sh
 
+echo ":: updating pkgupd"
+pkgupd in pkgupd --force --no-depends
+
 $@

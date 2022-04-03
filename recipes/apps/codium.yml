@@ -22,3 +22,4 @@ script: |
   rm ${pkgupd_pkgdir}/lib/x86_64-linux-gnu/liblzma.so*
   mv ${pkgupd_pkgdir}/vscodium.png ${pkgupd_pkgdir}/codium.png
   sed -i 's|vscodium|codium|' ${pkgupd_pkgdir}/codium.desktop
+  rm ${pkgupd_pkgdir}/usr/share/appdata -r

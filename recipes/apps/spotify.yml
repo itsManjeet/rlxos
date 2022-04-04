@@ -16,7 +16,7 @@ script: |
   tar -xaf data.tar.gz
   mv usr/share/spotify ${pkgupd_pkgdir}
   cp ${pkgupd_pkgdir}/icons/spotify-linux-128.png ${pkgupd_pkgdir}/spotify.png
-  sed -i 's|Icon=.*|Icon=spotify|' spotify.desktop
+  sed -i 's|Icon=.*|Icon=spotify|' ${pkgupd_pkgdir}/spotify.desktop
 
   # FIX: libcurl-gnutls is debian specific
   cp /usr/lib/libcurl.so.4.7.0 ${pkgupd_pkgdir}/libcurl-gnutls.so.4

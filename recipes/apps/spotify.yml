@@ -12,7 +12,7 @@ sources:
   - http://repository.spotify.com/pool/non-free/s/spotify-client/spotify-client_{{version}}.{{release}}_amd64.deb
 
 script: |
-  bsdtar -xaf spotify-client_{{version}}.{{release}}_amd64.deb
+  bsdtar -xf spotify-client_{{version}}.{{release}}_amd64.deb
   tar -xaf data.tar.gz
   mv usr/share/spotify ${pkgupd_pkgdir}
   cp ${pkgupd_pkgdir}/icons/spotify-linux-128.png ${pkgupd_pkgdir}/spotify.png

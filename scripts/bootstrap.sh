@@ -489,7 +489,7 @@ function main() {
 
   [[ -n ${GENERATE_DOCKER}   ]] && {
     echo ":: listing required packages ::"
-    calculatePackages core devel --force
+    calculatePackages core devel make-ca --force
     generate_docker
   }
   return 0

@@ -80,10 +80,8 @@ reset_system() {
 # rescue_shell 'fail message'
 # drop the boot process into rescue mode for debug
 rescue_shell() {
-
     echo -e "${RED}$1${RESET}\n${YELLOW}Dropping to ${GREEN}resuce${YELLO}shell${RESET}"
-
-    /bin/bash
+    setsid sh -c 'exec sh </dev/tty1 >/dev/tty1 2>&1'
 }
 
 # debug 'message'
@@ -96,10 +94,10 @@ debug() {
 # mount_filesystem
 # mount pseudo filesystems devtmpfs, sysfs, proc
 mount_filesystem() {
-    mount -t proc none /proc || rescue_shell "failed to mount /proc"
-    mount -t sysfs none /sys || rescue_shell "failed to mount /sys"
-    mount -t devtmpfs none /dev || rescue_shell "failed to mount /dev"
-    mount -t tmpfs none /run || rescue_shell "failed to mount /run"
+    mount -t proc none /proc -o nosuid,noexec,nodev || rescue_shell "failed to mount /proc"
+    mount -t sysfs none /sys -o nosuid,noexec,nodev || rescue_shell "failed to mount /sys"
+    mount -t devtmpfs none /dev -o mode=0755,nosuid || rescue_shell "failed to mount /dev"
+    mount -t tmpfs none /run -o nosuid,nodev,mode=0755 || rescue_shell "failed to mount /run"
 }
 
 # load_modules
@@ -183,13 +181,13 @@ mount_root_system() {
     # check and mount sysimg
     [[ -e "${sysimg}" ]] || rescue_shell "'${sysimg}' is missing"
 
-    syspoint="${diskpoint}/rlxos/cache/${system}/image"
+    syspoint="${diskpoint}/rlxos/cache/${cache}/image"
     mkdir -p "${syspoint}"
 
     mount -t squashfs "${sysimg}" "${syspoint}" || rescue_shell "failed to mount ${sysimg} -> ${syspoint}"
 
-    uprdir="${diskpoint}/rlxos/cache/${system}/upper"
-    wrkdir="${diskpoint}/rlxos/cache/${system}/work"
+    uprdir="${diskpoint}/rlxos/cache/${cache}/upper"
+    wrkdir="${diskpoint}/rlxos/cache/${cache}/work"
     rootpoint="/mnt/root"
     mkdir -p "${uprdir}" "${wrkdir}" "${rootpoint}"
 
@@ -250,6 +248,10 @@ parse_cmdline_args() {
             system="${p#*=}"
             ;;
 
+        cache=*)
+            cache="${p#*=}"
+            ;;
+
         secure=*)
             SECURE="${p#*=}"
             ;;
@@ -281,8 +283,11 @@ function main() {
     rootpoint='/mnt/root'
     system=
 
-    echo -e "${BOLD}welcome to ${GREEN}rlxos${RESET}"
-
+    if [[ -z ${cache} ]] ; then
+        cache=${system}
+    else
+        echo -e "using cache: ${cache}"
+    fi
     mount_filesystem
     parse_cmdline_args
 
@@ -317,6 +322,11 @@ function main() {
     check_resume
 
     [[ -z $RESCUE ]] || rescue_shell
+
+    mount --move /proc ${rootpoint}/proc
+    mount --move /sys ${rootpoint}/sys
+    mount --move /dev ${rootpoint}/dev
+    mount --move /run ${rootpoint}/run
 
     exec switch_root "${rootpoint}" "${init}" || rescue_shell "failed to switch roots"
 }

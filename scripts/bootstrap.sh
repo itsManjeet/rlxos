@@ -114,9 +114,6 @@ grpconv
 # executing pkgupd triggers
 pkgupd trigger
 
-# settings up default root password
-echo -e "rlxos\nrlxos" | passwd
-
 # set default localtime
 ln -sfv /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
 
@@ -488,8 +485,9 @@ function main() {
   }
 
   [[ -n ${GENERATE_DOCKER}   ]] && {
+    PROFILE_PKGS=$(cat /profiles/${VERSION}/docker/pkgs)
     echo ":: listing required packages ::"
-    calculatePackages core devel make-ca --force
+    calculatePackages ${PROFILE_PKGS} --force
     generate_docker
   }
   return 0

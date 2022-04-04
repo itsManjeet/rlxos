@@ -126,9 +126,9 @@ EOT
     exit 1
   fi
 
-  if [[ -e /profiles/${VERSION}/${PROFILE}/script ]] ; then    
+  if [[ -e /profiles/${VERSION}/docker/script ]] ; then    
     echo ":: patching root filesystem ::"
-    SCRIPT=$(cat /profiles/${VERSION}/${PROFILE}/script)
+    SCRIPT=$(cat /profiles/${VERSION}/docker/script)
     chroot ${ROOTFS} bash -ec "${SCRIPT}"
     if [[ ${?} != 0 ]] ; then
       rm -rf ${TEMPDIR}

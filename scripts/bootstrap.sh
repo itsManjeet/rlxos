@@ -191,6 +191,10 @@ EOT
     exit 1
   fi
 
+  while read loc format ; do
+    chroot ${ROOTFS} localdef -i ${loc} -f ${format} ${loc}.${format}
+  done < /var/cache/pkgupd/files/supported_locales
+
   if [[ -e /profiles/${VERSION}/${PROFILE}/script ]] ; then    
     echo ":: patching root filesystem ::"
     SCRIPT=$(cat /profiles/${VERSION}/${PROFILE}/script)

@@ -211,6 +211,33 @@ mount_root() {
     mount -o "${ro}" "${root}" "${rootpoint}" || rescue_shell "failed to mount roots ${root} to /mnt/root"
 }
 
+# start_plymouth
+# check and start plymouth
+start_plymouth() {
+    if [[ ! -e /usr/bin/plymouthd ]] ; then
+        return
+    fi
+
+    if [[ -n "${NO_PLYMOUTH}" ]] ; then
+        return 
+    fi
+
+    udevadm trigger --action=add --attr-match=0x030000 >/dev/null 2>&1
+    udevadm trigger --action=add --subsystem-match=graphics --subsystem-match=drm --subsystem-match=tty >/dev/null 2>&1
+    udevadm settle --timeout=30 2>&1
+
+    mknod /dev/fb c 29 &>/dev/null
+    mkdir -p /dev/pts
+    mount -t devpts -o noexec,nosuid,gid=5,mode=0620 devpts /dev/pts || true
+
+    plymouthd --mode=boot --pid-file=/run/plymouth/pid --attach-to-session
+
+    plymouth --show-splash
+
+    PLYMOUTH_STARTED=1
+}
+
+
 # check_resume
 # check if resume from hibernation
 check_resume() {
@@ -273,6 +300,14 @@ parse_cmdline_args() {
         RESET)
             SYSTEM_RESET=1
             ;;
+        
+        no-plymouth)
+            NO_PLYMOUTH=1
+            ;;
+        
+        delay=*)
+            DELAY="${p#*=}"
+            ;;
 
         rescue)
             RESCUE=1
@@ -295,11 +330,22 @@ function main() {
 
     mount_filesystem
     parse_cmdline_args
+    if [[ -n ${ISO} ]] ; then
+        if [[ -z ${DELAY} ]] ; then
+            DELAY=5
+        fi
+    fi
+    
+    [[ -z ${DEBUG}  ]] && dmesg -n1
 
     debug "loading modules"
     load_modules
 
-    sleep 5
+    [[ -z ${NO_PLYMOUTH} ]] && start_plymouth
+
+    if [[ -n ${DELAY} ]] ; then
+        sleep ${DELAY}
+    fi
 
     debug "searching roots"
     search_roots
@@ -327,6 +373,10 @@ function main() {
     check_resume
 
     [[ -z $RESCUE ]] || rescue_shell
+
+    [[ -n ${PLYMOUTH_STARTED } ]] && {
+        plymouth update-root-fs --new-root-dir=${rootpoint}
+    }
 
     mount --move /proc ${rootpoint}/proc
     mount --move /sys ${rootpoint}/sys

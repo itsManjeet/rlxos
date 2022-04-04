@@ -1,6 +1,6 @@
 id: plymouth
 version: 22.02.122
-release: 1
+release: 2
 about: A graphical boot splash screen with KMS
 license: GPL
 depends:
@@ -31,6 +31,7 @@ script: |
     --enable-pango \
     --enable-gtk=no \
     --with-release-file=/etc/os-release \
+    --with-logo=/usr/share/plymouth/rlxos-logo.png \
     --with-background-color=0x000000 \
     --with-background-start-color-stop=0x000000 \
     --with-background-end-color-stop=0x4D4D4D \
@@ -41,3 +42,5 @@ script: |
   make
 
   make DESTDIR="${pkgupd_pkgdir}" install
+
+  cp ${FILES}/logo/logo.png ${pkgupd_pkgdir}/usr/share/plymouth/rlxos-logo.png

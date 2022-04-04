@@ -489,6 +489,7 @@ function main() {
     echo ":: listing required packages ::"
     calculatePackages ${PROFILE_PKGS} --force
     generate_docker
+    docker push itsmanjeet/rlxos-devel:${VERSION}-${BUILD_ID}
   }
   return 0
 }

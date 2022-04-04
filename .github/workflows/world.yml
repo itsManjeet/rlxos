@@ -22,6 +22,6 @@ jobs:
         run: |
           export VERSION="${{ steps.branch-extract.outputs.branch }}"
           export NO_INPUT=1
-          export STORAGE_DIR=/root/server/storage
+          export STORAGE_DIR=/home/itsmanjeet/server/storage
           export PKGUPD_NO_PROGRESS=1
           ./scripts/bootstrap.sh --compile-all

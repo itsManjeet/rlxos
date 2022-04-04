@@ -9,6 +9,7 @@ depends:
     - pango
     - systemd
     - xf86-video-fbdev
+    - docbook-xsl
 build-dir: plymouth-{{version}}
 sources:
   - https://gitlab.freedesktop.org/plymouth/plymouth/-/archive/{{version}}/plymouth-{{version}}.tar.gz

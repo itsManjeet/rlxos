@@ -152,6 +152,11 @@ parse_args() {
             echo ":: using modules dir ${MODULES_DIR}"
             ;;
 
+        --no-plymouth)
+            NO_PLYMOUTH=1
+            echo ":: disabling plymouth support"
+            ;;
+
         -u)
             UNIVERSAL=1
             echo ":: generating universal initrd"
@@ -245,6 +250,75 @@ install_modules() {
     for i in ${MODULES_DIR}/$KERNEL/modules.*; do
         copy_module $i
     done
+}
+
+# installing plymouth
+install_plymouth() {
+    mkdir -p ${INITRD_DIR}/dev/pts
+    mkdir -p ${INITRD_DIR}/usr/share/plymouth/themes
+    mkdir -p ${INITRD_DIR}/run/plymouth
+
+    local DATADIR="/usr/share/plymouth"
+    local PLYMOUTH_LOGO_FILE="${DATADIR}/rlxos-logo.png"
+    local PLYMOUTH_THEME_NAME="$(plymouth-set-default-theme)"
+    local PLYMOUTH_THEME_DIR="${DATADIR}/themes/${PLYMOUTH_THEME_NAME}"
+    local PLYMOUTH_IMAGE_DIR=$(grep "ImageDir *= *" ${PLYMOUTH_THEME_DIR}/${PLYMOUTH_THEME_NAME}.plymouth | sed 's/ImageDir *= *//')
+	local PLYMOUTH_PLUGIN_PATH="$(plymouth --get-splash-plugin-path)"
+	local PLYMOUTH_MODULE_NAME="$(grep "ModuleName *= *" ${PLYMOUTH_THEME_DIR}/${PLYMOUTH_THEME_NAME}.plymouth | sed 's/ModuleName *= *//')"
+
+    install_binary /usr/bin/plymouth
+    install_binary /usr/bin/plymouthd
+    install_binary /usr/lib/plymouth/plymouth-fd-escrow
+
+    copy ${DATADIR}/themes/text/text.plymouth
+    install_binary ${PLYMOUTH_PLUGIN_PATH}/text.so
+    copy ${DATADIR}/themes/details/details.plymouth
+    install_binary ${PLYMOUTH_PLUGIN_PATH}/details.so
+
+    copy ${PLYMOUTH_LOGO_FILE}
+    copy /etc/os-release
+    copy /etc/plymouth/plymouthd.conf
+    copy ${DATADIR}/plymouthd.defaults
+
+    if [ -f "/usr/share/fonts/dejavu/DejaVuSans.ttf" -o -f "/usr/share/fonts/cantarell/Cantarell-Thin.otf" ] ; then
+        install_binary ${PLYMOUTH_PLUGIN_PATH}/label.so
+        copy "/etc/fonts/fonts.conf"
+    fi
+
+    if [ -f "/usr/share/fonts/dejavu/DejaVuSans.ttf" ] ; then
+        copy "/usr/share/fonts/dejavu/DejaVuSans.ttf"
+    fi
+
+    if [ -f "/usr/share/fonts/cantarell/Cantarell-Thin.otf" ] ; then
+        copy "/usr/share/fonts/cantarell/Cantarell-Thin.otf"
+    fi
+
+    if [ ! -f ${PLYMOUTH_PLUGIN_PATH}/${PLYMOUTH_MODULE_NAME}.so ] ; then
+        echo "Error! plymouth default theme ${PLYMOUTH_THEME_NAME} not exists"
+        cleanup
+        exit 1
+    fi
+
+    install_binary ${PLYMOUTH_PLUGIN_PATH}/${PLYMOUTH_MODULE_NAME}.so
+    install_binary ${PLYMOUTH_PLUGIN_PATH}/renderers/drm.so
+    install_binary ${PLYMOUTH_PLUGIN_PATH}/renderers/frame-buffer.so
+
+    if [ -d ${PLYMOUTH_THEME_DIR} ] ; then
+        copy ${PLYMOUTH_THEME_DIR}
+    fi
+
+    if [ "${PLYMOUTH_IMAGE_DIR}" != "${PLYMOUTH_THEME_DIR}" -a -d ${PLYMOUTH_IMAGE_DIR} ] ; then
+        copy ${PLYMOUTH_IMAGE_DIR}
+    fi
+
+    copy /usr/lib/udev/rules.d/70-uaccess.rules
+    copy /usr/lib/udev/rules.d/71-seat.rules
+
+    copy /etc/passwd
+    copy /etc/nsswitch.conf
+
+    install_binary "$(readlink -e /lib/libnss_files.so.2)"
+    copy /lib/libnss_files.so.2
 }
 
 # install password file

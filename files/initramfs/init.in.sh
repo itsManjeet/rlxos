@@ -374,14 +374,9 @@ function main() {
 
     [[ -z $RESCUE ]] || rescue_shell
 
-    [[ -n ${PLYMOUTH_STARTED } ]] && {
+    [[ -n ${PLYMOUTH_STARTED} ]] && {
         plymouth update-root-fs --new-root-dir=${rootpoint}
     }
-
-    mount --move /proc ${rootpoint}/proc
-    mount --move /sys ${rootpoint}/sys
-    mount --move /dev ${rootpoint}/dev
-    mount --move /run ${rootpoint}/run
 
     exec switch_root "${rootpoint}" "${init}" || rescue_shell "failed to switch roots"
 }

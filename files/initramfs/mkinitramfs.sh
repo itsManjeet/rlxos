@@ -268,7 +268,7 @@ install_plymouth() {
 
     install_binary /usr/bin/plymouth
     install_binary /usr/bin/plymouthd
-    install_binary /usr/lib/plymouth/plymouth-fd-escrow
+    install_binary /usr/lib/plymouth/plymouthd-fd-escrow
 
     copy ${DATADIR}/themes/text/text.plymouth
     install_binary ${PLYMOUTH_PLUGIN_PATH}/text.so
@@ -304,7 +304,7 @@ install_plymouth() {
     install_binary ${PLYMOUTH_PLUGIN_PATH}/renderers/frame-buffer.so
 
     if [ -d ${PLYMOUTH_THEME_DIR} ] ; then
-        copy ${PLYMOUTH_THEME_DIR}
+        cp -r ${PLYMOUTH_THEME_DIR} ${INITRD_DIR}/${PLYMOUTH_THEME_DIR}
     fi
 
     if [ "${PLYMOUTH_IMAGE_DIR}" != "${PLYMOUTH_THEME_DIR}" -a -d ${PLYMOUTH_IMAGE_DIR} ] ; then
@@ -353,6 +353,7 @@ function main() {
 
     install_udev
     install_modules
+    install_plymouth
     install_password
     compress_initrd
 

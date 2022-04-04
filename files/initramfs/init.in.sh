@@ -181,6 +181,16 @@ mount_root_system() {
     # check and mount sysimg
     [[ -e "${sysimg}" ]] || rescue_shell "'${sysimg}' is missing"
 
+    # check cache version
+    if [[ -z ${cache} ]] ; then
+        if [[ -d ${diskpoint}/rlxos/cache/${system} ]] ; then
+            echo "FOUND: image specific cache"
+            cache="${system}"
+        else
+            cache='common'
+        fi
+    fi
+
     syspoint="${diskpoint}/rlxos/cache/${cache}/image"
     mkdir -p "${syspoint}"
 
@@ -283,11 +293,6 @@ function main() {
     rootpoint='/mnt/root'
     system=
 
-    if [[ -z ${cache} ]] ; then
-        cache=${system}
-    else
-        echo -e "using cache: ${cache}"
-    fi
     mount_filesystem
     parse_cmdline_args
 

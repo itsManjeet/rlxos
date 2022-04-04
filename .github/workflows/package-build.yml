@@ -34,6 +34,6 @@ jobs:
             echo "compiling ${pkgid}"
             VERSION="${{ steps.branch-extract.outputs.branch }}" \
             NO_INPUT=1 \
-            STORAGE_DIR=/root/server/storage \
+            STORAGE_DIR=/home/itsmanjeet/server/storage \
             ./scripts/exec.sh pkgupd co ${pkgid} --force
           done

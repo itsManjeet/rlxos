@@ -1,6 +1,6 @@
 id: plymouth
 version: 22.02.122
-release: 2
+release: 3
 about: A graphical boot splash screen with KMS
 license: GPL
 depends:

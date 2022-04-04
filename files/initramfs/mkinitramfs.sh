@@ -265,8 +265,8 @@ compress_initrd() {
     
     (
         cd "${INITRD_DIR}"
-        find . | LANG=C cpio -o -H newc --quiet | gzip -9
-    ) >"${AOUT}"
+        find . | LANG=C cpio -o -H newc --quiet | zstd 19 -f -o "${AOUT}"
+    )
 
 }
 

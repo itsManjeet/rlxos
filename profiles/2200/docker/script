@@ -1,11 +1,5 @@
 #!/bin/sh
 
-# generate ca cache
-make-ca -C /etc/ssl/certdata.txt
-
-# PKGUPD fix
-mkdir -p /var/cache/pkgupd/pkgs
-
 # generating supported locals
 mkdir -p /usr/lib/locale/
 localedef -i en_IN -f UTF-8 en_IN.UTF-8

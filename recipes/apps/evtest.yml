@@ -16,7 +16,7 @@ bundle: true
 sources:
   - https://gitlab.freedesktop.org/libevdev/evtest/-/archive/evtest-{{version}}/evtest-evtest-{{version}}.tar.gz
 
-pre-script: autogen.sh
+pre-script: ./autogen.sh
 
 post-script: |
   rm ${pkgupd_pkgdir}/usr/share -r

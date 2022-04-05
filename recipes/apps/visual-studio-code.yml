@@ -20,7 +20,8 @@ AppRun: |
   #!/bin/sh
   SELF=$(readlink -f "$0")
   HERE=${SELF%/*}
-  exec ${HERE}/bin/code $@
+  unset ARGV0
+  exec ${HERE}/code $@
 
 DesktopFile: |
   [Desktop Entry]

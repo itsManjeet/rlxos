@@ -7,6 +7,9 @@ tags:
   - editor
 category: development
 type: app
+depends:
+  buildtime:
+    - appimagetool
 sources:
   - vscode.tar.gz::https://update.code.visualstudio.com/1.64.2/linux-x64/stable
 script: |

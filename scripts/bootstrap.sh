@@ -154,7 +154,7 @@ function generate_iso() {
   TEMPDIR=$(mktemp -d)
 
   echo ":: install required tools ::"
-  pkgupd in grub-i386 grub squashfs-tools lvm2 initramfs mtools linux --no-ask
+  pkgupd in grub-i386 grub squashfs-tools lvm2 initramfs plymouth mtools linux --no-ask
   if [[ $? != 0 ]] ; then
     echo ":: ERROR :: failed to install required tools"
     exit 1

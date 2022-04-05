@@ -19,7 +19,6 @@ sources:
 pre-script: ./autogen.sh
 autoconf-dir: true
 post-script: |
-  rm ${pkgupd_pkgdir}/usr/share -r
   cp ${FILES}/icons/library.svg ${pkgupd_pkgdir}/evtest.png
 
 AppRun: |

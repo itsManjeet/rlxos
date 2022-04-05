@@ -20,8 +20,7 @@ AppRun: |
   #!/bin/sh
   SELF=$(readlink -f "$0")
   HERE=${SELF%/*}
-  unset ARGV0
-  exec ${HERE}/code $@
+  exec ${HERE}/bin/code $@
 
 DesktopFile: |
   [Desktop Entry]
@@ -29,7 +28,7 @@ DesktopFile: |
   StartupWMClass=vscode
   Comment=Visual Studio Code
   GenericName=Text Editor
-  Exec=visual-studio-code
+  Exec=visual-studio-code --no-sandbox --unity-launch %U
   Icon=visual-studio-code
   Type=Application
   Categories=Development;TextEditor;

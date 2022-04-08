@@ -25,7 +25,7 @@ AppRun: |
   HERE="$(dirname "$(readlink -f "${0}")")"
   export PATH=${HERE}/usr/bin:${PATH}
   export PYTHONPATH=${HERE}/usr/lib/python3.9/site-packages:${PYTHONPATH}
-  exec python run_tuxemon.py
+  exec ${PATH}/usr/bin/tuxemon
 
 DesktopFile: |
   [Desktop Entry]

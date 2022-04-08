@@ -23,7 +23,6 @@ post-script: |
 AppRun: |
   #!/bin/sh
   HERE="$(dirname "$(readlink -f "${0}")")"
-  source ${HERE}/env/bin/activate
   export PATH=${HERE}/usr/bin:${PATH}
   export PYTHONPATH=${HERE}/usr/lib/python3.9/site-packages:${PYTHONPATH}
   exec python run_tuxemon.py

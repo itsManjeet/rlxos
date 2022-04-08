@@ -36,4 +36,4 @@ DesktopFile: |
   Exec=tuxemon
   Icon=tuxemon
   Type=Application
-  Categories=Games;
+  Categories=Game;

@@ -4,6 +4,7 @@ about: Opensource monster-fighting RPG
 depends:
   buildtime:
     - py-pip
+    - appimagetool
 license: GPL-3.0
 tags:
   - game

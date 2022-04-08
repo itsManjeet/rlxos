@@ -1,5 +1,6 @@
 id: yodl
 version: 4.03.03
+release: 1
 about: Implements a predocument language and tools to process it
 depends:
   runtime:

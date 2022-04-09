@@ -1,23 +1,16 @@
 id: inspector
-version: 0.1.0
+version: 0.1.1
+release: f0af38e5c7383b23ae8093ee2b146e9479226b60
 about: |
   Inspect on Application directory for changes
 
 depends:
   runtime:
-    - libappimage
     - libnotify
   
   buildtime:
     - cmake
 
 sources:
-  - inspector-main.tar.gz::https://github.com/rlxos/inspector/archive/refs/heads/main.tar.gz
-
-packages:
-  - id: pkg
-    dir: inspector-main
-
-    postscript: |
-      sed "3iAfter=gnome.target" -i ${pkgupd_pkgdir}/usr/lib/systemd/user/inspector.service
-      echo -e "\nWantedBy=default.target" >> ${pkgupd_pkgdir}/usr/lib/systemd/user/inspector.service
+  - inspector-{{version}}-{{release}}.tar.gz::https://github.com/itsManjeet/inspector/archive/{{release}}.tar.gz
+build-dir: inspector-{{release}}

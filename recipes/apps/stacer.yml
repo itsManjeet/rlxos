@@ -10,6 +10,7 @@ tags:
   - task-manager
   - optimizer
 
+type: app
 category: system
 sources:
   - https://github.com/oguzhaninan/Stacer/releases/download/v{{version}}/Stacer-{{version}}-x64.AppImage

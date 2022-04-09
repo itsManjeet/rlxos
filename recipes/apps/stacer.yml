@@ -1,0 +1,23 @@
+id: stacer
+version: 1.1.0
+about: System Optimizer
+license: GPL3
+depends:
+  buildtime:
+    - appimagetool
+tags:
+  - system
+  - task-manager
+  - optimizer
+
+category: system
+sources:
+  - https://github.com/oguzhaninan/Stacer/releases/download/v{{version}}/Stacer-{{version}}-x64.AppImage
+
+build-dir: .
+script: |
+  chmod +x Stacer-{{version}}-x64.AppImage
+  ./Stacer-{{version}}-x64.AppImage --appimage-extract
+
+  mv squashfs-root ${pkgupd_pkgdir}
+  

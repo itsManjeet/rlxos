@@ -10,9 +10,9 @@ license: LGPL2.1
 sources:
   - https://sourceforge.net/projects/dbus-cplusplus/files/dbus-c++/{{version}}/libdbus-c++-{{version}}.tar.gz
 pre-script: |
-  for i in ${FILES}/dbus-c++/*.patch ; do
-    patch -Np1 -i ${i}
-  done
+  patch -Np1 -i ${FILES}/dbus-c++/gcc47.patch
+  patch -Np1 -i ${FILES}/dbus-c++/disable-threading.patch
+  patch -Np1 -i ${FILES}/dbus-c++/fix-writechar.patch
 
   autoreconf -vi
 

@@ -17,7 +17,7 @@ sources:
 build-dir: neofetch-7.1.0
 script: |
   for i in ${FILES}/neofetch/*.patch ; do
-    patch -Np1 -i ${FILES}/neofetch/$i
+    patch -Np1 -i $i
   done
   make DESTDIR="${pkgupd_pkgdir}" install
   install -D -m 0644 LICENSE.md ${pkgupd_pkgdir}/usr/share/doc/neofetch/license

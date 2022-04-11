@@ -19,6 +19,11 @@ depends:
 sources:
   - pkgupd-{{version}}-{{release}}.tar.gz::https://github.com/rlxos/pkgupd/archive/{{release}}.tar.gz
 
+prescript: |
+  for i in ${FILES}/pkgupd/*.patch ; do
+    patch -Np1 -i ${i}
+  done
+
 build-dir: pkgupd-{{release}}
 post-script: |
   install -v -D -m 0755 _pkgupd_builddir/pkgupd-build ${pkgupd_pkgdir}/usr/bin/pkgupd-builder

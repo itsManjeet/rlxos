@@ -1,0 +1,17 @@
+id: ttf-gofont
+version: latest
+about: Official go fonts
+license: unknown
+category: fonts
+tags:
+  - font
+  - golang
+  - go
+  - coding
+type: fonts
+sources:
+  - ttf-gofont.tar.gz::https://go.googlesource.com/image/+archive/master/font/gofont/ttfs.tar.gz
+build-dir: .
+script: |
+  mkdir -p ${pkgupd_pkgdir}/
+  mv *.ttf ${pkgupd_pkgdir}/

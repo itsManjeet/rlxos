@@ -3,14 +3,14 @@ version: 7.1.0
 about: CLI system information tool writter in BASH
 license: MIT
 depends:
-  runtime:
-    - bash
+  buildtime:
+    - appimagetool
 category: system
 tags:
   - system
   - information
   - showoff
-
+type: app
 sources:
   - neofetch-{{version}}.tar.gz::https://github.com/dylanaraps/neofetch/archive/refs/tags/{{version}}.tar.gz
 

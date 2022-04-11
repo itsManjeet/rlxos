@@ -1,0 +1,280 @@
+From 9f6b343f2ff33133e933a41ba47f25f183a4199d Mon Sep 17 00:00:00 2001
+From: itsmanjeet <itsmanjeet1998@gmail.com>
+Date: Mon, 11 Apr 2022 11:41:19 +0530
+Subject: [PATCH] ADDED format to support fonts, icons, and theme
+
+---
+ libpkgupd/formats/fonts.cc | 30 ++++++++++++++++++++++++++++++
+ libpkgupd/formats/fonts.hh | 14 ++++++++++++++
+ libpkgupd/formats/icons.cc | 30 ++++++++++++++++++++++++++++++
+ libpkgupd/formats/icons.hh | 14 ++++++++++++++
+ libpkgupd/formats/theme.cc | 30 ++++++++++++++++++++++++++++++
+ libpkgupd/formats/theme.hh | 14 ++++++++++++++
+ libpkgupd/package.hh       | 16 +++++++++++++++-
+ libpkgupd/packager.cc      | 15 +++++++++++++++
+ 8 files changed, 162 insertions(+), 1 deletion(-)
+ create mode 100644 libpkgupd/formats/fonts.cc
+ create mode 100644 libpkgupd/formats/fonts.hh
+ create mode 100644 libpkgupd/formats/icons.cc
+ create mode 100644 libpkgupd/formats/icons.hh
+ create mode 100644 libpkgupd/formats/theme.cc
+ create mode 100644 libpkgupd/formats/theme.hh
+
+diff --git a/libpkgupd/formats/fonts.cc b/libpkgupd/formats/fonts.cc
+new file mode 100644
+index 0000000..00215ae
+--- /dev/null
++++ b/libpkgupd/formats/fonts.cc
+@@ -0,0 +1,30 @@
++#include "fonts.hh"
++
++using namespace rlxos::libpkgupd;
++
++bool Fonts::extract(std::string const &outdir) {
++  if (!std::filesystem::exists(m_PackageFile)) {
++    p_Error = "no " + m_PackageFile + " exists";
++    return false;
++  }
++
++  std::string fonts_dir = outdir + "/opt/share/fonts/" + m_Package.id();
++  if (!std::filesystem::exists(fonts_dir)) {
++    std::error_code error;
++    std::filesystem::create_directories(fonts_dir, error);
++    if (error) {
++      p_Error =
++          "failed to create font_dir " + fonts_dir + ", " + error.message();
++      return false;
++    }
++  }
++
++  std::string cmd = "/bin/tar";
++  cmd += " --zstd --exclude './info' -xPhpf " + m_PackageFile + " -C " + fonts_dir;
++  if (Executor().execute(cmd) != 0) {
++    p_Error = "failed to execute extraction command";
++    return false;
++  }
++
++  return true;
++}
+\ No newline at end of file
+diff --git a/libpkgupd/formats/fonts.hh b/libpkgupd/formats/fonts.hh
+new file mode 100644
+index 0000000..ede22ac
+--- /dev/null
++++ b/libpkgupd/formats/fonts.hh
+@@ -0,0 +1,14 @@
++#ifndef LIBPKGUPD_FONTS
++#define LIBPKGUPD_FONTS
++
++#include "../tar.hh"
++namespace rlxos::libpkgupd {
++class Fonts : public Tar {
++ public:
++  Fonts(std::string const& f) : Tar(f) {}
++
++  bool extract(std::string const& outdir) override;
++};
++}  // namespace rlxos::libpkgupd
++
++#endif
+\ No newline at end of file
+diff --git a/libpkgupd/formats/icons.cc b/libpkgupd/formats/icons.cc
+new file mode 100644
+index 0000000..e4c2a7e
+--- /dev/null
++++ b/libpkgupd/formats/icons.cc
+@@ -0,0 +1,30 @@
++#include "icons.hh"
++
++using namespace rlxos::libpkgupd;
++
++bool Icons::extract(std::string const &outdir) {
++  if (!std::filesystem::exists(m_PackageFile)) {
++    p_Error = "no " + m_PackageFile + " exists";
++    return false;
++  }
++
++  std::string theme_dir = outdir + "/opt/share/icons/" + m_Package.id();
++  if (!std::filesystem::exists(theme_dir)) {
++    std::error_code error;
++    std::filesystem::create_directories(theme_dir, error);
++    if (error) {
++      p_Error =
++          "failed to create icons_dir " + theme_dir + ", " + error.message();
++      return false;
++    }
++  }
++
++  std::string cmd = "/bin/tar";
++  cmd += " --zstd --exclude './info' -xPhpf " + m_PackageFile + " -C " + theme_dir;
++  if (Executor().execute(cmd) != 0) {
++    p_Error = "failed to execute extraction command";
++    return false;
++  }
++
++  return true;
++}
+\ No newline at end of file
+diff --git a/libpkgupd/formats/icons.hh b/libpkgupd/formats/icons.hh
+new file mode 100644
+index 0000000..79b5f28
+--- /dev/null
++++ b/libpkgupd/formats/icons.hh
+@@ -0,0 +1,14 @@
++#ifndef LIBPKGUPD_ICONS
++#define LIBPKGUPD_ICONS
++
++#include "../tar.hh"
++namespace rlxos::libpkgupd {
++class Icons : public Tar {
++ public:
++  Icons(std::string const& f) : Tar(f) {}
++
++  bool extract(std::string const& outdir) override;
++};
++}  // namespace rlxos::libpkgupd
++
++#endif
+\ No newline at end of file
+diff --git a/libpkgupd/formats/theme.cc b/libpkgupd/formats/theme.cc
+new file mode 100644
+index 0000000..523d7c2
+--- /dev/null
++++ b/libpkgupd/formats/theme.cc
+@@ -0,0 +1,30 @@
++#include "theme.hh"
++
++using namespace rlxos::libpkgupd;
++
++bool Themes::extract(std::string const &outdir) {
++  if (!std::filesystem::exists(m_PackageFile)) {
++    p_Error = "no " + m_PackageFile + " exists";
++    return false;
++  }
++
++  std::string theme_dir = outdir + "/opt/share/themes/" + m_Package.id();
++  if (!std::filesystem::exists(theme_dir)) {
++    std::error_code error;
++    std::filesystem::create_directories(theme_dir, error);
++    if (error) {
++      p_Error =
++          "failed to create theme_dir " + theme_dir + ", " + error.message();
++      return false;
++    }
++  }
++
++  std::string cmd = "/bin/tar";
++  cmd += " --zstd --exclude './info' -xPhpf " + m_PackageFile + " -C " + theme_dir;
++  if (Executor().execute(cmd) != 0) {
++    p_Error = "failed to execute extraction command";
++    return false;
++  }
++
++  return true;
++}
+\ No newline at end of file
+diff --git a/libpkgupd/formats/theme.hh b/libpkgupd/formats/theme.hh
+new file mode 100644
+index 0000000..8ddc96f
+--- /dev/null
++++ b/libpkgupd/formats/theme.hh
+@@ -0,0 +1,14 @@
++#ifndef LIBPKGUPD_THEMES
++#define LIBPKGUPD_THEMES
++
++#include "../tar.hh"
++namespace rlxos::libpkgupd {
++class Themes : public Tar {
++ public:
++  Themes(std::string const& f) : Tar(f) {}
++
++  bool extract(std::string const& outdir) override;
++};
++}  // namespace rlxos::libpkgupd
++
++#endif
+\ No newline at end of file
+diff --git a/libpkgupd/package.hh b/libpkgupd/package.hh
+index c30fae0..edfc26f 100644
+--- a/libpkgupd/package.hh
++++ b/libpkgupd/package.hh
+@@ -20,6 +20,9 @@ namespace rlxos::libpkgupd {
+ enum class PackageType : int {
+   APPIMAGE,
+   PACKAGE,
++  THEME,
++  ICON,
++  FONT,
+   RLXOS,
+ };
+ 
+@@ -31,6 +34,12 @@ static std::string packageTypeToString(PackageType type) {
+       return "pkg";
+     case PackageType::RLXOS:
+       return "rlx";
++    case PackageType::FONT:
++      return "fonts";
++    case PackageType::ICON:
++      return "icons";
++    case PackageType::THEME:
++      return "theme";
+     default:
+       throw std::runtime_error("invalid package type");
+   }
+@@ -43,8 +52,13 @@ static PackageType stringToPackageType(std::string const& type) {
+     return PackageType::PACKAGE;
+   } else if (type == "rlx") {
+     return PackageType::RLXOS;
++  } else if (type == "theme") {
++    return PackageType::THEME;
++  } else if (type == "icons") {
++    return PackageType::ICON;
++  } else if (type == "fonts") {
++    return PackageType::FONT;
+   }
+-
+   throw std::runtime_error("invalid package type " + type);
+ }
+ 
+diff --git a/libpkgupd/packager.cc b/libpkgupd/packager.cc
+index 7d46cb8..e444b2c 100644
+--- a/libpkgupd/packager.cc
++++ b/libpkgupd/packager.cc
+@@ -1,5 +1,8 @@
+ #include "packager.hh"
+ 
++#include "formats/fonts.hh"
++#include "formats/icons.hh"
++#include "formats/theme.hh"
+ #include "image.hh"
+ #include "tar.hh"
+ 
+@@ -12,6 +15,12 @@ std::shared_ptr<Packager> Packager::create(PackageType packageType,
+       return std::make_shared<Tar>(packageFile);
+     case PackageType::APPIMAGE:
+       return std::make_shared<Image>(packageFile);
++    case PackageType::FONT:
++      return std::make_shared<Fonts>(packageFile);
++    case PackageType::ICON:
++      return std::make_shared<Icons>(packageFile);
++    case PackageType::THEME:
++      return std::make_shared<Themes>(packageFile);
+     default:
+       throw std::runtime_error("unsupport package type: " +
+                                packageTypeToString(packageType));
+@@ -32,6 +41,12 @@ std::shared_ptr<Packager> Packager::create(std::string const& packageFile) {
+       return std::make_shared<Tar>(packageFile);
+     case PackageType::APPIMAGE:
+       return std::make_shared<Image>(packageFile);
++    case PackageType::FONT:
++      return std::make_shared<Fonts>(packageFile);
++    case PackageType::ICON:
++      return std::make_shared<Icons>(packageFile);
++    case PackageType::THEME:
++      return std::make_shared<Themes>(packageFile);
+     default:
+       throw std::runtime_error("unsupport package type: " +
+                                packageTypeToString(packageType));
+-- 
+2.32.0
+

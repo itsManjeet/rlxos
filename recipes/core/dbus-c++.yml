@@ -1,0 +1,25 @@
+id: dbus-c++
+version: 0.9.0
+about: A C++ API for D-BUS
+depends:
+  runtime:
+    - dbus
+    - libgcc
+    - glib
+license: LGPL2.1
+sources:
+  - https://sourceforge.net/projects/dbus-cplusplus/files/dbus-c++/{{version}}/libdbus-c++-{{version}}.tar.gz
+pre-script: |
+  for i in ${FILES}/dbus-c++/*.patch ; do
+    patch -Np1 -i ${i}
+  done
+
+  autoreconf -vi
+
+environ:
+  - LDFLAGS+=' -lpthread'
+
+configure: >
+  --disable-static
+  --disable-ecore
+  --enable-glib

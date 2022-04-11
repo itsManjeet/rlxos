@@ -1,6 +1,6 @@
 id: pkgupd
 version: 2201
-release: 7d5c5629c4b1174dfde065db45af33eea30a2916
+release: 9f6b343f2ff33133e933a41ba47f25f183a4199d
 about: |
   An Extensible package manager for rlxos
 
@@ -18,11 +18,6 @@ depends:
 
 sources:
   - pkgupd-{{version}}-{{release}}.tar.gz::https://github.com/rlxos/pkgupd/archive/{{release}}.tar.gz
-
-prescript: |
-  for i in ${FILES}/pkgupd/*.patch ; do
-    patch -Np1 -i ${i}
-  done
 
 build-dir: pkgupd-{{release}}
 post-script: |

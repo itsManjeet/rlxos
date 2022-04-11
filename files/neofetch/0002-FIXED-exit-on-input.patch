@@ -1,0 +1,22 @@
+From 28be86d4475aee872c42323d01c4f0259a660573 Mon Sep 17 00:00:00 2001
+From: itsmanjeet <itsmanjeet1998@gmail.com>
+Date: Mon, 11 Apr 2022 11:09:47 +0530
+Subject: [PATCH 2/2] [FIXED]: exit on input
+
+---
+ neofetch | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/neofetch b/neofetch
+index 324ccabf..6c426088 100755
+--- a/neofetch
++++ b/neofetch
+@@ -11613,3 +11613,4 @@ main() {
+ }
+ 
+ main "$@"
++read 
+\ No newline at end of file
+-- 
+2.32.0
+

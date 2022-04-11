@@ -1,6 +1,6 @@
 id: inspector
-version: 0.1.1
-release: 21772d3e0041f469b0be9e6a669d6d22cfd7d370
+version: 0.1.2
+release: 9599d8fbedca1158d621d305fba013a3c561ba5a
 about: |
   Inspect on Application directory for changes
 

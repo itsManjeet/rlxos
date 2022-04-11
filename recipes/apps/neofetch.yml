@@ -31,7 +31,7 @@ DesktopFile: |
   Type=Application
   StartupNotify=true
   Categories=System;
-
+  Terminal=true
 AppRun: |
   #!/bin/sh
   SELF=$(readlink -f "$0")

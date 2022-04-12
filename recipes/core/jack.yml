@@ -16,7 +16,7 @@ depends:
 license: GPL2 LGPL2.1
 sources:
   - jack-{{version}}.tar.gz::https://github.com/jackaudio/jack2/archive/refs/tags/v{{version}}.tar.gz
-build-dir: jack-{{version}}
+build-dir: jack2-{{version}}
 
 script: |
   export PYTHONPATH=${PWD}:${PYTHONPATH:-""}

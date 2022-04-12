@@ -20,6 +20,8 @@ build-dir: Tuxemon-{{version}}
 
 post-script: |
   cp ../tuxemon-{{version}}.png ${pkgupd_pkgdir}/tuxemon.png
+  cp mods ${pkgupd_pkgdir}/usr/bin/ -a
+
 AppRun: |
   #!/bin/sh
   HERE="$(dirname "$(readlink -f "${0}")")"

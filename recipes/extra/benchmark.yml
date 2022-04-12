@@ -11,5 +11,5 @@ sources:
   - https://github.com/google/benchmark/archive/v{{version}}/benchmark-{{version}}.tar.gz
 
 configure: >
-  -DBENCHMAKR_ENABLE_GTEST_TESTS=OFF
+  -DBENCHMARK_ENABLE_GTEST_TESTS=OFF
   -DBUILD_SHARED_LIBS=ON

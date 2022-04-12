@@ -1,0 +1,15 @@
+id: benchmark
+version: 1.6.1
+about: A microbenchmark support library
+license: Apache
+depends:
+  runtime:
+    - libgcc
+  buildtime:
+    - cmake
+sources:
+  - https://github.com/google/benchmark/archive/v{{version}}/benchmark-{{version}}.tar.gz
+
+configure: >
+  -DBENCHMAKR_ENABLE_GTEST_TESTS=OFF
+  -DBUILD_SHARED_LIBS=ON

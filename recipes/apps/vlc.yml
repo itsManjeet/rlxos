@@ -1,0 +1,21 @@
+id: vlc
+version: 3.0.11.1
+about: VLC media player is a free and open-source, portable, cross-platform media player software and streaming media server developed by the VideoLAN project. VLC is available for desktop operating systems and mobile platforms, such as Android, iOS and iPadOS.
+depends:
+  buildtime:
+    - appimagetool
+tags:
+  - media-player
+  - player
+  - video-player
+
+category: video
+type: app
+sources:
+  - https://github.com/cmatomic/VLCplayer-AppImage/releases/download/{{version}}/VLC_media_player-{{version}}-x86_64.AppImage
+
+build-dir: .
+script: |
+  chmod +x VLC_media_player-{{version}}-x86_64.AppImage
+  ./VLC_media_player-{{version}}-x86_64.AppImage --appimage-extract
+  mv squashfs-root ${pkgupd_pkgdir}

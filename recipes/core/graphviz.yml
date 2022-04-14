@@ -1,5 +1,5 @@
 id: graphviz
-version: 2.44.1
+version: 3.0.0
 release: 1
 about: Graph visualization software
 license:
@@ -12,9 +12,14 @@ depends:
     - gtk2
     - poppler
     - librsvg
+  buildtime:
+    - swig
 sources:
   - https://www2.graphviz.org/Packages/stable/portable_source/graphviz-{{version}}.tar.gz
 
-environ:
-  - LIBPOSTFIX=/
 autoconf-dir: true
+pre-script: |
+  sed -i '/LIBPOSTFIX="64"/s/64//' configure.ac
+  ./autogen.sh
+
+configure: --disable-php

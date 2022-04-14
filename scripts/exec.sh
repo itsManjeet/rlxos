@@ -7,6 +7,9 @@ BASEDIR="$(
 
 . ${BASEDIR}/common.sh
 
+echo "::updating system ::"
+pkgupd update --no-ask
+
 echo ":: updating pkgupd"
 pkgupd in pkgupd --force --no-depends
 

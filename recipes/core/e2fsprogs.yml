@@ -1,5 +1,6 @@
 id: e2fsprogs
 version: 1.46.2
+release: 1
 about: |
   Utilities for handling the ext2, ext3 and ext4 file system
 
@@ -11,17 +12,12 @@ depends:
     - systemd
 
 sources:
-  - https://www.kernel.org/pub/linux/kernel/people/tytso/e2fsprogs/v1.46.2/e2fsprogs-1.46.2.tar.xz
+  - https://www.kernel.org/pub/linux/kernel/people/tytso/e2fsprogs/v{{version}}/e2fsprogs-{{version}}.tar.xz
 
-packages:
-  - id: pkg
-    dir: e2fsprogs-1.46.2
-    flags:
-      - id: configure
-        value: >
-          --sysconfdir=/etc
-          --enable-elf-shlibs
-          --disable-libblkid
-          --disable-libuuid
-          --disable-uuidd
-          --disable-fsck
+configure: >
+  --sysconfdir=/etc
+  --enable-elf-shlibs
+  --disable-libblkid
+  --disable-libuuid
+  --disable-uuidd
+  --disable-fsck

@@ -17,6 +17,8 @@ environ:
   - PYTHON=/bin/python
   - PYTHONWARNINGS=ignore
 
+pre-script: |
+  sed -i '753d' src/gst-plugin/gstpocketsphinx.c
 autoconf-dir: true
 post-script: |
   install -D -m644 LICENSE ${pkgupd_pkgdir}/usr/share/licenses/pocketsphinx/LICENSE

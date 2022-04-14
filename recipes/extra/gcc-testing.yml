@@ -29,7 +29,7 @@ configure: >
   LD=ld 
   --libdir=/usr/lib
   --libexecdir=/usr/lib
-  --enable-languages=c,c++,ada,fortran,go,lto,objc,obj-c++,d
+  --enable-languages=c,c++,fortran,go,lto,objc,obj-c++,d
   --disable-multilib
   --disable-bootstrap
   --with-system-zlib

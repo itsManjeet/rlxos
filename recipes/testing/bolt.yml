@@ -10,3 +10,6 @@ depends:
     - libyaml-cpp
   buildtime:
     - cmake
+sources:
+  - bolt-{{version}}-{{commit}}.tar.gz::https://github.com/itsManjeet/bolt/archive/{{commit}}.tar.gz
+build-dir: bolt-{{commit}}

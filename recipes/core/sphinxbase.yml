@@ -13,8 +13,6 @@ depends:
 sources:
   - http://downloads.sourceforge.net/project/cmusphinx/sphinxbase/{{version}}/sphinxbase-{{version}}.tar.gz
 
-pre-script: |
-  autoconf -ivf
 environ:
   - PYTHON=/bin/python
   - PYTHONWARNINGS=ignore

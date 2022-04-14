@@ -18,10 +18,6 @@ jobs:
         name: configuring recipe files
         run: VERSION="${{ steps.branch-extract.outputs.branch }}" STORAGE_DIR=/storage ./scripts/configure.py
 
-      - id: update-system
-        name: updating system
-        run: pkgupd update --no-ask
-
       - id: bootstrap
         run: |
           export VERSION="${{ steps.branch-extract.outputs.branch }}"

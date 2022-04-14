@@ -12,7 +12,7 @@ depends:
     - libcap
     - gdbm
     - dbus
-  buidtime:
+  buildtime:
     - gobject-introspection
     - gtk
     - qt5

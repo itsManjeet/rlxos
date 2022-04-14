@@ -1,6 +1,6 @@
 id: openldap
 version: 2.6.1
-release: 1
+release: 2
 about: |
   Open source implementation of the Lightweight Directory Access Protocol
 
@@ -45,6 +45,7 @@ configure: >
   --enable-modules
   --enable-backends
   --enable-argon2
+  --disable-sql
   --with-argon2=libsodium
   --disable-wt
   --enable-overlays=mod

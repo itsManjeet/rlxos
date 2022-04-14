@@ -1,5 +1,6 @@
 id: gcc
 version: 11.1.0
+release: 2
 about: |
   The GNU compiler collection, which includes the C and C++ compilers
   
@@ -14,12 +15,12 @@ depends:
     - binutils
     - gcc
 
-build-dir: gcc-11.1.0
+build-dir: gcc-{{version}}
 sources:
-  - https://ftp.gnu.org/gnu/gcc/gcc-11.1.0/gcc-11.1.0.tar.xz
+  - https://ftp.gnu.org/gnu/gcc/gcc-{{version}}/gcc-{{version}}.tar.xz
 
 pre-script: |
-  patch -Np1 -i ${FILES}/gcc/gcc-11.1.0-upstream_fixes-1.patch
+  patch -Np1 -i ${FILES}/gcc/gcc-{{version}}-upstream_fixes-1.patch
   sed -e "/m64=/s/lib64/lib/" \
       -e "/m32=/s/m32=.*/m32=..\/lib32\$(call if_multiarch,:i386-linux-gnu)/" \
       -i.orig gcc/config/i386/t-linux64
@@ -28,18 +29,18 @@ configure: >
   LD=ld 
   --libdir=/usr/lib
   --libexecdir=/usr/lib
-  --enable-languages=c,c++
+  --enable-languages=c,c++,fortran,go,lto,objc,obj-c++,d
   --disable-multilib
   --disable-bootstrap
   --with-system-zlib
 
 post-script: |
-  [[ -d ${pkgupd_pkgdir}/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixes/bits/ ]] && \
-  rm -r ${pkgupd_pkgdir}/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixes/bits/
+  [[ -d ${pkgupd_pkgdir}/usr/lib/gcc/x86_64-pc-linux-gnu/{{version}}/include-fixes/bits/ ]] && \
+  rm -r ${pkgupd_pkgdir}/usr/lib/gcc/x86_64-pc-linux-gnu/{{version}}/include-fixes/bits/
 
   mkdir -p ${pkgupd_pkgdir}/usr/lib/bfd-plugins/
   ln -sv ../bin/cpp ${pkgupd_pkgdir}/usr/lib/
-  ln -sfv ../../lib/gcc/x86_64-pc-linux-gnu/11.1.0/liblto_plugin.so \
+  ln -sfv ../../lib/gcc/x86_64-pc-linux-gnu/{{version}}/liblto_plugin.so \
     ${pkgupd_pkgdir}/usr/lib/bfd-plugins/
   
   ln -sv gcc ${pkgupd_pkgdir}/usr/bin/cc
@@ -62,13 +63,13 @@ split:
       - usr/lib/liblsan.so.0
       - usr/lib/libcc1.so.0.0.0
       - usr/lib/libquadmath.so.0.0.0
-      - usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/liblto_plugin.so
-      - usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/plugin/libcc1plugin.so.0
-      - usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/plugin/libcp1plugin.so.0.0.0
-      - usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/plugin/libcp1plugin.so.0
-      - usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/plugin/libcc1plugin.so
-      - usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/plugin/libcp1plugin.so
-      - usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/plugin/libcc1plugin.so.0.0.0
+      - usr/lib/gcc/x86_64-pc-linux-gnu/{{version}}/liblto_plugin.so
+      - usr/lib/gcc/x86_64-pc-linux-gnu/{{version}}/plugin/libcc1plugin.so.0
+      - usr/lib/gcc/x86_64-pc-linux-gnu/{{version}}/plugin/libcp1plugin.so.0.0.0
+      - usr/lib/gcc/x86_64-pc-linux-gnu/{{version}}/plugin/libcp1plugin.so.0
+      - usr/lib/gcc/x86_64-pc-linux-gnu/{{version}}/plugin/libcc1plugin.so
+      - usr/lib/gcc/x86_64-pc-linux-gnu/{{version}}/plugin/libcp1plugin.so
+      - usr/lib/gcc/x86_64-pc-linux-gnu/{{version}}/plugin/libcc1plugin.so.0.0.0
       - usr/lib/libgomp.so.1
       - usr/lib/libitm.so.1
       - usr/lib/libasan.so.6
@@ -96,3 +97,18 @@ split:
       - usr/lib/libgomp.so.1.0.0
       - usr/lib/liblsan.so
       - usr/lib/libatomic.so
+      - usr/lib/libgdruntime.so
+      - usr/lib/libgdruntime.so.2
+      - usr/lib/libgdruntime.so.2.0.0
+      - usr/lib/libgfortran.so
+      - usr/lib/libgfortran.so.5
+      - usr/lib/libgfortran.so.5.0.0
+      - usr/lib/libgo.so
+      - usr/lib/libgo.so.19
+      - usr/lib/libgo.so.19.0.0
+      - usr/lib/libgphobos.so
+      - usr/lib/libgphobos.so.2
+      - usr/lib/libgphobos.so.2.0.0
+      - usr/lib/libobjc.so
+      - usr/lib/libobjc.so.4
+      - usr/lib/libobjc.so.4.0.0

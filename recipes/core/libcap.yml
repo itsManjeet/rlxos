@@ -13,8 +13,7 @@ depends:
     - acl
 
 script: |
-  sed -i "/install -m.*STA/d" libcap/Makefile
-  make KERNEL_HEADERS='/usr/include' prefix=/usr lib=lib sbin=bin
+  make DYNAMIC=yes KERNEL_HEADERS='/usr/include' prefix=/usr lib=lib sbin=bin
 
   make DESTDIR=${pkgupd_pkgdir} RAISE_SETFCAP='no' lib='lib' sbin=bin prefix='/usr' install
   chmod -v 755 ${pkgupd_pkgdir}/usr/lib/lib{cap,psx}.so.2.51

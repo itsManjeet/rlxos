@@ -15,7 +15,7 @@ depends:
   buildtime:
     - swig
 sources:
-  - https://www2.graphviz.org/Packages/stable/portable_source/graphviz-{{version}}.tar.gz
+  - https://gitlab.com/graphviz/graphviz/-/archive/{{version}}/graphviz-{{version}}.tar.bz2
 
 autoconf-dir: true
 pre-script: |

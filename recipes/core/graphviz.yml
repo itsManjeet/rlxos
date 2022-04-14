@@ -21,5 +21,5 @@ autoconf-dir: true
 pre-script: |
   sed -i '/LIBPOSTFIX="64"/s/64//' configure.ac
   ./autogen.sh
-
+build-type: autoconf
 configure: --disable-php

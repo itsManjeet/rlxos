@@ -4,7 +4,7 @@ about: Common library for sphinx speech recognition
 license: BSD
 depends:
   runtime:
-    - lapack
+    - openblas-lapack
     - pulseaudio
     - python
   buildtime:

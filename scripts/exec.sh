@@ -7,6 +7,8 @@ BASEDIR="$(
 
 . ${BASEDIR}/common.sh
 
+export PKGUPD_NO_PROGRESS=1
+
 echo "::updating system ::"
 pkgupd update --no-ask
 

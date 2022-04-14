@@ -8,6 +8,7 @@ depends:
     - pocketsphinx
     - pulseaudio
     - libyaml-cpp
+    - espeak-ng
   buildtime:
     - cmake
 sources:

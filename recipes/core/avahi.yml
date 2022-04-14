@@ -1,21 +1,28 @@
 id: avahi
 version: 0.8
+release: 1
 about: |
   A system which facilitates service discovery on a local network
 
 depends:
   runtime:
-    - glib
-    - gtk2
-    - gtk
+    - expat
     - libdaemon
-    - libglade
+    - glib
+    - libcap
+    - gdbm
+    - dbus
   buidtime:
     - gobject-introspection
+    - gtk
+    - qt5
+    - py-dbus
+    - py-gobject
+    - libevent
+    - graphviz
   
 sources:
-  - https://github.com/lathiat/avahi/releases/download/v0.8/avahi-0.8.tar.gz
-  - https://www.linuxfromscratch.org/patches/blfs/svn/avahi-0.8-ipv6_race_condition_fix-1.patch
+  - https://github.com/lathiat/avahi/releases/download/v{{version}}/avahi-{{version}}.tar.gz
 
 groups:
   - id: 84
@@ -29,26 +36,14 @@ users:
     dir: /var/run/avahi-daemon
     shell: /bin/false
 
-packages:
-  - id: pkg
-    dir: avahi-0.8
-    prescript: |
-      patch -Np1 -i ../avahi-0.8-ipv6_race_condition_fix-1.patch
-      sed -i "426a if (events & AVAHI_WATCH_HUP) { \
-      client_free(c); \
-      return; \
-      }" avahi-daemon/simple-protocol.c
-    
-    flags:
-      - id: configure
-        value: >
-          --disable-static
-          --disable-libevent
-          --disable-mono
-          --disable-monodoc
-          --disable-python
-          --disable-qt3
-          --disable-qt4
-          --disable-qt5
-          --enable-core-docs
-          --with-distro=none
+configure: >
+  with_dbus_sys=/usr/share/dbus-1/system.d
+  --enable-compat-libdns_sd
+  --with-distro=rlxos
+  --with-avahi-priv-access-group=network
+  --with-autoipd-user=avahi
+  --with-autoipd-group=avahi
+  --with-systemdsystemunitdir=/usr/lib/systemd/system
+
+post-script: |
+  ln -s avahi-compat-libdns_sd/dns_sd.h "$pkgupd_pkgdir/usr/include/dns_sd.h"

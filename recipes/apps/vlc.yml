@@ -19,3 +19,5 @@ script: |
   chmod +x VLC_media_player-{{version}}-x86_64.AppImage
   ./VLC_media_player-{{version}}-x86_64.AppImage --appimage-extract
   mv squashfs-root ${pkgupd_pkgdir}
+
+  mv ${pkgupd_pkgdir}/{org.videolan.vlc.desktop,vlc.desktop}

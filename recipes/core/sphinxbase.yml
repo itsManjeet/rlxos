@@ -1,5 +1,5 @@
 id: sphinxbase
-version: 5prealpha-13
+version: 5prealpha
 about: Common library for sphinx speech recognition
 license: BSD
 depends:

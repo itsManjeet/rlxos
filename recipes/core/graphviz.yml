@@ -19,6 +19,7 @@ sources:
 
 autoconf-dir: true
 pre-script: |
+  find /lib/ -name "*.la" -delete
   sed -i '/LIBPOSTFIX="64"/s/64//' configure.ac
   ./autogen.sh
 build-type: autoconf

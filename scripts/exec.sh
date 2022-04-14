@@ -9,10 +9,10 @@ BASEDIR="$(
 
 export PKGUPD_NO_PROGRESS=1
 
-echo "::updating system ::"
-pkgupd update --no-ask
-
 echo ":: updating pkgupd"
 pkgupd in pkgupd --force --no-depends
+
+echo "::updating system ::"
+pkgupd update --no-ask
 
 $@

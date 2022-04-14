@@ -1,5 +1,6 @@
 id: pocketsphinx
 version: 5prealpha
+release: 2
 about: Lightweight speech recognition engine
 license: BSD
 depends:

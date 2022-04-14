@@ -1,6 +1,6 @@
 id: openblas-lapack
 version: 0.3.20
-release: 1
+release: 2
 lapack_version: 0.9.0
 blas_version: 3.8.0
 major_version: 3

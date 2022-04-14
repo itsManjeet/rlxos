@@ -1,0 +1,23 @@
+id: sphinxbase
+version: 5prealpha-13
+about: Common library for sphinx speech recognition
+license: BSD
+depends:
+  runtime:
+    - lapack
+    - pulseaudio
+    - python
+  buildtime:
+    - bison
+    - swig
+sources:
+  - http://downloads.sourceforge.net/project/cmusphinx/sphinxbase/{{version}}/sphinxbase-{{version}}.tar.gz
+
+pre-script: |
+  autoconf -ivf
+environ:
+  - PYTHON=/bin/python
+  - PYTHONWARNINGS=ignore
+
+post-script: |
+  install -m644 LICENSE" "${pkgupd_pkgdir}/usr/share/licenses/sphinxbase/LICENSE"

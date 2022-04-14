@@ -1,6 +1,6 @@
 id: openldap
 version: 2.6.1
-release: 2
+release: 3
 about: |
   Open source implementation of the Lightweight Directory Access Protocol
 
@@ -36,57 +36,24 @@ pre-script: |
     
 autoconf-dir: true
 configure: >
+  --disable-static
+  --enable-versioning=yes
+  --disable-debug
+  --with-tls=openssl
+  --with-cyrus-sasl
   --enable-dynamic
-  --enable-syslog
-  --enable-ipv6
-  --enable-local
   --enable-crypt
   --enable-spasswd
+  --enable-slapd
   --enable-modules
-  --enable-backends
-  --enable-argon2
+  --enable-rlookups
+  --enable-backends=mod
+  --disable-ndb
   --disable-sql
-  --with-argon2=libsodium
   --disable-wt
   --enable-overlays=mod
-  --with-cyrus-sasl
-  --with-threads
 
 post-script: |
-
-  _extra_modules="nssov autogroup lastbind passwd/sha2"
-
-  for module in ${_extra_modules} ; do
-    make -C "contrib/slapd-modules/${module}" \
-      OPT="${CFLAGS} ${CPPFLAGS}" \
-      prefix=/usr \
-      libexecdir=/usr/lib \
-      sysconfdir=/etc/openldap
-  done
-
-  for dir in include libraries doc/man/man3 ; do
-    pushd ${dir}
-      make DESTDIR=${pkgupd_pkgdir} install
-    popd
-  done
-
-  install -D -m 644 -t ${pkgupd_pkgdir}/usr/share/man/man5 doc/man/man5/ldap.conf.5
-
-  rm "${pkgupd_pkgdir}"/etc/openldap/*.default
-  ln -sf liblber.so "${pkgupd_pkgdir}"/usr/lib/liblber.so.2
-  ln -sf libldap.so "${pkgupd_pkgdir}"/usr/lib/libldap.so.2
-
-  install -Dm644 -t "${pkgupd_pkgdir}/usr/share/licenses/openldap" LICENSE
-  
-  for module in ${_extra_modules} ; do
-    make -C "contrib/slapd-modules/${module}" \
-      OPT="${CFLAGS} ${CPPFLAGS}" \
-      prefix=/usr \
-      libexecdir=/usr/lib \
-      sysconfdir=/etc/openldap \
-      DESTDIR=${pkgupd_pkgdir} install
-  done
-
   ln -s ../lib/slapd ${pkgupd_pkgdir}/usr/bin/slapd
 
   sed -e "s/\.la/.so/" -i ${pkgupd_pkgdir}/etc/openldap/slapd.{conf,ldif}{,.default}

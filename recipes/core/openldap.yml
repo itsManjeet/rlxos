@@ -1,5 +1,6 @@
 id: openldap
 version: 2.6.1
+release: 1
 about: |
   Open source implementation of the Lightweight Directory Access Protocol
 
@@ -20,34 +21,225 @@ users:
   
 sources:
   - https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-{{version}}.tgz
-  - https://www.linuxfromscratch.org/patches/blfs/svn/openldap-{{version}}-consolidated-2.patch
 
-build-dir: openldap-{{version}}
 pre-script: |
-  patch -Np1 -i ../openldap-{{version}}-consolidated-2.patch
+  # change permission from 0644 to 0755
+  sed -i 's|-m 644 $(LIBRARY)|-m 755 $(LIBRARY)|' libraries/{liblber,libldap}/Makefile.in
+
+  # change rundir to /run/openldap
+  sed -i 's|#define LDAPI_SOCK LDAP_RUNDIR LDAP_DIRSEP "run" LDAP_DIRSEP "ldapi"|#define LDAPI_SOCK LDAP_DIRSEP "run" LDAP_DIRSEP "openldap" LDAP_DIRSEP "ldapi"|' include/ldap_defaults.h
+  sed -i 's|%LOCALSTATEDIR%/run|/run/openldap|' servers/slapd/slapd.{conf,ldif}
+  sed -i 's|-$(MKDIR) $(DESTDIR)$(localstatedir)/run|-$(MKDIR) $(DESTDIR)/run/openldap|' servers/slapd/Makefile.in
+
   sed -i -e "s|EnvironmentFile.*|EnvironmentFile=-/etc/conf.d/slapd|" -e "s/slapd -d 0/\0 -u ldap -g ldap/" servers/slapd/slapd.service
   autoconf
     
+autoconf-dir: true
 configure: >
-  --disable-static
-  --enable-versioning
-  --with-tls=openssl
-  --with-cyrus=sasl
   --enable-dynamic
+  --enable-syslog
+  --enable-ipv6
+  --enable-local
   --enable-crypt
   --enable-spasswd
-  --enable-slapd
   --enable-modules
-  --enable-rlookups
-  --enable-backends=mod
-  --disable-ndb
-  --disable-sql
+  --enable-backends
+  --enable-argon2
+  --with-argon2=libsodium
   --disable-wt
   --enable-overlays=mod
+  --with-cyrus-sasl
+  --with-threads
 
 post-script: |
+
+  _extra_modules="nssov autogroup lastbind passwd/sha2"
+
+  for module in ${_extra_modules} ; do
+    make -C "contrib/slapd-modules/${module}" \
+      OPT="${CFLAGS} ${CPPFLAGS}" \
+      prefix=/usr \
+      libexecdir=/usr/lib \
+      sysconfdir=/etc/openldap
+  done
+
+  for dir in include libraries doc/man/man3 ; do
+    pushd ${dir}
+      make DESTDIR=${pkgupd_pkgdir} install
+    popd
+  done
+
+  install -D -m 644 -t ${pkgupd_pkgdir}/usr/share/man/man5 doc/man/man5/ldap.conf.5
+
+  rm "${pkgupd_pkgdir}"/etc/openldap/*.default
+  ln -sf liblber.so "${pkgupd_pkgdir}"/usr/lib/liblber.so.2
+  ln -sf libldap.so "${pkgupd_pkgdir}"/usr/lib/libldap.so.2
+
+  install -Dm644 -t "${pkgupd_pkgdir}/usr/share/licenses/openldap" LICENSE
+  
+  for module in ${_extra_modules} ; do
+    make -C "contrib/slapd-modules/${module}" \
+      OPT="${CFLAGS} ${CPPFLAGS}" \
+      prefix=/usr \
+      libexecdir=/usr/lib \
+      sysconfdir=/etc/openldap \
+      DESTDIR=${pkgupd_pkgdir} install
+  done
+
+  ln -s ../lib/slapd ${pkgupd_pkgdir}/usr/bin/slapd
+
   sed -e "s/\.la/.so/" -i ${pkgupd_pkgdir}/etc/openldap/slapd.{conf,ldif}{,.default}
   install -v -dm700 -o 83 -g 83 ${pkgupd_pkgdir}/var/lib/openldap
   install -v -dm700 -o 83 -g 83 ${pkgupd_pkgdir}/etc/openldap/slapd.d
   chmod -v 640 ${pkgupd_pkgdir}/etc/openldap/slapd.{conf,ldif}
   chown -v root:83 ${pkgupd_pkgdir}/etc/openldap/slapd.{conf,ldif}
+
+split:
+  - into: libldap
+    about: Lightweight Directory Access Protocol (LDAP) client libraries
+    files:
+      - usr/lib/libldap.so
+      - usr/lib/libldap.so.2.0.200
+      - usr/lib/openldap/back_ldap.la
+      - usr/lib/openldap/syncprov.la
+      - usr/lib/openldap/syncprov.so.2.0.200
+      - usr/lib/openldap/ppolicy.so.2.0.200
+      - usr/lib/openldap/back_sock.so.2
+      - usr/lib/openldap/back_dnssrv.la
+      - usr/lib/openldap/autoca.so.2
+      - usr/lib/openldap/homedir.la
+      - usr/lib/openldap/back_passwd.la
+      - usr/lib/openldap/autoca.la
+      - usr/lib/openldap/back_ldap.so.2
+      - usr/lib/openldap/memberof.so.2.0.200
+      - usr/lib/openldap/back_ldap.so.2.0.200
+      - usr/lib/openldap/back_perl.so.2.0.200
+      - usr/lib/openldap/auditlog.so.2
+      - usr/lib/openldap/otp.la
+      - usr/lib/openldap/dds.so.2
+      - usr/lib/openldap/pcache.so.2
+      - usr/lib/openldap/dyngroup.la
+      - usr/lib/openldap/back_null.la
+      - usr/lib/openldap/auditlog.so
+      - usr/lib/openldap/translucent.la
+      - usr/lib/openldap/valsort.so.2.0.200
+      - usr/lib/openldap/back_passwd.so.2
+      - usr/lib/openldap/accesslog.so.2.0.200
+      - usr/lib/openldap/retcode.so
+      - usr/lib/openldap/homedir.so.2
+      - usr/lib/openldap/remoteauth.so.2
+      - usr/lib/openldap/ppolicy.so
+      - usr/lib/openldap/seqmod.so.2.0.200
+      - usr/lib/openldap/memberof.so
+      - usr/lib/openldap/translucent.so.2
+      - usr/lib/openldap/remoteauth.la
+      - usr/lib/openldap/valsort.so.2
+      - usr/lib/openldap/back_relay.so
+      - usr/lib/openldap/rwm.so
+      - usr/lib/openldap/sssvlv.so
+      - usr/lib/openldap/back_dnssrv.so.2.0.200
+      - usr/lib/openldap/back_null.so.2.0.200
+      - usr/lib/openldap/accesslog.la
+      - usr/lib/openldap/syncprov.so.2
+      - usr/lib/openldap/back_meta.so.2.0.200
+      - usr/lib/openldap/constraint.so
+      - usr/lib/openldap/unique.la
+      - usr/lib/openldap/homedir.so
+      - usr/lib/openldap/dds.so.2.0.200
+      - usr/lib/openldap/back_asyncmeta.so.2.0.200
+      - usr/lib/openldap/dynlist.la
+      - usr/lib/openldap/valsort.la
+      - usr/lib/openldap/auditlog.la
+      - usr/lib/openldap/retcode.so.2.0.200
+      - usr/lib/openldap/back_relay.la
+      - usr/lib/openldap/dynlist.so
+      - usr/lib/openldap/otp.so.2
+      - usr/lib/openldap/remoteauth.so
+      - usr/lib/openldap/seqmod.la
+      - usr/lib/openldap/pcache.so
+      - usr/lib/openldap/unique.so
+      - usr/lib/openldap/translucent.so.2.0.200
+      - usr/lib/openldap/accesslog.so.2
+      - usr/lib/openldap/memberof.la
+      - usr/lib/openldap/back_asyncmeta.so
+      - usr/lib/openldap/back_ldap.so
+      - usr/lib/openldap/seqmod.so.2
+      - usr/lib/openldap/accesslog.so
+      - usr/lib/openldap/refint.so.2.0.200
+      - usr/lib/openldap/rwm.so.2
+      - usr/lib/openldap/back_mdb.so
+      - usr/lib/openldap/back_perl.so.2
+      - usr/lib/openldap/dds.so
+      - usr/lib/openldap/remoteauth.so.2.0.200
+      - usr/lib/openldap/refint.so
+      - usr/lib/openldap/ppolicy.la
+      - usr/lib/openldap/back_sock.la
+      - usr/lib/openldap/back_null.so
+      - usr/lib/openldap/back_asyncmeta.so.2
+      - usr/lib/openldap/dyngroup.so.2
+      - usr/lib/openldap/deref.so
+      - usr/lib/openldap/refint.so.2
+      - usr/lib/openldap/dds.la
+      - usr/lib/openldap/constraint.la
+      - usr/lib/openldap/dyngroup.so
+      - usr/lib/openldap/dynlist.so.2
+      - usr/lib/openldap/back_meta.so.2
+      - usr/lib/openldap/sssvlv.so.2.0.200
+      - usr/lib/openldap/back_meta.la
+      - usr/lib/openldap/valsort.so
+      - usr/lib/openldap/collect.so.2.0.200
+      - usr/lib/openldap/autoca.so
+      - usr/lib/openldap/refint.la
+      - usr/lib/openldap/otp.so.2.0.200
+      - usr/lib/openldap/auditlog.so.2.0.200
+      - usr/lib/openldap/back_sock.so
+      - usr/lib/openldap/back_asyncmeta.la
+      - usr/lib/openldap/syncprov.so
+      - usr/lib/openldap/back_null.so.2
+      - usr/lib/openldap/back_relay.so.2
+      - usr/lib/openldap/sssvlv.so.2
+      - usr/lib/openldap/deref.so.2
+      - usr/lib/openldap/back_dnssrv.so.2
+      - usr/lib/openldap/unique.so.2
+      - usr/lib/openldap/deref.so.2.0.200
+      - usr/lib/openldap/memberof.so.2
+      - usr/lib/openldap/unique.so.2.0.200
+      - usr/lib/openldap/seqmod.so
+      - usr/lib/openldap/otp.so
+      - usr/lib/openldap/collect.so.2
+      - usr/lib/openldap/autoca.so.2.0.200
+      - usr/lib/openldap/ppolicy.so.2
+      - usr/lib/openldap/retcode.so.2
+      - usr/lib/openldap/dyngroup.so.2.0.200
+      - usr/lib/openldap/rwm.la
+      - usr/lib/openldap/constraint.so.2.0.200
+      - usr/lib/openldap/pcache.so.2.0.200
+      - usr/lib/openldap/constraint.so.2
+      - usr/lib/openldap/collect.la
+      - usr/lib/openldap/homedir.so.2.0.200
+      - usr/lib/openldap/dynlist.so.2.0.200
+      - usr/lib/openldap/back_perl.la
+      - usr/lib/openldap/back_sock.so.2.0.200
+      - usr/lib/openldap/pcache.la
+      - usr/lib/openldap/back_perl.so
+      - usr/lib/openldap/collect.so
+      - usr/lib/openldap/back_dnssrv.so
+      - usr/lib/openldap/back_passwd.so
+      - usr/lib/openldap/back_mdb.so.2
+      - usr/lib/openldap/back_mdb.la
+      - usr/lib/openldap/translucent.so
+      - usr/lib/openldap/rwm.so.2.0.200
+      - usr/lib/openldap/back_passwd.so.2.0.200
+      - usr/lib/openldap/back_meta.so
+      - usr/lib/openldap/back_relay.so.2.0.200
+      - usr/lib/openldap/sssvlv.la
+      - usr/lib/openldap/retcode.la
+      - usr/lib/openldap/back_mdb.so.2.0.200
+      - usr/lib/openldap/deref.la
+      - usr/lib/liblber.so.2
+      - usr/lib/libldap.so.2
+      - usr/lib/pkgconfig/lber.pc
+      - usr/lib/pkgconfig/ldap.pc
+      - usr/lib/liblber.so.2.0.200
+      - usr/lib/liblber.la
+      - usr/lib/liblber.so

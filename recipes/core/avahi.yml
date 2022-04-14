@@ -15,7 +15,7 @@ depends:
   buildtime:
     - gobject-introspection
     - gtk
-    - qt5
+    - qt
     - py-dbus
     - py-gobject
     - libevent

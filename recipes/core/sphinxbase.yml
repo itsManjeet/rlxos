@@ -18,4 +18,4 @@ environ:
   - PYTHONWARNINGS=ignore
 
 post-script: |
-  install -m644 LICENSE ${pkgupd_pkgdir}/usr/share/licenses/sphinxbase/LICENSE
+  install -D -m644 LICENSE ${pkgupd_pkgdir}/usr/share/licenses/sphinxbase/LICENSE

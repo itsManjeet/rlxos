@@ -1,10 +1,11 @@
 id: seahorse
 version: 40.0
+release: 1
 about: |
   A graphical interface for managing and using encryption keys
 
 sources:
-  - https://download.gnome.org/sources/seahorse/40/seahorse-40.0.tar.xz
+  - https://download.gnome.org/sources/seahorse/40/seahorse-{{version}}.tar.xz
 
 depends:
   runtime:
@@ -17,19 +18,14 @@ depends:
     - libsecret
     - libsoup
     - p11-kit
-    - openldap
     - openssh
     - gnome-keyring
     - avahi
 
   buildtime:
     - vala
-packages:
-  - id: pkg
-    dir: seahorse-40.0
-    prescript: |
-      sed -i -r "s:\"(/apps):\"/org/gnome\1:" data/*.xml
-    
-    flags:
-      - id: configure
-        value: --buildtype=release
+
+pre-script: |
+  sed -i -r "s:\"(/apps):\"/org/gnome\1:" data/*.xml
+
+configure: --buildtype=release

@@ -11,7 +11,7 @@ depends:
   runtime:
     - glibc
     - acl
-
+build-dir: libcap-{{version}}
 script: |
   make DYNAMIC=yes KERNEL_HEADERS='/usr/include' prefix=/usr lib=lib sbin=bin
 

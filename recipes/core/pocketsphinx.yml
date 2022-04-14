@@ -1,0 +1,20 @@
+id: pocketsphinx
+version: 5prealpha
+about: Lightweight speech recognition engine
+license: BSD
+depends:
+  runtime:
+    - gst-plugins-base
+    - sphinxbase
+  buildtime:
+    - python
+    - swig
+sources:
+  - http://downloads.sourceforge.net/project/cmusphinx/pocketsphinx/{{version}}/pocketsphinx-{{version}}.tar.gz
+
+environ:
+  - PYTHON=/bin/python
+  - PYTHONWARNINGS=ignore
+
+post-script: |
+  install -D -m644 LICENSE ${pkgupd_pkgdir}/usr/share/licenses/pocketsphinx/LICENSE

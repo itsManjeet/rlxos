@@ -1,0 +1,18 @@
+id: wimlib
+version: 1.13.5
+about: A library and program to extract, create and modify WIM files
+depends:
+  runtime:
+    - fuse2
+    - libxml2
+    - ntfs-3g
+    - openssl
+    - cabextract
+    - mtools
+license: CUSTOM
+sources:
+  - https://wimlib.net/downloads/wimlib-{{version}}.tar.gz
+configure: >
+  --with-libcrypto
+  --with-fuse
+  --with-ntfs-3g

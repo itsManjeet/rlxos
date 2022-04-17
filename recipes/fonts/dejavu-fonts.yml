@@ -9,4 +9,5 @@ sources:
 type: fonts
 build-dir: dejavu-fonts-ttf-{{version}}
 script: |
+  mkdir -p ${pkgupd_pkgdir}/
   cp ttf/*.ttf ${pkgupd_pkgdir}/

@@ -10,29 +10,21 @@ depends:
     - gnutls
 
 sources:
-  - https://tuxera.com/opensource/ntfs-3g_ntfsprogs-2017.3.23.tgz
+  - https://tuxera.com/opensource/ntfs-3g_ntfsprogs-{{version}}.tgz
 
-packages:
-  - id: pkg
-    dir: ntfs-3g_ntfsprogs-2017.3.23
-    prescript: |
-      sed -i "s|/sbin|\$(rootsbindir)|" {ntfsprogs,src}/Makefile.in
+build-dir: ntfs-3g_ntfsprogs-{{version}}
+pre-script: |
+  sed -i "s|/sbin|\$(rootsbindir)|" {ntfsprogs,src}/Makefile.in
 
-    flags:
-      - id: configurator
-        value: configure
-        
-      - id: configure
-        value: >
-          --disable-static
-          --with-fuse=external
-          --enable-posix-acls
-          --enable-extras
-          --enable-crypto
-          --disable-ldconfig
+build-type: autoconf
+configure: >
+  --disable-static
+  --with-fuse=external
+  --enable-posix-acls
+  --enable-extras
+  --enable-crypto
+  --disable-ldconfig
     
-      - id: install
-        value: rootbindir=/usr/bin rootsbindir=/usr/bin rootlibdir=/usr/lib
-      
-    postscript: |
-      ln -s /usr/bin/ntfs-3g ${pkgupd_pkgdir}/usr/bin/mount.ntfs
+install: rootbindir=/usr/bin rootsbindir=/usr/bin rootlibdir=/usr/lib 
+post-script: |
+  ln -s /usr/bin/ntfs-3g ${pkgupd_pkgdir}/usr/bin/mount.ntfs

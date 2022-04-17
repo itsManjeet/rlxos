@@ -1,9 +1,6 @@
 id: android-studio
 version: 2021.1.1.23
-about: |
-  <h3>Unoffical release</h3>
-
-  Android IDE (stable branch)
+about: Android IDE (stable branch)
 
 type: app
 depends:

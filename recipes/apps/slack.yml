@@ -1,6 +1,6 @@
 id: slack
 version: 4.23.0
-release: 1
+release: 2
 about: Slack is a proprietary business communication platform developed by American software company Slack Technologies and now owned by Salesforce. Slack offers many IRC-style features, including persistent chat rooms organized by topic, private groups, and direct messaging
 type: app
 sources:

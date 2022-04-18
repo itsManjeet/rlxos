@@ -1,5 +1,5 @@
 id: ntfs-3g
-version: 2017.2.23
+version: 2021.8.22
 about: |
   A stable, read-write open source driver for NTFS partitions
 

@@ -62,9 +62,9 @@ script: |
     -i ${pkgupd_pkgdir}/etc/samba/smb.conf.default
     
   mkdir -pv ${pkgupd_pkgdir}/etc/openldap/schema
-  cp examples/LDAP/README ${pkgupd_pkgdir}/etc/openldap/sschema/README.LDAP
-  cp examples/LDAP/samba* ${pkgupd_pkgdir}/etc/openldap/sschema/
-  cp examples/LDAP/{get*,ol*} ${pkgupd_pkgdir}/etc/openldap/sschema/
+  cp examples/LDAP/README ${pkgupd_pkgdir}/etc/openldap/schema/README.LDAP
+  cp examples/LDAP/samba* ${pkgupd_pkgdir}/etc/openldap/schema/
+  cp examples/LDAP/{get*,ol*} ${pkgupd_pkgdir}/etc/openldap/schema/
 
   install -vdm 755 ${pkgupd_pkgdir}/usr/lib/cups/backend
   ln -sf -v /usr/bin/smbspool ${pkgupd_pkgdir}/usr/lib/cups/backend/smb

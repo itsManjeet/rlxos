@@ -1,5 +1,5 @@
 id: libx11
-version: '7'
+version: 7
 about: xorg library libx11
 build-dir: libX11-1.7.2
 sources:

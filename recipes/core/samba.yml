@@ -25,7 +25,7 @@ sources:
   - https://www.samba.org/ftp/samba/stable/samba-{{version}}.tar.gz
 
 script: |
-   python3 -m venv pyenv
+  python3 -m venv pyenv
   ./pyenv/bin/pip3 install cryptography pyasn1 iso8601
 
   PYTHON=$PWD/pyenv/bin/python3 \
@@ -55,7 +55,7 @@ script: |
   install -v -m644 examples/smb.conf.default ${pkgupd_pkgdir}/etc/samba
   sed -e "s;log file =.*;log file = /var/log/samba/%m.log;" \
     -e "s;path = /usr/spool/samba;path = /var/spool/samba;" \
-    -i ${pkgupd_pkgdir}/etc/samba/smb.conf.
+    -i ${pkgupd_pkgdir}/etc/samba/smb.conf.default
     
   mkdir -pv ${pkgupd_pkgdir}/etc/openldap/schema
   cp examples/LDAP/README ${pkgupd_pkgdir}/etc/openldap/sschema/README.LDAP

@@ -24,6 +24,7 @@ depends:
 sources:
   - https://www.samba.org/ftp/samba/stable/samba-{{version}}.tar.gz
 
+build-dir: samba-{{version}}
 script: |
   python3 -m venv pyenv
   ./pyenv/bin/pip3 install cryptography pyasn1 iso8601

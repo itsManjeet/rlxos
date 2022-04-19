@@ -1,5 +1,6 @@
 id: qemu
 version: 6.0.0
+release: 1
 about: |
   A full virtualization solution for Linux on x86 hardware containing virtualization extensions
 
@@ -22,23 +23,18 @@ depends:
    - pkg-config
 
 sources:
-  - https://download.qemu-project.org/qemu-6.0.0.tar.xz
+  - https://download.qemu-project.org/qemu-{{version}}.tar.xz
 
-packages:
-  - id: pkg
-    dir: qemu-6.0.0
-    flags:
-      - id: configure
-        value: >
-          --target-list=x86_64-softmmu
-          --audio-drv-list=alsa
-          --smbd=/usr/bin/smbd
-          --enable-modules
-          --enable-sdl
-          --enable-gtk
+build-dir: qemu-{{version}}
+configure: >
+  --audio-drv-list=alsa
+  --smbd=/usr/bin/smbd
+  --enable-modules
+  --enable-sdl
+  --enable-gtk
     
-    postscript: |
-      install -v -D -m 644 ${FILES}/qemu/65-kvm.rules -t ${pkgupd_pkgdir}/usr/lib/udev/rules.d/
+post-script: |
+  install -v -D -m 644 ${FILES}/qemu/65-kvm.rules -t ${pkgupd_pkgdir}/usr/lib/udev/rules.d/
 
-      chgrp kvm ${pkgupd_pkgdir}/usr/lib/qemu-bridge-helper
-      chmod 4750 ${pkgupd_pkgdir}/usr/lib/qemu-bridge-helper
+  chgrp kvm ${pkgupd_pkgdir}/usr/lib/qemu-bridge-helper
+  chmod 4750 ${pkgupd_pkgdir}/usr/lib/qemu-bridge-helper

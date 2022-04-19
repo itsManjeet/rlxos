@@ -1,6 +1,6 @@
 id: gtk
 version: 3.24.30
-release: 2
+release: 3
 about: |
   Libraries used for creating graphical user interfaces for applications
 

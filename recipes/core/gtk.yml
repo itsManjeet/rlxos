@@ -1,5 +1,6 @@
 id: gtk
 version: 3.24.30
+release: 1
 about: |
   Libraries used for creating graphical user interfaces for applications
 
@@ -14,21 +15,58 @@ depends:
     - wayland-protocols
 
 sources:
-  - https://download.gnome.org/sources/gtk+/3.24/gtk+-3.24.30.tar.xz
+  - https://download.gnome.org/sources/gtk+/3.24/gtk+-{{version}}.tar.xz
 
-packages:
-  - id: pkg
-    dir: gtk+-3.24.30
-    flags:
-      - id: configurator
-        value: configure
+build-dir: gtk+-{{version}}
+build-type: autoconf
 
-      - id: configure
-        value: >
-          --enable-broadway-backend
-          --enable-x11-backend
-          --enable-wayland-backend
-          --disable-gtk-doc
+configure: >
+  --enable-broadway-backend
+  --enable-x11-backend
+  --enable-wayland-backend
+  --disable-gtk-doc
 
-    postscript: |
-      install -v -D -m 644 ${FILES}/triggers/immodules.yml -t ${pkgupd_pkgdir}/usr/share/pkgupd/triggers/
+post-script: |
+  install -v -D -m 644 ${FILES}/triggers/immodules.yml -t ${pkgupd_pkgdir}/usr/share/pkgupd/triggers/
+
+split:
+  - into: gtk-demos
+    about: Gtk demo applications
+    files:
+      - usr/bin/gtk3-icon-browser
+      - usr/bin/gtk3-widget-factory
+      - usr/bin/gtk3-demo
+      - usr/bin/gtk3-demo-application
+      - usr/share/glib-2.0/schemas/org.gtk.Demo.gschema.xml
+      - usr/share/glib-2.0/schemas/org.gtk.exampleapp.gschema.xml
+      - usr/share/man/man1/gtk3-icon-browser.1
+      - usr/share/man/man1/gtk3-demo.1
+      - usr/share/man/man1/gtk3-widget-factory.1
+      - usr/share/man/man1/gtk3-demo-application.1
+      - usr/share/icons/hicolor/256x256/apps/gtk3-demo.png
+      - usr/share/icons/hicolor/256x256/apps/gtk3-widget-factory-symbolic.symbolic.png
+      - usr/share/icons/hicolor/256x256/apps/gtk3-demo-symbolic.symbolic.png
+      - usr/share/icons/hicolor/48x48/apps/gtk3-widget-factory.png
+      - usr/share/icons/hicolor/48x48/apps/gtk3-demo.png
+      - usr/share/icons/hicolor/48x48/apps/gtk3-widget-factory-symbolic.symbolic.png
+      - usr/share/icons/hicolor/48x48/apps/gtk3-demo-symbolic.symbolic.png
+      - usr/share/icons/hicolor/16x16/apps/gtk3-widget-factory.png
+      - usr/share/icons/hicolor/16x16/apps/gtk3-demo.png
+      - usr/share/icons/hicolor/16x16/apps/gtk3-widget-factory-symbolic.symbolic.png
+      - usr/share/icons/hicolor/16x16/apps/gtk3-demo-symbolic.symbolic.png
+      - usr/share/icons/hicolor/32x32/apps/gtk3-widget-factory.png
+      - usr/share/icons/hicolor/32x32/apps/gtk3-demo.png
+      - usr/share/icons/hicolor/32x32/apps/gtk3-widget-factory-symbolic.symbolic.png
+      - usr/share/icons/hicolor/32x32/apps/gtk3-demo-symbolic.symbolic.png
+      - usr/share/icons/hicolor/24x24/apps/gtk3-widget-factory.png
+      - usr/share/icons/hicolor/24x24/apps/gtk3-demo.png
+      - usr/share/icons/hicolor/24x24/apps/gtk3-widget-factory-symbolic.symbolic.png
+      - usr/share/icons/hicolor/24x24/apps/gtk3-demo-symbolic.symbolic.png
+      - usr/share/icons/hicolor/22x22/apps/gtk3-widget-factory.png
+      - usr/share/icons/hicolor/22x22/apps/gtk3-demo.png
+      - usr/share/icons/hicolor/22x22/apps/gtk3-widget-factory-symbolic.symbolic.png
+      - usr/share/icons/hicolor/22x22/apps/gtk3-demo-symbolic.symbolic.png
+      - usr/share/applications/gtk3-demo.desktop
+      - usr/share/applications/gtk3-icon-browser.desktop
+      - usr/share/applications/gtk3-widget-factory.desktop
+

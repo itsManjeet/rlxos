@@ -10,10 +10,5 @@ depends:
 sources:
   - https://prdownloads.sourceforge.net/expat/expat-{{version}}.tar.xz
 
-packages:
-  - id: pkg
-    dir: expat-{{version}}
-
-    flags:
-      - id: configurator
-        value: configure
+dir: expat-{{version}}
+build-type: autoconf

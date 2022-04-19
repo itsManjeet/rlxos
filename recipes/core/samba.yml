@@ -1,6 +1,6 @@
 id: samba
 version: 4.16.0
-release: 1
+release: 2
 about: |
   Package provides file and print services to SMB/CIFS clients and Windows networking to Linux clients
 
@@ -17,9 +17,12 @@ depends:
     - libxslt
     - pam
     - perl-parse-yapp
+    - perl-json
     - cups
+    - libldap
   buildtime:
     - py-pip
+    - openldap
 
 sources:
   - https://www.samba.org/ftp/samba/stable/samba-{{version}}.tar.gz

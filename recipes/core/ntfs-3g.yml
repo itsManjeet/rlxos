@@ -9,7 +9,6 @@ depends:
     - fuse2
     - libgcrypt
     - gnutls
-    - libidn2
 
 sources:
   - https://tuxera.com/opensource/ntfs-3g_ntfsprogs-{{version}}.tgz

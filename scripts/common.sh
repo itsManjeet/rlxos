@@ -4,7 +4,7 @@ CONTAINER_VERSION='2200-12'
 SERVER_URL='https://apps.rlxos.dev'
 
 if [[ -z "${NOCONTAINER}" ]]; then
-    ROOTDIR="$(cd -- "$(dirname "$0")" >/dev/null 2>&1; pwd -P)/../"
+    ROOTDIR="${ROOTDIR:-$(cd -- "$(dirname "$0")" >/dev/null 2>&1; pwd -P)/../}"
     echo "ROOTDIR: ${ROOTDIR}"
     
     if [[ ! -e ${ROOTDIR}/.version ]] && [[ -z ${VERSION} ]]; then

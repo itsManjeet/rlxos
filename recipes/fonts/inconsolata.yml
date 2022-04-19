@@ -8,8 +8,9 @@ tags:
   - consolas
   - coding
   - fonts
-buildtime:
-  - unzip
+depends:
+  buildtime:
+    - unzip
 
 type: fonts
 sources:

@@ -4,9 +4,10 @@ CONTAINER_VERSION='2200-12'
 SERVER_URL='https://apps.rlxos.dev'
 
 if [[ -z "${NOCONTAINER}" ]]; then
-    BASEDIR="$(cd -- "$(dirname "$0")" >/dev/null 2>&1; pwd -P)/../"
+    ROOTDIR="$(cd -- "$(dirname "$0")" >/dev/null 2>&1; pwd -P)/../"
+    echo "ROOTDIR: ${ROOTDIR}"
     
-    if [[ ! -e ${BASEDIR}/.version ]] && [[ -z ${VERSION} ]]; then
+    if [[ ! -e ${ROOTDIR}/.version ]] && [[ -z ${VERSION} ]]; then
         echo "Error! no version specified"
         exit 1
     fi
@@ -14,24 +15,23 @@ if [[ -z "${NOCONTAINER}" ]]; then
         EXTRA_FLAGS='-i'
     fi
 
-    echo "basedir: ${BASEDIR}"
-    STORAGE_DIR=${STORAGE_DIR:-${BASEDIR}/build}
-    VERSION=${VERSION:-$(cat ${BASEDIR}/.version)}
+    STORAGE_DIR=${STORAGE_DIR:-${ROOTDIR}/build}
+    VERSION=${VERSION:-$(cat ${ROOTDIR}/.version)}
     docker run \
         --rm \
         --network host \
         --device /dev/fuse \
         --cap-add SYS_ADMIN \
         --security-opt apparmor:unconfined \
-        -v "${BASEDIR}/scripts:/scripts" \
+        -v "${ROOTDIR}/scripts:/scripts" \
         -v "${STORAGE_DIR}/${VERSION}/recipes:/var/cache/pkgupd/recipes" \
         -v "${STORAGE_DIR}/${VERSION}/pkgs:/var/cache/pkgupd/pkgs" \
         -v "${STORAGE_DIR}/sources:/var/cache/pkgupd/src" \
         -v "${STORAGE_DIR}/${VERSION}/logs:/logs" \
         -v "${STORAGE_DIR}/${VERSION}/releases:/releases" \
-        -v "${BASEDIR}/files:/var/cache/pkgupd/files" \
-        -v "${BASEDIR}/profiles:/profiles" \
-        -v "${BASEDIR}/pkgupd.yml:/etc/pkgupd.yml" \
+        -v "${ROOTDIR}/files:/var/cache/pkgupd/files" \
+        -v "${ROOTDIR}/profiles:/profiles" \
+        -v "${ROOTDIR}/pkgupd.yml:/etc/pkgupd.yml" \
         -v /var/run/docker.sock:/var/run/docker.sock \
         ${EXTRA_FLAGS} --privileged \
         -t itsmanjeet/rlxos-devel:${CONTAINER_VERSION} /usr/bin/env -i \
@@ -41,7 +41,7 @@ if [[ -z "${NOCONTAINER}" ]]; then
         PATH='/usr/bin:/opt/bin:/apps' \
         NOCONTAINER=1 \
         SERVER_URL=${SERVER_URL} \
-        BASEDIR=${BASEDIR} \
+        ROOTDIR=${ROOTDIR} \
         VERSION=${VERSION} "/scripts/$(basename ${0})" ${@}
     exit $?
 fi
@@ -61,7 +61,7 @@ SystemDatabase: ${ROOTFS}/var/lib/pkgupd/data" > ${temp_config}
 
 function BoltSendMesg() {
     # if [[ -z "${NOCONTAINER}" ]]; then
-    #     echo "${@}" >${BASEDIR}/discord-bolt
+    #     echo "${@}" >${ROOTDIR}/discord-bolt
     # else
     #     echo ${@} >/bolt
     # fi

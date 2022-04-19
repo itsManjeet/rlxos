@@ -1,5 +1,5 @@
 id: samba
-version: 4.15.3
+version: 4.16.0
 release: 1
 about: |
   Package provides file and print services to SMB/CIFS clients and Windows networking to Linux clients
@@ -18,13 +18,16 @@ depends:
     - pam
     - perl-parse-yapp
     - cups
+  buildtime:
+    - py-pip
 
 sources:
   - https://www.samba.org/ftp/samba/stable/samba-{{version}}.tar.gz
 
 script: |
-  python3 -m venv pyenv
+   python3 -m venv pyenv
   ./pyenv/bin/pip3 install cryptography pyasn1 iso8601
+
   PYTHON=$PWD/pyenv/bin/python3 \
   CPPFLAGS="-I/usr/lib/tirpc" \
     LDFLAGS="-ltirpc" \
@@ -42,10 +45,22 @@ script: |
       --enable-fhs \
       --without-ad-dc \
       --enable-selftest
-
   make
+
+  sed '1s@^.*$@#!/usr/bin/python3@' \
+    -i ./bin/default/source4/scripting/bin/samba-gpupdate.inst
+
   make DESTDIR=${pkgupd_pkgdir} install
 
-post-script: |
+  install -v -m644 examples/smb.conf.default ${pkgupd_pkgdir}/etc/samba
+  sed -e "s;log file =.*;log file = /var/log/samba/%m.log;" \
+    -e "s;path = /usr/spool/samba;path = /var/spool/samba;" \
+    -i ${pkgupd_pkgdir}/etc/samba/smb.conf.
+    
+  mkdir -pv ${pkgupd_pkgdir}/etc/openldap/schema
+  cp examples/LDAP/README ${pkgupd_pkgdir}/etc/openldap/sschema/README.LDAP
+  cp examples/LDAP/samba* ${pkgupd_pkgdir}/etc/openldap/sschema/
+  cp examples/LDAP/{get*,ol*} ${pkgupd_pkgdir}/etc/openldap/sschema/
+
   install -vdm 755 ${pkgupd_pkgdir}/usr/lib/cups/backend
   ln -sf -v /usr/bin/smbspool ${pkgupd_pkgdir}/usr/lib/cups/backend/smb

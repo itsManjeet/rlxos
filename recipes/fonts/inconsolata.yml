@@ -8,12 +8,14 @@ tags:
   - consolas
   - coding
   - fonts
+buildtime:
+  - unzip
 
 type: fonts
 sources:
-  - https://github.com/googlefonts/Inconsolata/archive/v{{version}}/ttf-inconsolata-{{version}}.tar.gz
+  - inconsolata-{{version}}.zip::https://github.com/googlefonts/Inconsolata/releases/download/v{{version}}/fonts_ttf.zip
 build-dir: .
 script: |
   install -d ${pkgupd_pkgdir}/
-  install -D -m 644 ${pkgupd_srcdir}/Inconsolata-3.000/fonts/ttf/*.ttf ${pkgupd_pkgdir}/
+  cp fonts_ttf/fonts/ttf/*.ttf ${pkgupd_pkgdir}/
    

@@ -1,5 +1,6 @@
 id: expat
 version: 2.4.7
+release: 1
 about: |
   A stream oriented C library for parsing XML
 

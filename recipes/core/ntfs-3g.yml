@@ -18,6 +18,7 @@ pre-script: |
   sed -i "s|/sbin|\$(rootsbindir)|" {ntfsprogs,src}/Makefile.in
 
 build-type: autoconf
+autoconf-dir: true
 configure: >
   --disable-static
   --with-fuse=external

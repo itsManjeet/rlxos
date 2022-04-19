@@ -20,6 +20,7 @@ depends:
     - p11-kit
     - openssh
     - gnome-keyring
+    - libldap
     - avahi
 
   buildtime:

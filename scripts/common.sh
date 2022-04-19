@@ -1,11 +1,11 @@
 #!/bin/sh
 
-BASEDIR="/home/itsmanjeet/server/rlxos"
-
 CONTAINER_VERSION='2200-12'
 SERVER_URL='https://apps.rlxos.dev'
 
 if [[ -z "${NOCONTAINER}" ]]; then
+    BASEDIR="$(cd -- "$(dirname "$0")" >/dev/null 2>&1; pwd -P)/../"
+    
     if [[ ! -e ${BASEDIR}/.version ]] && [[ -z ${VERSION} ]]; then
         echo "Error! no version specified"
         exit 1
@@ -13,6 +13,8 @@ if [[ -z "${NOCONTAINER}" ]]; then
     if [[ -z ${NO_INPUT} ]] ; then
         EXTRA_FLAGS='-i'
     fi
+
+    echo "basedir: ${BASEDIR}"
     STORAGE_DIR=${STORAGE_DIR:-${BASEDIR}/build}
     VERSION=${VERSION:-$(cat ${BASEDIR}/.version)}
     docker run \
@@ -39,6 +41,7 @@ if [[ -z "${NOCONTAINER}" ]]; then
         PATH='/usr/bin:/opt/bin:/apps' \
         NOCONTAINER=1 \
         SERVER_URL=${SERVER_URL} \
+        BASEDIR=${BASEDIR} \
         VERSION=${VERSION} "/scripts/$(basename ${0})" ${@}
     exit $?
 fi

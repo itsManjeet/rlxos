@@ -1,4 +1,4 @@
-name: bootstrap
+name: bootstrap-continue
 on: workflow_dispatch
 
 env:
@@ -23,6 +23,8 @@ jobs:
           export VERSION="${{ steps.branch-extract.outputs.branch }}"
           export NO_INPUT=1
           export STORAGE_DIR=/home/itsmanjeet/server/storage
+          export ROOTDIR=/home/itsmanjeet/server/rlxos
           export PKGUPD_NO_PROGRESS=1
-          ./scripts/bootstrap.sh --bootstrap --rebuild  --update-pkgupd
-          
+
+          ./scripts/bootstrap.sh --bootstrap --rebuild  --update-pkgupd --continue-build
+         

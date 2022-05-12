@@ -12,6 +12,7 @@ depends:
     - libcap
     - gdbm
     - dbus
+    - libevent
   buildtime:
     - gobject-introspection
 

@@ -1,9 +1,0 @@
-core initramfs firmware grub-i386 grub xorg
-xfce4 lightdm lightdm-gtk-greeter sys-setup
-fonts-cantarell adobe-source-code-pro-fonts ttf-noto
-qogir-gtk-theme qogir-icon-theme 
-fuse2 libbsd cifs-utils make-ca
-inspector flatpak gparted
-network-manager-applet
-xfce4-pulseaudio-plugin
-xdg-user-dirs

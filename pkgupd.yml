@@ -4,8 +4,4 @@ EnvironmentVariables:
     - CXXFLAGS=-march=x86-64 -O2 -pipe
     - MAKEFLAGS=-j8
 Repositories:
-    - testing
     - core
-    - apps
-    - extra
-    - fonts

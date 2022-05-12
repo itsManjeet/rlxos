@@ -4,4 +4,4 @@ pam-config poppler-data
 fonts-cantarell adobe-source-code-pro-fonts ttf-noto ttf-noto-cjk ttf-noto-emoji 
 fluent-gtk-theme fluent-icon-theme fluent-wallpaper
 fuse2 libbsd cifs-utils
-inspector flatpak gparted welcome
+inspector flatpak gparted

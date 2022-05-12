@@ -1,6 +1,5 @@
 id: graphviz
 version: 3.0.0
-release: 3
 about: Graph visualization software
 license:
   - EPL

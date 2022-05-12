@@ -8,7 +8,6 @@ depends:
     - alsa-lib
     - glu
     - libjpeg-turbo
-    # - qt
   buildtime:
     - llvm
 

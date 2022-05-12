@@ -12,8 +12,7 @@ depends:
     - gtk2
     - poppler
     - librsvg
-  buildtime:
-    - swig
+
 sources:
   - https://gitlab.com/graphviz/graphviz/-/archive/{{version}}/graphviz-{{version}}.tar.bz2
 
@@ -23,4 +22,6 @@ pre-script: |
   sed -i '/LIBPOSTFIX="64"/s/64//' configure.ac
   ./autogen.sh
 build-type: autoconf
-configure: --disable-php
+configure: >
+  --disable-ocaml
+  --with-qt=no

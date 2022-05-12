@@ -351,6 +351,11 @@ function parse_args() {
       --compile-all)
         COMPILE_ALL=1
         ;;
+      
+      --list-depends)
+        LIST_DEPENDS=1
+        shift
+        ;;
 
       -*|--*)
         echo ":: ERROR :: invalid option ${1}"
@@ -455,6 +460,15 @@ function main() {
   rm /var/lib/pkgupd/data/util-linux
   rm /var/lib/pkgupd/data/e2fsprogs
   rm /var/lib/pkgupd/data/iptables
+
+  if [[ -n ${LIST_DEPENDS} ]] ; then
+    PROFILE_PKGS=$(cat /profiles/${VERSION}/${PROFILE}/pkgs)
+    echo ":: listing dependencies ::"
+    calculatePackages --force ${PROFILE_PKGS}
+
+    echo "Packages: ${PKGS}"
+    exit 0
+  fi
   
   if [[ -n ${CONTINUE_BUILD} ]] || [[ -n ${BOOTSTRAP} ]] ; then
     PROFILE_PKGS=$(cat /profiles/${VERSION}/${PROFILE}/pkgs)

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-CONTAINER_VERSION='2200-12'
+CONTAINER_VERSION='2204-0419222205'
 SERVER_URL='https://apps.rlxos.dev'
 
 if [[ -z "${NOCONTAINER}" ]]; then

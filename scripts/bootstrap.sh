@@ -464,7 +464,7 @@ function main() {
   if [[ -n ${LIST_DEPENDS} ]] ; then
     PROFILE_PKGS=$(cat /profiles/${VERSION}/${PROFILE}/pkgs)
     echo ":: listing dependencies ::"
-    calculatePackages --force ${PROFILE_PKGS}
+    calculatePackages --force ${PROFILE_PKGS} grub-i386 grub squashfs-tools lvm2 initramfs plymouth mtools linux
 
     echo "Packages: ${PKGS}"
     exit 0
@@ -473,7 +473,7 @@ function main() {
   if [[ -n ${CONTINUE_BUILD} ]] || [[ -n ${BOOTSTRAP} ]] ; then
     PROFILE_PKGS=$(cat /profiles/${VERSION}/${PROFILE}/pkgs)
     echo ":: calculating dependencies ::"
-    calculatePackages --force ${PROFILE_PKGS}
+    calculatePackages --force ${PROFILE_PKGS} grub-i386 grub squashfs-tools lvm2 initramfs plymouth mtools linux
 
     echo "Packages: ${PKGS}"
   elif [[ -n ${COMPILE_ALL} ]] ; then

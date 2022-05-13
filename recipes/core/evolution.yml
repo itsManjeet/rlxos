@@ -20,7 +20,7 @@ depends:
     - libcanberra
     - libgweather
     - libnotify
-    - openldap
+    - libldap
     - seahorse
     - clutter-gtk
     - geoclue
@@ -28,6 +28,7 @@ depends:
   
   buildtime:
     - cmake
+    - openldap
 
 sources:
   - https://download.gnome.org/sources/evolution/3.40/evolution-3.40.2.tar.xz

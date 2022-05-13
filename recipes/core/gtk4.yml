@@ -1,8 +1,7 @@
 id: gtk4
-version: 4.2.1
+version: 4.5.1
 about: |
   Libraries used for creating graphical user interfaces for applications
-
 depends:
   runtime:
     - fribidi
@@ -12,28 +11,47 @@ depends:
     - libepoxy
     - libxkbcommon
     - pango
+    - tracker
     - wayland
     - ffmpeg
     - gst-plugins-bad
     - librsvg
     - colord
-    - sysprof
   
   buildtime:
     - gobject-introspection
     - git
 
 sources:
-  - https://download.gnome.org/sources/gtk/4.2/gtk-4.2.1.tar.xz
+  - https://download.gnome.org/sources/gtk/4.5/gtk-{{version}}.tar.xz
 
-packages:
-  - id: pkg
-    dir: gtk-4.2.1
-    flags:
-      - id: configure
-        value: >
-          --buildtype=release
-          -D broadway_backend=true
-          -D sysprof=enabled
-          -D colord=enabled
-          -D sassc=enabled
+dir: gtk-{{version}}
+configure: --buildtype=release -D broadway-backend=true -D tracker=enabled -D colord=enabled
+
+split:
+  - into: gtk4-demos
+    about: Gtk4 demo applications
+    files:
+      - usr/bin/gtk4-icon-browser
+      - usr/bin/gtk4-widget-factory
+      - usr/bin/gtk4-demo
+      - usr/bin/gtk4-demo-application
+      - usr/bin/gtk4-print-editor
+      - usr/share/glib-2.0/schemas/org.gtk.Demo4.gschema.xml
+      - usr/share/icons/hicolor/scalable/apps/org.gtk.PrintEditor4.Devel.svg
+      - usr/share/icons/hicolor/scalable/apps/org.gtk.WidgetFactory4.svg
+      - usr/share/icons/hicolor/scalable/apps/org.gtk.PrintEditor4.svg
+      - usr/share/icons/hicolor/scalable/apps/org.gtk.IconBrowser4.svg
+      - usr/share/icons/hicolor/scalable/apps/org.gtk.Demo4.svg
+      - usr/share/icons/hicolor/symbolic/apps/org.gtk.WidgetFactory4-symbolic.svg
+      - usr/share/icons/hicolor/symbolic/apps/org.gtk.Demo4-symbolic.svg
+      - usr/share/icons/hicolor/symbolic/apps/org.gtk.PrintEditor4-symbolic.svg
+      - usr/share/icons/hicolor/symbolic/apps/org.gtk.IconBrowser4-symbolic.svg
+      - usr/share/applications/org.gtk.WidgetFactory4.desktop
+      - usr/share/applications/org.gtk.IconBrowser4.desktop
+      - usr/share/applications/org.gtk.Demo4.desktop
+      - usr/share/applications/org.gtk.PrintEditor4.desktop
+      - usr/share/metainfo/org.gtk.WidgetFactory4.appdata.xml
+      - usr/share/metainfo/org.gtk.PrintEditor4.appdata.xml
+      - usr/share/metainfo/org.gtk.IconBrowser4.appdata.xml
+      - usr/share/metainfo/org.gtk.Demo4.appdata.xml

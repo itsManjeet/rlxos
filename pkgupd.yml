@@ -5,3 +5,7 @@ EnvironmentVariables:
     - MAKEFLAGS=-j8
 Repositories:
     - core
+    - extra
+    - apps
+    - fonts
+    - testing

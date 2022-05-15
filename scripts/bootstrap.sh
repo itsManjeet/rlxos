@@ -441,7 +441,13 @@ function compile_all() {
 function calculatePackages() {
   PKGUPD_CONFIG=$(mktemp)
   echo "Version: ${VERSION}
-SystemDatabase: /tmp" > ${PKGUPD_CONFIG}
+SystemDatabase: /tmp
+Repositories:
+  - core
+  - extra
+  - testing
+  - fonts
+  - apps" > ${PKGUPD_CONFIG}
   PKGS=$(pkgupd depends --config ${PKGUPD_CONFIG} ${@} 2>&1)
   if [[ $? != 0 ]] ; then
     echo ":: ERROR :: failed to calculate dependency tree: ${PKGS}"
@@ -478,7 +484,7 @@ function main() {
     echo "Packages: ${PKGS}"
   elif [[ -n ${COMPILE_ALL} ]] ; then
     echo ":: ordering all packages in dependency order"
-    PROFILE_PKGS=$(ls /var/cache/pkgupd/recipes/core/ | sed 's|.yml||g')
+    PROFILE_PKGS=$(find /var/cache/pkgupd/recipes/ -type f -name "*.yml" -exec basename {} \; | sed 's|.yml||g')
     calculatePackages --force ${PROFILE_PKGS}
 
     echo "Packages: ${PKGS}"

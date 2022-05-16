@@ -5,7 +5,6 @@ SERVER_URL='https://apps.rlxos.dev'
 
 if [[ -z "${NOCONTAINER}" ]]; then
     ROOTDIR="${ROOTDIR:-$(cd -- "$(dirname "$0")" >/dev/null 2>&1; pwd -P)/../}"
-    echo "ROOTDIR: ${ROOTDIR}"
     
     if [[ ! -e ${ROOTDIR}/.version ]] && [[ -z ${VERSION} ]]; then
         echo "Error! no version specified"

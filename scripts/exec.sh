@@ -8,14 +8,4 @@ BASEDIR="$(
 . ${BASEDIR}/common.sh
 
 export PKGUPD_NO_PROGRESS=1
-
-echo ":: updating pkgupd"
-pkgupd in pkgupd --force --no-depends
-
-echo ":: executing patch ::"
-find /lib/ -name "*.la" -delete
-
-echo "::updating system ::"
-pkgupd update --no-ask
-
 $@

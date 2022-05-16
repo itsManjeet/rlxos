@@ -11,6 +11,7 @@ function RunInContainer() {
     ${BASEDIR}/scripts/exec.sh ${@}
 }
 
+ls -al
 ALL_PKGS=$(find ${STORAGE_DIR}/${VERSION}/recipes/ -type f -name "*.yml" -exec basename {} \; | sed 's|.yml||g')
 
 echo ":: generating dependency tree ::"

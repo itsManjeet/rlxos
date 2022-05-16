@@ -24,5 +24,8 @@ fi
 for pkg in ${DEPENDENCY_TREE} ; do
     pkg=$(echo ${pkg} | tr -cd '[:print:]')
     echo ":: compiling ${pkg} ::"
-    RunInContainer pkgupd co ${pkg}
+    RunInContainer pkgupd co ${pkg} | tee /storage/${VERSION}/logs/${pkg}.log
+    if [[ ${PIPESTATUS[0]} != 0 ]] ; then
+        mv /storage/${VERSION}/logs/${pkg}.{log,failed}
+    fi
 done

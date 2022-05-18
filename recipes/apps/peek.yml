@@ -1,0 +1,41 @@
+id: peek
+version: 1.5.1
+about: |
+  Simple screen recoder with an easy to use interface
+
+category: accessories
+tags:
+  - screenrecoder
+  - screen
+
+depends:
+  runtime:
+    - ffmpeg
+    - gtk
+    - keybinder
+    - which
+    - gst-plugins-good
+  buildtime:
+    - vala
+    - cmake
+    - imagemagick
+
+sources:
+  - peek-{{version}}.tar.gz::https://github.com/phw/peek/archive/refs/tags/{{version}}.tar.gz
+
+type: app
+build-dir: peek-{{version}}
+post-script: |
+  cp ${pkgupd_pkgdir}/usr/share/applications/com.uploadedlobster.peek.desktop ${pkgupd_pkgdir}/peek.desktop
+  sed -i 's|Icon=com.uploadedlobster.peek|Icon=peek|' ${pkgupd_pkgdir}/peek.desktop
+  cp ${pkgupd_pkgdir}/usr/share/icons/scalable/apps/com.uploadedlobster.peek.svg ${pkgupd_pkgdir}/peek.png
+
+
+AppRun: |
+  #!/bin/sh
+  HERE="$(dirname "$(readlink -f "${0}")")"
+  export PATH="${HERE}"/usr/bin/:"${HERE}"/usr/sbin/:"${HERE}"/usr/games/:"${HERE}"/bin/:"${HERE}"/sbin/:"${PATH}"
+  export LD_LIBRARY_PATH="${HERE}"/usr/lib/:"${HERE}"/usr/lib/i386-linux-gnu/:"${HERE}"/usr/lib/x86_64-linux-gnu/:"${HERE}"/usr/lib32/:"${HERE}"/usr/lib64/:"${HERE}"/lib/:"${HERE}"/lib/i386-linux-gnu/:"${HERE}"/lib/x86_64-linux-gnu/:"${HERE}"/lib32/:"${HERE}"/lib64/:"${LD_LIBRARY_PATH}"
+  export XDG_DATA_DIRS="${HERE}"/usr/share/:"${XDG_DATA_DIRS}"
+  export GSETTINGS_SCHEMA_DIR="${HERE}"/usr/share/glib-2.0/schemas/:"${GSETTINGS_SCHEMA_DIR}"
+  exec peek "$@"

@@ -11,5 +11,6 @@ depends:
     - binutils
     - gcc
 
+build-dir: picotts-{{commit}}/pico
 pre-script: ./autogen.sh
 autoconf-dir: true

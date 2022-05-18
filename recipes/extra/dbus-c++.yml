@@ -1,6 +1,7 @@
 id: dbus-c++
 version: 0.9.0
 about: A C++ API for D-BUS
+release: 1
 depends:
   runtime:
     - dbus

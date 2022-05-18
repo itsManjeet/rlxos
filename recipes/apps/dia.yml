@@ -8,23 +8,25 @@ tags:
   - uml
   - diagram
 
-category: accessories
-packages:
-  - id: pkg
-    pack: app
-    strip: false
-    dir: .
-    script: |
-      mkdir -p AppDir
+depends:
+  buildtime:
+    - appimagetool
 
-      pkgupd-image generate dia
-      pkgupd-image union
-      pkgupd-image cleanup
-      
-      mv AppDir/usr/share/applications/dia.desktop AppDir/dia.desktop
-      cp AppDir/usr/share/icons/hicolor/48x48/apps/dia.png AppDir/dia.png
-      mv AppDir/usr/lib/x86_64-linux-gnu/dia/libdia.so AppDir/usr/lib/x86_64-linux-gnu/
-      mv AppDir ${pkgupd_pkgdir}
+category: accessories
+type: app
+strip: false
+build-dir: .
+script: |
+  mkdir -p AppDir
+
+  pkgupd-image generate dia
+  pkgupd-image union
+  pkgupd-image cleanup
+  
+  mv AppDir/usr/share/applications/dia.desktop AppDir/dia.desktop
+  cp AppDir/usr/share/icons/hicolor/48x48/apps/dia.png AppDir/dia.png
+  mv AppDir/usr/lib/x86_64-linux-gnu/dia/libdia.so AppDir/usr/lib/x86_64-linux-gnu/
+  mv AppDir ${pkgupd_pkgdir}
 
 AppRun: |
   #!/bin/sh

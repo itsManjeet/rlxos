@@ -10,6 +10,7 @@ tags:
 
 depends:
   buildtime:
+    - pkgupd-image
     - appimagetool
 
 category: accessories

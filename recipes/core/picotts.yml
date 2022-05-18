@@ -1,0 +1,15 @@
+id: picotts
+version: 20189d
+about: Text to speech voice sinthesizer from SVox, included in Android AOSP
+commit: 21089d223e177ba3cb7e385db8613a093dff74b5
+sources:
+  - https://github.com/rlxos/picotts/archive/{{commit}}.tar.gz
+depends:
+  runtime:
+    - glibc
+  buildtime:
+    - binutils
+    - gcc
+
+pre-script: ./autogen.sh
+autoconf-dir: true

@@ -2,7 +2,6 @@ id: peek
 version: 1.5.1
 about: |
   Simple screen recoder with an easy to use interface
-release: 1
 category: accessories
 tags:
   - screenrecoder

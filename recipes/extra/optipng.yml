@@ -6,13 +6,10 @@ depends:
     - glibc
     - libpng
     - zlib
-packages:
-  - id: pkg
-    dir: optipng-0.7.7
-    sources:
-      - https://downloads.sourceforge.net/sourceforge/optipng/optipng-0.7.7.tar.gz
-    script: |
-      ./configure --prefix=/usr --mandir=/usr/share/man --with-system-libs
-      make
-      
-      make prefix=${pkgupd_pkgdir}/usr mandir=${pkgupd_pkgdir}/usr/share/man install
+build-dir: optipng-{{version}}
+sources:
+  - https://downloads.sourceforge.net/sourceforge/optipng/optipng-{{version}}.tar.gz
+
+autoconf-dir: true
+configure: >
+  --with-system-libs

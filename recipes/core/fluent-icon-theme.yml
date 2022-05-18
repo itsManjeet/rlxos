@@ -1,5 +1,6 @@
 id: fluent-icon-theme
 version: 2022-02-04
+release: 1
 about: |
   A Fluent design icon theme
 
@@ -25,7 +26,7 @@ packages:
       cp ${FILES}/logo/logo.svg src/22/places/start-here.svg
       cp ${FILES}/logo/logo_alt.svg src/24/panel/start-here-symbolic.svg
       cp ${FILES}/logo/logo.svg src/24/places/start-here.svg
-
+      cp ${FILES}/logo/logo_alt.svg src/symbolic/actions/view-app-grid-symbolic.svg
 
       install -d ${pkgupd_pkgdir}/usr/share/icons
       ./install.sh -a -d ${pkgupd_pkgdir}/usr/share/icons/

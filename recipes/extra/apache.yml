@@ -46,9 +46,9 @@ configure: >
 
 post-script: |
   install -v -d -m 0755 ${pkgupd_pkgdir}/run/httpd
-  mv -v ${pkgupd_pkgdir}/usr/bin/suexec ${pkgupd_pkgdir}/usr/lib/httpd/suexec
-  chgrp 25 ${pkgupd_pkgdir}/usr/lib/httpd/suexec
-  chmod 4754 ${pkgupd_pkgdir}/usr/lib/httpd/suexec
+  # mv -v ${pkgupd_pkgdir}/usr/bin/suexec ${pkgupd_pkgdir}/usr/lib/httpd/suexec
+  # chgrp 25 ${pkgupd_pkgdir}/usr/lib/httpd/suexec
+  # chmod 4754 ${pkgupd_pkgdir}/usr/lib/httpd/suexec
   install -v -d -m 0755 -o 25 -g 25 ${pkgupd_pkgdir}/srv/www
   install -v -D -m 0644 ${FILES}/apache/service ${pkgupd_pkgdir}/usr/lib/systemd/system/httpd.service
       

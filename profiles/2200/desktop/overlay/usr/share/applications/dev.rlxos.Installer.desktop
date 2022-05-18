@@ -5,5 +5,5 @@ GenericName=installer
 Comment=Application
 Icon=dev.rlxos.Installer
 StartupNotify=true
-Exec=/bin/pkexec /bin/installer 2>&1 1>/tmp/installer.log
+Exec=/bin/pkexec /bin/installer
 Categories=GNOME;GTK;

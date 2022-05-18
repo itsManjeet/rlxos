@@ -12,4 +12,6 @@ sources:
 
 autoconf-dir: true
 configure: >
+  --prefix=/usr
+  --mandir=/usr/share/man
   --with-system-libs

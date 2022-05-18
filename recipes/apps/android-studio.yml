@@ -6,7 +6,13 @@ type: app
 depends:
   buildtime:
     - appimagetool
+    - shared-mime-info
 
+category: development
+tags:
+  - android
+  - apps
+  - ide
 sources:
   - https://dl.google.com/dl/android/studio/ide-zips/{{version}}/android-studio-{{version}}-linux.tar.gz
 build-dir: .

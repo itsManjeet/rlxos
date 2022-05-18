@@ -8,13 +8,10 @@ depends:
   buildtime:
     - gtk
     - optipng
-packages:
-  - id: pkg
-    dir: elementary-xfce-0.15.2
-    strip: false
-    sources:
-      - elementary-xfce-0.15.2.tar.gz::https://github.com/shimmerproject/elementary-xfce/archive/refs/tags/v0.15.2.tar.gz
-    script: |
-      ./configure --prefix=/usr
-      make
-      make DESTDIR=${pkgupd_pkgdir} install
+build-dir: elementary-xfce-{{version}}
+sources:
+  - elementary-xfce-{{version}}.tar.gz::https://github.com/shimmerproject/elementary-xfce/archive/refs/tags/v{{version}}.tar.gz
+script: |
+  ./configure --prefix=/usr
+  make
+  make DESTDIR=${pkgupd_pkgdir} install

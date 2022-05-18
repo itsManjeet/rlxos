@@ -11,19 +11,14 @@ depends:
   buildtime:
     - intltool
     - iproute2
+    - py-cython
 
 sources:
-  - https://github.com/blueman-project/blueman/releases/download/2.2.1/blueman-2.2.1.tar.xz
+  - https://github.com/blueman-project/blueman/releases/download/{{version}}/blueman-{{version}}.tar.xz
 
-packages:
-  - id: pkg
-    dir: blueman-2.2.1
-    flags:
-      - id: configurator
-        value: configure
-        
-      - id: configure
-        value: >
-          --libexecdir=/usr/lib/blueman
-          --disable-schemas-compile
-          --with-dhcp-config='/etc/dhcpd.conf'
+build-dir: blueman-{{version}}
+build-tool: autoconf
+configure: >
+  --libexecdir=/usr/lib/blueman
+  --disable-schemas-compile
+  --with-dhcp-config='/etc/dhcpd.conf'

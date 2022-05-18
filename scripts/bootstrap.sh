@@ -195,6 +195,8 @@ EOT
     chroot ${ROOTFS} /usr/bin/localdef -i ${loc} -f ${format} ${loc}.${format}
   done < /var/cache/pkgupd/files/supported_locales
 
+  echo "${BUILD_ID}" > ${TEMPDIR}/etc/rlxos-release
+
   if [[ -e /profiles/${VERSION}/${PROFILE}/script ]] ; then    
     echo ":: patching root filesystem ::"
     SCRIPT=$(cat /profiles/${VERSION}/${PROFILE}/script)

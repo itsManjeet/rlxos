@@ -1,0 +1,17 @@
+id: openjdk-bin
+version: 18.0.1
+about: Java programming language [Binary]
+depends:
+  runtime:
+    - alsa-lib
+    - cups
+    - giflib
+    - xorg-libs
+
+sources:
+  - https://anduin.linuxfromscratch.org/BLFS/OpenJDK/OpenJDK-{{version}}/OpenJDK-{{version}}+10-x86_64-bin.tar.xz
+build-dir: .
+script: |
+  install -v -d -m 0755 ${pkgupd_pkgdir}/opt/openjdk-bin-{{version}}
+  mv * ${pkgupd_pkgdir}/opt/openjdk-bin-{{version}}/
+  chown -R root:root ${pkgupd_pkgdir}/opt/openjdk-bin-{{version}}

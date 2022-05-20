@@ -1,5 +1,6 @@
 id: dnsmasq
 version: 2.86
+release: 1
 about: Lightweight, easy to configure DNS forwarder and DHCP server
 depends:
   runtime:

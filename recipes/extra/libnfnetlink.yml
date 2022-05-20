@@ -1,5 +1,6 @@
 id: libnfnetlink
 version: 1.0.2
+release: 1
 about: low-level library for netfilter related kernel/userspace communication
 depends:
   runtime:

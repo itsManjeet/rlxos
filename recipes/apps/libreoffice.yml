@@ -14,6 +14,9 @@ type: app
 sources:
   - https://libreoffice.soluzioniopen.com/stable/fresh/LibreOffice-fresh.basic-x86_64.AppImage
 
+depends:
+  buildtime:
+    - appimagetool
 build-dir: .
 script: |
   chmod +x LibreOffice-fresh.basic-x86_64.AppImage

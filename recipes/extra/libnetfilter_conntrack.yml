@@ -1,5 +1,6 @@
 id: libnetfilter_conntrack
 version: 1.0.9
+release: 1
 about: library providing an API to the in-kernel connecting tracking state table
 depends:
   runtime:

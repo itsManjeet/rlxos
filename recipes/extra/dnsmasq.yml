@@ -1,0 +1,42 @@
+id: dnsmasq
+version: 2.86
+about: Lightweight, easy to configure DNS forwarder and DHCP server
+depends:
+  runtime:
+    - dbus
+    - libidn2
+    - libnetfilter_conntrack
+    - nettle
+sources:
+  - http://www.thekelleys.org.uk/dnsmasq/dnsmasq-{{version}}.tar.xz
+
+script: |
+  OPTS='-DHAVE_DNSSEC -DHAVE_DBUS -DHAVE_LIBIDN2 -DHAVE_CONNTRACK'
+
+  make \
+    PREFIX=/usr \
+    BINDIR=/usr/bin \
+    COPTS="${OPTS}" \
+    all-i18n
+
+  cd contrib/lease-tools
+  make \
+    COPTS="${OPTS}" \
+    all
+
+  cd ../..
+  make \
+    COPTS="${OPTS}" \
+    PREFIX=/usr \
+    BINDIR=/usr/bin \
+    DESTDIR=${pkgupd_pkgdir} \
+    install install-i18n
+
+    install -D -m 0644 dbus/dnsmasq.conf ${pkgupd_pkgdir}/usr/share/dbus-1/system.d/dnsmasq.conf
+    install -D -m 0644 dnsmasq.conf.example ${pkgupd_pkgdir}/etc/dnsmasq.conf
+    install -D -m 0644 ${FILES}/dnsmasq/dnsmasq.service -t ${pkgupd_pkgdir}/usr/lib/systemd/system/
+    
+    sed -i 's,%%PREFIX%%,/usr,' ${pkgupd_pkgdir}/etc/dnsmasq.conf
+    install -D -m 0644 "trust-anchors.conf" -t ${pkgupd_pkgdir}/usr/share/dnsmasq/
+    install -Dm0755 -t "$pkgupd_pkgdir"/usr/bin/ 'contrib/lease-tools/dhcp_'{release{,6},lease_time}
+    install -Dm0644 -t "$pkgupd_pkgdir"/usr/share/man/man1 'contrib/lease-tools/dhcp_'{release{,6},lease_time}.1

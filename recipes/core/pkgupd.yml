@@ -1,7 +1,7 @@
 id: pkgupd
 version: 2200
-release: 6
-commit: c826b2dd1fad1f530205cd50a5f3faf7ff263ebe
+release: 8
+commit: 8e67c4a9f2f64a21cc79ce1a8144ca2b8c1a25fa
 about: |
   An Extensible package manager for rlxos
 
@@ -18,7 +18,7 @@ depends:
     - cmake
 
 sources:
-  - pkgupd-{{version}}-{{commit}}.tar.gz::https://github.com/rlxos/pkgupd/archive/{{commit}}.tar.gz
+  - pkgupd-{{version}}-{{commit}}.tar.gz::https://github.com/itsmanjeet/pkgupd/archive/{{commit}}.tar.gz
 
 build-dir: pkgupd-{{commit}}
 post-script: |

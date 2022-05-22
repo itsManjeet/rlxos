@@ -18,8 +18,8 @@ repos:
     - testing
 environ:
     - FILES=/var/cache/pkgupd/files/
-    - CFLAGS=-march=x86-64 -O2 -pipe
-    - CXXFLAGS=-march=x86-64 -O2 -pipe
+    - CFLAGS="-march=x86-64 -O2 -pipe"
+    - CXXFLAGS="-march=x86-64 -O2 -pipe"
     - MAKEFLAGS=-j8
 mirrors:
     - https://rlxos.dev/storage/

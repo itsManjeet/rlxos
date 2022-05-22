@@ -9,10 +9,12 @@ BASEDIR="$(
 
 
 echo "installing pkgupd"
-DEBUG=1 pkgupd in pkgupd --force --no-depends
+pkgupd in pkgupd --force --no-depends
+
+pkgupd sync
 
 for i in ${@} ; do
-    pkgupd build build.recipe=/var/cache/pkgupd/${i} package.repository=$(echo ${i} | cut -d '/' -f2) force=true
+    DEBUG=1 pkgupd build build.recipe=/var/cache/pkgupd/${i} package.repository=$(echo ${i} | cut -d '/' -f2) mode.all-yes=true
     if [[ $? != 0 ]] ; then
         echo "Error! failed to build ${i}"
         exit 1

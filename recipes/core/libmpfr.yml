@@ -8,13 +8,9 @@ depends:
     - libgmp
 
 sources:
-  - https://www.mpfr.org/mpfr-4.1.0/mpfr-4.1.0.tar.xz
+  - https://ftp.gnu.org/gnu/mpfr/mpfr-{{version}}.tar.xz
 
-packages:
-  - id: pkg
-    dir: mpfr-4.1.0
-    flags:
-      - id: configure
-        value: >
-          --enable-thread-safe
-          --disable-static
+build-dir: mpfr-{{version}}
+configure: >
+  --enable-thread-safe
+  --disable-static

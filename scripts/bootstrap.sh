@@ -57,7 +57,7 @@ function rebuild() {
       fi
       echo ":: compiling ${pkg}"
       pkgupd build \
-        build.recipe=${RECIPES_DIR}/core/${pkg} \
+        build.recipe=${RECIPES_DIR}/core/${pkg}.yml \
         build.depends=false \
         package.repository=core \
         mode.all-yes=true 2>&1 | sed -r 's/\x1b\[[0-9;]*m//g' | tee /logs/${pkg}.log

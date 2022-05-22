@@ -26,5 +26,5 @@ jobs:
           export ROOTDIR=/home/itsmanjeet/server/rlxos
           export PKGUPD_NO_PROGRESS=1
 
-          ./scripts/bootstrap.sh --bootstrap --rebuild  --update-pkgupd --continue-build
+          ./scripts/bootstrap.sh --bootstrap --rebuild  --continue-build
          

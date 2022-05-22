@@ -102,7 +102,8 @@ function generating_rootfs() {
     pkgupd install ${@} \
       mode.all-yes=true \
       dir.root=${ROOTFS} \
-      dir.data=${ROOTFS}/var/lib/pkgupd/data
+      dir.data=${ROOTFS}/var/lib/pkgupd/data \
+      installer.triggers=false
     ret=${?}
     
     return ${ret}

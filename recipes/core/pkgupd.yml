@@ -1,7 +1,7 @@
 id: pkgupd
-version: 2201
-release: 4
-commit: 302d5c895f4b841e3b5f76789c992e03d36c2bfd
+version: 2200
+release: 5
+commit: c826b2dd1fad1f530205cd50a5f3faf7ff263ebe
 about: |
   An Extensible package manager for rlxos
 
@@ -21,40 +21,3 @@ sources:
   - pkgupd-{{version}}-{{commit}}.tar.gz::https://github.com/rlxos/pkgupd/archive/{{commit}}.tar.gz
 
 build-dir: pkgupd-{{commit}}
-post-script: |
-  install -v -D -m 0755 _pkgupd_builddir/pkgupd-build ${pkgupd_pkgdir}/usr/bin/pkgupd-builder
-  install -v -D -m 0644 _pkgupd_builddir/liblibpkgupd.a ${pkgupd_pkgdir}/usr/lib/libpkgupd.a
-  mkdir -p ${pkgupd_pkgdir}/usr/include/libpkgupd/
-  cp libpkgupd/*.hh ${pkgupd_pkgdir}/usr/include/libpkgupd/
-
-split:
-  - into: pkgupd-builder
-    about: PKGUPD builder tool
-    files:
-      - usr/bin/pkgupd-builder
-
-  - into: libpkgupd
-    about: PKGUPD developement library
-    files:
-      - usr/lib/libpkgupd.a
-      - usr/include/libpkgupd/builder.hh
-      - usr/include/libpkgupd/colors.hh
-      - usr/include/libpkgupd/database.hh
-      - usr/include/libpkgupd/defines.hh
-      - usr/include/libpkgupd/downloader.hh
-      - usr/include/libpkgupd/exec.hh
-      - usr/include/libpkgupd/group.hh
-      - usr/include/libpkgupd/image.hh
-      - usr/include/libpkgupd/installer.hh
-      - usr/include/libpkgupd/libpkgupd.hh
-      - usr/include/libpkgupd/package.hh
-      - usr/include/libpkgupd/packager.hh
-      - usr/include/libpkgupd/recipe.hh
-      - usr/include/libpkgupd/remover.hh
-      - usr/include/libpkgupd/repository.hh
-      - usr/include/libpkgupd/resolver.hh
-      - usr/include/libpkgupd/stripper.hh
-      - usr/include/libpkgupd/system-database.hh
-      - usr/include/libpkgupd/tar.hh
-      - usr/include/libpkgupd/triggerer.hh
-      - usr/include/libpkgupd/user.hh

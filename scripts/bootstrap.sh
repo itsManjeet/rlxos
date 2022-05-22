@@ -42,7 +42,7 @@ function rebuild() {
   echo ":: rebuilding packages ::"
   for pkg in ${PKGS} ; do
     if [[ -n ${CONTINUE_BUILD} ]] && [[ -e /logs/${pkg}.log ]] ; then
-      pkgupd install ${pkg} force=true
+      pkgupd install ${pkg} force=true mode.all-yes=true
       if [[ ${PIPESTATUS[0]} != 0 ]] ; then
         echo ":: ERROR :: failed to install ${pkg}"
         mv /logs/${pkg}.{log,failed}
@@ -255,7 +255,7 @@ EOT
     exit 1
   fi
 
-  pkgupd install linux version=${VERSION} dir.data="/tmp" force=true
+  pkgupd install linux version=${VERSION} dir.data="/tmp" force=true mode.all-yes=true
   if [[ $? != 0 ]] ; then
     rm -rf ${ISODIR} ${TEMPDIR} ${PKGUPD_CONFIG}
     echo ":: ERROR :: failed to calculate dependency tree"
@@ -416,7 +416,7 @@ function continue_build() {
     echo ":: bootstraping toolchain ::"
     for i in kernel-headers glibc binutils libgcc gcc; do
       echo ":: installing toolchain - ${i} ::"
-      pkgupd install ${i} force=true
+      pkgupd install ${i} force=true mode.all-yes=true
       if [[ $? != 0 ]] ; then
           echo ":: ERROR :: failed to installing toolchain ${i}"
           exit 1

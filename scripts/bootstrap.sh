@@ -248,7 +248,7 @@ EOT
   echo ":: installing rootfs.img"
   cp /releases/rlxos-${VERSION}-${BUILD_ID}.sfs ${ISODIR}/rootfs.img
 
-  KERNEL_VERSION=$(pkgupd info linux | grep version: | awk '{print $2}')
+  KERNEL_VERSION=$(pkgupd info linux info.value=version)
   if [[ $? != 0 ]] || [[ -z ${KERNEL_VERSION} ]] ; then
     rm -rf ${ISODIR} ${TEMPDIR}
     echo ":: ERROR :: failed to get kernel version"

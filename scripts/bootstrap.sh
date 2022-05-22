@@ -55,6 +55,12 @@ function rebuild() {
             continue
         esac
       fi
+
+      case ${pkg} in
+        libgcc)   pkg=gcc   ;;
+        libllvm)  pkg=llvm  ;;
+        libboost) pkg=boost ;;
+      esac
       echo ":: compiling ${pkg}"
       pkgupd build \
         build.recipe=${RECIPES_DIR}/core/${pkg}.yml \

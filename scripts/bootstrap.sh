@@ -14,11 +14,21 @@ BUILD_ID=$(date +"%m%d%y%H%M")
 DEPENDS_FILE='/tmp/depends'
 export PKGUPD_NO_PROGRESS=1
 
+RECIPES_DIR='/var/cache/pkgupd/recipes/'
+
+pkgupd in pkgupd --force --no-depends
+
+pkgupd sync repos=core,
+
 function bootstrap() {
   echo ":: bootstraping toolchain ::"
   for i in kernel-headers glibc binutils gcc binutils glibc ; do
     echo ":: compiling toolchain - ${i} ::"
-    NO_DEPENDS=1 pkgupd co ${i} --force
+    pkgupd build \
+      build.recipe=${RECIPES_DIR}/core/${i}.yml \
+      build.depends=false \
+      package.repository=core \
+      mode.all-yes=true
     if [[ $? != 0 ]] ; then
         echo ":: ERROR :: failed to build toolchain ${i}"
         exit 1
@@ -32,7 +42,7 @@ function rebuild() {
   echo ":: rebuilding packages ::"
   for pkg in ${PKGS} ; do
     if [[ -n ${CONTINUE_BUILD} ]] && [[ -e /logs/${pkg}.log ]] ; then
-      pkgupd in ${pkg} --no-depends --force
+      pkgupd install ${pkg} force=true
       if [[ ${PIPESTATUS[0]} != 0 ]] ; then
         echo ":: ERROR :: failed to install ${pkg}"
         mv /logs/${pkg}.{log,failed}
@@ -46,7 +56,11 @@ function rebuild() {
         esac
       fi
       echo ":: compiling ${pkg}"
-      NO_DEPENDS=1 pkgupd co ${pkg} --force 2>&1 | sed -r 's/\x1b\[[0-9;]*m//g' | tee /logs/${pkg}.log
+      pkgupd build \
+        build.recipe=${RECIPES_DIR}/core/${pkg} \
+        build.depends=false \
+        package.repository=core \
+        mode.all-yes=true 2>&1 | sed -r 's/\x1b\[[0-9;]*m//g' | tee /logs/${pkg}.log
       if [[ ${PIPESTATUS[0]} != 0 ]] ; then
         echo ":: ERROR :: failed to build ${pkg}"
         mv /logs/${pkg}.{log,failed}
@@ -77,10 +91,10 @@ function rebuild() {
 }
 
 function generating_rootfs() {
-    temp_config=$(mktemp /tmp/pkgupd.XXXXXX)
-    echo "RootDir: ${ROOTFS}
-SystemDatabase: ${ROOTFS}/var/lib/pkgupd/data" > ${temp_config}
-    pkgupd in ${@} --config ${temp_config} --no-ask --no-triggers
+    pkgupd install ${@} \
+      mode.all-yes=true \
+      dir.root=${ROOTFS} \
+      dir.data=${ROOTFS}/var/lib/pkgupd/data
     ret=${?}
     rm ${temp_config}
     
@@ -92,7 +106,7 @@ function generate_docker() {
   TEMPDIR=$(mktemp -d)
 
   echo ":: install required tools ::"
-  pkgupd in docker --no-ask
+  pkgupd install docker mode.all-yes=true
   if [[ $? != 0 ]] ; then
     echo ":: ERROR :: failed to install required tools"
     exit 1
@@ -154,7 +168,7 @@ function generate_iso() {
   TEMPDIR=$(mktemp -d)
 
   echo ":: install required tools ::"
-  pkgupd in grub-i386 grub squashfs-tools lvm2 initramfs plymouth mtools linux --no-ask
+  pkgupd install grub-i386 grub squashfs-tools lvm2 initramfs plymouth mtools linux mode.all-yes=true
   if [[ $? != 0 ]] ; then
     echo ":: ERROR :: failed to install required tools"
     exit 1
@@ -233,17 +247,12 @@ EOT
     exit 1
   fi
 
-  PKGUPD_CONFIG=$(mktemp)
-  echo "Version: ${VERSION}
-SystemDatabase: /tmp
-RootDir: ${ISODIR}" > ${PKGUPD_CONFIG}
-  pkgupd install --config ${PKGUPD_CONFIG} linux --force --no-depends
+  pkgupd install linux version=${VERSION} dir.data="/tmp" force=true
   if [[ $? != 0 ]] ; then
     rm -rf ${ISODIR} ${TEMPDIR} ${PKGUPD_CONFIG}
     echo ":: ERROR :: failed to calculate dependency tree"
     exit 1
   fi
-  rm ${PKGUPD_CONFIG}
 
 
   echo ":: installing initrd kernel=${KERNEL_VERSION}-rlxos Modules=${ISODIR}/boot/modules"
@@ -399,7 +408,7 @@ function continue_build() {
     echo ":: bootstraping toolchain ::"
     for i in kernel-headers glibc binutils libgcc gcc; do
       echo ":: installing toolchain - ${i} ::"
-      pkgupd in ${i} --force --no-depends
+      pkgupd install ${i} force=true
       if [[ $? != 0 ]] ; then
           echo ":: ERROR :: failed to installing toolchain ${i}"
           exit 1
@@ -421,7 +430,12 @@ function compile_all() {
       echo ":: skipping ${pkg}, already compiled"
       continue
     fi
-    pkgupd co ${pkg} 2>&1 | sed -r 's/\x1b\[[0-9;]*m//g' | tee /logs/${pkg}.log
+    pkgupd build \
+      build.recipe=${RECIPES_DIR}/core/${pkg}.yml \
+      package.repository=core \
+      build.depends=false \
+      package.repository=core \
+      mode.all-yes=true 2>&1 | sed -r 's/\x1b\[[0-9;]*m//g' | tee /logs/${pkg}.log
     if [[ ${PIPESTATUS[0]} != 0 ]] ; then
         echo ":: ERROR :: failed to build ${pkg}"
         mv /logs/${pkg}.{log,failed}
@@ -441,21 +455,11 @@ function compile_all() {
 }
 
 function calculatePackages() {
-  PKGUPD_CONFIG=$(mktemp)
-  echo "Version: ${VERSION}
-SystemDatabase: /tmp
-Repositories:
-  - core
-  - extra
-  - testing
-  - fonts
-  - apps" > ${PKGUPD_CONFIG}
-  PKGS=$(pkgupd depends --config ${PKGUPD_CONFIG} ${@} 2>&1)
+  PKGS=$(pkgupd depends dir.data=/tmp repos=core, ${@} 2>&1)
   if [[ $? != 0 ]] ; then
     echo ":: ERROR :: failed to calculate dependency tree: ${PKGS}"
     exit 1
   fi
-  rm ${PKGUPD_CONFIG}
 }
 
 function main() {
@@ -472,7 +476,7 @@ function main() {
   if [[ -n ${LIST_DEPENDS} ]] ; then
     PROFILE_PKGS=$(cat /profiles/${VERSION}/${PROFILE}/pkgs)
     echo ":: listing dependencies ::"
-    calculatePackages --force ${PROFILE_PKGS} grub-i386 grub squashfs-tools lvm2 initramfs plymouth mtools linux
+    calculatePackages ${PROFILE_PKGS} grub-i386 grub squashfs-tools lvm2 initramfs plymouth mtools linux
 
     echo "Packages: ${PKGS}"
     exit 0
@@ -481,13 +485,13 @@ function main() {
   if [[ -n ${CONTINUE_BUILD} ]] || [[ -n ${BOOTSTRAP} ]] ; then
     PROFILE_PKGS=$(cat /profiles/${VERSION}/${PROFILE}/pkgs)
     echo ":: calculating dependencies ::"
-    calculatePackages --force ${PROFILE_PKGS} grub-i386 grub squashfs-tools lvm2 initramfs plymouth mtools linux
+    calculatePackages ${PROFILE_PKGS} grub-i386 grub squashfs-tools lvm2 initramfs plymouth mtools linux
 
     echo "Packages: ${PKGS}"
   elif [[ -n ${COMPILE_ALL} ]] ; then
     echo ":: ordering all packages in dependency order"
     PROFILE_PKGS=$(find /var/cache/pkgupd/recipes/ -type f -name "*.yml" -exec basename {} \; | sed 's|.yml||g')
-    calculatePackages --force ${PROFILE_PKGS}
+    calculatePackages ${PROFILE_PKGS}
 
     echo "Packages: ${PKGS}"
   fi
@@ -513,7 +517,7 @@ function main() {
   [[ -n ${GENERATE_DOCKER}   ]] && {
     PROFILE_PKGS=$(cat /profiles/${VERSION}/docker/pkgs)
     echo ":: listing required packages ::"
-    calculatePackages ${PROFILE_PKGS} --force
+    calculatePackages ${PROFILE_PKGS}
     generate_docker
     docker push itsmanjeet/rlxos-devel:${VERSION}-${BUILD_ID}
   }

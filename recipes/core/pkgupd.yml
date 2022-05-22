@@ -21,3 +21,7 @@ sources:
   - pkgupd-{{version}}-{{commit}}.tar.gz::https://github.com/rlxos/pkgupd/archive/{{commit}}.tar.gz
 
 build-dir: pkgupd-{{commit}}
+post-script: |
+  mkdir -p ${pkgupd_pkgdir}/usr/lib/
+  cp _pkgupd_builddir/liblibpkgupd.a ${pkgupd_pkgdir}/usr/lib/libpkgupd.a
+  mkdir -p ${pkgupd_pkgdir}/usr/include

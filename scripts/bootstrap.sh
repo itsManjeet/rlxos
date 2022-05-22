@@ -97,6 +97,7 @@ function rebuild() {
 }
 
 function generating_rootfs() {
+  mkdir -p ${ROOTFS}/var/lib/pkgupd/data
     pkgupd install ${@} \
       mode.all-yes=true \
       dir.root=${ROOTFS} \

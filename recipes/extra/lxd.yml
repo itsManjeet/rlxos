@@ -1,5 +1,6 @@
 id: lxd
 version: 4.19
+release: 1
 about: Daemon based on liblxc offering a REST API to manage containers
 depends:
   runtime:

@@ -1,7 +1,7 @@
 id: pkgupd
 version: 2200
-release: 8
-commit: 8e67c4a9f2f64a21cc79ce1a8144ca2b8c1a25fa
+release: 13
+commit: c81139651214c750cdefabb790e49ee5ecbc00d0
 about: |
   An Extensible package manager for rlxos
 
@@ -25,3 +25,13 @@ post-script: |
   mkdir -p ${pkgupd_pkgdir}/usr/lib/
   cp _pkgupd_builddir/liblibpkgupd.a ${pkgupd_pkgdir}/usr/lib/libpkgupd.a
   mkdir -p ${pkgupd_pkgdir}/usr/include
+
+files:
+  - path: etc/pkgupd.yml
+    content: |
+      version: {{version}}
+      mirrors:
+        - https://rlxos.dev/storage/stable
+      repos:
+        - core
+        - extra

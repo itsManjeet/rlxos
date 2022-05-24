@@ -22,4 +22,4 @@ environ:
     - CXXFLAGS="-march=x86-64 -O2 -pipe"
     - MAKEFLAGS=-j8
 mirrors:
-    - https://rlxos.dev/storage/
+    - https://rlxos.dev/storage/testing

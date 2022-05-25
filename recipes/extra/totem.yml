@@ -23,6 +23,7 @@ depends:
     - grilo-plugins
     - gst-libav
     - py-dbus
+    - libpeas
   buildtime:
     - appstream-glib
     - docbook-xsl

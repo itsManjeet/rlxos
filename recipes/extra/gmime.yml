@@ -12,6 +12,7 @@ depends:
   buildtime:
     - gobject-introspection
     - vala
+    - gtk-doc
 
 pre-script: |
   NOCONFIGURE=1 ./autogen.sh

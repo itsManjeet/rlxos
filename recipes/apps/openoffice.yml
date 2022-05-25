@@ -1,0 +1,23 @@
+id: openoffice
+version: 4.1.12
+about: A free and open productivity suite
+depends:
+  buildtime:
+    - appimagetool
+
+sources:
+  - https://downloads.apache.org/openoffice/{{version}}/binaries/en-US/Apache_OpenOffice_{{version}}_Linux_x86-64_install-rpm_en-US.tar.gz
+
+build-dir: en-US/RPMS
+script: |
+  mkdir -p ${pkgupd_pkgdir}
+  for file in *.rpm ; do
+    echo "extracting ${file##*/}"
+    bsdtar -xf ${file} -C ${pkgupd_pkgdir}
+  done
+
+  cd desktop-integration
+  for file in *.rpm ; do
+    echo "extracting ${file##*/}"
+    bsdtar -xf ${file} -C ${pkgupd_pkgdir}
+  done

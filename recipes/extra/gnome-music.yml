@@ -25,6 +25,7 @@ depends:
   buildtime:
     - gobject-introspection
     - appstream-glib
+    - itstool
 
 sources:
-  - https://gitlab.gnome.org/GNOME/gnome-music/-/archive/{{version}}/gnome-music-{{version}}.tar.gz
+  - https://download.gnome.org/sources/gnome-music/40/gnome-music-{{version}}.tar.xz

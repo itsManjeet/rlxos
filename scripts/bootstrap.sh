@@ -18,7 +18,7 @@ RECIPES_DIR='/var/cache/pkgupd/recipes/'
 
 pkgupd in pkgupd --force --no-depends
 
-pkgupd sync repos=core,
+pkgupd sync repos=core,extra
 
 function bootstrap() {
   echo ":: bootstraping toolchain ::"
@@ -114,7 +114,7 @@ function generate_docker() {
   TEMPDIR=$(mktemp -d)
 
   echo ":: install required tools ::"
-  pkgupd install docker mode.all-yes=true
+  pkgupd install docker mode.all-yes=true repos=core,extra
   if [[ $? != 0 ]] ; then
     echo ":: ERROR :: failed to install required tools"
     exit 1

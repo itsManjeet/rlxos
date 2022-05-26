@@ -255,7 +255,7 @@ EOT
     exit 1
   fi
 
-  pkgupd install linux version=${VERSION} dir.data="/tmp" force=true mode.all-yes=true
+  pkgupd install linux version=${VERSION} dir.root=${ISODIR} dir.data="/tmp" force=true mode.all-yes=true
   if [[ $? != 0 ]] ; then
     rm -rf ${ISODIR} ${TEMPDIR} ${PKGUPD_CONFIG}
     echo ":: ERROR :: failed to calculate dependency tree"

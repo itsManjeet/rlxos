@@ -214,7 +214,7 @@ EOT
   fi
 
   while read loc format ; do
-    chroot ${ROOTFS} /usr/bin/localdef -i ${loc} -f ${format} ${loc}.${format}
+    chroot ${ROOTFS} /usr/bin/localedef -i ${loc} -f ${format} ${loc}.${format}
   done < /var/cache/pkgupd/files/supported_locales
 
   echo "${BUILD_ID}" > ${TEMPDIR}/etc/rlxos-release

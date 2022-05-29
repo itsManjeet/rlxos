@@ -1,0 +1,22 @@
+id: phodav
+version: 2.5
+about: WebDav server implementation using libsoup (RFC 4918)
+depends:
+  runtime:
+    - avahi
+    - libsoup
+    - systemd
+  buildtime:
+    - gtk-doc
+    - meson
+    - xmlto
+sources:
+  - https://download.gnome.org/sources/{{id}}/{{version}}/{{id}}-{{version}}.tar.xz
+
+pre-script: |
+  sed -i 's|/etc/sysconfig/spice-webdavd|/etc/conf.d/spice-webdavd|
+          s|/usr/sbin/spice-webdavd|/usr/bin/spice-webdavd|' data/spice-webdavd.service
+      
+post-script: |
+  install -dm755 "$pkgupd_pkgdir/etc/conf.d/"
+  echo 'SPICE_WEBDAVD_EXTRA_ARGS=""' > "$pkgupd_pkgdir/etc/conf.d/spice-webdavd"

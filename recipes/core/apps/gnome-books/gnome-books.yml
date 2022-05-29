@@ -1,0 +1,20 @@
+id: gnome-books
+version: 40.0
+about: Access and organize your e-books on GNOME
+depends:
+  runtime:
+    - evince
+    - gjs
+    - gnome-desktop
+    - gnome-epub-thumbnailer
+    - gtk
+    - libgepub
+    - tracker-miners
+    - webkitgtk
+  buildtime:
+    - gobject-introspection
+    - meson
+    - git
+    - docbook-xsl
+sources:
+  - https://download.gnome.org/sources/gnome-books/40/gnome-books-{{version}}.tar.xz

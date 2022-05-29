@@ -1,5 +1,5 @@
 id: qemu
-version: 6.0.0
+version: 7.0.0
 release: 1
 about: |
   A full virtualization solution for Linux on x86 hardware containing virtualization extensions
@@ -17,10 +17,13 @@ depends:
    - gtk2
    - ncurses
    - sdl2
+   - spice
    - cairo
    - samba
+   - libcacard
   buildtime:
    - pkg-config
+   - spice-protocol
 
 sources:
   - https://download.qemu-project.org/qemu-{{version}}.tar.xz
@@ -33,9 +36,10 @@ configure: >
   --enable-modules
   --enable-sdl
   --enable-gtk
+  --enable-spice
     
 post-script: |
-  install -v -D -m 644 ${FILES}/qemu/65-kvm.rules -t ${pkgupd_pkgdir}/usr/lib/udev/rules.d/
+  install -v -D -m 644 ${FILES_DIR}/65-kvm.rules -t ${pkgupd_pkgdir}/usr/lib/udev/rules.d/
 
   chgrp kvm ${pkgupd_pkgdir}/usr/lib/qemu-bridge-helper
   chmod 4750 ${pkgupd_pkgdir}/usr/lib/qemu-bridge-helper

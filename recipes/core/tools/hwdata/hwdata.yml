@@ -1,0 +1,13 @@
+id: hwdata
+version: 0.360
+about: hardware identification databases
+depends:
+  buildtime:
+    - git
+sources:
+  - hwdata-{{version}}.tar.gz::https://github.com/vcrhonek/hwdata/archive/refs/tags/v{{version}}.tar.gz
+build-dir: hwdata-{{version}}
+script: |
+  for ids in pci.ids pnp.ids usb.ids; do
+    install -Dm644 "$ids" "${pkgupd_pkgdir}/usr/share/hwdata/${ids}"
+  done

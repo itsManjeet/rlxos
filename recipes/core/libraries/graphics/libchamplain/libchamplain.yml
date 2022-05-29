@@ -1,0 +1,16 @@
+id: libchamplain
+version: 0.12.20
+about: A map widget
+depends:
+  runtime:
+    - cairo
+    - clutter-gtk
+    - libsoup
+    - sqlite
+  buildtime:
+    - gobject-introspection
+    - gtk-doc
+    - meson
+    - vala
+sources:
+  - https://download.gnome.org/sources/{{id}}/0.12/{{id}}-{{version}}.tar.xz

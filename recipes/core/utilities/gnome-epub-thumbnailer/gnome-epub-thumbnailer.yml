@@ -1,0 +1,14 @@
+id: gnome-epub-thumbnailer
+version: 1.6
+about: Thumbnailer for EPub and MOBI books
+depends:
+  runtime:
+    - gdk-pixbuf
+    - libarchive
+    - librsvg
+    - libxml2
+sources:
+  - https://gitlab.gnome.org/GNOME/gnome-epub-thumbnailer/-/archive/{{version}}/gnome-epub-thumbnailer-{{version}}.tar.gz
+
+pre-script: |
+  NOCONFIGURE=1 ./autogen.sh

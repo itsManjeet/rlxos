@@ -1,0 +1,21 @@
+id: yajl
+version: 2.1.0
+about: yet another json library
+depends:
+  runtime:
+    - glibc
+  buildtime:
+    - cmake
+sources:
+  - yajl-{{version}}.tar.gz::https://github.com/lloyd/yajl/archive/refs/tags/{{version}}.tar.gz
+
+build-dir: yajl-{{version}}
+environ:
+  - CFLAGS+=' -ffat-lto-objects'
+
+configure: >
+  -DCMAKE_BUILD_TYPE='None'
+  -Wno-dev
+
+post-script: |
+  install -vDm 644 COPYING -t "$pkgupd_pkgdir/usr/share/doc/{{id}}"

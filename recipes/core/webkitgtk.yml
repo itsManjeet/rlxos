@@ -20,13 +20,13 @@ depends:
     - openjpeg
     - sqlite
     - libnotify
+    - enchant
     - wpebackend-fdo
 
   buildtime:
     - cmake
     - which
     - ruby
-    - enchant
 
 sources:
   - https://webkitgtk.org/releases/webkitgtk-2.32.3.tar.xz

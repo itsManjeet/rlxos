@@ -1,0 +1,25 @@
+id: evince
+version: 40.5
+about: Document viewer (PDF, PostScript, XPS, djvu, dvi, tiff, cbr, cbz, cb7, cbt)
+depends:
+  runtime:
+    - dconf
+    - gnome-desktop
+    - gsettings-desktop-schemas
+    - gspell
+    - gst-plugins-base
+    - gtk
+    - gvfs
+    - libarchive
+    - adwaita-icon-theme
+    - nautilus
+    - libhandy
+    - libsecret
+  buildtime:
+    - meson
+    - gtk-doc
+sources:
+  - https://gitlab.gnome.org/GNOME/evince/-/archive/{{version}}/evince-{{version}}.tar.gz
+
+meson: >
+  -Dgtk_doc=false

@@ -1,0 +1,19 @@
+id: gfbgraph
+version: 0_2_5
+about: GLib/GObject wrapper for the Facebook Graph API
+depends:
+  runtime:
+    - gnome-online-accounts
+  buildtime:
+    - gobject-introspection
+    - json-glib
+    - gtk-doc
+    - rest
+sources:
+  - https://gitlab.gnome.org/GNOME/libgfbgraph/-/archive/v_{{version}}/libgfbgraph-v_{{version}}.tar.gz
+pre-script: |
+  NOCONFIGURE=1 ./autogen.sh
+
+configure: >
+  --disable-static
+  --enable-introspection

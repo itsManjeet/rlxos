@@ -10,6 +10,6 @@ BASEDIR="$(
 echo "installing pkgupd"
 pkgupd update mode.ask=false
 
-pkgupd install squashfs-tools mode.all-yes=true
+pkgupd install squashfs-tools mode.ask=false
 
 pkgupd meta

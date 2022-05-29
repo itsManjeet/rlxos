@@ -1,0 +1,16 @@
+id: libvirt-glib
+version: 4.0.0
+about: GLib bindings for libvirt
+depends:
+  runtime:
+    - libvirt
+  buildtime:
+    - gobject-introspection
+    - intltool
+    - meson
+    - vala
+    - python
+sources:
+  - https://libvirt.org/sources/glib/{{id}}-{{version}}.tar.xz
+configure: >
+  --buildtype=plain

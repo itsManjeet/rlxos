@@ -1,0 +1,14 @@
+id: py-dbusmock
+version: 0.27.5
+about: Mock D-Bus objects for tests
+depends:
+  runtime:
+    - py-dbus
+    - py-gobject
+  buildtime:
+    - py-setuptools
+sources:
+  - https://github.com/martinpitt/python-dbusmock/releases/download/{{version}}/python-dbusmock-{{version}}.tar.gz
+script: |
+  python setup.py build
+  python setup.py install --root=${pkgupd_pkgdir} --optimize=1 --skip-build

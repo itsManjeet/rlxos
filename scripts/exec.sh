@@ -7,8 +7,7 @@ BASEDIR="$(
 
 . ${BASEDIR}/common.sh
 
-echo "installing pkgupd"
-pkgupd install pkgupd force=true
+pkgupd update mode.ask=false
 
 export PKGUPD_NO_PROGRESS=1
 $@

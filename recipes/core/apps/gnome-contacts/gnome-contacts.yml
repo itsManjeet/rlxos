@@ -1,0 +1,19 @@
+id: gnome-contacts
+version: 40.0
+about: Contact manager for GNOME
+depends:
+  runtime:
+    - evolution-data-server
+    - folks
+    - gnome-online-accounts
+    - dconf
+    - libgee
+    - cheese
+    - libhandy
+  buildtime:
+    - vala
+    - gobject-introspection
+    - meson
+    - docbook-xsl
+sources:
+  - https://gitlab.gnome.org/GNOME/gnome-contacts/-/archive/{{version}}/gnome-contacts-{{version}}.tar.gz

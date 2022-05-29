@@ -38,19 +38,17 @@ packages:
       
     
     install_script: |
-      version=1.79.2
-
-      [ -f /etc/xml/catalog ] || xmlcatalog --noout --create /etc/xml/catalog
+      [ -f /etc/xml/catalog ] || xmlcatalog --noout --create /etc/xml/catalog;
       
-      for ver in $version current; do
+      for ver in {{version}} current; do
         for x in rewriteSystem rewriteURI; do
           xmlcatalog --noout --add $x http://cdn.docbook.org/release/xsl/$ver \
-          /usr/share/xml/docbook/xsl-stylesheets-$version /etc/xml/catalog
+          /usr/share/xml/docbook/xsl-stylesheets-{{version}} /etc/xml/catalog
 
           xmlcatalog --noout --add $x http://docbook.sourceforge.net/release/xsl-ns/$ver \
-          /usr/share/xml/docbook/xsl-stylesheets-$version /etc/xml/catalog
+          /usr/share/xml/docbook/xsl-stylesheets-{{version}} /etc/xml/catalog
 
           xmlcatalog --noout --add $x http://docbook.sourceforge.net/release/xsl/$ver \
-          /usr/share/xml/docbook/xsl-stylesheets-nons-$version /etc/xml/catalog
+          /usr/share/xml/docbook/xsl-stylesheets-nons-{{version}} /etc/xml/catalog
         ;done
       ;done

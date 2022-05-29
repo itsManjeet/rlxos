@@ -1,0 +1,26 @@
+id: po4a
+version: 0.66
+about: Tools for helping translation of documentation
+depends:
+  runtime:
+    - gettext
+    - perl
+    - perl-unicode-linebreak
+    - perl-yaml-tiny
+  buildtime:
+    - docbook-xsl
+    - perl-locale-gettext
+    - perl-module-build
+    - perl-pod-parser
+    - perl-sgmls
+    - perl-term-readkey
+    - perl-text-wrapi18n
+sources:
+  - po4a-{{version}}.tar.gz::https://github.com/mquinson/po4a/archive/v{{version}}.tar.gz
+build-dir: po4a-{{version}}
+script: |
+  perl Build.PL installdirs=vendor create_packlist=0
+  LC_ALL=en_IN.UTF-8 perl Build
+  perl Build destdir=${pkgupd_pkgdir} install
+
+  find "${pkgupd_pkgdir}" -name .packlist -o -name perllocal.pod -delete

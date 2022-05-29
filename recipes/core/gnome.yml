@@ -29,7 +29,7 @@ depends:
     - gnome-keyring
     - gnome-logs
     - gnome-menus
-    # - gnome-music
+    - gnome-music
     - gnome-power-manager
     - gnome-screenshot
     - gnome-shell
@@ -50,7 +50,7 @@ depends:
     - nautilus
     # - remmina
     # - simple-scan
-    # - totem
+    - totem
     - xdg-user-dirs
     # - xdg-user-dirs-gtk
     # - yelp

@@ -1,0 +1,36 @@
+id: dpkg
+version: 1.21.7
+about: Debian package manager tools
+depends:
+  runtime:
+    - bzip2
+    - perl
+    - xz
+    - zlib
+  buildtime:
+    - perl-io-string
+    - perl-timedate
+sources:
+  - https://salsa.debian.org/dpkg-team/dpkg/-/archive/{{version}}/dpkg-{{version}}.tar.bz2
+
+pre-script: |
+  echo {{version}} > .dist-version
+  ./autogen
+
+environ:
+  CFLAGFS+=" -ffat-lto-objects"
+configure: >
+  --disable-start-stop-daemon
+
+post-script: |
+  mkdir -p ${pkgupd_pkgdir}/etc/dpkg/origins
+  ln -sf rlxos ${pkgupd_pkgdir}/etc/dpkg/origins/default
+
+  mkdir -p ${pkgupd_pkgdir}/var/dpkg/updates/
+  touch ${pkgupd_pkgdir}/var/lib/dpkg/{status,available}
+files:
+  - path: etc/dpkg/origins/rlxos
+    content: |
+      Vendor: rlxos
+      Vendor-URL: https://rlxos.dev
+      Bugs: https://rlxos.dev/

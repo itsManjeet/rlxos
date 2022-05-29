@@ -28,3 +28,10 @@ packages:
         value: >
           -D admin_group=adm
           -D systemd=true
+
+dpkg:
+  - accountsservice
+  - gir1.2-accountsservice-1.0
+  - libaccountsservice-dev
+  - libaccountsservice-doc
+  - libaccountsservice0

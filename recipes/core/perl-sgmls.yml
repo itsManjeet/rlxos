@@ -1,0 +1,22 @@
+id: perl-sgmls
+version: 1.1
+about: |
+ A Post processor for SGMLS and NSGMLS
+
+depends:
+  runtime:
+    - perl
+
+sources:
+  - https://cpan.metacpan.org/authors/id/R/RA/RAAB/SGMLSpm-{{version}}.tar.gz
+
+environ:
+  - PERL_MM_USE_DEFAULT=1
+  - PERL_AUTOINSTALL=--skipdeps
+  - MODULEBUILDRC=/dev/null
+script: |
+  find . -type f -exec chmod 0644 {} \;
+
+  perl Makefile.PL INSTALLDIRS=vendor
+  make
+  make install DESTDIR=${pkgupd_pkgdir}

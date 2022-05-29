@@ -1,0 +1,13 @@
+id: debian-archive-keyring
+version: 2021.1.1
+about: GnuPG archive keys of the debian archive
+depends:
+  runtime:
+    - gnupg
+  buildtime:
+    - jetring
+sources:
+  - https://mirrors.kernel.org/debian/pool/main/d/debian-archive-keyring/debian-archive-keyring_{{version}}.tar.xz
+script: |
+  make -j1
+  make DESTDIR=${pkgupd_pkgdir} install

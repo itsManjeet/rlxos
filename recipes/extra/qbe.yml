@@ -1,0 +1,13 @@
+id: qbe
+version: r1258
+about: Small embeddable C compiler backend
+commit: ee6c272416c2f9c76318f3a396c83aa69689c773
+depends:
+  runtime:
+    - glibc
+sources:
+  - https://c9x.me/git/qbe.git/snapshot/qbe-{{commit}}.tar.gz
+
+script: |
+  make
+  make DESTDIR=${pkgupd_pkgdir} PREFIX=/usr install

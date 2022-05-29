@@ -1,0 +1,11 @@
+--- js/ui/main.js	2022-05-29 11:28:50.820465375 +0530
++++ js/ui/main_new.js	2022-05-29 11:29:01.659375943 +0530
+@@ -309,6 +309,8 @@
+             let module = eval('imports.perf.%s;'.format(perfModuleName));
+             Scripting.runPerfScript(module, perfOutput);
+         }
++
++        overview.showApps();
+     });
+ }
+ 

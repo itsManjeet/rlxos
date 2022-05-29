@@ -108,8 +108,8 @@ function generating_rootfs() {
       dir.data=${ROOTFS}/var/lib/pkgupd/data \
       installer.triggers=false
     ret=${?}
-    
-    return ${ret}
+
+  return ${ret}
 }
 
 function generate_docker() {
@@ -193,6 +193,11 @@ function generate_iso() {
     echo ":: ERROR :: failed to generate rootfilesystem"
     exit 1
   fi
+
+  # generate non changable system packages
+  mkdir -p ${ROOTFS}/etc/pkgupd.conf.d/
+  echo "system.packages: " > ${ROOTFS}/etc/pkgupd.conf.d/system-packages.yml
+  ls ${ROOTFS}/var/lib/pkgupd/data/ | tr ' ' '\n' | sed 's@^@  - @' >> ${ROOTFS}/etc/pkgupd.conf.d/system-packages.yml
 
   chroot ${ROOTFS} bash -e << "EOT"
 pwconv

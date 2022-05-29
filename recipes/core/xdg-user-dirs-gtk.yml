@@ -1,0 +1,15 @@
+id: xdg-user-dirs-gtk
+version: "0.10"
+about: Create user dirs and asks to relocalize them
+license: GPL
+
+depends:
+  runtime:
+    - gtk
+    - xdg-user-dirs
+  buildtime:
+    - intltool
+sources:
+  - https://download.gnome.org/sources/xdg-user-dirs-gtk/{{version}}/xdg-user-dirs-gtk-{{version}}.tar.xz
+configure: >
+  --disable-more-warnings

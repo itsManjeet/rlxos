@@ -1,0 +1,16 @@
+id: perl-yaml-tiny
+version: 1.73
+about: |
+ Read/Write YAML files with as little code as possible
+
+depends:
+  runtime:
+    - perl
+
+sources:
+  - https://cpan.metacpan.org/authors/id/E/ET/ETHER/YAML-Tiny-{{version}}.tar.gz
+
+script: |
+  PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+  make
+  make install DESTDIR=${pkgupd_pkgdir}

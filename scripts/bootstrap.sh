@@ -206,6 +206,8 @@ ln -sfv /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
 
 # setting up hostname
 echo 'workstation' > /etc/hostname
+
+mkdir -p /usr/lib/locale
 EOT
   if [[ $? != 0 ]] ; then
     rm -rf ${TEMPDIR}

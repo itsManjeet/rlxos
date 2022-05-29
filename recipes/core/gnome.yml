@@ -12,16 +12,18 @@ depends:
     - gdm
     - gedit
     - gnome-backgrounds
-  #  - gnome-boxes
+    - gnome-boxes
+    - gnome-books
     - gnome-calculator
     - gnome-calendar
+    - gnome-contacts
     - gnome-characters
     - gnome-clocks
     - gnome-color-manager
     - gnome-control-center
     - gnome-disk-utility
-    # - gnome-documents
-    # - gnome-font-viewer
+    - evince
+    - gnome-font-viewer
     - gnome-initial-setup
     - gnome-icon-theme
     - gnome-icon-theme-extras
@@ -30,6 +32,8 @@ depends:
     - gnome-logs
     - gnome-menus
     - gnome-music
+    - gnome-maps
+    # - gnome-photos
     - gnome-power-manager
     - gnome-screenshot
     - gnome-shell
@@ -42,7 +46,7 @@ depends:
     - gnome-terminal
     # - gnome-theme-extra
     - gnome-tweaks
-    # - gnome-todo
+    - gnome-todo
     # - gnome-user-docs
     # - gnome-user-share
     # - gnome-usage

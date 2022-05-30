@@ -18,6 +18,6 @@ for repo in core extra apps fonts ; do
         echo "compiling ${pkg}"
         recipe_file="recipes/${repo}/$(basename ${pkg})"
         ${ROOT_DIR}/scripts/pkgupd-build.sh ${recipe_file}
-        [[ $? != 0 ]] && exit 1
+        echo "failed: ${pkg}"
     done
 done

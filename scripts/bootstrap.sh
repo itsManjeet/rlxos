@@ -19,7 +19,7 @@ RECIPES_DIR='/var/cache/pkgupd/recipes/'
 pkgupd sync
 
 echo "updating pkgupd"
-pkgupd install pkgupd force=true mode.all-yes=true
+pkgupd install pkgupd force=true mode.ask=false
 
 pkgupd update mode.ask=false
 

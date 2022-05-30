@@ -7,25 +7,17 @@ BASEDIR="$(
 
 STORAGE_DIR=${STORAGE_DIR:-${BASEDIR}/build}
 
-function RunInContainer() {
-    ${BASEDIR}/scripts/exec.sh ${@}
-}
+trap "{ echo 'Terminated' ; exit 1; }" SIGINT
 
-ls -al /
-ALL_PKGS=$(find /storage/${VERSION}/recipes/ -type f -name "*.yml" -exec basename {} \; | sed 's|.yml||g')
+for repo in core extra apps fonts ; do
+    repo_dir="${STORAGE_DIR}/../recipes/${repo}"
+    [[ -d ${repo_dir} ]] || continue
 
-echo ":: generating dependency tree ::"
-DEPENDENCY_TREE=$(RunInContainer pkgupd depends --force ${ALL_PKGS})
-if [[ $? != 0 ]] ; then
-    echo "failed to build dependency tree ${DEPENDENCY_TREE}"
-    exit 1
-fi
-
-for pkg in ${DEPENDENCY_TREE} ; do
-    pkg=$(echo ${pkg} | tr -cd '[:print:]')
-    echo ":: compiling ${pkg} ::"
-    RunInContainer pkgupd co ${pkg} | tee /storage/${VERSION}/logs/${pkg}.log
-    if [[ ${PIPESTATUS[0]} != 0 ]] ; then
-        mv /storage/${VERSION}/logs/${pkg}.{log,failed}
-    fi
+    echo "compiling ${repo} packages"
+    for pkg in ${repo_dir}/*.yml ; do
+        echo "compiling ${pkg}"
+        recipe_file="recipes/${repo}/$(basename ${pkg})"
+        ${STORAGE_DIR}/../scripts/pkgupd-build.sh ${recipe_file}
+        [[ $? != 0 ]] && exit 1
+    done
 done

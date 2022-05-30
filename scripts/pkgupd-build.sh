@@ -9,8 +9,6 @@ BASEDIR="$(
 
 
 echo "installing pkgupd"
-pkgupd in pkgupd --force --no-depends
-
 pkgupd sync
 
 for i in ${@} ; do

@@ -6,13 +6,13 @@ BASEDIR="$(
 )"
 
 . ${BASEDIR}/common.sh
+export PKGUPD_NO_PROGRESS=1
 
-
-echo "installing pkgupd"
-pkgupd sync
+echo "updating system"
+pkgupd update mode.ask=false
 
 for i in ${@} ; do
-    DEBUG=1 pkgupd build build.recipe=/var/cache/pkgupd/${i} package.repository=$(echo ${i} | cut -d '/' -f2) mode.all-yes=true
+    DEBUG=1 pkgupd build build.recipe=/var/cache/pkgupd/${i} package.repository=$(echo ${i} | cut -d '/' -f2) mode.ask=false
     if [[ $? != 0 ]] ; then
         echo "Error! failed to build ${i}"
         exit 1

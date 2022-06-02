@@ -3,8 +3,10 @@ version: 2200
 about: rlxos System Installer
 
 depends:
-  buildtime:
+  runtime:
     - gtkmm
+    - libhandy
+  buildtime:
     - cmake
 
 sources:

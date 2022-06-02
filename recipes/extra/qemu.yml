@@ -26,6 +26,7 @@ sources:
   - https://download.qemu-project.org/qemu-{{version}}.tar.xz
 
 build-dir: qemu-{{version}}
+build-type: autoconf
 configure: >
   --audio-drv-list=alsa
   --smbd=/usr/bin/smbd

@@ -1,0 +1,44 @@
+id: ufw
+version: 0.36.1
+about: Uncomplicated and easy to use CLI tool for managing a netfilter firewall
+depends:
+  runtime:
+    - iptables
+    - python
+
+sources:
+  - https://launchpad.net/ufw/0.36/{{version}}/+download/ufw-{{version}}.tar.gz
+
+pre-script: |
+  # FS#28769 - move from /lib to /usr/lib
+  sed -i -e 's|/lib|/usr/lib|' \
+         -e 's|sbin|bin|g' setup.py
+
+  # FS#35458, FS#54110 - correct iptables location
+  sed -i -e 's|sbin|bin|g' setup.py
+  sed -i -e 's|sbin|bin|g' src/util.py
+
+
+post-script: |
+  mkdir -p usr/lib/systemd/system/
+  chmod 644 ${pkgupd_pkgdir}/etc/ufw/*.rules
+
+files:
+  - path: usr/lib/systemd/system/ufw.service
+    content: |
+      [Unit]
+      Description=CLI Netfilter Manager
+      DefaultDependencies=no
+      After=systemd-sysctl.service
+      Before=sysinit.target
+      ConditionPathExists=|/etc/ufw/ufw.conf
+      ConditionDirectoryNotEmpty=|/usr/lib/ufw
+
+      [Service]
+      Type=oneshot
+      ExecStart=/usr/lib/ufw/ufw-init start
+      ExecStop=/usr/lib/ufw/ufw-init stop
+      RemainAfterExit=yes
+
+      [Install]
+      WantedBy=multi-user.target

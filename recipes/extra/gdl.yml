@@ -5,15 +5,13 @@ depends:
   runtime:
     - gtk
     - gobject-introspection
-packages:
-  - id: pkg
-    dir: gdl-GDL_3_40_0
-    sources:
-      - https://gitlab.gnome.org/GNOME/gdl/-/archive/GDL_3_40_0/gdl-GDL_3_40_0.tar.gz
-    prescript: |
-      autoreconf -fvi
-    flags:
-      - id: configure 
-        value: --disable-static
+  buildtime:
+    - gtk-doc
+    - intltool
+sources:
+  - https://gitlab.gnome.org/GNOME/gdl/-/archive/GDL_3_40_0/gdl-GDL_3_40_0.tar.gz
+pre-script: |
+  autoreconf -fvi
+configure: --disable-static
 
   

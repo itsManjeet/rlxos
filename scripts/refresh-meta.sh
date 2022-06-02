@@ -8,9 +8,7 @@ BASEDIR="$(
 . ${BASEDIR}/common.sh
 
 echo "installing pkgupd"
-DEBUG=1 pkgupd in pkgupd --force --no-depends
-
-pkgupd sync
+pkgupd update mode.ask=false
 
 pkgupd install squashfs-tools mode.all-yes=true
 

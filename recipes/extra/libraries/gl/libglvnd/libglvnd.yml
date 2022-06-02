@@ -1,0 +1,21 @@
+id: libglvnd
+version: 1.4.0
+about: The GL Vendor Neutral Dispatch library
+depends:
+  runtime:
+    - libxext
+    - mesa
+  buildtime:
+    - libx11
+    - meson
+    - python
+    - xorgproto
+license: custom:BSD-like
+sources:
+  - https://gitlab.freedesktop.org/glvnd/libglvnd/-/archive/v{{version}}/libglvnd-v{{version}}.tar.gz
+
+configure: >
+  -D gles1=false
+
+post-script: |
+  install -v -D -m 0644 ${FILES_DIR}/LICENSE -t ${pkgupd_pkgdir}/usr/share/doc/{{id}}/

@@ -3,23 +3,20 @@ version: 2.0.12
 about: Multitouch gesture recognizer
 license: GPL3
 
-packages:
-  - id: pkg
-    depends:
-      runtime:
-        - gtk
-        - libinput
-        - xorg
-        - systemd
-      buildtime:
-        - cmake
+depends:
+  runtime:
+    - gtk
+    - libinput
+    - xorg
+    - systemd
+    - pugixml
+  buildtime:
+    - cmake
 
-    sources:
-      - toughegg-{{version}}.tar.gz::https://github.com/JoseExposito/touchegg/archive/refs/tags/2.0.12.tar.gz
+sources:
+  - toughegg-{{version}}.tar.gz::https://github.com/JoseExposito/touchegg/archive/refs/tags/2.0.12.tar.gz
 
-    dir: touchegg-{{version}}
-    prescript: |
-      ls -al
+build-dir: touchegg-{{version}}
 
-    postscript: |
-      install -D -m 0644 installation/touchegg.desktop ${pkgupd_pkgdir}/etc/xdg/autostart/touchegg.desktop
+postscript: |
+  install -D -m 0644 installation/touchegg.desktop ${pkgupd_pkgdir}/etc/xdg/autostart/touchegg.desktop

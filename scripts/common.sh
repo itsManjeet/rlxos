@@ -23,7 +23,7 @@ if [[ -z "${NOCONTAINER}" ]]; then
         --cap-add SYS_ADMIN \
         --security-opt apparmor:unconfined \
         -v "${ROOTDIR}/scripts:/scripts" \
-        -v "${STORAGE_DIR}/${VERSION}/recipes:/var/cache/pkgupd/recipes" \
+        -v "${ROOTDIR}/recipes:/var/cache/pkgupd/recipes" \
         -v "${STORAGE_DIR}/${VERSION}/pkgs:/var/cache/pkgupd/pkgs" \
         -v "${STORAGE_DIR}/sources:/var/cache/pkgupd/src" \
         -v "${STORAGE_DIR}/${VERSION}/logs:/logs" \

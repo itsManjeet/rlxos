@@ -1,0 +1,27 @@
+id: dracut
+version: "056"
+about: An event driven initramfs infrastructure
+depends:
+  runtime:
+    - bash
+    - coreutils
+    - cpio
+    - filesystem
+    - findutils
+    - grep
+    - gzip
+    - kmod
+    - pkg-config
+    - procps-ng
+    - sed
+    - systemd
+    - util-linux
+    - xz
+    - binutils
+
+sources:
+  - https://mirrors.edge.kernel.org/pub/linux/utils/boot/dracut/dracut-{{version}}.tar.gz
+
+autoconf-dir: true
+configure: >
+  --systemdsystemunitdir=/usr/lib/systemd/system

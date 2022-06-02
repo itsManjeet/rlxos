@@ -3,22 +3,22 @@ version: 13
 about: Enable GNOME shell multi-touch gesture on X11
 license: GPL
 
-packages:
-  - id: pkg
-    depends:
-      runtime:
-        - gnome-shell
-        - touchegg
+depends:
+  runtime:
+    - gnome-shell
+    - touchegg
+  buildtime:
+    - unzip
     
-    sources:
-      - https://github.com/JoseExposito/gnome-shell-extension-x11gestures/releases/download/{{version}}/x11gestures@joseexposito.github.io.zip
+sources:
+  - https://github.com/JoseExposito/gnome-shell-extension-x11gestures/releases/download/{{version}}/x11gestures@joseexposito.github.io.zip
 
-    dir: .
+build-dir: .
     
-    script: |
-      bsdtar -xf ${PKGUPD_PKGDIR}/x11gestures@joseexposito.github.io.zip \
-        -C ${pkgupd_pkgdir} \
-        -s ":^:usr/share/gnome-shell/extensions/x11gestures@joseexposito.github.io/:"
+script: |
+  bsdtar -xf ${PKGUPD_PKGDIR}/x11gestures@joseexposito.github.io.zip \
+    -C ${pkgupd_pkgdir} \
+    -s ":^:usr/share/gnome-shell/extensions/x11gestures@joseexposito.github.io/:"
 
-      find "${pkgupd_pkgdir}" -type d -exec chmod 755 '{}' +
-      find "${pkgupd_pkgdir}" -type f -exec chmod 644 '{}' +
+  find "${pkgupd_pkgdir}" -type d -exec chmod 755 '{}' +
+  find "${pkgupd_pkgdir}" -type f -exec chmod 644 '{}' +

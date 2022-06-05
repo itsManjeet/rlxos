@@ -16,9 +16,12 @@ export PKGUPD_NO_PROGRESS=1
 
 RECIPES_DIR='/var/cache/pkgupd/recipes/'
 
-pkgupd in pkgupd --force --no-depends
+pkgupd sync
 
-pkgupd sync repos=core,extra
+echo "updating pkgupd"
+pkgupd install pkgupd force=true mode.all-yes=true
+
+pkgupd update mode.ask=false
 
 function bootstrap() {
   echo ":: bootstraping toolchain ::"
@@ -28,7 +31,7 @@ function bootstrap() {
       build.recipe=${RECIPES_DIR}/core/${i}.yml \
       build.depends=false \
       package.repository=core \
-      mode.all-yes=true
+      mode.ask=false
     if [[ $? != 0 ]] ; then
         echo ":: ERROR :: failed to build toolchain ${i}"
         exit 1
@@ -42,7 +45,7 @@ function rebuild() {
   echo ":: rebuilding packages ::"
   for pkg in ${PKGS} ; do
     if [[ -n ${CONTINUE_BUILD} ]] && [[ -e /logs/${pkg}.log ]] ; then
-      pkgupd install ${pkg} force=true mode.all-yes=true
+      pkgupd install ${pkg} force=true mode.ask=false
       if [[ ${PIPESTATUS[0]} != 0 ]] ; then
         echo ":: ERROR :: failed to install ${pkg}"
         mv /logs/${pkg}.{log,failed}
@@ -66,7 +69,7 @@ function rebuild() {
         build.recipe=${RECIPES_DIR}/core/${pkg}.yml \
         build.depends=false \
         package.repository=core \
-        mode.all-yes=true 2>&1 | sed -r 's/\x1b\[[0-9;]*m//g' | tee /logs/${pkg}.log
+        mode.ask=false 2>&1 | sed -r 's/\x1b\[[0-9;]*m//g' | tee /logs/${pkg}false
       if [[ ${PIPESTATUS[0]} != 0 ]] ; then
         echo ":: ERROR :: failed to build ${pkg}"
         mv /logs/${pkg}.{log,failed}
@@ -100,7 +103,7 @@ function generating_rootfs() {
   mkdir -p ${ROOTFS}/var/lib/pkgupd/data
   DEBUG=1 \
     pkgupd install ${@} \
-      mode.all-yes=true \
+      mode.ask=false \
       dir.root=${ROOTFS} \
       dir.data=${ROOTFS}/var/lib/pkgupd/data \
       installer.triggers=false
@@ -114,7 +117,7 @@ function generate_docker() {
   TEMPDIR=$(mktemp -d)
 
   echo ":: install required tools ::"
-  pkgupd install docker mode.all-yes=true repos=core,extra
+  pkgupd install docker mode.ask=false repos=core,efalse
   if [[ $? != 0 ]] ; then
     echo ":: ERROR :: failed to install required tools"
     exit 1
@@ -176,7 +179,7 @@ function generate_iso() {
   TEMPDIR=$(mktemp -d)
 
   echo ":: install required tools ::"
-  pkgupd install grub-i386 grub squashfs-tools lvm2 initramfs plymouth mtools linux mode.all-yes=true
+  pkgupd install grub-i386 grub squashfs-tools lvm2 initramfs plymouth mtools linux mode.ask=false
   if [[ $? != 0 ]] ; then
     echo ":: ERROR :: failed to install required tools"
     exit 1
@@ -257,7 +260,7 @@ EOT
     exit 1
   fi
 
-  pkgupd install linux version=${VERSION} dir.root=${ISODIR} dir.data="/tmp" force=true mode.all-yes=true
+  pkgupd install linux version=${VERSION} dir.root=${ISODIR} dir.data="/tmp" force=true mode.ask=false
   if [[ $? != 0 ]] ; then
     rm -rf ${ISODIR} ${TEMPDIR} ${PKGUPD_CONFIG}
     echo ":: ERROR :: failed to calculate dependency tree"
@@ -418,7 +421,7 @@ function continue_build() {
     echo ":: bootstraping toolchain ::"
     for i in kernel-headers glibc binutils libgcc gcc; do
       echo ":: installing toolchain - ${i} ::"
-      pkgupd install ${i} force=true mode.all-yes=true
+      pkgupd install ${i} force=true mode.ask=false
       if [[ $? != 0 ]] ; then
           echo ":: ERROR :: failed to installing toolchain ${i}"
           exit 1
@@ -445,7 +448,7 @@ function compile_all() {
       package.repository=core \
       build.depends=false \
       package.repository=core \
-      mode.all-yes=true 2>&1 | sed -r 's/\x1b\[[0-9;]*m//g' | tee /logs/${pkg}.log
+      mode.ask=false 2>&1 | sed -r 's/\x1b\[[0-9;]*m//g' | tee /logs/${pkg}false
     if [[ ${PIPESTATUS[0]} != 0 ]] ; then
         echo ":: ERROR :: failed to build ${pkg}"
         mv /logs/${pkg}.{log,failed}
@@ -465,7 +468,7 @@ function compile_all() {
 }
 
 function calculatePackages() {
-  PKGS=$(pkgupd depends dir.data=/tmp repos=core, ${@} 2>&1)
+  PKGS=$(pkgupd depends dir.data=/tmp repos=core,extra ${@} 2>&1)
   if [[ $? != 0 ]] ; then
     echo ":: ERROR :: failed to calculate dependency tree: ${PKGS}"
     exit 1

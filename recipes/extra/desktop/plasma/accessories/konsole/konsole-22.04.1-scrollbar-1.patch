@@ -1,0 +1,37 @@
+Submitted By:            Bruce Dubbs <bdubbs_at_linuxfromscratch_dot_org>
+Date:                    2019-08-28
+Initial Package Version: 19.08.0
+Upstream Status:         Not submitted
+Origin:                  Self
+Description:             Optional patch to change the color of the konsole
+                         scroll bar and its handle.  Customizing the colors
+                         requires editing the patch.
+Update:                  Rediff for version 20.12.2
+Update:                  Rework for version 21.04.2
+Update:                  Rework for version 21.12.0
+
+--- a/src/terminalDisplay/TerminalDisplay.cpp.orig	2021-06-17 12:51:57.309785538 -0500
++++ b/src/terminalDisplay/TerminalDisplay.cpp	2021-06-17 12:54:01.614159888 -0500
+ 
+@@ -320,7 +320,7 @@
+     connect(KonsoleSettings::self(), &KonsoleSettings::configChanged, this, &TerminalDisplay::setupHeaderVisibility);
+ 
+     _terminalColor = new TerminalColor(this);
+-    connect(_terminalColor, &TerminalColor::onPalette, _scrollBar, &TerminalScrollBar::updatePalette);
++    //connect(_terminalColor, &TerminalColor::onPalette, _scrollBar, &TerminalScrollBar::updatePalette);
+ 
+     _terminalPainter = new TerminalPainter(this);
+     connect(this, &TerminalDisplay::drawContents, _terminalPainter, &TerminalPainter::drawContents);
+@@ -2738,6 +2738,12 @@
+ 
+ void TerminalDisplay::applyProfile(const Profile::Ptr &profile)
+ {
++    // Set scrollbar colors
++    _scrollBar->setStyleSheet( QLatin1String(
++          "QScrollBar:vertical         {background: #ccc; border-left: 2px solid white}"
++          "QScrollBar::handle:vertical {background: #888; min-height: 30px; margin: 15px;}"
++        ) );
++
+     // load color scheme
+     _colorScheme = ViewManager::colorSchemeForProfile(profile);
+     _terminalColor->applyProfile(profile, _colorScheme, randomSeed());

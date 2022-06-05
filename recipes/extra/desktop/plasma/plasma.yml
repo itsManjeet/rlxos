@@ -1,0 +1,52 @@
+id: plasma
+version: 5.24
+about: Plasma desktop
+depends:
+  runtime:
+    - bluedevil
+    - breeze
+    - breeze-gtk
+    - discover
+    - drkonqi
+    - kactivitymanagerd
+    - kde-cli-tools
+    - kde-gtk-config
+    - kdecoration
+    - kdeplasma-addons
+    - kgamma5
+    - khotkeys
+    - kinfocenter
+    - kmenuedit
+    - kscreen
+    - kscreenlocker
+    - ksshaskpass
+    - ksystemstats
+    - kwallet-pam
+    - kwayland-integration
+    - kwayland-server
+    - kwin
+    - kwrited
+    - layer-shell-qt
+    - libkscreen
+    - libksysguard
+    - milou
+    - oxygen
+    - plasma-browser-integration
+    - plasma-desktop
+    - plasma-disks
+    - plasma-firewall
+    - plasma-integration
+    - plasma-nm
+    - plasma-pa
+    - plasma-sdk
+    - plasma-systemmonitor
+    - plasma-vault
+    - plasma-workspace
+    - plasma-workspace-wallpapers
+    - polkit-kde-agent-1
+    - powerdevil
+    - sddm-kcm
+    - systemsettings
+
+script: |
+  mkdir -p ${pkgupd_pkgdir}/usr

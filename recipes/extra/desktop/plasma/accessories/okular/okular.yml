@@ -1,0 +1,15 @@
+id: okular
+version: 22.04.1
+about: Okular is a document viewer for KDE
+depends:
+  runtime:
+    - kf5
+    - libkexiv2
+    - libtiff
+    - poppler
+sources:
+  - https://download.kde.org/stable/release-service/{{version}}/src/okular-{{version}}.tar.xz
+configure: >
+  -DCMAKE_BUILD_TYPE=Release
+  -DBUILD_TESTING=OFF
+  -Wno-dev

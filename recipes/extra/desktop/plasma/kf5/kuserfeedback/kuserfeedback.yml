@@ -1,0 +1,15 @@
+id: kuserfeedback
+version: 1.2.0
+about: Framework for collecting user feedback for applications via telemetry and surveys
+depends:
+  runtime:
+    - qt
+  buildtime:
+    - extra-cmake-modules
+sources:
+    - https://download.kde.org/stable/kuserfeedback/kuserfeedback-{{version}}.tar.xz
+
+configure: >
+    -DCMAKE_BUILD_TYPE=Release
+    -DBUILD_TESTING=OFF
+    -Wno-dev

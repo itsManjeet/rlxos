@@ -1,0 +1,14 @@
+id: libdbusmenu-qt
+version: 0.9.3
+about: Qt implementation of dbus menu specification
+
+depends:
+  runtime:
+    - qt
+sources:
+  - http://launchpad.net/ubuntu/+archive/primary/+files/libdbusmenu-qt_{{version}}+16.04.20160218.orig.tar.gz
+  
+configure: >
+  -DCMAKE_BUILD_TYPE=Release
+  -DWITH_DOC=OFF
+  -Wno-dev

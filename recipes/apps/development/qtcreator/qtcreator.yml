@@ -1,0 +1,31 @@
+id: qtcreator
+version: 7.0.2
+about: A cross-platform Qt IDE 
+depends:
+  runtime:
+    - qt
+    - libyaml-cpp
+    - libllvm
+    - python
+  buildtime:
+    - llvm
+    - cmake
+build-dir: qt-creator-opensource-src-{{version}}
+sources:
+  - https://download.qt.io/official_releases/qtcreator/7.0/{{version}}/qt-creator-opensource-src-{{version}}.tar.xz
+
+type: app
+configure: >
+  -DCMAKE_INSTALL_PREFIX=/usr
+  -DCMAKE_INSTALL_LIBEXECDIR=lib
+  -DWITH_DOCS=ON
+  -DWITH_DEVELOPER_DOCS=ON
+  -DQTC_CLANG_BUILDMODE_MATCH=ON
+  -DBUILD_HELVIEWERBACKEND_QTWEBENGINE=ON
+
+post-script: |
+  cd ${pkgupd_pkgdir}
+  mv ${FILES_DIR}/qtcreator.desktop {{id}}.desktop
+
+  mv usr/share/icons/hicolor/512x512/apps/QtProject-qtcreator.png {{id}}.png
+  install -v -D -m 0755 ${FILES_DIR}/AppRun AppRun

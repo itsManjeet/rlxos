@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Qt5 QDbusViewer
+GenericName=D-Bus Debugger
+Comment=Debug D-Bus applications
+Exec=/usr/lib/qt5/bin/qdbusviewer
+Icon=qdbusviewer-qt5.png
+Terminal=false
+Encoding=UTF-8
+Type=Application
+Categories=Qt;Development;Debugger;

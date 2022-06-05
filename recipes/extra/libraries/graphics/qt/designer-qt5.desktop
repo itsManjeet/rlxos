@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Qt5 Designer
+GenericName=Interface Designer
+Comment=Design GUIs for Qt5 applications
+Exec=/usr/lib/qt5/bin/designer
+Icon=designer-qt5.png
+MimeType=application/x-designer;
+Terminal=false
+Encoding=UTF-8
+Type=Application
+Categories=Qt;Development;

@@ -1,0 +1,20 @@
+id: qca
+version: 2.3.4
+about: A straightforward and cross-platform crypto API, using Qt datatypes and conventions
+depends:
+  runtime:
+    - qt  
+  buildtime:
+    - cmake
+    - which
+    - make-ca
+
+sources:
+  - https://download.kde.org/stable/qca/{{version}}/qca-{{version}}.tar.xz
+
+pre-script: |
+  sed -i 's@cert.pem@certs/ca-bundle.crt@' CMakeLists.txt
+
+configure: >
+  -DCMAKE_BUILD_TYPE=Release
+  -DQCA_MAN_INSTALL_DIR:PATH=/usr/share/man

@@ -1,0 +1,18 @@
+id: drkonqi
+version: 5.24.5
+about: Plasma drkonqi
+depends:
+  runtime:
+    - gdb
+    - kidletime
+    - kio
+    - syntax-highlighting
+  buildtime:
+    - extra-cmake-modules
+sources:
+    - https://download.kde.org/stable/plasma/{{version}}/{{id}}-{{version}}.tar.xz
+
+configure: >
+    -DCMAKE_BUILD_TYPE=Release
+    -DBUILD_TESTING=OFF
+    -Wno-dev

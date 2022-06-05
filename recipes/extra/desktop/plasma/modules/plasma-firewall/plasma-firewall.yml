@@ -1,0 +1,15 @@
+id: plasma-firewall
+version: 5.24.5
+about: Plasma plasma-firewall
+depends:
+  runtime:
+    - systemsettings
+  buildtime:
+    - extra-cmake-modules
+sources:
+    - https://download.kde.org/stable/plasma/{{version}}/{{id}}-{{version}}.tar.xz
+
+configure: >
+    -DCMAKE_BUILD_TYPE=Release
+    -DBUILD_TESTING=OFF
+    -Wno-dev

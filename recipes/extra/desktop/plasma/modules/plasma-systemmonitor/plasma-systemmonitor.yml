@@ -1,0 +1,25 @@
+id: plasma-systemmonitor
+version: 5.24.5
+about: Plasma plasma-systemmonitor
+depends:
+  runtime:
+    - kconfig
+    - kdeclarative
+    - kservice
+    - kglobalaccel
+    - kio
+    - kdbusaddons
+    - kitemmodels
+    - knewstuff
+    - libksysguard
+    - kirigami2
+  buildtime:
+    - ki18n
+    - extra-cmake-modules
+sources:
+    - https://download.kde.org/stable/plasma/{{version}}/{{id}}-{{version}}.tar.xz
+
+configure: >
+    -DCMAKE_BUILD_TYPE=Release
+    -DBUILD_TESTING=OFF
+    -Wno-dev

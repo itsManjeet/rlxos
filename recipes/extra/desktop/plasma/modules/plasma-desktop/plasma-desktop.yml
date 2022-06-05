@@ -1,0 +1,34 @@
+id: plasma-desktop
+version: 5.24.5
+about: Plasma plasma-desktop
+depends:
+  runtime:
+    - baloo
+    - gawk
+    - kdelibs4support
+    - kmenuedit
+    - ibus
+    - polkit-kde-agent-1
+    - xdg-user-dirs
+    # - kaccounts-integration
+    - kscreen
+    - plasma-nm
+    - powerdevil
+    # - scim
+  buildtime:
+    - extra-cmake-modules
+    - intltool
+    - kdesignerplugin
+    - kdoctools
+    - kinit
+    - xorg-drivers-evdev
+    - xf86-input-libinput
+    - xorg-drivers-synaptics
+    - xorg-server
+sources:
+    - https://download.kde.org/stable/plasma/{{version}}/{{id}}-{{version}}.tar.xz
+
+configure: >
+    -DCMAKE_BUILD_TYPE=Release
+    -DBUILD_TESTING=OFF
+    -Wno-dev

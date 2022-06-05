@@ -1,0 +1,16 @@
+id: kio-extras
+version: 22.04.1
+about: Additional components to increase the functionality of the KDE resource and network access abstractions
+depends:
+  runtime:
+    - kf5
+    - kdsoap
+    - libtirpc
+    - samba
+    - taglib
+sources:
+  - https://download.kde.org/stable/release-service/{{version}}/src/kio-extras-{{version}}.tar.xz
+configure: >
+  -DCMAKE_BUILD_TYPE=Release
+  -DBUILD_TESTING=OFF
+  -Wno-dev

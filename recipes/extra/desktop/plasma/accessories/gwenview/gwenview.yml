@@ -1,0 +1,15 @@
+id: gwenview
+version: 22.04.1
+about: Gwenview is a fast and easy-to-use image viewer for KDE
+depends:
+  runtime:
+    - exiv2
+    - kf5
+    - lcms
+    - libkdcraw
+sources:
+  - https://download.kde.org/stable/release-service/{{version}}/src/gwenview-{{version}}.tar.xz
+configure: >
+  -DCMAKE_BUILD_TYPE=Release
+  -DBUILD_TESTING=OFF
+  -Wno-dev

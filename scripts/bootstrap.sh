@@ -117,7 +117,7 @@ function generate_docker() {
   TEMPDIR=$(mktemp -d)
 
   echo ":: install required tools ::"
-  pkgupd install docker mode.ask=false repos=core,efalse
+  pkgupd install docker mode.ask=false
   if [[ $? != 0 ]] ; then
     echo ":: ERROR :: failed to install required tools"
     exit 1

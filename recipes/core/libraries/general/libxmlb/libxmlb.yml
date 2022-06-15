@@ -1,0 +1,17 @@
+id: libxmlb
+version: 0.3.9
+about: Library to help create and query binary XML blobs
+depends:
+  runtime:
+    - glib
+    - libstemmer
+    - xz
+  buildtime:
+    - gtk-doc
+    - gobject-introspection
+    - meson
+sources:
+  - https://people.freedesktop.org/~hughsient/releases/{{id}}-{{version}}.tar.xz
+
+post-script: |
+  rm -r ${pkgupd_pkgdir}/usr/{lib,share}/installed-tests

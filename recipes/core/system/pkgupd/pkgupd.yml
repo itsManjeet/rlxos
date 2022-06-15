@@ -1,7 +1,7 @@
 id: pkgupd
 version: 2200
-release: 29
-commit: 6aa8abf64c854637267107f646f96f4dd021bd2c
+release: 32
+commit: 069c9f26161c7c670ced4bdd468d3ff96523ac35
 about: |
   An Extensible package manager for rlxos
 
@@ -22,4 +22,3 @@ sources:
 
 build-dir: pkgupd-{{commit}}
 configure: -DINSTALL_GTEST=OFF
-

@@ -1,0 +1,16 @@
+id: gnome-software
+version: 40.4
+about: GNOME Software tools
+depends:
+  buildtime:
+    - appstream
+    - flatpak
+    - gsettings-desktop-schemas
+    - docbook-xsl
+    - gobject-introspection
+    - gpsell
+    - meson
+    - gnome-online-accounts
+    - libxmlb
+    - malcontent
+    - libhandy

@@ -35,5 +35,5 @@ jobs:
             NO_INPUT=1 \
             STORAGE_DIR=/home/itsmanjeet/server/storage/testing \
             ROOTDIR=/home/itsmanjeet/server/rlxos \
-            ./scripts/pkgupd-build.sh ${recipe_file}
+            ./scripts/bootstrap.sh --build-package ${recipe_file}
           done

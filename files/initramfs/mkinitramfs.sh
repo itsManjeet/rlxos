@@ -30,7 +30,7 @@ BINARIES="sh bash cat cp dd ls mkdir mknod mount \
          blkid dmesg findfs tail head \
          switch_root losetup touch install chroot agetty \
          truncate df awk mkfs.ext4 mkfs mkfs.ext2 mkfs.ext3
-         udevadm killall cut md5sum"
+         udevadm killall cut md5sum unzstd zstd setsid"
 
 INITRD_DIR=$(mktemp -d /tmp/initramfs.XXXXXXXXXX)
 INIT_IN=${INIT_IN:-'/usr/share/initramfs/init.in'}
@@ -239,13 +239,14 @@ install_modules() {
             copy_module ${module}
         fi
     done
-
-    copy_module ${MODULES_DIR}/$KERNEL/kernel/fs/isofs/isofs.ko.xz
-    copy_module ${MODULES_DIR}/$KERNEL/kernel/drivers/cdrom/cdrom.ko.xz
-    copy_module ${MODULES_DIR}/$KERNEL/kernel/drivers/scsi/sr_mod.ko.xz
-    copy_module ${MODULES_DIR}/$KERNEL/kernel/fs/overlayfs/overlay.ko.xz
-    copy_module ${MODULES_DIR}/$KERNEL/kernel/fs/hfsplus/hfsplus.ko.xz
-    copy_module ${MODULES_DIR}/$KERNEL/kernel/drivers/parport/parport.ko.xz
+    
+    ext=$(modinfo -k ${KERNEL} isofs | grep filename | awk '{print $2}' | rev | cut -d '.' -f1 | rev)
+    copy_module ${MODULES_DIR}/$KERNEL/kernel/fs/isofs/isofs.ko.${ext}
+    copy_module ${MODULES_DIR}/$KERNEL/kernel/drivers/cdrom/cdrom.ko.${ext}
+    copy_module ${MODULES_DIR}/$KERNEL/kernel/drivers/scsi/sr_mod.ko.${ext}
+    copy_module ${MODULES_DIR}/$KERNEL/kernel/fs/overlayfs/overlay.ko.${ext}
+    copy_module ${MODULES_DIR}/$KERNEL/kernel/fs/hfsplus/hfsplus.ko.${ext}
+    copy_module ${MODULES_DIR}/$KERNEL/kernel/drivers/parport/parport.ko.${ext}
 
     for i in ${MODULES_DIR}/$KERNEL/modules.*; do
         copy_module $i

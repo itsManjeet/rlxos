@@ -63,6 +63,11 @@ FILES_DIR='/var/cache/pkgupd/files/'
 echo ":: updating system"
 pkgupd update mode.ask=false
 
+pkgupd install pkgupd force=true mode.ask=false
+
+echo ":: updating system"
+pkgupd update mode.ask=false
+
 LOGDIR='/logs'
 export DEBUG=1
 export PKGUPD_NO_PROGRESS=1
@@ -469,7 +474,6 @@ function parse_args() {
 
       --continue-build)
         CONTINUE_BUILD=1
-        shift
         ;;
 
       --compile-all)
@@ -482,7 +486,10 @@ function parse_args() {
       
       --list-depends)
         LIST_DEPENDS=1
-        shift
+        ;;
+
+      --revdep)
+        REV_DEP=1
         ;;
 
       -*|--*)
@@ -648,6 +655,21 @@ function main() {
     docker push itsmanjeet/rlxos-devel:${VERSION}-${BUILD_ID}
   }
 
+  [[ -n ${REV_DEP} ]] && {
+    [[ "${#ARGS[@]}" == 0 ]] && {
+      echo "no package specified ${ARGS[@]}"
+      exit 1
+    }
+    pkgid=${ARGS[0]}
+
+    echo "calculating reverse dependency for ${pkgid}"
+    pkgupd revdep ${pkgid}
+    if [[ $? != 0 ]] ; then
+      echo "Error! failed to build ${pkgid}"
+      exit 1
+    fi
+  }
+
   [[ -n ${BUILD_PACKAGE} ]] && {
     [[ "${#ARGS[@]}" == 0 ]] && exit 1
     pkgid=${ARGS[0]}
@@ -656,7 +678,7 @@ function main() {
       build.repository=$(echo ${pkgid} | cut -d '/' -f2) \
       mode.ask=false  2>&1 | Log 'build' "$(basename ${pkgid} | sed 's#.yml##g')"
       if [[ ${PIPESTATUS[0]} != 0 ]] ; then
-          echo "Error! failed to build ${i}"
+          echo "Error! failed to build ${pkgid}"
           exit 1
       fi
   }

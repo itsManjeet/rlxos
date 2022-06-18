@@ -14,7 +14,6 @@ repos:
     - core
     - extra
     - apps
-    - fonts
     - testing
 environ:
     - FILES=/var/cache/pkgupd/files/

@@ -6,8 +6,7 @@ license: custom
 sources:
   - https://github.com/dejavu-fonts/dejavu-fonts/releases/download/version_2_37/dejavu-fonts-ttf-{{version}}.tar.bz2
 
-type: fonts
 build-dir: dejavu-fonts-ttf-{{version}}
 script: |
-  mkdir -p ${pkgupd_pkgdir}/
-  cp ttf/*.ttf ${pkgupd_pkgdir}/
+  mkdir -p ${pkgupd_pkgdir}/usr/share/fonts/{{id}}
+  cp ttf/*.ttf ${pkgupd_pkgdir}/usr/share/fonts/{{id}}/

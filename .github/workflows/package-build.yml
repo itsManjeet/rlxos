@@ -18,10 +18,6 @@ jobs:
       - id: branch-extract
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
 
-      - id: configure
-        name: configuring recipe files
-        run: VERSION="${{ steps.branch-extract.outputs.branch }}" STORAGE_DIR=/storage ./scripts/configure.py
-
       - id: getting-files
         uses: jitterbit/get-changed-files@v1
       

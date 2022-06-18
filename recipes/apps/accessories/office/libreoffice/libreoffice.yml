@@ -1,5 +1,6 @@
 id: libreoffice
-version: 7.2.4
+version: 7.3.1
+release: 1
 about: LibreOffice is a free and open-source office productivity software suite, a project of The Document Foundation. It was forked in 2010 from OpenOffice.org, an open-sourced version of the earlier StarOffice
 license: LGPL3
 tags: 
@@ -12,15 +13,15 @@ tags:
 category: office
 type: app
 sources:
-  - https://libreoffice.soluzioniopen.com/stable/fresh/LibreOffice-fresh.basic-x86_64.AppImage
+  - https://libreoffice.soluzioniopen.com/stable/full/LibreOffice-fresh.full-x86_64.AppImage
 
 depends:
   buildtime:
     - appimagetool
 build-dir: .
 script: |
-  chmod +x LibreOffice-fresh.basic-x86_64.AppImage
-  ./LibreOffice-fresh.basic-x86_64.AppImage --appimage-extract
+  chmod +x LibreOffice-fresh.full-x86_64.AppImage
+  ./LibreOffice-fresh.full-x86_64.AppImage --appimage-extract
   mv squashfs-root ${pkgupd_pkgdir}
 
   cd ${pkgupd_pkgdir}

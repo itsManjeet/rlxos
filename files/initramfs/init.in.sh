@@ -81,7 +81,7 @@ reset_system() {
 # drop the boot process into rescue mode for debug
 rescue_shell() {
     echo -e "${RED}$1${RESET}\n${YELLOW}Dropping to ${GREEN}resuce${YELLO}shell${RESET}"
-    setsid sh -c 'exec sh </dev/tty1 >/dev/tty1 2>&1'
+    exec sh
 }
 
 # debug 'message'
@@ -106,18 +106,18 @@ load_modules() {
 
     # load modules required for booting from squashfs image (cdrom)
     if [[ -n "$squa" ]] || [[ -n "$system" ]]; then
-        modules="$modules cdrom sr_mod isofs overlay"
+        modules="$modules loop cdrom sr_mod isofs overlay"
     fi
-
-    for m in $modules; do
-        modprobe $m || rescue_shell "failed to load $m module"
-    done
 
     /lib/systemd/systemd-udevd --daemon --resolve-names=never
     udevadm trigger --action=add --type=subsystems
     udevadm trigger --action=add --type=devices
     udevadm trigger --action=change --type=devices
     udevadm settle
+
+    for m in $modules; do
+        modprobe $m || rescue_shell "failed to load $m module"
+    done
 
 }
 

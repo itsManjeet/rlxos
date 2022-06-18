@@ -12,11 +12,10 @@ depends:
   buildtime:
     - unzip
 
-type: fonts
 sources:
   - inconsolata-{{version}}.zip::https://github.com/googlefonts/Inconsolata/releases/download/v{{version}}/fonts_ttf.zip
 build-dir: .
 script: |
-  install -d ${pkgupd_pkgdir}/
-  cp fonts_ttf/fonts/ttf/*.ttf ${pkgupd_pkgdir}/
+  install -d ${pkgupd_pkgdir}/usr/share/fonts/{{id}}
+  cp fonts/ttf/*.ttf ${pkgupd_pkgdir}/usr/share/fonts/{{id}}/
    

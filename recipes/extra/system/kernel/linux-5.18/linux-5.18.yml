@@ -1,5 +1,6 @@
 id: linux-5.18
 version: 5.18.3
+release: 1
 about: |
   Linux kernel, modules and headers
 

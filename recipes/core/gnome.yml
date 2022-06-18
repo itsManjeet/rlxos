@@ -33,6 +33,7 @@ depends:
     - gnome-music
     - gnome-maps
     - gnome-power-manager
+    - gnome-remote-desktop
     - gnome-screenshot
     - gnome-shell
     - gnome-shell-extensions

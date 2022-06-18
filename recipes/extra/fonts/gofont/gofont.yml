@@ -8,10 +8,9 @@ tags:
   - golang
   - go
   - coding
-type: fonts
 sources:
   - ttf-gofont.tar.gz::https://go.googlesource.com/image/+archive/master/font/gofont/ttfs.tar.gz
 build-dir: .
 script: |
-  mkdir -p ${pkgupd_pkgdir}/
-  mv *.ttf ${pkgupd_pkgdir}/
+  mkdir -p ${pkgupd_pkgdir}/usr/share/fonts/{{id}}
+  mv *.ttf ${pkgupd_pkgdir}/usr/share/fonts/{{id}}/

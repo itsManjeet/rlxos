@@ -1,0 +1,48 @@
+id: grub
+version: 2.06
+release: 1
+about: |
+  GRand Unified Bootloader
+
+depends:
+  runtime:
+    - gettext
+    - bash
+    - xz
+    - efibootmgr
+    - freetype
+    - libisoburn
+    - dosfstools
+
+  buildtime:
+    - python
+    - flex
+    - m4
+    - bison
+
+environ:
+  - PYTHON=python3
+  - CFLAGS=""
+
+build-dir: grub-{{version}}
+sources:
+  - http://ftp.gnu.org/gnu/grub/grub-{{version}}.tar.xz
+build-type: autoconf
+configure: >
+  --disable-werror
+  --disable-efiemu
+  --enable-grub-mkfont
+  --with-platform=efi
+  --target=x86_64
+  --sysconfdir=/etc
+  --with-bootdir=/boot/
+  CFLAGS="-Os"
+  CXXFLAGS="${CFLAGS}"
+
+pre-script: |
+  patch util/grub-mkconfig.in < ${FILES_DIR}/0001-RLXOS-CONFIG-PATCH-TO-SUPPORT-OVERLAY-FS.patch
+  patch util/grub.d/10_linux.in < ${FILES_DIR}/0002-RLXOS-SYSTEM-IMAGE-SEARCH-SUPPORT.patch
+  patch util/grub.d/10_linux.in < ${FILES_DIR}/0003-fixed-detection-of-rlxos-system-images.patch
+  install -v -D -m 0644 ${FILES_DIR}/grub.default ${pkgupd_pkgdir}/etc/default/grub
+  install -v -D -m 0755 ${FILES_DIR}/update-grub.sh ${pkgupd_pkgdir}/usr/bin/update-grub
+  install -v -D  ${FILES_DIR}/unicode.pf2 ${pkgupd_pkgdir}/usr/share/grub/unicode.pf2

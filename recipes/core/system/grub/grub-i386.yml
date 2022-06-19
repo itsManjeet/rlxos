@@ -1,5 +1,6 @@
 id: grub-i386
 version: 2.06
+release: 1
 about: |
   GRand Unified Bootloader
 
@@ -23,9 +24,9 @@ environ:
   - PYTHON=python3
   - CFLAGS=""
 
-build-dir: grub-2.06
+build-dir: grub-{{version}}
 sources:
-  - http://ftp.gnu.org/gnu/grub/grub-2.06.tar.xz
+  - http://ftp.gnu.org/gnu/grub/grub-{{version}}.tar.xz
 build-type: autoconf
 configure: >
     --disable-werror

@@ -1,6 +1,6 @@
 id: linux-5.18
 version: 5.18.3
-release: 1
+release: 2
 about: |
   Linux kernel, modules and headers
 
@@ -23,6 +23,9 @@ script: |
   make mrproper
 
   cp ${FILES_DIR}/config ./.config
+
+  sed '/^CONFIG_LOCALVERSION=/d' -i .config
+	echo 'CONFIG_LOCALVERSION="-{{version}}"' >> .config
 
   mkdir -p ${pkgupd_pkgdir}/{boot,lib}
   ln -sv ../lib/modules ${pkgupd_pkgdir}/boot/modules

@@ -1,6 +1,6 @@
 id: linux-5.18
 version: 5.18.3
-release: 4
+release: 5
 about: |
   Linux kernel, modules and headers
 
@@ -21,12 +21,12 @@ depends:
 
 script: |
   make mrproper
-  RELEASE=4
+  RELEASE=5
 
   cp ${FILES_DIR}/config ./.config
 
   sed '/^CONFIG_LOCALVERSION=/d' -i .config
-  echo 'CONFIG_LOCALVERSION="-{{version}}-$RELEASE-rlxos"' >> .config
+  echo "CONFIG_LOCALVERSION=\"-$RELEASE-rlxos\"" >> .config
 
   mkdir -p ${pkgupd_pkgdir}/{boot,lib}
   ln -sv ../lib/modules ${pkgupd_pkgdir}/boot/modules

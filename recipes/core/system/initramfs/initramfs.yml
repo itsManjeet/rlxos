@@ -1,5 +1,5 @@
 id: initramfs
-version: 0.1.7
+version: 0.1.8
 release: 1
 about: |
   rlxos initramfs tool
@@ -12,5 +12,5 @@ depends:
     - zstd
 
 script: |
-  install -v -D -m 644 ${FILES}/initramfs/init.in.sh  ${pkgupd_pkgdir}/usr/share/initramfs/init.in
-  install -v -D -m 755 ${FILES}/initramfs/mkinitramfs.sh  ${pkgupd_pkgdir}/usr/bin/mkinitramfs
+  install -v -D -m 644 ${FILES_DIR}/init.in.sh  ${pkgupd_pkgdir}/usr/share/initramfs/init.in
+  install -v -D -m 755 ${FILES_DIR}/mkinitramfs.sh  ${pkgupd_pkgdir}/usr/bin/mkinitramfs

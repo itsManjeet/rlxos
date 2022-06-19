@@ -25,7 +25,7 @@ script: |
   cp ${FILES_DIR}/config ./.config
 
   sed '/^CONFIG_LOCALVERSION=/d' -i .config
-	echo 'CONFIG_LOCALVERSION="-{{version}}"' >> .config
+  echo 'CONFIG_LOCALVERSION="-{{version}}"' >> .config
 
   mkdir -p ${pkgupd_pkgdir}/{boot,lib}
   ln -sv ../lib/modules ${pkgupd_pkgdir}/boot/modules

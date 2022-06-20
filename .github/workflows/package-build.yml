@@ -24,12 +24,13 @@ jobs:
       - id: build-packages
         run: |
           for recipe_file in ${{ steps.getting-files.outputs.all }}; do
-            [[ ${recipe_file} =~ "recipes/" ]] || continue
-            export PKGUPD_NO_PROGRESS=1
-            echo "compiling ${recipe_file}"
-            VERSION="${{ steps.branch-extract.outputs.branch }}" \
-            NO_INPUT=1 \
-            STORAGE_DIR=/home/itsmanjeet/server/storage/testing \
-            ROOTDIR=/home/itsmanjeet/server/rlxos \
-            ./scripts/bootstrap.sh --build-package ${recipe_file}
+            if [[ ${recipe_file} =~ "recipes/" ]] && [[ "${recipe_file}" == "*.yml" ]]  && [[ -e ${recipe_file} ]] ; then
+              export PKGUPD_NO_PROGRESS=1
+              echo "compiling ${recipe_file}"
+              VERSION="${{ steps.branch-extract.outputs.branch }}" \
+              NO_INPUT=1 \
+              STORAGE_DIR=/home/itsmanjeet/server/storage/testing \
+              ROOTDIR=/home/itsmanjeet/server/rlxos \
+              ./scripts/bootstrap.sh --build-package ${recipe_file}
+            fi
           done

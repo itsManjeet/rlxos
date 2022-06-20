@@ -1,20 +1,7 @@
-EnvironmentVariables:
-    - FILES=/var/cache/pkgupd/files
-    - CFLAGS=-march=x86-64 -O2 -pipe
-    - CXXFLAGS=-march=x86-64 -O2 -pipe
-    - MAKEFLAGS=-j8
-Repositories:
-    - core
-    - extra
-    - apps
-    - fonts
-    - testing
-
 repos:
     - core
     - extra
     - apps
-    - testing
 environ:
     - FILES=/var/cache/pkgupd/files/
     - CFLAGS="-march=x86-64 -O2 -pipe"

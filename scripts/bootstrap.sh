@@ -252,8 +252,14 @@ function generate_iso() {
   echo ":: generating iso ::"
   TEMPDIR=$(mktemp -d)
 
+  KERNEL_PACKAGE=linux
+  if [[ -e /profiles/${VERSION}/${PROFILE}/kernel ]] ; then
+    echo ":: using kernel ${KERNEL_PACKAGE}"
+    KERNEL_PACKAGE=$(cat /profiles/${VERSION}/${PROFILE}/kernel)
+  fi
+
   echo ":: install required tools ::"
-  pkgupd install grub-i386 grub squashfs-tools lvm2 initramfs plymouth mtools linux mode.ask=false
+  pkgupd install grub-i386 grub squashfs-tools lvm2 initramfs plymouth mtools ${KERNEL_PACKAGE} mode.ask=false
   if [[ $? != 0 ]] ; then
     echo ":: ERROR :: failed to install required tools"
     exit 1
@@ -333,7 +339,7 @@ EOT
   fi
 
   echo ":: compressing system ::"
-  mksquashfs ${TEMPDIR} /releases/rlxos-${VERSION}-${BUILD_ID}.sfs -comp zstd -Xcompression-level 22
+  mksquashfs ${TEMPDIR} /releases/rlxos-${VERSION}-${BUILD_ID}.sfs -comp zstd -Xcompression-level 12 -noappend
   ret=${?}
   rm -rf ${TEMPDIR}
 
@@ -350,14 +356,14 @@ EOT
   echo ":: installing rootfs.img"
   cp /releases/rlxos-${VERSION}-${BUILD_ID}.sfs ${ISODIR}/rootfs.img
 
-  KERNEL_VERSION=$(pkgupd info linux info.value=version)
+  KERNEL_VERSION=$(pkgupd info ${KERNEL_PACKAGE} info.value=version)
   if [[ $? != 0 ]] || [[ -z ${KERNEL_VERSION} ]] ; then
     rm -rf ${ISODIR} ${TEMPDIR}
     echo ":: ERROR :: failed to get kernel version"
     exit 1
   fi
 
-  pkgupd install linux version=${VERSION} dir.root=${ISODIR} dir.data="/tmp" force=true mode.ask=false
+  pkgupd install ${KERNEL_PACKAGE} version=${VERSION} dir.root=${ISODIR} dir.data="/tmp" force=true mode.ask=false
   if [[ $? != 0 ]] ; then
     rm -rf ${ISODIR} ${TEMPDIR} ${PKGUPD_CONFIG}
     echo ":: ERROR :: failed to calculate dependency tree"
@@ -403,7 +409,7 @@ EOT
     exit 1
   fi
 
-  mksquashfs ${TEMPDIR}/overlay/* ${ISODIR}/iso.img
+  mksquashfs ${TEMPDIR}/overlay/* ${ISODIR}/iso.img -noappend
   if [[ $? != 0 ]] ; then
     rm -rf ${ISODIR} ${TEMPDIR}
     echo ":: ERROR :: failed to install overlay image"
@@ -584,7 +590,7 @@ function compile_all() {
 }
 
 function calculatePackages() {
-  PKGS=$(pkgupd depends dir.data=/tmp repos=core,extra ${@} 2>&1)
+  PKGS=$(pkgupd depends dir.data=/tmp ${@} 2>&1)
   if [[ $? != 0 ]] ; then
     echo ":: ERROR :: failed to calculate dependency tree: ${PKGS}"
     exit 1

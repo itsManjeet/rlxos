@@ -243,6 +243,9 @@ install_modules() {
     for i in ${MODULES_DIR}/$KERNEL/modules.*; do
         copy_module $i
     done
+
+    # regenerate dependency list
+    depmod -b ${INITRD_DIR} ${KERNEL}
 }
 
 # installing plymouth

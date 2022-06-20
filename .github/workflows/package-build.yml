@@ -34,3 +34,10 @@ jobs:
               ./scripts/bootstrap.sh --build-package ${recipe_file}
             fi
           done
+      - id: refresh database
+        run: |
+          VERSION="${{ steps.branch-extract.outputs.branch }}" \
+          NO_INPUT=1 \
+          STORAGE_DIR=/home/itsmanjeet/server/storage/testing \
+          ROOTDIR=/home/itsmanjeet/server/rlxos \
+          ./scripts/bootstrap.sh --generate-metadata

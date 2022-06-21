@@ -244,6 +244,14 @@ install_modules() {
         copy_module $i
     done
 
+    ext=$(modinfo -k ${KERNEL} isofs | grep filename | awk '{print $2}' | rev | cut -d '.' -f1 | rev)
+    copy_module ${MODULES_DIR}/$KERNEL/kernel/fs/isofs/isofs.ko.${ext}
+    copy_module ${MODULES_DIR}/$KERNEL/kernel/drivers/cdrom/cdrom.ko.${ext}
+    copy_module ${MODULES_DIR}/$KERNEL/kernel/drivers/scsi/sr_mod.ko.${ext}
+    copy_module ${MODULES_DIR}/$KERNEL/kernel/fs/overlayfs/overlay.ko.${ext}
+    copy_module ${MODULES_DIR}/$KERNEL/kernel/fs/hfsplus/hfsplus.ko.${ext}
+    copy_module ${MODULES_DIR}/$KERNEL/kernel/drivers/parport/parport.ko.${ext}
+
     # regenerate dependency list
     depmod -b ${INITRD_DIR} ${KERNEL}
 }

@@ -24,7 +24,7 @@ jobs:
       - id: build-packages
         run: |
           for recipe_file in ${{ steps.getting-files.outputs.all }}; do
-            if [[ ${recipe_file} =~ "recipes/" ]] && [[ "${recipe_file}" == "*.yml" ]]  && [[ -e ${recipe_file} ]] ; then
+            if [[ ${recipe_file} =~ "recipes/" ]] && [[ ${recipe_file} == *.yml ]]  && [[ -e ${recipe_file} ]] ; then
               export PKGUPD_NO_PROGRESS=1
               echo "compiling ${recipe_file}"
               VERSION="${{ steps.branch-extract.outputs.branch }}" \

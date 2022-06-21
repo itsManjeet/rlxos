@@ -18,7 +18,7 @@ jobs:
         run: |
           export VERSION="${{ steps.branch-extract.outputs.branch }}"
           export NO_INPUT=1
-          export STORAGE_DIR=/home/itsmanjeet/server/storage/stable/
+          export STORAGE_DIR=/home/itsmanjeet/server/storage/testing/
           export PKGUPD_NO_PROGRESS=1
           export ROOTDIR=/home/itsmanjeet/server/rlxos
           ./scripts/bootstrap.sh --iso --docker --build-id ${{ env.BUILD_ID }}

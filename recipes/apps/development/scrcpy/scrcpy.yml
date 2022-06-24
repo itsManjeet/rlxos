@@ -1,5 +1,6 @@
 id: scrcpy
 version: 1.23
+release: 2
 about: Display and control your android device
 license: Apache
 depends:

@@ -383,8 +383,8 @@ EOT
   timeout=5
   
   insmod all_video
-  menuentry 'rlxos GNU/Linux [${VERSION}] Installer' {
-    linux /boot/vmlinuz-${KERNEL_VERSION}-rlxos iso=1 root=LABEL=RLXOS system=${VERSION}
+  menuentry 'rlxos GNU/Linux [${VERSION}-${BUILD_ID}] Installer' {
+    linux /boot/vmlinuz-${KERNEL_VERSION}-rlxos iso=1 root=LABEL=RLXOS system=${VERSION}-${BUILD_ID}
     initrd /boot/initrd-${KERNEL_VERSION}-rlxos
   }" > ${ISODIR}/boot/grub/grub.cfg
 
@@ -417,7 +417,7 @@ EOT
   fi
 
   # Injecting release version
-  echo "${VERSION}" > ${ISODIR}/version
+  echo "${VERSION}-${BUILD_ID}" > ${ISODIR}/version
 
   ISOFILE="/releases/rlxos-${PROFILE}-${VERSION}-${BUILD_ID}.iso"
   grub-mkrescue -volid RLXOS ${ISODIR} -o ${ISOFILE}

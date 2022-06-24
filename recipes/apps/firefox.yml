@@ -1,6 +1,6 @@
 id: firefox
 version: 101.0
-release: 1
+release: 2
 about: Mozilla Firefox or simply Firefox is a free and open-source web browser developed by the Mozilla Foundation and its subsidiary, the Mozilla Corporation. Firefox uses the Gecko rendering engine to display web pages, which implements current and anticipated web standards.
 license: GPL
 tags: 
@@ -23,26 +23,30 @@ script: |
   mv firefox/browser/chrome/icons/default/default128.png firefox/firefox.png
   mv firefox ${pkgupd_pkgdir}
 
-AppRun: |
-  #!/bin/sh
-  HERE="$(dirname "$(readlink -f "${0}")")"
-  export SNAP_NAME="firefox"
-  export MOZ_LEGACY_PROFILES=1
-  EXEC=${HERE}/firefox
-  exec ${EXEC} "$@"
+files:
+  - path: AppRun
+    perm: 0755
+    content: |
+      #!/bin/sh
+      HERE="$(dirname "$(readlink -f "${0}")")"
+      export SNAP_NAME="firefox"
+      export MOZ_LEGACY_PROFILES=1
+      EXEC=${HERE}/firefox
+      exec ${EXEC} "$@"
 
-DesktopFile: |
-  [Desktop Entry]
-  Version=1.0
-  Name=Firefox
-  GenericName=Web Browser
-  Comment=Browse the world wide web
-  Keywords=Internet;WWW;Browser;Web;Explorer;
-  Exec=@@exec@@ %u
-  Icon=firefox
-  Terminal=false
-  Type=Application
-  MimeType=text/html;text/xml;application/xhtml+xml;x-scheme-handler/http;x-scheme-handler/https;application/x-xpinstall;application/pdf;application/json;
-  StartupNotify=true
-  StartupWMClass=Firefox
-  Categories=Network;WebBrowser;
+  - path: firefox.desktop
+    content: |
+      [Desktop Entry]
+      Version=1.0
+      Name=Firefox
+      GenericName=Web Browser
+      Comment=Browse the world wide web
+      Keywords=Internet;WWW;Browser;Web;Explorer;
+      Exec=@@exec@@ %u
+      Icon=firefox
+      Terminal=false
+      Type=Application
+      MimeType=text/html;text/xml;application/xhtml+xml;x-scheme-handler/http;x-scheme-handler/https;application/x-xpinstall;application/pdf;application/json;
+      StartupNotify=true
+      StartupWMClass=Firefox
+      Categories=Network;WebBrowser;

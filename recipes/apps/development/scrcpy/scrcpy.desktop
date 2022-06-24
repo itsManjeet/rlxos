@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=scrcpy
+Exec=@@exec@@
+Icon=scrcpy
+Comment=Display and control your android device
+Categories=Development;
+Terminal=true
+StartupNotify=true

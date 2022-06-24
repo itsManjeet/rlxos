@@ -4,7 +4,7 @@ pam-config poppler-data
 fonts-cantarell adobe-source-code-pro-fonts ttf-noto ttf-noto-cjk ttf-noto-emoji dejavu-fonts liberation-fonts
 fluent-gtk-theme fluent-icon-theme fluent-wallpaper
 fuse2 libbsd cifs-utils ntfs-3g btrfs-progs
-inspector flatpak gparted
+flatpak gparted
 xdg-desktop-portal-gnome
 gufw zram-generator libreoffice
 

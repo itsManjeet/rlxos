@@ -10,4 +10,4 @@ echo 'LANG=en_IN.UTF-8' > /etc/locale.conf
 ln -sfv /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
 
 # install inspector globally
-systemctl enable inspector --global
+systemctl enable pkgupd-watchdog --global

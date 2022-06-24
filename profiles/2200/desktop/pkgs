@@ -7,3 +7,5 @@ fuse2 libbsd cifs-utils ntfs-3g btrfs-progs
 inspector flatpak gparted
 xdg-desktop-portal-gnome
 gufw zram-generator libreoffice
+
+android-udev

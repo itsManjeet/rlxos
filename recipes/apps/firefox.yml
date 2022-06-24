@@ -1,5 +1,5 @@
 id: firefox
-version: 99.0.1
+version: 101.0
 release: 1
 about: Mozilla Firefox or simply Firefox is a free and open-source web browser developed by the Mozilla Foundation and its subsidiary, the Mozilla Corporation. Firefox uses the Gecko rendering engine to display web pages, which implements current and anticipated web standards.
 license: GPL
@@ -38,7 +38,7 @@ DesktopFile: |
   GenericName=Web Browser
   Comment=Browse the world wide web
   Keywords=Internet;WWW;Browser;Web;Explorer;
-  Exec=firefox %u
+  Exec=@@exec@@ %u
   Icon=firefox
   Terminal=false
   Type=Application

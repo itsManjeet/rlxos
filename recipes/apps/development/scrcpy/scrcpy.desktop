@@ -6,5 +6,5 @@ Exec=@@exec@@
 Icon=scrcpy
 Comment=Display and control your android device
 Categories=Development;
-Terminal=true
+Terminal=false
 StartupNotify=true

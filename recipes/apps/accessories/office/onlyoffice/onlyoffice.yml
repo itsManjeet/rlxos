@@ -20,7 +20,7 @@ script: |
   bsdtar -xf onlyoffice-desktopeditors-{{version}}.deb
   bsdtar -xf data.tar.xz
 
-  mv opt/openoffice/desktopeditors ${pkgupd_pkgdir}
+  mv opt/{{id}}/desktopeditors ${pkgupd_pkgdir}
   install -v -D -m 0755 ${FILES_DIR}/AppRun -t ${pkgupd_pkgdir}/
   cp ${pkgupd_pkgdir}/asc-de-256.png ${pkgupd_pkgdir}/{{id}}.png
   cp ${FILES_DIR}/{{id}}.desktop ${pkgupd_pkgdir}

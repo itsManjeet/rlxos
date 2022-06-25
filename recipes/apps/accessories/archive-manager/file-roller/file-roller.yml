@@ -23,7 +23,7 @@ build-dir: file-roller-{{version}}
 configure: --buildtype=release -D packagekit=false
 post-script: |
   chmod -v 0755 ${pkgupd_pkgdir}/usr/lib/file-roller/isoinfo.sh
-  cp ${FILE_DIR}/file-roller.svg ${pkgupd_pkgdir}/file-roller.png
+  cp ${FILES_DIR}/file-roller.svg ${pkgupd_pkgdir}/file-roller.png
   cp ${pkgupd_pkgdir}/usr/share/applications/org.gnome.FileRoller.desktop ${pkgupd_pkgdir}/file-roller.desktop
 
   sed -i 's|Icon=.*|Icon=file-roller|' ${pkgupd_pkgdir}/file-roller.desktop

@@ -1,0 +1,18 @@
+id: pkgupd-port
+version: 2200
+release: 1
+commit: 13083d07cd21e04fa4efcb9b640abbd8d382b250
+about: pkgupd helper tool to generate debian roots packages for appimages
+depends:
+  runtime:
+    - appimagetool
+    
+  buildtime:
+    - go
+
+sources:
+  - pkgupd-image-{{version}}-{{commit}}.tar.gz::https://github.com/itsmanjeet/pkgupd-image/archive/{{commit}}.tar.gz
+build-dir: pkgupd-image-{{commit}}
+script: |
+  go build main.go
+  install -v -D -m 0755 main ${pkgupd_pkgdir}/usr/bin/pkgupd-port

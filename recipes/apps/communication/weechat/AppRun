@@ -5,6 +5,6 @@ export LD_LIBRARY_PATH=${HERE}/usr/lib:${LD_LIBRARY_PATH}
 if [[ -n ${HEADLESS} ]] ; then
     EXEC=${HERE}/usr/bin/weechat-headless
 else
-    EXEC=${HERE}/usr/bib/weechat
+    EXEC=${HERE}/usr/bin/weechat
 fi
 exec ${EXEC} "$@"

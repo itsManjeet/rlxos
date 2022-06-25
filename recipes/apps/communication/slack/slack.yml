@@ -1,0 +1,21 @@
+id: slack
+version: 4.26.1
+release: 2
+about: Slack is a proprietary business communication platform developed by American software company Slack Technologies and now owned by Salesforce. Slack offers many IRC-style features, including persistent chat rooms organized by topic, private groups, and direct messaging
+type: app
+sources:
+  - https://downloads.slack-edge.com/releases/linux/{{version}}/prod/x64/slack-{{version}}-0.1.fc21.x86_64.rpm
+depends:
+  buildtime:
+    - appimagetool
+build-dir: .
+script: |
+  bsdtar -xf slack-{{version}}-0.1.fc21.x86_64.rpm
+
+  mv usr/lib/slack ${pkgupd_pkgdir}
+  mv ${FILES_DIR}/{{id}}.svg ${pkgupd_pkgdir}/{{id}}.png
+
+  cp ${FILES_DIR}/AppRun ${pkgupd_pkgdir}
+  chmod +x ${pkgupd_pkgdir}/AppRun
+
+  cp ${FILES_DIR}/{{id}}.desktop ${pkgupd_pkgdir}/

@@ -1,0 +1,4 @@
+#!/bin/sh
+HERE="$(dirname "$(readlink -f "${0}")")"
+EXEC=${HERE}/slack
+exec ${EXEC} "$@"

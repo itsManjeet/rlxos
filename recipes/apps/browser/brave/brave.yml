@@ -1,0 +1,28 @@
+id: brave
+version: 1.40.105
+about: Brave is a free and open-source web browser developed by Brave Software, Inc. based on the Chromium web browser. Brave is a privacy-focused browser, which automatically blocks online advertisements and website trackers in its default settings
+license: BSD MPL2 custom:chromium
+depends:
+  buildtime:
+    - appimagetool
+tags: 
+  - internet
+  - browser
+  - explorer
+
+type: app
+category: internet
+strip: false
+sources:
+  - brave-{{version}}::https://github.com/brave/brave-browser/releases/download/v{{version}}/brave-browser-{{version}}-linux-amd64.zip
+build-dir: .
+script: |
+  mkdir -p ${pkgupd_pkgdir}
+  bsdtar -xf ${PKGUPD_SRCDIR}/brave-{{version}} -C ${pkgupd_pkgdir}
+  chmod +x ${pkgupd_pkgdir}/brave
+
+  cp ${FILES_DIR}/AppRun ${pkgupd_pkgdir}/
+  chmod +x ${pkgupd_pkgdir}/AppRun
+
+  cp ${FILES_DIR}/{{id}}.svg ${pkgupd_pkgdir}/{{id}}.png
+  cp ${FILES_DIR}/{{id}}.desktop ${pkgupd_pkgdir}/

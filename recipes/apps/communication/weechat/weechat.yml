@@ -40,8 +40,8 @@ post-script: |
   cd ${pkgupd_pkgdir}
   
   # cleanup
-  rm usr/include
-  rm usr/lib/pkgconfig
+  rm usr/include -r
+  rm usr/lib/pkgconfig -r
 
   cp usr/share/applications/weechat.desktop .
   cp ${FILES_DIR}/{{id}}.png .

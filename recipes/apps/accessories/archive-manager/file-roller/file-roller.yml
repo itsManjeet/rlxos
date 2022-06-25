@@ -1,6 +1,6 @@
 id: file-roller
 version: 3.40.0
-release: 1
+release: 2
 about: |
   An archive manager for GNOME with support for tar, bzip2, gzip, zip, jar, compress, lzop, zstd, and many other archive formats
 type: app
@@ -23,7 +23,7 @@ build-dir: file-roller-{{version}}
 configure: --buildtype=release -D packagekit=false
 post-script: |
   chmod -v 0755 ${pkgupd_pkgdir}/usr/lib/file-roller/isoinfo.sh
-  cp ${pkgupd_pkgdir}/usr/share/icons/hicolor/scalable/apps/org.gnome.ArchiveManager.svg ${pkgupd_pkgdir}/file-roller.png
+  cp ${FILE_DIR}/file-roller.svg ${pkgupd_pkgdir}/file-roller.png
   cp ${pkgupd_pkgdir}/usr/share/applications/org.gnome.FileRoller.desktop ${pkgupd_pkgdir}/file-roller.desktop
 
   sed -i 's|Icon=.*|Icon=file-roller|' ${pkgupd_pkgdir}/file-roller.desktop
@@ -34,5 +34,3 @@ post-script: |
   rm ${pkgupd_pkgdir}/usr/share/metainfo/ -r
 
   install -v -D -m 0755 ${FILES_DIR}/AppRun -t ${pkgupd_pkgdir}/
-
-  cp ${pkgupd_pkgdir}/file-roller.png ${FILES_DIR}/

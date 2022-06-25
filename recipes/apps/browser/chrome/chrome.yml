@@ -1,6 +1,6 @@
 id: chrome
 version: 102.0.5005.115
-release: 1
+release: 2
 about: The popular and trusted web browser by Google (Stable Channel)
 
 depends:
@@ -8,8 +8,15 @@ depends:
     - appimagetool
 sources:
   - https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_{{version}}-1_amd64.deb
-strip: false
+tags: 
+  - internet
+  - browser
+  - explorer
+
 type: app
+category: internet
+strip: false
+
 build-dir: .
 script: |
   bsdtar -xf ${PKGUPD_SRCDIR}/google-chrome-stable_{{version}}-1_amd64.deb

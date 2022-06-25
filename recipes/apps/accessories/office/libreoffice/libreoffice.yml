@@ -1,5 +1,5 @@
 id: libreoffice
-version: 7.3.1
+version: 7.3.4
 release: 1
 about: LibreOffice is a free and open-source office productivity software suite, a project of The Document Foundation. It was forked in 2010 from OpenOffice.org, an open-sourced version of the earlier StarOffice
 license: LGPL3
@@ -27,5 +27,8 @@ script: |
   cd ${pkgupd_pkgdir}
   mv libreoffice7.3-startcenter.png libreoffice.png
   mv startcenter.desktop libreoffice.desktop
+
+  # copy icon
+  cp libreoffice.png ${FILES_DIR}/
 
   sed -i 's|Icon=libreoffice7.3-startcenter|Icon=libreoffice|' libreoffice.desktop

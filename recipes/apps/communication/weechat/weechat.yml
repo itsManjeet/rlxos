@@ -22,6 +22,7 @@ depends:
     - cmake
     - python
     - tcl
+    - appimagetool
 
 sources:
   - https://www.weechat.org/files/src/weechat-{{version}}.tar.xz

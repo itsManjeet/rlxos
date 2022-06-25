@@ -1,5 +1,6 @@
 id: openoffice
 version: 4.1.12
+release: 1
 about: A free and open productivity suite
 depends:
   buildtime:

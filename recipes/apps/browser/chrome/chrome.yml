@@ -1,5 +1,6 @@
 id: chrome
 version: 102.0.5005.115
+release: 1
 about: The popular and trusted web browser by Google (Stable Channel)
 
 depends:
@@ -16,7 +17,7 @@ script: |
   mkdir -p ${pkgupd_pkgdir}/
   bsdtar -xf data.tar.xz -C ${pkgupd_pkgdir}/
 
-  cp ${pkgupd_pkgdir}/opt/google/chrome/product_logo_128.png ${pkgupd_pkgdir}/chrome.png
+  cp ${FILES_DIR}/{{id}}.svg ${pkgupd_pkgdir}/chrome.png
   cp ${pkgupd_pkgdir}/usr/share/applications/google-chrome.desktop ${pkgupd_pkgdir}/chrome.desktop
 
   install -v -D -m 0755 ${FILES_DIR}/AppRun -t ${pkgupd_pkgdir}/

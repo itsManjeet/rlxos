@@ -1,6 +1,6 @@
 id: weechat
 version: 3.5
-release: 2
+release: 3
 about: Fast, light and extensible IRC client (curses UI)
 license: GPL
 category: internet

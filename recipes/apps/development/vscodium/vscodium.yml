@@ -1,5 +1,5 @@
-id: codium
-version: 1.67.2
+id: vscodium
+version: 1.68.1
 about: Free/Libre Open Source Software Binaries of VS Code
 license: MIT
 tags:
@@ -18,8 +18,9 @@ script: |
   chmod +x codium-{{version}}.AppImage
   ./codium-{{version}}.AppImage --appimage-extract
   mv squashfs-root ${pkgupd_pkgdir}
+
   # cleanup libraries
   rm ${pkgupd_pkgdir}/lib/x86_64-linux-gnu/liblzma.so*
-  mv ${pkgupd_pkgdir}/vscodium.png ${pkgupd_pkgdir}/codium.png
-  sed -i 's|vscodium|codium|' ${pkgupd_pkgdir}/codium.desktop
+  
+  mv ${FILES_DIR}/{{id}}.svg ${pkgupd_pkgdir}/{{id}}.png
   rm ${pkgupd_pkgdir}/usr/share/appdata -r

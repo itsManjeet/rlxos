@@ -9,6 +9,7 @@ depends:
     - qt
     - libyaml-cpp
     - python
+    - appimagetool
 build-dir: qt-creator-opensource-src-{{version}}
 sources:
   - https://download.qt.io/official_releases/qtcreator/7.0/{{version}}/qt-creator-opensource-src-{{version}}.tar.xz

@@ -1,8 +1,13 @@
 id: scrcpy
 version: 1.23
-release: 3
+release: 4
 about: Display and control your android device
 license: Apache
+category: development
+tags:
+  - android
+  - screencast
+  - android-control
 depends:
   buildtime:
     - ffmpeg
@@ -35,3 +40,6 @@ post-script: |
   install -v -D -m 0755 /usr/bin/adb -t ${pkgupd_pkgdir}/usr/bin/
 
   rm -r ${pkgupd_pkgdir}/usr/share/{man,zsh,bash-completion}
+
+  # export icon
+  cp ${pkgupd_pkdir}/{{id}}.png ${FILES_DIR}/

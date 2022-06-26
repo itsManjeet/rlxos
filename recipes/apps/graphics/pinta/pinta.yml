@@ -11,7 +11,7 @@ depends:
 tags:
   - paint
   - graphics
-category: accessories
+category: graphics
 type: app
 sources:
   - https://github.com/PintaProject/Pinta/releases/download/{{version}}/pinta-{{version}}.tar.gz
@@ -23,20 +23,16 @@ post-script: |
   cd ${pkgupd_pkgdir}
 
   mv usr/share/applications/pinta.desktop .
-  mv usr/share/icons/hicolor/scalable/apps/pinta.svg pinta.png
+  sed -i 's#TryExec=.*##' {{id}}.desktop
+  mv ${FILES_DIR}/{{id}}.svg pinta.png
 
   # install dotnet runtime
   mkdir -p usr/share/dotnet/
   cp /usr/share/dotnet/{shared,host} usr/share/dotnet/ -a
   cp /usr/share/dotnet/dotnet usr/share/dotnet/
 
+  cp ${FILES_DIR}/AppRun .
+  chmod +x AppRun
+
 autoconf-dir: true
-files:
-  - path: AppRun
-    perm: 0755
-    content: |
-      #!/bin/bash
-      SELF=$(readlink -f "$0")
-      HERE=${SELF%/*}
-      LD_LIBRARY_PATH=${HERE}/usr/lib/pinta:${LD_LIBRARY_PATH}
-      exec ${HERE}/usr/share/dotnet/dotnet ${HERE}/usr/lib/pinta/Pinta.dll $@
+

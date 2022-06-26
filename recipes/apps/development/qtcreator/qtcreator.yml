@@ -1,5 +1,6 @@
 id: qtcreator
 version: 7.0.2
+release: 2
 about: A cross-platform Qt IDE 
 depends:
   buildtime:
@@ -14,6 +15,14 @@ sources:
 
 type: app
 bundle: true
+category: development
+tags:
+  - qt
+  - development
+  - c++
+  - cpp
+  - graphics
+  - ide
 configure: >
   -DCMAKE_INSTALL_PREFIX=/usr
   -DCMAKE_INSTALL_LIBEXECDIR=lib
@@ -24,9 +33,8 @@ configure: >
 
 post-script: |
   cd ${pkgupd_pkgdir}
-  mv ${FILES_DIR}/qtcreator.desktop {{id}}.desktop
-
-  mv usr/share/icons/hicolor/512x512/apps/QtProject-qtcreator.png {{id}}.png
+  mv usr/share/applications/org.qt-project.qtcreator.desktop {{id}}.desktop
+  sed -i 's#TryExec=.*##' {{id}}.desktop
+  sed -i 's#Icon=.*#Icon={{id}}#' {{id}}.desktop
+  mv ${FILES_DIR}/{{id}}.svg {{id}}.png
   install -v -D -m 0755 ${FILES_DIR}/AppRun AppRun
-
-  cp {{id}}.png ${FILES_DIR}/

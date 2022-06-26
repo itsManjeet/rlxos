@@ -42,4 +42,4 @@ post-script: |
   rm -r ${pkgupd_pkgdir}/usr/share/{man,zsh,bash-completion}
 
   # export icon
-  cp ${pkgupd_pkdir}/{{id}}.png ${FILES_DIR}/
+  cp ${pkgupd_pkgdir}/{{id}}.png ${FILES_DIR}/

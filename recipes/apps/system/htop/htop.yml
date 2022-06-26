@@ -1,0 +1,38 @@
+id: htop
+version: 3.2.0
+about: Interactive process viewer
+depends:
+  buildtime:
+    - libcap
+    - libnl
+    - ncurses
+    - lm-sensors
+    - appimagetool
+type: app
+category: system
+tags:
+  - system
+  - process
+  - task
+  - manager
+
+sources:
+  - https://github.com/htop-dev/htop/releases/download/{{version}}/htop-{{version}}.tar.xz
+
+pre-script: |
+  autoreconf -fi
+
+configure: >
+  --enable-cgroup
+  --enable-delayacct
+  --enable-openvz
+  --enable-unicode
+  --enable-vserver
+
+post-script: |
+  cp ${FILES_DIR}/AppRun ${pkgupd_pkgdir}/
+  chmod +x ${pkgupd_pkgdir}/AppRun
+
+  cp ${pkgupd_pkgdir}/usr/share/applications/{{id}}.desktop ${pkgupd_pkgdir}/
+  sed -i 's#TryExec=.*##' ${pkgupd_pkgdir}/{{id}}.desktop
+  cp ${FILES_DIR}/{{id}}.svg ${pkgupd_pkgdir}/{{id}}.png

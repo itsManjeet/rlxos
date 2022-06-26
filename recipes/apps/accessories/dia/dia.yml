@@ -36,7 +36,7 @@ pre-script: |
   sed -i 's#freetype-config --cflags#pkg-config --cflags freetype2#' configure
   sed -i 's#freetype-config --libs#pkg-config --libs freetype2#' configure
 
-  patch -Np1 -i ${FILES_DIR}/dia/dia.patch
+  patch -Np1 -i ${FILES_DIR}/dia.patch
 
 autoconf-dir: true
 configure: >

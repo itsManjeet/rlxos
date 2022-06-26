@@ -11,3 +11,6 @@ ln -sfv /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
 
 # install inspector globally
 systemctl enable pkgupd-watchdog --global
+
+# create Applications directory for pkgupd-watchdog
+[[ ! -d /etc/skel/Applications ]] && mkdir -p /etc/skel/Applications

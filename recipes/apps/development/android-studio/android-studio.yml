@@ -1,0 +1,25 @@
+id: android-studio
+version: 2021.2.1.14
+about: Android IDE (stable branch)
+
+type: app
+depends:
+  buildtime:
+    - appimagetool
+    - shared-mime-info
+
+category: development
+tags:
+  - android
+  - apps
+  - ide
+sources:
+  - https://dl.google.com/dl/android/studio/ide-zips/{{version}}/android-studio-{{version}}-linux.tar.gz
+build-dir: .
+script: |
+  mv android-studio ${pkgupd_pkgdir} && cd ${pkgupd_pkgdir}
+
+  cp ${FILES_DIR}/{{id}}.svg {{id}}.png
+  cp ${FILES_DIR}/{{id}}.desktop .
+  cp ${FILES_DIR}/AppRun .
+  chmod +x AppRun

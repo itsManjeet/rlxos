@@ -1,0 +1,25 @@
+id: evtest
+version: 1.34
+about: Input device event monitor and query tool
+license: GPL
+tags:
+  - system
+category: system
+url: https://cgit.freedesktop.org/evtest/
+
+depends:
+  buildtime:
+    - appimagetool
+
+type: app
+sources:
+  - https://gitlab.freedesktop.org/libevdev/evtest/-/archive/evtest-{{version}}/evtest-evtest-{{version}}.tar.gz
+
+pre-script: ./autogen.sh
+autoconf-dir: true
+post-script: |
+  cp ${FILES_DIR}/{{id}}.svg ${pkgupd_pkgdir}/{{id}}.png
+  cp ${FILES_DIR}/{{id}}.desktop ${pkgupd_pkgdir}/
+  cp ${FILES_DIR}/AppRun ${pkgupd_pkgdir}/
+  chmod +x ${FILES_DIR}/AppRun
+  mkdir -p ${pkgupd_pkgdir}/usr/lib/

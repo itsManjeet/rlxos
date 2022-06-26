@@ -14,28 +14,16 @@ type: app
 sources:
   - neofetch-{{version}}.tar.gz::https://github.com/dylanaraps/neofetch/archive/refs/tags/{{version}}.tar.gz
 
-build-dir: neofetch-7.1.0
+build-dir: neofetch-{{version}}
 script: |
-  for i in ${FILES}/neofetch/*.patch ; do
+  for i in ${FILES_DIR}/*.patch ; do
     patch -Np1 -i $i
   done
   make DESTDIR="${pkgupd_pkgdir}" install
   install -D -m 0644 LICENSE.md ${pkgupd_pkgdir}/usr/share/doc/neofetch/license
 
-  cp ${FILES}/neofetch/logo.png ${pkgupd_pkgdir}/neofetch.png
+  cp ${FILES_DIR}/{{id}}.png ${pkgupd_pkgdir}/{{id}}.png
 
-DesktopFile: |
-  [Desktop Entry]
-  Name=Neofetch
-  Comment=Show off tool
-  Exec=neofetch
-  Icon=neofetch
-  Type=Application
-  StartupNotify=true
-  Categories=System;
-  Terminal=true
-AppRun: |
-  #!/bin/sh
-  SELF=$(readlink -f "$0")
-  HERE=${SELF%/*}
-  exec ${HERE}/usr/bin/neofetch
+  cp ${FILES_DIR}/{{id}}.desktop ${pkgupd_pkgdir}/
+  cp ${FILES_DIR}/AppRun ${pkgupd_pkgdir}/
+  chmod +x ${pkgupd_pkgdir}/AppRun

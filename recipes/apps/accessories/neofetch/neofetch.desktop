@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Neofetch
+Comment=Show off tool
+Exec=@@exec@@
+Icon=neofetch
+Type=Application
+StartupNotify=true
+Categories=System;
+Terminal=true

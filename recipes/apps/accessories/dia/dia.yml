@@ -1,6 +1,6 @@
 id: dia
 version: 0.97.3
-release: 2
+release: 3
 about: Dia is a GTK+ based diagram creation program for GNU/Linux, MacOS X, Unix, and Windows, and is released under the GPL license. ... It currently has special objects to help draw entity relationship diagrams, UML diagrams, flowcharts, network diagrams, and many other diagrams
 license: GPL
 tags: 
@@ -36,7 +36,7 @@ pre-script: |
   sed -i 's#freetype-config --cflags#pkg-config --cflags freetype2#' configure
   sed -i 's#freetype-config --libs#pkg-config --libs freetype2#' configure
 
-  patch -Np1 -i ${FILES}/dia/dia.patch
+  patch -Np1 -i ${FILES_DIR}/dia/dia.patch
 
 autoconf-dir: true
 configure: >
@@ -46,22 +46,11 @@ configure: >
 post-script: |
   cd ${pkgupd_pkgdir}
   mv usr/share/applications/dia.desktop dia.desktop
-  cp usr/share/icons/hicolor/48x48/apps/dia.png dia.png
+  cp ${FILES_DIR}/{{id}}.svg dia.png
 
   # TODO: check better way
   mv usr/share/dia data
   mv data/ui/* data/
-files:
-  - path: AppRun
-    perm: 0755
-    content: |
-      #!/bin/sh
-      HERE="$(dirname "$(readlink -f "${0}")")"
-      export DIA_BASE_PATH=${HERE}
-      export DIA_LIB_PATH=${HERE}/usr/lib/dia:${HERE}
-      export DIA_SHARE_PATH=${HERE}/data/shapes
-      export DIA_XSLT_PATH=${HERE}/data/xslt
-      export DIA_PYTHON_PATH=${HERE}/data/python:${HERE}/data
-      export DIA_SHEET_PATH=${HERE}/data/sheets
-      export LD_LIBRARY_PATH=${HERE}/usr/lib/dia:${LD_LIBRARY_PATH}
-      exec ${HERE}/usr/bin/dia $@
+  
+  cp ${FILES_DIR}/AppRun .
+  chmod +x AppRun

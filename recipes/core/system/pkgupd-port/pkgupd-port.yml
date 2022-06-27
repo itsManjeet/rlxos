@@ -1,7 +1,7 @@
 id: pkgupd-port
 version: 2200
-release: 1
-commit: 13083d07cd21e04fa4efcb9b640abbd8d382b250
+release: 2
+commit: d1b3ade98e86f04cdcebc4d71b4a8a9c993e6eb3
 about: pkgupd helper tool to generate debian roots packages for appimages
 depends:
   runtime:

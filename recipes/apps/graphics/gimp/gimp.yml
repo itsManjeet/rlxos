@@ -12,7 +12,7 @@ sources:
 
 buildtime: .
 script: |
-  chmod + gimp-{{version}}.AppImage
+  chmod +x gimp-{{version}}.AppImage
   ./gimp-{{version}}.AppImage --appimage-extract
   mv squashfs-root ${pkgupd_pkgdir}
 

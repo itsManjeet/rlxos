@@ -1,6 +1,6 @@
 id: inkscape
 version: 1.0.1
-release: 1
+release: 2
 about: Inkscape is a free and open-source vector graphics editor used to create vector images, primarily in Scalable Vector Graphics format. Other formats can be imported and exported. Inkscape can render primitive vector shapes and text
 license: GPL
 tags: 
@@ -11,18 +11,12 @@ type: app
 depends:
   buildtime:
     - appimagetool
-  
-sources:
-  - https://inkscape.org/gallery/item/21590/Inkscape-3bc2e81-x86_64.AppImage
+    - pkgupd-port
 
 build-dir: .
 script: |
-  chmod +x Inkscape-3bc2e81-x86_64.AppImage
-  ./Inkscape-3bc2e81-x86_64.AppImage --appimage-extract
-  mv squashfs-root ${pkgupd_pkgdir}
+  pkgupd-port generate ${pkgupd_pkgdir} inkscape
 
-  cd ${pkgupd_pkgdir}
-  cp ${FILES_DIR}/{{id}}.svg inkscape.png
-  mv org.inkscape.Inkscape.desktop inkscape.desktop
-
-  sed -i 's|Icon=org.inkscape.Inkscape|Icon=inkscape|' inkscape.desktop
+  cp ${pkgupd_pkgdir}/usr/share/applications/inkscape.desktop ${pkgupd_pkgdir}/
+  cp ${FILES_DIR}/{{id}}.svg ${pkgupd_pkgdir}/{{id}}.png
+  pkgupd-port apprun ${pkgupd_pkgdir}

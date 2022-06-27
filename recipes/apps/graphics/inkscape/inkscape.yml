@@ -17,6 +17,6 @@ build-dir: .
 script: |
   pkgupd-port generate ${pkgupd_pkgdir} inkscape
 
-  cp ${pkgupd_pkgdir}/usr/share/applications/inkscape.desktop ${pkgupd_pkgdir}/
+  cp ${FILES_DIR}/{{id}}.desktop ${pkgupd_pkgdir}/
   cp ${FILES_DIR}/{{id}}.svg ${pkgupd_pkgdir}/{{id}}.png
   pkgupd-port apprun ${pkgupd_pkgdir}

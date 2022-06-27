@@ -5,7 +5,7 @@
      </key>
      <key name="enabled-extensions" type="as">
 -      <default>[]</default>
-+      <default>['blur-me@nunchucks', 'dash-to-panel@jderose9.github.com', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'nightthemeswitcher@romainvigier.fr']</default>
++      <default>['blur-me@nunchucks', 'dash-to-panel@jderose9.github.com', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'nightthemeswitcher@romainvigier.fr', 'ding@rastersoft.com']</default>
        <summary>UUIDs of extensions to enable</summary>
        <description>
          GNOME Shell extensions have a UUID property; this key lists extensions

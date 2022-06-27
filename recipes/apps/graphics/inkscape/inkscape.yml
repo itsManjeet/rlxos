@@ -12,6 +12,7 @@ depends:
   buildtime:
     - appimagetool
     - pkgupd-port
+    - rsync
 
 build-dir: .
 script: |

@@ -1,6 +1,6 @@
 id: gnome-shell
 version: 40.3
-release: 1
+release: 2
 about: |
   Core user interface for GNOME Desktop Environment
 
@@ -22,13 +22,13 @@ depends:
     - ibus
     - gnome-autoar
     - libnma
-    # - gnome-menus
+    - gnome-menus
     # - telepathy-mission-control
 
 sources:
-  - https://download.gnome.org/sources/gnome-shell/40/gnome-shell-40.3.tar.xz
+  - https://download.gnome.org/sources/gnome-shell/40/gnome-shell-{{verion}}.tar.xz
 
-build-dir: gnome-shell-40.3
+build-dir: gnome-shell-{{version}}
 pre-script: |
   patch data/org.gnome.shell.gschema.xml.in < ${FILES}/gnome-shell/config.patch
   patch js/ui/main.js < ${FILES}/gnome-shell/show-apps-on-startup.patch

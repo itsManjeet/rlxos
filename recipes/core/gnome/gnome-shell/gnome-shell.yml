@@ -30,7 +30,7 @@ sources:
 
 build-dir: gnome-shell-{{version}}
 pre-script: |
-  patch data/org.gnome.shell.gschema.xml.in < ${FILES}/gnome-shell/config.patch
-  patch js/ui/main.js < ${FILES}/gnome-shell/show-apps-on-startup.patch
+  patch data/org.gnome.shell.gschema.xml.in < ${FILES_DIR}/config.patch
+  patch js/ui/main.js < ${FILES_DIR}/show-apps-on-startup.patch
 configure: --buildtype=release
 

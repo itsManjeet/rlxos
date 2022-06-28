@@ -1,5 +1,6 @@
 id: mutter
 version: 40.3
+release: 2
 about: |
   The window manager for GNOME
 
@@ -22,11 +23,9 @@ depends:
     - gobject-introspection
 
 sources:  
-  - https://download.gnome.org/sources/mutter/40/mutter-40.3.tar.xz
-packages:
-  - id: pkg
-    dir: mutter-40.3
-    flags:
-      - id: configure
-        value: >
-          --buildtype=debugoptimized
+  - https://download.gnome.org/sources/mutter/40/mutter-{{version}}.tar.xz
+build-dir: mutter-{{version}}
+pre-script: |
+  patch data/org.gnome.mutter.gschema.xml.in < ${FILES_DIR}/center-window.patch
+configure: >
+  --buildtype=release

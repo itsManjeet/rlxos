@@ -1,5 +1,6 @@
 id: openoffice
 version: 4.1.12
+release: 1
 about: A free and open productivity suite
 depends:
   buildtime:
@@ -9,19 +10,31 @@ sources:
   - https://downloads.apache.org/openoffice/{{version}}/binaries/en-US/Apache_OpenOffice_{{version}}_Linux_x86-64_install-rpm_en-US.tar.gz
 
 type: app
+tags: 
+  - office
+  - word
+  - excel
+  - powerpoint
+  - presentation
+category: office
+
 build-dir: en-US/RPMS
 script: |
-  mkdir -p ${pkgupd_pkgdir}
   for file in *.rpm ; do
     echo "extracting ${file##*/}"
-    bsdtar -xf ${file} -C ${pkgupd_pkgdir}
+    bsdtar -xf ${file}
   done
 
-  cd desktop-integration
-  for file in *.rpm ; do
+  for file in desktop-integration/*.rpm ; do
     echo "extracting ${file##*/}"
-    bsdtar -xf ${file} -C ${pkgupd_pkgdir}
+    bsdtar -xf ${file}
   done
+  
+  mv opt/openoffice4 ${pkgupd_pkgdir}
 
   cp ${FILES_DIR}/openoffice.desktop ${pkgupd_pkgdir}/
-  
+  cp usr/share/icons/hicolor/128x128/apps/openoffice4-main.png ${pkgupd_pkgdir}/{{id}}.png
+  install -v -D -m 0755 ${FILES_DIR}/AppRun -t ${pkgupd_pkgdir}/
+
+  cp ${pkgupd_pkgdir}/{{id}}.png ${FILES_DIR}/
+ 

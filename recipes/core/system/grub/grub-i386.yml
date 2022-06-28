@@ -1,0 +1,44 @@
+id: grub-i386
+version: 2.06
+release: 1
+about: |
+  GRand Unified Bootloader
+
+depends:
+  runtime:
+    - gettext
+    - bash
+    - xz
+    - efibootmgr
+    - freetype
+    - libisoburn
+    - dosfstools
+
+  buildtime:
+    - python
+    - flex
+    - m4
+    - bison
+
+environ:
+  - PYTHON=python3
+  - CFLAGS=""
+
+build-dir: grub-{{version}}
+sources:
+  - http://ftp.gnu.org/gnu/grub/grub-{{version}}.tar.xz
+build-type: autoconf
+configure: >
+    --disable-werror
+    --disable-efiemu
+    --with-platform=pc
+    --target=i386
+    --disable-nls
+    --sysconfdir=/etc
+    CFLAGS="-Os"
+    CXXFLAGS="${CFLAGS}"
+
+post-script: |
+  rm -rf ${pkgupd_pkgdir}/etc ${pkgupd_pkgdir}/usr/bin ${pkgupd_pkgdir}/usr/sbin
+  rm -rf ${pkgupd_pkgdir}/usr/share/grub/grub-mkconfig_lib
+  rm -rf ${pkgupd_pkgdir}/usr/share/info

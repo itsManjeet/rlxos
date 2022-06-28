@@ -1,0 +1,31 @@
+id: libreoffice
+version: 7.3.4
+release: 2
+about: LibreOffice is a free and open-source office productivity software suite, a project of The Document Foundation. It was forked in 2010 from OpenOffice.org, an open-sourced version of the earlier StarOffice
+license: LGPL3
+tags: 
+  - office
+  - word
+  - excel
+  - powerpoint
+  - presentation
+
+category: office
+type: app
+sources:
+  - https://libreoffice.soluzioniopen.com/stable/full/LibreOffice-fresh.full-x86_64.AppImage
+
+depends:
+  buildtime:
+    - appimagetool
+build-dir: .
+script: |
+  chmod +x LibreOffice-fresh.full-x86_64.AppImage
+  ./LibreOffice-fresh.full-x86_64.AppImage --appimage-extract
+  mv squashfs-root ${pkgupd_pkgdir}
+
+  cd ${pkgupd_pkgdir}
+  cp ${FILES_DIR}/libreoffice.svg {{id}}.png
+  mv startcenter.desktop {{id}}.desktop
+
+  sed -i 's|Icon=libreoffice7.3-startcenter|Icon=libreoffice|' {{id}}.desktop

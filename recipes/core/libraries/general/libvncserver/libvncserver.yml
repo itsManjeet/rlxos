@@ -1,0 +1,17 @@
+id: libvncserver
+version: 0.9.13
+release: 1
+about: Cross-platform C libraries that allow you to easily implement VNC server or client functionality
+license: GPL
+depends:
+  runtime:
+    - gnutls
+    - libgcrypt
+    - libjpeg-turbo
+    - libpng
+    - openssl
+  buildtime:
+    - cmake
+    - sdl2
+sources:
+  - https://github.com/LibVNC/libvncserver/archive/LibVNCServer-{{version}}.tar.gz

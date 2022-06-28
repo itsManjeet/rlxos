@@ -12,16 +12,17 @@ depends:
     - gdm
     - gedit
     - gnome-backgrounds
-  #  - gnome-boxes
+    - gnome-books
     - gnome-calculator
     - gnome-calendar
+    - gnome-contacts
     - gnome-characters
     - gnome-clocks
     - gnome-color-manager
     - gnome-control-center
     - gnome-disk-utility
-    # - gnome-documents
-    # - gnome-font-viewer
+    - evince
+    - gnome-font-viewer
     - gnome-initial-setup
     - gnome-icon-theme
     - gnome-icon-theme-extras
@@ -30,7 +31,9 @@ depends:
     - gnome-logs
     - gnome-menus
     - gnome-music
+    - gnome-maps
     - gnome-power-manager
+    - gnome-remote-desktop
     - gnome-screenshot
     - gnome-shell
     - gnome-shell-extensions
@@ -40,29 +43,15 @@ depends:
     - gnome-session
     - gnome-system-monitor
     - gnome-terminal
-    # - gnome-theme-extra
     - gnome-tweaks
-    # - gnome-todo
-    # - gnome-user-docs
-    # - gnome-user-share
-    # - gnome-usage
+    - gnome-todo
     - gnome-weather
     - nautilus
-    # - remmina
-    # - simple-scan
     - totem
     - xdg-user-dirs
-    # - xdg-user-dirs-gtk
-    # - yelp
-    - gnome
     - ttf-noto
     - ttf-opensans
     - evolution
 
-packages:
-  - id: pkg
-    dir: .
-    script: |
-
-      mkdir -p ${pkgupd_pkgdir}/usr/share/gnome
-      echo "3.40" > ${pkgupd_pkgdir}/usr/share/gnome/version
+script: |
+  mkdir -p ${pkgupd_pkgdir}/usr/

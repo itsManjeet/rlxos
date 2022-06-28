@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Visual Studio Code
+StartupWMClass=vscode
+Comment=Visual Studio Code
+GenericName=Text Editor
+Exec=@@exec@@ --no-sandbox --unity-launch %U
+Icon=visual-studio-code
+Type=Application
+Categories=Development;TextEditor;

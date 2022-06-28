@@ -5,43 +5,58 @@ about: |
 
 depends:
   runtime:
-    - dbus
-    - openssl
-    - gdk-pixbuf
-    - libepoxy
+    - xorg-libs
+    - alsa-lib
+    - make-ca
+    - cups
+    - glib
+    - gst-plugins-base
+    - harfbuzz-icu
+    - jasper
+    - libjpeg-turbo
     - libmng
+    - libpng
+    - libtiff
+    - libwebp
     - libxkbcommon
-    - harfbuzz
-    - xcb-util-wm
+    - mesa
+    - mtdev
+    - pcre2
+    - sqlite
+    - wayland
     - xcb-util-image
     - xcb-util-keysyms
     - xcb-util-renderutil
-    - desktop-file-utils
-    - libxcb
-    - sqlite
-    - fontconfig
-    - which
+    - xcb-util-wm
+    - libinput
+    - ibus
+    - ffmpeg
+    - pulseaudio
     - nodejs
     - nss
-    - pcre2
-    - python
-    - alsa-lib
-    - pulseaudio
-    - ffmpeg
-    - icu
-    - cups
+    - libxslt
+    - opus
+    - pipewire
+    - poppler
+    - kerberos-v5
+    - libevent
 
 build-dir: qt-everywhere-src-{{version}}
 sources:
   - https://download.qt.io/archive/qt/5.15/{{version}}/single/qt-everywhere-opensource-src-{{version}}.tar.xz
 script: |
-
-  sed -i "/utility/a #include <limits>"     qtbase/src/corelib/global/qglobal.h
-  sed -i "/string/a #include <limits>"      qtbase/src/corelib/global/qfloat16.h
-  sed -i "/qbytearray/a #include <limits>"  qtbase/src/corelib/text/qbytearraymatcher.h
-  sed -i "/type_traits/a #include <limits>" qtdeclarative/src/qmldebug/qqmlprofilerevent_p.h
+  patch -Np1 -i ${FILES_DIR}/qt-everywhere-opensource-src-5.15.4-kf5-1.patch
 
   ./configure -prefix /usr \
+    -archdatadir /usr/lib/qt5 \
+    -bindir /usr/bin \
+    -plugindir /usr/lib/qt5/plugins \
+    -importdir /usr/lib/qt5/imports \
+    -headerdir /usr/include/qt5 \
+    -datadir /usr/share/qt5 \
+    -docdir /usr/share/doc/qt5 \
+    -translationdir /usr/share/qt5/translations \
+    -examplesdir /usr/share/doc/qt5/examples \
     -sysconfdir /etc/xdg \
     -confirm-license -opensource \
     -dbus-linked \
@@ -49,6 +64,8 @@ script: |
     -system-harfbuzz \
     -system-sqlite \
     -nomake examples \
+    -system-ffmpeg \
+    -webengine-icu \
     -no-rpath \
     -syslog \
     -journald
@@ -73,3 +90,10 @@ script: |
               ${pkgupd_pkgdir}/usr/share/pixmaps/qdbusviewer-qt5.png
 
   install -v -D ${FILES_DIR}/*.desktop -t ${pkgupd_pkgdir}/usr/share/applications/
+
+  for file in moc uic rcc qmake lconvert lrelease lupdate; do
+    ln -sfvn $file ${pkgupd_pkgdir}/usr/bin/$file-qt5
+  done
+
+  mkdir -p ${pkgupd_pkgdir}/etc/ld.so.conf.d/
+  echo "/usr/lib/qt5" > ${pkgupd_pkgdir}/etc/ld.so.conf.d/qt5.conf

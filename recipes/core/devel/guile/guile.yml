@@ -1,0 +1,26 @@
+id: guile
+version: 2.2.7
+about: Portable, embeddable Scheme implementation written in C
+license: GPL
+depends:
+  runtime:
+    - gc
+    - libgmp
+    - libffi
+    - libtool
+    - libunistring
+    - ncurses
+    - texinfo
+sources:
+  - https://ftp.gnu.org/pub/gnu/{{id}}/{{id}}-{{version}}.tar.gz
+
+pre-script: |
+  sed -e '/test-out-of-memory/d' -i test-suite/standalone/Makefile.am 
+  autoreconf -if
+
+configure: >
+  --disable-static
+  --disable-error-on-warning
+
+post-script: |
+  rm "$pkgupd_pkgdir"/usr/lib/libguile-2.?.so.*-gdb.scm

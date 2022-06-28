@@ -1,0 +1,29 @@
+id: neofetch
+version: 7.1.0
+about: CLI system information tool writter in BASH
+license: MIT
+depends:
+  buildtime:
+    - appimagetool
+category: system
+tags:
+  - system
+  - information
+  - showoff
+type: app
+sources:
+  - neofetch-{{version}}.tar.gz::https://github.com/dylanaraps/neofetch/archive/refs/tags/{{version}}.tar.gz
+
+build-dir: neofetch-{{version}}
+script: |
+  for i in ${FILES_DIR}/*.patch ; do
+    patch -Np1 -i $i
+  done
+  make DESTDIR="${pkgupd_pkgdir}" install
+  install -D -m 0644 LICENSE.md ${pkgupd_pkgdir}/usr/share/doc/neofetch/license
+
+  cp ${FILES_DIR}/{{id}}.png ${pkgupd_pkgdir}/{{id}}.png
+
+  cp ${FILES_DIR}/{{id}}.desktop ${pkgupd_pkgdir}/
+  cp ${FILES_DIR}/AppRun ${pkgupd_pkgdir}/
+  chmod +x ${pkgupd_pkgdir}/AppRun

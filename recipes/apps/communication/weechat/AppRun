@@ -1,0 +1,10 @@
+#!/bin/sh
+HERE="$(dirname "$(readlink -f "${0}")")"
+export PATH=${HERE}/usr/bin:${PATH}
+export LD_LIBRARY_PATH=${HERE}/usr/lib:${LD_LIBRARY_PATH}
+if [[ -n ${HEADLESS} ]] ; then
+    EXEC=${HERE}/usr/bin/weechat-headless
+else
+    EXEC=${HERE}/usr/bin/weechat
+fi
+exec ${EXEC} "$@"

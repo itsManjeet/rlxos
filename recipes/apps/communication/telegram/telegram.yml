@@ -1,0 +1,27 @@
+id: telegram
+version: 4.0.2
+about: Telegram is a freeware, cross-platform, cloud-based instant messaging service. The service also provides end-to-end encrypted video calling, VoIP, file sharing and several other features. It was launched for iOS on 14 August 2013 and Android in October 2013.
+license: GPL3
+tags:
+  - chat
+  - messsaging
+
+category: internet
+strip: false
+depends:
+  runtime:
+    - appimagetool
+type: app
+
+sources:
+  - https://github.com/telegramdesktop/tdesktop/releases/download/v{{version}}/tsetup.{{version}}.tar.xz
+
+build-dir: .
+script: |
+  install -D -m 0755 Telegram/Telegram ${pkgupd_pkgdir}/telegram
+  # chrpath --delete ${pkgupd_pkgdir}/telegram
+  cp ${FILES_DIR}/AppRun ${pkgupd_pkgdir}/
+  chmod +x ${pkgupd_pkgdir}/AppRun
+  cp ${FILES_DIR}/{{id}}.svg ${pkgupd_pkgdir}/{{id}}.png
+  cp ${FILES_DIR}/{{id}}.desktop ${pkgupd_pkgdir}/
+

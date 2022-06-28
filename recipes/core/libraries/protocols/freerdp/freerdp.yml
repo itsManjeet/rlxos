@@ -1,0 +1,54 @@
+id: freerdp
+version: 2.7.0
+release: 1
+about: Free implementation of the Remote Desktop Protocol (RDP)
+
+depends:
+  runtime:
+    - dbus-glib
+    - glibc
+    - gst-plugins-base
+    - gstreamer
+    - alsa-lib
+    - ffmpeg
+    - cups
+    - libgssglue
+    - icu
+    - libjpeg-turbo
+    - pam
+    - pulseaudio
+    - systemd
+    - libusb
+    - xorg-libs
+    - wayland
+    - pcsclite
+  buildtime:
+    - docbook-xsl
+    - cmake
+    - kerberos-v5
+    - xorgproto
+    - xmlto
+
+sources:
+  - freerdp-{{version}}.tar.gz::https://github.com/{{id}}/{{id}}/archive/{{version}}.tar.gz
+
+build-dir: FreeRDP-{{version}}
+configure: >
+  -DPROXY_PLUGINDIR=/usr/lib/freerdp2/server/proxy/plugins
+  -DWITH_DSP_FFMPEG=ON
+  -DWITH_FFMPEG=ON
+  -DWITH_PULSE=ON
+  -DWITH_CUPS=ON
+  -DWITH_PSCS=ON
+  -DWITH_ICU=ON
+  -DWITH_JPEG=ON
+  -DWITH_SERVER=ON
+  -DWITH_SWSCALE=ON
+  -DWITH_CHANNELS=ON
+  -DWITH_CLIENT_CHANNELS=ON
+  -DWITH_SERVER_CHANNELS=ON
+  -DCHANNEL_URBDRC_CLIENT=ON
+  -Wno-dev
+
+post-script:
+  install -vD -m 0644 ChangeLog README.md -t ${pkgupd_pkgdir}/usr/share/doc/{{id}}/

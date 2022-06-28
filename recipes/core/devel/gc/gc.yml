@@ -1,0 +1,21 @@
+id: gc
+version: 8.2.0
+release: 1
+about: A garbage collector for C and C++
+depends:
+  runtime:
+    - libgcc
+license: GPL
+sources:
+  - https://github.com/ivmai/bdwgc/releases/download/v{{version}}/gc-{{version}}.tar.gz
+  - gc-missing-header.patch::https://github.com/ivmai/bdwgc/commit/c876dc2b.patch
+
+pre-script: |
+  patch -p1 < ../gc-missing-header.patch # Install missing header
+  ./autogen.sh
+
+build-type: autoconf
+autoconf-dir: true
+configure: >
+  --enable-cplusplus
+  --disable-static

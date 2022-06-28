@@ -1,0 +1,21 @@
+id: visual-studio-code
+version: 1.68.1
+about: <h2>unofficial release</h2> visual studio code release
+tags:
+  - development
+  - ide
+  - editor
+category: development
+type: app
+depends:
+  buildtime:
+    - appimagetool
+sources:
+  - vscode.tar.gz::https://update.code.visualstudio.com/{{version}}/linux-x64/stable
+script: |
+  mv VSCode-linux-x64 ${pkgupd_pkgdir}
+  cp ${FILES_DIR}/{{id}}.svg ${pkgupd_pkgdir}/visual-studio-code.png
+  cp ${FILES_DIR}/AppRun ${pkgupd_pkgdir}/
+  chmod +x ${pkgupd_pkgdir}/AppRun
+
+  cp ${FILES_DIR}/{{id}}.desktop ${pkgupd_pkgdir}

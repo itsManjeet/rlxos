@@ -1,0 +1,18 @@
+id: gnome-shell-extension-desktop-icons-ng
+version: 46
+release: 2
+about: A fork from the official desktop icons project, with several enhancements like Drag'n'Drop.
+license: GPL3
+depends:
+  runtime:
+    - gnome-shell
+  buildtime:
+    - meson
+
+sources:
+  - https://gitlab.com/rastersoft/desktop-icons-ng/-/archive/{{version}}/desktop-icons-ng-{{version}}.tar.gz
+
+build-dir: desktop-icons-ng-{{version}}
+configure: >
+  --prefix=/usr
+  --localedir=share/locale

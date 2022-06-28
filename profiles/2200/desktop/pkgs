@@ -1,9 +1,11 @@
-core plymouth initramfs firmware grub-i386 grub xorg
-gnome
+core plymouth initramfs firmware grub-i386 grub os-prober xorg
+gnome welcome-tour
 pam-config poppler-data
-fonts-cantarell adobe-source-code-pro-fonts ttf-noto ttf-noto-cjk ttf-noto-emoji 
+fonts-cantarell adobe-source-code-pro-fonts ttf-noto ttf-noto-cjk ttf-noto-emoji dejavu-fonts liberation-fonts
 fluent-gtk-theme fluent-icon-theme fluent-wallpaper
-fuse2 libbsd cifs-utils
-inspector flatpak gparted
+fuse2 libbsd cifs-utils ntfs-3g btrfs-progs
+flatpak gparted
 xdg-desktop-portal-gnome
-gufw
+gufw zram-generator libreoffice
+
+android-udev

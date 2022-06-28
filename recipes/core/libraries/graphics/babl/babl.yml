@@ -1,0 +1,13 @@
+id: babl
+version: 0.1.88
+about: Dynamic, any to any, pixel format conversion library
+depends:
+  runtime:
+    - glibc
+    - lcms
+  buildtime:
+    - gobject-introspection
+    - meson
+    - vala
+sources:
+  - https://download.gimp.org/pub/babl/0.1/babl-{{version}}.tar.xz

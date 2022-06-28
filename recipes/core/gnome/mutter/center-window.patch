@@ -1,0 +1,11 @@
+--- org.gnome.mutter.gschema.xml	2022-05-30 22:10:39.000000000 +0530
++++ org.gnome.mutter.gschema.xml.new	2022-06-28 20:35:45.420909458 +0530
+@@ -94,7 +94,7 @@
+     </key>
+ 
+     <key name="center-new-windows" type="b">
+-      <default>false</default>
++      <default>true</default>
+       <summary>Place new windows in the center</summary>
+       <description>
+         When true, the new windows will always be put in the center of the

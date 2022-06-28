@@ -1,5 +1,5 @@
 core plymouth initramfs firmware grub-i386 grub os-prober xorg
-gnome
+gnome welcome-tour
 pam-config poppler-data
 fonts-cantarell adobe-source-code-pro-fonts ttf-noto ttf-noto-cjk ttf-noto-emoji dejavu-fonts liberation-fonts
 fluent-gtk-theme fluent-icon-theme fluent-wallpaper

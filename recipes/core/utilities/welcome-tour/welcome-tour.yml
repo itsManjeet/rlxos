@@ -1,6 +1,6 @@
 id: welcome-tour
 version: 2200
-release: 1
+release: 2
 commit: fc61d0ddfb4fbb9baa65a61f216cea24a8566e4f
 about: rlxos welcome tour
 depends:
@@ -15,6 +15,6 @@ build-dir: welcome-tour-{{commit}}
 
 post-script: |
   install -v -D -m 0755 ${pkgupd_pkgdir}/usr/share/applications/dev.rlxos.WelcomeTour.desktop \
-    -t ${pkgupd_pkgdir}/etc/autostart/
+    -t ${pkgupd_pkgdir}/etc/xdg/autostart/
   
   rm -r ${pkgupd_pkgdir}/usr/share/applications

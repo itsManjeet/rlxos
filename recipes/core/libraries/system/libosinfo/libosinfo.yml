@@ -1,5 +1,6 @@
 id: libosinfo
 version: 1.10.0
+release: 2
 about: GObject based library API for managing information about operating systems, hypervisors and the (virtual) hardware devices they can support
 depends:
   runtime:
@@ -7,6 +8,7 @@ depends:
     - hwdata
     - libsoup
     - libxslt
+    - osinfo-db
   buildtime:
     - gobject-introspection
     - gtk-doc

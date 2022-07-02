@@ -1,6 +1,6 @@
 id: libvirt
 version: 8.4.0
-release: 2
+release: 4
 about: API for controlling virtualization engines (openvz,kvm,qemu,virtualbox,xen,etc)
 depends:
   runtime:
@@ -27,6 +27,7 @@ depends:
     - iproute2
     - libxslt
     - meson
+    - py-pip
 #    - rpcsv-proto
 
 sources:
@@ -41,6 +42,8 @@ pre-script: |
   sed -i 's|/usr/libexec/qemu-bridge-helper|/usr/lib/qemu/qemu-bridge-helper|g' \
     src/qemu/qemu.conf.in \
     src/qemu/test_libvirtd_qemu.aug.in
+  
+  pip install docutils
 
 configure: >
   --libexecdir=lib/libvirt
@@ -65,7 +68,6 @@ configure: >
   -Ddtrace=disabled
   -Dnumad=disabled
   -Dstorage_zfs=enabled
-  -Ddocs=disabled
   -Dstorage_rbd=disabled
 
 groups:
@@ -85,3 +87,6 @@ post-script: |
   chmod 600 ${pkgupd_pkgdir}/etc/libvirt/nwfilter/*.xml \
     ${pkgupd_pkgdir}/etc/libvirt/qemu/networks/default.xml
   chmod 700 ${pkgupd_pkgdir}/etc/libvirt/secrets
+
+install-script: |
+  usermod -a -G kvm libvirt

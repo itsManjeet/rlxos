@@ -1,6 +1,6 @@
 id: qemu
 version: 7.0.0
-release: 1
+release: 2
 about: |
   A full virtualization solution for Linux on x86 hardware containing virtualization extensions
 
@@ -20,6 +20,8 @@ depends:
    - spice
    - cairo
    - samba
+   - libusb
+   - usbredir
    - libcacard
   buildtime:
    - pkg-config

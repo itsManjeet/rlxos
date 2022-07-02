@@ -1,0 +1,13 @@
+id: osinfo-db-tools
+version: 1.10.0
+about: Tools for managing the osinfo database
+depends:
+  runtime:
+    - json-glib
+    - libarchive
+    - libsoup
+    - libxslt
+  buildtime:
+    - meson
+sources:
+  - https://releases.pagure.org/libosinfo/osinfo-db-tools-{{version}}.tar.xz

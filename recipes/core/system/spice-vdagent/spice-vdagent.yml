@@ -16,7 +16,7 @@ depends:
   buildtime:
     - spice-protocol
 sources:
-  - https://www.spice-space.org/download/releases/$pkgname-{{version}}.tar.bz2
+  - https://www.spice-space.org/download/releases/{{id}}-{{version}}.tar.bz2
 
 pre-script: |
   sed -i 's|/etc/sysconfig/spice-vdagentd|/etc/conf.d/spice-vdagentd|

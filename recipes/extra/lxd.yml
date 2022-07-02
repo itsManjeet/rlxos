@@ -1,6 +1,6 @@
 id: lxd
 version: 4.19
-release: 1
+release: 2
 about: Daemon based on liblxc offering a REST API to manage containers
 depends:
   runtime:
@@ -19,6 +19,9 @@ depends:
 sources:
   - https://linuxcontainers.org/downloads/lxd/lxd-{{version}}.tar.gz
 
+groups:
+  - id: 116
+    name: lxd
 build-dir: lxd-{{version}}
 pre-script: |
   mkdir bin

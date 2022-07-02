@@ -1,5 +1,6 @@
 id: gnome
 version: 3.40
+release: 2
 about: |
   Gnome Desktop Environment
 
@@ -13,6 +14,7 @@ depends:
     - gedit
     - gnome-backgrounds
     - gnome-books
+    - gnome-boxes
     - gnome-calculator
     - gnome-calendar
     - gnome-contacts

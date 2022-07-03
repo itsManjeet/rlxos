@@ -1,5 +1,6 @@
 id: systemd
 version: 249
+release: 2
 about: |
   Package contains programs for controlling the startup, running, and shutdown of the system
 
@@ -65,3 +66,7 @@ post-install: |
   systemctl enable \
     getty@tty1.service \
     remote-fs.target
+
+  # install machine policy
+  install -v -D -m 0644 ${FILES_DIR}/10-machines.rules \
+    -t ${pkgupd_pkgdir}/usr/share/polkit-1/rules.d/

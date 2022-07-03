@@ -1,0 +1,7 @@
+polkit.addRule(function(action, subject) {
+    if (action.id == "org.freedesktop.machine1.shell") {
+        if (subject.isInGroup("adm")) {
+            return polkit.Result.YES;
+        }
+    }
+});

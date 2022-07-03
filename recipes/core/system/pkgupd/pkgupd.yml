@@ -1,7 +1,7 @@
 id: pkgupd
 version: 2200
-release: 44
-commit: 03d17bd9d6bb769ab263b6c33f199ae26341cd4f
+release: 45
+commit: 7add5cd98ec742ec045388ce7395b7786cc330ef
 about: |
   An Extensible package manager for rlxos
 

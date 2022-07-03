@@ -10,6 +10,7 @@ depends:
     - libcap-ng
     - libldap
   buildtime:
+    - openldap
     - kernel-headers
     - python
     - swig

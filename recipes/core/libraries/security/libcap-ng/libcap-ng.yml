@@ -10,6 +10,8 @@ depends:
     - swig
 sources:
   - https://github.com/stevegrubb/libcap-ng/archive/v{{version}}/{{id}}-{{version}}.tar.gz
+pre-script: |
+  ./autogen.sh
 configure: >
   --enable-static=no
   --without-python

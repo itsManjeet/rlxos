@@ -1,6 +1,6 @@
 id: qtcreator
 version: 7.0.2
-release: 2
+release: 3
 about: A cross-platform Qt IDE 
 depends:
   buildtime:
@@ -39,3 +39,6 @@ post-script: |
   sed -i 's#Icon=.*#Icon={{id}}#' {{id}}.desktop
   mv ${FILES_DIR}/{{id}}.svg {{id}}.png
   install -v -D -m 0755 ${FILES_DIR}/AppRun AppRun
+
+  # install qt5 plugins and specs
+  cp /usr/lib/qt5/ ${pkgupd_pkgdir}/usr/lib/ -a

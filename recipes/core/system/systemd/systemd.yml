@@ -12,6 +12,7 @@ depends:
     - diffutils
     - glibc
     - grep
+    - libgcrypt
     - py-jinja2
     - libcap
     - sed
@@ -56,6 +57,7 @@ configure: >
   -D mount-path=/usr/bin/mount
   -D umount-path=/usr/bin/umount
   -D sulogin-path=/usr/bin/sulogin
+  -D importd=true
 
 
 post-install: |

@@ -1,5 +1,6 @@
 id: audit
 version: 3.0.8
+release: 2
 about: Userspace components of the audit framework
 license: GPL2 LGPL2.1
 depends:

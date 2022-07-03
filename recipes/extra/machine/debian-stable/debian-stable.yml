@@ -1,0 +1,25 @@
+id: debian-stable
+version: 0.0.1
+about: debian based machine for rlxos
+depends:
+  buildtime:
+    - debootstrap
+    - debian-archive-keyring
+    - ca-certificates
+    - pcre2
+    - libpsl
+    - desktop-file-utils
+
+script: |
+  mkdir -p ${pkgupd_pkgdir}
+
+  debootstrap \
+    --arch amd64 \
+    --include=systemd-container,sudo \
+    stable ${pkgupd_pkgdir} \
+    https://deb.debian.org/debian/
+
+  # create default user
+  chroot ${pkgupd_pkgdir} \
+    /usr/sbin/useradd -G sudo -g users -s /bin/bash \
+      -m -p $(openssl passwd -1 rlxos) rlxos

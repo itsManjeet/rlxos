@@ -8,6 +8,7 @@ depends:
     - cmake
     - qt
     - libyaml-cpp
+    - libgcrypt
     - python
     - appimagetool
 build-dir: qt-creator-opensource-src-{{version}}

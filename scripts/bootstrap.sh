@@ -5,7 +5,7 @@ BASEDIR="$(
     pwd -P
 )"
 
-CONTAINER_VERSION='2200-54'
+CONTAINER_VERSION='2200-64'
 SERVER_URL='https://apps.rlxos.dev'
 
 if [[ -z "${NOCONTAINER}" ]]; then

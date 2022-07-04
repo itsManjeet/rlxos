@@ -1,6 +1,6 @@
 id: qtcreator
 version: 7.0.2
-release: 4
+release: 5
 about: A cross-platform Qt IDE 
 depends:
   buildtime:

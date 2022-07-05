@@ -1,5 +1,6 @@
 id: spice-vdagent
 version: 0.22.1
+release: 2
 about: Spice agent for linux guests
 depends:
   runtime:
@@ -32,3 +33,5 @@ post-script: |
   [ -d ${pkgupd_pkgdir} ] && rm -r ${pkgupd_pkgdir}/var
   install -dm 755 ${pkgupd_pkgdir}/etc/conf.d/
   echo 'SPICE_VDAGENTD_EXTRA_ARGS=""' > "$pkgupd_pkgdir/etc/conf.d/spice-vdagentd"
+
+  install -v -D -m 0755 -t ${pkgupd_pkgdir}/etc/modules-load.d/ ${FILES_DIR}/10-uinput.conf

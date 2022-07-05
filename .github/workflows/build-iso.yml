@@ -15,7 +15,7 @@ jobs:
         run: |
           export TAG=${GITHUB_REF#refs/*/}
           echo "VERSION=${TAG%-*}" >> $GITHUB_ENV
-          echo "BUILD_ID${TAG##*-}" >> $GITHUB_ENV
+          echo "BUILD_ID=${TAG##*-}" >> $GITHUB_ENV
 
       - id: build-iso
         run: |

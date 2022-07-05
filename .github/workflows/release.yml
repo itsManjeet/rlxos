@@ -1,5 +1,8 @@
 name: Release
-on: workflow_dispatch
+on:
+  push:
+    tags:
+      '**'
 
 env:
   BUILD_ID: ${{ github.run_number }}

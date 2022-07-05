@@ -1,0 +1,58 @@
+name: build-iso
+on:
+  push:
+    tags:
+      '**'
+jobs:
+  build:
+    runs-on: self-hosted
+    timeout-minutes: 43800
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - id: setup-environment-variables
+        run: |
+          export TAG=${GITHUB_REF#refs/*/}
+          echo "VERSION=${TAG%-*}" >> $GITHUB_ENV
+          echo "BUILD_ID${TAG##*-}" >> $GITHUB_ENV
+
+      - id: build-iso
+        run: |
+          export NO_INPUT=1
+          export STORAGE_DIR=/home/itsmanjeet/server/storage/testing/
+          export PKGUPD_NO_PROGRESS=1
+          export ROOTDIR=/home/itsmanjeet/server/rlxos
+          ./scripts/bootstrap.sh --iso --build-id ${BUILD_ID}
+
+      - id: upload-system-image
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: build/${{ env.VERSION }}/releases/rlxos-${VERSION}-${BUILD_ID}.sfs
+          asset_name: ${{ env.VERSION }}-${{ env.BUILD_ID }}
+          tag: ${{ github.ref }}
+      
+      - id: upload-system-tarball
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: build/${{ env.VERSION }}/releases/rlxos-${VERSION}-${BUILD_ID}.tar
+          asset_name: ${{ env.VERSION }}-${{ env.BUILD_ID }}.tar
+          tag: ${{ github.ref }}
+
+      - id: upload-system-iso
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: build/${{ env.VERSION }}/releases/rlxos-desktop-${VERSION}-${BUILD_ID}.iso
+          asset_name: rlxos-desktop-${{ env.VERSION }}-${{ env.BUILD_ID }}.iso
+          tag: ${{ github.ref }}
+
+      - id: upload-system-iso-md5
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: build/${{ env.VERSION }}/releases/rlxos-desktop-${VERSION}-${BUILD_ID}.iso.md5
+          asset_name: rlxos-desktop-${{ env.VERSION }}-${{ env.BUILD_ID }}.iso.md5
+          tag: ${{ github.ref }}

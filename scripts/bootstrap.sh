@@ -298,6 +298,12 @@ echo 'workstation' > /etc/hostname
 # systemd setup
 systemctl enable getty@tty1.service
 
+# generate initial machine-id
+dbus-uuidgen > /etc/machine-id
+
+ln -sv /proc/self/mounts /etc/mtab
+ln -sv /run/systemd/resolve/stub-resolv.conf /etc/resolve.conf
+
 mkdir -p /usr/lib/locale
 EOT
   if [[ $? != 0 ]] ; then

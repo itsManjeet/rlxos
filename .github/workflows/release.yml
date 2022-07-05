@@ -14,8 +14,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - id: branch-extract
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      - id: build-id
+        run: echo "BUILD_ID=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
 
       - id: release
         run: |

@@ -26,7 +26,7 @@ jobs:
           echo "BUILD_ID=${TAG##*-}" >> $GITHUB_ENV
           echo "STORAGE_DIR=/home/itsmanjeet/server/storage/${{ inputs.repository }}/" >> $GITHUB_ENV
           echo "ROOTDIR=/home/itsmanjeet/server/rlxos" >> $GITHUB_ENV
-          echo "PKGUPD_FILE=${ROOTDIR}/pkgupd.${{input.repository}}.yml" >> $GITHUB_ENV
+          echo "PKGUPD_FILE=${ROOTDIR}/pkgupd.${{ inputs.repository }}.yml" >> $GITHUB_ENV
 
       - id: build-iso
         run: |

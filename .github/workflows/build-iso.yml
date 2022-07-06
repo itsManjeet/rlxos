@@ -5,9 +5,10 @@ on:
       '**'
   workflow_dispatch:
     inputs:
-      build_id:
-        description: 'Build ID'
+      repository:
+        description: 'repository'
         required: true
+        default: 'testing'
         type: string
 
 jobs:
@@ -23,8 +24,9 @@ jobs:
           export TAG=${GITHUB_REF#refs/*/}
           echo "VERSION=${TAG%-*}" >> $GITHUB_ENV
           echo "BUILD_ID=${TAG##*-}" >> $GITHUB_ENV
-          echo "STORAGE_DIR=/home/itsmanjeet/server/storage/testing/" >> $GITHUB_ENV
+          echo "STORAGE_DIR=/home/itsmanjeet/server/storage/${{ inputs.repository }}/" >> $GITHUB_ENV
           echo "ROOTDIR=/home/itsmanjeet/server/rlxos" >> $GITHUB_ENV
+          echo "PKGUPD_FILE=${ROOTDIR}/pkgupd.${{input.repository}}.yml" >> $GITHUB_ENV
 
       - id: build-iso
         run: |

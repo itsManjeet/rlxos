@@ -21,6 +21,7 @@ if [[ -z "${NOCONTAINER}" ]]; then
 
     STORAGE_DIR=${STORAGE_DIR:-${ROOTDIR}/build}
     VERSION=${VERSION:-$(cat ${ROOTDIR}/.version)}
+    PKGUPD_FILE=${PKGUPD_FILE:-${ROOTDIR}/pkgupd.testing.yml}
     docker run \
         --rm \
         --network host \
@@ -35,7 +36,7 @@ if [[ -z "${NOCONTAINER}" ]]; then
         -v "${STORAGE_DIR}/${VERSION}/releases:/releases" \
         -v "${ROOTDIR}/files:/var/cache/pkgupd/files" \
         -v "${ROOTDIR}/profiles:/profiles" \
-        -v "${ROOTDIR}/pkgupd.yml:/etc/pkgupd.yml" \
+        -v "${PKGUPD_FILE}:/etc/pkgupd.yml" \
         -v /var/run/docker.sock:/var/run/docker.sock \
         ${EXTRA_FLAGS} --privileged \
         -t itsmanjeet/rlxos-devel:${CONTAINER_VERSION} /usr/bin/env -i \

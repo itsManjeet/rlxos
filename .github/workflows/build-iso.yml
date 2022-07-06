@@ -3,7 +3,7 @@ on:
   push:
     tags:
       '**'
-  workflow_run:
+  workflow_dispatch:
     inputs:
       build_id:
         description: 'Build ID'

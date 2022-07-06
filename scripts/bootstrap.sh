@@ -298,9 +298,6 @@ echo 'workstation' > /etc/hostname
 # systemd setup
 systemctl enable getty@tty1.service
 
-# generate initial machine-id
-dbus-uuidgen > /etc/machine-id
-
 ln -sv /proc/self/mounts /etc/mtab
 ln -sv /run/systemd/resolve/stub-resolv.conf /etc/resolve.conf
 
@@ -311,6 +308,8 @@ EOT
     echo ":: ERROR :: failed to execute essentails"
     exit 1
   fi
+
+  dbus-uuidgen > ${TEMPDIR}/etc/machine-id
 
   while read loc format ; do
     echo "adding locale ${loc}.${format}"

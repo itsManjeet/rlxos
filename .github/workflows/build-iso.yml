@@ -29,7 +29,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ${{ env.STORAGE_DIR }}/${{ env.VERSION }}/releases/rlxos-${{ env.VERSION }}-${{ env.BUILD_ID }}.sfs
+          file: build/${{ env.VERSION }}/releases/rlxos-${{ env.VERSION }}-${{ env.BUILD_ID }}.sfs
           asset_name: ${{ env.VERSION }}-${{ env.BUILD_ID }}
           tag: ${{ github.ref }}
       
@@ -37,7 +37,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ${{ env.STORAGE_DIR }}/${{ env.VERSION }}/releases/rlxos-${{ env.VERSION }}-${{ env.BUILD_ID }}.tar
+          file: build/${{ env.VERSION }}/releases/rlxos-${{ env.VERSION }}-${{ env.BUILD_ID }}.tar
           asset_name: ${{ env.VERSION }}-${{ env.BUILD_ID }}.tar
           tag: ${{ github.ref }}
 
@@ -45,7 +45,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ${{ env.STORAGE_DIR }}/${{ env.VERSION }}/releases/rlxos-desktop-${{ env.VERSION }}-${{ env.BUILD_ID }}.iso
+          file: build/${{ env.VERSION }}/releases/rlxos-desktop-${{ env.VERSION }}-${{ env.BUILD_ID }}.iso
           asset_name: rlxos-desktop-${{ env.VERSION }}-${{ env.BUILD_ID }}.iso
           tag: ${{ github.ref }}
 
@@ -53,6 +53,6 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ${{ env.STORAGE_DIR }}/${{ env.VERSION }}/releases/rlxos-desktop-${{ env.VERSION }}-${{ env.BUILD_ID }}.iso.md5
+          file: build/${{ env.VERSION }}/releases/rlxos-desktop-${{ env.VERSION }}-${{ env.BUILD_ID }}.iso.md5
           asset_name: rlxos-desktop-${{ env.VERSION }}-${{ env.BUILD_ID }}.iso.md5
           tag: ${{ github.ref }}

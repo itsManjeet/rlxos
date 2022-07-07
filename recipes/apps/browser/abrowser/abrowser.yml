@@ -1,0 +1,29 @@
+id: abrowser
+version: 101.0.1
+release: 3
+about: Abrowser, safe and easy web browser from Mozilla
+license: GPL MPL LGPL
+tags: 
+  - internet
+  - browser
+  - explorer
+
+type: app
+category: internet
+strip: false
+
+depends:
+  buildtime:
+    - appimagetool
+sources:
+  - https://archive.trisquel.info/trisquel/pool/main/f/firefox/abrowser_{{version}}+build1-0ubuntu0.20.04.1+10.0trisquel89_amd64.deb
+
+build-dir: .
+script: |
+  bsdtar -xf abrowser_{{version}}+build1-0ubuntu0.20.04.1+10.0trisquel89_amd64.deb
+  tar -xaf data.tar.xz
+
+  mv usr/lib/abrowser ${pkgupd_pkgdir}
+  install -v -D -m 0755 ${FILES_DIR}/AppRun -t ${pkgupd_pkgdir}/
+  cp ${FILES_DIR}/{{id}}.desktop ${pkgupd_pkgdir}/
+  cp ${FILES_DIR}/{{id}}.png ${pkgupd_pkgdir}/{{id}}.png

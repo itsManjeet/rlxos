@@ -26,6 +26,10 @@ type: app
 bundle: true
 build-dir: peek-{{version}}
 post-script: |
+
+  # compile glib schemas
+  glib-compile-schemas usr/share/glib-2.0/schemas
+
   cp ${FILES_DIR}/peek.desktop ${pkgupd_pkgdir}/
   cp ${FILES_DIR}/peek.png ${pkgupd_pkgdir}/
   mkdir -p ${pkgupd_pkgdir}/usr/lib/

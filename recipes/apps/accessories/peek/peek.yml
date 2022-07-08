@@ -28,4 +28,5 @@ build-dir: peek-{{version}}
 post-script: |
   cp ${FILES_DIR}/peek.desktop ${pkgupd_pkgdir}/
   cp ${FILES_DIR}/peek.png ${pkgupd_pkgdir}/
+  mkdir -p ${pkgupd_pkgdir}/usr/lib/
   install -v -D -m 0755 ${FILES_DIR}/AppRun -t ${pkgupd_pkgdir}/

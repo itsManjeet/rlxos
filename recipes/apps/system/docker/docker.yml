@@ -1,5 +1,6 @@
 id: docker
 version: 20.10.7
+release: 2
 about: Pack, ship and run any application as a lightweight container
 depends:
   buildtime:

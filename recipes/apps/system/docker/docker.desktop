@@ -4,6 +4,6 @@ Name=docker
 Comment=docker container
 Exec=@@exec@@
 Icon=docker
-Terminal=true
+Terminal=false
 Type=Application
 Categories=System;

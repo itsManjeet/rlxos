@@ -1,16 +1,20 @@
 id: spotify
-version: 1.1.80.699
-release: gc3dac750
+version: 1.1.84.716
+release: gc5f8b819
 about: A proprietary music streaming service
 depends:
   buildtime:
     - curl
     - appimagetool
 license: custom
+category: multimedia
+tags:
+  - spotify
+
 type: app
 sources:
   - http://repository.spotify.com/pool/non-free/s/spotify-client/spotify-client_{{version}}.{{release}}_amd64.deb
-
+build-dir: .
 script: |
   bsdtar -xf spotify-client_{{version}}.{{release}}_amd64.deb
   tar -xaf data.tar.gz
@@ -18,12 +22,7 @@ script: |
   cp ${pkgupd_pkgdir}/icons/spotify-linux-128.png ${pkgupd_pkgdir}/spotify.png
   sed -i 's|Icon=.*|Icon=spotify|' ${pkgupd_pkgdir}/spotify.desktop
 
+  install -v -D -m 0755 ${FILES_DIR}/AppRun -t ${pkgupd_pkgdir}/
+
   # FIX: libcurl-gnutls is debian specific
   cp /usr/lib/libcurl.so.4.7.0 ${pkgupd_pkgdir}/libcurl-gnutls.so.4
-
-AppRun: |
-  #!/bin/sh
-  SELF=$(readlink -f "$0")
-  HERE=${SELF%/*}
-  exec ${HERE}/spotify $@
-

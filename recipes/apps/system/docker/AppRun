@@ -1,0 +1,20 @@
+#!/bin/bash
+SELF=$(readlink -f "$0")
+HERE=${SELF%/*}
+
+PID_FILE='/run/docker.pid'
+export PATH=${HERE}/usr/bin:${PATH}
+
+function isRunning() {
+    if [ -f ${PID_FILE} ] && [ -d /proc/$(cat ${PID_FILE}) ]  ; then
+        return 0
+    fi
+    return 1
+}
+if isRunning ; then
+    # run cli
+    exec docker ${@}
+else
+    echo "starting server"
+    exec pkexec dockerd -p ${PID_FILE} -G 'adm' ${@}
+fi

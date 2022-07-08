@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=docker
+Comment=docker container
+Exec=@@exec@@
+Icon=docker
+Terminal=true
+Type=Application
+Categories=System;

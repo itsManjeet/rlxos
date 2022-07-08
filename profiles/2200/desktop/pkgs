@@ -8,4 +8,4 @@ flatpak gparted
 xdg-desktop-portal-gnome
 gufw zram-generator libreoffice
 
-android-udev spice-vdagent phodav
+android-udev spice-vdagent phodav docker

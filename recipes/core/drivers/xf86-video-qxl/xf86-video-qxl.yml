@@ -1,0 +1,23 @@
+id: xf86-video-qxl
+version: 0.1.5
+about: Xorg X11 qxl video driver
+license: MIT
+depends:
+  runtime:
+    - spice
+    - systemd
+    - libXfont2
+  buildtime:
+    - xorg-server
+    - spice-protocol
+    - xorgproto
+    - libcacard
+    - util-macros
+sources:
+  - https://gitlab.freedesktop.org/xorg/driver/xf86-video-qxl/-/archive/xf86-video-qxl-{{version}}/xf86-video-qxl-xf86-video-qxl-{{version}}.tar.gz
+
+pre-script: |
+  autoreconf -fi
+configure: --enable-xspice
+post-script: |
+  install -v -D -m 0755 scripts/Xspice ${pkgupd_pkgdir}/usr/bin/Xspice

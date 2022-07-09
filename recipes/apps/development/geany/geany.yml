@@ -1,0 +1,29 @@
+id: geany
+version: 1.38
+about: A fast and lightweight IDE
+depends:
+  buildtime:
+    - intltool
+    - gtk
+    - vte
+    - appimagetool
+type: app
+category: development
+tags:
+  - development
+  - ide
+  - lightweight
+sources:
+  - https://github.com/geany/geany/releases/download/{{version}}.0/geany-{{version}}.tar.gz
+
+configure: >
+  --enable-binreloc
+pre-script: |
+  sed -i 's#GEANY_DATADIR#getenv("GEANY_DATADIR")#' src/utils.c
+post-script: |
+  rm ${pkgupd_pkgdir}/usr/include/  -r
+  rm ${pkgupd_pkgdir}/usr/share/doc -r
+
+  cp ${pkgupd_pkgdir}/usr/share/applications/geany.desktop ${pkgupd_pkgdir}/
+  cp ${pkgupd_pkgdir}/usr/share/icons/hicolor/scalable/apps/geany.svg ${pkgupd_pkgdir}/{{id}}.png
+  install -v -D -m 0755 ${FILES_DIR}/AppRun -t ${pkgupd_pkgdir}/

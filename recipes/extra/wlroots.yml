@@ -1,5 +1,5 @@
 id: wlroots
-version: 0.14.1
+version: 0.15.1
 about: A modular wayland compositor library
 depends:
   runtime:
@@ -9,8 +9,5 @@ depends:
   buildtime:
     - meson
     
-packages:
-  - id: pkg
-    dir: wlroots-0.14.1
-    sources:
-      - https://github.com/swaywm/wlroots/releases/download/0.14.1/wlroots-0.14.1.tar.gz
+sources:
+  - https://github.com/swaywm/wlroots/releases/download/{{version}}/wlroots-{{version}}.tar.gz

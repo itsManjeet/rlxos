@@ -17,27 +17,5 @@ build-dir: .
 script: |
   mv thunderbird ${pkgupd_pkgdir}
   cp ${pkgupd_pkgdir}/chrome/icons/default/default256.png ${pkgupd_pkgdir}/thunderbird.png
-
-
-DesktopFile: |
-  [Desktop Entry]
-  Encoding=UTF-8
-  Version=1.0
-  Name=Thunderbird
-  Comment=Send and reveive mail with thunderbird
-  Exec=thunderbird %u
-  Icon=thunderbird
-  Terminal=false
-  Type=Application
-  Categories=Network;Email;
-  MimeType=message/rfc822;x-scheme-handler/mailto;application/x-xpinstall;
-  StartupNotify=true
-  Actions=ComposeMessage;OpenAddressBook;
-
-  [Desktop Action ComposeMessage]
-  Name=Write new message
-  Exec=thunderbird -compose
-
-  [Desktop Action OpenAddressBook]
-  Name=Open address book
-  Exec=/usr/bin/thunderbird -addressbook
+  cp ${FILES_DIR}/{{id}}.desktop ${pkgupd_pkgdir}/
+  install -v -D -m 0755 ${FILES_DIR}/AppRun -t ${pkgupd_pkgdir}

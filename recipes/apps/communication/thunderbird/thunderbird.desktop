@@ -1,0 +1,21 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Name=Thunderbird
+Comment=Send and reveive mail with thunderbird
+Exec=@@exec@@ %u
+Icon=thunderbird
+Terminal=false
+Type=Application
+Categories=Network;Email;
+MimeType=message/rfc822;x-scheme-handler/mailto;application/x-xpinstall;
+StartupNotify=true
+Actions=ComposeMessage;OpenAddressBook;
+
+[Desktop Action ComposeMessage]
+Name=Write new message
+Exec=@@exec@@ -compose
+
+[Desktop Action OpenAddressBook]
+Name=Open address book
+Exec=@@exec@@ -addressbook

@@ -1,5 +1,5 @@
 id: sway
-version: 1.7
+version: 1.6.1
 about: Tiling Wayland compositor and replacement for the i3 window manager
 license: MIT
 depends:
@@ -20,7 +20,7 @@ depends:
     - meson
     - ninja
     - setconf
-    - wayland-protocol
+    - wayland-protocols
 sources:
   - https://github.com/swaywm/sway/releases/download/{{version}}/sway-{{version}}.tar.gz
 pre-script: |

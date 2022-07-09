@@ -4,6 +4,7 @@ about: cmdline json parser
 depends:
   runtime:
     - glibc
+    - oniguruma
   buildtime:
     - autoconf
     - automake
@@ -12,8 +13,9 @@ depends:
     - python
 sources:
   - https://github.com/stedolan/jq/releases/download/jq-{{version}}/jq-{{version}}.tar.gz
+build-dir: jq-{{version}}
 autoconf-dir: true
 configure: >
-  --with-oniguruma=builtin
+  --prefix=/usr
   --disable-maintainer-mode
 install: prefix=/usr

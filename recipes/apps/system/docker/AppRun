@@ -13,8 +13,8 @@ function isRunning() {
 }
 if isRunning ; then
     # run cli
-    exec docker ${@}
+    exec ${HERE}/usr/bin/docker ${@}
 else
     echo "starting server"
-    exec pkexec dockerd -p ${PID_FILE} -G 'adm' ${@}
+    exec pkexec ${HERE}/usr/bin/dockerd -p ${PID_FILE} -G 'adm' ${@}
 fi

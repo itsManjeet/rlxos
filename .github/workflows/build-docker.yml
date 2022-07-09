@@ -1,4 +1,4 @@
-name: Release
+name: release
 on: workflow_dispatch
 
 env:
@@ -21,4 +21,4 @@ jobs:
           export STORAGE_DIR=/home/itsmanjeet/server/storage/testing/
           export PKGUPD_NO_PROGRESS=1
           export ROOTDIR=/home/itsmanjeet/server/rlxos
-          ./scripts/bootstrap.sh --iso --docker --build-id ${{ env.BUILD_ID }}
+          ./scripts/bootstrap.sh --docker --build-id ${{ env.BUILD_ID }}

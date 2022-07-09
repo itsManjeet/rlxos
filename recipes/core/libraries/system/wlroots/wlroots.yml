@@ -1,11 +1,12 @@
 id: wlroots
-version: 0.15.1
+version: 0.14.1
 about: A modular wayland compositor library
 depends:
   runtime:
     - xorg
     - wayland-protocols
     - seatd
+    - libxkbcommon
   buildtime:
     - meson
     

@@ -1,6 +1,6 @@
 id: xfce4-settings
 version: 4.16.2
-release: 1
+release: 2
 about: collection of programs to adjust xfce preferences
 depends:
   runtime:

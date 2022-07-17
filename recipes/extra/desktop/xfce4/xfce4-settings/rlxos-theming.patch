@@ -1,0 +1,34 @@
+--- old	2021-11-14 19:24:38.244150401 +0530
++++ new	2021-11-14 19:27:32.120211038 +0530
+@@ -6,16 +6,16 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <channel name="xsettings" version="1.0">
+   <property name="Net" type="empty">
+-    <property name="ThemeName" type="empty"/>
+-    <property name="IconThemeName" type="empty"/>
++    <property name="ThemeName" type="string" value="Fluent-light"/>
++    <property name="IconThemeName" type="string" value="Fluent"/>
+     <property name="DoubleClickTime" type="int" value="400"/>
+     <property name="DoubleClickDistance" type="int" value="5"/>
+     <property name="DndDragThreshold" type="int" value="8"/>
+     <property name="CursorBlink" type="bool" value="true"/>
+     <property name="CursorBlinkTime" type="int" value="1200"/>
+     <property name="SoundThemeName" type="string" value="default"/>
+-    <property name="EnableEventSounds" type="bool" value="false"/>
+-    <property name="EnableInputFeedbackSounds" type="bool" value="false"/>
++    <property name="EnableEventSounds" type="bool" value="true"/>
++    <property name="EnableInputFeedbackSounds" type="bool" value="true"/>
+   </property>
+   <property name="Xft" type="empty">
+     <property name="DPI" type="empty"/>
+@@ -28,8 +28,8 @@
+   <property name="Gtk" type="empty">
+     <property name="CanChangeAccels" type="bool" value="false"/>
+     <property name="ColorPalette" type="string" value="black:white:gray50:red:purple:blue:light blue:green:yellow:orange:lavender:brown:goldenrod4:dodger blue:pink:light green:gray10:gray30:gray75:gray90"/>
+-    <property name="FontName" type="string" value="Sans 10"/>
+-    <property name="MonospaceFontName" type="string" value="Monospace 10"/>
++    <property name="FontName" type="string" value="Cantarell 10"/>
++    <property name="MonospaceFontName" type="string" value="Source Code Pro 10"/>
+     <property name="IconSizes" type="string" value=""/>
+     <property name="KeyThemeName" type="string" value=""/>
+     <property name="ToolbarStyle" type="string" value="icons"/>

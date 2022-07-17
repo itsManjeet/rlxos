@@ -4,6 +4,8 @@ about: xfce application finder and launcher tool
 depends:
   runtime:
     - garcon
+  buildtime:
+    - intltool
 sources:
   - https://archive.xfce.org/src/xfce/xfce4-appfinder/4.16/xfce4-appfinder-{{version}}.tar.bz2
 pre-script: |

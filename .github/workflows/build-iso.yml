@@ -1,5 +1,10 @@
 name: build-iso
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
+    inputs:
+      profile:
+        required: true
+        default: desktop
 
 env:
   BUILD_ID: ${{ github.run_number }}
@@ -21,4 +26,4 @@ jobs:
           export STORAGE_DIR=/home/itsmanjeet/server/storage/testing/
           export PKGUPD_NO_PROGRESS=1
           export ROOTDIR=/home/itsmanjeet/server/rlxos
-          ./scripts/bootstrap.sh --iso --build-id ${{ env.BUILD_ID }}
+          ./scripts/bootstrap.sh --iso --build-id ${{ env.BUILD_ID }} --profile ${{ github.event.inputs.profile }}

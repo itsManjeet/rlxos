@@ -1,0 +1,14 @@
+[Unit]
+Description=Initial setup script
+After=getty@tty2.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/systemd-initial-setup.sh
+StandardInput=tty
+TTYPath=/dev/tty2
+TTYReset=yes
+TTYHangup=yes
+
+[Install]
+WantedBy=default.target

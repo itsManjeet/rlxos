@@ -1,0 +1,11 @@
+id: systemd-initial-setup
+version: 1.0.1
+about: rlxos initial setup script
+depends:
+  runtime:
+    - bash
+    - systemd
+
+script: |
+  install -v -D -m 0644 ${FILES_DIR}/{{id}}.service -t ${pkgupd_pkgdir}/usr/lib/systemd/system/
+  install -v -D -m 0755 ${FILES_DIR}/{{id}}.sh    ${pkgupd_pkgdir}/usr/bin/{{id}}

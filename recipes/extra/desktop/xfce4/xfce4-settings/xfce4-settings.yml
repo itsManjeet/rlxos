@@ -1,0 +1,21 @@
+id: xfce4-settings
+version: 4.16.2
+release: 1
+about: collection of programs to adjust xfce preferences
+depends:
+  runtime:
+    - exo
+    - garcon
+    - libcanberra
+    - libnotify
+    - libxklavier
+    - colord
+    - libinput
+    - upower
+sources:
+  - https://archive.xfce.org/src/xfce/xfce4-settings/4.16/xfce4-settings-{{version}}.tar.bz2
+pre-script: |
+  patch xfsettingsd/xsettings.xml < ${FILES_DIR}/rlxos-theming.patch
+configure: >
+  --enable-sound-settings
+  --enable-pluggable-dialogs

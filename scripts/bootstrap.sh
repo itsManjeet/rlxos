@@ -200,7 +200,7 @@ function generate_docker() {
 
   echo ":: generating rootfs ::"
   ROOTFS=${TEMPDIR}
-  generating_rootfs ${PKGS}
+  generating_rootfs ${@}
   if [[ $? != 0 ]] ; then
     rm -rf ${TEMPDIR}
     echo ":: ERROR :: failed to generate rootfilesystem"
@@ -268,7 +268,7 @@ function generate_iso() {
 
   echo ":: generating rootfs ::"
   ROOTFS=${TEMPDIR}
-  generating_rootfs ${PKGS}
+  generating_rootfs ${@}
   if [[ $? != 0 ]] ; then
     rm -rf ${TEMPDIR}
     echo ":: ERROR :: failed to generate rootfilesystem"
@@ -345,7 +345,7 @@ EOT
   fi
 
   echo ":: compressing system ::"
-  mksquashfs ${TEMPDIR} /releases/rlxos-${VERSION}-${BUILD_ID}.sfs -comp zstd -Xcompression-level 12 -noappend
+  mksquashfs ${TEMPDIR} /releases/rlxos-${PROFILE}-${VERSION}-${BUILD_ID}.sfs -comp zstd -Xcompression-level 12 -noappend
   ret=${?}
   rm -rf ${TEMPDIR}
 
@@ -360,7 +360,7 @@ EOT
   mkdir -p ${ISODIR}/boot/grub
 
   echo ":: installing rootfs.img"
-  cp /releases/rlxos-${VERSION}-${BUILD_ID}.sfs ${ISODIR}/rootfs.img
+  cp /releases/rlxos-${PROFILE}-${VERSION}-${BUILD_ID}.sfs ${ISODIR}/rootfs.img
 
   KERNEL_VERSION=$(pkgupd info ${KERNEL_PACKAGE} info.value=version)
   if [[ $? != 0 ]] || [[ -z ${KERNEL_VERSION} ]] ; then
@@ -652,18 +652,14 @@ function main() {
     mkdir -p ${LOGDIR}/iso
 
     PROFILE_PKGS=$(cat /profiles/${VERSION}/${PROFILE}/pkgs)
-    echo ":: listing required packages ::"
-    calculatePackages ${PROFILE_PKGS}
-    generate_iso 2>&1 | Log 'iso' ${BUILD_ID} 
+    generate_iso ${PROFILE_PKGS} 2>&1 | Log 'iso' ${BUILD_ID} 
   }
 
   [[ -n ${GENERATE_DOCKER}   ]] && {
     mkdir -p ${LOGDIR}/docker
 
     PROFILE_PKGS=$(cat /profiles/${VERSION}/docker/pkgs)
-    echo ":: listing required packages ::"
-    calculatePackages ${PROFILE_PKGS}
-    generate_docker 2>&1 | Log 'docker' ${BUILD_ID}
+    generate_docker ${PROFILE_PKGS} 2>&1 | Log 'docker' ${BUILD_ID}
     docker push itsmanjeet/rlxos-devel:${VERSION}-${BUILD_ID}
   }
 

@@ -1,0 +1,5 @@
+systemd-oomd
+systemd-resolved
+systemd-initial-setup
+NetworkManager
+lightdm

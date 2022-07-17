@@ -6,12 +6,16 @@ depends:
   runtime:
     - exo
     - garcon
+    - xfconf
     - libcanberra
     - libnotify
     - libxklavier
     - colord
     - libinput
     - upower
+  buildtime:
+    - intltool
+    - xorg-drivers-input
 sources:
   - https://archive.xfce.org/src/xfce/xfce4-settings/4.16/xfce4-settings-{{version}}.tar.bz2
 pre-script: |

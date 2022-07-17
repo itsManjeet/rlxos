@@ -6,6 +6,10 @@ cat /etc/passwd | grep "/home" && {
     echo "already setup"
     exit 0
 }
+cat /proc/cmdline | grep 'iso=1' && {
+    echo "skipping"
+    exit 0
+}
 
 function check() {
     local ret=${?}

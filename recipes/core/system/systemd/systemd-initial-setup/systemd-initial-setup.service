@@ -4,7 +4,7 @@ After=getty@tty2.service
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/systemd-initial-setup.sh
+ExecStart=/usr/bin/systemd-initial-setup
 StandardInput=tty
 TTYPath=/dev/tty2
 TTYReset=yes

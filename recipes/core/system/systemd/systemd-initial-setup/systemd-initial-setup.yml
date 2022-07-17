@@ -1,5 +1,5 @@
 id: systemd-initial-setup
-version: 1.0.1
+version: 1.0.2
 about: rlxos initial setup script
 depends:
   runtime:

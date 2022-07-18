@@ -103,15 +103,21 @@ install_binary() {
 # install_libraries
 # install libraries required by binaries installed from $(install_binary)
 install_libraries() {
-
+    systemd_version=$(pkgupd info systemd info.value=version)
+    if [[ $? != 0 ]] ; then
+        echo "Error! failed to get systemd version: ${systemd_version}"
+        cleanup
+        exit 1
+    fi
+    systemd_version=${systemd_version%%-*}
     copy /usr/lib/ld-linux-x86-64.so.2
-    copy /usr/lib/systemd/libsystemd-shared-249.so
+    copy /usr/lib/systemd/libsystemd-shared-${systemd_version}.so
 
     sort $unsorted | uniq | while read library; do
         if [[ "$library" == linux-vdso.so.1 ]] ||
             [[ "$library" == linux-gate.so.1 ]] ||
             [[ "$library" =~ ld-linux-x86-64.so.2 ]] ||
-            [[ "$library" =~ libsystemd-shared-249.so ]]; then
+            [[ "$library" =~ libsystemd-shared-${systemd_version}.so ]]; then
 
             continue
         fi

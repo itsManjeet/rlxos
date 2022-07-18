@@ -1,0 +1,87 @@
+#!/bin/bash
+
+ROOT_DEVICE=${1}
+BOOT_DEVICE=${2}
+ISO_DIR=${ISO_DIR:-'/run/iso'}
+VERSION=${VERSION:-$(cat ${ISO_DIR}/version)}
+
+if [[ -z ${2} ]] ; then
+    echo "Usage: ${0} <root-device> <boot-device>"
+    exit 1
+fi
+
+if [[ ! -e ${ROOT_DEVICE} ]] ; then
+    echo "No device node exists '${ROOT_DEVICE}'"
+    exit 1
+fi
+
+if [[ ! -e ${ISO_DIR}/rootfs.img ]] ; then
+    echo "System image ${ISO_DIR}/rootfs.img is missing"
+    exit 1
+fi
+
+umount -l ${ROOT_DEVICE}
+
+echo "installing rlxos ${VERSION} into ${ROOT_DEVICE}"
+
+WORK_DIR=$(mktemp -d /tmp/installer.XXXXXXX)
+
+mount -t auto ${ROOT_DEVICE} ${WORK_DIR} || {
+    echo "Failed to mount ${ROOT_DEVICE} to ${WORK_DIR}"
+    exit 1
+}
+
+mkdir -p ${WORK_DIR}/{rlxos/system,config,boot/grub} || {
+    echo "Failed to create directory hierarchy"
+    exit 1
+}
+
+
+cp ${ISO_DIR}/rootfs.img ${WORK_DIR}/rlxos/system/${VERSION} || {
+    echo "Failed to install system image ${ISO_DIR}/rootfs.img -> ${WORK_DIR}/rlxos/system/${VERSION}"
+    exit 1
+}
+
+cp ${ISO_DIR}/boot/{vmlinuz-*,initrd-*, modules} ${WORK_DIR}/boot/ -a || {
+    echo "Failed to install kernel and initramfs ${ISO_DIR}/boot/ -> ${WORK_DIR}/boot/"
+    exit 1
+}
+
+mount | grep efivars && {
+    mkdir -p ${WORK_DIR}/boot/efi || {
+        echo "Failed to create efi directory"
+        exit 1
+    }
+
+    mount ${BOOT_DEVICE} ${WORK_DIR}/boot/efi || {
+        echo "Failed to install efi device"
+        exit 1
+    }
+
+    echo "installing uefi bootloader"
+    grub-install --root-directory=${WORK_DIR} --boot-directory=${WORK_DIR}/boot --recheck || {
+        echo "Failed to install uefi bootloader"
+        exit 1
+    }
+    
+} || {
+    echo "installing legacy bootloader"
+     grub-install --root-directory=${WORK_DIR} --boot-directory=${WORK_DIR}/boot ${BOOT_DEVICE} --recheck || {
+        echo "Failed to install legacy bootloader"
+        exit 1
+    }
+}
+
+echo "
+insmod part_gpt
+insmod part_msdos
+insmod all_video
+timeout=5
+default='rlxos [inital-setup]'
+menuentry 'rlxos [inital-setup]' {
+  insmod gzio
+  insmod ext2
+  linux /boot/$(basename ${WORK_DIR}/boot/vmlinuz-*) root=UUID=$(lsblk -no uuid ${ROOT_DEVICE}) system=${VERSION} quiet splash fastboot
+  initrd /boot/$(basename ${WORK_DIR}/boot/initrd-*)
+}
+" > ${WORK_DIR}/boot/grub/grub.cfg

@@ -7,7 +7,7 @@ depends:
     - curl
     - libllvm
     - llvm
-    - libssh2
+    - libssh
   buildtime:
     - cmake
     - gdb

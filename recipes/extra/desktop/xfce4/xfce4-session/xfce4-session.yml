@@ -1,0 +1,16 @@
+id: xfce4-session
+version: 4.16.0
+about: A session manager for Xfce
+depends:
+  runtime:
+    - libwnck
+    - libxfce4ui
+    - desktop-file-utils
+    - shared-mime-info
+    - polkit-gnome
+    - xfdesktop
+    - xinit
+sources:
+  - https://archive.xfce.org/src/xfce/xfce4-session/4.16/xfce4-session-{{version}}.tar.bz2
+configure: >
+  --disable-legacy-sm

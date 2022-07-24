@@ -1,0 +1,37 @@
+id: rustc
+version: 1.60.0
+about: Rust programming language is designed to be a safe, concurrent, practical language
+
+depends:
+  runtime:
+    - curl
+    - libllvm
+    - llvm
+    - libssh2
+  buildtime:
+    - cmake
+    - gdb
+    - ninja
+
+sources:
+  - https://static.rust-lang.org/dist/rustc-{{version}}-src.tar.xz
+
+environ:
+  - RUSTFLAS+=" -C link-args=-lffi"
+  - LIBSSH2_SYS_USE_PKG_CONFI=1
+
+script: |
+  sed 's#@@version@@#{{version}}##' ${FILES_DIR}/config.toml > ${PWD}/config.toml
+  python3 ./x.py build --exclude src/tools/miri
+  DESTDIR=${pkgupd_pkgdir} python3 ./x.py install
+
+  chown -R root:root ${pkgupd_pkgdir}
+  
+  mkdir -p ${pkgupd_pkgdir}/etc/ld.so.conf.d/
+  mkdir -p ${pkgupd_pkgdir}/etc/profile.d/
+  echo "/opt/rustc-{{version}}/lib" > ${pkgupd_pkgdir}/etc/ld.so.conf.d/rustc
+  
+  echo 'PATH=${PATH}:/opt/rustc-{{version}}/bin
+  MANPATH=${MANPATH}:/opt/rustc-{{version}}/share/man' > ${pkgupd_pkgdir}/etc/profile.d/rustc.sh
+  
+  

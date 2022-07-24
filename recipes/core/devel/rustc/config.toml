@@ -1,0 +1,22 @@
+[llvm]
+targets = "X86"
+link-shared = true
+
+[build]
+docs = false
+extended = true
+
+[install]
+prefix = "/opt/rustc-@@version@@"
+docdir = "doc"
+
+[rust]
+channel = "stable"
+rpath = false
+codegen-tests = false
+
+[target.x86_64-unknown-linux-gnu]
+llvm-config = "/usr/bin/llvm-config"
+
+[target.i686-unknown-linux-gnu]
+llvm-config = "/usr/bin/llvm-config"

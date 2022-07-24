@@ -1,0 +1,13 @@
+id: xfce4-panel
+version: 4.16.3
+about: xfce4 panel
+depends:
+  runtime:
+    - cairo
+    - exo
+    - garcon
+    - libwnck
+sources:
+  - https://archive.xfce.org/src/xfce/xfce4-panel/4.16/xfce4-panel-{{version}}.tar.bz2
+
+configure: --enable-vala=no

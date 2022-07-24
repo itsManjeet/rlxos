@@ -1,5 +1,6 @@
 id: rustc
 version: 1.60.0
+release: 1
 about: Rust programming language is designed to be a safe, concurrent, practical language
 
 depends:

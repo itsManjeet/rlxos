@@ -1,0 +1,28 @@
+id: xfce4
+version: 4.16
+about: Xfce4 desktop environment
+depends:
+  runtime:
+    - xfce4-panel
+    - thunar
+    - thunar-volman
+    - xfce4-appfinder
+    - xfce4-power-manager
+    - xfce4-settings
+    - xfconf
+    - xfdesktop
+    - xfwm4
+    - xfce4-session
+    - mousepad
+    - xfce4-terminal
+    - parole
+    - ristretto
+    - xfce4-taskmanager
+    - xfce4-whiskermenu-plugin
+    - xfce4-xkb-plugin
+    - xfce4-docklike-plugin
+    - xfce4-notifyd
+
+build-dir: .
+script: |
+  mkdir -p ${pkgupd_pkgdir}/usr

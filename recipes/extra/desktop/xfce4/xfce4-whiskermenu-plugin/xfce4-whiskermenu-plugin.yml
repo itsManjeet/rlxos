@@ -1,0 +1,13 @@
+id: xfce4-whiskermenu-plugin
+version: 2.6.0
+about: Menu for xfce4
+depends:
+  runtime:
+    - garcon
+    - gtk
+    - xfce4-panel
+  buildtime:
+    - intltool
+    - cmake
+sources:
+  - https://archive.xfce.org/src/panel-plugins/xfce4-whiskermenu-plugin/2.6/xfce4-whiskermenu-plugin-{{version}}.tar.bz2

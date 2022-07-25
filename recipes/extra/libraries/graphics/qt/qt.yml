@@ -1,5 +1,5 @@
 id: qt
-version: 5.15.4
+version: 5.15.5
 about: |
   Cross-platform application framework
 
@@ -40,12 +40,15 @@ depends:
     - poppler
     - kerberos-v5
     - libevent
+    - python2
+  buildtime:
+    - gperf
 
 build-dir: qt-everywhere-src-{{version}}
 sources:
   - https://download.qt.io/archive/qt/5.15/{{version}}/single/qt-everywhere-opensource-src-{{version}}.tar.xz
 script: |
-  patch -Np1 -i ${FILES_DIR}/qt-everywhere-opensource-src-5.15.4-kf5-1.patch
+  patch -Np1 -i ${FILES_DIR}/qt-everywhere-opensource-src-{{version}}-kf5-1.patch
 
   ./configure -prefix /usr \
     -archdatadir /usr/lib/qt5 \

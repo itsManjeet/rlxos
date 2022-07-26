@@ -32,7 +32,7 @@ depends:
 
 build-dir: qt-everywhere-src-{{version}}
 sources:
-  - https://download.qt.io/archive/qt/5.15/{{version}}/single/qt-everywhere-src-{{version}}.tar.xz
+  - https://download.qt.io/archive/qt/5.15/{{version}}/single/qt-everywhere-opensource-src-{{version}}.tar.xz
 script: |
   patch -Np1 -i ${FILES_DIR}/qt-everywhere-opensource-src-{{version}}-kf5-1.patch
 

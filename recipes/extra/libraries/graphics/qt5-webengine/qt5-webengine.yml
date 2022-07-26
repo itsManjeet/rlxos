@@ -18,6 +18,8 @@ depends:
     - kerberos-v5
     - pipewire
     - poppler
+  buildtime:
+    - gperf
 sources:
   - https://anduin.linuxfromscratch.org/BLFS/qtwebengine/qtwebengine-{{version}}.tar.xz
 

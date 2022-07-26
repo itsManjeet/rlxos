@@ -5,61 +5,38 @@ about: |
 
 depends:
   runtime:
-    - xorg-libs
-    - alsa-lib
-    - make-ca
-    - cups
-    - glib
-    - gst-plugins-base
-    - harfbuzz-icu
-    - jasper
-    - libjpeg-turbo
+    - dbus
+    - openssl
+    - gdk-pixbuf
+    - libepoxy
     - libmng
-    - libpng
-    - libtiff
-    - libwebp
     - libxkbcommon
-    - mesa
-    - mtdev
-    - pcre2
-    - sqlite
-    - wayland
+    - harfbuzz
+    - xcb-util-wm
     - xcb-util-image
     - xcb-util-keysyms
     - xcb-util-renderutil
-    - xcb-util-wm
-    - libinput
-    - ibus
-    - ffmpeg
-    - pulseaudio
-    - nodejs
+    - desktop-file-utils
+    - libxcb
+    - sqlite
+    - fontconfig
+    - which
     - nss
-    - libxslt
-    - opus
-    - pipewire
-    - poppler
-    - kerberos-v5
-    - libevent
-    - python2
-  buildtime:
-    - gperf
+    - libwebp
+    - python
+    - alsa-lib
+    - pulseaudio
+    - ffmpeg
+    - wayland
+    - icu
 
 build-dir: qt-everywhere-src-{{version}}
 sources:
-  - https://download.qt.io/archive/qt/5.15/{{version}}/single/qt-everywhere-opensource-src-{{version}}.tar.xz
+  - https://download.qt.io/archive/qt/5.15/{{version}}/single/qt-everywhere-src-{{version}}.tar.xz
 script: |
   patch -Np1 -i ${FILES_DIR}/qt-everywhere-opensource-src-{{version}}-kf5-1.patch
 
   ./configure -prefix /usr \
-    -archdatadir /usr/lib/qt5 \
-    -bindir /usr/bin \
-    -plugindir /usr/lib/qt5/plugins \
-    -importdir /usr/lib/qt5/imports \
-    -headerdir /usr/include/qt5 \
-    -datadir /usr/share/qt5 \
-    -docdir /usr/share/doc/qt5 \
-    -translationdir /usr/share/qt5/translations \
-    -examplesdir /usr/share/doc/qt5/examples \
     -sysconfdir /etc/xdg \
     -confirm-license -opensource \
     -dbus-linked \
@@ -67,11 +44,10 @@ script: |
     -system-harfbuzz \
     -system-sqlite \
     -nomake examples \
-    -system-ffmpeg \
-    -webengine-icu \
     -no-rpath \
     -syslog \
-    -journald
+    -journald \
+    -skip qtwebengine
 
   make
 
@@ -92,11 +68,4 @@ script: |
   install -v -Dm644 qttools/src/qdbus/qdbusviewer/images/qdbusviewer-128.png \
               ${pkgupd_pkgdir}/usr/share/pixmaps/qdbusviewer-qt5.png
 
-  install -v -D ${FILES_DIR}/*.desktop -t ${pkgupd_pkgdir}/usr/share/applications/
-
-  for file in moc uic rcc qmake lconvert lrelease lupdate; do
-    ln -sfvn $file ${pkgupd_pkgdir}/usr/bin/$file-qt5
-  done
-
-  mkdir -p ${pkgupd_pkgdir}/etc/ld.so.conf.d/
-  echo "/usr/lib/qt5" > ${pkgupd_pkgdir}/etc/ld.so.conf.d/qt5.conf
+  install -v -D ${FILES}/qt/*.desktop -t ${pkgupd_pkgdir}/usr/share/applications/

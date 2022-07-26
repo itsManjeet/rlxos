@@ -68,4 +68,4 @@ script: |
   install -v -Dm644 qttools/src/qdbus/qdbusviewer/images/qdbusviewer-128.png \
               ${pkgupd_pkgdir}/usr/share/pixmaps/qdbusviewer-qt5.png
 
-  install -v -D ${FILES}/qt/*.desktop -t ${pkgupd_pkgdir}/usr/share/applications/
+  install -v -D ${FILES_DIR}/*.desktop -t ${pkgupd_pkgdir}/usr/share/applications/

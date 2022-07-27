@@ -1,0 +1,19 @@
+id: dpp
+version: 10.0.13
+about: Lightweight and Scalable C++ Discord API Bot Library
+depends:
+  runtime:
+    - libsodium
+    - openssl
+    - opus
+    - zlib
+  buildtime:
+    - cmake
+sources:
+  - https://github.com/brainboxdotcc/DPP/archive/refs/tags/v{{version}}.tar.gz
+
+configure: >
+  -DDPP_BUILD_TEST=OFF
+  -DRUN_LDCONFIG=OFF
+  -DCMAKE_INSTALL_MESSAGE=NEVER
+  -Wno-dev

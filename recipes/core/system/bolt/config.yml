@@ -1,0 +1,10 @@
+id: bolt
+logics:
+  distance:
+    model-path: /var/lib/bolt/distance.model
+plugins:
+  shell:
+    command: /bin/sh
+backend:
+  id: socket
+  path: /run/bolt.socket

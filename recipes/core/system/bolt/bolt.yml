@@ -11,5 +11,5 @@ sources:
   - bolt-{{commit}}.tar.gz::https://github.com/itsManjeet/bolt/archive/{{commit}}.tar.gz
 build-dir: bolt-{{commit}}
 post-script: |
-  install -v -D -m 0644 ${FILES_DIR}/config.yml ${pkgupd_pkgdir}/etc/bolt.yml
+  install -v -D -m 0644 ${FILES_DIR}/bolt.conf ${pkgupd_pkgdir}/etc/bolt.yml
   install -v -D -m 0644 ${FILES_DIR}/default.model ${pkgupd_pkgdir}/var/lib/bolt/distance.model

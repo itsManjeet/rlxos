@@ -39,7 +39,7 @@ script: |
   qmake .. -- -system-ffmpeg -webengine-icu
 
   make
-  make install DESTDIR=${pkgupd_pkgdir}
+  make INSTALL_ROOT=${pkgupd_pkgdir} install
 
   find ${pkgupd_pkgdir}/ -name \*.prl \
    -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;

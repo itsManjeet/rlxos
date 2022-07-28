@@ -1,0 +1,2 @@
+{"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qrlxos GNU/Linux\nrlxos is a semi-immutable independent general purpose GNU/Linux distribution.\\E$"}
+{"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qrlxos GNU/Linux\nrlxos is a semi-immutable independent general purpose GNU/Linux distribution which primary targets the beginners.\\E$"}

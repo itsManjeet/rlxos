@@ -7,7 +7,7 @@ docs = false
 extended = true
 
 [install]
-prefix = "/opt/rustc-@@version@@"
+prefix = "/usr"
 docdir = "doc"
 
 [rust]

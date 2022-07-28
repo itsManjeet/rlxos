@@ -1,5 +1,6 @@
 id: qt5-webengine
 version: 5.15.10
+release: 2
 about: QtWebEngine integrates chromium's web capabilities into Qt
 depends:
   runtime:

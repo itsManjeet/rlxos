@@ -1,0 +1,25 @@
+id: source
+version: 2200
+release: 2
+about: A easy to learn dynamically typed programming language
+commit: 321493f580196a3d5c34f1406769fd6d8aca1306
+depends:
+  buildtime:
+    - boost
+    - appimagetool
+
+type: app
+category: development
+tags:
+  - source
+  - src
+  - programming-language
+
+sources:
+  - source-{{commit}}.tar.gz::https://github.com/itsManjeet/src/archive/{{commit}}.tar.gz
+build-dir: src-{{commit}}
+
+post-script: |
+  cp assets/logo.png ${pkgupd_pkgdir}/{{id}}.png
+  cp ${FILES_DIR}/{{id}}.desktop ${pkgupd_pkgdir}/{{id}}.desktop
+  install -v -D -m 0755 ${FILES_DIR}/AppRun -t ${pkgupd_pkgdir}/

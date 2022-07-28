@@ -37,6 +37,15 @@ script: |
   patch -Np1 -i ${FILES_DIR}/qt-everywhere-opensource-src-{{version}}-kf5-1.patch
 
   ./configure -prefix /usr \
+    -archdatadir /usr/lib/qt5 \
+    -bindir /usr/bin \
+    -plugindir /usr/lib/qt5/plugins \
+    -importdir /usr/lib/qt5/imports \
+    -headerdir /usr/include/qt5 \
+    -datadir /usr/share/qt5 \
+    -docdir /usr/share/doc/qt5 \
+    -translationdir /usr/share/qt5/translations \
+    -examplesdir /usr/share/doc/qt5/examples \
     -sysconfdir /etc/xdg \
     -confirm-license -opensource \
     -dbus-linked \

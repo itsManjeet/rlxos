@@ -8,9 +8,6 @@ depends:
     - libpng
 
 sources:
-  - https://fukuchi.org/works/qrencode/qrencode-4.1.1.tar.bz2
-
-packages:
-  - id: pkg
-    dir: qrencode-4.1.1
-    
+  - https://fukuchi.org/works/qrencode/qrencode-{{version}}.tar.bz2
+build-type: autoconf
+configure: --disable-static

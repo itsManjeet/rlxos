@@ -38,6 +38,7 @@ depends:
     - plasma-integration
     - plasma-nm
     - plasma-pa
+    - plasma-pam
     - plasma-sdk
     - plasma-systemmonitor
     - plasma-vault

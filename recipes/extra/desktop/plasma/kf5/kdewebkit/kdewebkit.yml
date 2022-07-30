@@ -4,6 +4,7 @@ about: KF5 kdewebkit
 depends:
   runtime:
     - kparts
+    - qt5-webengine
   buildtime:
     - extra-cmake-modules
 sources:

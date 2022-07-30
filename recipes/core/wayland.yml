@@ -1,5 +1,5 @@
 id: wayland
-version: 1.19.0
+version: 1.21.0
 about: |
   Project to define a protocol for a compositor to talk to its clients as well as a library implementation of the protocol
 
@@ -7,15 +7,9 @@ depends:
   runtime:
     - libxml2
 
+sources:
+  - https://gitlab.freedesktop.org/wayland/wayland/-/releases/{{version}}/downloads/wayland-{{version}}.tar.xz
 
-packages:
-  - id: pkg
-    dir: wayland-1.19.0
-    sources:
-      - https://wayland.freedesktop.org/releases/wayland-1.19.0.tar.xz
-
-    flags:
-      - id: configure
-        value: >
-          -D documentation=false
-          --buildtype=release
+configure: >
+  -D documentation=false
+  --buildtype=release

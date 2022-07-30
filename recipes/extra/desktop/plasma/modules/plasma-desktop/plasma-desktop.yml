@@ -22,7 +22,7 @@ depends:
     - kdoctools
     - kinit
     - xorg-drivers-evdev
-    - xf86-input-libinput
+    - xorg-drivers-input
     - xorg-drivers-synaptics
     - xorg-server
 sources:

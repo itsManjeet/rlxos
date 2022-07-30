@@ -22,6 +22,7 @@ environ:
   - LIBSSH2_SYS_USE_PKG_CONFI=1
 
 script: |
+  cp ${FILES_DIR}/config.toml .
   python3 ./x.py build --exclude src/tools/miri
   DESTDIR=${pkgupd_pkgdir} python3 ./x.py install
 

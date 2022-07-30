@@ -7,4 +7,4 @@ sources:
 build-dir: .
 script: |
   mkdir -p ${pkgupd_pkgdir}/usr/share/awesome/
-  cp redflat-{{commit}} ${pkgupd_pkgdir}/usr/share/awesome/redflat
+  cp -a redflat-{{commit}} ${pkgupd_pkgdir}/usr/share/awesome/redflat

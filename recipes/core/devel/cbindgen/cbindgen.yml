@@ -10,4 +10,4 @@ sources:
 
 script: |
   cargo build --release
-  install -v -D -m 0755 target/release/cbindgen ${pkgupd_pkgdir}/usr/bin/
+  install -v -D -m 0755 target/release/cbindgen -t ${pkgupd_pkgdir}/usr/bin/

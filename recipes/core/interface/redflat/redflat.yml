@@ -1,0 +1,10 @@
+id: redflat
+version: 2200
+about: Awesome wm extension library
+commit: 370feaebea5c4b7fd82e71bc2ff7150f6c170891
+sources:
+  - redflat-{{commit}}.tar.gz::https://github.com/worron/redflat/archive/{{commit}}.tar.gz
+build-dir: .
+script: |
+  mkdir -p ${pkgupd_pkgdir}/usr/share/awesome/
+  cp redflat-{{commit}} ${pkgupd_pkgdir}/usr/share/awesome/redflat

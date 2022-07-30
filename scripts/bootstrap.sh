@@ -103,76 +103,24 @@ function bootstrap() {
   for i in kernel-headers glibc binutils gcc binutils glibc ; do
     echo ":: compiling toolchain - ${i} ::"
     pkgupd build \
-      build.recipe=${RECIPES_DIR}/core/${i}.yml \
+      ${RECIPES_DIR}/core/${i}/${i}.yml \
       build.depends=false \
-      package.repository=core \
+      build.repository=core \
       mode.ask=false 2>&1 | Log "${_tag}" "${i}"
-    if [[ $? != 0 ]] ; then
+    if [[ ${PIPESTATUS[0]} != 0 ]] ; then
         echo ":: ERROR :: failed to build toolchain ${i}"
         exit 1
+    fi
+
+    version=$(head -n2 ${RECIPES_DIR}/core/${i}/${i}.yml | grep 'version: ' | awk '{print $2}'s)
+    pkgupd inject /var/cache/pkgupd/pkgs/core/${i}-${version}.pkg
+    if [[ $? != 0 ]] ; then
+      echo ":: ERROR :: failed to inject ${i}-${version}"
+      exit 1
     fi
   done
 
   echo ":: bootstrapping success ::"
-}
-
-function rebuild() {
-  local _tag='build'
-
-  mkdir -p ${LOGDIR}/${_tag}
-
-  echo ":: rebuilding packages ::"
-  for pkg in ${PKGS} ; do
-    if [[ -n ${CONTINUE_BUILD} ]] && [[ -e ${LOGDIR}/${_tag}/${pkg}-*.log ]] ; then
-      pkgupd install ${pkg} force=true mode.ask=false 2>&1 | Log ${_tag} "${pkg}"
-      if [[ ${PIPESTATUS[0]} != 0 ]] ; then
-        echo ":: ERROR :: failed to install ${pkg}"
-        exit 1
-      fi
-    else
-      if [[ -e ${LOGDIR}/${_tag}/${pkg}-*.log ]] ; then
-        case ${pkg} in
-          libgcc|gcc|libllvm|llvm|libboost|boost)
-            continue
-        esac
-      fi
-
-      case ${pkg} in
-        libgcc)   pkg=gcc   ;;
-        libllvm)  pkg=llvm  ;;
-        libboost) pkg=boost ;;
-      esac
-      echo ":: compiling ${pkg}"
-      pkgupd build \
-        build.recipe=${RECIPES_DIR}/core/${pkg}.yml \
-        build.depends=false \
-        package.repository=core \
-        mode.ask=false 2>&1 | Log ${_tag} ${pkg}
-      if [[ ${PIPESTATUS[0]} != 0 ]] ; then
-        echo ":: ERROR :: failed to build ${pkg}"
-        exit 1
-      fi
-    fi
-    case ${pkg} in
-      libgcc|gcc)
-        touch ${LOGDIR}/${_tag}/libgcc-xxx.log
-        touch ${LOGDIR}/${_tag}/gcc-xxx.log
-        ;;
-
-      libllvm|llvm)
-        touch ${LOGDIR}/${_tag}/libllvm-xxx.log
-        touch ${LOGDIR}/${_tag}/llvm-xxx.log
-        ;;
-
-      libboost|boost)
-        touch ${LOGDIR}/${_tag}/boost-xxx.log
-        touch ${LOGDIR}/${_tag}/libboost-xxx.log
-        ;;
-    esac
-  done
-  
-  echo ":: rebuilding success ::"
-  return 0
 }
 
 function generating_rootfs() {
@@ -447,10 +395,6 @@ function parse_args() {
         BOOTSTRAP=1
         ;;
 
-      --rebuild)
-        REBUILD=1
-        ;;
-
       --iso)
         GENERATE_ISO=1
         ;;
@@ -518,92 +462,6 @@ function parse_args() {
   done
 }
 
-function update_pkgupd() {
-  mkdir -p ${LOGDIR}/pkgupd
-
-  echo ":: updating PKGUPD"
-  pkgupd build pkgupd mode.ask=false 2>&1 | Log 'pkgupd' 'update'
-  if [[ $? != 0 ]] ; then
-    echo ":: ERROR :: failed to upgrade PKGUPD"
-    exit 1
-  fi
-}
-
-function continue_build() {
-  local _tag='build'
-  echo ":: continuing build ::"
-
-  [[ -n ${UPDATE_PKGUPD}  ]] && {
-    echo ":: updating pkgupd ::"
-    pkgupd install pkgupd force=yes
-    if [[ $? != 0 ]] ; then
-      echo ":: ERROR :: failed to upgrade PKGUPD"
-      exit 1
-    fi
-
-    echo ":: updating pkgupd success ::"
-  }
-  
-  [[ -n ${BOOTSTRAP} ]]  && {
-    echo ":: bootstraping toolchain ::"
-    for i in kernel-headers glibc binutils libgcc gcc; do
-      echo ":: installing toolchain - ${i} ::"
-      pkgupd install ${i} force=true mode.ask=false | Log ${_tag} "${i}"
-      if [[ $? != 0 ]] ; then
-          echo ":: ERROR :: failed to installing toolchain ${i}"
-          exit 1
-      fi
-    done
-    echo ":: bootstrapping success ::"
-  }
-
-}
-
-function compile_all() {
-  local _tag='build'
-  mkdir -p ${LOGDIR}/${_tag}
-
-  local TotalPackagesToBuild=()
-  local TotalBuildSuccess=()
-  local TotalBuildFailed=()
-
-  for pkg in ${PKGS};  do
-    echo ":: compiling ${pkg}"
-    if [[ -f ${LOGDIR}/${_tag}/${pkg}-*.log ]] ; then
-      echo ":: skipping ${pkg}, already compiled"
-      continue
-    fi
-    pkgupd build \
-      build.recipe=${RECIPES_DIR}/core/${pkg}.yml \
-      package.repository=core \
-      build.depends=false \
-      package.repository=core \
-      mode.ask=false 2>&1 | Log ${_tag} ${pkg}
-    if [[ ${PIPESTATUS[0]} != 0 ]] ; then
-        echo ":: ERROR :: failed to build ${pkg}"
-        TotalBuildFailed+=(${pkg})
-        continue
-    else
-        TotalBuildSuccess+=(${pkg})
-    fi
-  done
-
-  echo "
-------- Report ----------
-  Total Packages    : ${#PKGS[@]}
-  Successful Builds : ${#TotalBuildSuccess[@]}
-  Failed builds     : ${#TotalBuildFailed[@]}
-" > ${LOGDIR}/${_tag}/report-$(date +"%m%d%y%H%M")
-}
-
-function calculatePackages() {
-  PKGS=$(pkgupd depends dir.data=/tmp ${@} 2>&1)
-  if [[ $? != 0 ]] ; then
-    echo ":: ERROR :: failed to calculate dependency tree: ${PKGS}"
-    exit 1
-  fi
-}
-
 function main() {
   parse_args ${@}
 
@@ -618,37 +476,17 @@ function main() {
   if [[ -n ${LIST_DEPENDS} ]] ; then
     PROFILE_PKGS=$(cat /profiles/${VERSION}/${PROFILE}/pkgs)
     echo ":: listing dependencies ::"
-    calculatePackages ${PROFILE_PKGS} grub-i386 grub squashfs-tools lvm2 initramfs plymouth mtools linux
+    pkgupd depends ${PROFILE_PKGS} grub-i386 grub squashfs-tools lvm2 initramfs plymouth mtools linux depends.all=true
 
     echo "Packages: ${PKGS}"
     exit 0
   fi
+
+  [[ -n ${BOOTSTRAP} ]] && {
+    bootstrap 
+    exit $?
+  }
   
-  if [[ -n ${CONTINUE_BUILD} ]] || [[ -n ${BOOTSTRAP} ]] ; then
-    PROFILE_PKGS=$(cat /profiles/${VERSION}/${PROFILE}/pkgs)
-    echo ":: calculating dependencies ::"
-    calculatePackages ${PROFILE_PKGS} grub-i386 grub squashfs-tools lvm2 initramfs plymouth mtools linux
-
-    echo "Packages: ${PKGS}"
-  elif [[ -n ${COMPILE_ALL} ]] ; then
-    echo ":: ordering all packages in dependency order"
-    PROFILE_PKGS=$(find /var/cache/pkgupd/recipes/ -type f -name "*.yml" -exec basename {} \; | sed 's|.yml||g')
-    calculatePackages ${PROFILE_PKGS}
-
-    echo "Packages: ${PKGS}"
-  fi
-
-  if [[ -n ${CONTINUE_BUILD} ]] ; then 
-    continue_build
-  else
-    [[ -n ${UPDATE_PKGUPD}  ]] && update_pkgupd
-    [[ -n ${BOOTSTRAP}      ]] && bootstrap
-  fi
-
-  [[ -n ${REBUILD}        ]] && rebuild
-
-  [[ -n ${COMPILE_ALL}    ]] && compile_all
-
   [[ -n ${GENERATE_ISO}   ]] && {
     mkdir -p ${LOGDIR}/iso
 

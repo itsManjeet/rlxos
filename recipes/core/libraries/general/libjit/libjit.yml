@@ -4,7 +4,7 @@ about: Generic jit compiler library
 commit: 7d33e65ebc0885ab93d9cab5c622e45c53486274
 depends:
   buildtime:
-    - awk
+    - gawk
     - bison
     - flex
 sources:

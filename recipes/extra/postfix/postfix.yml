@@ -22,6 +22,8 @@ users:
     group: postfix
     shell: /bin/false
 
+sources:
+  - https://ghostarchive.org/postfix/postfix-release/official/postfix-{{version}}.tar.gz
 environ:
   - CCARGS='-DNO_NIS -DUSE_SASL_AUTH -DUSE_CYRUS_SASL -I/usr/include/sasl -DHAS_LDAP -DHAS_SQLITE -DUSE_TLS -I/usr/include/openssl/'
   - AUXLIBS='-lssl -lcrypto -lsqlite3 -lpthread -lldap -llber -lsasl2'

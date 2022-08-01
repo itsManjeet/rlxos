@@ -5,8 +5,10 @@ depends:
   runtime:
     - berkeley-db
     - cyrus-sasl
-    - libnsl
     - icu
+    - pcre2
+    - libldap
+  buildtime:
     - openldap
 groups:
   - id: 32
@@ -24,14 +26,23 @@ users:
 
 sources:
   - https://ghostarchive.org/postfix/postfix-release/official/postfix-{{version}}.tar.gz
-environ:
-  - CCARGS='-DNO_NIS -DUSE_SASL_AUTH -DUSE_CYRUS_SASL -I/usr/include/sasl -DHAS_LDAP -DHAS_SQLITE -DUSE_TLS -I/usr/include/openssl/'
-  - AUXLIBS='-lssl -lcrypto -lsqlite3 -lpthread -lldap -llber -lsasl2'
-
+build-dir: postfix-{{version}}
 script: |
-  make CCARGS=${CCARGS} AUXLIBS=${AUXLIBS} makefiles
+  sed -i 's/.\x08//g' README_FILES/*
+  unset DEBUG
+  groupadd -g 32 postfix
+  groupadd -g 33 postdrop 
+  useradd -c "Postfix Daemon User" -d /var/spool/postfix -g postfix -s /bin/false -u 32 postfix &&
+  chown -v postfix:postfix /var/mail
+  make CCARGS='-DNO_NIS \
+               -DUSE_TLS -I/usr/include/openssl/ \
+               -DUSE_SASL_AUTH -DUSE_CYRUS_SASL -I/usr/include/sasl \
+               -DHAS_LDAP \
+               -DHAS_SQLITE' \
+      AUXLIBS="-lssl -lcrypto -lsasl2 -lldap -lsqlite3 -llber -lpthread -lz -lm" makefiles
+
   make
-  sh postfix--install -non-interactive \
+  sh postfix-install -non-interactive \
         daemon_directory=/usr/lib/postfix \
         manpage_directory=/usr/share/man \
         html_directory=/usr/share/doc/postfix-{{version}}/html \

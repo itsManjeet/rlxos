@@ -88,10 +88,10 @@ cat ${FILES_DIR}/logo/ascii
 echo "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
 echo "Architecture : $(uname -m)"
 echo "Container    : ${CONTAINER_VERSION}"
-echo "GCC          : $(pkgupd info gcc info.value=version)"
-echo "Binutils     : $(pkgupd info binutils info.value=version)"
-echo "GLibc        : $(pkgupd info glibc info.value=version)"
-echo "Pkgupd       : $(pkgupd info pkgupd info.value=version)"
+echo "GCC          : $(PKGUPD_NO_MESSAGE=1 pkgupd info gcc info.value=version)"
+echo "Binutils     : $(PKGUPD_NO_MESSAGE=1 pkgupd info binutils info.value=version)"
+echo "GLibc        : $(PKGUPD_NO_MESSAGE=1 pkgupd info glibc info.value=version)"
+echo "Pkgupd       : $(PKGUPD_NO_MESSAGE=1 pkgupd info pkgupd info.value=version)"
 }
 
 function bootstrap() {

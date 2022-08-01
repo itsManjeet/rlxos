@@ -103,7 +103,7 @@ install_binary() {
 # install_libraries
 # install libraries required by binaries installed from $(install_binary)
 install_libraries() {
-    systemd_version=$(pkgupd info systemd info.value=version)
+    systemd_version=$(PKGUPD_NO_MESSAGE=1 pkgupd info systemd info.value=version)
     if [[ $? != 0 ]] ; then
         echo "Error! failed to get systemd version: ${systemd_version}"
         cleanup

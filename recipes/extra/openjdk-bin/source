@@ -1,0 +1,17 @@
+export JAVA_HOME=@@install_dir@@
+export PATH=${JAVA_HOME}/bin:${PATH}
+export MANPATH=${JAVA_HOME}/man:${MANPATH}
+AUTO_CLASSPATH_DIR=/usr/share/java
+
+CLASSPATH=${PWD}:${CLASSPATH}
+
+for dir in `find ${AUTO_CLASSPATH_DIR} -type d 2>/dev/null` ; do
+    CLASSPATH=${dir}:${CLASSPATH}
+done 
+
+for jar in `find ${AUTO_CLASSPATH_DIR} -name "*.jar" 2>/dev/null` ; do
+    CLASSPATH=${jar}:${CLASSPATH}
+done 
+
+export CLASSPATH
+unset AUTO_CLASSPATH_DIR dir jar

@@ -4,7 +4,8 @@ about: |
   GObject bindings for libudev.
 
 depends:
-  runtime: glib
+  runtime: 
+    - glib
 
 sources:
   - https://download.gnome.org/sources/libgudev/{{version}}/libgudev-{{version}}.tar.xz

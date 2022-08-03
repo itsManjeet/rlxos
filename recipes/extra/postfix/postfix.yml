@@ -46,7 +46,8 @@ script: |
         daemon_directory=/usr/lib/postfix \
         manpage_directory=/usr/share/man \
         html_directory=/usr/share/doc/postfix-{{version}}/html \
-        readme_directory=/usr/share/doc/postfix-{{version}}/readme
+        readme_directory=/usr/share/doc/postfix-{{version}}/readme \
+        install_root="$pkgupd_pkgdir"
 
   install -v -D -m 644 LICENSE -t ${pkgupd_pkgdir}/usr/share/doc/{{id}}/
   install -vDm 644 ${FILES_DIR}/{{id}}.service -t "$pkgupd_pkgdir/usr/lib/systemd/system/"

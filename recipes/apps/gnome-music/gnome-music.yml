@@ -1,6 +1,6 @@
 id: gnome-music
 version: 40.1.1
-release: 1
+release: 2
 about: Music player and management application
 license:
   - GPL
@@ -25,6 +25,7 @@ depends:
     - appstream-glib
     - itstool
     - appimagetool
+    - check
 type: app
 category: multimedia
 tags:
@@ -32,8 +33,7 @@ tags:
   - player
   - media
 pre-script: |
-  # appimage patch
-  sed -i s'#@pkgdatadir@#os.getenv("PKGDATA_DIR")#' gnome-music.in
+  sed '49,61d' -i data/meson.build
 
 sources:
   - https://download.gnome.org/sources/gnome-music/40/gnome-music-{{version}}.tar.xz
@@ -58,6 +58,9 @@ post-script: |
   cp /usr/bin/grl-inspect-* usr/bin/
   cp /usr/bin/grl-launch-* usr/bin/
   cp /usr/lib/grilo-0.3/ usr/lib/ -a
+  cp /usr/lib/libcheck.so* usr/lib/
 
   cp -a usr/lib/org.gnome.Music/* usr/lib/
   mv usr/share/org.gnome.Music/gir-1.0 usr/share/
+
+  sed -i "s#'/usr/share/org.gnome.Music'#os.getenv(\"PKGDATA_DIR\")#" usr/bin/gnome-music

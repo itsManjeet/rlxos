@@ -36,19 +36,26 @@ depends:
 type: app
 bundle: true
 license: CCPL GPL2
-
+category: games
 sources:
   - https://releases.wildfiregames.com/{{id}}-{{version}}-unix-build.tar.xz
+  - https://releases.wildfiregames.com/0ad-{{version}}-unix-data.tar.xz
 
+build-dir: 0ad-0.0.25b-alpha
 script: |
+  useradd -m build_user
+  chown build_user: -Rv .
+
+  cd build/workspaces
   export WX_CONFIG="wx-config-gtk3"
-  ./update-workspace.sh -j$(nproc) \
+
+  sudo -u build_user sh ./update-workspaces.sh -j$(nproc) \
     --without-pch \
     --bindir=/usr/bin \
     --libdir=/usr/lib/0ad \
     --datadir=/usr/share/0ad/data
 
-  VERBOSE=1 make
+  VERBOSE=1 make config=release
 
   install -d ${pkgupd_pkgdir}/usr/{bin,lib/0ad,share/0ad/data}
   install -D -m 0755 binaries/system/pyrogenesis ${pkgupd_pkgdir}/usr/bin/
@@ -58,3 +65,9 @@ script: |
   install -Dm0755 build/resources/0ad.sh ${pkgupd_pkgdir}/usr/bin/0ad
   cp build/resources/0ad.desktop ${pkgupd_pkgdir}/
   cp build/resources/0ad.png ${pkgupd_pkgdir}/
+  cp ${FILES_DIR}/AppRun ${pkgupd_pkgdir}/
+  chmod +x ${pkgupd_pkgdir}/AppRun
+  
+  mkdir -p ${pkgupd_pkgdir}/usr/share/{{id}}
+  tar -xaf ${PKGUPD_SRCDIR}/{{id}}-{{version}}-unix-data.tar.xz
+  cp -r {{id}}-{{version}}/binaries/data ${pkgupd_pkgdir}/usr/share/{{id}}/

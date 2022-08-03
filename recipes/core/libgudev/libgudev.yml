@@ -1,5 +1,5 @@
 id: libgudev
-version: 236
+version: 237
 about: |
   GObject bindings for libudev.
 
@@ -7,8 +7,4 @@ depends:
   runtime: glib
 
 sources:
-  - https://download.gnome.org/sources/libgudev/236/libgudev-236.tar.xz
-  
-packages:
-  - id: pkg
-    dir: libgudev-236
+  - https://download.gnome.org/sources/libgudev/{{version}}/libgudev-{{version}}.tar.xz

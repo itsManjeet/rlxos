@@ -8,7 +8,7 @@ sources:
   - typescript-{{version}}.noextract::https://registry.npmjs.org/{{id}}/-/{{id}}-{{version}}.tgz
 
 script: |
-  mv ${PKGUPD_PKGDIR}/typescript-{{version}}.noextract typescript-{{version}}.tgz
+  mv ${PKGUPD_SRCDIR}/typescript-{{version}}.noextract typescript-{{version}}.tgz
 
   npm install -g --prefix ${pkgupd_pkgdir}/usr typescript-{{version}}.tgz
   chmod -R u=rwX,go=rX "${pkgupd_pkgdir}"

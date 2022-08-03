@@ -31,6 +31,10 @@ tags:
   - music
   - player
   - media
+pre-script: |
+  # appimage patch
+  sed -i s'#@pkgdatadir@#os.getenv("PKGDATA_DIR")#' gnome-music.in
+
 sources:
   - https://download.gnome.org/sources/gnome-music/40/gnome-music-{{version}}.tar.xz
 post-script: |
@@ -54,3 +58,6 @@ post-script: |
   cp /usr/bin/grl-inspect-* usr/bin/
   cp /usr/bin/grl-launch-* usr/bin/
   cp /usr/lib/grilo-0.3/ usr/lib/ -a
+
+  cp -a usr/lib/org.gnome.Music/* usr/lib/
+  mv usr/share/org.gnome.Music/gir-1.0 usr/share/

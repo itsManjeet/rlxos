@@ -1,0 +1,30 @@
+id: lynis
+version: 3.0.8
+about: Security and system auditing tool to harden Unix/Linux systems
+depends:
+  runtime:
+    - gawk
+    - bash
+    - iptables
+sources:
+  - https://downloads.cisofy.com/lynis/lynis-{{version}}.tar.gz
+pre-script: |
+  sed -e 's|/path/to/lynis|/usr/bin/lynis|g' -i extras/systemd/lynis.service
+
+  install -Dm 755 lynis -t "${pkgupd_pkgdir}/usr/bin"
+  install -Dm 644 default.prf -t "${pkgupd_pkgdir}/etc/{{id}}"
+  install -d "${pkgupd_pkgdir}/usr/share/{{id}}"
+  cp -ra db include plugins "${pkgupd_pkgdir}/usr/share/{{id}}"
+
+  # doc files
+  install -Dm 644 README INSTALL CHANGELOG.md FAQ \
+    -t "${pkgupd_pkgdir}/usr/share/doc/{{id}}"
+  install -Dm 644 "{{id}}.8" -t "${pkgupd_pkgdir}/usr/share/man/man8"
+
+  # completion
+  install -Dm 644 extras/bash_completion.d/{{id}} \
+    -t "${pkgupd_pkgdir}/usr/share/bash-completion/completions"
+
+  # systemd
+  install -Dm 644 extras/systemd/{lynis.service,lynis.timer} \
+    -t "${pkgupd_pkgdir}/usr/lib/systemd/system"

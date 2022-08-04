@@ -201,7 +201,9 @@ mount_root_system() {
     rootpoint="/mnt/root"
     mkdir -p "${uprdir}" "${wrkdir}" "${rootpoint}"
 
-    mount -t overlay overlay -o upperdir="${uprdir}",lowerdir="${syspoint}",workdir="${wrkdir}" "${rootpoint}"
+    # disable metacopy and index
+    # causing kernel panic: mount system call failed: stale file handle
+    mount -t overlay overlay -o index=off -o metacopy=off -o upperdir="${uprdir}",lowerdir="${syspoint}",workdir="${wrkdir}" "${rootpoint}"
 }
 
 # mount_root

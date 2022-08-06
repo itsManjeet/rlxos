@@ -1,0 +1,38 @@
+id: schroot
+version: 1.6.10
+about: Allows users to execute shell commands under different root filesystems. (Successor to dchroot)
+commit: 3+deb9u1
+depends:
+  runtime:
+    - libboost
+    - e2fsprogs
+    - lockdev
+    - pam
+  buildtime:
+    - boost
+    - cppunit
+sources:
+  - http://http.debian.net/debian/pool/main/s/{{id}}/{{id}}_{{version}}.orig.tar.xz
+  - http://http.debian.net/debian/pool/main/s/schroot/schroot_{{version}}-{{commit}}.debian.tar.xz
+
+pre-script: |
+  cat ../debian/patches/series | while read p; do
+    patch -p1 -i ../debian/patches/$p
+  done
+  patch -p1 -i ${FILES_DIR}/schroot-cppunit.patch
+  patch -p1 -i ${FILES_DIR}/schroot-gcc8-assert-fix.patch
+  ./bootstrap
+build-type: autoconf
+autoconf-dir: true
+configure: >
+  --enable-dchroot
+  --enable-lvm-snapshot
+  --enable-btfs-snapshot
+  --with-bash-completion-dir=/usr/share/bash-completion/completions/
+  BTRFS=/usr/bin/btrfs
+  BTRFSCTL=/usr/bin/btrfsctl
+  LVCREATE=/usr/bin/lvcreate
+  LVREMOVE=/usr/bin/lvremove
+
+post-script: |
+  patch -i ${FILES_DIR}/pam.d.schroot.patch ${pkgupd_pkgdir}/etc/pam.d/schroot

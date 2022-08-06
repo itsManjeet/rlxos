@@ -16,5 +16,8 @@
 * [Interface](chapter-03/interface.md)
 * [Customization](chapter-03/customization.md)
 
-### Chapter 04: System Management
-* [Factory Reset](chapter-04/factory-reset.md)
+### Chapter 04: Package Management
+* [Introduction](chapter-04/README.md)
+
+### Chapter 05: System Management
+* [Factory Reset](chapter-05/factory-reset.md)

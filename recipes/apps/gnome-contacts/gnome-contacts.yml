@@ -1,0 +1,37 @@
+id: gnome-contacts
+version: 40.0
+release: 2
+about: Contact manager for GNOME
+depends:
+  buildtime:
+    - evolution-data-server
+    - folks
+    - gnome-online-accounts
+    - dconf
+    - libgee
+    - cheese
+    - libhandy
+    - vala
+    - gobject-introspection
+    - meson
+    - docbook-xsl
+    - appimagetool
+sources:
+  - https://gitlab.gnome.org/GNOME/gnome-contacts/-/archive/{{version}}/gnome-contacts-{{version}}.tar.gz
+type: app
+category: accessories
+tags:
+  - contact
+
+post-script: |
+  cd ${pkgupd_pkgdir}
+
+  glib-compile-schemas usr/share/glib-2.0/schemas/
+  cp usr/share/icons/hicolor/scalable/apps/org.gnome.Contacts.svg {{id}}.png
+  cp usr/share/applications/org.gnome.Contacts.desktop {{id}}.desktop
+  sed -i 's#org.gnome.Contacts#{{id}}#' {{id}}.desktop
+  sed -i 's#DBusActivatable=true##' {{id}}.desktop
+  rm -r usr/share/metainfo
+
+  cp ${FILES_DIR}/AppRun AppRun
+  chmod +x AppRun

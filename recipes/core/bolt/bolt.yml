@@ -1,6 +1,6 @@
 id: bolt
 version: 2200
-release: 1
+release: 2
 about: rlxos virtual assistant
 commit: d0abf722deb17ceea441c89abdec04c6f59fbf3f
 depends:
@@ -17,6 +17,7 @@ pre-script: |
   sed -i 's#install_files#install#' assets/CMakeLists.txt
   sed -i 's#scalable/#scalable#' assets/CMakeLists.txt
   sed -i 's#icon.svg#bolt.svg#' assets/CMakeLists.txt
+  sed -i 's#apps/scalable#scalable/apps' assets/CMakeLists.txt
 post-script: |
   install -v -D -m 0644 ${FILES_DIR}/bolt.conf ${pkgupd_pkgdir}/etc/bolt.yml
   install -v -D -m 0644 ${FILES_DIR}/default.model ${pkgupd_pkgdir}/var/lib/bolt/distance.model

@@ -12,6 +12,11 @@ depends:
 sources:
   - bolt-{{commit}}.tar.gz::https://github.com/itsManjeet/bolt/archive/{{commit}}.tar.gz
 build-dir: bolt-{{commit}}
+pre-script: |
+  mv assets/icon.svg assets/bolt.svg
+  sed -i 's#install_files#install#' assets/CMakeLists.txt
+  sed -i 's#scalable/#scalable#' assets/CMakeLists.txt
+  sed -i 's#icon.svg#bolt.svg#' assets/CMakeLists.txt
 post-script: |
   install -v -D -m 0644 ${FILES_DIR}/bolt.conf ${pkgupd_pkgdir}/etc/bolt.yml
   install -v -D -m 0644 ${FILES_DIR}/default.model ${pkgupd_pkgdir}/var/lib/bolt/distance.model

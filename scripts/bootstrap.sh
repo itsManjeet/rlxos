@@ -37,7 +37,7 @@ if [[ -z "${NOCONTAINER}" ]]; then
         -v "${ROOTDIR}/files:/var/cache/pkgupd/files" \
         -v "${ROOTDIR}/profiles:/profiles" \
         -v "${ROOTDIR}/${PKGUPD_FILE}:/etc/pkgupd.yml" \
-        -v "/tmp:/tmp" \
+        -v "${ROOTDIR}/build/tmp:/tmp" \
         -v /var/run/docker.sock:/var/run/docker.sock \
         ${EXTRA_FLAGS} --privileged \
         -t itsmanjeet/rlxos-devel:${CONTAINER_VERSION} /usr/bin/env -i \
@@ -59,7 +59,7 @@ PROFILE='desktop'
 BUILD_ID=$(date +"%m%d%y%H%M")
 DEPENDS_FILE='/tmp/depends'
 export PKGUPD_NO_PROGRESS=1
-
+export PKGUPD_NO_MESSAGE=1
 RECIPES_DIR='/var/cache/pkgupd/recipes/'
 FILES_DIR='/var/cache/pkgupd/files/'
 echo ":: updating system"
@@ -71,7 +71,6 @@ echo ":: updating system"
 pkgupd update mode.ask=false
 
 LOGDIR='/logs'
-export DEBUG=1
 export PKGUPD_NO_PROGRESS=1
 
 # Log <tag> <id>
@@ -88,10 +87,10 @@ cat ${FILES_DIR}/logo/ascii
 echo "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
 echo "Architecture : $(uname -m)"
 echo "Container    : ${CONTAINER_VERSION}"
-echo "GCC          : $(PKGUPD_NO_MESSAGE=1 pkgupd info gcc info.value=version)"
-echo "Binutils     : $(PKGUPD_NO_MESSAGE=1 pkgupd info binutils info.value=version)"
-echo "GLibc        : $(PKGUPD_NO_MESSAGE=1 pkgupd info glibc info.value=version)"
-echo "Pkgupd       : $(PKGUPD_NO_MESSAGE=1 pkgupd info pkgupd info.value=version)"
+echo "GCC          : $(pkgupd info gcc info.value=version)"
+echo "Binutils     : $(pkgupd info binutils info.value=version)"
+echo "GLibc        : $(pkgupd info glibc info.value=version)"
+echo "Pkgupd       : $(pkgupd info pkgupd info.value=version)"
 }
 
 function bootstrap() {
@@ -318,7 +317,7 @@ EOT
     exit 1
   fi
 
-  pkgupd install ${KERNEL_PACKAGE} version=${VERSION} dir.root=${ISODIR} dir.data="/tmp" force=true mode.ask=false
+  pkgupd install ${KERNEL_PACKAGE} version=${VERSION} dir.root=${ISODIR} dir.data="$(mktemp -d /tmp/pkgupd.XXXXX)" force=true mode.ask=false
   if [[ $? != 0 ]] ; then
     rm -rf ${ISODIR} ${TEMPDIR} ${PKGUPD_CONFIG}
     echo ":: ERROR :: failed to calculate dependency tree"

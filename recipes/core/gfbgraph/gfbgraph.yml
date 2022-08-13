@@ -1,6 +1,6 @@
 id: gfbgraph
 version: 0_2_5
-release: 1
+release: 2
 about: GLib/GObject wrapper for the Facebook Graph API
 depends:
   runtime:
@@ -20,4 +20,4 @@ configure: >
   --enable-introspection
   --enable-gtk-doc
 
-install: libgfgraphdocdir=/usr/share/doc/gfbgraph
+install: libgfbgraphdocdir=/usr/share/doc/gfbgraph

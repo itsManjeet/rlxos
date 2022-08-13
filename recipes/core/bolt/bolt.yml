@@ -1,8 +1,8 @@
 id: bolt
 version: 2200
-release: 2
+release: 3
 about: rlxos virtual assistant
-commit: d0abf722deb17ceea441c89abdec04c6f59fbf3f
+commit: 53d0f9e3539cce66fd85912f980e481f41f781ea
 depends:
   runtime:
     - dpp

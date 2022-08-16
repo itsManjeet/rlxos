@@ -24,7 +24,7 @@ sources:
   - https://download.gnome.org/sources/gnome-characters/40/gnome-characters-{{version}}.tar.xz
 
 pre-script: |
-  #patch data/meson < ${FILES_DIR}/meson_build_fix.patch
+  sed -i -e '49,70d' data/meson.build
 
 post-script: |
   cd ${pkgupd_pkgdir}

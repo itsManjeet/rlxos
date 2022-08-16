@@ -1,0 +1,44 @@
+id: gnome-characters
+version: 40.0
+about: |
+  A character map application
+
+depends:
+  buildtime:
+    - gjs
+    - gnome-desktop
+    - gtk
+    - libhandy
+    - libunistring
+    - gobject-introspection
+    - gperf
+    - appimagetool
+bundle: true
+type: app
+category: accessories
+tags:
+  - characters
+  - emoji
+
+sources:
+  - https://download.gnome.org/sources/gnome-characters/40/gnome-characters-{{version}}.tar.xz
+
+pre-script: |
+  #patch data/meson < ${FILES_DIR}/meson_build_fix.patch
+
+post-script: |
+  cd ${pkgupd_pkgdir}
+
+  cp /usr/bin/gjs usr/bin/
+
+  mv usr/lib/org.gnome.Characters/* usr/lib/
+  sed 's#@@version@@#{{version}}#' ${FILES_DIR}/gnome-characters.js > usr/share/org.gnome.Characters/org.gnome.Characters
+  ln -srfv usr/share/org.gnome.Characters/org.gnome.Characters usr/bin/gnome-characters
+
+  glib-compile-schemas usr/share/glib-2.0/schemas/
+
+  cp ${FILES_DIR}/{{id}}.desktop {{id}}.desktop
+  cp ${FILES_DIR}/{{id}}.svg {{id}}.png
+  cp ${FILES_DIR}/AppRun AppRun
+  chmod +x AppRun
+  

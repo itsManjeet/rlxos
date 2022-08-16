@@ -1,0 +1,23 @@
+--- data/meson.build.bak	2021-03-21 05:23:43.711294400 +0530
++++ data/meson.build	2022-08-16 18:32:09.449974510 +0530
+@@ -46,20 +46,6 @@
+ desktop_conf.set('appid', characters_application_id)
+ desktop_conf.set('bindir', characters_bindir)
+ 
+-i18n.merge_file(
+-  'desktop-file',
+-  type: 'desktop',
+-  input: configure_file (
+-    input: characters_name + '.desktop.in',
+-    output: characters_name + '.desktop.in',
+-    configuration: desktop_conf
+-  ),
+-  output: characters_application_id + '.desktop',
+-  po_dir: po_dir,
+-  install: true,
+-  install_dir: join_paths(characters_datadir, 'applications')
+-)
+-
+ appdata_file = i18n.merge_file(
+   'appdata-file',
+   input: characters_name + '.appdata.xml.in',

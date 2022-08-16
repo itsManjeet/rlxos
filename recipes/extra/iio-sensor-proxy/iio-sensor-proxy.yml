@@ -15,4 +15,4 @@ sources:
 configure: >
   -Dsystemdsystemunitdir=/usr/lib/systemd/system
   -Dudevrulesdir=/usr/lib/udev/rules.d
-  -Dsysconfdir=/usr/share
+  --sysconfdir=/usr/share

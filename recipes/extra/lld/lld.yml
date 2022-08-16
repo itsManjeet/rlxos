@@ -1,0 +1,29 @@
+id: lld
+version: 12.0.1
+about: Linker from LLVM project
+depends:
+  runtime:
+    - libllvm
+  buildtime:
+    - cmake
+    - llvm
+    - ninja
+
+sources:
+  - https://github.com/llvm/llvm-project/releases/download/llvmorg-{{version}}/lld-{{version}}.src.tar.xz
+  - https://github.com/llvm/llvm-project/releases/download/llvmorg-{{version}}/llvm-{{version}}.src.tar.xz
+  - https://github.com/llvm/llvm-project/releases/download/llvmorg-{{version}}/libunwind-{{version}}.src.tar.xz
+
+pre-script: |
+  ls -al ${pkgupd_srcdir}/
+  mv ${pkgupd_srcdir}/libunwind{-{{version}}.src,}
+
+configure: >
+  -DCMAKE_BUILD_TYPE=Release
+  -DCMAKE_INSTALL_DOCDIR=share/doc
+  -DCMAKE_SKIP_RPATH=ON
+  -DLLVM_BUILD_DOCS=OFF
+  -DLLVM_EXTERNAL_LIT=/usr/bin/lit
+  -DLLVM_INCLUDE_TESTS=ON
+  -DLLVM_LINK_LLVM_DYLIB=ON
+  -DLLVM_MAIN_SRC_DIR="${pkgupd_srcdir}/llvm-{{version}}.src"

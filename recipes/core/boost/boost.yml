@@ -1,5 +1,6 @@
 id: boost
 version: 1.76.0
+release: 2
 about: |
   A set of free peer-reviewed portable C++ source libraries
 
@@ -12,6 +13,12 @@ sources:
 
 build-dir: boost_1_76_0
 script: |
+  cd tools/build
+  ./bootstrap.sh --cxxflags="${CXXFLAGS:-} ${LDFLAGS:-}"
+  ./b2 install --prefix=${pkgupd_pkgdir}/usr
+  ln -s b2 ${pkgupd_pkgdir}/usr/bin/bjam
+
+  cd ../..
   ./bootstrap.sh --with-icu --with-python=python3 --prefix=/usr
   ./b2 -j $(nproc) \
     threading=multi \

@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v2
       
       - name: Update system
-        run: pkgupd update mode.ask=false
+        run: NO_INPUT=1 PKGUPD_CONFIG_PATH=${PWD}/pkgupd.testing.yml pkgupd update mode.ask=false
 
       - name: Compile Packages
         run: |

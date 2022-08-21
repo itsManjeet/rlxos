@@ -14,7 +14,7 @@ jobs:
     runs-on: self-hosted
     timeout-minutes: 43800
     container:
-      image: itsmanjeet/rlxos-devel:${{env.CONTAINER}}
+      image: itsmanjeet/rlxos-devel:2200-1
     
     steps:
       - uses: actions/checkout@v2

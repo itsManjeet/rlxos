@@ -17,7 +17,7 @@ jobs:
       image: itsmanjeet/rlxos-devel:{{env.CONTAINER}}
     
     steps:
-      - uses: action/checkout@v2
+      - uses: actions/checkout@v2
 
       - name: Getting changed files
         id: changed-files
@@ -29,7 +29,7 @@ jobs:
       - name: Compile Packages
         run: |
           [[ -n "${{github.event.inputs.recipe_file}}" ]] && changed_file="${{github.event.inputs.recipe_file}}"
-          
+
           for changed_file in ${{ steps.changed-files.outputs.all }} ; do
             if [[ ${changed_file} =~ "recipes/" ]] && [[ ${changed_file} == "*.yml" ]] && [[ -e ${changed_file} ]] ; then
               echo "compiling ${changed_file}"

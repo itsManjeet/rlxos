@@ -1,10 +1,5 @@
 name: Build Package
 on:
-  push:
-    paths:
-      - "recipes/**"
-    branches-ignore:
-      - master
   workflow_dispatch:
     inputs:
       recipe_file:
@@ -18,24 +13,15 @@ jobs:
     
     steps:
       - uses: actions/checkout@v2
-
-      - name: Getting changed files
-        id: changed-files
-        uses: jitterbit/get-changed-files@v1
-
+      
       - name: Update system
         run: pkgupd update mode.ask=false
 
       - name: Compile Packages
         run: |
-          [[ -n "${{github.event.inputs.recipe_file}}" ]] && changed_file="${{github.event.inputs.recipe_file}}"
-
-          for changed_file in ${{ steps.changed-files.outputs.all }} ; do
-            if [[ ${changed_file} =~ "recipes/" ]] && [[ ${changed_file} == "*.yml" ]] && [[ -e ${changed_file} ]] ; then
-              echo "compiling ${changed_file}"
-              PKGUPD_NO_PROGRESS=1 \
-                NO_INPUT=1 \
-                pkgupd build ${changed_file}
-            fi
-          done
+          changed_file="${{github.event.inputs.recipe_file}}"
+          echo "compiling ${changed_file}"
+          PKGUPD_NO_PROGRESS=1 \
+            NO_INPUT=1 \
+            pkgupd build ${changed_file}
 

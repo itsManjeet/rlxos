@@ -13,7 +13,6 @@ depends:
     - libarchive
     - tar
     - bash
-    
   buildtime: 
     - cmake
 

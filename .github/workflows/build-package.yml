@@ -17,7 +17,7 @@ jobs:
     container:
       image: itsmanjeet/rlxos-devel:2200-1
       volumes:
-        - ${{ secrets.STORAGE_DIR }}/${{ github.event.inputs.repository }}/${{ github.event.inputs.version }}/pkgs/:/var/cache/pkgupd/pkgs/
+        - "${{ secrets.STORAGE_DIR }}/${{ github.event.inputs.repository }}/${{ github.event.inputs.version }}/pkgs/:/var/cache/pkgupd/pkgs/"
     
     steps:
       - uses: actions/checkout@v2

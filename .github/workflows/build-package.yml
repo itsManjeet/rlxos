@@ -35,12 +35,14 @@ jobs:
           changed_file="${{github.event.inputs.recipe_file}}"
           [[ -z ${changed_file} ]] && changed_file="${{ steps.changed-files.outputs.all }}"
           for recipe in ${changed_file} ; do
-            echo "compiling ${recipe}"
-            PKGUPD_NO_PROGRESS=1 \
-              PKGUPD_CONFIG_PATH=${PWD}/pkgupd.testing.yml \
-              NO_INPUT=1 \
-              pkgupd build ${recipe} \
-              build.repository=$(echo ${recipe} | cut -d '/' -f2)
+            if [[ ${recipe} =~ "recipes/" ]] && [[ "${recipe}" == "*.yml" ]] && [[ -e "${recipe}" ]] ; then
+              echo "compiling ${recipe}"
+              PKGUPD_NO_PROGRESS=1 \
+                PKGUPD_CONFIG_PATH=${PWD}/pkgupd.testing.yml \
+                NO_INPUT=1 \
+                pkgupd build ${recipe} \
+                build.repository=$(echo ${recipe} | cut -d '/' -f2)
+            fi
           done
 
       - name: Update Repository

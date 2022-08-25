@@ -4,12 +4,7 @@ on:
     inputs:
       recipe_file:
         required: true
-      repository:
-        required: true
-        default: testing
-      version:
-        required: true
-        default: 2200
+
   push:
     paths:
       - 'recipes/**'
@@ -22,7 +17,7 @@ jobs:
     container:
       image: itsmanjeet/rlxos-devel:2200-1
       volumes:
-        - /storage/${{ github.event.inputs.repository }}/${{ github.event.inputs.version }}/pkgs/:/var/cache/pkgupd/pkgs/
+        - /storage/testing/2200/pkgs/:/var/cache/pkgupd/pkgs/
     
     steps:
       - uses: actions/checkout@v2

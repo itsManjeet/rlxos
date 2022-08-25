@@ -34,6 +34,9 @@ jobs:
             NO_INPUT=1 \
             pkgupd build ${changed_file}
 
-      - name: Upload Package
+      - name: Update Repository
         run: |
-          cp /var/cache/pkgupd/pkgdir/
+          PKGUPD_NO_PROGRESS=1 \
+            PKGUPD_CONFIG_PATH=${PWD}/pkgupd.testing.yml \
+            NO_INPUT=1 \
+            pkgupd meta

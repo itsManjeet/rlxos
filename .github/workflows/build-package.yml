@@ -40,7 +40,7 @@ jobs:
           changed_file="${{github.event.inputs.recipe_file}}"
           [[ -z ${changed_file} ]] && changed_file="${{ steps.changed-files.outputs.all }}"
           for recipe in ${changed_file} ; do
-            if [[ ${recipe} =~ "recipes/" ]] && [[ "${recipe}" == "*.yml" ]] && [[ -e "${recipe}" ]] ; then
+            if [[ ${recipe} =~ recipes/ ]] && [[ "${recipe}" == *.yml ]] && [[ -e ${recipe} ]] ; then
               echo "compiling ${recipe}"
               PKGUPD_NO_PROGRESS=1 \
                 PKGUPD_CONFIG_PATH=${PWD}/pkgupd.testing.yml \

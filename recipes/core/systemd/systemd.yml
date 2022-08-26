@@ -1,5 +1,6 @@
 id: systemd
 version: 251
+release: 2
 about: |
   Package contains programs for controlling the startup, running, and shutdown of the system
 
@@ -51,6 +52,7 @@ configure: >
   -D pam=true
   -D lz4=true
   -D man=true
+  -D zstd=true
   -D mode=release
   -D kmod-path=/usr/bin/kmod
   -D mount-path=/usr/bin/mount

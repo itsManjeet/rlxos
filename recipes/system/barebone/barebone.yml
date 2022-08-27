@@ -1,0 +1,20 @@
+id: barebone
+version: 2200
+release: 1
+about: rlxos barebone system image
+build-type: system
+
+# list of packages included in the system
+include:
+  - core          # rlxos core, packages list can be viewed from recipes/core/core.yml
+  - initramfs     # for initial ram disk
+  - firmware      # includes non-free firmware
+  - grub-i386     # for boot legacy
+  - grub          # for uefi boot, exclude grub if using systemd-boot
+
+# default root password
+root: rlxos
+
+# script to be run inside chroot
+inside: |
+  true

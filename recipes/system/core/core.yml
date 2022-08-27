@@ -1,0 +1,18 @@
+id: core
+version: 2200
+release: 1
+about: rlxos core system image
+type: img
+build-type: system
+depends:
+  buildtime:
+    - squashfs-tools
+
+include:
+  - core
+  - initramfs
+  - firmware
+  - grub
+  - grub-i386
+
+root: rlxos

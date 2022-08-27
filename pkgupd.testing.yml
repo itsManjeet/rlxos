@@ -3,6 +3,7 @@ repos:
     - extra
     - apps
     - machine
+    - system
 environ:
     - FILES=/var/cache/pkgupd/files/
     - CFLAGS="-march=x86-64 -O2 -pipe"

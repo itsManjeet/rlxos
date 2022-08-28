@@ -19,12 +19,14 @@ jobs:
       - name: list error packages
         uses: mathiasvr/command-output@v1
         id: error-packages
-        run: wc -l build/2200/logs/checkup/error.list | awk '{print $1}'
+        with:
+          run: wc -l build/2200/logs/checkup/error.list | awk '{print $1}'
       
       - name: list outdated packages
         uses: mathiasvr/command-output@v1
         id: outdated-packages
-        run: wc -l build/2200/logs/checkup/outdated.list | awk '{print $1}'
+        with:
+          run: wc -l build/2200/logs/checkup/outdated.list | awk '{print $1}'
       
       - name: send telegram message
         uses: appleboy/telegram-action@master

@@ -1,0 +1,7 @@
+url=https://archive.mozilla.org/pub/firefox/releases/
+
+port_getver() {	
+	fetch \
+	| grep -Eo releases/[0-9.]+/ \
+	| cut -d / -f2
+}

@@ -17,10 +17,12 @@ jobs:
         run: ./scripts/check-update.sh
 
       - name: list error packages
+        uses: mathiasvr/command-output@v1
         id: error-packages
         run: wc -l build/2200/logs/checkup/error.list | awk '{print $1}'
       
       - name: list outdated packages
+        uses: mathiasvr/command-output@v1
         id: outdated-packages
         run: wc -l build/2200/logs/checkup/outdated.list | awk '{print $1}'
       
@@ -31,7 +33,7 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
             Packages updated:
-            - Outdated : ${{ steps.outdated-packages.outputs.all }}
-            - Error    : ${{ steps.error-packages.outputs.all }}
+            - Outdated : ${{ steps.outdated-packages.outputs.stdout }}
+            - Error    : ${{ steps.error-packages.outputs.stdout }}
           
           

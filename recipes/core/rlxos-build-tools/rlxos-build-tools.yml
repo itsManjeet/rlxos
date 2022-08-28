@@ -1,0 +1,14 @@
+id: rlxos-build-tools
+version: 2200
+release: 1
+about: Build tools for rlxos
+depends:
+  runtime:
+    - pkgupd
+    - squashfs-tools
+    - grub-i386
+    - grub
+
+script: |
+  install -v -D -m 0755 ${FILES_DIR}/tar2sys.sh ${pkgupd_pkgdir}/usr/bin/tar2sys
+  install -v -D -m 0755 ${FILES_DIR}/mkiso.sh ${pkgupd_pkgdir}/usr/bin/mkiso

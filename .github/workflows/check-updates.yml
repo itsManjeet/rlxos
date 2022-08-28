@@ -1,0 +1,36 @@
+name: Check updates
+on:
+  schedule:
+    - cron: '* 5 * * *'
+  workflow_dispatch:
+
+jobs:
+  checkup:
+    runs-on: self-hosted
+    container:
+      image: itsmanjeet/rlxos-devel:2200-1
+    
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: check updates
+        run: ./scripts/check-update.sh
+
+      - name: list error packages
+        id: error-packages
+        run: wc -l build/2200/logs/checkup/error.list | awk '{print $1}'
+      
+      - name: list outdated packages
+        id: outdated-packages
+        run: wc -l build/2200/logs/checkup/outdated.list | awk '{print $1}'
+      
+      - name: send telegram message
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            Packages updated:
+            - Outdated : ${{ steps.outdated-packages.outputs.all }}
+            - Error    : ${{ steps.error-packages.outputs.all }}
+          

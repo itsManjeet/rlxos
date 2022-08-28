@@ -46,7 +46,7 @@ jobs:
               PKGUPD_NO_PROGRESS=1 \
                 PKGUPD_CONFIG_PATH=${PWD}/pkgupd.testing.yml \
                 NO_INPUT=1 \
-                pkgupd build ${recipe} \
+                pkgupd build ${PWD}/${recipe} \
                 build.repository=$(echo ${recipe} | cut -d '/' -f2)
             fi
           done

@@ -363,7 +363,7 @@ function main() {
 
     install_udev
     install_modules
-    install_plymouth
+    [[ -z ${NO_PLYMOUTH} ]] && install_plymouth
     install_password
     compress_initrd
 

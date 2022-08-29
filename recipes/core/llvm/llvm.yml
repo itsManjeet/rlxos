@@ -38,22 +38,25 @@ split:
     about: llvm runtime library
     files:
       - usr/lib/libLTO.so.14
-      - usr/lib/libLLVM-{{version}}.so
-      - usr/lib/libLLVM-14.so
-      - usr/lib/libRemarks.so
       - usr/lib/libLTO.so
       - usr/lib/LLVMgold.so
-      - usr/lib/libLLVM.so
-      - usr/lib/libclang.so.14
-      - usr/lib/libclang.so
+      - usr/lib/libclang-cpp.so.14
       - usr/lib/libclang-cpp.so
+      - usr/lib/libclang.so.14.0.6
+      - usr/lib/libclang.so.13
+      - usr/lib/libclang.so
+      - usr/lib/libLLVM-14.so
+      - usr/lib/libLLVM.so
+      - usr/lib/libRemarks.so.14
+      - usr/lib/libRemarks.so
       - usr/lib/clang/{{version}}/lib/linux/libclang_rt.ubsan_minimal-x86_64.so
+      - usr/lib/clang/{{version}}/lib/linux/libclang_rt.ubsan_standalone-x86_64.so
       - usr/lib/clang/{{version}}/lib/linux/libclang_rt.hwasan-x86_64.so
-      - usr/lib/clang/{{version}}/lib/linux/libclang_rt.scudo_minimal-x86_64.so
-      - usr/lib/clang/{{version}}/lib/linux/libclang_rt.asan-x86_64.so
+      - usr/lib/clang/{{version}}/lib/linux/libclang_rt.hwasan_aliases-x86_64.so
+      - usr/lib/clang/{{version}}/lib/linux/libclang_rt.tsan-x86_64.so
       - usr/lib/clang/{{version}}/lib/linux/libclang_rt.scudo-x86_64.so
+      - usr/lib/clang/{{version}}/lib/linux/libclang_rt.scudo_minimal-x86_64.so
+      - usr/lib/clang/{{version}}/lib/linux/libclang_rt.scudo_standalone-x86_64.so
+      - usr/lib/clang/{{version}}/lib/linux/libclang_rt.asan-x86_64.so
       - usr/lib/clang/{{version}}/lib/linux/libclang_rt.memprof-x86_64.so
       - usr/lib/clang/{{version}}/lib/linux/libclang_rt.dyndd-x86_64.so
-      - usr/lib/clang/{{version}}/lib/linux/libclang_rt.ubsan_standalone-x86_64.so
-      - usr/lib/libclang-cpp.so.14
-      - usr/lib/libRemarks.so.14

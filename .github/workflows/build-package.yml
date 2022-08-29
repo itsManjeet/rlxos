@@ -57,7 +57,7 @@ jobs:
 
   update-repository:
     runs-on: self-hosted
-    needs: [check-changes]
+    needs: [build]
     timeout-minutes: 43800
     container:
       image: itsmanjeet/rlxos-devel:2200-1

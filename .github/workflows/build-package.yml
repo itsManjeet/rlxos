@@ -45,7 +45,7 @@ jobs:
       
       - name: Compile Packages
         run: |
-          changed_file="${needs.check-changes.outputs.changed_files}}"
+          changed_file="${{needs.check-changes.outputs.changed_files}}"
           for recipe in ${changed_file} ; do
             if [[ ${recipe} =~ recipes/ ]] && [[ "${recipe}" == *.yml ]] && [[ -e ${recipe} ]] ; then
               echo "compiling ${recipe}"

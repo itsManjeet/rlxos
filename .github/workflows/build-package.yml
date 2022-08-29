@@ -5,10 +5,6 @@ on:
       - 'recipes/**'
     branches-ignore:
       - master
-  workflow_dispatch:
-    inputs:
-      recipe_file:
-        required: true
 env:
   NO_INPUT: 1
   PKGUPD_NO_PROGRESS: 1

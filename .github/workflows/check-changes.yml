@@ -1,0 +1,26 @@
+name: check changes
+on:
+  push:
+    paths:
+      - 'recipes/**'
+    branches-ignore:
+      - master
+
+jobs:
+  checkup:
+    runs-on: self-hosted
+    container:
+      image: itsmanjet/rlxos-devel:2200-1
+    
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get changed files
+        id: changed-files
+        uses: jitterbit/get-changed-files@v1
+        if: ${{ github.event.action }} == 'push'
+
+      - name: trigger workflow
+        uses: itsmanjeet/rlxos/.github/workflows/build-package.yml@2200
+        with:
+          recipe_file: ${{ steps.changed-files.outputs.all }}

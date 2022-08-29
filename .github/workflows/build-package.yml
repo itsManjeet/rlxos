@@ -1,15 +1,14 @@
 name: Build Package
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       recipe_file:
         required: true
+        type: string
+env:
+  NO_INPUT: 1
+  PKGUPD_NO_PROGRESS: 1
 
-  push:
-    paths:
-      - 'recipes/**'
-    branches-ignore:
-      - master
 jobs:
   build:
     runs-on: self-hosted
@@ -25,27 +24,17 @@ jobs:
       
       - name: Update system
         run: |
-          export NO_INPUT=1 
-          export PKGUPD_NO_PROGRESS=1 
           export PKGUPD_CONFIG_PATH=${PWD}/pkgupd.testing.yml 
           pkgupd update mode.ask=false
           pkgupd install squashfs-tools mode.ask=false
       
-      - name: Get changed files
-        id: changed-files
-        uses: jitterbit/get-changed-files@v1
-        if: ${{ github.event.action }} == 'push'
-
       - name: Compile Packages
         run: |
-          changed_file="${{github.event.inputs.recipe_file}}"
-          [[ -z ${changed_file} ]] && changed_file="${{ steps.changed-files.outputs.all }}"
+          changed_file="${{inputs.recipe_file}}"
           for recipe in ${changed_file} ; do
             if [[ ${recipe} =~ recipes/ ]] && [[ "${recipe}" == *.yml ]] && [[ -e ${recipe} ]] ; then
               echo "compiling ${recipe}"
-              PKGUPD_NO_PROGRESS=1 \
-                PKGUPD_CONFIG_PATH=${PWD}/pkgupd.testing.yml \
-                NO_INPUT=1 \
+              PKGUPD_CONFIG_PATH=${PWD}/pkgupd.testing.yml \
                 pkgupd build ${PWD}/${recipe} \
                 build.repository=$(echo ${recipe} | cut -d '/' -f2)
             fi
@@ -53,7 +42,5 @@ jobs:
 
       - name: Update Repository
         run: |
-          PKGUPD_NO_PROGRESS=1 \
-            PKGUPD_CONFIG_PATH=${PWD}/pkgupd.testing.yml \
-            NO_INPUT=1 \
+          PKGUPD_CONFIG_PATH=${PWD}/pkgupd.testing.yml \
             pkgupd meta

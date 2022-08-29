@@ -1,6 +1,6 @@
 id: rlxos-build-tools
 version: 2200
-release: 2
+release: 3
 about: Build tools for rlxos
 depends:
   runtime:
@@ -8,6 +8,7 @@ depends:
     - squashfs-tools
     - grub-i386
     - grub
+    - initramfs
 
 script: |
   install -v -D -m 0755 ${FILES_DIR}/tar2sys.sh ${pkgupd_pkgdir}/usr/bin/tar2sys

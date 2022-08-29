@@ -4,6 +4,7 @@ ARGS=()
 OS_ID='rlxos GNU/Linux'
 VERSION='testing'
 LABEL='RLXOS'
+PLYMOUTH_FLAG='--no-plymouth'
 
 while [[ $# -gt 0 ]] ; do
     case $1 in
@@ -30,6 +31,10 @@ while [[ $# -gt 0 ]] ; do
         --kernel-version)
             KERNEL_VERSION="$2"
             shift
+        ;;
+
+        --with-plymouth)
+            PLYMOUTH_FLAG=''
         ;;
 
         --system-image)
@@ -79,7 +84,7 @@ done
     exit 1
 }
 
-REAL_KERNEL_VERSION="$(pkgupd info linux-${KERNEL_VERSION} info.value=version)-rlxos"
+REAL_KERNEL_VERSION="$(PKGUPD_NO_MESSAGE=1 pkgupd info linux-${KERNEL_VERSION} info.value=version)-rlxos"
 GRUB_CONFIG="
 default=${OS_ID} [${VERSION}] Installer
 timeout=5
@@ -113,14 +118,14 @@ echo "=> configuring grub"
 echo "${GRUB_CONFIG}" > ${ISODIR}/boot/grub/grub.cfg
 
 echo "=> installing linux kernel ${KERNEL_VERSION}"
-pkgupd install linux-${KERNEL_VERSION} dir.roots=${ISODIR} installer.depends=false force=true || {
+pkgupd install linux-${KERNEL_VERSION} dir.root=${ISODIR} installer.depends=false force=true || {
     echo "Error! failed to install linux kernel"
     cleanup
     exit 1
 }
 
 echo "=> generating initramfs"
-mkinitramfs -k=${REAL_KERNEL_VERSION} -o=${ISODIR}/boot/initrd-${REAL_KERNEL_VERSION} -u -m=${ISODIR}/boot/modules/linux-${REAL_KERNEL_VERSION} || {
+mkinitramfs -k=${REAL_KERNEL_VERSION} ${PLYMOUTH_FLAG} -o=${ISODIR}/boot/initrd-${REAL_KERNEL_VERSION} -u -m=${ISODIR}/boot/modules || {
     echo "Error! failed to generate initramfs image"
     cleanup
     exit 1

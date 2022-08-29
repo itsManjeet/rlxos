@@ -1,0 +1,20 @@
+name: Trigger build
+on:
+  workflow_dispatch:
+    inputs:
+      recipe_file:
+        required: true
+
+jobs:
+  checkup:
+    runs-on: self-hosted
+    container:
+      image: itsmanjet/rlxos-devel:2200-1
+    
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: trigger workflow
+        uses: itsmanjeet/rlxos/.github/workflows/build-package.yml@2200
+        with:
+          recipe_file: ${{github.event.inputs.recipe_file}}

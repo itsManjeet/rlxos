@@ -13,7 +13,7 @@ include:
   - grub          # for uefi boot, exclude grub if using systemd-boot
 
 # default root password
-root: rlxos
+inside.root: rlxos
 
 # script to be run inside chroot
 inside: |

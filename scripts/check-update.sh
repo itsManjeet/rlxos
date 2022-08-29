@@ -30,7 +30,7 @@ getver_default() {
 getver_github() {
 	fetch \
 	| grep archive \
-	| grep -Eo '(v?|"$filename"-)'[0-9a-z.]+\.tar\.gz \
+	| grep -Eo $filename-[0-9a-z.]+\.tar\.gz \
 	| sed "s/\.tar\.gz//;s/^v//;s/^$filename-//" \
 	| $grepexclude
 }
@@ -129,7 +129,7 @@ alter_per_url() {
 			url="https://sourceforge.net/projects/$(echo $url | cut -d / -f4)/rss?limit=200";;
 		*sourceforge.net*)
 			url="https://sourceforge.net/projects/$(echo $url | cut -d / -f5)/rss?limit=200";;
-		*gitlab.com*)
+		*gitlab.*)
 			url=$(echo $url | cut -d/ -f1-5)/tags;;
 		*python.org*|*pypi.org*|*pythonhosted.org*|*pypi.io*)
 			url=https://pypi.org/simple/${name/python?-/};;
@@ -153,7 +153,7 @@ check() {
 		name=$(head -n1 ${ppath} | awk '{print $2}')
         version=$(head -n2 ${ppath} | grep 'version:' | awk '{print $2}')
         commit=$($(head -n4 ${ppath} | grep 'commit:' | awk '{print $2}'))
-        source="$(cat ${ppath} | grep -A1 'sources:' | tail -n1 | awk '{print $2}' | sed "s#{{version}}#${version}#" | sed "s#{{id}}#${id}#" | sed "s#{{commit}}#${commit}#")"
+        source="$(cat ${ppath} | grep -A1 'sources:' | tail -n1 | awk '{print $2}' | sed "s#{{version}}#$version#g" | sed "s#{{id}}#${id}#g" | sed "s#{{commit}}#${commit}#g")"
 	else
         echo "missing ${ppath}"
 		return
@@ -197,7 +197,7 @@ check() {
 		run_check port_getver
 	else
 		case $url in
-			*github.com*|*gitlab.com*)
+			*github.com*|*gitlab.*)
 				run_check getver_github;;
 			*ftp.gnome.org*)
 				run_check getver_gnome;;

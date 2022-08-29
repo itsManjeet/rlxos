@@ -1,5 +1,6 @@
 id: thunderbird
 version: 102.2.0
+release: 2
 about: Mozilla Thunderbird is a free and open-source cross-platform email client, personal information manager, news client, RSS and chat client developed by the Mozilla Foundation and operated by subsidiary MZLA Technologies Corporation.
 license: GPL MPL LGPL
 tags:

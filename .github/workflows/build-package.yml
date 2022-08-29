@@ -1,17 +1,36 @@
 name: Build Package
 on:
-  workflow_call:
+  push:
+    paths:
+      - 'recipes/**'
+    branches-ignore:
+      - master
+  workflow_dispatch:
     inputs:
       recipe_file:
         required: true
-        type: string
 env:
   NO_INPUT: 1
   PKGUPD_NO_PROGRESS: 1
 
 jobs:
+  check-changes:
+    if: ${{ github.event.action }} == 'push'
+    runs-on: self-hosted
+    outputs:
+      changed_files: ${{ steps.changed-files.outputs.all }}
+    container:
+      image: itsmanjeet/rlxos-devel:2200-1
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get changed files
+        id: changed-files
+        uses: jitterbit/get-changed-files@v1
+
   build:
     runs-on: self-hosted
+    needs: [check-changes]
     timeout-minutes: 43800
     container:
       image: itsmanjeet/rlxos-devel:2200-1
@@ -30,7 +49,7 @@ jobs:
       
       - name: Compile Packages
         run: |
-          changed_file="${{inputs.recipe_file}}"
+          changed_file="${needs.check-changes.outputs.changed_files}}"
           for recipe in ${changed_file} ; do
             if [[ ${recipe} =~ recipes/ ]] && [[ "${recipe}" == *.yml ]] && [[ -e ${recipe} ]] ; then
               echo "compiling ${recipe}"

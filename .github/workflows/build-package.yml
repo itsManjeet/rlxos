@@ -80,7 +80,7 @@ jobs:
 
   update-bazaar:
     runs-on: self-hosted
-    needs: [build]
+    needs: [update-repository]
     timeout-minutes: 43800
     container:
       image: itsmanjeet/rlxos-devel:2200-1

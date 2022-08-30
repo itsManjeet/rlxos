@@ -48,6 +48,6 @@ jobs:
           VERSION=$(pkgupd info ${PROFILE} info.value=version)
           mkiso --system-image ${PWD}/${PROFILE}.img \
             --overlay $(pkgupd info ${PROFILE}-overlay info.value=package) \
-            --kernel ${{ github.event.inputs.kernel }} \
+            --kernel-version ${{ github.event.inputs.kernel }} \
             --version ${VERSION} \
             --output /var/cache/pkgupd/releases/rlxos-${PROFILE}-${VERSION}.iso

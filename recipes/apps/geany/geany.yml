@@ -1,5 +1,6 @@
 id: geany
 version: 1.38
+release: 2
 about: A fast and lightweight IDE
 depends:
   buildtime:

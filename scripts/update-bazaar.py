@@ -42,6 +42,9 @@ for package in repositories:
             'name': 'Package File',
             'file': 'https://storage.rlxos.dev/stable/2200/pkgs/%s/%s-%s.%s' % (package['repository'], package['id'], package['version'], package['type'])
         }],
+        'images': [{
+            'src': 'https://storage.rlxos.dev/icons/%s.svg' % package['name'],
+        }],
         'categories': [{
             'id': category_id,
         }]

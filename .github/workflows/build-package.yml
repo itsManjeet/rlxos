@@ -66,6 +66,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
+      - name: Update system
+        run: |
+          export PKGUPD_CONFIG_PATH=${PWD}/pkgupd.testing.yml 
+          pkgupd update mode.ask=false
+          pkgupd install squashfs-tools mode.ask=false
       
       - name: Update Repository
         run: |

@@ -1,0 +1,53 @@
+name: Release ISO
+on:
+  workflow_dispatch:
+    inputs:
+      profile:
+        required: true
+        type: string
+      repository:
+        required: true
+        type: string
+        default: testing
+      kernel:
+        required: true
+        type: string
+        default: 5.18
+
+env:
+  NO_INPUT: 1
+  PKGUPD_NO_PROGRESS: 1
+  PKGUPD_NO_MESSAGE: 1
+  REPOSITORY: ${{ github.event.inputs.repository }}
+  PROFILE: ${{ github.event.inputs.profile }}
+
+jobs:
+  build:
+    runs-on: self-hosted
+    timeout-minutes: 43800
+    container:
+      image: itsmanjeet/rlxos-devel:2200-1
+      volumes:
+        - /storage/${{ github.event.inputs.repository }}/2200/pkgs/:/var/cache/pkgupd/pkgs/
+        - /storage/${{ github.event.inputs.repository }}/2200/releases/:/var/cache/pkgupd/releases/
+      options: --privileged
+    
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Update System
+        run: |
+          export PKGUPD_CONFIG_PATH=${PWD}/pkgupd.${REPOSITORY}.yml
+          pkgupd update mode.ask=false
+          pkgupd install rlxos-build-tools mtools mode.ask=false
+
+      - name: Generate ISO 
+        run: |
+          export PKGUPD_CONFIG_PATH=${PWD}/pkgupd.${REPOSITORY}.yml
+          tar2sys $(pkgupd info ${PROFILE} info.value=package) ${PROFILE}.img
+          VERSION=$(pkgupd info ${PROFILE} info.value=version)
+          mkiso --system-image ${PWD}/${PROFILE}.img \
+            --overlay $(pkgupd info ${PROFILE}-overlay info.value=package) \
+            --kernel ${{ github.event.inputs.kernel }} \
+            --version ${VERSION} \
+            --output /var/cache/pkgupd/releases/rlxos-${PROFILE}-${VERSION}.iso

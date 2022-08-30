@@ -1,6 +1,6 @@
 id: barebone
 version: 2200
-release: 1
+release: 2
 about: rlxos barebone system image
 build-type: system
 type: img

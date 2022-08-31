@@ -1,7 +1,7 @@
 id: pkgupd
 version: 2200
-release: 64
-commit: eb95c5d173c78350200a5a84164db557afb4176f
+release: 65
+commit: 4fce6d351ffc239b53d26830c54d14ddfeccdc7f
 about: |
   An Extensible package manager for rlxos
 
@@ -21,3 +21,7 @@ sources:
 
 build-dir: pkgupd-{{commit}}
 configure: -DINSTALL_GTEST=OFF
+
+install-script: |
+  echo "regenerating pkgupd database"
+  pkgupd regenerate

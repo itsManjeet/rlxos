@@ -102,7 +102,13 @@ jobs:
       
       - name: Update Bazaar
         run: |
-          ./scripts/update-bazaar.py /var/cache/pkgupd/pkgs/$(dirname $(echo ${{needs.check-changes.outputs.changed_files}} | cut -d '/' -f2-)).meta
+          changed_file="${{needs.check-changes.outputs.changed_files}}"
+          for recipe in ${changed_file} ; do
+            if [[ ${recipe} =~ recipes/ ]] && [[ "${recipe}" == *.yml ]] && [[ -e ${recipe} ]] ; then
+              ./scripts/update-bazaar.py /var/cache/pkgupd/pkgs/$(dirname $(echo ${recipe} | cut -d '/' -f2-)).meta
+            fi
+          done
+          
         env:
           BAZAAR_ID: ${{ secrets.BAZAAR_ID }}
           BAZAAR_KEY: ${{ secrets.BAZAAR_KEY }}

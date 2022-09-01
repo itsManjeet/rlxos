@@ -1,22 +1,18 @@
 id: boost
 version: 1.76.0
-release: 5
-commit: d8aedf33ae6ac06d875aa3b93f2f772234297f63
+release: 2
 about: |
   A set of free peer-reviewed portable C++ source libraries
 
 depends:
   runtime:
     - which
-    - wxgtk
 
 sources:
   - https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.bz2
-  - boost-ui-{{commit}}.tar.gz::https://github.com/kosenko/ui/archive/{{commit}}.tar.gz
 
 build-dir: boost_1_76_0
 script: |
-  tar -xaf ${PKGUPD_SRCDIR}/boost-ui-{{commit}}.tar.gz -C libs/
   cd tools/build
   ./bootstrap.sh --cxxflags="${CXXFLAGS:-} ${LDFLAGS:-}"
   ./b2 install --prefix=${pkgupd_pkgdir}/usr

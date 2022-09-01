@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from traceback import print_tb
 import yaml
 import os
 import sys
@@ -69,7 +70,7 @@ for package in bazaar_cache:
                 'file': 'https://storage.rlxos.dev/stable/2200/pkgs/%s/%s-%s.%s' % (i['repository'], i['id'], i['version'], i['type'])
             }]
         })
-    repositories.pop(idx)
+        repositories.pop(idx)
     bazaar_cache.pop(bazaar_idx)
 
 for product in bazaar_cache:
@@ -98,3 +99,9 @@ for package in repositories:
         }]
     })
 
+response  = wcapi.post('products/batch', data = bulk_cache)
+if response.status_code == 200 or \
+    response.status_code == 201:
+    print('success')
+else:
+    print(response.status_code, response.json()['message'])

@@ -74,7 +74,8 @@ for package in bazaar_cache:
     bazaar_cache.pop(bazaar_idx)
 
 for product in bazaar_cache:
-    bulk_cache['delete'].append(product['id'])
+    if product['id'] != 1252:
+        bulk_cache['delete'].append(product['id'])
 
 for package in repositories:
     print('adding %s' % package['id'])

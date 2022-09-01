@@ -1,8 +1,8 @@
 id: android-studio
 version: 2021.2.1.14
-release: 2
+release: 3
 about: Android IDE (stable branch)
-
+strip: false
 type: app
 depends:
   buildtime:

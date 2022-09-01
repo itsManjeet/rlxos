@@ -41,6 +41,8 @@ jobs:
         run: |
           export PKGUPD_CONFIG_PATH=${PWD}/pkgupd.testing.yml 
           pkgupd update mode.ask=false
+          # temporary reupdate for updated pkgupd database
+          pkgupd update mode.ask=false
           pkgupd install squashfs-tools mode.ask=false
       
       - name: Compile Packages

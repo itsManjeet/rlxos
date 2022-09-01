@@ -16,6 +16,10 @@ meta_file = sys.argv[1]
 with open(meta_file, 'r') as f:
     package = yaml.safe_load(f)
 
+if package['repository'] == 'core' or \
+    package['repository'] == 'extra':
+    sys.exit(0)
+
 response = wcapi.get('products?slug=%s' % package['id'])
 category_id = 35
 if package['repository'] == 'apps':

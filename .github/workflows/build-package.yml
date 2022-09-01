@@ -46,6 +46,7 @@ jobs:
           pkgupd install squashfs-tools mode.ask=false
       
       - name: Compile Packages
+        id: compiled-package
         run: |
           changed_file="${{needs.check-changes.outputs.changed_files}}"
           for recipe in ${changed_file} ; do
@@ -82,7 +83,7 @@ jobs:
 
   update-bazaar:
     runs-on: self-hosted
-    needs: [update-repository]
+    needs: [build, check-changes]
     timeout-minutes: 43800
     container:
       image: itsmanjeet/rlxos-devel:2200-1
@@ -101,7 +102,7 @@ jobs:
       
       - name: Update Bazaar
         run: |
-          ./scripts/update-bazaar.py
+          ./scripts/update-bazaar.py /var/cache/pkgups/pkgs/$(dirname $(echo ${{needs.check-changes.outputs.changed_files}} | cut -d '/' -f2-)).meta
         env:
           BAZAAR_ID: ${{ secrets.BAZAAR_ID }}
           BAZAAR_KEY: ${{ secrets.BAZAAR_KEY }}

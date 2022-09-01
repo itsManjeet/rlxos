@@ -1,5 +1,5 @@
 id: abrowser
-version: 101.0.1
+version: 104.0
 release: 4
 about: Abrowser, safe and easy web browser from Mozilla
 license: GPL MPL LGPL
@@ -16,7 +16,7 @@ depends:
   buildtime:
     - appimagetool
 sources:
-  - https://archive.trisquel.info/trisquel/pool/main/f/firefox/abrowser_{{version}}+build1-0ubuntu0.20.04.1+10.0trisquel89_amd64.deb
+  - https://archive.trisquel.info/trisquel/pool/main/f/firefox/abrowser_{{version}}+build2-0ubuntu0.22.04.1~mt1+11.0trisquel92_amd64.deb
 
 build-dir: .
 script: |

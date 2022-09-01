@@ -1,0 +1,21 @@
+id: tcc
+version: 0.9.27
+release: 1
+about: Tiny C Compiler
+depends:
+  buildtime:
+    - glibc
+    - appimagetool
+category: development
+tags:
+  - compiler
+  - development
+sources:
+  - https://download.savannah.nongnu.org/releases/tinycc/tcc-{{version}}.tar.bz2
+
+post-script: |
+  cp ${FILES_DIR}/AppRun ${pkgupd_pkgdir}/
+  chmod +x ${pkgupd_pkgdir}/AppRun
+
+  cp ${FILES_DIR}/tcc.desktop ${pkgupd_pkgdir}/{{id}}.desktop
+  cp ${FILES_DIR}/tcc.svg ${pkgupd_pkgdir}/{{id}}.png

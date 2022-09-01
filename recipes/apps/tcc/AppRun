@@ -1,0 +1,5 @@
+#!/bin/bash
+HERE="$(dirname "$(readlink -f "${0}")")"
+export LD_LIBRARY_PATH=${HERE}/usr/lib:${LD_LIBRARY_PATH}
+[[ -z NO_INCLUDE_FLAGS ]] && EXTRA_FLAGS="-I${HERE}/usr/include -L${HERE}/usr/lib"
+exec ${HERE}/usr/bin/tcc ${EXTRA_FLAGS} $@

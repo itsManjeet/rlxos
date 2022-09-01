@@ -1,6 +1,6 @@
 id: tcc
 version: 0.9.27
-release: 1
+release: 2
 about: Tiny C Compiler
 depends:
   buildtime:

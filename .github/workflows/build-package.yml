@@ -102,7 +102,7 @@ jobs:
       
       - name: Update Bazaar
         run: |
-          ./scripts/update-bazaar.py /var/cache/pkgups/pkgs/$(dirname $(echo ${{needs.check-changes.outputs.changed_files}} | cut -d '/' -f2-)).meta
+          ./scripts/update-bazaar.py /var/cache/pkgupd/pkgs/$(dirname $(echo ${{needs.check-changes.outputs.changed_files}} | cut -d '/' -f2-)).meta
         env:
           BAZAAR_ID: ${{ secrets.BAZAAR_ID }}
           BAZAAR_KEY: ${{ secrets.BAZAAR_KEY }}

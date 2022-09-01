@@ -16,7 +16,7 @@ sources:
 
 build-dir: boost_1_76_0
 script: |
-  tar -xaf ${PKGUPD_SRC_DIR}/boost-ui-{{commit}}.tar.gz -C libs/
+  tar -xaf ${PKGUPD_SRCDIR}/boost-ui-{{commit}}.tar.gz -C libs/
   cd tools/build
   ./bootstrap.sh --cxxflags="${CXXFLAGS:-} ${LDFLAGS:-}"
   ./b2 install --prefix=${pkgupd_pkgdir}/usr

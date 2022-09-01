@@ -21,7 +21,7 @@ sources:
 build-dir: .
 script: |
   bsdtar -xf abrowser_{{version}}+build2-0ubuntu0.22.04.1~mt1+11.0trisquel92_amd64.deb
-  tar -xaf data.tar.xz
+  tar -xaf data.tar.*
 
   mv usr/lib/abrowser ${pkgupd_pkgdir}
   install -v -D -m 0755 ${FILES_DIR}/AppRun -t ${pkgupd_pkgdir}/

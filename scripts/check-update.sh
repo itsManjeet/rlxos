@@ -112,10 +112,10 @@ run_check() {
 		sed "\,^$ppath ,d" -i $outdatelist
 
 		if [ "$upver" = "404" ]; then
-			echo -e " $ppath ${RED}404${CRESET} ($version)"
+			echo -e " $name ${RED}404${CRESET} ($version)"
 			echo "$ppath $version" >> $outdateerror
 		elif [ "$version" != "$upver" ]; then
-			echo -e " $ppath ${YELLOW}$upver${CRESET} ($version)"
+			echo -e " $name ${YELLOW}$upver${CRESET} ($version)"
 			echo "$ppath $upver $version" >> $outdatelist
 		fi
 	fi
@@ -162,13 +162,13 @@ check() {
 	# ignore
 	if [ -f "$outdateskip" ]; then
 		if grep -qx $ppath "$outdateskip"; then
-			echo -e " $ppath ${GREEN}SKIP${CRESET} ($version)"
+			echo -e " $name ${GREEN}SKIP${CRESET} ($version)"
 			return
 		fi
 	fi
 
 	if [ -z "$source" ]; then
-		echo -e " $ppath ${GREEN}SKIP${CRESET} ($version)"
+		echo -e " $name ${GREEN}SKIP${CRESET} ($version)"
 		return
 	fi
 

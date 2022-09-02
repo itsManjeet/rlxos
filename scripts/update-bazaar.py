@@ -13,6 +13,7 @@ wcapi = API(
 )
 
 meta_file = sys.argv[1]
+recipe_file = sys.argv[2]
 with open(meta_file, 'r') as f:
     package = yaml.safe_load(f)
 
@@ -22,8 +23,8 @@ if package['repository'] == 'core' or \
 
 icon_file = ''
 for ext in ['png', 'svg', 'jpg', 'jpeg']:
-    if os.path.exists(meta_file.replace('.yml', '.' + ext)):
-        icon_file = meta_file.replace('.yml', '.' + ext)
+    if os.path.exists(recipe_file.replace('.yml', '.' + ext)):
+        icon_file = recipe_file.replace('.yml', '.' + ext)
         print('using icon %s' % icon_file)
         break
 

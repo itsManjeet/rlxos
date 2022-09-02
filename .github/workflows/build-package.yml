@@ -105,7 +105,7 @@ jobs:
           changed_file="${{needs.check-changes.outputs.changed_files}}"
           for recipe in ${changed_file} ; do
             if [[ ${recipe} =~ recipes/ ]] && [[ "${recipe}" == *.yml ]] && [[ -e ${recipe} ]] ; then
-              ./scripts/update-bazaar.py /var/cache/pkgupd/pkgs/$(dirname $(echo ${recipe} | cut -d '/' -f2-)).meta
+              ./scripts/update-bazaar.py /var/cache/pkgupd/pkgs/$(dirname $(echo ${recipe} | cut -d '/' -f2-)).meta ${recipe}
             fi
           done
           

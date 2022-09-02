@@ -24,6 +24,7 @@ icon_file = ''
 for ext in ['png', 'svg', 'jpg', 'jpeg']:
     if os.path.exists(meta_file.replace('.yml', '.' + ext)):
         icon_file = meta_file.replace('.yml', '.' + ext)
+        print('using icon %s' % icon_file)
         break
 
 response = wcapi.get('products?slug=%s' % package['id'])

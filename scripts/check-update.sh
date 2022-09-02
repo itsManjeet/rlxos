@@ -30,7 +30,7 @@ getver_default() {
 getver_github() {
 	fetch \
 	| grep archive \
-	| grep -Eo $filename-[0-9a-z.]+\.tar\.gz \
+	| grep -Eo '(v?|"$filename"-)'[0-9a-z.]+\.tar\.gz \
 	| sed "s/\.tar\.gz//;s/^v//;s/^$filename-//" \
 	| $grepexclude
 }

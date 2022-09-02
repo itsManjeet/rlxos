@@ -14,28 +14,16 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: check updates
-        run: ./scripts/check-update.sh
+        id: check-updates
+        run: echo "::set-output name=list::$(./scripts/check-update.sh)" 
 
-      - name: list error packages
-        uses: mathiasvr/command-output@v1
-        id: error-packages
-        with:
-          run: wc -l build/2200/logs/checkup/error.list | awk '{print $1}'
-      
-      - name: list outdated packages
-        uses: mathiasvr/command-output@v1
-        id: outdated-packages
-        with:
-          run: wc -l build/2200/logs/checkup/outdated.list | awk '{print $1}'
-      
       - name: send telegram message
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
-            Packages updated:
-            - Outdated : ${{ steps.outdated-packages.outputs.stdout }}
-            - Error    : ${{ steps.error-packages.outputs.stdout }}
+            Outdated package report:
+            ${{ steps.check-updates.outputs.list }}
           
           

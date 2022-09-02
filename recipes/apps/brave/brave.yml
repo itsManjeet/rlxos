@@ -15,7 +15,7 @@ type: app
 category: internet
 strip: false
 sources:
-  - brave-{{version}}::https://github.com/brave/brave-browser/releases/download/v{{version}}/brave-browser-{{version}}-linux-amd64.zip
+  - brave-{{version}}::https://github.com/brave/brave-browser/releases/download/v{{version}}/brave-browser-nightly-{{version}}-linux-amd64.zip
 build-dir: .
 script: |
   mkdir -p ${pkgupd_pkgdir}

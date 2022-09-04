@@ -26,7 +26,7 @@ jobs:
     runs-on: self-hosted
     timeout-minutes: 43800
     container:
-      image: itsmanjeet/rlxos-devel:2200-1
+      image: itsmanjeet/rlxos-devel:2200-2
       volumes:
         - /storage/${{ github.event.inputs.repository }}/2200/pkgs/:/var/cache/pkgupd/pkgs/
         - /storage/${{ github.event.inputs.repository }}/2200/releases/:/var/cache/pkgupd/releases/

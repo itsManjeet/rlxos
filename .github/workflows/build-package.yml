@@ -16,7 +16,7 @@ jobs:
     outputs:
       changed_files: ${{ steps.changed-files.outputs.all }}
     container:
-      image: itsmanjeet/rlxos-devel:2200-1
+      image: itsmanjeet/rlxos-devel:2200-2
 
     steps:
       - uses: actions/checkout@v2
@@ -29,7 +29,7 @@ jobs:
     needs: [check-changes]
     timeout-minutes: 43800
     container:
-      image: itsmanjeet/rlxos-devel:2200-1
+      image: itsmanjeet/rlxos-devel:2200-2
       volumes:
         - /storage/testing/2200/pkgs/:/var/cache/pkgupd/pkgs/
       options: --privileged
@@ -63,7 +63,7 @@ jobs:
     needs: [build]
     timeout-minutes: 43800
     container:
-      image: itsmanjeet/rlxos-devel:2200-1
+      image: itsmanjeet/rlxos-devel:2200-2
       volumes:
         - /storage/testing/2200/pkgs/:/var/cache/pkgupd/pkgs/
 
@@ -86,7 +86,7 @@ jobs:
     needs: [build, check-changes]
     timeout-minutes: 43800
     container:
-      image: itsmanjeet/rlxos-devel:2200-1
+      image: itsmanjeet/rlxos-devel:2200-2
       volumes:
         - /storage/testing/2200/pkgs/:/var/cache/pkgupd/pkgs/
 

@@ -8,5 +8,5 @@ docker run  \
     -v ${PWD}/scripts:/scripts \
     -v ${PWD}/recipes:/var/cache/pkgupd/recipes \
     -w /rlxos \
-    -it itsmanjeet/rlxos-devel:2200-1 \
+    -it itsmanjeet/rlxos-devel:2200-2 \
     bash

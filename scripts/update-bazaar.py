@@ -25,6 +25,7 @@ icon_file = ''
 for ext in ['png', 'svg', 'jpg', 'jpeg']:
     if os.path.exists(recipe_file.replace('.yml', '.' + ext)):
         icon_file = recipe_file.replace('.yml', '.' + ext)
+        icon_file = icon_file[icon_file.find('recipes/'):]
         print('using icon %s' % icon_file)
         break
 
@@ -48,9 +49,13 @@ if len(response.json()) == 0:
         }]
     }
     if len(icon_file) != 0:
+        icon_url = 'http://storage.rlxos.dev/' + icon_file
+        print('icon url %s' % icon_url)
         meta_data['images'] = [{
-            'src': 'https://storage.rlxos.dev/' + icon_file,
-        }],
+            'src': icon_url,
+        }]
+
+    print(meta_data)
     response = wcapi.post('products', data = meta_data)
 else:
     response = wcapi.post('products/%d' % response.json()[0]['id'], data = {
@@ -65,4 +70,4 @@ if response.status_code == 200 or \
     response.status_code == 201:
     print('success')
 else:
-    print(response.status_code, response.json()['message'])
+    print(response.status_code, response.json()['message'], response.json()['code'])

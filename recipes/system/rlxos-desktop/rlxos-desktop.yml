@@ -1,0 +1,74 @@
+id: rlxos-desktop
+version: 2200
+release: 71
+about: GNOME interface for rlxos desktop
+build-type: system
+
+includde:
+  - core
+  - initramfs
+  - firmware
+  - grub-i386
+  - grub
+  - plymouth
+  - os-prober
+  - xorg
+  - gnome
+  - welcome-tour
+  - bolt
+  - pam-config
+  - poppler-data
+
+# fonts 
+  - fonts-cantarell
+  - adobe-source-code-pro-fonts
+  - ttf-noto
+  - ttf-noto-cjk
+  - ttf-noto-emoji
+  - dejavu-fonts
+  - liberation-fonts
+
+# theming
+  - fluent-gtk-theme
+  - fluent-icon-theme
+  - fluent-wallpaper
+
+# extra dependencies
+  - fuse2
+  - libbsd
+
+# OOBE 
+  - cifs-utils
+  - ntfs-3g
+  - btfs-progs
+  - squashfs-tools
+  - flatpak
+  - garted
+  - xdg-desktop-portal-gnome
+
+# apps
+  - gufw
+  - zram-generator
+  - libreoffice
+  - android-udev
+
+# virtual environment experience
+  - spice-vdagent
+  - phodav
+
+inside.root: rlxos
+
+inside: |
+  make-ca -C /etc/ssl/certdata.txt
+
+service.system:
+  - systemd-oomd
+  - systemd-resolved
+  - NetworkManager
+  - gdm
+
+service.user:
+  - pkgupd-watchdog
+  - bolt
+  - pipewire.socket
+  - pipewire-media-session

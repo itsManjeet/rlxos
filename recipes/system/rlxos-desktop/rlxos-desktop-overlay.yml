@@ -1,0 +1,21 @@
+id: rlxos-desktop-overlay
+version: 2200
+about: rlxos desktop iso overlay
+release: 1
+build-type: system
+type: img
+include:
+  - installer
+inside.pkgupd.trigger: false
+inside.pwconv.required: false
+
+pre-script: |
+  install -v -D -m 0644 ${FILES_DIR}/10-auto-login.conf -t ${pkgupd_pkgdir}/etc/gdm/
+  
+  install -v -d ${pkgupd_pkgdir}/etc/skel/.config
+  touch ${pkgupd_pkgdir}/etc/skel/.config/welcome-tour-done
+
+  ln -sv /run/iso/boot ${pkgupd_pkgdir}/boot
+
+  install -v -D -m 0755 ${FILES_DIR}/liveuser-setup.sh  ${pkgupd_pkgdir}/usr/bin/liveuser-setup
+  install -v -D -m 0644 ${FILES_DIR}/liveuser-setup.service -t ${pkgupd_pkgdir}/etc/systemd/system/

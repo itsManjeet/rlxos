@@ -1,6 +1,6 @@
 id: barebone-overlay
 version: 2200
-release: 1
+release: 2
 build-type: system
 type: img
 about: overlay image for barebone system image

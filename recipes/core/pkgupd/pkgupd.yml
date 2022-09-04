@@ -21,7 +21,3 @@ sources:
 
 build-dir: pkgupd-{{commit}}
 configure: -DINSTALL_GTEST=OFF
-
-install-script: |
-  echo "regenerating pkgupd database"
-  pkgupd regenerate

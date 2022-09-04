@@ -57,7 +57,7 @@ includde:
   - phodav
 
 inside.root: rlxos
-
+include.path: var/lib/pkgupd/data
 inside: |
   make-ca -C /etc/ssl/certdata.txt
 

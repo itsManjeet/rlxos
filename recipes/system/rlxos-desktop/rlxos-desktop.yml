@@ -49,7 +49,6 @@ include:
 # apps
   - gufw
   - zram-generator
-  - libreoffice
   - android-udev
 
 # virtual environment experience

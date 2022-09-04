@@ -43,7 +43,7 @@ include:
   - btrfs-progs
   - squashfs-tools
   - flatpak
-  - garted
+  - gparted
   - xdg-desktop-portal-gnome
 
 # apps

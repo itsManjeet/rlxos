@@ -8,7 +8,7 @@ jobs:
   checkup:
     runs-on: self-hosted
     container:
-      image: itsmanjeet/rlxos-devel:2200-1
+      image: itsmanjeet/rlxos-devel:2200-2
     
     steps:
       - uses: actions/checkout@v2

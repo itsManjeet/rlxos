@@ -4,7 +4,7 @@ release: 71
 about: GNOME interface for rlxos desktop
 build-type: system
 
-includde:
+include:
   - core
   - initramfs
   - firmware

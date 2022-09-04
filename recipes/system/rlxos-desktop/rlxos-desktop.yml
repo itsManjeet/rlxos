@@ -40,7 +40,7 @@ include:
 # OOBE 
   - cifs-utils
   - ntfs-3g
-  - btfs-progs
+  - btrfs-progs
   - squashfs-tools
   - flatpak
   - garted

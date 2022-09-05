@@ -42,7 +42,7 @@ if len(response.json()) == 0:
         'downloadable': True,
         'downloads': [{
             'name': 'Package File',
-            'file': 'https://storage.rlxos.dev/stable/2200/pkgs/%s/%s-%s.%s' % (package['repository'], package['id'], package['version'], package['type'])
+            'file': 'https://storage.rlxos.dev/testing/2200/pkgs/%s/%s-%s.%s' % (package['repository'], package['id'], package['version'], package['type'])
         }],
         'categories': [{
             'id': category_id,
@@ -62,7 +62,7 @@ else:
         'description': package['about'],
         'downloads': [{
             'name': 'Package File',
-            'file': 'https://storage.rlxos.dev/stable/2200/pkgs/%s/%s-%s.%s' % (package['repository'], package['id'], package['version'], package['type'])
+            'file': 'https://storage.rlxos.dev/testing/2200/pkgs/%s/%s-%s.%s' % (package['repository'], package['id'], package['version'], package['type'])
         }]
     })
 

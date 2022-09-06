@@ -81,7 +81,7 @@ jobs:
           PKGUPD_CONFIG_PATH=${PWD}/pkgupd.testing.yml \
             pkgupd meta
   push-notification:
-    if: "!startsWith(github.event.head_commit.message, skip:)"
+    if: !startsWith(github.event.head_commit.message, "skip:")
     runs-on: self-hosted
     needs: [build]
 

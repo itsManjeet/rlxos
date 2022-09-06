@@ -1,6 +1,6 @@
 id: gnome-contacts
 version: 40.0
-release: 4
+release: 5
 about: Contact manager for GNOME
 depends:
   buildtime:

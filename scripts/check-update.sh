@@ -6,8 +6,6 @@ BASEDIR="$(
 )"
 BASEDIR="$(dirname ${BASEDIR})"
 
-VERSION=$(cat ${BASEDIR}/.version)
-
 RED='\e[0;31m'      #Red
 GREEN='\e[0;32m'    #Green
 YELLOW='\e[0;33m'   #Yellow
@@ -238,7 +236,7 @@ main() {
 }
 
 RECIPES_DIR=${BASEDIR}/recipes/
-BUILD_DIR=${BASEDIR}/build/${VERSION}/logs/checkup
+BUILD_DIR=${BASEDIR}/build/logs/checkup
 outdatelist="${BUILD_DIR}/outdated.list"
 outdateerror="${BUILD_DIR}/error.list"
 outdateskip="${BUILD_DIR}/skipped.list"

@@ -1,10 +1,12 @@
 id: 2in1
 version: 2200
+release: 2
 about: utilities and services for 2 in 1 laptop devices
 depends:
   runtime:
     - xrandr
     - xinput
+    - iio-sensor-proxy
 script: |
   mkdir -p ${pkgupd_pkgdir}/usr/bin/
   gcc -O2 ${FILES_DIR}/2in1.c -o ${pkgupd_pkgdir}/usr/bin/2in1

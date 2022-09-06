@@ -80,6 +80,18 @@ jobs:
         run: |
           PKGUPD_CONFIG_PATH=${PWD}/pkgupd.testing.yml \
             pkgupd meta
+  push-notification:
+    if: "!startsWith(github.event.head_commit.message, skip:)"
+    runs-on: self-hosted
+    needs: [build]
+
+    steps:
+      - name: send telegram message
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: ${{github.event.head_commit.message}}
 
   update-bazaar:
     runs-on: self-hosted

@@ -1,0 +1,22 @@
+id: dmenu
+version: 5.1
+about: Generic menu for X
+depends:
+  runtime:
+    - coreutils
+    - fontconfig
+    - freetype
+    - glibc
+    - libx11
+    - libXft
+    - libXinerama
+sources:
+  - https://dl.suckless.org/tools/dmenu-{{version}}.tar.gz
+
+script: |
+  make \
+    X11INC=/usr/include/X11 \
+    X11LIB=/usr/lib/X11 \
+    FREETYPEINC=/usr/include/freetype2
+
+  make PREFIX=/usr DESTDIR=${pkgupd_pkgdir} install

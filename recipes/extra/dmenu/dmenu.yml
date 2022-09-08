@@ -14,9 +14,5 @@ sources:
   - https://dl.suckless.org/tools/dmenu-{{version}}.tar.gz
 
 script: |
-  make \
-    X11INC=/usr/include/X11 \
-    X11LIB=/usr/lib/X11 \
-    FREETYPEINC=/usr/include/freetype2
-
+  make
   make PREFIX=/usr DESTDIR=${pkgupd_pkgdir} install

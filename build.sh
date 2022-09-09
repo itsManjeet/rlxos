@@ -8,9 +8,9 @@ VERSION=${VERSION:-2200}
 KERNEL=${KERNEL:-5.18}
 CONTAINER=${CONTAINER:-'itsmanjeet/rlxos-devel:2200-2'}
 INTERACTIVE='-i'
-PKGUPD_PATH='/var/cache/pkgupd'
-BUILDDIR="${BASEDIR}/build"
-LOGDIR="${BUILDDIR}/logs"
+PKGUPD_PATH=${PKGUPD_PATH:-'/var/cache/pkgupd'}
+BUILDDIR=${BUILDDIR:-"${BASEDIR}/build"}
+LOGDIR=${LOGDIR:-"${BUILDDIR}/logs"}
 
 function printLogo() {
     [[ -z ${LOGO} ]] && cat ${BASEDIR}/files/logo/ascii || echo ${LOGO}
@@ -38,25 +38,28 @@ function printHelp() {
 
 function runInsideDocker() {
     echo "INSIDE DOCKER: $@"
-    docker run                              \
-        --rm                                \
-        --network host                      \
-        --device    /dev/fuse               \
-        --cap-add   SYS_ADMIN               \
-        --security-opt apparmor:unconfined  \
-        -v ${BASEDIR}/recipes:/recipes \
-        -v ${BUILDDIR}/pkgs:${PKGUPD_PATH}/pkgs \
-        -v ${BUILDDIR}/sources:${PKGUPD_PATH}/src \
+    docker run                                          \
+        --rm                                            \
+        --network host                                  \
+        --device    /dev/fuse                           \
+        --cap-add   SYS_ADMIN                           \
+        --security-opt apparmor:unconfined              \
+        -v /storage:/storage                            \
+        -v ${BASEDIR}/recipes:/recipes                  \
+        -v ${BUILDDIR}/pkgs:${PKGUPD_PATH}/pkgs         \
+        -v ${BUILDDIR}/sources:${PKGUPD_PATH}/src       \
         -v ${BUILDDIR}/releases:${PKGUPD_PATH}/releases \
-        -v ${BUILDDIR}/screenshots:/screenshots \
-        -v ${BASEDIR}/pkgupd.yml:/etc/pkgupd.yml \
-        --privileged \
-        ${INTERACTIVE} -t ${CONTAINER} /usr/bin/env -i \
-            HOME=/root          \
-            TERM=${TERM}        \
-            PS1='[container] \u:\w$ '   \
-            PATH='/usr/bin:/opt/bin:/apps' \
-            PKGUPD_NO_PROGRESS=1 ${DEBUG_FLAG} \
+        -v ${BASEDIR}/recipes:${PKGUPD_PATH}/recipes    \
+        -v ${BUILDDIR}/screenshots:/screenshots         \
+        -v ${BASEDIR}/pkgupd.yml:/etc/pkgupd.yml        \
+        -v /tmp:/tmp                                    \
+        --privileged                                    \
+        ${INTERACTIVE} -t ${CONTAINER} /usr/bin/env -i  \
+            HOME=/root                                  \
+            TERM=${TERM}                                \
+            PS1='[container] \u:\w$ '                   \
+            PATH='/usr/bin:/opt/bin:/apps'              \
+            PKGUPD_NO_PROGRESS=1 ${DEBUG_FLAG}          \
             /usr/bin/bash -c "$@"        
 }
 
@@ -277,6 +280,16 @@ case ${TASK} in
         fi
 
         doBuild ${ARGS[0]}
+        exit $?
+        ;;
+
+    refresh)
+        runInsideDocker "pkgupd update mode.ask=false && pkgupd meta"
+        exit $?
+        ;;
+
+    inside)
+        runInsideDocker "bash"
         exit $?
         ;;
 

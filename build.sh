@@ -52,7 +52,7 @@ function runInsideDocker() {
         -v ${BASEDIR}/recipes:${PKGUPD_PATH}/recipes    \
         -v ${BUILDDIR}/screenshots:/screenshots         \
         -v ${BASEDIR}/pkgupd.yml:/etc/pkgupd.yml        \
-        -v /tmp:/tmp                                    \
+        -v ${BASEDIR}/build/tmp:/tmp                    \
         --privileged                                    \
         ${INTERACTIVE} -t ${CONTAINER} /usr/bin/env -i  \
             HOME=/root                                  \

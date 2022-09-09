@@ -8,4 +8,5 @@ depends:
     - shadow
 
 script: |
-  
+  install -v -D -m 0755 ${FILES_DIR}/liveboot.sh.in  ${pkgupd_pkgdir}/usr/lib/liveboot
+  install -v -D -m 0644 ${FILES_DIR}/liveboot.sevice -t ${pkgupd_pkgdir}/etc/systemd/system/

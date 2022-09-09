@@ -1,0 +1,22 @@
+#!/bin/bash
+
+LIVEUSER=${LIVEUSER:-'liveuser'}
+LIVEUSER_PASSWORD=${LIVEUSER_PASSWORD:-'liveuser'}
+
+# check if liveboot
+cat /proc/cmdline | grep 'iso=1' || {
+    exit 0
+}
+
+function createLiveUser() {
+    if id ${1} &>/dev/null ; then
+        echo 'Liveuser already exists'
+    else
+        useradd -m ${1} -g users -G adm
+        echo -e "${2}\n${2}" | passwd ${1}
+    fi
+}
+
+echo "Creating live user"
+echo "  UserID: ${LIVEUSER}"
+createLiveUser ${LIVEUSER} ${LIVEUSER_PASSWORD}

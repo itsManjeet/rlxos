@@ -19,6 +19,3 @@ pre-script: |
   touch ${pkgupd_pkgdir}/etc/skel/.config/welcome-tour-done
 
   ln -sv /run/iso/boot ${pkgupd_pkgdir}/boot
-
-  install -v -D -m 0755 ${FILES_DIR}/liveuser-setup.sh  ${pkgupd_pkgdir}/usr/bin/liveuser-setup
-  install -v -D -m 0644 ${FILES_DIR}/liveuser-setup.service -t ${pkgupd_pkgdir}/etc/systemd/system/

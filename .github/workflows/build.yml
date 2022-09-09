@@ -11,30 +11,31 @@ on:
         required: true
         type: string
 jobs:
-  runs-on: self-hosted
-  steps:
-    - uses: actions/checkout@v2
+  build:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
 
-    - name: get changes
-      id: changed-files
-      uses: jitterbit/get-changed-files@v1
-      if: ${{ github.event.action }} == 'push'
+      - name: get changes
+        id: changed-files
+        uses: jitterbit/get-changed-files@v1
+        if: ${{ github.event.action }} == 'push'
 
-    - name: build changes
-      run: |
-        export TELEGRAM_TO=${{ secrets.TELEGRAM_TO }}
-        export TELEGRAM_TOKEN=${{ secrets.TELEGRAM_TOKEN }}
-        export BAZAAR_ID=${{ secrets.BAZAAR_ID }}
-        export BAZAAR_KEY=${{ secrets.BAZAAR_KEY }}
-        
-        if [[ ${{github.event.action}} == 'push' ]] ; then
-          recipefile=${{steps.changed-files.outputs.all}}
-        else
-          recipefile=${{github.event.inputs.recipefile}}
-        fi
-
-        for recipe in ${recipefile} ; do
-          if [[ ${recipe} =~ recipes/ ]] && [[ "${recipe}" == *.yml ]] && [[ -e ${recipe} ]] ; then
-            ./scripts/build.sh ${recipe} --non-interactive --debug --build-dir /storage/testing/2200/
+      - name: build changes
+        run: |
+          export TELEGRAM_TO=${{ secrets.TELEGRAM_TO }}
+          export TELEGRAM_TOKEN=${{ secrets.TELEGRAM_TOKEN }}
+          export BAZAAR_ID=${{ secrets.BAZAAR_ID }}
+          export BAZAAR_KEY=${{ secrets.BAZAAR_KEY }}
+          
+          if [[ ${{github.event.action}} == 'push' ]] ; then
+            recipefile=${{steps.changed-files.outputs.all}}
+          else
+            recipefile=${{github.event.inputs.recipefile}}
           fi
-        done
+
+          for recipe in ${recipefile} ; do
+            if [[ ${recipe} =~ recipes/ ]] && [[ "${recipe}" == *.yml ]] && [[ -e ${recipe} ]] ; then
+              ./scripts/build.sh ${recipe} --non-interactive --debug --build-dir /storage/testing/2200/
+            fi
+          done

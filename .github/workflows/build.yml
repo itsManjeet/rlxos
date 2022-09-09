@@ -36,6 +36,6 @@ jobs:
 
           for recipe in ${recipefile} ; do
             if [[ ${recipe} =~ recipes/ ]] && [[ "${recipe}" == *.yml ]] && [[ -e ${recipe} ]] ; then
-              ./build.sh ${recipe} --non-interactive --debug --build-dir /storage/testing/2200/
+              ./build.sh build ${recipe} --non-interactive --debug --build-dir /storage/testing/2200/
             fi
           done

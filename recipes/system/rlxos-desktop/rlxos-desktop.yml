@@ -1,6 +1,6 @@
 id: rlxos-desktop
 version: 2200
-release: 72
+release: 73
 about: GNOME interface for rlxos desktop
 build-type: system
 
@@ -56,9 +56,18 @@ include:
   - phodav
 
 inside.root: rlxos
-include.path: var/lib/pkgupd/data
 inside: |
   make-ca -C /etc/ssl/certdata.txt
+
+  # store pkgupd data
+  mkdir -p /var/lib/pkgupd/
+  cp /usr/share/rlxos-desktop/included /var/lib/pkgupd/data -a
+
+  mkdir -p /etc/pkgupd.yml.d/
+  echo "system-packages: " > /etc/pkgupd.yml.d/system-packages.yml
+  for i in /var/lib/pkgupd/data/* ; do
+    echo " - $(basename $i)">> /etc/pkgupd.yml.d/system-packages.yml
+  done
 
 service.system:
   - systemd-oomd

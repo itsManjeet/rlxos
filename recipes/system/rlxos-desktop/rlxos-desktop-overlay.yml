@@ -6,6 +6,7 @@ build-type: system
 type: img
 include:
   - installer
+  - liveboot
 include-depends: false
 installer.triggers: false
 inside.pkgupd.trigger: false

@@ -29,9 +29,9 @@ jobs:
           export BAZAAR_KEY=${{ secrets.BAZAAR_KEY }}
           
           if [[ "${{github.event_name}}" == 'push' ]] ; then
-            recipefile=${{steps.changed-files.outputs.all}}
+            recipefile="${{steps.changed-files.outputs.all}}"
           else
-            recipefile=${{github.event.inputs.recipefile}}
+            recipefile="${{github.event.inputs.recipefile}}"
           fi
 
           for recipe in ${recipefile} ; do

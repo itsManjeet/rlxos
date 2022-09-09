@@ -10,3 +10,4 @@
 /.version
 /discord-bolt
 /scripts/.env
+**/__pkgupd_builddir__

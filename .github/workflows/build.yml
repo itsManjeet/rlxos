@@ -19,7 +19,7 @@ jobs:
       - name: get changes
         id: changed-files
         uses: jitterbit/get-changed-files@v1
-        if: ${{ github.event.action }} == 'push'
+        if: github.event.action == 'push'
 
       - name: build changes
         run: |

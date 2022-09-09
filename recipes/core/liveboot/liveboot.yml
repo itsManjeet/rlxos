@@ -1,0 +1,11 @@
+id: liveboot
+version: 2200
+about: setup live environment for rlxos liveiso
+depends:
+  runtime:
+    - bash
+    - coreutils
+    - shadow
+
+script: |
+  

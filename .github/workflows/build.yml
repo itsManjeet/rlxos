@@ -13,6 +13,9 @@ on:
 jobs:
   build:
     runs-on: self-hosted
+    container:
+      image: itsmanjeet/rlxos-devel:2200-2
+
     steps:
       - uses: actions/checkout@v2
 
@@ -36,6 +39,6 @@ jobs:
 
           for recipe in ${recipefile} ; do
             if [[ ${recipe} =~ recipes/ ]] && [[ "${recipe}" == *.yml ]] && [[ -e ${recipe} ]] ; then
-              ./build.sh build ${recipe} --non-interactive --debug --build-dir /storage/testing/2200/
+              ./build.sh build ${recipe} --debug --build-dir /storage/testing/2200/
             fi
           done

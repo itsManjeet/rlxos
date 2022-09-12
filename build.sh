@@ -3,14 +3,9 @@
 BASEDIR="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
 [[ -e ${BASEDIR}/.config ]] && source ${BASEDIR}/.config
-
-VERSION=${VERSION:-2200}
-KERNEL=${KERNEL:-5.18}
-CONTAINER=${CONTAINER:-'itsmanjeet/rlxos-devel:2200-2'}
-INTERACTIVE='-i'
-PKGUPD_PATH=${PKGUPD_PATH:-'/var/cache/pkgupd'}
-BUILDDIR=${BUILDDIR:-"${BASEDIR}/build"}
-LOGDIR=${LOGDIR:-"${BUILDDIR}/logs"}
+KERNEL=${KERNEL:-'5.18'}
+PKGUPD_PATH=${PKGUPD_PATH:-'/var/cache/pkgupd/'}
+BUILDDIR=${BUILDDIR:-"/storage/testing/2200/"}
 
 function printLogo() {
     [[ -z ${LOGO} ]] && cat ${BASEDIR}/files/logo/ascii || echo ${LOGO}
@@ -27,8 +22,6 @@ function printHelp() {
     echo "  test <file>                 test build inside rlxos container"
     echo ""
     echo "Flags:"
-    echo "  --container                 specify docker container to run command inside"
-    echo "  --non-interactive           non interactive docker run"
     echo "  --pkgupd-path               specify pkgupd cache path inside container"
     echo "  --kernel                    specify kernel version for release build"
     echo "  --build-dir                 specify build directory"
@@ -36,37 +29,9 @@ function printHelp() {
     echo ""
 }
 
-function runInsideDocker() {
-    echo "INSIDE DOCKER: $@"
-    docker run                                          \
-        --rm                                            \
-        --network host                                  \
-        --device    /dev/fuse                           \
-        --cap-add   SYS_ADMIN                           \
-        --security-opt apparmor:unconfined              \
-        -v /storage:/storage                            \
-        -v ${BASEDIR}/recipes:/recipes                  \
-        -v ${BUILDDIR}/pkgs:${PKGUPD_PATH}/pkgs         \
-        -v ${BUILDDIR}/sources:${PKGUPD_PATH}/src       \
-        -v ${BUILDDIR}/releases:${PKGUPD_PATH}/releases \
-        -v ${BASEDIR}/recipes:${PKGUPD_PATH}/recipes    \
-        -v ${BUILDDIR}/screenshots:/screenshots         \
-        -v ${BASEDIR}/pkgupd.yml:/etc/pkgupd.yml        \
-        -v ${BASEDIR}/build/tmp:/tmp                    \
-        --privileged                                    \
-        ${INTERACTIVE} -t ${CONTAINER} /usr/bin/env -i  \
-            HOME=/root                                  \
-            TERM=${TERM}                                \
-            PS1='[container] \u:\w$ '                   \
-            PATH='/usr/bin:/opt/bin:/apps'              \
-            PKGUPD_NO_PROGRESS=1 ${DEBUG_FLAG}          \
-            /usr/bin/bash -c "$@"        
-}
-
-mkdir -p ${LOGDIR}
 
 function Log() {
-    sed -r 's/\x1b\[[0-9;]*m//g' | tee ${LOGDIR}/${1}.log
+    sed -r 's/\x1b\[[0-9;]*m//g' | tee /var/log/${1}.log
 }
 
 function doGenerateSystem() {
@@ -110,13 +75,11 @@ function doGenerateSystem() {
     echo "VERSION     : ${_version}"
     local _isofile="rlxos-${_id}-${_version}.iso"
 
-    runInsideDocker "pkgupd update mode.ask=false && \
-        pkgupd install squashfs-tools rlxos-build-tools mtools mode.ask=false && \
-        mkiso --system-image ${_system_file} \
+    mkiso --system-image ${_system_file} \
               --overlay ${_overlay_file} \
               --kernel-version ${KERNEL} \
               --version ${_version} \
-              --output ${PKGUPD_PATH}/releases/${_isofile}"
+              --output ${PKGUPD_PATH}/releases/${_isofile}
     if [[ $? != 0 ]] ; then
         echo "Error! failed generate system iso"
         exit 1
@@ -133,6 +96,11 @@ function doGenerateSystem() {
     )
 
     echo "SUCCESS ISO file ready"
+}
+
+function doSystemUpdate() {
+    echo "updating system"
+    pkgupd update mode.ask=false
 }
 
 function doTestAppImage() {
@@ -175,18 +143,19 @@ function doBuild() {
 
     echo "REPOSITORY: ${_repository}"
     echo "PACKAGE ID: ${_package_id}"
-    
-    runInsideDocker "pkgupd update mode.ask=false && \
-        pkgupd install squashfs-tools mode.ask=false && \
-        pkgupd build /${_recipefile} build.repository=${_repository}" | Log ${_package_id}
-    if [[ ${PIPESTATUS[0]} != 0 ]] ; then
-        echo "Error! failed to build ${_repository}/${_package_id}"
-        exit 1
+
+    if [[ -z ${SKIP_BUILD} ]] ; then
+        echo "skipping build"
+        pkgupd build /${_recipefile} build.repository="${_repository}" | Log ${_package_id}
+        if [[ ${PIPESTATUS[0]} != 0 ]] ; then
+            echo "Error! failed to build ${_repository}/${_package_id}"
+            exit 1
+        fi
     fi
 
     local _package_meta="${BUILDDIR}/pkgs/${_repository}/${_package_id}.meta"
     if [[ ! -e $_package_meta ]] ; then 
-        echo "Error! no meta file generated"
+        echo "Error! no meta file generated at ${_package_meta}"
         exit 
     fi
     local _package_version="$(cat ${_package_meta} | grep 'version:' | awk '{print $2}')"
@@ -227,20 +196,6 @@ function doBuild() {
 ARGS=()
 while [[ $# -gt 0 ]] ; do
     case $1 in
-        --container)
-            container=${2}
-            shift
-            ;;
-
-        --non-interactive)
-            INTERACTIVE=''
-            ;;
-
-        --pkgupd-path)
-            PKGUPD_PATH=${2}
-            shift
-            ;;
-
         --kernel)
             KERNEL=${2}
             shift
@@ -254,6 +209,10 @@ while [[ $# -gt 0 ]] ; do
         --debug)
             DEBUG=1
             DEBUG_FLAG='DEBUG=1'
+            ;;
+        
+        --skip-build)
+            SKIP_BUILD=1
             ;;
         
         -*|--*)
@@ -279,19 +238,15 @@ case ${TASK} in
             exit 1
         fi
 
-        doBuild ${ARGS[0]}
+        doBuild $(realpath ${ARGS[0]})
         exit $?
         ;;
 
     refresh)
-        runInsideDocker "pkgupd update mode.ask=false && pkgupd meta"
+        pkgupd meta
         exit $?
         ;;
 
-    inside)
-        runInsideDocker "bash"
-        exit $?
-        ;;
 
     test-appimage)
         if [[ ${#ARGS[@]} -ne 1 ]] ; then

@@ -10,4 +10,4 @@ environ:
     - MAKEFLAGS=-j8
     - ARCH=x86_64
 mirrors:
-    - https://storage.rlxos.dev/testing
+    - https://rlxos.dev/storage/stable

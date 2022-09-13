@@ -1,0 +1,16 @@
+id: talloc
+version: 2.3.4
+about: Hierarchical pool based memory allocator with destructors
+depends:
+  runtime:
+    - glibc
+    - libxcrypt
+  buildtime:
+    - python
+    - docbook-xsl
+sources:
+  - https://www.samba.org/ftp/talloc/talloc-{{version}}.tar.gz
+configure: >
+  --bundled-libraries=NONE
+  --builtin-libraries=replace
+  --enable-talloc-compat1

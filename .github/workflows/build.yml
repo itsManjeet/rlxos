@@ -52,3 +52,7 @@ jobs:
               ./build.sh build ${recipe} --debug --pkgupd-path /storage/testing/2200/
             fi
           done
+
+      - name: sync
+        run: |
+          ./build.sh meta --debug --pkgupd-path /storage/testing/2200/

@@ -11,6 +11,7 @@ depends:
 sources:
   - https://www.samba.org/ftp/talloc/talloc-{{version}}.tar.gz
 build-dir: talloc-{{version}}
+autoconf-dir: true
 configure: >
   --bundled-libraries=NONE
   --builtin-libraries=replace

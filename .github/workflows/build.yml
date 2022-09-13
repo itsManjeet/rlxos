@@ -12,13 +12,13 @@ on:
         type: string
 env:
   PKGUPD_NO_PROGRESS: 1
-  CONTAINER_ID: rlxos-devel:2200-2
+
 jobs:
   build:
     runs-on: self-hosted
     container:
-      image: itsmanjeet/${{ env.CONTAINER_ID }}
-      volume:
+      image: itsmanjeet/rlxos-devel:2200-2
+      volumes:
         - ${{ secrets.STORAGE_DIR }}:/storage
     steps:
       - uses: actions/checkout@v2

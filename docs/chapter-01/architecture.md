@@ -26,7 +26,7 @@ As in the [File System Protection](#file-system-protection) section we replaced 
 
 
 
-## Parallel Layers
+## Multiple Layers
 
 Now suppose you have colored your flower with red. After some time you want to repaint with yellow or pink. Now this can be achieved by simply changing the transparent sheet. and recolor it with different color and that's how the current architecture of rlxos works.
 

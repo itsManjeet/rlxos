@@ -55,4 +55,4 @@ jobs:
 
       - name: sync
         run: |
-          ./build.sh meta --debug --pkgupd-path /storage/testing/2200/
+          ./build.sh refresh --debug --pkgupd-path /storage/testing/2200/

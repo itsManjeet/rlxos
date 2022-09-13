@@ -10,4 +10,5 @@
 /.version
 /discord-bolt
 /scripts/.env
+/book
 **/__pkgupd_builddir__

@@ -10,12 +10,16 @@ on:
       recipefile:
         required: true
         type: string
+env:
+  PKGUPD_NO_PROGRESS: 1
+  CONTAINER_ID: rlxos-devel:2200-2
 jobs:
   build:
     runs-on: self-hosted
     container:
-      image: itsmanjeet/rlxos-devel:2200-2
-
+      image: itsmanjeet/${{ env.CONTAINER_ID }}
+      volume:
+        - ${{ secrets.STORAGE_DIR }}:/storage
     steps:
       - uses: actions/checkout@v2
 
@@ -23,6 +27,12 @@ jobs:
         id: changed-files
         uses: jitterbit/get-changed-files@v1
         if: github.event_name == 'push'
+
+      - name: prerequisite
+        run: |
+          ln -srfv ./pkgupd.yml /etc/pkgupd.yml
+          pkgupd update mode.ask=false
+          pkgupd install squashfs-tools rlxos-build-tools mtools mode.ask=false
 
       - name: build changes
         run: |
@@ -39,6 +49,6 @@ jobs:
 
           for recipe in ${recipefile} ; do
             if [[ ${recipe} =~ recipes/ ]] && [[ "${recipe}" == *.yml ]] && [[ -e ${recipe} ]] ; then
-              ./build.sh build ${recipe} --debug --build-dir /storage/testing/2200/
+              ./build.sh build ${recipe} --debug --pkgupd-path /storage/testing/2200/
             fi
           done

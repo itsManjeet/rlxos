@@ -10,6 +10,7 @@ depends:
     - docbook-xsl
 sources:
   - https://www.samba.org/ftp/talloc/talloc-{{version}}.tar.gz
+build-dir: talloc-{{version}}
 configure: >
   --bundled-libraries=NONE
   --builtin-libraries=replace

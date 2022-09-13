@@ -19,7 +19,7 @@ jobs:
     container:
       image: itsmanjeet/rlxos-devel:2200-2
       volumes:
-        - ${{ secrets.STORAGE_DIR }}:/storage
+        - /storage:/storage
     steps:
       - uses: actions/checkout@v2
 

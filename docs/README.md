@@ -1,11 +1,8 @@
 # Introduction
 
 ## rlxos GNU/Linux
-rlxos GNU/Linux is a completely open source general purpose operating system based on Linux kernel with an aim to provide an Android like workflow and easiness on desktop PC.
+rlxos is a general purpose and independent operating system based on [Layered Filesystem](../chapter-01/architecture.md) with Android linux UX and feel on desktop PC.
 
-rlxos (pronounced as relax or R-L-X O-S) implements from scratch with a layered [architecture](architecture.md) which provide rlxos the capabilities to:
-
-- [Factory reset](../chapter-04/factory-reset.md)
 - [Manage multiple Profiles]()
 - [Manage multiple System]()
 - [Secured root file system]()

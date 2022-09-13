@@ -15,7 +15,4 @@ pre-script: |
 
 script: |
   make -f GNUmakefile -C src
-  make -f GNUmakefile -C doc
-
   install -v -D -m 0755 src/{{id}} -t ${pkgupd_pkgdir}/usr/bin/
-  install -v -D -m 0644 doc/proot/man.1 "${pkgdir}"/usr/share/man/man1/{{id}}.1

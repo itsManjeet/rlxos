@@ -5,7 +5,6 @@ BASEDIR="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 [[ -e ${BASEDIR}/.config ]] && source ${BASEDIR}/.config
 KERNEL=${KERNEL:-'5.18'}
 PKGUPD_PATH=${PKGUPD_PATH:-'/var/cache/pkgupd/'}
-BUILDDIR=${BUILDDIR:-"/storage/testing/2200/"}
 
 function printLogo() {
     [[ -z ${LOGO} ]] && cat ${BASEDIR}/files/logo/ascii || echo ${LOGO}
@@ -44,7 +43,7 @@ function doGenerateSystem() {
         echo "system image file ${_system_file} not exists"
         exit 1
     }
-    _system_file=$(realpath $_system_file | sed "s#${BUILDDIR}#${PKGUPD_PATH}#g")
+    _system_file=$(realpath $_system_file)
 
     local _overlay_file=${2}
     [[ -z ${_overlay_file} ]] && {
@@ -55,7 +54,7 @@ function doGenerateSystem() {
         echo "overlay image file ${_overlay_file} not exists"
         exit 1
     }
-    _overlay_file=$(realpath $_overlay_file | sed "s#${BUILDDIR}#${PKGUPD_PATH}#g")
+    _overlay_file=$(realpath $_overlay_file)
 
     local _id=${3}
     [[ -z $_id ]] && {
@@ -85,22 +84,17 @@ function doGenerateSystem() {
         exit 1
     fi
 
-    if [[ ! -e ${BUILDDIR}/releases/${_isofile} ]] ; then
+    if [[ ! -e ${PKGUPD_PATH}/releases/${_isofile} ]] ; then
         echo "Error! no iso file build ${_isofile}"
         exit 1
     fi
 
     (
-        cd ${BUILDDIR}/releases/;
+        cd ${PKGUPD_PATH}/releases/;
         md5sum ${_isofile} > ${_isofile}.md5sum;
     )
 
     echo "SUCCESS ISO file ready"
-}
-
-function doSystemUpdate() {
-    echo "updating system"
-    pkgupd update mode.ask=false
 }
 
 function doTestAppImage() {
@@ -116,11 +110,11 @@ function doTestAppImage() {
         exit 1
     }
 
-    local _appimage_inside=$(echo ${_appimage_file} | sed "s#${BUILDDIR}#${PKGUPD_PATH}#g")
+    local _appimage_inside=${_appimage_file}
     echo "TESTING: ${_appimage_inside}"
 
-    # runInsideDocker "pkgupd update mode.ask=false; \
-    #     pkgupd install xorg imagemagick gtk dbus-glib libnl mode.ask=false; \
+    # runInsideDocker "_pkgupd update mode.ask=false; \
+    #     _pkgupd install xorg imagemagick gtk dbus-glib libnl mode.ask=false; \
         
     #     Xvfb :100 -screen 5 1024x768x8 &
     #     sleep 2
@@ -145,22 +139,23 @@ function doBuild() {
     echo "PACKAGE ID: ${_package_id}"
 
     if [[ -z ${SKIP_BUILD} ]] ; then
-        echo "skipping build"
-        pkgupd build /${_recipefile} build.repository="${_repository}" | Log ${_package_id}
+        _pkgupd build /${_recipefile} build.repository="${_repository}" | Log ${_package_id}
         if [[ ${PIPESTATUS[0]} != 0 ]] ; then
             echo "Error! failed to build ${_repository}/${_package_id}"
             exit 1
         fi
+    else
+        echo "SKIPPING BUILD"
     fi
 
-    local _package_meta="${BUILDDIR}/pkgs/${_repository}/${_package_id}.meta"
+    local _package_meta="${PKGUPD_PATH}/pkgs/${_repository}/${_package_id}.meta"
     if [[ ! -e $_package_meta ]] ; then 
         echo "Error! no meta file generated at ${_package_meta}"
         exit 
     fi
     local _package_version="$(cat ${_package_meta} | grep 'version:' | awk '{print $2}')"
     local _package_type="$(cat ${_package_meta} | grep 'type:' | awk '{print $2}')"
-    local _package_file="${BUILDDIR}/pkgs/${_repository}/${_package_id}-${_package_version}.${_package_type}"
+    local _package_file="${PKGUPD_PATH}/pkgs/${_repository}/${_package_id}-${_package_version}.${_package_type}"
 
     echo "PACKAGE FILE: ${_package_file}"
     if [[ ! -e ${_package_file} ]] ; then
@@ -182,7 +177,7 @@ function doBuild() {
             local _overlay_meta=$(echo ${_package_meta} | sed 's#.meta#-overlay.meta#g')
             local _overlay_version="$(cat ${_overlay_meta} | grep 'version:' | awk '{print $2}')"
             local _overlay_type="$(cat ${_overlay_meta} | grep 'type:' | awk '{print $2}')"
-            local _overlay_file="${BUILDDIR}/pkgs/${_repository}/${_package_id}-overlay-${_overlay_version}.${_overlay_type}"
+            local _overlay_file="${PKGUPD_PATH}/pkgs/${_repository}/${_package_id}-overlay-${_overlay_version}.${_overlay_type}"
             if [[ ! -e ${_overlay_file} ]] ; then
                 echo "Error! no overlay file ${_overlay_file} not exists"
                 exit 1
@@ -201,8 +196,8 @@ while [[ $# -gt 0 ]] ; do
             shift
             ;;
 
-        --build-dir)
-            BUILDDIR=${2}
+        --pkgupd-path)
+            PKGUPD_PATH=${2}
             shift
             ;;
 
@@ -230,6 +225,11 @@ if [[ -z ${TASK} ]] ; then
     printHelp
     exit 1
 fi
+
+function _pkgupd() {
+    pkgupd $@ dir.pkgs=${PKGUPD_PATH}/pkgs
+
+}
 
 case ${TASK} in
     build)

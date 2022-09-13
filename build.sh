@@ -243,7 +243,7 @@ case ${TASK} in
         ;;
 
     refresh)
-        pkgupd meta
+        _pkgupd meta
         exit $?
         ;;
 

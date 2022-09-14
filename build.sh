@@ -175,6 +175,7 @@ function doBuild() {
             fi
 
             if [[ "${_recipefile}" =~ '-docker.yml' ]] ; then
+                pkgupd install docker mode.ask=false
                 cat ${_package_file} | zstd -d | docker import - "itsmanjeet/${_package_id}:${_package_version}"
                 exit 0
             fi

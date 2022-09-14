@@ -174,6 +174,11 @@ function doBuild() {
                 exit 0
             fi
 
+            if [[ "${_recipefile}" =~ '-docker.yml' ]] ; then
+                cat ${_package_file} | zstd -d | docker import - "itsmanjeet/${_package_id}:${_package_version}"
+                exit 0
+            fi
+
             local _overlay_meta=$(echo ${_package_meta} | sed 's#.meta#-overlay.meta#g')
             local _overlay_version="$(cat ${_overlay_meta} | grep 'version:' | awk '{print $2}')"
             local _overlay_type="$(cat ${_overlay_meta} | grep 'type:' | awk '{print $2}')"

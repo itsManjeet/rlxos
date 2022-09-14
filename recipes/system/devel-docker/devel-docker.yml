@@ -9,3 +9,4 @@ include:
   - appimagetool
   - cmake
 inside.root: rlxos
+include.path: var/lib/pkgupd/data

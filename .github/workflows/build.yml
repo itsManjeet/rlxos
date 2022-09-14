@@ -20,6 +20,7 @@ jobs:
       image: itsmanjeet/devel-docker:2200-2
       volumes:
         - /storage:/storage
+        - /var/run/docker.sock:/var/run/docker.sock
     steps:
       - uses: actions/checkout@v2
 

@@ -4,7 +4,7 @@ BASEDIR="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
 [[ -e ${BASEDIR}/.config ]] && source ${BASEDIR}/.config
 KERNEL=${KERNEL:-'5.18'}
-PKGUPD_PATH=${PKGUPD_PATH:-'/var/cache/pkgupd/'}
+PKGUPD_PATH=${PKGUPD_PATH:-'/storage/'}
 SERVER_STABILITY='testing'
 
 function printLogo() {
@@ -149,14 +149,14 @@ function doBuild() {
         echo "SKIPPING BUILD"
     fi
 
-    local _package_meta="${PKGUPD_PATH}/pkgs/${_repository}/${_package_id}.meta"
+    local _package_meta="${PKGUPD_PATH}/${_repository}/${_package_id}.meta"
     if [[ ! -e $_package_meta ]] ; then 
         echo "Error! no meta file generated at ${_package_meta}"
         exit 
     fi
     local _package_version="$(cat ${_package_meta} | grep 'version:' | awk '{print $2}')"
     local _package_type="$(cat ${_package_meta} | grep 'type:' | awk '{print $2}')"
-    local _package_file="${PKGUPD_PATH}/pkgs/${_repository}/${_package_id}-${_package_version}.${_package_type}"
+    local _package_file="${PKGUPD_PATH}/${_repository}/${_package_id}-${_package_version}.${_package_type}"
 
     echo "PACKAGE FILE: ${_package_file}"
     if [[ ! -e ${_package_file} ]] ; then
@@ -184,7 +184,7 @@ function doBuild() {
             local _overlay_meta=$(echo ${_package_meta} | sed 's#.meta#-overlay.meta#g')
             local _overlay_version="$(cat ${_overlay_meta} | grep 'version:' | awk '{print $2}')"
             local _overlay_type="$(cat ${_overlay_meta} | grep 'type:' | awk '{print $2}')"
-            local _overlay_file="${PKGUPD_PATH}/pkgs/${_repository}/${_package_id}-overlay-${_overlay_version}.${_overlay_type}"
+            local _overlay_file="${PKGUPD_PATH}/${_repository}/${_package_id}-overlay-${_overlay_version}.${_overlay_type}"
             if [[ ! -e ${_overlay_file} ]] ; then
                 echo "Error! no overlay file ${_overlay_file} not exists"
                 exit 1
@@ -217,7 +217,7 @@ while [[ $# -gt 0 ]] ; do
             SKIP_BUILD=1
             ;;
         
-        --sever-stability)
+        --server-stability)
             SERVER_STABILITY=${2}
             shift
             ;;
@@ -239,7 +239,7 @@ if [[ -z ${TASK} ]] ; then
 fi
 
 function _pkgupd() {
-    pkgupd $@ dir.pkgs=${PKGUPD_PATH}/pkgs
+    pkgupd $@ dir.pkgs=${PKGUPD_PATH}
 
 }
 

@@ -8,5 +8,5 @@ docker run                                                          \
     -v /var/run/docker.sock:/var/run/docker.sock                    \
     -v ${STORAGE_DIR}:/storage                                      \
     -w /rlxos                                                       \
-    -it itsmanjeet/rlxos-devel:2200-2                               \
+    -it itsmanjeet/devel-docker:2200-3                              \
     bash

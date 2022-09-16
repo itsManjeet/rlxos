@@ -90,11 +90,6 @@ function doGenerateSystem() {
         exit 1
     fi
 
-    (
-        cd ${PKGUPD_PATH}/releases/;
-        md5sum ${_isofile} > ${_isofile}.md5sum;
-    )
-
     echo "SUCCESS ISO file ready"
 }
 

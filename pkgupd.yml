@@ -12,5 +12,5 @@ environ:
     - ARCH=x86_64
 mirrors:
     - https://storage.rlxos.dev/stable
-server.stability: info
+server.stability: testing
 downloader.ssl.verify: false

@@ -60,13 +60,12 @@ include.path: var/lib/pkgupd/data
 inside: |
   make-ca -C /etc/ssl/certdata.txt
 
-  # store pkgupd data
-  mkdir -p /var/lib/pkgupd/
-  cp /usr/share/rlxos-desktop/included /var/lib/pkgupd/data -a
-
   mkdir -p /etc/pkgupd.yml.d/
   echo "system-packages: " > /etc/pkgupd.yml.d/system-packages.yml
   for i in /var/lib/pkgupd/data/* ; do
+    if [[ "$i" == "*.files" ]] ; then 
+      continue
+    fi
     echo " - $(basename $i)">> /etc/pkgupd.yml.d/system-packages.yml
   done
 

@@ -1,5 +1,5 @@
 #!/bin/bash -e
-STORAGE_DIR=${STORAGE_DIR:-"$(dirname ${PWD})/rlxos.dev/storage"}
+STORAGE_DIR=${STORAGE_DIR:-"$(dirname ${PWD})/storage.rlxos.dev"}
 
 docker run                                                          \
     --privileged                                                    \

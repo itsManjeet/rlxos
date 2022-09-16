@@ -50,10 +50,10 @@ jobs:
 
           for recipe in ${recipefile} ; do
             if [[ ${recipe} =~ recipes/ ]] && [[ "${recipe}" == *.yml ]] && [[ -e ${recipe} ]] ; then
-              ./build.sh build ${recipe} --debug --pkgupd-path /storage/testing/2200/
+              ./build.sh build ${recipe} --debug --pkgupd-path /storage/
             fi
           done
 
       - name: sync
         run: |
-          ./build.sh refresh --debug --pkgupd-path /storage/testing/2200/
+          ./build.sh refresh --debug --pkgupd-path /storage/

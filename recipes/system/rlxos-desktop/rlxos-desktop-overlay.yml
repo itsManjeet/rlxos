@@ -1,7 +1,7 @@
 id: rlxos-desktop-overlay
 version: 2200
 about: rlxos desktop iso overlay
-release: 2
+release: 3
 build-type: system
 type: img
 include:

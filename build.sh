@@ -5,6 +5,7 @@ BASEDIR="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 [[ -e ${BASEDIR}/.config ]] && source ${BASEDIR}/.config
 KERNEL=${KERNEL:-'5.18'}
 PKGUPD_PATH=${PKGUPD_PATH:-'/var/cache/pkgupd/'}
+SERVER_STABILITY='testing'
 
 function printLogo() {
     [[ -z ${LOGO} ]] && cat ${BASEDIR}/files/logo/ascii || echo ${LOGO}
@@ -216,6 +217,11 @@ while [[ $# -gt 0 ]] ; do
             SKIP_BUILD=1
             ;;
         
+        --sever-stability)
+            SERVER_STABILITY=${2}
+            shift
+            ;;
+        
         -*|--*)
             echo "Error! unknown option $1"
             exit 1
@@ -249,7 +255,7 @@ case ${TASK} in
         ;;
 
     refresh)
-        _pkgupd meta
+        _pkgupd meta server.stability=${SERVER_STABILITY}
         exit $?
         ;;
 

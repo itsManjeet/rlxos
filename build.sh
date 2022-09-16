@@ -73,7 +73,7 @@ function doGenerateSystem() {
     echo "OVERLAY FILE: ${_overlay_file}"
     echo "KERNEL      : ${KERNEL}"
     echo "VERSION     : ${_version}"
-    local _isofile="rlxos-${_id}-${_version}.iso"
+    local _isofile="${_id}-${_version}.iso"
 
     mkiso --system-image ${_system_file} \
               --overlay ${_overlay_file} \

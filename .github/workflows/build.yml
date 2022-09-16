@@ -17,7 +17,7 @@ jobs:
   build:
     runs-on: self-hosted
     container:
-      image: itsmanjeet/devel-docker:2200-2
+      image: itsmanjeet/devel-docker:2200-3
       volumes:
         - /storage:/storage
         - /var/run/docker.sock:/var/run/docker.sock

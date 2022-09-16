@@ -1,6 +1,6 @@
 id: devel-docker
 version: 2200
-release: 2
+release: 3
 about: rlxos devel docker
 build-type: system
 include:
@@ -9,4 +9,4 @@ include:
   - appimagetool
   - cmake
 inside.root: rlxos
-include.path: var/lib/pkgupd/data
+include.path: var/lib/pkgupd/data/

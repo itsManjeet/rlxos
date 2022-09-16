@@ -32,6 +32,7 @@ jobs:
       - name: prerequisite
         run: |
           ln -srfv ./pkgupd.yml /etc/pkgupd.yml
+          mkdir -p /var/lib/pkgupd/data
           pkgupd update mode.ask=false
           pkgupd install squashfs-tools rlxos-build-tools mtools mode.ask=false
 

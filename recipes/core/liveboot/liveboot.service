@@ -4,7 +4,7 @@ DefaultDependencies=no
 Before=sysinit.target
 
 [Service]
-Type=onshot
+Type=oneshot
 ExecStart=@@libexecdir@@/liveboot
 TimeoutSec=0
 RemainAfterExit=yes

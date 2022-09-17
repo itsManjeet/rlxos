@@ -66,9 +66,9 @@ inside: |
 
   # generating all supported locales
   mkdir -p /usr/lib/locale/
-  while read loc format ; do
-    localedef -i ${loc} -f ${format} ${loc}.${format}
-  done < /var/cache/pkgupd/files/supported_locales
+  localedef -i en_IN -f UTF-8 en_IN.UTF-8
+  localedef -i en_US -f UTF-8 en_US.UTF-8
+
 
   echo "2200-74" > /etc/rlxos-release
 

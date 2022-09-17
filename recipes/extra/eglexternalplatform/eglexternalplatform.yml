@@ -1,0 +1,13 @@
+id: eglexternalplatform
+version: 1.1
+about: EGL External Platform interface
+depends:
+  runtime:
+    - libglvnd
+sources:
+  - eglexternalplatform-{{version}}.tar.gz::https://github.com/NVIDIA/eglexternalplatform/archive/refs/tags/{{version}}.tar.gz
+build-dir: eglexternalplatform-{{version}}
+script: |
+  install -D -t ${pkgupd_pkgdir}/usr/include/EGL -m644 interface/*
+  install -D -t ${pkgupd_pkgdir}/usr/share/pkgconfig -m644 *.pc
+  install -D -t ${pkgupd_pkgdir}/usr/share/doc/{{id}} -m644 COPYING

@@ -1,0 +1,186 @@
+id: nvidia-utils
+version: 515.65.01
+about: NVIDIA drivers utilities
+depends:
+  runtime:
+    - egl-wayland
+    - libglvnd
+    - xorg-server
+sources:
+  - https://us.download.nvidia.com/XFree86/Linux-x86_64/{{version}}/NVIDIA-Linux-x86_64-{{version}}.run
+
+groups:
+  - id: 143
+    name: nvidia-persistenced
+
+users:
+  - id: 143
+    name: nvidia-persistenced
+    about: NVIDIA Persistence Daemon
+    dir: /dev/null
+    group: 143
+    shell: /bin/false
+script: |
+  sh NVIDIA-Linux-x86_64-{{version}}.run --extract-only
+  cd NVIDIA-Linux-x86_64-{{version}}
+  bsdtar -xf nvidia-persistenced-init.tar.bz2
+
+  cd kernel
+  sed -i "s/__VERSION_STRING/{{version}}/" dkms.conf
+  sed -i 's/__JOBS/`nproc`/' dkms.conf
+  sed -i 's/__DKMS_MODULES//' dkms.conf
+  sed -i '$iBUILT_MODULE_NAME[0]="nvidia"\
+  DEST_MODULE_LOCATION[0]="/kernel/drivers/video"\
+  BUILT_MODULE_NAME[1]="nvidia-uvm"\
+  DEST_MODULE_LOCATION[1]="/kernel/drivers/video"\
+  BUILT_MODULE_NAME[2]="nvidia-modeset"\
+  DEST_MODULE_LOCATION[2]="/kernel/drivers/video"\
+  BUILT_MODULE_NAME[3]="nvidia-drm"\
+  DEST_MODULE_LOCATION[3]="/kernel/drivers/video"\
+  BUILT_MODULE_NAME[4]="nvidia-peermem"\
+  DEST_MODULE_LOCATION[4]="/kernel/drivers/video"' dkms.conf
+
+  # Gift for linux-rt guys
+  sed -i 's/NV_EXCLUDE_BUILD_MODULES/IGNORE_PREEMPT_RT_PRESENCE=1 NV_EXCLUDE_BUILD_MODULES/' dkms.conf
+
+  cd ..
+  install -Dm644 nvidia.icd "${pkgupd_pkgdir}/etc/OpenCL/vendors/nvidia.icd"
+  install -Dm755 "libnvidia-compiler.so.{{version}}" "${pkgupd_pkgdir}/usr/lib/libnvidia-compiler.so.{{version}}"
+  install -Dm755 "libnvidia-opencl.so.{{version}}" "${pkgupd_pkgdir}/usr/lib/libnvidia-opencl.so.{{version}}"
+
+  find "${pkgupd_pkgdir}" -type f -name '*.so*' ! -path '*xorg/*' -print0 | while read -d $'\0' _lib; do
+    _soname=$(dirname "${_lib}")/$(readelf -d "${_lib}" | grep -Po 'SONAME.*: \[\K[^]]*' || true)
+    _base=$(echo ${_soname} | sed -r 's/(.*)\.so.*/\1.so/')
+    [[ -e "${_soname}" ]] || ln -s $(basename "${_lib}") "${_soname}"
+    [[ -e "${_base}" ]] || ln -s $(basename "${_soname}") "${_base}"
+  done
+
+  install -dm 755 "${pkgupd_pkgdir}"/usr/src
+  cp -dr --no-preserve='ownership' kernel "${pkgupd_pkgdir}/usr/src/nvidia-{{version}}"
+
+  install -Dm755 nvidia_drv.so "${pkgupd_pkgdir}/usr/lib/xorg/modules/drivers/nvidia_drv.so"
+
+  # Wayland/GBM
+  install -Dm755 libnvidia-egl-gbm.so.1* -t "${pkgupd_pkgdir}/usr/lib/"
+  install -Dm644 15_nvidia_gbm.json "${pkgupd_pkgdir}/usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json"
+  mkdir -p "${pkgupd_pkgdir}/usr/lib/gbm"
+  ln -sr "${pkgupd_pkgdir}/usr/lib/libnvidia-allocator.so.{{version}}" "${pkgupd_pkgdir}/usr/lib/gbm/nvidia-drm_gbm.so"
+
+  # firmware
+  install -Dm644 firmware/gsp.bin "${pkgupd_pkgdir}/usr/lib/firmware/nvidia/{{version}}/gsp.bin"
+
+  # GLX extension module for X
+  install -Dm755 "libglxserver_nvidia.so.{{version}}" "${pkgupd_pkgdir}/usr/lib/nvidia/xorg/libglxserver_nvidia.so.{{version}}"
+  # Ensure that X finds glx
+  ln -s "libglxserver_nvidia.so.{{version}}" "${pkgupd_pkgdir}/usr/lib/nvidia/xorg/libglxserver_nvidia.so.1"
+  ln -s "libglxserver_nvidia.so.{{version}}" "${pkgupd_pkgdir}/usr/lib/nvidia/xorg/libglxserver_nvidia.so"
+
+  install -Dm755 "libGLX_nvidia.so.{{version}}" "${pkgupd_pkgdir}/usr/lib/libGLX_nvidia.so.{{version}}"
+
+  # OpenGL libraries
+  install -Dm755 "libEGL_nvidia.so.{{version}}" "${pkgupd_pkgdir}/usr/lib/libEGL_nvidia.so.{{version}}"
+  install -Dm755 "libGLESv1_CM_nvidia.so.{{version}}" "${pkgupd_pkgdir}/usr/lib/libGLESv1_CM_nvidia.so.{{version}}"
+  install -Dm755 "libGLESv2_nvidia.so.{{version}}" "${pkgupd_pkgdir}/usr/lib/libGLESv2_nvidia.so.{{version}}"
+  install -Dm644 "10_nvidia.json" "${pkgupd_pkgdir}/usr/share/glvnd/egl_vendor.d/10_nvidia.json"
+
+  # OpenGL core library
+  install -Dm755 "libnvidia-glcore.so.{{version}}" "${pkgupd_pkgdir}/usr/lib/libnvidia-glcore.so.{{version}}"
+  install -Dm755 "libnvidia-eglcore.so.{{version}}" "${pkgupd_pkgdir}/usr/lib/libnvidia-eglcore.so.{{version}}"
+  install -Dm755 "libnvidia-glsi.so.{{version}}" "${pkgupd_pkgdir}/usr/lib/libnvidia-glsi.so.{{version}}"
+
+  # misc
+  install -Dm755 "libnvidia-fbc.so.{{version}}" "${pkgupd_pkgdir}/usr/lib/libnvidia-fbc.so.{{version}}"
+  install -Dm755 "libnvidia-encode.so.{{version}}" "${pkgupd_pkgdir}/usr/lib/libnvidia-encode.so.{{version}}"
+  install -Dm755 "libnvidia-cfg.so.{{version}}" "${pkgupd_pkgdir}/usr/lib/libnvidia-cfg.so.{{version}}"
+  install -Dm755 "libnvidia-ml.so.{{version}}" "${pkgupd_pkgdir}/usr/lib/libnvidia-ml.so.{{version}}"
+  install -Dm755 "libnvidia-glvkspirv.so.{{version}}" "${pkgupd_pkgdir}/usr/lib/libnvidia-glvkspirv.so.{{version}}"
+  install -Dm755 "libnvidia-allocator.so.{{version}}" "${pkgupd_pkgdir}/usr/lib/libnvidia-allocator.so.{{version}}"
+  install -Dm755 "libnvidia-vulkan-producer.so.{{version}}" "${pkgupd_pkgdir}/usr/lib/libnvidia-vulkan-producer.so.{{version}}"
+  # Sigh libnvidia-vulkan-producer.so has no SONAME set so create_links doesn't catch it. NVIDIA please fix!
+  ln -s "libnvidia-vulkan-producer.so.{{version}}" "${pkgupd_pkgdir}/usr/lib/libnvidia-vulkan-producer.so.1"
+  ln -s "libnvidia-vulkan-producer.so.{{version}}" "${pkgupd_pkgdir}/usr/lib/libnvidia-vulkan-producer.so"
+
+  # Vulkan ICD
+  install -Dm644 "nvidia_icd.json" "${pkgupd_pkgdir}/usr/share/vulkan/icd.d/nvidia_icd.json"
+  install -Dm644 "nvidia_layers.json" "${pkgupd_pkgdir}/usr/share/vulkan/implicit_layer.d/nvidia_layers.json"
+
+  # VDPAU
+  install -Dm755 "libvdpau_nvidia.so.{{version}}" "${pkgupd_pkgdir}/usr/lib/vdpau/libvdpau_nvidia.so.{{version}}"
+
+  # nvidia-tls library
+  install -Dm755 "libnvidia-tls.so.{{version}}" "${pkgupd_pkgdir}/usr/lib/libnvidia-tls.so.{{version}}"
+
+  # CUDA
+  install -Dm755 "libcuda.so.{{version}}" "${pkgupd_pkgdir}/usr/lib/libcuda.so.{{version}}"
+  install -Dm755 "libnvcuvid.so.{{version}}" "${pkgupd_pkgdir}/usr/lib/libnvcuvid.so.{{version}}"
+
+  # PTX JIT Compiler (Parallel Thread Execution (PTX) is a pseudo-assembly language for CUDA)
+  install -Dm755 "libnvidia-ptxjitcompiler.so.{{version}}" "${pkgupd_pkgdir}/usr/lib/libnvidia-ptxjitcompiler.so.{{version}}"
+
+  # raytracing
+  install -Dm755 "libnvoptix.so.{{version}}" "${pkgupd_pkgdir}/usr/lib/libnvoptix.so.{{version}}"
+  install -Dm755 "libnvidia-rtcore.so.{{version}}" "${pkgupd_pkgdir}/usr/lib/libnvidia-rtcore.so.{{version}}"
+
+  # NGX
+  install -Dm755 nvidia-ngx-updater "${pkgupd_pkgdir}/usr/bin/nvidia-ngx-updater"
+  install -Dm755 "libnvidia-ngx.so.{{version}}" "${pkgupd_pkgdir}/usr/lib/libnvidia-ngx.so.{{version}}"
+  install -Dm755 _nvngx.dll "${pkgupd_pkgdir}/usr/lib/nvidia/wine/_nvngx.dll"
+  install -Dm755 nvngx.dll "${pkgupd_pkgdir}/usr/lib/nvidia/wine/nvngx.dll"
+
+  # Optical flow
+  install -Dm755 "libnvidia-opticalflow.so.{{version}}" "${pkgupd_pkgdir}/usr/lib/libnvidia-opticalflow.so.{{version}}"
+
+  # DEBUG
+  install -Dm755 nvidia-debugdump "${pkgupd_pkgdir}/usr/bin/nvidia-debugdump"
+
+  # nvidia-xconfig
+  install -Dm755 nvidia-xconfig "${pkgupd_pkgdir}/usr/bin/nvidia-xconfig"
+  install -Dm644 nvidia-xconfig.1.gz "${pkgupd_pkgdir}/usr/share/man/man1/nvidia-xconfig.1.gz"
+
+  # nvidia-bug-report
+  install -Dm755 nvidia-bug-report.sh "${pkgupd_pkgdir}/usr/bin/nvidia-bug-report.sh"
+
+  # nvidia-smi
+  install -Dm755 nvidia-smi "${pkgupd_pkgdir}/usr/bin/nvidia-smi"
+  install -Dm644 nvidia-smi.1.gz "${pkgupd_pkgdir}/usr/share/man/man1/nvidia-smi.1.gz"
+
+  # nvidia-cuda-mps
+  install -Dm755 nvidia-cuda-mps-server "${pkgupd_pkgdir}/usr/bin/nvidia-cuda-mps-server"
+  install -Dm755 nvidia-cuda-mps-control "${pkgupd_pkgdir}/usr/bin/nvidia-cuda-mps-control"
+  install -Dm644 nvidia-cuda-mps-control.1.gz "${pkgupd_pkgdir}/usr/share/man/man1/nvidia-cuda-mps-control.1.gz"
+
+  # nvidia-modprobe
+  # This should be removed if nvidia fixed their uvm module!
+  install -Dm4755 nvidia-modprobe "${pkgupd_pkgdir}/usr/bin/nvidia-modprobe"
+  install -Dm644 nvidia-modprobe.1.gz "${pkgupd_pkgdir}/usr/share/man/man1/nvidia-modprobe.1.gz"
+
+  # nvidia-persistenced
+  install -Dm755 nvidia-persistenced "${pkgupd_pkgdir}/usr/bin/nvidia-persistenced"
+  install -Dm644 nvidia-persistenced.1.gz "${pkgupd_pkgdir}/usr/share/man/man1/nvidia-persistenced.1.gz"
+  install -Dm644 nvidia-persistenced-init/systemd/nvidia-persistenced.service.template "${pkgupd_pkgdir}/usr/lib/systemd/system/nvidia-persistenced.service"
+  sed -i 's/__USER__/nvidia-persistenced/' "${pkgupd_pkgdir}/usr/lib/systemd/system/nvidia-persistenced.service"
+
+  # application profiles
+  install -Dm644 nvidia-application-profiles-{{version}}-rc "${pkgupd_pkgdir}/usr/share/nvidia/nvidia-application-profiles-{{version}}-rc"
+  install -Dm644 nvidia-application-profiles-{{version}}-key-documentation "${pkgupd_pkgdir}/usr/share/nvidia/nvidia-application-profiles-{{version}}-key-documentation"
+
+  install -Dm644 LICENSE "${pkgupd_pkgdir}/usr/share/licenses/nvidia-utils/LICENSE"
+  install -Dm644 README.txt "${pkgupd_pkgdir}/usr/share/doc/nvidia/README"
+  install -Dm644 NVIDIA_Changelog "${pkgupd_pkgdir}/usr/share/doc/nvidia/NVIDIA_Changelog"
+  cp -r html "${pkgupd_pkgdir}/usr/share/doc/nvidia/"
+  ln -s nvidia "${pkgupd_pkgdir}/usr/share/doc/nvidia-utils"
+
+  # new power management support
+  install -Dm644 systemd/system/*.service -t "${pkgupd_pkgdir}/usr/lib/systemd/system"
+  install -Dm755 systemd/system-sleep/nvidia "${pkgupd_pkgdir}/usr/lib/systemd/system-sleep/nvidia"
+  install -Dm755 systemd/nvidia-sleep.sh "${pkgupd_pkgdir}/usr/bin/nvidia-sleep.sh"
+  install -Dm755 nvidia-powerd "${pkgupd_pkgdir}/usr/bin/nvidia-powerd"
+  install -Dm644 nvidia-dbus.conf "${pkgupd_pkgdir}"/usr/share/dbus-1/system.d/nvidia-dbus.conf
+
+  # distro specific files must be installed in /usr/share/X11/xorg.conf.d
+  install -Dm644 "${FILES_DIR}/nvidia-drm-outputclass.conf" "${pkgupd_pkgdir}/usr/share/X11/xorg.conf.d/10-nvidia-drm-outputclass.conf"
+
+  install -Dm644 "${FILES_DIR}/nvidia.rules" "${pkgupd_pkgdir}"/usr/lib/udev/rules.d/60-nvidia.rules
+
+  echo "blacklist nouveau" | install -Dm644 /dev/stdin "${pkgupd_pkgdir}/usr/lib/modprobe.d/{{id}}.conf"
+  echo "nvidia-uvm" | install -Dm644 /dev/stdin "${pkgupd_pkgdir}/usr/lib/modules-load.d/{{id}}.conf"

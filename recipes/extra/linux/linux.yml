@@ -61,7 +61,6 @@ script: |
   echo "Installing KConfig files..."
   find . -name 'Kconfig*' -exec install -Dm644 {} "$builddir/{}" \;
   echo "Removing unneeded architectures..."
-  local arch
   for arch in "$builddir"/arch/*/; do
     [[ $arch = */x86/ ]] && continue
     echo "Removing $(basename "$arch")"
@@ -73,6 +72,24 @@ script: |
   find -L "$builddir" -type l -printf 'Removing %P\n' -delete
   echo "Removing loose objects..."
   find "$builddir" -type f -name '*.o' -printf 'Removing %P\n' -delete
+<<<<<<< HEAD
+=======
+  echo "Stripping build tools..."
+  while read -rd '' file; do
+    case "$(file -bi "$file")" in
+      application/x-sharedlib\;*)      # Libraries (.so)
+        strip -v $STRIP_SHARED "$file" ;;
+      application/x-archive\;*)        # Libraries (.a)
+        strip -v $STRIP_STATIC "$file" ;;
+      application/x-executable\;*)     # Binaries
+        strip -v $STRIP_BINARIES "$file" ;;
+      application/x-pie-executable\;*) # Relocatable binaries
+        strip -v $STRIP_SHARED "$file" ;;
+    esac
+  done < <(find "$builddir" -type f -perm -u+x ! -name vmlinux -print0)
+  echo "Stripping vmlinux..."
+  strip -v $STRIP_STATIC "$builddir/vmlinux"
+>>>>>>> 278b78a3e8b376616cec2c4b4aa58baaa131bb39
   echo "Adding symlink..."
   mkdir -p "${pkgupd_pkgdir}/usr/src"
   ln -sr "$builddir" "${pkgupd_pkgdir}/usr/src/{{id}}"

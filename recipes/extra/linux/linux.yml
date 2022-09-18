@@ -61,7 +61,6 @@ script: |
   echo "Installing KConfig files..."
   find . -name 'Kconfig*' -exec install -Dm644 {} "$builddir/{}" \;
   echo "Removing unneeded architectures..."
-  local arch
   for arch in "$builddir"/arch/*/; do
     [[ $arch = */x86/ ]] && continue
     echo "Removing $(basename "$arch")"
@@ -74,7 +73,6 @@ script: |
   echo "Removing loose objects..."
   find "$builddir" -type f -name '*.o' -printf 'Removing %P\n' -delete
   echo "Stripping build tools..."
-  local file
   while read -rd '' file; do
     case "$(file -bi "$file")" in
       application/x-sharedlib\;*)      # Libraries (.so)

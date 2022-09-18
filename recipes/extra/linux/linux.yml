@@ -75,7 +75,6 @@ script: |
   echo "Adding symlink..."
   mkdir -p "${pkgupd_pkgdir}/usr/src"
   ln -sr "$builddir" "${pkgupd_pkgdir}/usr/src/{{id}}"
-  mv ${pkgupd_pkgdir}/{lib,boot}
 split:
   - into: kernel-headers
     about: Headers and scripts for building modules for the Linux kernel

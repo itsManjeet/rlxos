@@ -82,5 +82,5 @@ split:
     about: Headers and scripts for building modules for the Linux kernel
 
     files:
-      - boot/modules/{{version}}/build/
+      - boot/modules/{{version}}-{{release}}-rlxos/build/
       - usr/src/{{id}}

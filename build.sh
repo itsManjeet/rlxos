@@ -131,7 +131,7 @@ function doBuild() {
     echo "PACKAGE ID: ${_package_id}"
 
     if [[ -z ${SKIP_BUILD} ]] ; then
-        _pkgupd build /${_recipefile} build.repository="${_repository}" | Log ${_package_id}
+        _pkgupd build /${_recipefile} build.repository="${_repository}"
         if [[ ${PIPESTATUS[0]} != 0 ]] ; then
             echo "Error! failed to build ${_repository}/${_package_id}"
             exit 1

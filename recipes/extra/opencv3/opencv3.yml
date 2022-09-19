@@ -3,7 +3,7 @@ version: 3.4.16
 about: Libraries mainly aimed at real-time computer vision
 depends:
   runtime:
-    - openblas-lpack
+    - openblas-lapack
     - ffmpeg
     - gst-plugins-base
     - libexif

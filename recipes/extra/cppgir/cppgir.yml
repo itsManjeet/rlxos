@@ -4,9 +4,12 @@ about: GObject Introspection C++ binding wrapper generator
 commit: 0a3190c0de5c213f118e7bb849df47835a2ac537
 sources:
   - https://gitlab.com/mnauw/cppgir/-/archive/{{commit}}/cppgir-{{commit}}.tar.gz
+  - https://github.com/martinmoene/expected-lite/releases/download/v0.6.2/expected.hpp
 depends:
   runtime:
     - fmt
     - libboost
   buildtime:
     - boost
+pre-script: |
+  install -v -D -m 0644 -t expected-lite/include/nonstd/ ../expected.hpp

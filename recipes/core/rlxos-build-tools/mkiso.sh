@@ -28,11 +28,6 @@ while [[ $# -gt 0 ]] ; do
             shift
         ;;
 
-        --kernel-version)
-            KERNEL_VERSION="$2"
-            shift
-        ;;
-
         --with-plymouth)
             PLYMOUTH_FLAG=''
         ;;
@@ -79,20 +74,15 @@ done
     exit 1
 }
 
-[[ -z ${KERNEL_VERSION} ]] && {
-    echo "no kernel version specified"
-    exit 1
-}
-
-REAL_KERNEL_VERSION="$(PKGUPD_NO_MESSAGE=1 pkgupd info linux-${KERNEL_VERSION} info.value=version)-rlxos"
+KERNEL_VERSION="$(PKGUPD_NO_MESSAGE=1 pkgupd info linux info.value=version)-rlxos"
 GRUB_CONFIG="
 default=${OS_ID} [${VERSION}] Installer
 timeout=5
 
 insmod all_video
 menuentry '${OS_ID} [${VERSION}] Installer' {
-    linux /boot/vmlinuz-${REAL_KERNEL_VERSION} ro quiet fastboot loglevel=3 iso=1 root=LABEL=${LABEL} system=${VERSION}
-    initrd /boot/initrd-${REAL_KERNEL_VERSION}
+    linux /boot/vmlinuz-${KERNEL_VERSION} ro quiet fastboot loglevel=3 iso=1 root=LABEL=${LABEL} system=${VERSION}
+    initrd /boot/initrd-${KERNEL_VERSION}
 }"
 
 if [[ -n ${GRUB_FILE} ]] ; then
@@ -117,15 +107,15 @@ mkdir -p ${ISODIR}/boot/grub/
 echo "=> configuring grub"
 echo "${GRUB_CONFIG}" > ${ISODIR}/boot/grub/grub.cfg
 
-echo "=> installing linux kernel ${KERNEL_VERSION}"
-pkgupd install linux-${KERNEL_VERSION} dir.root=${ISODIR} installer.depends=false force=true || {
+echo "=> installing linux kernel"
+pkgupd install linux dir.root=${ISODIR} installer.depends=false force=true || {
     echo "Error! failed to install linux kernel"
     cleanup
     exit 1
 }
 
 echo "=> generating initramfs"
-mkinitramfs -k=${REAL_KERNEL_VERSION} ${PLYMOUTH_FLAG} -o=${ISODIR}/boot/initrd-${REAL_KERNEL_VERSION} -u -m=${ISODIR}/boot/modules || {
+mkinitramfs -k=${KERNEL_VERSION} ${PLYMOUTH_FLAG} -o=${ISODIR}/boot/initrd-${KERNEL_VERSION} -u -m=${ISODIR}/boot/modules || {
     echo "Error! failed to generate initramfs image"
     cleanup
     exit 1

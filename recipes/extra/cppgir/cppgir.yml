@@ -1,0 +1,12 @@
+id: cppgir
+version: 2200
+about: GObject Introspection C++ binding wrapper generator
+commit: 0a3190c0de5c213f118e7bb849df47835a2ac537
+sources:
+  - https://gitlab.com/mnauw/cppgir/-/archive/{{commit}}/cppgir-{{commit}}.tar.gz
+depends:
+  runtime:
+    - fmt
+    - libboost
+  buildtime:
+    - boost

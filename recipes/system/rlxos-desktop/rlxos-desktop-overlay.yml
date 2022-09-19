@@ -1,7 +1,7 @@
 id: rlxos-desktop-overlay
 version: 2200
 about: rlxos desktop iso overlay
-release: 3
+release: 4
 build-type: system
 type: img
 include:
@@ -13,7 +13,7 @@ inside.pkgupd.trigger: false
 inside.pwconv.required: false
 
 pre-script: |
-  install -v -D -m 0644 ${FILES_DIR}/10-auto-login.conf -t ${pkgupd_pkgdir}/etc/gdm/
+  install -v -D -m 0644 ${FILES_DIR}/custom.conf -t ${pkgupd_pkgdir}/etc/gdm/
   
   install -v -d ${pkgupd_pkgdir}/etc/skel/.config
   touch ${pkgupd_pkgdir}/etc/skel/.config/welcome-tour-done

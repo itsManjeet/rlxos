@@ -1,6 +1,6 @@
 id: liveboot
 version: 2200
-release: 1
+release: 2
 about: setup live environment for rlxos liveiso
 depends:
   runtime:
@@ -10,5 +10,7 @@ depends:
 
 script: |
   install -v -D -m 0755 ${FILES_DIR}/liveboot.sh.in  ${pkgupd_pkgdir}/usr/lib/liveboot
-  install -v -D -m 0644 ${FILES_DIR}/liveboot.service -t ${pkgupd_pkgdir}/etc/systemd/system/
-  sed -i 's#@@libexecdir@@#/usr/lib#g' ${pkgupd_pkgdir}/etc/systemd/system/liveboot.service
+  install -v -D -m 0644 ${FILES_DIR}/liveboot.service -t ${pkgupd_pkgdir}/usr/lib/systemd/system/
+  sed -i 's#@@libexecdir@@#/usr/lib#g' ${pkgupd_pkgdir}/usr/lib/systemd/system/liveboot.service
+  mkdir -p ${pkgupd_pkgdir}/usr/lib/systemd/system/sysinit.target.wants/
+  ln -sv ../liveboot.service ${pkgupd_pkgdir}/usr/lib/systemd/system/sysinit.target.wants/liveboot.service

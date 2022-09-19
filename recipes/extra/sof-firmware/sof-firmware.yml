@@ -2,7 +2,7 @@ id: sof-firmware
 version: 2.2.1
 about: Source open firmware
 variables:
-  binver: v2
+  binver: v2.2
   tplgver: v2.2.1
 
 sources:
@@ -22,10 +22,10 @@ script: |
   cp -at ${fwdir} sof-{{binver}}
   ln -sr ${fwdir}/sof-{{binver}} ${fwdir}/sof
 
-  install -Dt ${pkgupd_pkgdir}/usr/share/doc/{{id}} -m644 LICENSE* Notice*
+  install -Dt ${pkgupd_pkgdir}/usr/share/doc/{{id}} -m644 LICENCE* Notice*
 
   install -Dt ${pkgupd_pkgdir}/usr/bin tools-{{binver}}/*
-  install -Dt ${pkgupd_pkgdir}/usr/share/doc/sof-tools -m644 LICENSE* Notice*
+  install -Dt ${pkgupd_pkgdir}/usr/share/doc/sof-tools -m644 LICENCE* Notice*
 
 split:
   - into: sof-tools

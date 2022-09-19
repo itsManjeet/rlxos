@@ -3,7 +3,6 @@
 BASEDIR="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
 [[ -e ${BASEDIR}/.config ]] && source ${BASEDIR}/.config
-KERNEL=${KERNEL:-'5.18'}
 PKGUPD_PATH=${PKGUPD_PATH:-'/storage/'}
 SERVER_STABILITY='testing'
 
@@ -23,7 +22,6 @@ function printHelp() {
     echo ""
     echo "Flags:"
     echo "  --pkgupd-path               specify pkgupd cache path inside container"
-    echo "  --kernel                    specify kernel version for release build"
     echo "  --build-dir                 specify build directory"
     echo "  --debug                     enable PKGUPD debug messages"
     echo ""
@@ -71,13 +69,11 @@ function doGenerateSystem() {
 
     echo "SYSTEM FILE : ${_system_file}"
     echo "OVERLAY FILE: ${_overlay_file}"
-    echo "KERNEL      : ${KERNEL}"
     echo "VERSION     : ${_version}"
     local _isofile="${_id}-${_version}.iso"
 
     mkiso --system-image ${_system_file} \
               --overlay ${_overlay_file} \
-              --kernel-version ${KERNEL} \
               --version ${_version} \
               --output ${PKGUPD_PATH}/releases/${_isofile}
     if [[ $? != 0 ]] ; then
@@ -193,11 +189,6 @@ function doBuild() {
 ARGS=()
 while [[ $# -gt 0 ]] ; do
     case $1 in
-        --kernel)
-            KERNEL=${2}
-            shift
-            ;;
-
         --pkgupd-path)
             PKGUPD_PATH=${2}
             shift

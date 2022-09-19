@@ -3,6 +3,7 @@ version: 2200
 release: 4
 about: rlxos barebone system image
 build-type: system
+type: img
 # list of packages included in the system
 include:
   - core          # rlxos core, packages list can be viewed from recipes/core/core.yml

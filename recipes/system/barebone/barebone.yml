@@ -1,6 +1,6 @@
 id: barebone
 version: 2200
-release: 3
+release: 4
 about: rlxos barebone system image
 build-type: system
 # list of packages included in the system
@@ -13,7 +13,3 @@ include:
 
 # default root password
 inside.root: rlxos
-
-# script to be run inside chroot
-inside: |
-  true

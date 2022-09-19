@@ -1,0 +1,38 @@
+id: opencv
+version: 4.6.0
+about: Libraries mainly aimed at real-time computer vision
+depends:
+  runtime:
+    - openblas-lapack
+    - ffmpeg
+    - gst-plugins-base
+    - libexif
+    - gtk
+    - jasper
+    - libpng
+    - libtiff
+    - libwebp
+    - xine-lib
+    - v4l-utils
+  buildtime:
+    - cmake
+    - unzip
+sources:
+  - https://github.com/opencv/opencv/archive/{{version}}/opencv-{{version}}.tar.gz
+  - https://github.com/opencv/opencv_contrib/archive/{{version}}/opencv_contrib-{{version}}.tar.gz
+
+pre-script: |
+  sed -e '/\/avformat.h/i #include <libavcodec/version.h>' \
+    -i modules/videoio/src/ffmpeg_codecs.hpp
+
+configure: >
+  -DCMAKE_BUILD_TYPE=Release
+  -DENABLE_CXX11=ON
+  -DBUILD_PREF_TESTS=OFF
+  -DWITH_XINE=ON
+  -DBUILD_TESTS=OFF
+  -DENABLE_PRECOMPILED_HEADERS=OFF
+  -DCMAKE_SKIP_RPATH=ON
+  -DBUILD_WITH_DEBUG_INFO=OFF
+  -Wno-dev
+  

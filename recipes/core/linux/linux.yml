@@ -1,5 +1,5 @@
 id: linux
-version: 5.12.10
+version: 5.18.5
 release: 6
 about: |
   Linux kernel, modules and headers

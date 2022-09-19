@@ -76,7 +76,7 @@ script: |
   mkdir -p "${pkgupd_pkgdir}/usr/src"
   ln -sr "$builddir" "${pkgupd_pkgdir}/usr/src/{{id}}"
 split:
-  - into: kernel-headers
+  - into: linux-dev
     about: Headers and scripts for building modules for the Linux kernel
 
     files:

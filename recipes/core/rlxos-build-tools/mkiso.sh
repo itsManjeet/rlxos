@@ -113,6 +113,11 @@ pkgupd install linux dir.root=${ISODIR} installer.depends=false force=true || {
     cleanup
     exit 1
 }
+cp -a ${ISODIR}/boot/modules/${KERNEL_VERSION}/vmlinuz ${ISODIR}/boot/vmlinuz-${KERNEL_VERSION} || {
+    echo "Error! failed to install kernel image"
+    cleanup
+    exit 1
+}
 
 echo "=> generating initramfs"
 mkinitramfs -k=${KERNEL_VERSION} ${PLYMOUTH_FLAG} -o=${ISODIR}/boot/initrd-${KERNEL_VERSION} -u -m=${ISODIR}/boot/modules || {

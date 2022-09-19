@@ -1,6 +1,6 @@
 id: rlxos-build-tools
 version: 2200
-release: 4
+release: 5
 about: Build tools for rlxos
 depends:
   runtime:

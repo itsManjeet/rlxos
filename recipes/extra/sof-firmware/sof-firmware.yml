@@ -1,0 +1,35 @@
+id: sof-firmware
+version: 2.2.1
+about: Source open firmware
+variables:
+  binver: v2
+  tplgver: v2.2.1
+
+sources:
+  - https://github.com/thesofproject/sof-bin/releases/download/{{ binver }}/sof-bin-{{ binver }}.tar.gz 
+  - https://github.com/thesofproject/sof-bin/releases/download/{{ tplgver }}/sof-tplg-{{ tplgver }}.tar.gz
+
+build-dir: .
+
+script: |
+  fwdir=${pkgupd_pkgdir}/usr/lib/firmware/intel
+  mkdir -p ${fwdir}
+
+  cp -at ${fwdir} sof-tplg-{{tplgver}}/
+  ln -sr ${fwdir}/sof-tplg-{{tplgver}} ${fwdir}/sof-tplg
+
+  cd sof-bin-{{binver}}
+  cp -at ${fwdir} sof-{{binver}}
+  ln -sr ${fwdir}/sof-{{binver}} ${fwdir}/sof
+
+  install -Dt ${pkgupd_pkgdir}/usr/share/doc/{{id}} -m644 LICENSE* Notice*
+
+  install -Dt ${pkgupd_pkgdir}/usr/bin tools-{{binver}}/*
+  install -Dt ${pkgupd_pkgdir}/usr/share/doc/sof-tools -m644 LICENSE* Notice*
+
+split:
+  - into: sof-tools
+    about: Sound open firmware tools
+    files:
+      - usr/bin
+      - usr/share/doc/sof-tools

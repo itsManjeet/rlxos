@@ -19,3 +19,6 @@ pre-script: |
   touch ${pkgupd_pkgdir}/etc/skel/.config/welcome-tour-done
 
   ln -sv /run/iso/boot ${pkgupd_pkgdir}/boot
+
+post-script: |
+  install -v -D -m 0644 ${pkgupd_pkgdir}/usr/share/applications/dev.rlxos.Installer.desktop -t ${pkgupd_pkgdir}/etc/xdg/autostart/

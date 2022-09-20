@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=MTR
+Comment=Combines the functionality of traceroute and ping into one tool
+Exec=@@exec@@
+Icon=mtr
+Type=Application
+StartupNotify=true
+Categories=System;
+Terminal=true

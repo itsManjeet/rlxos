@@ -1,5 +1,5 @@
 id: openjdk-bin
-version: 18.0.1.1
+version: 18.0.2
 about: Java programming language [Binary]
 depends:
   runtime:
@@ -9,12 +9,13 @@ depends:
     - xorg-libs
 
 sources:
-  - https://anduin.linuxfromscratch.org/BLFS/OpenJDK/OpenJDK-{{version}}/OpenJDK-{{version}}+10-x86_64-bin.tar.xz
+  - https://anduin.linuxfromscratch.org/BLFS/OpenJDK/OpenJDK-{{version}}/OpenJDK-{{version}}+8-x86_64-bin.tar.xz
 build-dir: .
 script: |
-  install -v -d -m 0755 ${pkgupd_pkgdir}/opt/openjdk-bin-{{version}}
-  mv * ${pkgupd_pkgdir}/opt/openjdk-bin-{{version}}/
-  chown -R root:root ${pkgupd_pkgdir}/opt/openjdk-bin-{{version}}
+  JAVA_HOME=/opt/openjdk-bin-{{version}}
+  install -v -d -m 0755 ${pkgupd_pkgdir}/${JAVA_HOME}
+  mv * ${pkgupd_pkgdir}/${JAVA_HOME}
+  chown -R root:root ${pkgupd_pkgdir}/${JAVA_HOME}
 
-  ln -sfv /etc/pki/tls/java/cacerts ${pkgupd_pkgdir}/opt/openjdk-bin-{{version}}/lib/security/cacets
-  install -v -D -m 0755 ${FILES_DIR}/source ${pkgupd_pkgdir}/opt/openjdk-bin-{{version}}/source
+  install -v -D -m 0755 ${FILES_DIR}/source ${pkgupd_pkgdir}/${JAVA_HOME}/source
+  sed -i "s#@@install_dir@@#${JAVA_HOME}#g" ${pkgupd_pkgdir}/${JAVA_HOME}/source

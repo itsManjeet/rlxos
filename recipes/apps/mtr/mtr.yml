@@ -1,0 +1,27 @@
+id: mtr
+version: 0.95
+about: Combines the functionality of traceroute and ping into one tool
+depends:
+  buildtime:
+    - ncurses
+    - gtk
+    - libcap
+    - gdk-pixbuf
+    - appimagetool
+type: app
+category: utilities
+tags:
+  - networking
+sources:
+  - https://github.com/traviscross/mtr/archive/v{{version}}/{{id}}-{{version}}.tar.gz
+pre-script: |
+  echo {{version}} > .tarball-version
+  autoreconf -fiv
+bundle: true
+configure: >
+  --with-gtk
+post-script: |
+  mkdir -p ${pkgupd_pkgdir}/usr/lib/
+  install -v -D -m 0644 ${FILES_DIR}/mtr.svg ${pkgupd_pkgdir}/{{id}}.png
+  install -v -D -m 0755 ${FILES_DIR}/AppRun ${pkgupd_pkgdir}/AppRun
+  install -v -D -m 0644 ${FILES_DIR}/{{id}}.desktop ${pkgupd_pkgdir}/{{id}}.desktop

@@ -1,8 +1,0 @@
-core initramfs firmware grub-i386 grub os-prober systemd-initial-setup
-xorg xfce4 welcome-tour networkmanager network-manager-applet lightdm lightdm-gtk-greeter
-pam-config make-ca
-fonts-cantarell adobe-source-code-pro-fonts
-fluent-gtk-theme fluent-icon-theme fluent-wallpaper
-fuse2 libbsd cifs-utils ntfs-3g btrfs-progs squashfs-tools
-flatpak gparted
-gufw zram-generator docker

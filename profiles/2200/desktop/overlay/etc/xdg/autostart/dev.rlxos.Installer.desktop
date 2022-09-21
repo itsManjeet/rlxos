@@ -1,9 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=installer
-GenericName=installer
-Comment=Application
-Icon=dev.rlxos.Installer
-StartupNotify=true
-Exec=/bin/pkexec /bin/installer
-Categories=GNOME;GTK;

@@ -9,7 +9,7 @@ depends:
     - pcre2
     - libpsl
     - desktop-file-utils
-
+type: machine
 script: |
   mkdir -p ${pkgupd_pkgdir}
 

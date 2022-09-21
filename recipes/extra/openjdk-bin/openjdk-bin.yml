@@ -1,5 +1,5 @@
 id: openjdk-bin
-version: 18.0.2
+version: 18.0.2.1
 about: Java programming language [Binary]
 depends:
   runtime:
@@ -9,8 +9,8 @@ depends:
     - xorg-libs
 
 sources:
-  - https://anduin.linuxfromscratch.org/BLFS/OpenJDK/OpenJDK-{{version}}/OpenJDK-{{version}}+8-x86_64-bin.tar.xz
-build-dir: .
+  - https://storage.rlxos.dev/sources/openjdk-{{version}}_linux-x64_bin.tar.gz
+build-dir: jdk-{{version}}
 script: |
   JAVA_HOME=/opt/openjdk-bin-{{version}}
   install -v -d -m 0755 ${pkgupd_pkgdir}/${JAVA_HOME}

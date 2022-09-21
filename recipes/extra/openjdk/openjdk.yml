@@ -1,0 +1,46 @@
+id: openjdk
+version: 18.0.2
+about: open-source implementation of Oracle's Java Standard Edition platform
+environ:
+  - JAVA_HOME=/opt/openjdk-bin-18.0.2.1
+  - PATH=${JAVA_HOME}/bin:${PATH}
+  - AUTO_CLASSPATH_DIR=/usr/shar/java
+depends:
+  runtime:
+    - alsa-lib
+    - cpio
+    - cups
+    - unzip
+    - which
+    - xorg-libs
+    - zip
+    - make-ca
+    - giflib
+    - lcms
+    - libjpeg-turbo
+    - libpng
+  buildtime:
+    - openjdk-bin
+sources:
+  - https://github.com/openjdk/jdk18u/archive/jdk-{{version}}-ga.tar.gz
+
+script: |
+  sh ./configure                    \
+  --enable-unlimited-crypto         \
+  --disable-warnings-as-errors      \
+  --with-stdc++lib=dynamic          \
+  --with-giflib=system              \
+  --with-lcms=system                \
+  --with-libjpeg=system             \
+  --with-libpng=system              \
+  --with-zlib=system                \
+  --with-version-build="8"          \
+  --with-version-pre=""             \
+  --with-version-opt=""             \
+  --with-cacerts-file=${JAVA_HOME}/lib/security/cacerts
+
+  unset MAKEFLAGS
+  make LOG=warn JOBS=$(nproc) images
+
+  mkdir -p ${pkgupd_pkgdir}/opt/{{id}}-{{version}}/
+  cp -Rv build/*/images/jdk/* ${pkgupd_pkgdir}/opt/{{id}}-{{version}}/

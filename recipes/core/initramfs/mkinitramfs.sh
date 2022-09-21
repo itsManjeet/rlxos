@@ -218,7 +218,7 @@ install_udev() {
 install_modules() {
 
     local REQMODULES="crypto fs lib"
-    local DRIVERS="block ata md firewire parport cdrom input scsi message pcmcia virtio hid usb/host usb/storage"
+    local DRIVERS="block ata md firewire nvme parport cdrom input scsi message pcmcia virtio hid usb/host usb/storage"
 
     for mod in ${REQMODULES}; do
         FTGT="${FTGT} ${MODULES_DIR}/${KERNEL}/kernel/${mod}"

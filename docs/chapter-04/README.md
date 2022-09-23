@@ -4,97 +4,64 @@
 
 PKGUPD is provide a high level abstraction for managing package in rlxos GNU/Linux. PKGUPD is capable of managing packages both from binary packages and source codes;
 
-## Usage
+PKGUPD is capable to install/building universal AppImage (.app), native packages (.pkg and .rlx), subsystems (.machine) and system images (.img)
 
-```shell
-pkgupd [TASK] <args>..
-PKGUPD is a system package manager for rlxos.
-Perform system level package transcations like installation, upgradation and removal of packages.
+# Basic Usage
 
-Task:
- - install       Install package from repository
-                 Options:
-                  - installer.depends=<bool>   # Enable or disable dependency management
-                  - force=<bool>               # Force installation of already installed package
-                  - installer.triggers=<bool>  # Skip triggers during installation, also include user/group creation
-                  - downloader.force=<bool>    # Force redownload of specified package
+## Updating system and database
+> However upgradation of system packages is restricted with 2200 release and pkgupd-update only manage the AppImages and extra installed package updates.
 
- - remove        Remove package from system
-                 Options:
-                  - system.packages=<list>    # Skip System packages for removal
+`sudo pkgupd update`
 
- - sync          Sync local database from server repository
- - info          Display package information of specified package
-                 Options:
-                  - info.value=<param>        # show particular information value
-                  - info.value=installed.time # extra parameter for installed package
-                  - info.value=files.count    # extra parameter for installed package
+**Exclude packages from update** via `update.exclude=list,of,packages,`
 
- - search        Search package from repository
- - update        Update non-system packages of system
-                 Options:
-                  - system.packages=<list>    # Skip all system packages
-                  - update.exclude=<list>    # Specify package to exclude from update
+## Installing package, appimage or machine
 
- - depends       List all the dependent packages required
-                 Options:
-                  - depends.all=<bool>    # List all dependent packages including already installed packages
+`sudo pkgupd install <package-name>`
 
- - inject        Inject package from url or filepath directly into system
-                  - Can be used for rlxos .app files or bundle packages
-
- - meta          Generate meta information for package repository
- - build         Build the specified package either from recipe file or from the source repository.
- - trigger       Execute required triggers and create required users & groups
- - revdep        List the reverse dependency of specified package
- - owner         Search the package who provide specified file.
- - run           Run binaries inside container
-                  Options:
-                  - run.config=<path>   # Set container configuration
-
- - cleanup       clean pkgupd cache including:
-                  - package cache
-                  - source files 
-                  - recipe data
- - watchdog      Setup the directory as trigger point for pkgupd
-                 Directory in (watchdog.dir) will be inspected
-                 for changes, Any package put in that directory
-                 will be integrated into the system
+**Skip dependency checkup** via `installer.depends=false`
+**Force reinstallation** via `force=true`
+**Different root directory** via `dir.root=/path/to/root`
 
 
-Exit Status:
-  0 if OK
-  1 if process failed.
+## Removing packages
+> Removal of system packages (or preinstalled packages) is resticted as per the layer-architecture. So pkgupd-remove is usefull for user installed packages and appimages
 
-Full documentation <https://docs.rlxos.dev/pkgupd>
-```
+`sudo pkgupd remove <package-name>`
 
-## Configurations
+and then to cleanup unneeded dependencies
 
-pkgupd can intake configration directly from cmdline arguments or from /etc/pkgupd.yml file or can specify configuration file path with config=`<path/to/config>`
+`sudo pkgupd autoremove`
 
-```yaml
+## Search package via name or description
 
-mirrors:
-    - https://rlxos.dev/storage/
+`pkgupd search <package-name> or <description>`
 
-repositories:
-    - core
-    - extra
-```
 
-or
+## Getting information about package
 
-```shell
-pkgupd sync mirrors=https://rlxos.dev/storage, repository=core,extra
-```
+`pkgupd info <package-name>`
 
-### Advance configurations
+or to print information about specific parameter
 
-| Configuration Parameter | Descriptions                                      | Default Value          |
-| ----------------------- | ------------------------------------------------- | ---------------------- |
-| dir.root                | Specify the root directory for package installing | '/'                    |
-| dir.data                | PKGUPD system database path                       | /var/lib/pkgupd/data   |
-| dir.cache               | PKGUPD cache directory                            | /var/cache/pkgupd      |
-| dir.pkgs                | PKGUPD binary packages cache                      | /var/cache/pkgupd/pkgs |
-| dir.pkgs                | PKGUPD binary source code cache                   | /var/cache/pkgupd/src  |
+`pkgupd info <package-name> info.value=name`
+
+supported parameters are:
+- name
+- version
+- about
+- files
+- installed.time
+- files.count
+- repository
+- package
+
+or to dump the package information into file
+
+`pkgupd info <package-name> info.dump=/path/to/file`
+
+## Cleanup cache
+
+`/var/cache/pkgupd/` holds the temporary files and cache of downloaded packages
+
+`sudo pkgupd cleanup`

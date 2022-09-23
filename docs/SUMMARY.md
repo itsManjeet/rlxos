@@ -19,6 +19,9 @@
 
 # Package Management
 - [Introduction](chapter-04/README.md)
+- [Architecure](chapter-04/architecture.md)
+- [Building Packages](chapter-04/building-packages.md)
 
 # System Management
+- [Subsystem](chapter-05/subsystem.md)
 - [Factory Reset](chapter-05/factory-reset.md)

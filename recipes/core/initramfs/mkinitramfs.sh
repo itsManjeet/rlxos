@@ -38,6 +38,7 @@ KERNEL=${KERNEL:-$(uname -r)}
 PASSWORD='rlxos'
 unsorted=$(mktemp /tmp/unsorted.XXXXXXXXXX)
 MODULES_DIR='/boot/modules'
+UNIVERSAL=1
 
 export LC_ALL=C
 

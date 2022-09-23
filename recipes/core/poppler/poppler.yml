@@ -1,5 +1,6 @@
 id: poppler
 version: 21.07.0
+release: 2
 about: |
   A PDF rendering library and command line tools used to manipulate PDF files
 
@@ -11,7 +12,7 @@ depends:
     - libjpeg-turbo
     - libpng
     - nss
-    - boost
+    - libboost
     - openjpeg
 
   buildtime:

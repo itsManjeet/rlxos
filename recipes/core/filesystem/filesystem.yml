@@ -1,6 +1,12 @@
 id: filesystem
 version: 2200
-codename: begin
+variables:
+  codename: reboot
+backup:
+  - etc/passwd
+  - etc/group
+  - etc/hostname
+  - etc/hosts
 about: |
   rlxos filesystem
 
@@ -8,12 +14,7 @@ depends:
   runtime:
     - iana-etc
 
-packages:
-  - id: pkg
-    dir: .
-
-    plugin: script
-    script: |
+script: |
       mkdir -p ${pkgupd_pkgdir}/usr/{bin,lib,share,include}
       ln -sv bin ${pkgupd_pkgdir}/usr/sbin
       ln -sv lib ${pkgupd_pkgdir}/usr/lib64
@@ -24,33 +25,36 @@ packages:
         ln -sv usr/$i "${pkgupd_pkgdir}"/$i
       done
 
-     
-
-      mkdir -p ${pkgupd_pkgdir}/{home,mnt,srv,opt}
+      mkdir -p ${pkgupd_pkgdir}/{mnt,srv,opt}
       mkdir -p ${pkgupd_pkgdir}/etc/{opt,sysconfig}
       mkdir -p ${pkgupd_pkgdir}/usr/share/{color,dict,doc,info,locale,man,misc,terminfo,zoneinfo}
       mkdir -p ${pkgupd_pkgdir}/usr/share/man/man{1..8}
       mkdir -p ${pkgupd_pkgdir}/var/{cache,local,log,mail,opt,spool}
       mkdir -p ${pkgupd_pkgdir}/var/lib/{color,misc,locate}
+      mkdir -p ${pkgupd_pkgdir}/run/initramfs/home
+      ln -sv /run/initramfs/home ${pkgupd_pkgdir}/home
 
       ln -sv /run/initramfs/boot ${pkgupd_pkgdir}/boot
       ln -sv /run ${pkgupd_pkgdir}/var/run
 
       for i in fstab group inputrc \
         issue nsswitch.conf \
-        passwd profile shells ; do
-        install -v -D -m 644 ${FILES}/fs/$i ${pkgupd_pkgdir}/etc/$i
+        passwd profile shells host.conf \
+        hosts ; do
+        install -v -D -m 644 ${FILES_DIR}/$i ${pkgupd_pkgdir}/etc/$i
       done
 
       for i in lsb-release os-release ; do
-        sed 's|@codename@|{{codename}}|' ${FILES}/fs/${i} | sed 's|@version@|{{version}}|' > ${pkgupd_pkgdir}/etc/$i
+        sed 's|@codename@|{{codename}}|' ${FILES_DIR}/${i} | sed 's|@version@|{{version}}|' > ${pkgupd_pkgdir}/etc/$i
       done
+
+      echo {{codename}} > ${pkgupd_pkgdir}/etc/hostname
 
       install -v -d -m 0750 ${pkgupd_pkgdir}/root
       install -v -d -m 1777 ${pkgupd_pkgdir}/tmp ${pkgupd_pkgdir}/var/tmp
 
-      install -v -D -m 644 ${FILES}/fs/bash_profile "${pkgupd_pkgdir}"/etc/skel/.bash_profile
-      install -v -D -m 644 ${FILES}/fs/user_profile "${pkgupd_pkgdir}"/etc/skel/.profile
+      install -v -D -m 644 ${FILES_DIR}/bash_profile "${pkgupd_pkgdir}"/etc/skel/.bash_profile
+      install -v -D -m 644 ${FILES_DIR}/user_profile "${pkgupd_pkgdir}"/etc/skel/.profile
 
       touch ${pkgupd_pkgdir}/var/log/{btmp,lastlog,faillog,wtmp}
       chgrp -v 16 ${pkgupd_pkgdir}/var/log/lastlog

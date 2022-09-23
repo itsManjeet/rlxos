@@ -26,6 +26,18 @@ if [ -z "$INPUTRC" -a ! -f "$HOME/.config/inputrc" ] ; then
 	INPUTRC=/etc/inputrc
 fi
 
+
+
+if [ "${PS1-}" ] ; then
+	if [ "${BASH-}" ] && [ "$BASH" != "/bin/sh " ] ; then
+		if [ -f /etc/bashrc ] ; then
+			. /etc/bashrc
+		fi
+	else
+		PS1='\u@\h:\w\$ '
+	fi
+fi
+
 if [ "$(id -gn)" = "$(id -un)" -a $EUID -gt 99 ] ; then
 	umask 002
 else

@@ -1,0 +1,24 @@
+id: openpmix
+version: 4.2.0
+about: Extended version of the PMI standard
+depends:
+  runtime:
+    - curl
+    - glibc
+    - hwloc
+    - jansson
+    - libevent
+    - zlib
+  buildtime:
+    - perl
+    - python
+sources:
+  - openpmix-{{version}}.tar.gz::https://github.com/{{id}}/{{id}}/archive/refs/tags/v{{version}}.tar.gz
+build-dir: openpmix-{{version}}
+
+pre-script: |
+  ./autogen.pl
+
+configure: >
+  --with-curl
+  --with-jansson

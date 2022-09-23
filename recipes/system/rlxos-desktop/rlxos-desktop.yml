@@ -99,7 +99,7 @@ inside: |
   mkdir -p /etc/pkgupd.yml.d/
   echo "system.packages: " > /etc/pkgupd.yml.d/system-packages.yml
   for i in /var/lib/pkgupd/data/* ; do
-    if [[ "$i" == "*.files" ]] ; then 
+    if [[ $i == *.files ]] ; then 
       continue
     fi
     echo " - $(basename $i)">> /etc/pkgupd.yml.d/system-packages.yml

@@ -1,0 +1,15 @@
+id: pam_wrapper
+version: 1.1.4
+about: Tool to test PAM applications and PAM modules
+depends:
+  runtime:
+    - pam
+    - python
+  buildtime:
+    - cmake
+sources:
+  - https://www.samba.org/ftp/cwrap/pam_wrapper-{{version}}.tar.gz
+build-dir: pam_wrapper-{{version}}
+configure: >
+  -DCMAKE_BUILD_TYPE=None
+  -DUNIT_TESTING=false

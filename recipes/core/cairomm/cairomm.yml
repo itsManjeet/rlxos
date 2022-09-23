@@ -1,11 +1,13 @@
 id: cairomm
 version: 1.14.0
+release: 2
 about: |
   A C++ interface to Cairo
 depends:
   runtime:
     - cairo
     - libsigc++
+  buildtime:
     - boost
 sources:
   - https://www.cairographics.org/releases/cairomm-{{version}}.tar.xz

@@ -1,5 +1,6 @@
 id: pam-config
 version: 1.5.1
+release: 2
 about: |
   rlxos pam configuration module
 
@@ -13,5 +14,5 @@ script: |
       system-auth \
       system-password \
       system-session ; do
-    install -v -D -m 644 ${FILES}/pam/${i} -t ${pkgupd_pkgdir}/etc/pam.d/
+    install -v -D -m 644 ${FILES_DIR}/${i} -t ${pkgupd_pkgdir}/etc/pam.d/
   done

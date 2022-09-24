@@ -1,0 +1,10 @@
+id: gd
+version: 2.3.3
+about: Library for the dynamic creation of images by programmers
+depends:
+  runtime:
+    - fontconfig
+    - libwebp
+sources:
+  - https://github.com/libgd/libgd/archive/gd-{{version}}.tar.gz
+build-dir: libgd-gd-{{version}}

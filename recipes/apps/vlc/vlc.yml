@@ -12,6 +12,7 @@ tags:
 
 category: multimedia
 type: app
+strip: false
 sources:
   - https://github.com/cmatomic/VLCplayer-AppImage/releases/download/{{version}}/VLC_media_player-{{version}}-x86_64.AppImage
 

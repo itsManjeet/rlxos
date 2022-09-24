@@ -159,6 +159,9 @@ prepare_cdrom() {
 
     mkdir -p /run/initramfs/overlay/{upper,work}
 
+    # create home dir if not exists
+    [[ -d /run/initramfs/home ]] || mkdir -p /run/initramfs/home
+
     rootpoint=/mnt/root
     mkdir -p $rootpoint
     mount -t overlay overlay -o upperdir=/run/initramfs/overlay/upper,lowerdir="${_lowerdirpoint}",workdir=/run/initramfs/overlay/work $rootpoint
@@ -190,6 +193,9 @@ mount_root_system() {
             cache='common'
         fi
     fi
+
+    # create home dir if not exists
+    [[ -d /run/initramfs/home ]] || mkdir -p /run/initramfs/home
 
     syspoint="${diskpoint}/rlxos/cache/${cache}/image"
     mkdir -p "${syspoint}"

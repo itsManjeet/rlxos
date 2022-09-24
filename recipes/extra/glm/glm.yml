@@ -9,7 +9,7 @@ depends:
 build-dir: .
 script: |
   mkdir -p ${pkgupd_pkgdir}/usr/include
-  cp -r glm ${pkgupd_pkgdir}/usr/include/ 
+  cp -r glm/glm ${pkgupd_pkgdir}/usr/include/ 
   mkdir -p ${pkgupd_pkgdir}/usr/lib/pkgconfig/
   sed "s/@VERSION@/{{version}}/" ${FILES_DIR}/glm.pc.in > ${pkgupd_pkgdir}/usr/lib/pkgconfig/glm.pc
 

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+export HERE="$(dirname "$(readlink -f "${0}")")"
+export LD_LIBRARY_PATH=${HERE}/usr/lib:${LD_LIBRARY_PATH}
+export PATH=${HERE}/usr/bin:${PATH}
+export GSETTINGS_SCHEMA_DIR=${HERE}/usr/share/glib-2.0/schemas/:${GSETTINGS_SCHEMA_DIR}
+export PYTHONPATH=${HERE}/usr/lib/python3.9/site-packages/:${PYTHONPATH}
+export XDG_DATA_DIRS=${HERE}/usr/share:${XDG_DATA_DIRS}
+export GI_TYPELIB_PATH=${HERE}/usr/lib/girepository-1.0/:${PKGDATA_DIR}/gir-1.0:${GI_TYPELIB_PATH}
+export GI_GIR_PATH=${HERE}/usr/share/gir-1.0:${PKGDATA_DIR}/gir-1.0
+
+exec ${HERE}/usr/bin/gnome-clocks ${@}

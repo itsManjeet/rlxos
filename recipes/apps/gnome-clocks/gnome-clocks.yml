@@ -1,0 +1,37 @@
+id: gnome-clocks
+version: 40.0
+about: Clocks from gnome
+type: app
+category: accessories
+tags:
+  - clock
+depends:
+  buildtime:
+    - geoclue
+    - geocode-glib
+    - gnome-desktop
+    - libcanberra
+    - gsound
+    - gtk
+    - libgweather
+    - libhandy
+    - gobject-introspection
+    - vala
+    - appimagetool
+
+sources:
+  - https://download.gnome.org/sources/gnome-clocks/40/gnome-clocks-{{version}}.tar.xz
+bundle: true
+post-script: |
+  cd ${pkgupd_pkgdir}
+  rm usr/share/help -r
+
+  glib-compile-schemas usr/share/glib-2.0/schemas/
+  cp usr/share/icons/hicolor/scalable/apps/org.gnome.clocks.svg {{id}}.png
+  cp usr/share/applications/org.gnome.clocks.desktop {{id}}.desktop
+  sed -i 's#org.gnome.clocks#{{id}}#' {{id}}.desktop
+
+  mkdir -p usr/lib
+
+  install -v -m 0755 ${FILES_DIR}/AppRun AppRun
+  sed -i '/^DBusActivatable/d' {{id}}.desktop

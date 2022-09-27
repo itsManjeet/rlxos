@@ -215,14 +215,15 @@ mount_root_system() {
 # mount_root
 # mount root device to /mnt/root
 mount_root() {
-    [[ -d "${rootpoint}" ]] || mkdir -p "${rootpoint}"/{sysroot,cache,work,root}
-    mount -o "${ro}" "${root}" "${rootpoint}/sysroot" || rescue_shell "failed to mount roots ${root} to ${rootpoint}/sysroot"
+    [[ -d "${rootpoint}" ]] || mkdir -p "${rootpoint}"
+    mount -o "${ro}" "${root}" "${rootpoint}" || rescue_shell "failed to mount roots ${root} to /mnt/root"
 
-    mount -t overlay overlay -o index=off -o metacopy=off \
-        -o upperdir="${rootpoint}/cache",lowerdir="${rootpoint}/sysroot",workdir="${rootpoint}/work" "${rootpoint}/root" || \
-            rescue_shell "failed to mount overlay"
-    
-    rootpoint="${rootpoint}/root"
+    mount -t overlay overlay \
+            -o index=off     \
+            -o metacopy=off  \
+            -o upperdir="${rootpoint}/cache",lowerdir="${rootpoint}/sysroot",workdir="${rootpoint}/work" \
+            "${rootpoint}/root" || rescue_shell "failed to add overlay layer ${root}"
+    rootpoint=${rootpoint}/root
 }
 
 # start_plymouth

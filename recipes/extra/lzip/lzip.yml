@@ -1,0 +1,9 @@
+id: lzip
+version: 1.23
+about: A lossless file compressor based on the LZMA algorithm
+depends:
+  runtime:
+    - libgcc
+sources:
+  - https://download.savannah.gnu.org/releases/{{id}}/{{id}}-{{version}}.tar.gz
+build-dir: lzip-{{version}}

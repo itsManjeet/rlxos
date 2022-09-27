@@ -1,6 +1,6 @@
 id: initramfs
-version: 0.1.10
-release: 8
+version: 0.2.0
+release: 1
 about: |
   rlxos initramfs tool
 

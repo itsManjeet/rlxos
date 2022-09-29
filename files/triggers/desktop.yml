@@ -1,5 +1,0 @@
-id: desktop
-message: Updating Desktop file database
-regex: ^\/(\w+)\/share\/applications\/$
-args: true
-exec: update-desktop-database

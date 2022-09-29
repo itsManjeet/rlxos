@@ -1,4 +1,0 @@
-id: fonts
-message: Updating font cache
-regex: ^\/(\w+)\/share\/fonts\/$
-exec: fc-cache -s

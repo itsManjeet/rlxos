@@ -1,5 +1,0 @@
-id: gio
-message: Updating GIO module cache
-regex: ^\/(\w+)\/lib\/gio\/modules\/$
-args: true
-exec: gio-querymodules

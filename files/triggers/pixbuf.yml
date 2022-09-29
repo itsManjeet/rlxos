@@ -1,4 +1,0 @@
-id: pixbuf
-message: Updating GDK Pixbuf cache
-regex: ^\/(\w+)\/lib\/gdk-pixbuf-\d+\.\d+\/\d+\.\d+\.\d+\/loaders\/$
-exec: gdk-pixbuf-query-loaders --update-cache

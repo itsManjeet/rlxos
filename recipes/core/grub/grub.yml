@@ -1,6 +1,6 @@
 id: grub
 version: 2.06
-release: 2
+release: 3
 about: |
   GRand Unified Bootloader
 
@@ -36,6 +36,12 @@ configure: >
   --target=x86_64
   --sysconfdir=/etc
   --with-bootdir=/boot/
+  --enable-quiet-boot
+  --enable-quick-boot
+  --enable-boot-time
+  --disable-silent-rules
+  --enable-mm-debug
+  --enable-cache-stats
   CFLAGS="-Os"
   CXXFLAGS="${CFLAGS}"
 

@@ -1,7 +1,9 @@
 # GRUB boot loader configuration
 
 GRUB_DEFAULT=0
-GRUB_TIMEOUT=5
+GRUB_TIMEOUT=0
+GRUB_HIDDEN_TIMEOUT=1
+GRUB_HIDDEN_TIMEOUT_QUIET=true
 GRUB_DISTRIBUTOR="rlxos"
 GRUB_CMDLINE_LINUX_DEFAULT="quiet splash loglevel=3 systemd.show_status=auto rd.udev.log_level=3"
 GRUB_CMDLINE_LINUX=""
@@ -12,9 +14,6 @@ GRUB_PRELOAD_MODULES="part_gpt part_msdos"
 # Uncomment to enable booting from LUKS encrypted devices
 #GRUB_ENABLE_CRYPTODISK=y
 
-# Uncomment to enable Hidden Menu, and optionally hide the timeout count
-#GRUB_HIDDEN_TIMEOUT=5
-#GRUB_HIDDEN_TIMEOUT_QUIET=true
 
 # Uncomment to use basic console
 GRUB_TERMINAL_INPUT=console

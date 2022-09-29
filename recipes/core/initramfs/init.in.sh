@@ -216,7 +216,7 @@ mount_root_system() {
 # mount root device to /mnt/root
 mount_root() {
     [[ -d "${rootpoint}" ]] || mkdir -p "${rootpoint}"
-    mount -o "${ro}" "${root}" "${rootpoint}" || rescue_shell "failed to mount roots ${root} to /mnt/root"
+    mount -o rw "${root}" "${rootpoint}" || rescue_shell "failed to mount roots ${root} to /mnt/root"
 
     mount -t overlay overlay \
             -o index=off     \

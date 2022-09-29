@@ -223,6 +223,13 @@ mount_root() {
             -o metacopy=off  \
             -o upperdir="${rootpoint}/cache",lowerdir="${rootpoint}/sysroot",workdir="${rootpoint}/work" \
             "${rootpoint}/root" || rescue_shell "failed to add overlay layer ${root}"
+    
+    for dir in home boot ; do
+        if [[ -d ${rootpoint}/${dir} ]] ; then
+            mkdir -p ${rootpoint}/root/${dir}
+            mount --bind ${rootpoint}/${dir} ${rootpoint}/root/${dir}
+        fi
+    done
     rootpoint=${rootpoint}/root
 }
 

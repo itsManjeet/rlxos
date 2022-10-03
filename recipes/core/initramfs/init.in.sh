@@ -259,6 +259,34 @@ start_plymouth() {
     PLYMOUTH_STARTED=1
 }
 
+mount_user_directories() {
+    for dir in home boot ; do
+        if [[ ! -d ${rootpoint}/${dir} ]] ; then
+            mkdir -p ${rootpoint}/${dir}
+        fi
+
+        # is ISO or system image
+        if [[ -n ${ISO} || -n ${system} ]] ; then
+            if [[ -d ${rootpoint}/root/${dir} ]] ; then
+                rmdir ${rootpoint}/root/${dir} || continue   # skip if contain data
+            fi
+
+            if [[ -n ${ISO} ]] ; then
+                ln -sv /run/iso/${dir} ${rootpoint}/root/${dir}
+            elif [[ -n ${system} ]] ; then
+                ln -sv /run/initramfs/${dir} ${rootpoint}/root/${dir}
+            fi
+        else
+            # TODO: cleanup old preferences
+            if [[ -L ${rootpoint}/root/${dir} ]] ; then
+                rm ${rootpoint}/root/${dir}
+            fi
+            mkdir -p ${rootpoint}/root/${dir}
+            mount --bind ${rootpoint}/${dir} ${rootpoint}/root/${dir}
+        fi
+    done
+}
+
 
 # check_resume
 # check if resume from hibernation
@@ -389,6 +417,9 @@ function main() {
         mount_root
     fi
 
+    debug "setting up user directories"
+    mount_user_directories
+    
     killall -w /lib/systemd/systemd-udevd
 
     debug "checking resume"

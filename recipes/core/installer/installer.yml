@@ -1,16 +1,17 @@
 id: installer
 version: 2200
 release: 3
-commit: 4b53cdb8ad7bf2bdd33ec3491f1dac48049b94ef
+commit: 47628ddbf1b617e40cda9937e50c45e8084ae314
 about: rlxos System Installer
 
 depends:
   buildtime:
-    - gtkmm
-    - cmake
-    - libhandy
+    - go
 
 sources:
   - installer-{{commit}}.tar.gz::https://github.com/itsManjeet/installer/archive/{{commit}}.tar.gz
 
 build-dir: installer-{{commit}}
+script: |
+  mkdir -p ${pkgupd_pkgdir}/usr/bin/
+  go build -o ${pkgupd_pkgdir}/usr/bin/installer cmd/cli/cli.go

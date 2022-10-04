@@ -4,6 +4,11 @@ release: 4
 about: rlxos barebone system image
 build-type: system
 type: img
+depends:
+  buildtime:
+    - squashfs-tools
+    - mtools
+    - rlxos-build-tools
 # list of packages included in the system
 include:
   - core          # rlxos core, packages list can be viewed from recipes/core/core.yml
@@ -11,6 +16,7 @@ include:
   - firmware      # includes non-free firmware
   - grub-i386     # for boot legacy
   - grub          # for uefi boot, exclude grub if using systemd-boot
+  - squashfs-tools
 
 # default root password
 inside.root: rlxos

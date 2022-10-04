@@ -159,12 +159,21 @@ prepare_cdrom() {
 
     mkdir -p /run/initramfs/overlay/{upper,work}
 
-    # create home dir if not exists
-    [[ -d /run/initramfs/home ]] || mkdir -p /run/initramfs/home
-
     rootpoint=/mnt/root
     mkdir -p $rootpoint
     mount -t overlay overlay -o upperdir=/run/initramfs/overlay/upper,lowerdir="${_lowerdirpoint}",workdir=/run/initramfs/overlay/work $rootpoint
+
+    for dir in home boot ; do
+        if [[ -d ${rootpoint}/${dir} && ! -L ${rootpoint}/${dir} ]] ; then
+            rmdir ${rootpoint}/${dir} || continue
+        fi
+        if [[ ! -d /run/iso/${dir} ]] ; then
+            mkdir -p /run/initramfs/${dir}
+            ln -sf /run/initramfs/${dir} ${rootpoint}/${dir}
+        else
+            ln -sf /run/iso/${dir} ${rootpoint}/${dir}
+        fi
+    done
 }
 
 # mount_root_system
@@ -194,9 +203,6 @@ mount_root_system() {
         fi
     fi
 
-    # create home dir if not exists
-    [[ -d /run/initramfs/home ]] || mkdir -p /run/initramfs/home
-
     syspoint="${diskpoint}/rlxos/cache/${cache}/image"
     mkdir -p "${syspoint}"
 
@@ -210,6 +216,13 @@ mount_root_system() {
     # disable metacopy and index
     # causing kernel panic: mount system call failed: stale file handle
     mount -t overlay overlay -o index=off -o metacopy=off -o upperdir="${uprdir}",lowerdir="${syspoint}",workdir="${wrkdir}" "${rootpoint}"
+
+    for dir in home boot ; do
+        if [[ -d ${rootpoint}/${dir} && ! -L ${rootpoint}/${dir} ]] ; then
+            rmdir ${rootpoint}/${dir} || continue
+        fi
+        ln -sf /run/initramfs/${dir} ${rootpoint}/${dir}
+    done
 }
 
 # mount_root
@@ -225,10 +238,10 @@ mount_root() {
             "${rootpoint}/root" || rescue_shell "failed to add overlay layer ${root}"
     
     for dir in home boot ; do
-        if [[ -d ${rootpoint}/${dir} ]] ; then
-            mkdir -p ${rootpoint}/root/${dir}
-            mount --bind ${rootpoint}/${dir} ${rootpoint}/root/${dir}
-        fi
+        [[ -d ${rootpoint}/${dir}      ]] || mkdir -p ${rootpoint}/${dir}
+        [[ -L ${rootpoint}/root/${dir} ]] && rm ${rootpoint}/root/${dir}
+        mkdir -p ${rootpoint}/root/${dir}
+        mount --bind ${rootpoint}/${dir} ${rootpoint}/root/${dir}
     done
     rootpoint=${rootpoint}/root
 }
@@ -257,34 +270,6 @@ start_plymouth() {
     plymouth --show-splash
 
     PLYMOUTH_STARTED=1
-}
-
-mount_user_directories() {
-    for dir in home boot ; do
-        if [[ ! -d ${rootpoint}/${dir} ]] ; then
-            mkdir -p ${rootpoint}/${dir}
-        fi
-
-        # is ISO or system image
-        if [[ -n ${ISO} || -n ${system} ]] ; then
-            if [[ -d ${rootpoint}/root/${dir} ]] ; then
-                rmdir ${rootpoint}/root/${dir} || continue   # skip if contain data
-            fi
-
-            if [[ -n ${ISO} ]] ; then
-                ln -sv /run/iso/${dir} ${rootpoint}/root/${dir}
-            elif [[ -n ${system} ]] ; then
-                ln -sv /run/initramfs/${dir} ${rootpoint}/root/${dir}
-            fi
-        else
-            # TODO: cleanup old preferences
-            if [[ -L ${rootpoint}/root/${dir} ]] ; then
-                rm ${rootpoint}/root/${dir}
-            fi
-            mkdir -p ${rootpoint}/root/${dir}
-            mount --bind ${rootpoint}/${dir} ${rootpoint}/root/${dir}
-        fi
-    done
 }
 
 
@@ -417,9 +402,6 @@ function main() {
         mount_root
     fi
 
-    debug "setting up user directories"
-    mount_user_directories
-    
     killall -w /lib/systemd/systemd-udevd
 
     debug "checking resume"

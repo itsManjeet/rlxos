@@ -30,7 +30,7 @@ BINARIES="sh bash cat cp dd ls mkdir mknod mount \
          blkid dmesg findfs tail head \
          switch_root losetup touch install chroot agetty \
          truncate df awk mkfs.ext4 mkfs mkfs.ext2 mkfs.ext3
-         udevadm killall cut md5sum unzstd zstd setsid"
+         udevadm killall cut md5sum unzstd zstd setsid rmdir"
 
 INITRD_DIR=$(mktemp -d /tmp/initramfs.XXXXXXXXXX)
 INIT_IN=${INIT_IN:-'/usr/share/initramfs/init.in'}

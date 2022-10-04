@@ -26,5 +26,5 @@ inside.root: rlxos
 
 service.system:
   - getty@tty1
-  - systemd-resovled
+  - systemd-resolved
   - systemd-networkd

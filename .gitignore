@@ -12,3 +12,4 @@
 /scripts/.env
 /book
 **/__pkgupd_builddir__
+*.qcow2

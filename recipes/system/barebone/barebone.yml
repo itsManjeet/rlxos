@@ -18,5 +18,13 @@ include:
   - grub          # for uefi boot, exclude grub if using systemd-boot
   - squashfs-tools
 
+# use include path
+include.path: var/lib/pkgupd/data
+
 # default root password
 inside.root: rlxos
+
+service.system:
+  - getty@tty1
+  - systemd-resovled
+  - systemd-networkd

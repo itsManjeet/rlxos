@@ -1,7 +1,7 @@
 id: installer
 version: 2200
 release: 3
-commit: f7e89eb930cf87e090625421fb7d1c07fb230985
+commit: 63b29a19f455c5f6863d5686d34318c9cfa29c3c
 about: rlxos System Installer
 
 depends:

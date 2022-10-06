@@ -11,5 +11,6 @@ script: |
   sed -i 's|-Werror||' Makefile
   make library
 
+  unset DESTDIR
   make PREFIX="${pkgupd_pkgdir}/usr" install
   install -Dm644 LICENSE-MIT -t ${pkgupd_pkgdir}/usr/share/doc/{{id}}

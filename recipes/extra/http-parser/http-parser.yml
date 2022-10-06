@@ -9,7 +9,7 @@ sources:
 build-dir: http-parser-{{version}}
 script: |
   sed -i 's|-Werror||' Makefile
-  mak library
+  make library
 
   make PREFIX="${pkgupd_pkgdir}/usr" install
   install -Dm644 LICENSE-MIT -t ${pkgupd_pkgdir}/usr/share/doc/{{id}}

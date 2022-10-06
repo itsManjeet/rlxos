@@ -1,0 +1,30 @@
+id: libgit2
+version: 1.5.0
+about: A linkable library for GIT
+depends:
+  runtime:
+    - glibc
+    - http-parser
+    - libssh
+    - openssl
+    - pcre
+  buildtime:
+    - cmake
+    - python
+sources:
+  - libgit2-{{version}}.tar.gz::https://github.com/libgit2/libgit2/archive/v{{version}}.tar.gz
+
+build-dir: libgit2-{{version}}
+
+pre-script: |
+  patch  -Np1 -i ${FILES_DIR}/libgit2-1.5.0-remove_http-parse_incompatible_tests.patch
+
+configure: >
+  -DCMAKE_BUILD_TYPE=None
+  -DUSE_HTTP_PARSER=system
+  -DUSE_SSH=ON
+  -DTHREADSAFE=ON
+  -Wno-dev
+
+post-script: |
+  install -vDm 644 AUTHORS README.md -t "$pkgupd_pkgdir/usr/share/doc/{{id}}"

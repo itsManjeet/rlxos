@@ -1,0 +1,15 @@
+id: http-parser
+version: 2.9.4
+about: Parser for HTTP Request/Response written in C
+depends:
+  runtime:
+    - glibc
+sources:
+  - http-parser-{{version}}.tar.gz::https://github.com/nodejs/http-parser/archive/v{{version}}.tar.gz
+build-dir: http-parser-{{version}}
+script: |
+  sed -i 's|-Werror||' Makefile
+  mak library
+
+  make PREFIX="${pkgupd_pkgdir}/usr" install
+  install -Dm644 LICENSE-MIT -t ${pkgupd_pkgdir}/usr/share/doc/{{id}}

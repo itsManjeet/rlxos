@@ -1,5 +1,6 @@
 id: sddm
 version: 0.19.0
+release: 2
 about: QML based X11 and Wayland display manager
 depends:
   runtime:
@@ -48,3 +49,4 @@ post-script: |
   "$pkgupd_pkgdir"/usr/bin/sddm --example-config > "$pkgupd_pkgdir"/usr/lib/sddm/sddm.conf.d/default.conf
   sed -r 's|DefaultPath=.*|DefaultPath=/usr/local/sbin:/usr/local/bin:/usr/bin|g' -i "$pkgupd_pkgdir"/usr/lib/sddm/sddm.conf.d/default.conf
   sed -e "/^InputMethod/s/qtvirtualkeyboard//" -i "$pkgupd_pkgdir"/usr/lib/sddm/sddm.conf.d/default.conf
+  install -v -d -o 64 -g 64 ${pkgupd_pkgdir}/var/lib/sddm

@@ -1,0 +1,29 @@
+id: dolphin
+version: 22.08.1
+about: KDE file manager
+depends:
+  buildtime:
+    - baloo-widgets
+    - kactivities
+    - kcmutils
+    - kio-extras
+    - knewstuff
+    - kparts
+    - kuserfeedback
+    - extra-cmake-modules
+    - kdoctools
+    - appimagetool
+sources:
+  - https://download.kde.org/stable/release-service/{{version}}/src/{{id}}-{{version}}.tar.xz
+
+type: app
+bundle: true
+configure: >
+  -DBUILD_TESTING=OFF
+
+post-script: |
+  cp logo.png ${pkgupd_pkgdir}/{{id}}.png
+  cd ${pkgupd_pkgdir}
+  cp usr/share/applications/org.kde.dolphin.desktop {{id}}.desktop
+  sed -i 's#Icon=system-file-manager#Icon={{id}}#g' {{id}}.desktop
+  install -v -D -m 0755 ${FILES_DIR}/AppRun AppRun

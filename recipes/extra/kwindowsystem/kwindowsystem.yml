@@ -1,17 +1,13 @@
 id: kwindowsystem
-version: 5.87.0
+version: 5.97.0
 about: Access to windowing system
 depends:
   runtime:
     - qt
+    - kwayland
   buildtime:
     - extra-cmake-modules
-packages:
-  - id: pkg
-    dir: kwindowsystem-5.87.0
-    sources:
-      - https://download.kde.org/stable/frameworks/5.87/kwindowsystem-5.87.0.tar.xz
-    flags:
-      - id: configure
-        value: >
-          -DBUILD_TESTING=OFF
+sources:
+  - https://download.kde.org/stable/frameworks/5.97/kwindowsystem-{{version}}.tar.xz
+configure: >
+  -DBUILD_TESTING=OFF

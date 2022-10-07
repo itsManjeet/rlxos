@@ -1,5 +1,5 @@
 id: kpmcore
-version: 22.04.1
+version: 22.08.1
 about: Library for managing partitions
 depends:
   runtime:

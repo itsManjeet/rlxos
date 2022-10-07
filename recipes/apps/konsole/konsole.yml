@@ -1,0 +1,27 @@
+id: konsole
+version: 22.08.1
+about: KF5 based terminal emulator
+depends:
+  buildtime:
+    - knewstuff
+    - knotifyconfig
+    - kparts
+    - kpty
+    - extra-cmake-modules
+    - kdoctools
+    - appimagetool
+sources:
+  - https://download.kde.org/stable/release-service/{{version}}/src/konsole-{{version}}.tar.xz
+
+type: app
+
+configure: >
+  -DCMAKE_BUILD_TYPE=Release
+  -DBUILD_TESTING=OFF
+  -Wno-dev
+
+post-script: |
+  cp desktop/org.kde.konsole.desktop ${pkgupd_pkgdir}/{{id}}.desktop
+  install -v -D -m 0644 ${FILES_DIR}/{{id}}.png ${pkgupd_pkgdir}/{{id}}.png
+  sed -i 's#Icon=utilities-terminal#Icon={{id}}#g' ${pkgupd_pkgdir}/{{id}}.desktop
+  install -v -D -m 0755 ${FILES_DIR}/AppRun ${pkgupd_pkgdir}/AppRun

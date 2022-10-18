@@ -14,3 +14,4 @@ mirrors:
     - https://storage.rlxos.dev/stable
 server.stability: testing
 downloader.ssl.verify: false
+dir.pkgs: /storage

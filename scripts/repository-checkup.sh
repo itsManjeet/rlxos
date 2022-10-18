@@ -3,6 +3,7 @@
 PKGS=" "
 VERSION=${VERSION:-"2200"}
 LOGDIR=${LOGDIR:-"build/${VERSION}/logs/"}
+STORAGE_DIR=${STORAGE_DIR:-"/home/itsmanjeet/storage.rlxos.dev"}
 
 echo ":: scanning repositories ::"
 for i in $(find recipes/ -type f -name "*.yml") ; do
@@ -28,7 +29,7 @@ done
 
 PKGS+=" "
 
-ALL_PKGS=$(cd build/2200/pkgs; find . -not -name "*.digest" -not -name "meta" -not -name "recipe" | sed 's|\./||g' | sort)
+ALL_PKGS=$(cd ${STORAGE_DIR}/; find . -not -name "*.digest" -not -name "meta" -not -name "recipe" -not -name "*.meta" -not -name "stable" -not -name "testing" | sed 's|\./||g' | sort)
 REQUIRED_PKGS=$(echo ${PKGS} | sort)
 FOUND_PACKAGES=""
 MISSING_PACKAGES=""
@@ -62,7 +63,7 @@ else
     read v
     if [[ $v ==  "yes" ]] ; then
         for i in ${TO_REMOVE} ; do
-            rm -f build/2200/pkgs/${i} -v
+            rm -f ${STORAGE_DIR}/${i} -v
         done
     fi
 fi

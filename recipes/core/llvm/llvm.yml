@@ -1,5 +1,5 @@
 id: llvm
-version: 14.0.6
+version: 12.0.1
 about: |
   A collection of modular and reusable compiler and toolchain technologies
 
@@ -8,15 +8,15 @@ depends:
     - cmake
 
 sources:
-  - https://github.com/llvm/llvm-project/releases/download/llvmorg-{{version}}/llvm-{{version}}.src.tar.xz
-  - https://github.com/llvm/llvm-project/releases/download/llvmorg-{{version}}/clang-{{version}}.src.tar.xz
-  - https://github.com/llvm/llvm-project/releases/download/llvmorg-{{version}}/compiler-rt-{{version}}.src.tar.xz
+  - https://github.com/llvm/llvm-project/releases/download/llvmorg-12.0.1/llvm-12.0.1.src.tar.xz
+  - https://github.com/llvm/llvm-project/releases/download/llvmorg-12.0.1/clang-12.0.1.src.tar.xz
+  - https://github.com/llvm/llvm-project/releases/download/llvmorg-12.0.1/compiler-rt-12.0.1.src.tar.xz
 
-build-dir: llvm-{{version}}.src
+build-dir: llvm-12.0.1.src
 pre-script: |
   ls ../
-  mv ../clang-{{version}}.src tools/clang
-  mv ../compiler-rt-{{version}}.src projects/compiler-rt
+  mv ../clang-12.0.1.src tools/clang
+  mv ../compiler-rt-12.0.1.src projects/compiler-rt
 
   grep -rl "#!.*python" | xargs sed -i "1s/python$/python3/"
 
@@ -29,7 +29,6 @@ configure: >
   -DLLVM_ENABLE_RTTI=ON
   -DLLVM_TARGETS_TO_BUILD="X86;AMDGPU;BPF"
   -DLLVM_BUILD_TESTS=ON
-  -DLLVM_INCLUDE_BENCHMARKS=OFF
   -DLLVM_BINUTILS_INCDIR=/usr/include
   -Wno-dev -G Ninja
 
@@ -37,26 +36,23 @@ split:
   - into: libllvm
     about: llvm runtime library
     files:
-      - usr/lib/libLTO.so.14
+      - usr/lib/libLTO.so.12
+      - usr/lib/libLLVM-12.0.1.so
+      - usr/lib/libLLVM-12.so
+      - usr/lib/libRemarks.so
       - usr/lib/libLTO.so
       - usr/lib/LLVMgold.so
-      - usr/lib/libclang-cpp.so.14
-      - usr/lib/libclang-cpp.so
-      - usr/lib/libclang.so.14.0.6
-      - usr/lib/libclang.so.13
-      - usr/lib/libclang.so
-      - usr/lib/libLLVM-14.so
       - usr/lib/libLLVM.so
-      - usr/lib/libRemarks.so.14
-      - usr/lib/libRemarks.so
-      - usr/lib/clang/{{version}}/lib/linux/libclang_rt.ubsan_minimal-x86_64.so
-      - usr/lib/clang/{{version}}/lib/linux/libclang_rt.ubsan_standalone-x86_64.so
-      - usr/lib/clang/{{version}}/lib/linux/libclang_rt.hwasan-x86_64.so
-      - usr/lib/clang/{{version}}/lib/linux/libclang_rt.hwasan_aliases-x86_64.so
-      - usr/lib/clang/{{version}}/lib/linux/libclang_rt.tsan-x86_64.so
-      - usr/lib/clang/{{version}}/lib/linux/libclang_rt.scudo-x86_64.so
-      - usr/lib/clang/{{version}}/lib/linux/libclang_rt.scudo_minimal-x86_64.so
-      - usr/lib/clang/{{version}}/lib/linux/libclang_rt.scudo_standalone-x86_64.so
-      - usr/lib/clang/{{version}}/lib/linux/libclang_rt.asan-x86_64.so
-      - usr/lib/clang/{{version}}/lib/linux/libclang_rt.memprof-x86_64.so
-      - usr/lib/clang/{{version}}/lib/linux/libclang_rt.dyndd-x86_64.so
+      - usr/lib/libclang.so.12
+      - usr/lib/libclang.so
+      - usr/lib/libclang-cpp.so
+      - usr/lib/clang/12.0.1/lib/linux/libclang_rt.ubsan_minimal-x86_64.so
+      - usr/lib/clang/12.0.1/lib/linux/libclang_rt.hwasan-x86_64.so
+      - usr/lib/clang/12.0.1/lib/linux/libclang_rt.scudo_minimal-x86_64.so
+      - usr/lib/clang/12.0.1/lib/linux/libclang_rt.asan-x86_64.so
+      - usr/lib/clang/12.0.1/lib/linux/libclang_rt.scudo-x86_64.so
+      - usr/lib/clang/12.0.1/lib/linux/libclang_rt.memprof-x86_64.so
+      - usr/lib/clang/12.0.1/lib/linux/libclang_rt.dyndd-x86_64.so
+      - usr/lib/clang/12.0.1/lib/linux/libclang_rt.ubsan_standalone-x86_64.so
+      - usr/lib/libclang-cpp.so.12
+      - usr/lib/libRemarks.so.12

@@ -231,10 +231,33 @@ mount_root() {
     [[ -d "${rootpoint}" ]] || mkdir -p "${rootpoint}"
     mount -o rw "${root}" "${rootpoint}" || rescue_shell "failed to mount roots ${root} to /mnt/root"
 
+    system_image="${rootpoint}/sysroot/${system}"
+    if [[ -d ${system_image} ]] ; then
+        lowerdir=${system_image}
+    else if [[ -f ${system_image} ]] ; then
+        mkdir -p ${rootpoint}/.squashfs
+        mount ${system_image} ${rootpoint}/.squashfs
+        lowerdir=${rootpoint}/.squashfs
+    else
+        rescue_shell "Invalid system=${system}"
+    fi
+
+    # check cache version
+    if [[ -z ${cache} ]] ; then
+        if [[ -d ${rootpoint}/cache/${system} ]] ; then
+            echo "FOUND: image specific cache"
+            cache="${system}"
+        else
+            cache='common'
+        fi
+    fi
+
+    mkdir -p ${rootpoint}/.work
+
     mount -t overlay overlay \
             -o index=off     \
             -o metacopy=off  \
-            -o upperdir="${rootpoint}/cache",lowerdir="${rootpoint}/sysroot",workdir="${rootpoint}/work" \
+            -o upperdir="${rootpoint}/cache/${cache}",lowerdir="${lowerdir}",workdir="${rootpoint}/.work" \
             "${rootpoint}/root" || rescue_shell "failed to add overlay layer ${root}"
     
     for dir in home boot ; do
@@ -360,7 +383,7 @@ function main() {
     init='/sbin/init'
     squa='/rootfs.img'
     isoverlay='/iso.img'
-    rootpoint='/mnt/root'
+    rootpoint='/run/sysroot'
     system=
 
     mount_filesystem
@@ -389,15 +412,6 @@ function main() {
         debug "activating iso mode"
         prepare_cdrom
     elif [[ "${system}" ]]; then
-
-        if [[ ! -z "${SYSTEM_RESET}" ]]; then
-            debug "resetting system"
-            reset_system
-        fi
-
-        debug "activating overlay mode"
-        mount_root_system
-    else
         debug "activating disk mode"
         mount_root
     fi

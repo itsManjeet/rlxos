@@ -8,7 +8,7 @@ env:
 jobs:
   build:
     runs-on: self-hosted
-    timeout: 46000
+    timeout-minutes: 46000
     container:
       image: itsmanjeet/devel-docker:2200-3
       volumes:

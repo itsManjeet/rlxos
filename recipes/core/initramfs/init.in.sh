@@ -234,7 +234,7 @@ mount_root() {
     system_image="${rootpoint}/sysroot/${system}"
     if [[ -d ${system_image} ]] ; then
         lowerdir=${system_image}
-    else if [[ -f ${system_image} ]] ; then
+    elif [[ -f ${system_image} ]] ; then
         mkdir -p ${rootpoint}/.squashfs
         mount ${system_image} ${rootpoint}/.squashfs
         lowerdir=${rootpoint}/.squashfs

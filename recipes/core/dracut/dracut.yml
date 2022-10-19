@@ -1,5 +1,5 @@
 id: dracut
-version: "056"
+version: 057
 about: An event driven initramfs infrastructure
 depends:
   runtime:
@@ -23,5 +23,7 @@ sources:
   - https://mirrors.edge.kernel.org/pub/linux/utils/boot/dracut/dracut-{{version}}.tar.gz
 
 autoconf-dir: true
+pre-script: |
+  find . -type f -exec sed -i 's#lib/modules/#boot/modules/#g' {} \;
 configure: >
   --systemdsystemunitdir=/usr/lib/systemd/system

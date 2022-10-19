@@ -1,5 +1,5 @@
 id: dracut
-version: 057
+version: 056
 about: An event driven initramfs infrastructure
 depends:
   runtime:

@@ -185,6 +185,21 @@ function doBuild() {
     esac
 }
 
+function buildAll() {
+    local _all_pkgs="$(cat /storage/core/stable | grep "^  - id:" | awk '{print $3}')"
+    _all_pkgs+=" $(cat /storage/extra/stable | grep "^  - id:" | awk '{print $3}')"
+    _all_pkgs=$(PKGUPD_NO_MESSAGE=1 pkgupd depends $(echo ${_all_pkgs} | sed 's#libXres##g') depends.all=true)
+
+    local _pkg
+    for _pkg in ${_all_pkgs} ; do
+        echo "=> compiling ${_pkg}"
+        _pkgupd build $_pkg | Log ${_pkg}
+        if [[ $? != 0 ]] ; then
+        echo ":: ERROR :: ${_pkg} build failed"
+        fi
+    done
+}
+
 # Parse input arguments
 ARGS=()
 while [[ $# -gt 0 ]] ; do
@@ -237,6 +252,11 @@ case ${TASK} in
         fi
 
         doBuild $(realpath ${ARGS[0]})
+        exit $?
+        ;;
+
+    build-all)
+        buildAll
         exit $?
         ;;
 

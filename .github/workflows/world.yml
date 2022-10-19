@@ -1,0 +1,31 @@
+name: build world
+on:
+  workflow_dispatch:
+
+env:
+  PKGUPD_NO_PROGRESS: 1
+
+jobs:
+  build:
+    runs-on: self-hosted
+    timeout: 46000
+    container:
+      image: itsmanjeet/devel-docker:2200-3
+      volumes:
+        - /home/itsmanjeet/storage.rlxos.dev:/storage
+        - /var/run/docker.sock:/var/run/docker.sock
+      options: --privileged --device /dev/fuse --cap-add SYS_ADMIN
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: prerequisite
+        run: |
+          ln -srfv ./pkgupd.yml /etc/pkgupd.yml
+          pkgupd update mode.ask=false
+
+      - name: build changes
+        run: |
+          ./build.sh build-all
+      - name: sync
+        run: |
+          ./build.sh refresh --debug --pkgupd-path /storage/

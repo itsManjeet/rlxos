@@ -27,3 +27,4 @@ pre-script: |
   find . -type f -exec sed -i 's#lib/modules/#boot/modules/#g' {} \;
 configure: >
   --systemdsystemunitdir=/usr/lib/systemd/system
+  --disable-documentation

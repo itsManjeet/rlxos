@@ -6,6 +6,9 @@ about: |
 sources:
   - zlib-{{version}}.tar.gz::https://github.com/madler/zlib/archive/refs/tags/v{{version}}.tar.gz
 
+depends:
+  runtime:
+    - glibc
 build-dir: zlib-{{version}}
 build-type: autoconf
 

@@ -5,7 +5,7 @@ about: |
 
 depends:
   runtime:
-    python
+    - python
 
 sources:
   - https://files.pythonhosted.org/packages/source/s/six/six-1.16.0.tar.gz

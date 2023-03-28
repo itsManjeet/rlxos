@@ -13,3 +13,5 @@
 /book
 **/__pkgupd_builddir__
 *.qcow2
+/venv
+/.bash_history

@@ -1,8 +1,0 @@
-id: scdoc
-version: 1.11.2
-about: Tool for generating roff manual pages
-sources:
-  - scdoc-{{version}}.tar.gz::https://git.sr.ht/~sircmpwn/{{id}}/archive/{{version}}.tar.gz
-build-dir: scdoc-{{version}}
-script: |
-  make PREFIX=/usr DESTDIR=${pkgupd_pkgdir} install

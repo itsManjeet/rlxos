@@ -1,0 +1,22 @@
+diff -ur exiv2.old/cmake/compilerFlags.cmake exiv2/cmake/compilerFlags.cmake
+--- exiv2.old/cmake/compilerFlags.cmake	2021-04-29 12:05:56.583134150 +0200
++++ exiv2/cmake/compilerFlags.cmake	2021-04-29 12:12:13.061717835 +0200
+@@ -1,4 +1,5 @@
+ # These flags applies to exiv2lib, the applications, and to the xmp code
++include(CheckCXXCompilerFlag)
+ 
+ if ( MINGW OR UNIX OR MSYS ) # MINGW, Linux, APPLE, CYGWIN
+     if (${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
+@@ -26,7 +27,11 @@
+         # This fails under Fedora, MinGW GCC 8.3.0 and CYGWIN/MSYS 9.3.0
+         if (NOT (MINGW OR CMAKE_HOST_SOLARIS OR CYGWIN OR MSYS) )
+             if (COMPILER_IS_GCC AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 8.0)
+-                add_compile_options(-fstack-clash-protection -fcf-protection)
++                check_cxx_compiler_flag(-fstack-clash-protection STACK_CLASH_PROTECTION)
++                check_cxx_compiler_flag(-fcf-protection CF_PROTECTION)
++                if (STACK_CLASH_PROTECTION AND CF_PROTECTION)
++                    add_compile_options(-fstack-clash-protection -fcf-protection)
++                endif()
+             endif()
+ 
+             if( (COMPILER_IS_GCC   AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 5.0) # Not in GCC 4.8

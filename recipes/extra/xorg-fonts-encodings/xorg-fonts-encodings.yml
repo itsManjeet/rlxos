@@ -1,6 +1,0 @@
-id: xorg-fonts-encodings
-version: '7'
-about: xorg fonts xorg-fonts-encodings
-build-dir: encodings-1.0.5
-sources:
-- https://www.x.org/pub/individual/font/encodings-1.0.5.tar.bz2

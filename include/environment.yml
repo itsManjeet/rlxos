@@ -1,0 +1,8 @@
+environment:
+  LC_ALL: en_US.UTF-8
+  (?):
+  - arch == "aarch64":
+      JavaScriptCoreUseJIT: '0'
+      Malloc: '1'
+  - arch == "riscv64":
+      G_SLICE: always-malloc

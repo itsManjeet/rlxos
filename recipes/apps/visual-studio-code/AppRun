@@ -1,5 +1,0 @@
-#!/bin/sh
-SELF=$(readlink -f "$0")
-HERE=${SELF%/*}
-unset ARGV0
-exec ${HERE}/code $@

@@ -1,6 +1,0 @@
-id: libXcursor
-version: '7'
-about: xorg library libXcursor
-build-dir: libXcursor-1.2.0
-sources:
-- https://www.x.org/pub/individual/lib/libXcursor-1.2.0.tar.bz2

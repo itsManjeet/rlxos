@@ -1,0 +1,29 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 45a2218..7622fcd 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -28,6 +28,7 @@ find_package(PkgConfig)
+ find_package(XKBCommon)
+ pkg_check_modules(GLib2 REQUIRED IMPORTED_TARGET "glib-2.0>=2.56")
+ pkg_check_modules(Gio2 REQUIRED IMPORTED_TARGET "gio-2.0")
++pkg_check_modules(GioUnix2 REQUIRED IMPORTED_TARGET "gio-unix-2.0")
+ pkg_check_modules(GObject2 REQUIRED IMPORTED_TARGET "gobject-2.0")
+ add_subdirectory(fcitx-gclient)
+ 
+diff --git a/fcitx-gclient/CMakeLists.txt b/fcitx-gclient/CMakeLists.txt
+index 24085d4..3bad7ed 100644
+--- a/fcitx-gclient/CMakeLists.txt
++++ b/fcitx-gclient/CMakeLists.txt
+@@ -47,9 +47,10 @@ target_include_directories(Fcitx5GClient
+         "$<INSTALL_INTERFACE:${CMAKE_INSTALL_FULL_INCLUDEDIR}>/Fcitx5/GClient"
+     INTERFACE
+         "${Gio2_INCLUDE_DIRS}"
++        "${GioUnix2_INCLUDE_DIRS}"
+         "${GObject2_INCLUDE_DIRS}"
+ )
+-target_link_libraries(Fcitx5GClient LINK_PRIVATE PkgConfig::Gio2 PkgConfig::GLib2 PkgConfig::GObject2)
++target_link_libraries(Fcitx5GClient LINK_PRIVATE PkgConfig::Gio2 PkgConfig::GioUnix2 PkgConfig::GLib2 PkgConfig::GObject2)
+ 
+ configure_file(Fcitx5GClient.pc.in ${CMAKE_CURRENT_BINARY_DIR}/Fcitx5GClient.pc @ONLY)
+ 
+

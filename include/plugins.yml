@@ -1,0 +1,20 @@
+plugins:
+- origin: pip
+  package-name: buildstream-external
+  elements:
+    flatpak_image: 0
+    flatpak_repo: 0
+    collect_manifest: 0
+    x86image: 0
+  sources:
+    cargo: 0
+    git_tag: 1
+    
+- origin: local
+  path: plugins
+  elements:
+    collect_initial_scripts: 0
+    ostree: 0
+  sources:
+    go-vendor: 0
+    cargo-lock: 0

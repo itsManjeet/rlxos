@@ -1,0 +1,50 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 4b2df6b..8afcd4b 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -14,40 +14,14 @@ include(ExternalProject)
+ 
+ set(CMAKE_FIND_LIBRARY_SUFFIXES ".so" ".a")
+ find_library(DL dl REQUIRED)
+-find_library(FFI ffi)
+-find_library(TCC tcc)
++find_library(FFI ffi REQUIRED)
++find_library(LIBTCC tcc REQUIRED)
+ find_program(MAKE_EXECUTABLE NAMES gmake make mingw32-make REQUIRED)
+ 
+ add_executable(${PROJECT_NAME} src/srclang.cxx)
+-if ((NOT FFI) OR (FFI MATCHES ".*\\.so"))
+-ExternalProject_Add(libffi
+-        SOURCE_DIR ${PROJECT_SOURCE_DIR}/libffi
+-        DOWNLOAD_COMMAND cd <SOURCE_DIR> && ./autogen.sh
+-        CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
+-        BUILD_COMMAND ${MAKE_EXECUTABLE}
+-        INSTALL_COMMAND ${MAKE_EXECUTABLE} install)
+-ExternalProject_Get_Property(libffi INSTALL_DIR)
+-include_directories(${INSTALL_DIR}/include)
+-link_directories(${INSTALL_DIR}/lib)
+-set(FFI ${INSTALL_DIR}/lib/libffi.a)
+-add_dependencies(${PROJECT_NAME} libffi)
+-endif ()
+-
+-if (NOT TCC)
+-ExternalProject_Add(tinycc
+-        SOURCE_DIR ${PROJECT_SOURCE_DIR}/libtcc
+-        CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
+-        BUILD_COMMAND ${MAKE_EXECUTABLE}
+-        INSTALL_COMMAND ${MAKE_EXECUTABLE} install)
+-ExternalProject_Get_Property(tinycc INSTALL_DIR)
+-include_directories(${INSTALL_DIR}/include)
+-link_directories(${INSTALL_DIR}/lib)
+-set(LIBTCC ${INSTALL_DIR}/lib/libtcc.a)
+-add_dependencies(${PROJECT_NAME} tinycc)
+-endif ()
+-
+-
+-target_link_libraries(${PROJECT_NAME} ${FFI} ${DL} ${LIBTCC} -static -rdynamic)
++
++
++target_link_libraries(${PROJECT_NAME} ${FFI} ${DL} ${LIBTCC} -rdynamic)
+ # target_compile_definitions(${PROJECT_NAME} PUBLIC -DSRCLANG_GC_DEBUG)
+ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+ enable_testing()

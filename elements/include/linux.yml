@@ -1,0 +1,6 @@
+sources:
+- kind: tar
+  url: https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.0.7.tar.xz
+  ref: 67dacc2b78605a56e997f4c08d009be87c98ec66f1870220226c8b3cc676590f
+- kind: local
+  path: files/linux/config

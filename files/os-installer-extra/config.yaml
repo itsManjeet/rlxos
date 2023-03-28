@@ -1,0 +1,26 @@
+distribution_name: 'rlxos'
+internet_connection_required: no
+suggested_languages:
+  - 'ar'
+  - 'de'
+  - 'en'
+  - 'es'
+  - 'fr'
+  - 'ja'
+  - 'ru'
+  - 'zh'
+
+welcome_page:
+  logo: '/usr/share/icons/logo.svg'
+  text: 'Welcome to rlxos GNU/Linux'
+  usage: yes
+
+minimum_disk_size: 5
+
+offer_disk_encryption: no
+skip_user: yes
+skip_locale: yes
+
+browser_cmd: 'epiphany'
+disks_cmd: 'sudo gparted'
+wifi_cmd: 'gnome-control-center wifi'

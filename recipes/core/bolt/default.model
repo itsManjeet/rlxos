@@ -1,2 +1,0 @@
-hello:hey there you are using rlxos GNU/Linux
-uefi:@shell#[ -e /sys/firmware/efi/efivars ] && echo "uefi supported" || echo "uefi not supported"

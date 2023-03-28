@@ -1,0 +1,2 @@
+[org.gnome.shell]
+favorite-apps=['org.mozilla.firefox.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Calendar.desktop', 'org.gnome.Console.desktop', 'org.gnome.TextEditor.desktop', 'org.gnome.Cheese.desktop', 'org.gnome.Music.desktop', 'org.gnome.Totem.desktop', 'org.gnome.Photos.desktop', 'org.gnome.Geary.desktop', 'org.gnome.Software.desktop', 'org.gnome.Settings.desktop', 'org.gnome.Tour.desktop']

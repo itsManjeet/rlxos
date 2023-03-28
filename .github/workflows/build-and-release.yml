@@ -1,0 +1,73 @@
+name: Build And Release
+on:
+  push:
+    paths-ignore:
+      - 'docs/**'
+      - boot.toml
+      - .github/workflow/docs.yml
+  workflow_dispatch:
+
+env:
+  BST: bst --config buildstream.conf --colors --builders 1
+
+jobs:
+  generate-cache:
+    strategy:
+      matrix:
+        variant:
+          - desktop
+          - workstation
+
+    name: Generate Cache
+    runs-on: self-hosted
+    timeout-minutes: 46000
+    steps:
+      - uses: actions/checkout@v1
+      - name: Generate System Image
+        run: ${BST} -o variant ${{ matrix.variant }} build system/repo.bst
+
+  build-installer-iso:
+    name: Build Installer ISO
+    runs-on: self-hosted
+    timeout-minutes: 46000
+    needs: generate-cache
+    strategy:
+      matrix:
+        variant:
+          - desktop
+          - workstation
+
+    steps:
+      - uses: actions/checkout@v1
+      
+      - name: Build Installer ISO
+        run: ${BST} -o variant ${{ matrix.variant }} build installer/image.bst
+        
+      - name: Checkout Image
+        run: ${BST} -o variant ${{ matrix.variant }} checkout installer/image.bst ${{ secrets.DAILY_DIR }} -f
+
+  release:
+    name: Release
+    runs-on: self-hosted
+    needs: build-installer-iso
+    environment: RELEASE
+    strategy:
+      matrix:
+        variant:
+          - desktop
+          - workstation
+    env:
+      RELEASE_DIR: ${{ secrets.RELEASE_DIR }}
+      OSTREE_REPO: ${{ secrets.OSTREE_REPO }}
+      OSTREE_GPG: ${{ secrets.OSTREE_GPG }}
+    steps:
+      - uses: actions/checkout@v1
+      - name: Checkout Image
+        run: ${BST} -o variant ${{ matrix.variant }} checkout installer/image.bst $RELEASE_DIR -f
+      
+      - name: Generate Changelog
+        run: echo "${{ github.event.head_commit.message }}" > commit_body
+      
+      - name: Update ostree
+        run: VARIANT="${{ matrix.variant }}" make update-ostree
+      

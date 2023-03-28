@@ -1,6 +1,0 @@
-id: setxkbmap
-version: '7'
-about: xorg apps setxkbmap
-build-dir: setxkbmap-1.3.2
-sources:
-- https://www.x.org/pub/individual/app/setxkbmap-1.3.2.tar.bz2

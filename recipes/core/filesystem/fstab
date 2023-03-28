@@ -1,8 +1,0 @@
-#
-# /etc/fstab: File System Table
-# Listed filesystems with automount at boot
-
-
-# Filesystem    MountPoint  Type    Options     Dump    FsckOrder
-# /dev/???          /home    ??     defaults     1          2
-#

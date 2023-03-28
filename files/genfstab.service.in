@@ -1,0 +1,11 @@
+[Unit]
+Description="System filesystem static table generator"
+ConditionPathExists=!/etc/fstab
+Before=local-fs.target
+After=proc.mount
+
+[Service]
+ExecStart=__LIBEXECDIR__/genfstab.sh
+
+[Install]
+WantedBy=local-fs-pre.target

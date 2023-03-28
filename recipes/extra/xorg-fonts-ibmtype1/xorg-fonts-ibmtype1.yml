@@ -1,6 +1,0 @@
-id: xorg-fonts-ibmtype1
-version: '7'
-about: xorg fonts xorg-fonts-ibmtype1
-build-dir: font-ibm-type1-1.0.3
-sources:
-- https://www.x.org/pub/individual/font/font-ibm-type1-1.0.3.tar.bz2

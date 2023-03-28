@@ -1,6 +1,0 @@
-id: libXaw
-version: '7'
-about: xorg library libXaw
-build-dir: libXaw-1.0.14
-sources:
-- https://www.x.org/pub/individual/lib/libXaw-1.0.14.tar.bz2

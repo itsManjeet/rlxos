@@ -1,6 +1,0 @@
-id: xinput
-version: '7'
-about: xorg apps xinput
-build-dir: xinput-1.6.3
-sources:
-- https://www.x.org/pub/individual/app/xinput-1.6.3.tar.bz2

@@ -1,0 +1,41 @@
+From 0401646dc07d5f468fcef7e0715380d410f913d4 Mon Sep 17 00:00:00 2001
+From: "manjeet.singh1" <manjeet.singh@bobble.ai>
+Date: Sat, 4 Feb 2023 21:43:04 +0530
+Subject: [PATCH] rlxos default configurations
+
+---
+ .../org.gnome.shell.extensions.dock-from-dash.gschema.xml   | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/schemas/org.gnome.shell.extensions.dock-from-dash.gschema.xml b/schemas/org.gnome.shell.extensions.dock-from-dash.gschema.xml
+index ddbc99a..31e42f0 100644
+--- a/schemas/org.gnome.shell.extensions.dock-from-dash.gschema.xml
++++ b/schemas/org.gnome.shell.extensions.dock-from-dash.gschema.xml
+@@ -4,13 +4,13 @@
+     <schema path="/org/gnome/shell/extensions/dock-from-dash/" id="org.gnome.shell.extensions.dock-from-dash">
+ 
+     <key type="b" name="always-show">
+-        <default>false</default>
++        <default>true</default>
+         <summary>Always show the dock</summary>
+         <description>Keep the dock always visible.</description>
+     </key>
+ 
+     <key type="i" name="hide">
+-        <default>1</default>
++        <default>2</default>
+         <summary>When to hide the dock</summary>
+         <description>0: never, 1: When window is maximized, 2: When window overlaps dock.</description>
+     </key>
+@@ -70,7 +70,7 @@
+     </key>
+ 
+     <key type="b" name="show-overview">
+-        <default>false</default>
++        <default>true</default>
+         <summary>Show overview at startup</summary>
+         <description>Show the overview at startup.</description>
+     </key>
+-- 
+2.38.1
+

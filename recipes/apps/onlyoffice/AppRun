@@ -1,6 +1,0 @@
-#!/bin/sh
-
-SELF=$(readlink -f "$0")
-HERE=${SELF%/*}
-export LD_LIBRARY_PATH=${HERE}:${LD_LIBRARY_PATH}
-exec ${HERE}/DesktopEditors "$@"

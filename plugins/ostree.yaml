@@ -1,0 +1,9 @@
+variables:
+  sysroot: '%{build-root}/sysroot'
+
+config:
+  # environment: []
+  # ostree-branch: ''
+
+  # Commands to run on the sysroot before comitting
+  initial-commands: []

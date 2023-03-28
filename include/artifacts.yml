@@ -1,0 +1,3 @@
+artifacts:
+- url: https://cache.rlxos.dev:11001
+  server-cert: server.crt

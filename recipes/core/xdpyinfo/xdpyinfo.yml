@@ -1,6 +1,0 @@
-id: xdpyinfo
-version: '7'
-about: xorg apps xdpyinfo
-build-dir: xdpyinfo-1.3.2
-sources:
-- https://www.x.org/pub/individual/app/xdpyinfo-1.3.2.tar.bz2

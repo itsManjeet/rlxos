@@ -1,6 +1,0 @@
-id: libsm
-version: '7'
-about: xorg library libsm
-build-dir: libSM-1.2.3
-sources:
-- https://www.x.org/pub/individual/lib/libSM-1.2.3.tar.bz2

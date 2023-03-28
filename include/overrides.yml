@@ -1,0 +1,40 @@
+elements:
+  autotools:
+    variables:
+      conf-global: >-
+        --disable-static
+        --disable-Werror
+        --host=%{triplet}
+        --build=%{triplet}
+
+  cmake:
+    variables:
+      cmake-global: >-
+        -DCMAKE_BUILD_TYPE=RelWithDebInfo
+        -DCMAKE_C_FLAGS_RELWITHDEBINFO="-DNDEBUG"
+        -DCMAKE_CXX_FLAGS_RELWITHDEBINFO="-DNDEBUG"
+      generator: Ninja
+
+  meson:
+    variables:
+      meson-global: >-
+        --buildtype=plain
+        --auto-features=enabled
+
+  pip:
+    config:
+      install-commands:
+      - python -m pip install --no-build-isolation --root=%{install-root} --prefix=%{prefix} .
+
+  filter:
+    config:
+      include-orphans: true
+
+sources:
+  git_tag:
+    config:
+      checkout-submodules: false
+      track-tags: false
+  cargo:
+    config:
+      url: crates:crates

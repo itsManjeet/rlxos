@@ -1,0 +1,30 @@
+From 74888b25217d8275c6ed6219c641fa46ac8641ec Mon Sep 17 00:00:00 2001
+From: Philip Chimento <philip.chimento@gmail.com>
+Date: Fri, 22 Jul 2022 11:33:20 -0700
+Subject: [PATCH 2/4] Bug 1780857 - Change if to ifdef for DEBUG. (r?jimb)
+
+The paradigm for DEBUG is that it is defined or not defined, not 1 or 0,
+so we have to use ifdef here. Otherwise we get a build error in embedded
+SpiderMonkey when DEBUG is not defined.
+
+https://bugzilla.mozilla.org/show_bug.cgi?id=1780857
+---
+ js/public/Debug.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/js/public/Debug.h b/js/public/Debug.h
+index ed025d5ca..6d7fd8a4b 100644
+--- a/js/public/Debug.h
++++ b/js/public/Debug.h
+@@ -139,7 +139,7 @@ class Builder {
+   // Check that |thing| is in the same compartment as our debuggerObject. Used
+   // for assertions when constructing BuiltThings. We can overload this as we
+   // add more instantiations of BuiltThing.
+-#if DEBUG
++#ifdef DEBUG
+   void assertBuilt(JSObject* obj);
+ #else
+   void assertBuilt(JSObject* obj) {}
+-- 
+2.37.1
+

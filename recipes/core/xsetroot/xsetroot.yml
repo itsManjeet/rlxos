@@ -1,6 +1,0 @@
-id: xsetroot
-version: '7'
-about: xorg apps xsetroot
-build-dir: xsetroot-1.1.2
-sources:
-- https://www.x.org/pub/individual/app/xsetroot-1.1.2.tar.bz2

@@ -1,0 +1,12 @@
+variables:
+  installer-volume-id: "rlxos-%{variant}-%{arch}"
+  ostree-branch: "%{arch}/%{variant}"
+  ostree-remote-url: "https://ostree.rlxos.dev/"
+  runstatedir: "/run"
+
+  (?):
+  - arch == "x86_64":
+      go-arch: "amd64"
+  
+  fix-pyc-timestamps: ''
+

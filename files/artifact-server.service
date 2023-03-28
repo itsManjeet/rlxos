@@ -1,0 +1,13 @@
+[Unit]
+Description=rlxos artifact cache server
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+ExecStart=/usr/local/bin/bst-artifact-server --port 11001 --server-key /path/to/server.key --server-cert /path/to/server.crt /storage.rlxos.dev/artifacts/
+
+[Install]
+WantedBy=multi-user.target

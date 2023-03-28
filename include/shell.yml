@@ -1,0 +1,68 @@
+shell:
+  command: ['bash', '--noprofile', '--norc', '-i']
+  environment:
+    LANG: '$LANG'
+    DISPLAY: '$DISPLAY'
+    DBUS_SESSION_BUS_ADDRESS: '$DBUS_SESSION_BUS_ADDRESS'
+    XDG_RUNTIME_DIR: '$XDG_RUNTIME_DIR'
+    PULSE_SERVER: 'unix:${XDG_RUNTIME_DIR}/pulse/native'
+    COLORTERM: $COLORTERM
+    COLUMNS: $COLUMNS
+    DESKTOP_SESSION: $DESKTOP_SESSION
+    HOME: $HOME
+    LINES: $LINES
+    SHELL: $SHELL
+    SSH_AUTH_SOCK: $SSH_AUTH_SOCK
+    TERM: $TERM
+    VTE_VERSION: $VTE_VERSION
+    WAYLAND_DISPLAY: $WAYLAND_DISPLAY
+    XDG_CURRENT_DESKTOP: $XDG_CURRENT_DESKTOP
+    XDG_DATA_DIRS: $XDG_DATA_DIRS
+    XDG_MENU_PREFIX: $XDG_MENU_PREFIX
+    XDG_SESSION_DESKTOP: $XDG_SESSION_DESKTOP
+    XDG_SESSION_TYPE: $XDG_SESSION_TYPE
+  host-files:
+  - '/etc/passwd'
+  - '/etc/group'
+  - '/etc/resolv.conf'
+  - path: '/dev/dri'
+    optional: true
+  - path: '/dev/mali'
+    optional: true
+  - path: '/dev/mali0'
+    optional: true
+  - path: '/dev/umplock'
+    optional: true
+  - path: '/dev/nvidiactl'
+    optional: true
+  - path: '/dev/nvidia0'
+    optional: true
+  - path: '/dev/nvidia-modeset'
+    optional: true
+  - '/sys'
+  - '${XDG_RUNTIME_DIR}'
+  - path: '/tmp/.X11-unix'
+    optional: true
+  - '/dev'
+  - '$HOME'
+  - /run/dbus/system_bus_socket
+
+  - path: /media
+    optional: true
+  - path: /run/media
+    optional: true
+  - path: /mnt
+    optional: true
+  - host_path: '$XDG_RUNTIME_DIR/.flatpak-helper/monitor'
+    path: /run/host/monitor
+    optional: true
+  - host_path: /etc
+    path: /run/host/etc
+  - host_path: /run
+    path: /run/host/run
+  - host_path: /tmp
+    path: /run/host/tmp
+  - host_path: /usr
+    path: /run/host/usr
+  - host_path: /var
+    path: /run/host/var

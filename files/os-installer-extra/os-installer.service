@@ -1,0 +1,12 @@
+[Unit]
+Description=RLXOS Installer
+RefuseManualStart=true
+RefuseManualStop=true
+
+BindsTo=gnome-session.target
+After=gnome-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/os-installer
+Restart=no

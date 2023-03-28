@@ -1,0 +1,107 @@
+diff --git a/widgets@aylur/schemas/org.gnome.shell.extensions.aylurs-widgets.gschema.xml b/widgets@aylur/schemas/org.gnome.shell.extensions.aylurs-widgets.gschema.xml
+index a898f75..9dfa5ef 100644
+--- a/widgets@aylur/schemas/org.gnome.shell.extensions.aylurs-widgets.gschema.xml
++++ b/widgets@aylur/schemas/org.gnome.shell.extensions.aylurs-widgets.gschema.xml
+@@ -5,14 +5,14 @@
+     path="/org/gnome/shell/extensions/aylurs-widgets/">
+ 
+     <!-- enables -->
+-    <key name="battery-bar" type="b">		        <default>true</default></key>
+-    <key name="dash-board" type="b">		        <default>true</default></key>
++    <key name="battery-bar" type="b">		        <default>false</default></key>
++    <key name="dash-board" type="b">		        <default>false</default></key>
+     <key name="date-menu-tweaks" type="b">			<default>true</default></key>
+     <key name="media-player" type="b">			    <default>true</default></key>
+     <key name="power-menu" type="b">			      <default>true</default></key>
+     <key name="workspace-indicator" type="b">		<default>true</default></key>
+     <key name="notification-indicator" type="b"><default>true</default></key>
+-    <key name="background-clock" type="b">			<default>true</default></key>
++    <key name="background-clock" type="b">			<default>false</default></key>
+     <key name="quick-settings-tweaks" type="b">	<default>true</default></key>
+ 
+     <!-- background-clock -->
+@@ -187,19 +187,19 @@
+ 
+     <!-- date-menu-tweak -->
+     <key name="date-menu-hide-stock-mpris" type="b">			  <default>false</default></key>
+-    <key name="date-menu-position" type="i">							  <default>1</default></key>
++    <key name="date-menu-position" type="i">							  <default>0</default></key>
+     <key name="date-menu-offset" type="i">								  <default>0</default></key>
+     <key name="date-menu-remove-padding" type="b">				  <default>false</default></key>
+     <key name="date-menu-indicator-position" type="i">		  <default>1</default></key>
+     <key name="date-menu-date-format" type="s">						  <default>"%H:%M | %a:%d"</default></key>
+     <key name="date-menu-mirror" type="b">								  <default>false</default></key>
+-    <key name="date-menu-hide-notifications" type="b">		  <default>false</default></key>
++    <key name="date-menu-hide-notifications" type="b">		  <default>true</default></key>
+     <key name="date-menu-custom-menu" type="b">						  <default>true</default></key>
+     <key name="date-menu-show-events" type="b">						  <default>true</default></key>
+     <key name="date-menu-show-clocks" type="b">						  <default>true</default></key>
+     <key name="date-menu-show-weather" type="b">					  <default>true</default></key>
+     <key name="date-menu-show-media" type="b">						  <default>true</default></key>
+-    <key name="date-menu-show-system-levels" type="b">		  <default>true</default></key>
++    <key name="date-menu-show-system-levels" type="b">		  <default>false</default></key>
+     <key name="date-menu-show-user" type="b">							  <default>true</default></key>
+     <key name="date-menu-levels-show-battery" type="b">		  <default>true</default></key>
+     <key name="date-menu-levels-show-storage" type="b">		  <default>true</default></key>
+@@ -218,9 +218,9 @@
+     <key name="date-menu-media-prefer" type="s">						<default>"firefox"</default></key>
+ 
+     <!-- notification-indicator -->
+-    <key name="notification-indicator-position" type="i">				<default>0</default></key>
++    <key name="notification-indicator-position" type="i">				<default>2</default></key>
+     <key name="notification-indicator-offset" type="i">					<default>0</default></key>
+-    <key name="notification-indicator-hide-on-zero" type="b">		<default>true</default></key>
++    <key name="notification-indicator-hide-on-zero" type="b">		<default>false</default></key>
+     <key name="notification-indicator-menu-width" type="i">			<default>500</default></key>
+     <key name="notification-indicator-hide-counter" type="b">		<default>false</default></key>
+     <key name="notification-indicator-show-dnd" type="b">				<default>false</default></key>
+@@ -255,29 +255,29 @@
+     <key name="power-menu-icon-size" type="i">							<default>70</default></key>
+     <key name="power-menu-icon-padding" type="i">						<default>24</default></key>
+     <key name="power-menu-dialog-padding" type="i">					<default>36</default></key>
+-    <key name="power-menu-dialog-spacing" type="i">					<default>16</default></key>
++    <key name="power-menu-dialog-spacing" type="i">					<default>200</default></key>
+     <key name="power-menu-dialog-roundness" type="i">				<default>16</default></key>
+-    <key name="power-menu-dialog-show-bg" type="b">					<default>true</default></key>
++    <key name="power-menu-dialog-show-bg" type="b">					<default>false</default></key>
+ 
+     <!-- workspace-indicator -->
+-    <key name="workspace-indicator-position" type="i">			  <default>0</default></key>
++    <key name="workspace-indicator-position" type="i">			  <default>1</default></key>
+     <key name="workspace-indicator-offset" type="i">				  <default>2</default></key>
+     <key name="workspace-indicator-style" type="i">		        <default>0</default></key>
+     <key name="workspace-indicator-show-names" type="b">		  <default>false</default></key>
+     <key name="workspace-indicator-active-name" type="s">	    <default>""</default></key>
+ 
+     <!-- quick-toggles -->
+-    <key name="quick-settings-menu-width" type="i">							<default>400</default></key>
+-    <key name="quick-settings-style" type="i">									<default>0</default></key>
++    <key name="quick-settings-menu-width" type="i">							<default>500</default></key>
++    <key name="quick-settings-style" type="i">									<default>3</default></key>
+     <key name="quick-settings-adjust-roundness" type="b">				<default>true</default></key>
+-    <key name="quick-settings-show-notifications" type="b">			<default>true</default></key>
++    <key name="quick-settings-show-notifications" type="b">			<default>false</default></key>
+     <key name="quick-settings-show-system-levels" type="b">			<default>true</default></key>
+     <key name="quick-settings-levels-show-battery" type="b">		<default>true</default></key>
+     <key name="quick-settings-levels-show-storage" type="b">		<default>true</default></key>
+     <key name="quick-settings-levels-show-cpu" type="b">				<default>true</default></key>
+     <key name="quick-settings-levels-show-ram" type="b">				<default>true</default></key>
+     <key name="quick-settings-levels-show-temp" type="b">				<default>true</default></key>
+-    <key name="quick-settings-show-media" type="b">							<default>true</default></key>
++    <key name="quick-settings-show-media" type="b">							<default>false</default></key>
+     <key name="quick-settings-media-prefer-one" type="b">				<default>false</default></key>
+     <key name="quick-settings-media-prefer" type="s">						<default>"spotify"</default></key>
+     <key name="quick-settings-media-style" type="i">						<default>1</default></key>
+@@ -295,9 +295,9 @@
+     <key name="quick-settings-show-network-bt" type="b">				<default>false</default></key>
+     <key name="quick-settings-show-vpn" type="b">								<default>true</default></key>
+     <key name="quick-settings-show-bluetooth" type="b">					<default>true</default></key>
+-    <key name="quick-settings-show-power" type="b">							<default>true</default></key>
++    <key name="quick-settings-show-power" type="b">							<default>false</default></key>
+     <key name="quick-settings-show-airplane" type="b">					<default>false</default></key>
+     <key name="quick-settings-show-rotate" type="b">						<default>true</default></key>
+     
+   </schema>
+-</schemalist>
+\ No newline at end of file
++</schemalist>

@@ -1,6 +1,0 @@
-id: xbacklight
-version: '7'
-about: xorg apps xbacklight
-build-dir: xbacklight-1.2.3
-sources:
-- https://www.x.org/pub/individual/app/xbacklight-1.2.3.tar.bz2

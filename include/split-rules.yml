@@ -1,0 +1,27 @@
+split-rules:
+  devel:
+    (>):
+    - '%{indep-libdir}/**/include'
+    - '%{indep-libdir}/**/include/**'
+    - '%{bindir}/*-config'
+    - '%{libdir}/cmake'
+    - '%{libdir}/cmake/**'
+    - '%{datadir}/cmake'
+    - '%{datadir}/cmake/**'
+    - '%{datadir}/gir-1.0'
+    - '%{datadir}/gir-1.0/**'
+    - '%{datadir}/vala*/vapi'
+    - '%{datadir}/vala*/vapi/**'
+    - '%{datadir}/installed-tests'
+    - '%{datadir}/installed-tests/**'
+    - '%{libexecdir}/installed-tests'
+    - '%{libexecdir}/installed-tests/**'
+  doc:
+    (>):
+    - '%{datadir}/gtk-doc/html/'
+    - '%{datadir}/gtk-doc/html/**'
+  source:
+  - '%{sourcedir}'
+  - '%{sourcedir}/**'
+  vm:
+  - '%{datadir}/dbus-1/**'

@@ -1,0 +1,2 @@
+[org.gnome.shell]
+enabled-extensions=['blur-my-shell@aunetx', 'dock-from-dash@fthx', 'gsconnect@andyholmes.github.io', 'flypie@schneegans.github.com', 'widgets@aylur']

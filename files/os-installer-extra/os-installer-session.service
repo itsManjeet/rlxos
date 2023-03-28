@@ -1,0 +1,37 @@
+[Unit]
+Description=RLXO Installer Session
+After=systemd-user-sessions.service
+Wants=dbus.socket
+After=dbus.socket
+After=session-c1.scope
+Before=graphical.target
+Conflicts=getty@tty1.service
+After=getty@tty1.service
+Conflicts=plymouth-quit.service
+After=plymouth-start.service
+OnFailure=plymouth-quit.service
+Conflicts=gdm.service
+After=systemd-logind.service
+#After=plymouth-quit-wait.service
+
+[Service]
+ExecStartPre=!-/usr/bin/plymouth deactivate
+ExecStart=/usr/bin/gnome-session --session=os-installer
+ExecStartPost=!-/usr/bin/plymouth quit --retain-splash
+#TimeoutStartSec=60
+#WatchdogSec=20
+User=os-installer
+PAMName=os-installer-session
+TTYPath=/dev/tty1
+#TTYReset=yes
+#TTYVHangup=yes
+#TTYVTDisallocate=yes
+StandardInput=tty-fail
+#UtmpIdentifier=tty1
+#UtmpMode=user
+Environment=XDG_SESSION_TYPE=wayland GNOME_SHELL_SESSION_MODE=os-installer
+KeyringMode=shared
+
+[Install]
+WantedBy=graphical.target
+Alias=display-manager.service

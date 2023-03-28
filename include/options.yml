@@ -1,0 +1,17 @@
+options:
+  arch:
+    type: arch
+    description: Target architecture
+    variable: arch
+    values:
+      - x86_64
+
+  variant:
+    type: enum
+    description: Desktop variant
+    variable: variant
+    values:
+      - desktop
+      - workstation
+
+    default: desktop

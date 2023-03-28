@@ -1,0 +1,7 @@
+disable libvirt-guests.service
+disable libvirtd.service
+disable libvirtd.socket
+disable libvirtd-*.socket
+disable virt*d.service
+disable virt*d.socket
+disable virt*d-*.socket

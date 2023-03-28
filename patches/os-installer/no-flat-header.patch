@@ -1,0 +1,12 @@
+diff --git a/data/resources/ui/main_window.blp b/data/resources/ui/main_window.blp
+index b735134..c3b7be9 100644
+--- a/data/resources/ui/main_window.blp
++++ b/data/resources/ui/main_window.blp
+@@ -15,7 +15,6 @@ template OsInstallerWindow : Adw.ApplicationWindow {
+     Adw.HeaderBar {
+       show-start-title-buttons: false;
+       show-end-title-buttons: false;
+-      styles ["flat"]
+ 
+       [start]
+       Box {

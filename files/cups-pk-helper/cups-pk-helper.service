@@ -1,0 +1,8 @@
+[Unit]
+Description=Cups PolicyKit helper
+
+[Service]
+Type=dbus
+BusName=org.opensuse.CupsPkHelper.Mechanism
+ExecStart=/usr/libexec/cups-pk-helper-mechanism
+User=root

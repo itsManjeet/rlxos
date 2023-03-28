@@ -1,6 +1,0 @@
-id: xorg-fonts-bhttf
-version: '7'
-about: xorg fonts xorg-fonts-bhttf
-build-dir: font-bh-ttf-1.0.3
-sources:
-- https://www.x.org/pub/individual/font/font-bh-ttf-1.0.3.tar.bz2

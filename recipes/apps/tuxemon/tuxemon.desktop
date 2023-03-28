@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=Tuxemon
-Comment=Opensource monster fighting RPG
-GenericName=Game
-Exec=@@exec@@
-Icon=tuxemon
-Type=Application
-Categories=Game;

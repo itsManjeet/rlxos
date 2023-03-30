@@ -22,6 +22,7 @@ depends:
   - freedesktop-sdk.bst:components/groff.bst
   - freedesktop-sdk.bst:components/help2man.bst
   - freedesktop-sdk.bst:components/libpipeline.bst
+  - freedesktop-sdk.bst:components/llvm.bst
   - freedesktop-sdk.bst:components/m4.bst
   - freedesktop-sdk.bst:components/man-db.bst
   - freedesktop-sdk.bst:components/man-pages-posix.bst

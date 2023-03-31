@@ -76,10 +76,13 @@ config:
 
   - |
     mkdir -p %{install-root}%{sysconfdir}/sudoers.d/
-    echo "os-installer ALL=(ALL) NOPASSWD: ALL" >  %{install-root}%{sysconfdir}/sudoers.d/os-installer
+    echo "%wheel ALL=(ALL) NOPASSWD: ALL" >  %{install-root}%{sysconfdir}/sudoers.d/wheel
 
 public:
   bst:
     integration-commands:
     - |
       rm "%{indep-libdir}/systemd/system/gdm.service"
+
+    overlay-whitelist:
+      - '%{sysconfdir}/sudoers.d/**'

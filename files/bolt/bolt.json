@@ -1,0 +1,14 @@
+{
+  "listener": {
+    "type": "stream",
+    "stream": "cin"
+  },
+  "responder": {
+    "type": "stream",
+    "stream": "cout"
+  },
+  "model": "/usr/share/bolt/model.json",
+  "plugin-path": [
+    "/usr/libexec/bolt/"
+  ]
+}

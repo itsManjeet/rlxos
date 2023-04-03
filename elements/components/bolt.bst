@@ -5,7 +5,7 @@ sources:
   track: master
   url: github:itsmanjeet/bolt.git
 
-  ref: 0.0.1-3-g75b416663d5af14cd2a7b6962766121c6537f37c
+  ref: 0.0.1-4-g77d68cd5707e0bf8545e4ffefa660a3631141c8a
 
 - kind: local
   path: files/bolt/bolt.json
@@ -18,8 +18,9 @@ depends:
 - components/vosk-api.bst
 - components/pipewire.bst
 - components/espeak-ng.bst
+- freedesktop-sdk.bst:components/curl.bst
 
 config:
-   install-commands:
-     (>):
-      - install -Dm0644 -t %{install-root}%{sysconfdir} bolt.json
+  install-commands:
+    (>):
+    - install -Dm0644 -t %{install-root}%{sysconfdir} bolt.json

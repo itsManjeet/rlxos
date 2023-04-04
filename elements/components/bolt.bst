@@ -5,7 +5,7 @@ sources:
   track: master
   url: github:itsmanjeet/bolt.git
 
-  ref: 0.0.1-4-g77d68cd5707e0bf8545e4ffefa660a3631141c8a
+  ref: 0.0.1-5-g8d1d3a9963d6eb33667c1052020f8b02004e373b
 
 - kind: local
   path: files/bolt/bolt.json

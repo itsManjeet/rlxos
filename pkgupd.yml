@@ -15,3 +15,5 @@ mirrors:
 server.stability: testing
 downloader.ssl.verify: false
 dir.pkgs: /storage
+dir.src: /sources
+dir.recipes: /rlxos/recipes

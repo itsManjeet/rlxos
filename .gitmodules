@@ -1,0 +1,3 @@
+[submodule "src/pkgupd"]
+	path = src/pkgupd
+	url = git@github.com:itsmanjeet/pkgupd

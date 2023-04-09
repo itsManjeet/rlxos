@@ -23,7 +23,7 @@ packages:
     - lib.*/libthread_db-.*\.so$
 
     prescript: |
-      patch -Np1 -i ${FILES}/glibc/glibc-2.33-fhs-1.patch
+      patch -Np1 -i ${FILES_DIR}/glibc-2.33-fhs-1.patch
       sed -e "402a\      *result = local->data.services[database_index];" -i nss/nss_database.c
       sed "s/amx_/amx-/" -i sysdeps/x86/tst-cpu-features-supports.c
 

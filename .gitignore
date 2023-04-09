@@ -1,7 +1,6 @@
 /build
 /pkgs
 /Dockerfile
-/src
 /tmp
 /disk.qcow2
 /secure
@@ -14,4 +13,7 @@
 **/__pkgupd_builddir__
 *.qcow2
 /venv
+/.venv
 /.bash_history
+/storage
+/sources

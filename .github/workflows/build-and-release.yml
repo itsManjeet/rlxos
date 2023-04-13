@@ -60,6 +60,7 @@ jobs:
       RELEASE_DIR: ${{ secrets.RELEASE_DIR }}
       OSTREE_REPO: ${{ secrets.OSTREE_REPO }}
       OSTREE_GPG: ${{ secrets.OSTREE_GPG }}
+      MIRROR_DIR: ${{ secrets.MIRROR }}
     steps:
       - uses: actions/checkout@v1
       - name: Checkout Image
@@ -70,4 +71,7 @@ jobs:
       
       - name: Update ostree
         run: VARIANT="${{ matrix.variant }}" make update-ostree
+
+      - name: Syncing Mirror
+        run: rsync -avW --inplace --progress ${RELEASE_DIR} ${MIRROR_DIR}
       

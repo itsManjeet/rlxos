@@ -3,7 +3,7 @@ on:
   push:
     paths-ignore:
       - 'docs/**'
-      - boot.toml
+      - book.toml
       - .github/workflow/docs.yml
   workflow_dispatch:
 

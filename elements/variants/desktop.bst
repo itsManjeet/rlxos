@@ -70,8 +70,10 @@ depends:
   - components/ibus-libpinyin.bst
   - components/xdg-desktop-portal-gnome.bst
   - components/xdg-desktop-portal-gtk.bst
-  - components/default-terminal.bst
   
+  - components/default-terminal.bst
+  - components/default-backgrounds.bst
+
   - proprietary/nvidia/pkg.bst
 
   - freedesktop-sdk.bst:components/xcb-util-cursor.bst

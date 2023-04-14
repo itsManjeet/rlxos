@@ -8,6 +8,8 @@ sources:
   path: files/gnome-shell-extensions/org.gnome.shell-enabled-extensions.gschema.override
 - kind: local
   path: files/gnome-shell-extensions/org.gnome.shell-favorite-apps.gschema.override
+- kind: local
+  path: files/gnome-shell-extensions/org.gnome.desktop.background.gschema.override
 
 build-depends:
 - freedesktop-sdk.bst:public-stacks/buildsystem-meson.bst

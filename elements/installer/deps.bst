@@ -9,6 +9,8 @@ depends:
 
 - components/plymouth.bst
 - components/branding.bst
+- components/gnome-shell-extensions.bst
+- components/default-backgrounds.bst
 
 - freedesktop-sdk.bst:components/wayland.bst
 - freedesktop-sdk.bst:components/systemd.bst

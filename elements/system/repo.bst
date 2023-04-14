@@ -24,6 +24,6 @@ config:
        --efisource LABEL=EFI \
        --efipath /boot >/dev/null
 
-  - rm %{sysroot}/etc/fstab
+  - sed '#^/dev/gpt-auto-root#d' %{sysroot}/etc/fstab
 
   - mv %{sysroot}/etc %{sysroot}/usr/etc

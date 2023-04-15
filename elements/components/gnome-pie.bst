@@ -2,8 +2,8 @@ kind: manual
 
 sources:
 - kind: remote
-  url: https://github.com/Schneegans/Fly-Pie/releases/download/v17/flypie@schneegans.github.com.zip
-  ref: a0a1ff80a5396530d285f453095437e53ba925e7c7233d71ce9303ad0609e172
+  url: https://github.com/Schneegans/Fly-Pie/releases/download/v19/flypie@schneegans.github.com.zip
+  ref: 298bbb6e9cbbcddf0fa45261d8cfd1dec1ee9db03d15993f64ea1141a3bbc937
 build-depends:
 - freedesktop-sdk.bst:public-stacks/buildsystem-meson.bst
 - freedesktop-sdk.bst:components/unzip.bst

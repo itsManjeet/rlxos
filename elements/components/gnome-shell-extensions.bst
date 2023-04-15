@@ -16,9 +16,11 @@ build-depends:
 depends:
 - components/gnome-menus.bst
 - components/gnome-shell.bst
+- components/gnome-pie.bst
 - components/gnome-shell-extension-blur-my-shell.bst
 - components/gnome-shell-extension-dash-from-dock.bst
 - components/gnome-shell-extension-gsconnect.bst
+- components/gnome-shell-extension-aylur-widgets.bst
 - components/librsvg.bst
 - freedesktop-sdk.bst:bootstrap-import.bst
 variables:

@@ -74,4 +74,33 @@ jobs:
 
       - name: Syncing Mirror
         run: rsync -avW --inplace --progress ${RELEASE_DIR} ${MIRROR_DIR}
-      
+  
+  publish:
+    name: Publish On social media
+    runs-on: self-hosted
+    needs: release
+    environment: POST
+    steps:
+      - uses: actions/checkout@v1
+      - name: Send Telegram Notification
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ${{ github.event.commits[0].message }}
+
+            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
+
+      - name: send Twitter Notification
+        uses: ethomson/send-tweet-action@v1
+        with:
+          status: |
+            ${{ github.event.commits[0].message }}
+
+            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
+
+          consumer-key: ${{ secrets.TWITTER_CONSUMER_API_KEY }}
+          consumer-secret: ${{ secrets.TWITTER_CONSUMER_API_SECRET }}
+          access-token: ${{ secrets.TWITTER_ACCESS_TOKEN }}
+          access-token-secret: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}

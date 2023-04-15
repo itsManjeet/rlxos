@@ -106,22 +106,9 @@ jobs:
           access-token-secret: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}
 
       - name: Update community.rlxos.dev
-        uses: fjogeleit/http-request-action@v1
-        with:
-          url: 'https://community.rlxos.dev/api/discussions'
-          method: 'POST'
-          customHeaders: '{"Content-Type": "application/json", "Authorization": "Token ${{ secrets.COMMUNITY_TOKEN }}"}'
-          data: |
-            '{
-              "data": {
-                "attributes": {
-                  "title": "${{ github.event.commits[0].message }}"
-                  "content": "see changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}"
-                },
-                "type": "discussions"
-              }
-            }'
-
+        run: |
+          curl -X POST https://community.rlxos.dev/api/discussions -H "Authorization: Token ${{ secrets.COMMUNITY_TOKEN }}" -H "Content-Type: application/json" -d '{"data": {"attributes": {"title": "${{ github.event.commits[0].message }}", "content": "see changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}"}, "type": "disucssions"}}'
+        
       - uses: bluwy/release-for-reddit-action@v1
         with:
           username: ${{ secrets.REDDIT_USERNAME }}

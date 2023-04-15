@@ -2,7 +2,7 @@ kind: stack
 depends:
   - variants/core.bst
   - components/spice-vdagent.bst
-#  - components/appimaged.bst
+  - components/appimaged.bst
   - components/pinentry.bst
   - components/wpa-supplicant.bst
   - components/xdg-desktop-portal.bst

@@ -20,6 +20,7 @@ depends:
   - components/zram-generator.bst
   - components/firmware.bst
   - components/alsa-ucm.bst
+  - components/srclang.bst
   - freedesktop-sdk.bst:bootstrap-import.bst
   - freedesktop-sdk.bst:components/bash-config.bst
   - freedesktop-sdk.bst:components/bash-completion.bst

@@ -80,6 +80,8 @@ jobs:
     runs-on: self-hosted
     needs: release
     environment: POST
+    env:
+      COMMUNITY_TOKEN: ${{ secrets.COMMUNITY_TOKEN }}
     steps:
       - uses: actions/checkout@v1
       - name: Send Telegram Notification
@@ -107,7 +109,7 @@ jobs:
 
       - name: Update community.rlxos.dev
         run: |
-          curl -X POST https://community.rlxos.dev/api/discussions -H "Authorization: Token ${{ secrets.COMMUNITY_TOKEN }}" -H "Content-Type: application/json" -d '{"data": {"attributes": {"title": "${{ github.event.commits[0].message }}", "content": "see changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}"}, "type": "disucssions"}}'
+          curl -X POST https://community.rlxos.dev/api/discussions -H "Authorization: Token ${COMMUNITY_TOKEN}" -H "Content-Type: application/json" -d '{"data": {"attributes": {"title": "${{ github.event.commits[0].message }}", "content": "see changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}"}, "type": "disucssions"}}'
         
       - uses: bluwy/release-for-reddit-action@v1
         with:
@@ -116,5 +118,6 @@ jobs:
           app-id: ${{ secrets.REDDIT_APP_ID }}
           app-secret: ${{ secrets.REDDIT_APP_SECRET }}
           subreddit: rlxos_dev
+          url: https://rlxos.dev/
           title: ${{ github.event.commits[0].message }}
           comment: 'see changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}'

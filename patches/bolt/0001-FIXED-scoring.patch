@@ -1,0 +1,29 @@
+From 27ce53b9328a11979064d26b7c622ab8c2398a65 Mon Sep 17 00:00:00 2001
+From: itsmanjeet <itsmanjeet1998@gmail.com>
+Date: Thu, 20 Apr 2023 19:56:45 +0530
+Subject: [PATCH] FIXED scoring
+
+---
+ src/Bolt.cxx | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/src/Bolt.cxx b/src/Bolt.cxx
+index fc9380a..6a8789f 100644
+--- a/src/Bolt.cxx
++++ b/src/Bolt.cxx
+@@ -28,11 +28,10 @@ Bolt::~Bolt() {
+ void Bolt::respond(const std::string &sentence) {
+     auto intensions = model->classify(sentence);
+     auto [responses, responseScore] = model->fuzzySearch(sentence);
+-    responseScore *= 0.1; // decrese the priority of fuzzySearch
+     if (!knowlegde.contains("history")) knowlegde["history"] = std::vector<std::string>();
+     knowlegde["history"].push_back("-" + sentence);
+ 
+-    if (intensions.size() && responseScore < 0.8) {
++    if ((intensions.size() && responseScore < 0.7) || responses.empty()) {
+         for (auto const &i: intensions) {
+             if (execute(i.first, sentence)) {
+                 knowlegde["history"].push_back("$" + i.first);
+-- 
+2.39.2
+

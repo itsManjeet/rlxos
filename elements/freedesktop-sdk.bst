@@ -9,11 +9,11 @@ config:
   options:
     target_arch: '%{arch}'
     (?):
-    - system_arch in ('x86_64', 'i686'):
+    - arch in ('x86_64', 'i686'):
         bootstrap_build_arch: 'x86_64'
-    - system_arch in ('aarch64', 'arm'):
+    - arch in ('aarch64', 'arm'):
         bootstrap_build_arch: 'aarch64'
-    - system_arch == "ppc64le":
+    - arch == "ppc64le":
         bootstrap_build_arch: "ppc64le"
-    - system_arch == "riscv64":
+    - arch == "riscv64":
         bootstrap_build_arch: "x86_64"

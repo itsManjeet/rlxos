@@ -10,10 +10,7 @@ sources:
       url: https://gitlab.gnome.org/jwestman/blueprint-compiler.git
 
 
-  ref: 0.2-204-gbdd275296617f2ec876880aedba3212b15679918
-
-- kind: patch
-  path: patches/os-installer/no-flat-header.patch
+  ref: 0.2-206-g1bac620df522893cc976c903047b3e3538111288
 
 depends:
 - freedesktop-sdk.bst:bootstrap-import.bst

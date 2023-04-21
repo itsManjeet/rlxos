@@ -17,6 +17,9 @@ jobs:
         variant:
           - desktop
           - workstation
+        arch:
+          - x86_64
+          - riscv64
 
     name: Generate Cache
     runs-on: self-hosted
@@ -24,7 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Generate System Image
-        run: ${BST} -o variant ${{ matrix.variant }} build system/repo.bst
+        run: ${BST} -o variant ${{ matrix.variant }} -o arch ${{ matrix.arch }} build system/repo.bst
 
   build-installer-iso:
     name: Build Installer ISO
@@ -36,15 +39,19 @@ jobs:
         variant:
           - desktop
           - workstation
+        
+        arch:
+          - x86_64
+          - riscv64
 
     steps:
       - uses: actions/checkout@v1
       
       - name: Build Installer ISO
-        run: ${BST} -o variant ${{ matrix.variant }} build installer/image.bst
+        run: ${BST} -o variant ${{ matrix.variant }} -o arch ${{ matrix.arch }} build installer/image.bst
         
       - name: Checkout Image
-        run: ${BST} -o variant ${{ matrix.variant }} checkout installer/image.bst ${{ secrets.DAILY_DIR }} -f
+        run: ${BST} -o variant ${{ matrix.variant }} -o arch ${{ matrix.arch }} checkout installer/image.bst ${{ secrets.DAILY_DIR }} -f
 
   release:
     name: Release
@@ -56,6 +63,10 @@ jobs:
         variant:
           - desktop
           - workstation
+        
+        arch:
+          - x86_64
+          - riscv64
     env:
       RELEASE_DIR: ${{ secrets.RELEASE_DIR }}
       OSTREE_REPO: ${{ secrets.OSTREE_REPO }}
@@ -64,13 +75,13 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Checkout Image
-        run: ${BST} -o variant ${{ matrix.variant }} checkout installer/image.bst $RELEASE_DIR -f
+        run: ${BST} -o variant ${{ matrix.variant }} -o arch ${{ matrix.arch }} checkout installer/image.bst $RELEASE_DIR -f
       
       - name: Generate Changelog
         run: echo "${{ github.event.head_commit.message }}" > commit_body
       
       - name: Update ostree
-        run: VARIANT="${{ matrix.variant }}" make update-ostree
+        run: VARIANT="${{ matrix.variant }}" ARCH="${{ matrix.arch }}" make update-ostree
 
       - name: Syncing Mirror
         run: rsync -avW --inplace --progress ${RELEASE_DIR} ${MIRROR_DIR}

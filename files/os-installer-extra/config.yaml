@@ -1,6 +1,7 @@
 distribution_name: 'rlxos'
 internet_connection_required: no
 suggested_languages:
+  - 'hi'
   - 'ar'
   - 'de'
   - 'en'
@@ -12,8 +13,7 @@ suggested_languages:
 
 welcome_page:
   logo: '/usr/share/icons/logo.svg'
-  text: 'Welcome to rlxos GNU/Linux'
-  usage: yes
+
 
 minimum_disk_size: 5
 

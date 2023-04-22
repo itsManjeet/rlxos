@@ -1,10 +1,19 @@
 options:
+  system_arch:
+    type: arch
+    description: System architecture
+    variable: system_arch
+    values:
+      - x86_64
+      - riscv64
+
   arch:
     type: arch
     description: Target architecture
     variable: arch
     values:
       - x86_64
+      - riscv64
 
   variant:
     type: enum

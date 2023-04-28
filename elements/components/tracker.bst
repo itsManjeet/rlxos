@@ -2,8 +2,8 @@ kind: meson
 
 sources:
 - kind: tar
-  url: gnome_downloads:tracker/3.4/tracker-3.4.2.tar.xz
-  ref: 4e6df142a4f704878fca98ebb5a224750e5ea546aa2aaabaa726a73540bd1731
+  url: gnome_downloads:tracker/3.5/tracker-3.5.1.tar.xz
+  ref: f972d50ac7bafdccf113b1eb99dcae35404685a99e55bfef16f3ac83b4de974d
 build-depends:
 - components/gobject-introspection.bst
 - components/vala.bst

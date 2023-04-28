@@ -38,8 +38,8 @@ sources:
   directory: src/github.com/containers/podman
   track: main
   track-extra:
-  - v4.3
+  - v4.5
 
   exclude:
   - "*rc*"
-  ref: v2.1.0-8510-gc35e74f4ccde619cd21b2215a5a4e9a0177cb418
+  ref: v4.5.0-10-g5d1f5d79ac74bc04f9d83c0a73714abd608c1599

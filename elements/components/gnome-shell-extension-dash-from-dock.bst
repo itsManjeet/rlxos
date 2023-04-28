@@ -8,7 +8,7 @@ sources:
 - kind: git_tag
   url: github:dgsasha/dock-from-dash.git
   track: main
-  ref: 8e6147e37bb33da7e8dc08800933d2c16569ca64
+  ref: a96461c3803088b08c5f0836661cc56614023f13
 
 - kind: patch
   path: patches/gnome-shell-extensions/dash-from-dock/0001-rlxos-default-configurations.patch

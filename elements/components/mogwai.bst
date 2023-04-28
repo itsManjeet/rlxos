@@ -2,15 +2,20 @@ kind: meson
 
 sources:
 - kind: tar
-  url: github_files:endlessm/mogwai/archive/Release_3.9.4.tar.gz
+  url: github_files:endlessm/mogwai/archive/refs/tags/Version_0.3.0.tar.gz
 
-  ref: 9cd4ba92cade0d998618ae18458b12acc2db15350ae2170823ccd1739e745583
+  ref: 9b2c6da0332b93d2d86ec519a1d93dd5dae5cef5f20d375f6837b6aa591d2bae
 build-depends:
 - freedesktop-sdk.bst:public-stacks/buildsystem-meson.bst
 
 depends:
 - components/networkmanager.bst
 - components/glib.bst
-- components/libsoup-2.4.bst
+- components/libgsystemservice.bst
+- components/libsoup.bst
 - freedesktop-sdk.bst:components/systemd.bst
 - freedesktop-sdk.bst:bootstrap-import.bst
+
+variables:
+  meson-local: >-
+    -Dsoup2=false

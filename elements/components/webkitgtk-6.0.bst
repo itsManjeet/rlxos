@@ -18,8 +18,8 @@ public:
     split-rules:
       devel:
         (>):
-        - '%{libdir}/libjavascriptcoregtk-5.0.so'
-        - '%{libdir}/libwebkit2gtk-5.0.so'
+        - '%{libdir}/libjavascriptcoregtk-6.0.so'
+        - '%{libdir}/libwebkitgtk-6.0.so'
       webkit-debug:
       - '%{debugdir}'
       - '%{debugdir}/**'

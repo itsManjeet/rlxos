@@ -2,8 +2,8 @@ kind: meson
 
 sources:
 - kind: tar
-  url: gnome_downloads:gnome-initial-setup/43/gnome-initial-setup-43.2.tar.xz
-  ref: 23d7963a54d49594504d0eacd85096cafb5f86f1e74a58e040675b6e798ae698
+  url: gnome_downloads:gnome-initial-setup/44/gnome-initial-setup-44.0.tar.xz
+  ref: 593cfc6dc8f82a98671b94c035b97dbe88ef56e708780b2ad1d2324e4d04bbff
 build-depends:
 - freedesktop-sdk.bst:public-stacks/buildsystem-meson.bst
 
@@ -26,7 +26,7 @@ depends:
 - components/glib.bst
 - components/gtk.bst
 - components/libadwaita.bst
-- components/webkit2gtk-5.0.bst
+- components/webkitgtk-6.0.bst
 - freedesktop-sdk.bst:components/gstreamer.bst
 - freedesktop-sdk.bst:components/pwquality.bst
 - freedesktop-sdk.bst:bootstrap-import.bst

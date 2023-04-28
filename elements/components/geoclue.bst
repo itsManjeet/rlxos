@@ -2,9 +2,9 @@ kind: meson
 
 sources:
 - kind: tar
-  url: freedesktop_files:geoclue/geoclue/uploads/0e42403294a35949d2481da6514994f3/geoclue-2.6.0.tar.xz
+  url: freedesktop_files:geoclue/geoclue/-/archive/2.7.0/geoclue-2.7.0.tar.gz
 
-  ref: 2283effa8f9c40c3331dd9ae89d01011d17cbeae12b03e1b7579482d8ceb253e
+  ref: 761931226a7b8ecf3098c9ee1ff1240adec2870a6d9129ad89e934d3aa761be5
 build-depends:
 - components/gobject-introspection.bst
 - components/gtk-doc.bst

@@ -2,8 +2,8 @@ kind: autotools
 
 sources:
 - kind: tar
-  url: github_files:ostreedev/ostree/releases/download/v2022.5/libostree-2022.5.tar.xz
-  ref: 914c4d993bc111d7dd30ae9721b6ffe8ab56eb1fd6e81b097b09f400cc1b053f
+  url: github_files:ostreedev/ostree/releases/download/v2023.2/libostree-2023.2.tar.xz
+  ref: ceb0788755a0bff5738d44543552fbf883cf71df481baa3ca7288da7a402bb85
 - kind: patch
   path: patches/ostree/no-boot-symlink.patch
 
@@ -46,11 +46,11 @@ public:
 config:
   install-commands:
     (>):
-      - |
-        mkdir -p "%{install-root}/sysroot"
-        ln -s sysroot/ostree "%{install-root}/ostree"
-        ln -s var/home "%{install-root}/home"
-        rm -rf "%{install-root}/root"
-        ln -s var/roothome "%{install-root}/root"
-        ln -s run/media "%{install-root}/media"
+    - |
+      mkdir -p "%{install-root}/sysroot"
+      ln -s sysroot/ostree "%{install-root}/ostree"
+      ln -s var/home "%{install-root}/home"
+      rm -rf "%{install-root}/root"
+      ln -s var/roothome "%{install-root}/root"
+      ln -s run/media "%{install-root}/media"
 

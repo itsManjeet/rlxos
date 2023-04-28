@@ -1,8 +1,8 @@
 kind: meson
 sources:
 - kind: tar
-  url: gnome_downloads:gnome-shell-extensions/43/gnome-shell-extensions-43.1.tar.xz
-  ref: adde04bd946a13113557e4c34c890bbe9077505a6a3f0755f17bea1c6e4a2d17
+  url: gnome_downloads:gnome-shell-extensions/44/gnome-shell-extensions-44.0.tar.xz
+  ref: 8c345e72f31a1e37f55063e0b15997301b01194ed698772fd87aeb50cbb101ab
 
 - kind: local
   path: files/gnome-shell-extensions/org.gnome.shell-enabled-extensions.gschema.override
@@ -30,4 +30,4 @@ variables:
 config:
   install-commands:
     (>):
-      - install -Dm644 -t %{install-root}/%{datadir}/glib-2.0/schemas/ %{build-root}/*.override
+    - install -Dm644 -t %{install-root}/%{datadir}/glib-2.0/schemas/ %{build-root}/*.override

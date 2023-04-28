@@ -2,11 +2,11 @@ kind: meson
 
 sources:
 - kind: tar
-  url: gnome_downloads:libnotify/0.8/libnotify-0.8.1.tar.xz
-  ref: d033e6d4d6ccbf46a436c31628a4b661b36dca1f5d4174fe0173e274f4e62557
+  url: gnome_downloads:libnotify/0.8/libnotify-0.8.2.tar.xz
+  ref: c5f4ed3d1f86e5b118c76415aacb861873ed3e6f0c6b3181b828cf584fc5c616
 build-depends:
 - components/gobject-introspection.bst
-- components/gtk-doc.bst
+- components/gi-docgen.bst
 - freedesktop-sdk.bst:public-stacks/buildsystem-meson.bst
 
 depends:

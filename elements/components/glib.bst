@@ -2,31 +2,17 @@ kind: meson
 
 sources:
 - kind: tar
-  url: gnome_downloads:glib/2.74/glib-2.74.4.tar.xz
-  ref: 0e82da5ea129b4444227c7e4a9e598f7288d1994bf63f129c44b90cfd2432172
-- kind: patch
-  path: patches/glib/6626765a79f125cf0ec9cdaefa51ceef718d41e7.patch
+  url: gnome_downloads:glib/2.76/glib-2.76.2.tar.xz
+  ref: 24f3847857b1d8674cdb0389a36edec0f13c666cd3ce727ecd340eb9da8aca9e
 
 build-depends:
 - components/gtk-doc.bst
 - freedesktop-sdk.bst:public-stacks/buildsystem-meson.bst
 
 runtime-depends:
-# a dummy dependency so our glib is always staged
-# on top of freedesktop-sdk version
 - freedesktop-sdk.bst:components/glib.bst
 
 depends:
-# sysprof-capture-4 ends up in Requires.private
-# so we either could have added sysprof-minimal
-# as a builddep to everything that depends on it
-# and its downstream users, or make it a runtime
-# dependency of glib and have it be always available
-# transiently.
-#
-# Ideally, sysprof-minimal would be just a build dep
-# of modules, since its already statically linked.
-# https://github.com/mesonbuild/meson/issues/3970
 - components/sysprof-minimal.bst
 - freedesktop-sdk.bst:components/libffi.bst
 - freedesktop-sdk.bst:components/util-linux.bst

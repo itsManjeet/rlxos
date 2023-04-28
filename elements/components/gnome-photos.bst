@@ -2,8 +2,8 @@ kind: meson
 
 sources:
 - kind: tar
-  url: gnome_downloads:gnome-photos/43/gnome-photos-43.0.tar.xz
-  ref: c7ac7458d533f29d955011c74b76224d79ea31bcc12e9d6d0ce7b6c3704d08e1
+  url: gnome_downloads:gnome-photos/44/gnome-photos-44.0.tar.xz
+  ref: e78e210397d3c62809c6cd5521da6eccb4a11ddea5bf2af8632a47f4da5c829e
 build-depends:
 - freedesktop-sdk.bst:components/desktop-file-utils.bst
 - freedesktop-sdk.bst:components/itstool.bst
@@ -11,7 +11,6 @@ build-depends:
 
 runtime-depends:
 - components/tracker-miners.bst
-- components/grilo-plugins.bst
 - components/adwaita-icon-theme.bst
 
 depends:
@@ -20,9 +19,7 @@ depends:
 - components/geocode-glib.bst
 - components/gexiv2.bst
 - components/gnome-online-accounts.bst
-- components/grilo.bst
 - components/libdazzle.bst
-- components/libgdata.bst
 - components/libportal.bst
 - components/gdk-pixbuf.bst
 - components/glib.bst

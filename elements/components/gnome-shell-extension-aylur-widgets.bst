@@ -16,6 +16,6 @@ sources:
   url: github:Aylur/gnome-extensions.git
   track: main
 
-  ref: 60e66a7d801aa238c64165e4d28108e793fdba98
+  ref: 66a789773f4c73ad4df2fddc37b1358de11e64e3
 - kind: patch
   path: patches/gnome-shell-extensions/aylur-widgets/configurations.patch

@@ -2,10 +2,9 @@ kind: meson
 
 sources:
 - kind: tar
-  url: gnome_downloads:cheese/43/cheese-43.0.tar.xz
-  ref: 74574c4a3c327327f1a2d6d0b3f937be2afb07a6159b6d78db9c192de6667f0b
+  url: gnome_downloads:cheese/44/cheese-44.0.1.tar.xz
+  ref: d922401272cdd415c292703e52c6b364466a0b20ee1db320251644c283606fd4
 build-depends:
-- components/appstream-glib.bst
 - components/gobject-introspection.bst
 - components/gtk-doc.bst
 - components/vala.bst

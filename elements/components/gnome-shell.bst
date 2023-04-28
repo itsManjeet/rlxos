@@ -2,8 +2,8 @@ kind: meson
 
 sources:
 - kind: tar
-  url: gnome_downloads:gnome-shell/43/gnome-shell-43.2.tar.xz
-  ref: e76fd4be9342410ee9fbdcdd6b2d81c6ff060e7c8cc5a0f1cae6a7aba25d1860
+  url: gnome_downloads:gnome-shell/44/gnome-shell-44.1.tar.xz
+  ref: 0bfbe4394d267625154d08d01467bdbd99e8157512fc8df45d5c02ddb7551ca6
 build-depends:
 - components/sassc.bst
 - freedesktop-sdk.bst:components/asciidoc.bst

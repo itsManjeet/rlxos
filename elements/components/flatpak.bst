@@ -2,9 +2,9 @@ kind: autotools
 
 sources:
 - kind: tar
-  url: github_files:flatpak/flatpak/releases/download/1.14.1/flatpak-1.14.1.tar.xz
+  url: github_files:flatpak/flatpak/releases/download/1.14.4/flatpak-1.14.4.tar.xz
 
-  ref: 0a3c823343018cc58986b6c82545609c8cdbf0fba5f01d88307bd14acb5dd39f
+  ref: 8a34dbd0b67c434e7598b98ec690953d046f0db26e480aeafb46d72aec716799
 - kind: remote
   url: https://flathub.org/repo/flathub.flatpakrepo
 
@@ -49,4 +49,4 @@ variables:
 config:
   install-commands:
     (>):
-      - install -Dm644 %{build-root}/flathub.flatpakrepo -t %{install-root}/%{sysconfdir}/flatpak/remotes.d/
+    - install -Dm644 %{build-root}/flathub.flatpakrepo -t %{install-root}/%{sysconfdir}/flatpak/remotes.d/

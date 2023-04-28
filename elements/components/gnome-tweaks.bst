@@ -5,7 +5,7 @@ sources:
   url: gnome:gnome-tweaks.git
   track: master
 
-  ref: 42.beta-29-g060bb924d087d96592ed565ddf8fc584d361aa90
+  ref: 42.beta-65-g47d8b817c46938732a66fa970f23eb6ed5b5c9f3
 build-depends:
 - freedesktop-sdk.bst:public-stacks/buildsystem-meson.bst
 
@@ -16,5 +16,4 @@ runtime-depends:
 - components/pygobject.bst
 
 depends:
-- components/libhandy.bst
 - freedesktop-sdk.bst:bootstrap-import.bst

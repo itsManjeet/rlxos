@@ -1,8 +1,8 @@
 kind: autotools
 sources:
 - kind: tar
-  url: gnome_downloads:gnome-user-docs/43/gnome-user-docs-43.0.tar.xz
-  ref: 3607160effd6f91e25a8798b57defb2099dd70b8fee4e7e2f20f2637ac28caee
+  url: gnome_downloads:gnome-user-docs/44/gnome-user-docs-44.1.tar.xz
+  ref: 93f3294d43fd22f9962ccf6bd17ff64eae78a6ca063fe6c1e9bc58d00f34e3a8
 build-depends:
 - components/yelp-tools.bst
 - freedesktop-sdk.bst:public-stacks/buildsystem-autotools.bst

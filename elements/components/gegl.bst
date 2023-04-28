@@ -2,9 +2,9 @@ kind: meson
 
 sources:
 - kind: tar
-  url: gimp:gegl/0.4/gegl-0.4.40.tar.xz
+  url: gimp:gegl/0.4/gegl-0.4.44.tar.xz
 
-  ref: cdde80d15a49dab9a614ef98f804c8ce6e4cfe1339a3c240c34f3fb45436b85d
+  ref: 0a4cdb41635e406a0849cd0d3f03caf7d97cab8aa13d28707d532d0089d56126
 build-depends:
 - components/gobject-introspection.bst
 - components/vala.bst

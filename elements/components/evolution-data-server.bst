@@ -2,8 +2,8 @@ kind: cmake
 
 sources:
 - kind: tar
-  url: gnome_downloads:evolution-data-server/3.46/evolution-data-server-3.46.3.tar.xz
-  ref: 0938e2279e5cfbc2204766ca9d3fea570911699b07c10cbe01aca62a7e8b2bee
+  url: gnome_downloads:evolution-data-server/3.48/evolution-data-server-3.48.1.tar.xz
+  ref: 5ce62c1e67f2789342a7f4a035b102f74e62ed85f60e81a5b7f3e04165404dff
 build-depends:
 - components/vala.bst
 - freedesktop-sdk.bst:components/gperf.bst
@@ -19,6 +19,7 @@ depends:
 - components/libsecret.bst
 - components/libsoup.bst
 - components/webkit2gtk-4.1.bst
+- components/webkitgtk-6.0.bst
 - freedesktop-sdk.bst:components/libical.bst
 - freedesktop-sdk.bst:components/nspr.bst
 - freedesktop-sdk.bst:components/nss.bst
@@ -35,4 +36,3 @@ variables:
     -DWITH_GWEATHER4=ON
     -DWITH_LIBDB=OFF
     -DENABLE_GOOGLE=OFF
-    -DENABLE_OAUTH2_WEBKITGTK4=OFF

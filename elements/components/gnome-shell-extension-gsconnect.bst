@@ -13,4 +13,4 @@ sources:
 - kind: git_tag
   url: github:GSConnect/gnome-shell-extension-gsconnect.git
   track: main
-  ref: v54-25-g2039513393da9279206c874abdda16ced427532e
+  ref: v55-36-g182fbe98b3aa6072d8cd6282faacb2d875cdb522

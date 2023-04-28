@@ -2,8 +2,8 @@ kind: meson
 
 sources:
 - kind: tar
-  url: gnome_downloads:gnome-software/43/gnome-software-43.3.tar.xz
-  ref: 93ee80747978ad2cc02e5ae73d0a3d3ec82eea134fc779e2aa916901bbb58090
+  url: gnome_downloads:gnome-software/44/gnome-software-44.1.tar.xz
+  ref: 9dc6551512cf0a26d03e0d79f494870a6916d43c14d82199c43a11d9cc0ad5aa
 build-depends:
 - components/gtk-doc.bst
 - components/sysprof-minimal.bst
@@ -39,6 +39,3 @@ variables:
     -Dflatpak=true
     -Deos_updater=true
     -Dpackagekit=false
-    -Dsoup2=true
-    -Dhardcoded_curated=true
-    -Ddefault_featured_apps=true

@@ -6,7 +6,7 @@ sources:
   track: master
   directory: vosk-api
 
-  ref: go/v0.3.45-4-gfff40ce1a1f1b921272a184acfd0c21350750789
+  ref: go/v0.3.45-15-gd56221bcf25503be65f39d2a609e924b6f65bd32
 - kind: git_tag
   url: https://github.com/xianyi/OpenBLAS.git
   track: v0.3.20
@@ -30,7 +30,7 @@ sources:
   track: vosk
   directory: kaldi
 
-  ref: 93ef0019b847272a239fbb485ef97f29feb1d587
+  ref: a25f216f5ce4eec5e45a6ab7651e20c9840a05cd
 - kind: remote
   url: https://alphacephei.com/kaldi/models/vosk-model-small-en-us-0.15.zip
 

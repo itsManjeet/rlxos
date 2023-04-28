@@ -1,10 +1,9 @@
 kind: meson
 sources:
 - kind: tar
-  url: gnome_downloads:gnome-weather/43/gnome-weather-43.0.tar.xz
-  ref: 2f11117f75552bf1bb9e01f01cfb3c2fcda6a3f69070ffe0519a0761532b8f26
+  url: gnome_downloads:gnome-weather/44/gnome-weather-44.0.tar.xz
+  ref: 6b0d38ac785041699df628926e35db7b5ffa086ee0d6934c222a19c6b9923baf
 build-depends:
-- components/appstream-glib.bst
 - components/gobject-introspection.bst
 - freedesktop-sdk.bst:public-stacks/buildsystem-meson.bst
 depends:

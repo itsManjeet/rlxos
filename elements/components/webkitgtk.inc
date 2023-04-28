@@ -6,6 +6,7 @@ sources:
 build-depends:
 - components/bubblewrap.bst
 - components/gi-docgen.bst
+- components/unifdef.bst
 - components/xdg-dbus-proxy.bst
 - components/gobject-introspection.bst
 - freedesktop-sdk.bst:components/gperf.bst
@@ -15,14 +16,15 @@ build-depends:
 
 runtime-depends:
 - components/gst-libav.bst
-- components/gst-plugins-bad.bst
 - components/gst-plugins-good.bst
 
 depends:
 - components/at-spi2-core.bst
 - components/enchant-2.bst
 - components/geoclue.bst
+- components/gst-plugins-bad.bst
 - components/gst-plugins-base.bst
+- components/libavif.bst
 - components/libmanette.bst
 - components/libnotify.bst
 - components/libsecret.bst
@@ -31,6 +33,8 @@ depends:
 - components/woff2.bst
 - components/wpebackend-fdo.bst
 - freedesktop-sdk.bst:components/brotli.bst
+- freedesktop-sdk.bst:components/dummy-gbm.bst
+- freedesktop-sdk.bst:components/libepoxy.bst
 - freedesktop-sdk.bst:components/hyphen.bst
 - freedesktop-sdk.bst:components/lcms.bst
 - freedesktop-sdk.bst:components/libseccomp.bst

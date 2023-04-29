@@ -15,6 +15,7 @@ depends:
 - components/gnome-online-accounts.bst
 - components/libportal.bst
 - components/cheese.bst
+- components/libqrencode.bst
 - components/gnome-desktop.bst
 - components/adwaita-icon-theme.bst
 - components/glib.bst

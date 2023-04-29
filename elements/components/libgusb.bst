@@ -12,6 +12,7 @@ build-depends:
 
 depends:
 - components/glib.bst
+- components/json-glib.bst
 - freedesktop-sdk.bst:components/libusb.bst
 - freedesktop-sdk.bst:bootstrap-import.bst
 

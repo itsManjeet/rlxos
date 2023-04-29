@@ -16,4 +16,5 @@ runtime-depends:
 - components/pygobject.bst
 
 depends:
+- components/libhandy.bst
 - freedesktop-sdk.bst:bootstrap-import.bst

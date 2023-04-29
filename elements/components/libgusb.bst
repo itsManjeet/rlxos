@@ -6,7 +6,7 @@ sources:
   ref: 02d3a992a0cd16c46a346439334417617cd7cd5b2ccc5fe0fe998e9ffb8d5d8a
 build-depends:
 - components/gobject-introspection.bst
-- components/gtk-doc.bst
+- components/gi-docgen.bst
 - components/vala.bst
 - freedesktop-sdk.bst:public-stacks/buildsystem-meson.bst
 

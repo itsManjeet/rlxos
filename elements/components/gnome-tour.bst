@@ -289,6 +289,10 @@ sources:
   - name: winnow
     version: 0.3.6
     sha: 23d020b441f92996c80d94ae9166e8501e59c7bb56121189dc9eab3bd8216966
+
+  
+- kind: patch
+  path: patches/gnome-tour/0001-rlxos-specified-patches.patch
 build-depends:
 - freedesktop-sdk.bst:components/desktop-file-utils.bst
 - freedesktop-sdk.bst:components/rust.bst

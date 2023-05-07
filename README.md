@@ -2,11 +2,11 @@
 > A truly modern implementation of GNU/Linux distribution
 
 ## Targets
-- [x] A completely immutable system root for best possible system stability.
-- [x] Container based package management for better control over permissions.
+- [x] A completely immutable system root for the best possible system stability.
+- [x] Container-based package management for better control over permissions.
 - [x] Stable delta update infrastructure in dragging release model as Atomic actions.
-- [x] A flexible Virtual Assistant for system management and task automations.
-- [x] A future ready interface compatible with touch display and convertible systems.
+- [x] A flexible Virtual Assistant for system management and task automation.
+- [x] A future-ready interface that is compatible with touch display and convertible systems.
 - [ ] And a lot more.
 
 ## Join Us
@@ -27,7 +27,7 @@ Join our [Telegram](https://t.) and get involved in the development process.
 
 ### Environment Setup
 
-**Prerequesties**
+**Prerequisites**
 
 1. Python3 (>= 3.8)
 2. BuildStream (1.6.x) and its dependencies
@@ -56,7 +56,7 @@ Join our [Telegram](https://t.) and get involved in the development process.
 
 <img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png" alt="Logo" width="80" height="80">
 
-[JetBrain OpenSource Support](https://jb.gg/OpenSourceSupport)
+[JetBrains OpenSource Support](https://jb.gg/OpenSourceSupport)
 
 ## Acknowledgments
 
@@ -65,3 +65,5 @@ Join our [Telegram](https://t.) and get involved in the development process.
 - [GNOME OS](https://os.gnome.org)
 - [Freedesktop Sdk](https://freedesktop-sdk.io)
 - [Linux From Scratch](https://linuxfromscratch.org)
+- [Creative Commons](https://creativecommons.org/)
+- [Flaticons](https://www.flaticon.com/)

@@ -3,7 +3,6 @@ on:
   push:
     paths-ignore:
       - 'docs/**'
-      - book.toml
       - .github/workflow/docs.yml
   workflow_dispatch:
 
@@ -107,9 +106,9 @@ jobs:
           access-token: ${{ secrets.TWITTER_ACCESS_TOKEN }}
           access-token-secret: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}
 
-      - name: Update community.rlxos.dev
-        run: |
-          curl -X POST https://community.rlxos.dev/api/discussions -H "Authorization: Token ${COMMUNITY_TOKEN}" -H "Content-Type: application/json" -d '{"data": {"attributes": {"title": "${{ github.event.commits[0].message }}", "content": "see changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}"}, "type": "disucssions"}}'
+      # - name: Update community.rlxos.dev
+      #   run: |
+      #     curl -X POST https://community.rlxos.dev/api/discussions -H "Authorization: Token ${COMMUNITY_TOKEN}" -H "Content-Type: application/json" -d '{"data": {"attributes": {"title": "${{ github.event.commits[0].message }}", "content": "see changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}"}, "type": "disucssions"}}'
         
       - uses: bluwy/release-for-reddit-action@v1
         with:

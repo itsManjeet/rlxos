@@ -11,45 +11,38 @@ env:
 
 jobs:
   generate-cache:
-    strategy:
-      matrix:
-        variant:
-          - desktop
-          - workstation
-
     name: Generate Cache
     runs-on: self-hosted
     timeout-minutes: 46000
     steps:
       - uses: actions/checkout@v1
       - name: Generate System Image
-        run: ${BST} -o variant ${{ matrix.variant }} build system/repo.bst
+        run: ${BST} -o variant experimental build system/repo.bst
 
-  build-installer-iso:
-    name: Build Installer ISO
+  checkout-experimental:
+    name: Checkout Experimental
     runs-on: self-hosted
     timeout-minutes: 46000
     needs: generate-cache
-    strategy:
-      matrix:
-        variant:
-          - desktop
-          - workstation
 
     steps:
       - uses: actions/checkout@v1
       
       - name: Build Installer ISO
-        run: ${BST} -o variant ${{ matrix.variant }} build installer/image.bst
+        run: ${BST} -o variant experimental build installer/image.bst
         
       - name: Checkout Image
-        run: ${BST} -o variant ${{ matrix.variant }} checkout installer/image.bst ${{ secrets.DAILY_DIR }} -f
+        run: ${BST} -o variant experimental checkout installer/image.bst ${{ secrets.DAILY_DIR }} -f
+
+      - name: Update ostree
+        run: VARIANT="experimental" make update-ostree
 
   release:
     name: Release
     runs-on: self-hosted
-    needs: build-installer-iso
+    needs: checkout-experimental
     environment: RELEASE
+    if: github.ref == 'refs/heads/stable'
     strategy:
       matrix:
         variant:

@@ -5,6 +5,6 @@ kind: stack
       depends:
         - variants/desktop.bst
 
-  - variant == "workstation":
+  - variant == "workstation" or variant == "experimental":
       depends:
         - variants/workstation.bst

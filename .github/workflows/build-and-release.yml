@@ -34,6 +34,9 @@ jobs:
       - name: Checkout Image
         run: ${BST} -o variant experimental checkout installer/image.bst ${{ secrets.DAILY_DIR }} -f
 
+      - name: Generate Changelog
+        run: echo "${{ github.event.head_commit.message }}" > commit_body
+
       - name: Update ostree
         run: VARIANT="experimental" make update-ostree
 

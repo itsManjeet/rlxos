@@ -5,11 +5,32 @@ kind: manual
 build-depends:
   - proprietary/nvidia/source.bst
   - freedesktop-sdk.bst:bootstrap-import.bst
+  - components/linux.bst
 
 config:
+  configure-commands:
+  - cp -rf /nvidia/kernel/ .
+
+  build-commands:
+  - |  
+    NVIDIAVER=$(cat /nvidia/nvidiaver)
+    KERNEL_VERSION=$(make -sC %{prefix}/src/linux kernelrelease)
+    MODDIR=%{indep-libdir}/modules/${KERNEL_VERSION}
+    make KERNEL_UNAME=$KERNEL_VERSION KERNEL_MODLIB=$MODDIR KERNEL_SOURCES=%{prefix}/src/linux modules
+
   install-commands:
   - |
     NVIDIAVER=$(cat /nvidia/nvidiaver)
+    KERNEL_VERSION=$(make -sC %{prefix}/src/linux kernelrelease)
+    MODDIR=%{indep-libdir}/modules/${KERNEL_VERSION}
+
+    make modules_install INSTALL_MOD_PATH=%{install-root}%{prefix} KERNEL_UNAME=$KERNEL_VERSION KERNEL_MODLIB=$MODDIR KERNEL_SOURCES=%{prefix}/src/linux
+
+    install -Dm644 nvidia.rules %{install-root}%{indep-libdir}/udev/rules.d/60-nvidia.rules
+    install -Dm644 blacklist-nouveau.conf %{install-root}%{indep-libdir}/modprobe.d/blacklist-nouveau.conf
+    install -Dm644 nvidia-modeset.conf %{install-root}%{indep-libdir}/modprobe.d/nvidia-modeset.conf
+    install -Dm644 load-nvidia.conf %{install-root}%{indep-libdir}/modules-load.d/nvidia.conf
+
     # json/icd
     install -Dm644 /nvidia/10_nvidia_wayland.json %{install-root}%{datadir}/egl/egl_external_platform.d/10_nvidia_wayland.json
     install -Dm644 /nvidia/10_nvidia.json %{install-root}%{datadir}/glvnd/egl_vendor.d/10_nvidia.json

@@ -24,6 +24,11 @@ jobs:
     runs-on: self-hosted
     timeout-minutes: 46000
     needs: generate-cache
+    environment: EXPERIMENTAL
+
+    env:
+      OSTREE_REPO: ${{ secrets.OSTREE_REPO }}
+      OSTREE_GPG: ${{ secrets.OSTREE_GPG }}
 
     steps:
       - uses: actions/checkout@v1

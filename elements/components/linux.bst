@@ -141,6 +141,13 @@ config:
     case "%{arch}" in
     esac
 
+    # enable ZRAM support
+    # module ZRAM
+    # enable ZRAM_DEF_COMP_ZSTD
+    # value_str ZRAM_DEF_COMP="zstd"
+    # enable ZRAM_WRITEBACK
+    # enable ZRAM_MULTI_COMP
+
     # udev will fail to work with legacy sysfs
     remove SYSFS_DEPRECATED
 
@@ -788,6 +795,7 @@ config:
     module BT_HCIVHCI
     module BT_MRVL
     module BT_MRVL_SDIO
+    module BT_RFCOMM
 
     # MIDI
     module SND_SEQUENCER
@@ -983,6 +991,7 @@ config:
         module SND_SOC_INTEL_SOF_RT5682_MACH
         module SND_SOC_INTEL_SOUNDWIRE_SOF_MACH
         enable SND_SOC_INTEL_USER_FRIENDLY_LONG_NAMES
+        module SND_YMFPCI
       ;;
     esac
 
@@ -1151,6 +1160,43 @@ config:
     module USB_SERIAL_WHITEHEAT
     module USB_SERIAL_XR
     module USB_SERIAL_XSENS_MT
+
+    module USB_UAS
+    module USB_TMC
+    module USB_SL811_HCD
+    module USB_MDC800
+    module USB_MICROTEK
+    module APPLE_MFI_FASTCHARGE
+    module USB_SISUSBVGA
+    module USB_ADUTUX
+    module USB_APPLEDISPLAY
+    module USB_CHAOSKEY
+    module USB_EMI26
+    module USB_EMI62
+    module USB_FTDI_ELAN
+    module USB_IDMOUSE
+    module USB_IOWARRIOR
+    module USB_ISIGHTFW
+    module USB_LCD
+    module USB_LD
+    module USB_LEGOTOWER
+    module USB_SEVSEG
+    module USB_TRANCEVIBRATOR
+    module USB_YUREX
+    module USB_STORAGE_ALAUDA
+    module USB_STORAGE_CYPRESS_ATACB
+    module USB_STORAGE_DATAFAB
+    module USB_STORAGE_ENE_UB6250
+    module USB_STORAGE_FREECOM
+    module USB_STORAGE_ISD200
+    module USB_STORAGE_JUMPSHOT
+    module USB_STORAGE_KARMA
+    module USB_STORAGE_ONETOUCH
+    module USB_STORAGE_REALTEK
+    module USB_STORAGE_SDDR09
+    module USB_STORAGE_SDDR55
+    module USB_STORAGE_USBAT
+    module UCSI_ACPI
 
     # Required by podman
     module TUN
@@ -1678,6 +1724,81 @@ config:
       ;;
     esac
 
+    # Error Detection and correction
+    case "%{arch}" in
+      x86_64|i686)
+        module EDAC_AMD64
+        module EDAC_E752X
+        module EDAC_I10NM
+        module EDAC_I3000
+        module EDAC_I3200
+        module EDAC_I5100
+        module EDAC_I5400
+        module EDAC_I7300
+        module EDAC_I7CORE
+        module EDAC_I82975X
+        module EDAC_IE31200
+        module EDAC_PND2
+        module EDAC_SBRIDGE
+        module EDAC_SKX
+        module EDAC_X38
+      ;;
+    esac
+
+    # Pinctrl
+    case "%{arch}" in
+      x86_64|i686)
+        module PINCTRL_ALDERLAKE
+        module PINCTRL_BROXTON
+        module PINCTRL_CANNONLAKE
+        module PINCTRL_CEDARFORK
+        module PINCTRL_CHERRYVIEW
+        module PINCTRL_DENVERTON
+        module PINCTRL_ELKHARTLAKE
+        module PINCTRL_EMMITSBURG
+        module PINCTRL_GEMINILAKE
+        module PINCTRL_ICELAKE
+        module PINCTRL_JASPERLAKE
+        module PINCTRL_LAKEFIELD
+        module PINCTRL_LEWISBURG
+        module PINCTRL_SUNRISEPOINT
+        module PINCTRL_TIGERLAKE
+      ;;
+    esac
+
+    # Watch dog
+    case "%{arch}" in
+      x86_64|i686)
+        module ALIM1535_WDT
+        module ALIM7101_WDT
+        module F71808E_WDT
+        module HP_WATCHDOG
+        module I6300ESB_WDT
+        module IB700_WDT
+        module IBMASR
+        module IE6XX_WDT
+        module INTEL_MEI_WDT
+        module IT8712F_WDT
+        module IT87_WDT
+        enable ITCO_VENDOR_SUPPORT
+        module ITCO_WDT
+        module MACHZ_WDT
+        module NIC7018_WDT
+        module NV_TCO
+        module PCIPCWATCHDOG
+        module SBC_FITPC2_WATCHDOG
+        module SMSC_SCH311X_WDT
+        module SOFT_WATCHDOG
+        module SP5100_TCO
+        module USBPCWATCHDOG
+        module VIA_WDT
+        module W83627HF_WDT
+        module W83877F_WDT
+        module W83977F_WDT
+        module WDAT_WDT
+      ;;
+    esac
+
     # Platforms
     case "%{arch}" in
       x86_64|i686)
@@ -1698,6 +1819,18 @@ config:
         module ACERHDF
         module ACER_WIRELESS
         module ACPI_TOSHIBA
+        module ACPI_HED
+        enable ACPI_PCI_SLOT
+        module ACPI_PROCESSOR_AGGREGATOR
+        module ACPI_SBS
+        module ACPI_TAD
+
+        enable ACPI_APEI
+        enable ACPI_APEI_GHES
+        enable ACPI_APEI_PCIEAER
+        
+        module ACPI_PROCESSOR_AGGREGATOR
+        module ACPI_THERMAL_REL
         module AMD_PMC
         module AMILO_RFKILL
         module APPLE_GMUX
@@ -1709,6 +1842,13 @@ config:
         module GPD_POCKET_FAN
         module HP_ACCEL
         module IDEAPAD_LAPTOP
+        module INTEL_MEI_HDCP
+        module INTEL_MEI
+        module INTEL_MEI_ME
+        module INTEL_MEI_TXE
+        module INTEL_RAPL
+        module INTEL_TCC_COOLING
+        module INTEL_POWERCLAMP
         module INTEL_ATOMISP2_PM
         module INTEL_CHTWC_INT33FE
         module INTEL_HID_EVENT
@@ -1720,6 +1860,29 @@ config:
         module INTEL_VBTN
         module INTEL_IPS
         module INTEL_PMC_CORE
+        module INTEL_IDMA64
+        module INTEL_IOATDMA
+        module INT3406_THERMAL
+        module INT340X_THERMAL
+        module INTEL_PCH_THERMAL
+        module INTEL_POWERCLAMP
+        module INTEL_SOC_DTS_THERMAL
+        enable THERMAL_GOV_FAIR_SHARE
+        enable THERMAL_STATISTICS
+        module INPUT_APANEL
+        module INPUT_ATI_REMOTE2
+        module INPUT_ATLAS_BTNS
+        module INPUT_AXP20X_PEK
+        module INPUT_CM109
+        module INPUT_IDEAPAD_SLIDEBAR
+        module INPUT_KEYSPAN_REMOTE
+        module INPUT_PCSPKR
+        module INPUT_POWERMATE
+        module INPUT_SOC_BUTTON_ARRAY
+        module INPUT_YEALINK
+        module SERIO_ALTERA_PS2
+        module SERIO_RAW
+        module SENSORS_CORETEMP
         module LG_LAPTOP
         module MSI_LAPTOP
         module PANASONIC_LAPTOP
@@ -1761,6 +1924,7 @@ config:
         module X86_ANDROID_TABLETS
       ;;
     esac
+
 
   - |
     make -j1 olddefconfig

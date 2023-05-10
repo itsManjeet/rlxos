@@ -17,7 +17,7 @@ depends:
   - components/os-release.bst
   - components/systemd-presets.bst
   - components/ntfs-3g.bst
-  - components/zram-generator.bst
+  # - components/zram-generator.bst
   - components/firmware.bst
   - components/alsa-ucm.bst
   - components/srclang.bst

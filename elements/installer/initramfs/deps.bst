@@ -10,7 +10,6 @@ depends:
 - freedesktop-sdk.bst:components/gzip.bst
 - components/firmware.bst
 - components/linux.bst
-- proprietary/nvidia/pkg.bst
 - freedesktop-sdk.bst:components/pkg-config.bst
 - freedesktop-sdk.bst:components/shadow.bst
 - freedesktop-sdk.bst:components/systemd.bst

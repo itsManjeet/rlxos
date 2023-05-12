@@ -19,6 +19,14 @@ variables:
   kernel_arch: '%{arch}'
   src-arch: '%{kernel_arch}'
   image-name: '$(make -s image_name)'
+  (?):
+  - arch == "x86_64":
+      src-arch: x86
+  - arch == "i686":
+      src-arch: x86
+      kernel_arch: i386
+
+
 
 environment:
   ARCH: '%{kernel_arch}'
@@ -59,10 +67,8 @@ config:
       "arch/%{src-arch}/Makefile"
       scripts
       include
+      tools/objtool/objtool
     )
-    if [ "$(scripts/config -s STACK_VALIDATION)" = y ]; then
-      to_copy+=(tools/objtool/objtool)
-    fi
     for file in "${to_copy[@]}"
     do
       targetfile="${targetdir}/${file}"

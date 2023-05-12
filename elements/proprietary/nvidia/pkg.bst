@@ -6,13 +6,14 @@ build-depends:
   - proprietary/nvidia/source.bst
   - freedesktop-sdk.bst:bootstrap-import.bst
   - components/linux.bst
+  - freedesktop-sdk.bst:components/zstd.bst
+  - freedesktop-sdk.bst:components/openssl.bst
 
 config:
   configure-commands:
-  - cp -rf /nvidia/kernel/ .
-
+  - cp /nvidia/kernel/* . -a
   build-commands:
-  - |  
+  - |
     NVIDIAVER=$(cat /nvidia/nvidiaver)
     KERNEL_VERSION=$(make -sC %{prefix}/src/linux kernelrelease)
     MODDIR=%{indep-libdir}/modules/${KERNEL_VERSION}
@@ -25,6 +26,9 @@ config:
     MODDIR=%{indep-libdir}/modules/${KERNEL_VERSION}
 
     make modules_install INSTALL_MOD_PATH=%{install-root}%{prefix} KERNEL_UNAME=$KERNEL_VERSION KERNEL_MODLIB=$MODDIR KERNEL_SOURCES=%{prefix}/src/linux
+
+  - |
+    NVIDIAVER=$(cat /nvidia/nvidiaver)
 
     install -Dm644 nvidia.rules %{install-root}%{indep-libdir}/udev/rules.d/60-nvidia.rules
     install -Dm644 blacklist-nouveau.conf %{install-root}%{indep-libdir}/modprobe.d/blacklist-nouveau.conf
@@ -50,7 +54,7 @@ config:
     install -Dm755 /nvidia/nvidia-debugdump %{install-root}%{bindir}/nvidia-debugdump
     install -Dm755 /nvidia/nvidia-bug-report.sh %{install-root}%{bindir}/nvidia-bug-report.sh
     # firmware
-    install -Dm644 /nvidia/firmware/gsp_{ad10x,tu10x}.bin -t %{install-root}%{indep-libdir}/firmware/nvidia/$NVIDIAVER/
+    install -Dm644 /nvidia/firmware/gsp_{ga10x,tu10x}.bin -t %{install-root}%{indep-libdir}/firmware/nvidia/$NVIDIAVER/
     # systemd
     install -Dm644 /nvidia/systemd/system/*.service -t %{install-root}%{indep-libdir}/systemd/system
     install -Dm755 /nvidia/systemd/system-sleep/nvidia %{install-root}%{indep-libdir}/systemd/system-sleep/nvidia
@@ -60,3 +64,7 @@ config:
     ln -sr %{install-root}%{libdir}/libnvidia-allocator.so.$NVIDIAVER %{install-root}%{libdir}/gbm/nvidia-drm_gbm.so
     ln -s libnvidia-vulkan-producer.so.$NVIDIAVER %{install-root}%{libdir}/libnvidia-vulkan-producer.so.1
     ln -s libnvidia-vulkan-producer.so.$NVIDIAVER %{install-root}%{libdir}/libnvidia-vulkan-producer.so
+
+sources:
+- kind: local
+  path: files/nvidia

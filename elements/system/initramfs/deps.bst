@@ -4,6 +4,7 @@ depends:
 - freedesktop-sdk.bst:bootstrap-import.bst
 - freedesktop-sdk.bst:components/util-linux.bst
 - components/linux.bst
+- proprietary/nvidia/pkg.bst
 - freedesktop-sdk.bst:components/systemd.bst
 - freedesktop-sdk.bst:components/dbus.bst
 - freedesktop-sdk.bst:components/dracut.bst

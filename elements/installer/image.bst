@@ -55,7 +55,7 @@ config:
         vfat {
             extraargs = "-F32 -n EFI"
         }
-        size = $(get_size /sysroot/efi)
+        size = 500M
     }
     image squashfs.img {
         mountpoint = "/"

@@ -59,6 +59,8 @@ depends:
   - components/simple-scan.bst
   - components/totem.bst
   - components/yelp.bst
+  - components/thunderbolt.bst
+  - components/switcheroo-control.bst
   - components/gnome-tweaks.bst
   - components/gnome-disk-utility.bst
   - components/networkmanager-openvpn.bst

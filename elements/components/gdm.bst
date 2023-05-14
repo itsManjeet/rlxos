@@ -36,6 +36,10 @@ config:
     - mkdir -p %{install-root}%{sysusersdir}
     - install -m 644 gdm-config/gdm-sysusers.conf %{install-root}%{sysusersdir}/gdm.conf
 
+    # TODO: Better way??
+    # Enable wayland support with nvidia graphics card
+    - rm %{install-root}%{indep-libdir}/udev/rules.d/61-gdm.rules
+
     - mkdir -p %{install-root}%{pamdir}
     - |
       # Our configuration is similar to redhat but without selinux

@@ -52,3 +52,7 @@ depends:
   - freedesktop-sdk.bst:components/xorg-proto-xorgproto.bst
   - freedesktop-sdk.bst:components/xorg-util-macros.bst
 
+  - freedesktop-sdk.bst:extensions/vainfo/libva-utils.bst
+  - freedesktop-sdk.bst:extensions/vulkaninfo/vulkan-tools.bst
+  - freedesktop-sdk.bst:extensions/glxinfo/mesa-demos.bst
+  - freedesktop-sdk.bst:extensions/clinfo/clinfo.bst

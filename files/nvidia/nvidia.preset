@@ -1,0 +1,4 @@
+enable nvidia-hibernate
+disable nvidia-powerd
+enable nvidia-resume
+enable nvidia-suspend

@@ -95,11 +95,8 @@ public:
         - '%{bootdir}/System.map'
 
 sources:
-- kind: git_tag
-  url: kernel:linux/kernel/git/stable/linux.git
-  track: v*
-  exclude:
-  - '*-rc*'
-  ref: v6.3-0-g457391b0380335d5e9a5babdec90ac53928b23b4
+- kind: tar
+  url: https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.0.7.tar.xz
+  ref: 67dacc2b78605a56e997f4c08d009be87c98ec66f1870220226c8b3cc676590f
 - kind: local
   path: files/linux/

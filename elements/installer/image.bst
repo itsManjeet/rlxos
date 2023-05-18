@@ -103,4 +103,6 @@ config:
     genimage
 
   - mv /build/images/installer.iso "%{install-root}/%{installer-volume-id}.iso"
-  - implantisomd5 "%{install-root}/%{installer-volume-id}.iso"
+  - |
+    cd %{install-root}/
+    sha512sum %{install-root}/%{installer-volume-id}.iso > %{install-root}/%{installer-volume-id}.iso.sha512sum

@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  BST: bst --config buildstream.conf --colors --builders 1
+  BST: bst --colors --builders 1
 
 jobs:
   generate-cache:

@@ -25,6 +25,6 @@ config:
        --efipath /boot >/dev/null
 
   # Managed by ostree initrd service?
-  - sed -i -e '/^\/dev\/gpt-auto-root/d' /etc/fstab
+  - sed -i -e '/^\/dev\/gpt-auto-root/d' %{sysroot}/etc/fstab
 
   - mv %{sysroot}/etc %{sysroot}/usr/etc

@@ -3,7 +3,7 @@ kind: stack
 depends:
   - system/initramfs.bst
   - components/branding.bst
-  - components/fstab.bst
+  - components/zsh.bst
   - components/nsswitch.bst
   - components/noto-cjk.bst
   - components/android-udev-rules.bst

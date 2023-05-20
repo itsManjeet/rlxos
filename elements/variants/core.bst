@@ -2,6 +2,7 @@ kind: stack
 
 depends:
   - system/initramfs.bst
+  - components/useradd.bst
   - components/branding.bst
   - components/zsh.bst
   - components/nsswitch.bst

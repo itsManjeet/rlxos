@@ -3,7 +3,6 @@ kind: stack
 depends:
 - components/plymouth.bst
 - components/os-release.bst
-- installer/isomd5sum.bst
 
 - freedesktop-sdk.bst:components/dbus.bst
 - freedesktop-sdk.bst:components/dracut.bst

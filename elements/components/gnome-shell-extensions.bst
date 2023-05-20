@@ -5,11 +5,7 @@ sources:
   ref: 8c345e72f31a1e37f55063e0b15997301b01194ed698772fd87aeb50cbb101ab
 
 - kind: local
-  path: files/gnome-shell-extensions/org.gnome.shell-enabled-extensions.gschema.override
-- kind: local
-  path: files/gnome-shell-extensions/org.gnome.shell-favorite-apps.gschema.override
-- kind: local
-  path: files/gnome-shell-extensions/org.gnome.desktop.background.gschema.override
+  path: files/gnome-shell-extensions/
 
 build-depends:
 - freedesktop-sdk.bst:public-stacks/buildsystem-meson.bst

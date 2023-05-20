@@ -1,0 +1,15 @@
+[org.gnome.desktop.interface]
+show-battery-percentage=true
+
+[org.gnome.mutter]
+experimental-features=['scale-monitor-framebuffer']
+center-new-windows=true
+
+[org.gnome.desktop.peripherals.touchpad]
+tap-to-click=true
+
+[org.gnome.nautilus.icon-view]
+captions=['size', 'none', 'none']
+
+[org.gnome.desktop.wm.preferences]
+button-layout ':minimize,maximize,close'

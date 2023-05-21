@@ -10,7 +10,7 @@
 - [ ] And a lot more.
 
 ## Join Us
-Join our [Telegram](https://t.) and get involved in the development process.
+Join our [Discussions](https://github.com/itsManjeet/rlxos/discussions) and get involved in the development process.
 
 ## Source Code
 

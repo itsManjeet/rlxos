@@ -39,6 +39,7 @@ aliases:
   pypi: https://files.pythonhosted.org/packages/
   samba: https://download.samba.org/pub/
   sourceforge: https://downloads.sourceforge.net/
+  sourceforge_project: https://sourceforge.net/projects/
   spice: https://www.spice-space.org/download/
   tcpdump: https://www.tcpdump.org/
   tecnocode: https://tecnocode.co.uk/downloads/
@@ -46,8 +47,6 @@ aliases:
   videolan: https://download.videolan.org/
   webkitgtk: https://webkitgtk.org/releases/
   wpewebkit: https://wpewebkit.org/releases/
-
-  # git aliases go here
   freedesktop: https://gitlab.freedesktop.org/
   github: https://github.com/
   gitlab: https://gitlab.com/

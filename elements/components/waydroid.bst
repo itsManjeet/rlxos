@@ -1,6 +1,7 @@
 kind: manual
 
 depends:
+- components/lxc.bst
 - components/python-gbinder.bst
 - components/pygobject.bst
 - components/dnsmasq.bst

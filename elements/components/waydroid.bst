@@ -1,7 +1,7 @@
 kind: manual
 
 depends:
-- components/libglibutil.bst
+- components/python-gbinder.bst
 - components/pygobject.bst
 - components/dnsmasq.bst
 - freedesktop-sdk.bst:components/python3-dbus.bst

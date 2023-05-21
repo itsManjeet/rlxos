@@ -89,6 +89,5 @@ depends:
   - freedesktop-sdk.bst:vm/mesa-default.bst
   - freedesktop-sdk.bst:components/iio-sensor-proxy.bst
 
-  - freedesktop-sdk.bst:extensions/gstreamer-vaapi/gstreamer-vaapi.bst
   - freedesktop-sdk.bst:extensions/platform-vaapi-intel/intel-media-driver.bst
   - freedesktop-sdk.bst:extensions/platform-vaapi-intel/intel-vaapi-driver.bst

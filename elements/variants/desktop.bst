@@ -77,7 +77,7 @@ depends:
   - components/default-terminal.bst
   - components/default-backgrounds.bst
 
-  - proprietary/nvidia/pkg.bst
+  - components/nvidia-settings.bst
 
   - freedesktop-sdk.bst:components/xcb-util-cursor.bst
   - freedesktop-sdk.bst:components/xcb-util-image.bst

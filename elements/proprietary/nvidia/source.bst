@@ -21,14 +21,10 @@ sandbox:
   build-gid: 1000
 
 config:
-  # configure-commands:
-  # - sed -i 's#/dev/tty#/dev/stderr#g' NVIDIA-Linux-x86_64-530.41.03.run
-  # - sed -i '697,713d' NVIDIA-Linux-x86_64-530.41.03.run
-  # - sed -i 's#skip=845#skip=828#' NVIDIA-Linux-x86_64-530.41.03.run
   install-commands:
-  - sh ./NVIDIA-Linux-x86_64-530.41.03.run --ui=none -x --target %{install-root}/nvidia
+  - sh ./NVIDIA-Linux-x86_64-530.41.03.run --ui=none -x --target %{install-root}/nvidia/
   - sh ./NVIDIA-Linux-x86_64-530.41.03.run --version-string > %{install-root}/nvidia/nvidiaver
-  - cd %{install-root}/nvidia && tar -xf nvidia-persistenced-init.tar.bz2
+  - tar -xf %{install-root}/nvidia/nvidia-persistenced-init.tar.bz2 -C %{install-root}/nvidia/
 
   strip-commands:
   - true

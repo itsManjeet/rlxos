@@ -115,7 +115,7 @@ config:
     install -Dm755 nvidia-powerd -t %{install-root}%{bindir}
     install -Dm644 nvidia-dbus.conf -t %{install-root}%{datadir}/dbus-1/system.d/
 
-    install -Dm644 nvidia.sysusers -t %{install-root}%{indep-libdir}/sysusers.d/
+    install -Dm644 nvidia.sysusers  %{install-root}%{indep-libdir}/sysusers.d/nvidia.conf
     install -Dm644 nvidia.rules %{install-root}/%{indep-libdir}/udev/rules.d/60-nvidia.rules
 
     mkdir -p %{install-root}%{indep-libdir}/modprobe.d/ %{install-root}%{indep-libdir}/modules-load.d/

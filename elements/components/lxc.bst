@@ -28,6 +28,9 @@ config:
       unitdir="$(pkg-config --variable=systemdsystemunitdir systemd)"
       install -Dm644 -t %{install-root}${unitdir} lxc.service
       install -Dm644 -t %{install-root}${unitdir} lxc-auto.service
+    - |
+      presetdir="$(pkg-config --variable=systemdsystempresetdir systemd)"
+      install -Dm644 -t %{install-root}${presetdir} lxc.preset
 
 
 sources:

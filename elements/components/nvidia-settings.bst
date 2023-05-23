@@ -14,6 +14,10 @@ build-depends:
 config:
   install-commands:
     (>):
+    # FIX libdir
+    - |
+      mkdir -p %{install-root}%{libdir}/
+      mv %{install-root}%{indep-libdir}/libnvidia-*.so.* %{install-root}%{libdir}/
     - install -Dm644 -t %{install-root}%{datadir}/applications/ doc/nvidia-settings.desktop
     - install -Dm644 -t %{install-root}%{datadir}/pixmaps/ doc/nvidia-settings.png
     - |

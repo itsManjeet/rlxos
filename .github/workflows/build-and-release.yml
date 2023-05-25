@@ -63,6 +63,8 @@ jobs:
       MIRROR_DIR: ${{ secrets.MIRROR }}
     steps:
       - uses: actions/checkout@v1
+      - name: BUILD
+        run: ${BST} -o variant ${{ matrix.variant }} build installer/image.bst
       - name: Checkout Image
         run: ${BST} -o variant ${{ matrix.variant }} checkout installer/image.bst $RELEASE_DIR -f
       

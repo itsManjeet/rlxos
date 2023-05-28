@@ -7,6 +7,7 @@ depends:
   - components/zsh.bst
   - components/nsswitch.bst
   - components/noto-cjk.bst
+  - components/indic-otf.bst
   - components/android-udev-rules.bst
   - components/bolt.bst
   - components/sudoer.bst

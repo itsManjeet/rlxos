@@ -1,0 +1,11 @@
+--- st-settings.orig.c	2023-04-24 13:56:56.000000000 +0530
++++ st-settings.c	2023-05-29 12:53:32.485942139 +0530
+@@ -294,7 +294,7 @@
+   props[PROP_SLOW_DOWN_FACTOR] = g_param_spec_double("slow-down-factor",
+                                                       "Slow down factor",
+                                                       "Factor applied to all animation durations",
+-                                                      EPSILON, G_MAXDOUBLE, 1.0,
++                                                      EPSILON, G_MAXDOUBLE, 0.75,
+                                                       ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+ 
+   /**

@@ -4,10 +4,14 @@ sources:
 - kind: tar
   url: gnome_downloads:gnome-shell/44/gnome-shell-44.1.tar.xz
   ref: 0bfbe4394d267625154d08d01467bdbd99e8157512fc8df45d5c02ddb7551ca6
+- kind: local
+  path: patches/gnome-shell
+
 build-depends:
 - components/sassc.bst
 - freedesktop-sdk.bst:components/asciidoc.bst
 - freedesktop-sdk.bst:components/docbook-xsl.bst
+- freedesktop-sdk.bst:components/patch.bst
 - freedesktop-sdk.bst:components/perl.bst
 - freedesktop-sdk.bst:public-stacks/buildsystem-meson.bst
 
@@ -45,3 +49,10 @@ variables:
     -Dextensions_app=false
     -Dextensions-tool:bash_completion=disabled
     -Dtests=false
+
+config:
+  configure-commands:
+    (<):
+    - |
+      patch js/ui/main.js show-apps-on-login.patch
+      patch src/st/st-settings.c speed-up-animation.patch

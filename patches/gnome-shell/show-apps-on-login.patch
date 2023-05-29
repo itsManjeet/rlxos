@@ -1,0 +1,10 @@
+--- main.orig.js	2023-04-24 13:56:56.000000000 +0530
++++ main.js	2023-05-29 12:50:17.961098284 +0530
+@@ -360,6 +360,7 @@
+             let perfOutput = GLib.getenv("SHELL_PERF_OUTPUT");
+             Scripting.runPerfScript(perfModule, perfOutput);
+         }
++        overview.showApps();
+     });
+ }
+ 

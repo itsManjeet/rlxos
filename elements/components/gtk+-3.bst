@@ -2,12 +2,9 @@ kind: meson
 
 sources:
 - kind: tar
-  url: gnome_downloads:gtk+/3.24/gtk+-3.24.37.tar.xz
-  ref: 6745f0b4c053794151fd0f0e2474b077cccff5f83e9dd1bf3d39fe9fe5fb7f57
-- kind: patch
-  path: patches/gtk3/gtk3-werror.patch
-- kind: patch
-  path: patches/gtk3/gtk3-crashy.patch
+  url: gnome_downloads:gtk+/3.24/gtk+-3.24.38.tar.xz
+  ref: ce11decf018b25bdd8505544a4f87242854ec88be054d9ade5f3a20444dd8ee7
+
 
 build-depends:
 - components/gobject-introspection.bst

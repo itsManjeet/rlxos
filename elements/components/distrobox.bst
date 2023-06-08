@@ -4,7 +4,7 @@ sources:
 - kind: git_tag
   url: github:89luca89/distrobox
   track: main
-  ref: 1.4.2.1-94-g5c780e2773149ef9ea0b2e314853dfb0fc631a62
+  ref: 1.4.2.1-111-gf008b521ee776a66c36a87848c85d3e3f0f6a3dd
 build-depends:
 - freedesktop-sdk.bst:bootstrap-import.bst
 

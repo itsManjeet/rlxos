@@ -1,8 +1,8 @@
 kind: meson
 sources:
 - kind: tar
-  url: gnome_downloads:grilo/0.3/grilo-0.3.15.tar.xz
-  ref: f352acf73665669934270636fede66b52da6801fe20f638c4048ab2678577b2d
+  url: gnome_downloads:grilo/0.3/grilo-0.3.16.tar.xz
+  ref: 884580e8c5ece280df23aa63ff5234b7d48988a404df7d6bfccd1e77b473bd96
 build-depends:
 - components/gobject-introspection.bst
 - components/gtk-doc.bst

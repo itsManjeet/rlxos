@@ -2,8 +2,8 @@ kind: autotools
 
 sources:
 - kind: tar
-  url: gnome_downloads:gspell/1.12/gspell-1.12.0.tar.xz
-  ref: 40d2850f1bb6e8775246fa1e39438b36caafbdbada1d28a19fa1ca07e1ff82ad
+  url: gnome_downloads:gspell/1.12/gspell-1.12.1.tar.xz
+  ref: 8ec44f32052e896fcdd4926eb814a326e39a5047e251eec7b9056fbd9444b0f1
 build-depends:
 - components/gobject-introspection.bst
 - components/gtk-doc.bst

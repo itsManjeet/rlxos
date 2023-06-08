@@ -2,8 +2,8 @@ kind: meson
 
 sources:
 - kind: tar
-  url: gnome_downloads:sushi/43/sushi-43.0.tar.xz
-  ref: 57848526149ab1c784fb92fbc934c3514fe522aba649d5d9fedec7e1b147527b
+  url: gnome_downloads:sushi/44/sushi-44.2.tar.xz
+  ref: 6c002fe0aea19027ba448b5aec94d5cd753c9752f996ee033152428738ea43e9
 build-depends:
 - freedesktop-sdk.bst:public-stacks/buildsystem-meson.bst
 - components/evince.bst

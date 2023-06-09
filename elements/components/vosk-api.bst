@@ -6,7 +6,7 @@ sources:
   track: master
   directory: vosk-api
 
-  ref: go/v0.3.45-15-gd56221bcf25503be65f39d2a609e924b6f65bd32
+  ref: go/v0.3.45-16-g12f29a3415e4967e088ed09202bfb0007e5a1787
 - kind: git_tag
   url: https://github.com/xianyi/OpenBLAS.git
   track: v0.3.20

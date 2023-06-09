@@ -32,4 +32,4 @@ sources:
 - kind: git_tag
   url: github:NVIDIA/nvidia-settings.git
   track: main
-  ref: 530.41.03-0-g8c0ba0680bd4941dc66b471ed2b3fc13f661e45d
+  ref: 535.43.02-0-g39c3e28e84f3ffb034abaf1ae92dbb570c207d05

@@ -4,6 +4,7 @@ depends:
   - components/spice-vdagent.bst
   - components/appimaged.bst
   - components/waydroid.bst
+  - components/waydroid-script.bst
   - components/pinentry.bst
   - components/wpa-supplicant.bst
   - components/xdg-desktop-portal.bst

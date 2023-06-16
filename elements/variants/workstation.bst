@@ -1,6 +1,7 @@
 kind: stack
 depends:
   - variants/desktop.bst
+  - components/vala-language-server.bst
   - freedesktop-sdk.bst:components/git.bst
   - freedesktop-sdk.bst:components/appstream.bst
   - freedesktop-sdk.bst:components/appstream-glib.bst

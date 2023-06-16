@@ -13,49 +13,49 @@ EOF
 
 while [ $# -gt 0 ]; do
     case "$1" in
-	--gpg-*=*)
-	    gpg_opts+=("$1")
-	    ;;
-	--gpg-*)
-	    gpg_opts+=("$1" "$2")
-	    shift
-	    ;;
-	--collection-id=*)
-	    collection_id="${1#--collection-id=}"
-	    ;;
-	--collection-id)
-	    collection_id="${2}"
-	    shift
-	    ;;
-	--help)
-	    help
-	    exit 0
-	    ;;
-	--)
-	    main_opts+=("$@")
-	    shift $(($#-1))
-	    ;;
-	--*)
-	    echo "Unknown option '$1'" 1>&2
-	    exit 1
-	    ;;
-	-*)
-	    for ((i=1;i < ${#1};++i)); do
-		case "${1:i}" in
-		    h)
-			help
-			exit 0
-			;;
-		    *)
-			echo "Unknown option '${1:i}'" 1>&2
-			exit 1
-			;;
-		esac
-	    done
-	    ;;
-	*)
-	    main_opts+=("$1")
-	    ;;
+        --gpg-*=*)
+            gpg_opts+=("$1")
+        ;;
+        --gpg-*)
+            gpg_opts+=("$1" "$2")
+            shift
+        ;;
+        --collection-id=*)
+            collection_id="${1#--collection-id=}"
+        ;;
+        --collection-id)
+            collection_id="${2}"
+            shift
+        ;;
+        --help)
+            help
+            exit 0
+        ;;
+        --)
+            main_opts+=("$@")
+            shift $(($#-1))
+        ;;
+        --*)
+            echo "Unknown option '$1'" 1>&2
+            exit 1
+        ;;
+        -*)
+            for ((i=1;i < ${#1};++i)); do
+                case "${1:i}" in
+                    h)
+                        help
+                        exit 0
+                    ;;
+                    *)
+                        echo "Unknown option '${1:i}'" 1>&2
+                        exit 1
+                    ;;
+                esac
+            done
+        ;;
+        *)
+            main_opts+=("$1")
+        ;;
     esac
     shift
 done
@@ -71,7 +71,7 @@ element="${main_opts[1]}"
 ref="${main_opts[2]}"
 
 if [[ -f commit_body ]] ; then
-	COMMIT_MESSAGE="--body-file commit_body"
+    COMMIT_MESSAGE="--body-file commit_body"
 fi
 
 checkout="$(mktemp --suffix="-update-repo" -d -p "$(dirname "$(basename $OSTREE_REPO)")")"
@@ -94,19 +94,19 @@ ostree pull-local --repo="${OSTREE_REPO}" "${checkout}" "${commit}"
 prev_commit="$(ostree rev-parse "${ref}" 2>/dev/null || true)"
 
 ostree commit ${gpg_opts[*]} \
-       --branch="${ref}" --tree=ref="${commit}" --skip-if-unchanged ${COMMIT_MESSAGE}
+--branch="${ref}" --tree=ref="${commit}" --skip-if-unchanged ${COMMIT_MESSAGE}
 
 new_commit="$(ostree rev-parse "${ref}")"
 
 if [ "${new_commit}" != "${prev_commit}" ]; then
     ostree prune --refs-only --keep-younger-than="6 months ago"
-
+    
     if [ -n "${prev_commit}" ]; then
         ostree static-delta generate "${ref}"
     fi
-
+    
     ostree summary \
-           ${collection_id:+--add-metadata=ostree.deploy-collection-id='"'"${collection_id}"'"'} \
-           ${gpg_opts[*]} \
-           --update
+    ${collection_id:+--add-metadata=ostree.deploy-collection-id='"'"${collection_id}"'"'} \
+    ${gpg_opts[*]} \
+    --update
 fi

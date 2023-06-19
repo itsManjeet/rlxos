@@ -4,8 +4,8 @@ depends:
 - components/sudoer.bst
 - components/gnome-console.bst
 - components/gparted.bst
-- installer/os-installer-extra.bst
-- installer/installer-dirs.bst
+- components/os-installer-extra.bst
+- boards/common/pseudo-dirs.bst
 
 - components/plymouth.bst
 - components/branding.bst

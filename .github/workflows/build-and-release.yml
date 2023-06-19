@@ -25,6 +25,10 @@ jobs:
     timeout-minutes: 46000
     needs: generate-cache
     environment: EXPERIMENTAL
+    strategy:
+      matrix:
+        board:
+          - amd64-efi
 
     env:
       OSTREE_REPO: ${{ secrets.OSTREE_REPO }}
@@ -37,7 +41,7 @@ jobs:
         run: ${BST} -o variant experimental build installer/image.bst
         
       - name: Checkout Image
-        run: ${BST} -o variant experimental checkout installer/image.bst ${{ secrets.DAILY_DIR }} -f
+        run: ${BST} -o variant experimental checkout boards/${{ matrix.board }}/image.bst ${{ secrets.DAILY_DIR }} -f
 
       - name: Generate Changelog
         run: echo "${{ github.event.head_commit.message }}" > commit_body
@@ -53,9 +57,8 @@ jobs:
     if: github.ref == 'refs/heads/stable'
     strategy:
       matrix:
-        variant:
-          - desktop
-          - workstation
+        board:
+          - amd64-efi
     env:
       RELEASE_DIR: ${{ secrets.RELEASE_DIR }}
       OSTREE_REPO: ${{ secrets.OSTREE_REPO }}
@@ -64,15 +67,15 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: BUILD
-        run: ${BST} -o variant ${{ matrix.variant }} build installer/image.bst
+        run: ${BST} -o variant desktop build boards/${{ matrix.board }}/image.bst
       - name: Checkout Image
-        run: ${BST} -o variant ${{ matrix.variant }} checkout installer/image.bst $RELEASE_DIR -f
+        run: ${BST} -o variant desktop checkout boards/${{ matrix.board }}/image.bst $RELEASE_DIR -f
       
       - name: Generate Changelog
         run: echo "${{ github.event.head_commit.message }}" > commit_body
       
       - name: Update ostree
-        run: VARIANT="${{ matrix.variant }}" make update-ostree
+        run: VARIANT="desktop" make update-ostree
 
       - name: Syncing Mirror
         run: rsync -avW --inplace --progress ${RELEASE_DIR} ${MIRROR_DIR}

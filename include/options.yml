@@ -8,11 +8,9 @@ options:
 
   variant:
     type: enum
-    description: Desktop variant
+    description: Target variant
     variable: variant
     values:
-      - desktop
-      - workstation
       - experimental
-
-    default: desktop
+      - desktop
+    default: experimental

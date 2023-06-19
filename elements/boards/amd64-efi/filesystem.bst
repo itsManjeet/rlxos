@@ -1,7 +1,7 @@
 kind: compose
 
 build-depends:
-- installer/deps.bst
+- boards/amd64-efi/deps.bst
 
 config:
   exclude:

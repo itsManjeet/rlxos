@@ -1,0 +1,42 @@
+name: Update extension
+on:
+  push:
+    paths:
+      - 'elements/extensions/**'
+
+env:
+  BST: bst --colors --builders 1
+
+jobs:
+  update-extension:
+    name: Updating extension
+    runs-on: self-hosted
+    timeout-minutes: 46000
+    environment: RELEASE
+    env:
+      RELEASE_DIR: ${{ secrets.RELEASE_DIR }}
+      OSTREE_REPO: ${{ secrets.OSTREE_REPO }}
+      OSTREE_GPG: ${{ secrets.OSTREE_GPG }}
+      MIRROR_DIR: ${{ secrets.MIRROR }}
+    steps:
+      - uses: actions/checkout@v1
+      - uses: jitterbit/get-changed-files@v1
+        id: changes
+        with:
+          format: space-delimited
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Update extensions
+        run: |
+          VARIANT=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
+          ARCH=$(uname -m)
+          for i in ${{ steps.changes.outputs.all }} ; do
+            if [[ $i == "extensions/*" ]] ; then
+              id=$(basename $i |)
+              id=${id%.*}
+              echo "=> generating extension ${id}"
+              ${BST} -o variant ${VARIANT} build ${i}
+              
+              echo "=> commiting release ${VARIANT} ${REF}"
+              VARIANT=${VARIANT} REF=${i} OSTREE_BRANCH=${ARCH}/${VARIANT}/extension/${id} make update-ostree
+            fi
+          done

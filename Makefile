@@ -1,8 +1,9 @@
 ARCH ?= $(shell uname -m)
 VARIANT ?= desktop
-OSTREE_BRANCH := $(ARCH)/$(VARIANT)
+OSTREE_BRANCH ?= $(ARCH)/$(VARIANT)
 OSTREE_REPO ?= ostree-repo
 OSTREE_GPG ?= ostree-gpg
+REF ?= system/repo.bst
 define OSTREE_GPG_CONFIG
 Key-Type: DSA
 Key-Length: 1024
@@ -34,9 +35,9 @@ files/rlxos.gpg: $(OSTREE_GPG)/key-config
 	gpg --homedir=$(OSTREE_GPG) --export --armor >"$@"
 
 update-ostree: files/rlxos.gpg
-	utils/commit-ostree.sh								\
-	  --gpg-homedir=$(OSTREE_GPG)						\
-	  --gpg-sign=$$(cat $(OSTREE_GPG)/default-id)		\
-	  --collection-id=dev.rlxos.System					\
-	  $(OSTREE_REPO) system/repo.bst					\
+	utils/commit-ostree.sh														\
+	  --gpg-homedir=$(OSTREE_GPG)											\
+	  --gpg-sign=$$(cat $(OSTREE_GPG)/default-id)			\
+	  --collection-id=dev.rlxos.System								\
+	  $(OSTREE_REPO) $(REF)														\
 	  $(OSTREE_BRANCH)

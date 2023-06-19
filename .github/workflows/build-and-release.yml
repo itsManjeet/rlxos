@@ -3,6 +3,7 @@ on:
   push:
     paths-ignore:
       - 'docs/**'
+      - 'elements/extensions/**'
       - .github/workflow/docs.yml
   workflow_dispatch:
 
@@ -47,7 +48,7 @@ jobs:
         run: echo "${{ github.event.head_commit.message }}" > commit_body
 
       - name: Update ostree
-        run: VARIANT="experimental" make update-ostree
+        run: VARIANT="experimental" REF="system/repo.bst" make update-ostree
 
   release:
     name: Release
@@ -75,7 +76,7 @@ jobs:
         run: echo "${{ github.event.head_commit.message }}" > commit_body
       
       - name: Update ostree
-        run: VARIANT="desktop" make update-ostree
+        run: VARIANT="desktop" REF="system/repo.bst" make update-ostree
 
       - name: Syncing Mirror
         run: rsync -avW --inplace --progress ${RELEASE_DIR} ${MIRROR_DIR}

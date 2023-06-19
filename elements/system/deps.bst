@@ -101,7 +101,6 @@ depends:
 - components/default-terminal.bst
 - components/default-backgrounds.bst
 
-- components/nvidia-settings.bst
 - freedesktop-sdk.bst:bootstrap-import.bst
 - freedesktop-sdk.bst:components/bash-config.bst
 - freedesktop-sdk.bst:components/bash-completion.bst

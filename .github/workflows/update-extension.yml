@@ -1,11 +1,9 @@
 name: Update extension
 on:
   push:
-    paths-ignore:
-      - .github/workflow/update-extensions.yml
-      - 'docs/**'
     paths:
       - 'elements/extensions/**'
+      - .github/workflow/update-extensions.yml
 
 env:
   BST: bst --colors --builders 1

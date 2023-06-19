@@ -13,6 +13,10 @@ variables:
 
 config:
   layout:
+  - element: ''
+    destination: /tmp
+  - element: ''
+    destination: /build
   - element: boards/amd64-efi/build-deps.bst
     destination: /
   - element: boards/amd64-efi/filesystem.bst
@@ -25,7 +29,6 @@ config:
     destination: /rlxos/images/
 
   commands:
-  - mkdir -p /tmp
   - mkdir -p /build/images
   - mkdir -p /build/install-root
   - mkdir -p /build/stage-1

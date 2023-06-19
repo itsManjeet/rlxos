@@ -18,6 +18,12 @@ variables:
 
 config:
   layout:
+  - element: ''
+    destination: '/tmp'
+  - element: ''
+    destination: '/var/tmp'
+  - element: ''
+    destination: '/boot'
   - element: boards/amd64-efi/initramfs/deps.bst
     destination: '/'
   - element: boards/amd64-efi/initramfs/initial-scripts.bst
@@ -26,8 +32,6 @@ config:
     destination: '/'
 
   commands:
-  - |
-    mkdir -p /boot /tmp /var/tmp
   - |
     prepare-image.sh \
        --seed "%{uuidnamespace}" \

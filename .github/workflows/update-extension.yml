@@ -1,6 +1,9 @@
 name: Update extension
 on:
   push:
+    paths-ignore:
+      - .github/workflow/update-extensions.yml
+      - 'docs/**'
     paths:
       - 'elements/extensions/**'
 
@@ -28,9 +31,9 @@ jobs:
           VARIANT=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
           ARCH=$(uname -m)
           for i in ${{ steps.changes.outputs.all }} ; do
-            if [[ $i == "extensions/*" ]] ; then
-              id=$(basename $i |)
-              id=${id%.*}
+            if [[ $i == "elements/extensions/*/repo.bst" ]] ; then
+              i=$(echo $i | cut -d '/' -f2-)
+              id=$(echo $i | cut -d '/' -f2)
               echo "=> generating extension ${id}"
               ${BST} -o variant ${VARIANT} build ${i}
               

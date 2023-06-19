@@ -4,7 +4,7 @@ on:
     paths-ignore:
       - 'docs/**'
       - 'elements/extensions/**'
-      - .github/workflow/docs.yml
+      - .github/workflow/update-extensions.yml
   workflow_dispatch:
 
 env:

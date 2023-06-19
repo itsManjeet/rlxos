@@ -8,5 +8,5 @@ config:
 
 build-depends:
 - components/libostree.bst
-- proprietary/nvidia/nvidia-settings.bst
-- proprietary/nvidia/pkg.bst
+- extensions/nvidia/nvidia-settings.bst
+- extensions/nvidia/pkg.bst

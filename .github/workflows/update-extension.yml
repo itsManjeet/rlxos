@@ -12,12 +12,10 @@ jobs:
     name: Updating extension
     runs-on: self-hosted
     timeout-minutes: 46000
-    environment: RELEASE
+    environment: EXPERIMENTAL
     env:
-      RELEASE_DIR: ${{ secrets.RELEASE_DIR }}
       OSTREE_REPO: ${{ secrets.OSTREE_REPO }}
       OSTREE_GPG: ${{ secrets.OSTREE_GPG }}
-      MIRROR_DIR: ${{ secrets.MIRROR }}
     steps:
       - uses: actions/checkout@v1
       - uses: jitterbit/get-changed-files@v1

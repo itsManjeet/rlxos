@@ -39,7 +39,7 @@ jobs:
       - uses: actions/checkout@v1
       
       - name: Build Installer ISO
-        run: ${BST} -o variant experimental build installer/image.bst
+        run: ${BST} -o variant experimental build boards/${{ matrix.board }}/image.bst
         
       - name: Checkout Image
         run: ${BST} -o variant experimental checkout boards/${{ matrix.board }}/image.bst ${{ secrets.DAILY_DIR }} -f

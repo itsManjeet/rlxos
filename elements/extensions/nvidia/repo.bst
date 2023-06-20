@@ -4,7 +4,7 @@ config:
   environment:
   - components/libostree.bst
   
-  ostree-branch: "%{arch}/%{variant}/extension/nvidia"
+  ostree-branch: "%{extension-prefix}/nvidia"
 
 build-depends:
 - components/libostree.bst

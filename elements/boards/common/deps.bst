@@ -15,7 +15,6 @@ depends:
 - freedesktop-sdk.bst:components/wayland.bst
 - freedesktop-sdk.bst:components/systemd.bst
 - components/linux.bst
-- proprietary/nvidia/pkg.bst
 - components/firmware.bst
 
 - freedesktop-sdk.bst:components/shadow.bst

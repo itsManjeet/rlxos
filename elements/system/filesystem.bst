@@ -7,10 +7,5 @@ build-depends:
 
 config:
   exclude:
-    - debug
-  (?):
-    - variant == "desktop":
-        exclude:
-          (>):
-            - devel
-            - doc
+  - debug
+  - devel

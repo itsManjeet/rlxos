@@ -6,7 +6,7 @@ depends:
 - freedesktop-sdk.bst:components/libvdpau.bst
 - freedesktop-sdk.bst:components/xorg-lib-xv.bst
 - freedesktop-sdk.bst:components/xorg-lib-xxf86vm.bst
-- proprietary/nvidia/pkg.bst
+- extensions/nvidia/pkg.bst
 
 build-depends:
 - freedesktop-sdk.bst:public-stacks/buildsystem-autotools.bst

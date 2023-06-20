@@ -68,15 +68,15 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: BUILD
-        run: ${BST} -o variant desktop build boards/${{ matrix.board }}/image.bst
+        run: ${BST} -o variant stable build boards/${{ matrix.board }}/image.bst
       - name: Checkout Image
-        run: ${BST} -o variant desktop checkout boards/${{ matrix.board }}/image.bst $RELEASE_DIR -f
+        run: ${BST} -o variant stable checkout boards/${{ matrix.board }}/image.bst $RELEASE_DIR -f
       
       - name: Generate Changelog
         run: echo "${{ github.event.head_commit.message }}" > commit_body
       
       - name: Update ostree
-        run: VARIANT="desktop" REF="system/repo.bst" make update-ostree
+        run: VARIANT="stable" REF="system/repo.bst" make update-ostree
 
       - name: Syncing Mirror
         run: rsync -avW --inplace --progress ${RELEASE_DIR} ${MIRROR_DIR}

@@ -1,0 +1,16 @@
+id: xz
+version: 5.4.3
+about: Compressing and Decompressing files
+
+sources:
+- https://tukaani.org/xz/xz-{{version}}.tar.xz
+
+depends:
+  runtime:
+  - glibc
+
+build-dir: xz-{{version}}
+build-type: autoconf
+
+configure: >
+  --disable-static

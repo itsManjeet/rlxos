@@ -1,0 +1,4 @@
+Defaults secure_path="/usr/bin:/opt/bin:/apps"
+Defaults pwfeedback
+%adm ALL=(ALL) ALL
+rlxos-sys ALL=(ALL) NOPASSWD: ALL

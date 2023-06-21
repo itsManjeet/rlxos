@@ -1,0 +1,33 @@
+id: openblas-lapack
+version: 0.3.20
+release: 4
+lapack_version: 0.9.0
+blas_version: 3.8.0
+major_version: 3
+about: Optimized BLAS library based on GotoBlas2 1.13 BSD (providing blas, lapack and cblas)
+license: BSD
+depends:
+  runtime:
+    - gcc:lib  
+  buildtime:
+    - gcc
+    - perl
+sources:
+  - openblas-lapack-{{version}}.tar.gz::https://github.com/xianyi/OpenBLAS/archive/v{{version}}.tar.gz
+build-dir: OpenBLAS-{{version}}
+script: |
+  _config="FC=gfortran USE_OPENMP=1 USE_THREAD=1 USE_TLS=1 NO_LAPACK=0 BUILD_LAPACK_DEPRECATED=1 MAJOR_VERSION={{major_version}} NO_STATIC=1"
+  make  ${_config} libs netlib shared
+
+  make ${_config} PREFIX=/usr DESTDIR=${pkgupd_pkgdir} install
+
+  install -D -m 0644 LICENSE ${pkgupd_pkgdir}/usr/share/license/openblas-lapack/LICENSE
+
+  cd ${pkgupd_pkgdir}/usr/lib
+
+  for l in libblas.so libblas.so.{{major_version}} libblas.so.{{blas_version}} \
+    libcblas.so libcblas.so.{{major_version}} libcblas.so.{{blas_version}} \
+    liblapack.so liblapack.so.{{major_version}} liblapack.so.{{lapack_version}} \
+    liblapacke.so liblapacke.so.{{major_version}} liblapacke.so.{{lapack_version}} ; do
+      ln -sf libopenblas.so ${l}
+  done

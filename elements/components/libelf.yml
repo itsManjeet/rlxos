@@ -1,0 +1,23 @@
+id: libelf
+version: 0.185
+release: 2
+about: |
+  Executable and Linkable Format utilities
+
+depends:
+  runtime:
+    - gcc:lib
+    - xz
+    - zlib
+    - zstd
+
+sources:
+  - https://sourceware.org/ftp/elfutils/{{version}}/elfutils-{{version}}.tar.bz2
+
+autoconf-dir: true
+build-dir: elfutils-{{version}}
+configure: --disable-debuginfod --enable-libdebuginfod=dummy
+install: -C libelf
+post-script: |
+  install -v -m 644 -D config/libelf.pc -t ${pkgupd_pkgdir}/usr/lib/pkgconfig/
+  rm ${pkgupd_pkgdir}/usr/lib/libelf.a

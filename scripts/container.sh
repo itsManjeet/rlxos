@@ -1,23 +1,24 @@
 #!/bin/bash
 
-CONTAINER_IMAGE='itsmanjeet/devel-docker:2200-3'
-CONTAINER_NAME='rlxos-devel'
-CONTAINER=${CONTAINER:-'podman'}
+CONTAINER_IMAGE='itsmanjeet/devel-docker:2300-2'
+CONTAINER_NAME='devel-docker'
+CONTAINER=${CONTAINER:-'docker'}
 
 if [[ ! -z ${REMOVE_CONTAINER} ]]; then
-  podman container rm rlxos-devel
+    ${CONTAINER} container rm ${CONTAINER_NAME}
 fi
 
 if [ ! "$(${CONTAINER} ps -q -f name=${CONTAINER_NAME})" ] ; then
     if [ "$(${CONTAINER} ps -aq -f status=exited -f name=${CONTAINER_NAME})" ] ; then
-      ${CONTAINER} start ${CONTAINER_NAME}
+        ${CONTAINER} start ${CONTAINER_NAME}
     else
-      echo "=> creating container"
-      ${CONTAINER} run --privileged -it -d --name ${CONTAINER_NAME}  \
+        echo "=> creating container"
+        ${CONTAINER} run --privileged -it -d --name ${CONTAINER_NAME}  \
         -v "${PWD}":/rlxos                              \
         -v "${PWD}/pkgupd.yml:/etc/pkgupd.yml"          \
-        -v "${PWD}"/storage:/storage                    \
-        -v "${PWD}/sources:/sources"                    \
+        -v "${PWD}"/build/storage:/storage              \
+        -v "${PWD}/build/sources:/sources"              \
+        -v "${PWD}/files:/files"                        \
         -w /rlxos                                       \
         -e PATH=/rlxos/bin:/usr/bin:/opt/bin            \
         -e PS1='(rlxos) \W \$ '                         \

@@ -1,12 +1,9 @@
 repos:
     - core
-    - extra
-    - apps
-    - machine
-    - system
+    - releases
 environ:
-    - CFLAGS="-march=x86-64 -mtune=generic -O2 -pipe -fstack-protector-strong -D_FORTIFY_SOURCE=2 --param=ssp-buffer-size=4"
-    - CXXFLAGS="-march=x86-64 -mtune=generic -O2 -pipe -fstack-protector-strong -D_FORTIFY_SOURCE=2 --param=ssp-buffer-size=4"
+    - CFLAGS="-march=x86-64-v3 -mtune=generic -O2 -pipe -fstack-protector-strong -D_FORTIFY_SOURCE=2 --param=ssp-buffer-size=4"
+    - CXXFLAGS="-march=x86-64-v3 -mtune=generic -O2 -pipe -fstack-protector-strong -D_FORTIFY_SOURCE=2 --param=ssp-buffer-size=4"
     - LDFLAGS="-Wl,-O1,--sort-common,--as-needed,-z,relro,--hash-style=gnu"
     - MAKEFLAGS=-j8
     - ARCH=x86_64
@@ -16,4 +13,5 @@ server.stability: testing
 downloader.ssl.verify: false
 dir.pkgs: /storage
 dir.src: /sources
-dir.recipes: /rlxos/recipes
+dir.elements: /rlxos/elements
+dir.repo: /storage

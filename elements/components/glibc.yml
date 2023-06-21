@@ -1,0 +1,46 @@
+id: glibc
+version: 2.37
+about: GNU C Library
+
+depends:
+  runtime:
+    - filesystem
+
+  buildtime:
+    - kernel-headers
+
+sources:
+- https://ftp.gnu.org/gnu/glibc/glibc-{{version}}.tar.xz
+
+skip-strip:
+- lib.*/ld-.*\.so$
+- lib.*/libc-.*\.so$
+- lib.*/libpthread-.*\.so$
+- lib.*/libthread_db-.*\.so$
+
+pre-script: |
+  patch -Np1 -i ${FILES_DIR}/glibc-{{version}}-fhs-1.patch
+  sed '/width -=/s/workend - string/number_length/' \
+    -i stdio-common/vfprintf-process-arg.c
+
+environ:
+- M4=m4
+
+configure: >
+  --disable-werror
+  --enable-kernel=4.14
+  --enable-stack-protector=strong
+  --with-headers=/usr/include
+  libc_cv_slibdir=/usr/lib
+
+post-script: |
+  sed "/RTLDLIST=/s@/usr@@g" -i ${pkgupd_pkgdir}/usr/bin/ldd
+
+  cp -v nscd/nscd.conf ${pkgupd_pkgdir}/etc/
+  mkdir -p ${pkgupd_pkgdir}/var/cache/nscd
+
+  install -v -Dm644 nscd/nscd.tmpfiles ${pkgupd_pkgdir}/usr/lib/tmpfiles.d/nscd.conf
+  install -v -Dm644 nscd/nscd.service  ${pkgupd_pkgdir}/usr/lib/systemd/system/nscd.service
+
+  sed -e '1,3d' -e 's|/| |g' -e 's| \\||g' \
+    localedata/SUPPORTED > "${pkgupd_pkgdir}"/usr/share/i18n/SUPPORTED

@@ -1,0 +1,21 @@
+id: busybox
+version: 1.36.1
+about: utilities for resuce and embedded system
+
+depends:
+  build-time:
+  - kernel-headers
+  - glibc
+  - ncurses
+
+sources:
+- https://www.busybox.net/downloads/busybox-{{version}}.tar.bz2
+
+script: |
+  make defconfig
+  export KCONFIG_NOTIMESTAMP=1
+
+  make ${MAKEFLAGS}
+
+  install -Dm0755 busybox ${pkgupd_pkgdir}/usr/bin/busybox
+  install -Dm0644 docs/busybox.1 ${pkgupd_pkgdir}/usr/share/man/man1/busybox.1

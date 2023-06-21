@@ -1,0 +1,21 @@
+id: gettext
+version: 0.21
+about: Utilities for internationalization and localization
+
+sources:
+- https://ftp.gnu.org/gnu/gettext/gettext-{{version}}.tar.xz
+
+depends:
+  runtime:
+  - acl
+  - libxml2
+
+build-dir: gettext-{{version}}
+
+build-type: autoconf
+        
+configure: >
+  --disable-static
+
+post-script: |
+  chmod -v 0755 ${pkgupd_pkgdir}/usr/lib/preloadable_libintl.so

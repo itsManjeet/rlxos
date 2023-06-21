@@ -1,0 +1,31 @@
+id: binutils
+version: 2.40
+about: A linker, an assembler, and other tools for handling object files
+
+depends:
+  runtime:
+  - zlib
+  - glibc
+  - libelf
+  - zlib
+  - zstd
+
+build-dir: binutils-${{version}}
+
+sources:
+- https://ftp.gnu.org/gnu/binutils/binutils-{{version}}.tar.xz
+
+
+configure: >
+  --enable-gold
+  --enable-ld=default
+  --enable-lto
+  --enable-plugins
+  --enable-shared
+  --disable-werror
+  --enable-64-bit-bfd
+  --with-system-zlib
+
+post-script: |
+  rm -fv ${pkgupd_pkgdir}/usr/lib/lib{bfd,ctf,ctf-nobfd,opcodes}.a
+  rm -fv ${pkgupd_pkgdir}/usr/share/man/man1/{gprofng,gp-*}.1

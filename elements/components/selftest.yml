@@ -1,0 +1,12 @@
+id: selftest
+version: 0.0.1
+about: rlxos self test utility
+
+depends:
+  runtime:
+  - findutils
+  - grep
+  - gawk
+
+script: |
+  install -vDm0755 ${FILES_DIR}/selftest.sh ${pkgupd_pkgdir}/usr/bin/selftest

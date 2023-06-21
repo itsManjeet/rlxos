@@ -1,0 +1,28 @@
+id: openmpi
+version: 4.1.4
+about: High performance message passing library (MPI)
+depends:
+  runtime:
+    - gcc:lib
+    - glibc
+    - hwloc
+    - libevent
+    - libnl
+    - openpmix
+    - zlib
+    - openssh
+    - perl
+  buildtime:
+    - inetutils
+sources:
+  - https://www.open-mpi.org/software/ompi/v4.1/downloads/openmpi-{{version}}.tar.bz2
+
+configure: >
+  --enable-builtin-atomics
+  --enable-mpi-cxx
+  --enable-mpi-fortran=all
+  --enable-pretty-print-stacktrace
+  --sysconfdir=/etc/openmpi
+  --with-hwloc=external
+  --with-libevent=external
+  --with-pmix=external

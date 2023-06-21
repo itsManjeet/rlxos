@@ -1,0 +1,25 @@
+id: bash
+version: 5.1.8
+release: 1
+about: |
+  Bourne-Again SHell
+
+depends:
+  runtime:
+    - glibc
+    - readline
+    - ncurses
+
+sources:
+  - https://ftp.gnu.org/gnu/bash/bash-5.1.8.tar.gz
+
+build-dir: bash-5.1.8
+configure: >
+  --without-bash-malloc
+  --with-installed-readline
+
+post-script: |
+  ln -sv bash ${pkgupd_pkgdir}/usr/bin/sh
+  install -v -D -m 0644 ${FILES_DIR}/bashrc ${pkgupd_pkgdir}/etc/bashrc
+  install -v -D -m 0644 ${FILES_DIR}/user_bashrc ${pkgupd_pkgdir}/etc/skel/.bashrc
+  install -v -D -m 0644 ${FILES_DIR}/user_bash_profile ${pkgupd_pkgdir}/etc/skel/.bash_profile

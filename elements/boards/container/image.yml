@@ -1,0 +1,13 @@
+id: container
+version: 2307
+about: rlxos container
+
+build-type: system
+include:
+- core
+- devel
+- cmake
+
+inside.root: rlxos
+include.path: var/lib/pkgupd/data
+

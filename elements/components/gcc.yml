@@ -1,0 +1,98 @@
+id: gcc
+version: 13.1.0
+release: 1
+about: The GNU compiler collection, which includes the C and C++ compilers
+  
+depends:
+  runtime:
+  - zlib
+  - libmpc
+  - libmpfr
+  - libgmp
+
+  buildtime:
+  - binutils
+  - gcc
+
+build-dir: gcc-{{version}}
+sources:
+- https://ftp.gnu.org/gnu/gcc/gcc-{{version}}/gcc-{{version}}.tar.xz
+
+pre-script: |
+  sed -e '/m64=/s/lib64/lib/' \
+        -i.orig gcc/config/i386/t-linux64
+      
+configure: >
+  LD=ld 
+  --enable-languages=c,c++,fortran,go,lto,objc,obj-c++,d
+  --enable-default-pie
+  --enable-default-ssp
+  --disable-multilib
+  --disable-bootstrap
+  --disable-fixincludes
+  --with-system-zlib
+
+post-script: |
+  [[ -d ${pkgupd_pkgdir}/usr/lib/gcc/x86_64-pc-linux-gnu/{{version}}/include-fixes/bits/ ]] && \
+  rm -r ${pkgupd_pkgdir}/usr/lib/gcc/x86_64-pc-linux-gnu/{{version}}/include-fixes/bits/
+
+  mkdir -p ${pkgupd_pkgdir}/usr/lib/bfd-plugins/
+  ln -sv ../bin/cpp ${pkgupd_pkgdir}/usr/lib/
+  ln -sfv ../../lib/gcc/x86_64-pc-linux-gnu/{{version}}/liblto_plugin.so \
+    ${pkgupd_pkgdir}/usr/lib/bfd-plugins/
+  
+  ln -sv gcc ${pkgupd_pkgdir}/usr/bin/cc
+
+  if [[ -d ${pkgupd_pkgdir}/lib ]] ; then
+    cp ${pkgupd_pkgdir}/lib/* ${pkgupd_pkgdir}/usr/lib/ -a
+    rm ${pkgupd_pkgdir}/lib -r
+  fi
+
+split:
+  - into: lib
+    about: GCC runtime libraries
+    files:
+    - usr/lib/libasan.so
+    - usr/lib/libasan.so.8
+    - usr/lib/libasan.so.8.0.0
+    - usr/lib/libatomic.so
+    - usr/lib/libatomic.so.1
+    - usr/lib/libatomic.so.1.2.0
+    - usr/lib/libgcc_s.so
+    - usr/lib/libgcc_s.so.1
+    - usr/lib/libgdruntime.so
+    - usr/lib/libgdruntime.so.4
+    - usr/lib/libgdruntime.so.4.0.0
+    - usr/lib/libgfortran.so
+    - usr/lib/libgfortran.so.5
+    - usr/lib/libgfortran.so.5.0.0
+    - usr/lib/libgo.so
+    - usr/lib/libgo.so.22
+    - usr/lib/libgo.so.22.0.0
+    - usr/lib/libgomp.so
+    - usr/lib/libgomp.so.1
+    - usr/lib/libgomp.so.1.0.0
+    - usr/lib/libgphobos.so
+    - usr/lib/libgphobos.so.4
+    - usr/lib/libgphobos.so.4.0.0
+    - usr/lib/libitm.so
+    - usr/lib/libitm.so.1
+    - usr/lib/libitm.so.1.0.0
+    - usr/lib/liblsan.so
+    - usr/lib/liblsan.so.0
+    - usr/lib/liblsan.so.0.0.0
+    - usr/lib/libobjc.so
+    - usr/lib/libobjc.so.4
+    - usr/lib/libobjc.so.4.0.0
+    - usr/lib/libquadmath.so
+    - usr/lib/libquadmath.so.0
+    - usr/lib/libquadmath.so.0.0.0
+    - usr/lib/libstdc++.so
+    - usr/lib/libstdc++.so.6
+    - usr/lib/libstdc++.so.6.0.31
+    - usr/lib/libtsan.so
+    - usr/lib/libtsan.so.2
+    - usr/lib/libtsan.so.2.0.0
+    - usr/lib/libubsan.so
+    - usr/lib/libubsan.so.1
+    - usr/lib/libubsan.so.1.0.0

@@ -1,0 +1,19 @@
+id: zlib
+version: 1.2.13
+about: Compression and decompression routines
+
+sources:
+- zlib-{{version}}.tar.gz::https://github.com/madler/zlib/archive/refs/tags/v{{version}}.tar.gz
+
+depends:
+  runtime:
+  - glibc
+
+build-dir: zlib-{{version}}
+build-type: autoconf
+
+configure: >
+  --prefix=/usr
+
+post-script: |
+  rm -fv ${pkgupd_pkgdir}/usr/lib/libz.a

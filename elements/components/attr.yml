@@ -1,0 +1,16 @@
+id: attr
+version: 2.5.1
+release: 2
+about: Utilities to administer the extended attributes on filesystem objects
+
+sources:
+- https://download.savannah.gnu.org/releases/attr/attr-{{version}}.tar.gz
+
+depends:
+  runtime:
+  - glibc
+
+build-dir: attr-{{version}}
+configure: >
+  --sysconfdir=/etc
+  --disable-static

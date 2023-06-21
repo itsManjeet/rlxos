@@ -1,0 +1,19 @@
+id: kernel-headers
+version: 6.3.8
+about: |
+  Linux kernel, modules and headers
+
+depends:
+  buildtime:
+  - rsync
+
+sources:
+- https://www.kernel.org/pub/linux/kernel/v6.x/linux-{{version}}.tar.xz
+
+
+script: |
+  make mrproper
+  
+  make INSTALL_HDR_PATH=${pkgupd_pkgdir}/usr headers_install
+
+  rm -r ${pkgupd_pkgdir}/usr/include/drm

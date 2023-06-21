@@ -1,0 +1,21 @@
+id: protobuf
+version: 3.19.4
+about: Protocol buffers - Google's data interchange format
+license: BSD
+packages:
+  - id: pkg
+    depends:
+      runtime:
+        - gcc:lib
+        - glibc
+        - zlib
+      buildtime:
+        - py-setuptools
+        - unzip
+    sources:
+      - https://github.com/protocolbuffers/protobuf/releases/download/v3.19.4/protobuf-all-3.19.4.tar.gz
+    
+    dir: protobuf-3.19.4
+    
+    prescript: |
+      autoreconf -vfi

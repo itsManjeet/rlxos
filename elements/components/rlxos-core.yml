@@ -1,0 +1,11 @@
+id: rlxos-core
+version: 2200
+about: rlxos core system image
+include:
+  - core
+inside: |
+  ls -al
+
+root: rlxos
+build-type: system
+type: img

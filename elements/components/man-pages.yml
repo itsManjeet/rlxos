@@ -1,0 +1,10 @@
+id: man-pages
+version: 6.04
+about: Linux man pages
+
+sources:
+- https://www.kernel.org/pub/linux/docs/man-pages/man-pages-{{version}}.tar.xz
+
+build-dir: man-pages-{{version}}
+script: |
+  make prefix=/usr DESTDIR=${pkgupd_pkgdir} install

@@ -1,14 +1,14 @@
 kind: make
 
 depends:
+- extensions/nvidia/pkg.bst
+
+build-depends:
 - components/gtk+-3.bst
 - freedesktop-sdk.bst:components/jansson.bst
 - freedesktop-sdk.bst:components/libvdpau.bst
 - freedesktop-sdk.bst:components/xorg-lib-xv.bst
 - freedesktop-sdk.bst:components/xorg-lib-xxf86vm.bst
-- extensions/nvidia/pkg.bst
-
-build-depends:
 - freedesktop-sdk.bst:public-stacks/buildsystem-autotools.bst
 
 config:

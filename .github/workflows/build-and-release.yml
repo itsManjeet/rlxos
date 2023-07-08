@@ -13,8 +13,10 @@ jobs:
       matrix:
         board:
           - amd64
+    env:
+      CACHE_PATH: ${{ secrets.CACHE_PATH }}
     steps:
       - uses: actions/checkout@v1
       - name: Generating Board Image
         run: |
-          go run rlxos/cmd/pkgupd-builder build boards/${{matrix.board}}/image.yml
+          go run rlxos/cmd/pkgupd-builder -cache-path ${CACHE_PATH} build boards/${{matrix.board}}/image.yml

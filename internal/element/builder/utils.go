@@ -23,8 +23,10 @@ func (wc *WriteCounter) Write(p []byte) (int, error) {
 }
 
 func (wc WriteCounter) PrintProgress() {
-	fmt.Printf("\r%s", strings.Repeat(" ", 35))
-	fmt.Printf("\rDownloading... %s complete", humanize.Bytes(wc.Total))
+	if len(os.Getenv("$GITHUB_ACTIONS")) == 0 {
+		fmt.Printf("\r%s", strings.Repeat(" ", 35))
+		fmt.Printf("\rDownloading... %s complete", humanize.Bytes(wc.Total))
+	}
 }
 
 func DownloadFile(filepath string, url string) error {

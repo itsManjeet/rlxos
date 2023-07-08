@@ -1,8 +1,6 @@
 name: Build and Release
 on:
   push:
-    tags:
-      - "v*"
 
 jobs:
   generate-image:

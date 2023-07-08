@@ -47,6 +47,7 @@ type Builder struct {
 	Environ     []string          `yaml:"environ"`
 	BuildTools  []BuildTool       `yaml:"build-tools"`
 	projectPath string
+	cachePath   string
 	pool        map[string]*element.Element
 }
 
@@ -56,7 +57,7 @@ type BuildTool struct {
 	Script      string   `yaml:"script"`
 }
 
-func New(projectPath string) (*Builder, error) {
+func New(projectPath string, cachePath string) (*Builder, error) {
 	data, err := os.ReadFile(path.Join(projectPath, "config.yml"))
 	if err != nil {
 		return nil, err
@@ -76,6 +77,7 @@ func New(projectPath string) (*Builder, error) {
 		b.Variables = map[string]string{}
 	}
 	b.projectPath = projectPath
+	b.cachePath = cachePath
 
 	log.Println("Loading elements")
 	if err := filepath.WalkDir(path.Join(projectPath, "elements"), func(p string, d fs.DirEntry, err error) error {
@@ -195,7 +197,7 @@ func (b *Builder) CacheFile(e *element.Element) (string, error) {
 
 	value := s.Sum(nil)
 
-	return path.Join(b.projectPath, "build", "cache", fmt.Sprintf("%x", value)), nil
+	return path.Join(b.cachePath, "cache", fmt.Sprintf("%x", value)), nil
 }
 
 func (b *Builder) Build(id string) error {
@@ -248,9 +250,9 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 
 	log.Println("setting up container for ", id)
 
-	sourcesDir := path.Join(b.projectPath, "build", "sources")
-	packagesDir := path.Join(b.projectPath, "build", "cache")
-	logDir := path.Join(b.projectPath, "build", "logs")
+	sourcesDir := path.Join(b.cachePath, "sources")
+	packagesDir := path.Join(b.cachePath, "cache")
+	logDir := path.Join(b.cachePath, "logs")
 	workdir, err := os.MkdirTemp(os.TempDir(), fmt.Sprintf("%s-*", e.Id))
 	if err != nil {
 		return fmt.Errorf("failed to create temporary dir %s", err)

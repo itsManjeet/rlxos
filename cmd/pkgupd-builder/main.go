@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"path"
 	"rlxos/internal/element"
 	"rlxos/internal/element/builder"
 )
@@ -57,6 +58,7 @@ func listfiles(b *builder.Builder, id string) {
 
 func main() {
 	projectPath, _ := os.Getwd()
+	cacheDir := ""
 	var task string
 	var args []string
 	for i := 1; i < len(os.Args); i++ {
@@ -66,6 +68,9 @@ func main() {
 			case "-project-path":
 				i = i + 1
 				projectPath = os.Args[i]
+			case "-cache-path":
+				i = i + 1
+				cacheDir = os.Args[i]
 			default:
 				fmt.Println("ERROR: invalid flag", arg)
 			}
@@ -75,8 +80,11 @@ func main() {
 			args = append(args, arg)
 		}
 	}
+	if len(cacheDir) == 0 {
+		cacheDir = path.Join(projectPath, "build")
+	}
 
-	b, err := builder.New(projectPath)
+	b, err := builder.New(projectPath, cacheDir)
 	if err != nil {
 		log.Panicln(err)
 	}

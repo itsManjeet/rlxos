@@ -1,0 +1,8 @@
+id: npth
+version: 1.6
+about: A very portable POSIX/ANSI-C based library for Unix platforms which provides
+  non-preemptive priority-based scheduling for multiple threads of execution (multithreading)
+  inside event-driven applications
+sources:
+- https://www.gnupg.org/ftp/gcrypt/npth/npth-1.6.tar.bz2
+build-dir: npth-1.6

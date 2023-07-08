@@ -1,5 +1,0 @@
-#!/bin/bash
-SELF=$(readlink -f "$0")
-HERE=${SELF%/*}
-LD_LIBRARY_PATH=${HERE}/usr/lib/pinta:${LD_LIBRARY_PATH}
-exec ${HERE}/usr/share/dotnet/dotnet ${HERE}/usr/lib/pinta/Pinta.dll $@

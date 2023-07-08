@@ -1,0 +1,13 @@
+id: git
+version: 2.32.0
+about: Directory content manager
+sources:
+- https://www.kernel.org/pub/software/scm/git/git-2.32.0.tar.xz
+build-dir: git-2.32.0
+depends:
+  runtime:
+  - curl
+  - expat
+script: "./configure --prefix=/usr \\\n  --with-gitconfig=/etc/gitconfig \\\n  --libexecdir=/usr/lib\
+  \ \\\n  --with-python=python3\n \nmake\nmake perllibdir=/usr/lib/perl5/5.34/site_perl\
+  \ install DESTDIR=${pkgupd_pkgdir}"

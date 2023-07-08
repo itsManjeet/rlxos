@@ -1,0 +1,28 @@
+id: libappimage
+version: 1.0.3
+about: 'Implements functionality for dealing with AppImage files '
+sources:
+- libappimage-1.0.3.tar.gz::https://github.com/AppImage/libappimage/archive/refs/tags/v1.0.3.tar.gz
+build-dir: libappimage-1.0.3
+depends:
+  buildtime:
+  - automake
+  - cmake
+  - libtool
+  - git
+  - wget
+  - boost
+  runtime:
+  - cairo
+  - fuse
+  - libboost
+  - libarchive
+  - librsvg
+  - fuse2
+  - desktop-file-utils
+  - gdk-pixbuf
+pre-script: 'patch -Np1 -i ${FILES}/appimage/gcc.patch
+
+  '
+configure: -DBUILD_TESTING:bool=False -DUSE_SYSTEM_XZ=ON -DUSE_SYSTEM_LIBARCHIVE=ON
+  -DUSE_SYSTEM_BOOST=ON

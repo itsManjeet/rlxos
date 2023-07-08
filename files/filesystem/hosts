@@ -1,6 +1,5 @@
-#
-# /etc/hosts: File to translate hostname/domain names to IP address
-#
+# Static table lookup for hostnames.
+# See hosts(5) for details.
 
 127.0.0.1 localhost
 ::1       localhost

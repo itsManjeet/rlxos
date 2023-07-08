@@ -1,0 +1,11 @@
+id: libdazzle
+version: 3.40.0
+about: Library to GObject and GTK+ that adds APIs for special graphical effects
+sources:
+- https://download.gnome.org/sources/libdazzle/3.40/libdazzle-3.40.0.tar.xz
+build-dir: libdazzle-3.40.0
+depends:
+  buildtime:
+  - vala
+  runtime:
+  - gtk

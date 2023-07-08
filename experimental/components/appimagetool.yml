@@ -1,0 +1,11 @@
+id: appimagetool
+version: 13
+about: used to generate an AppImage from an existing AppDir
+sources:
+- https://github.com/AppImage/AppImageKit/releases/download/13/appimagetool-x86_64.AppImage
+build-dir: .
+depends:
+  runtime:
+  - fuse2
+  - desktop-file-utils
+script: install -v -D -m 0755 appimagetool-x86_64.AppImage ${pkgupd_pkgdir}/usr/bin/appimagetool

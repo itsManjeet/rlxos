@@ -1,0 +1,23 @@
+id: openfst
+version: 1.7.9
+about: Library for constructing, combining, optimizing and searching weighted finite-state
+  transducers
+sources:
+- https://www.openfst.org/twiki/pub/FST/FstDownload/openfst-1.7.9.tar.gz
+build-dir: openfst-1.7.9
+depends:
+  buildtime:
+  - automake
+  - make
+  - gcc
+  runtime:
+  - glibc
+  - python
+environ:
+- LIBS='-ldl'
+configure: '--enable-bin --enable-compact-fsts --enable-compress --enable-const-fsts
+  --enable-far --enable-linear-fsts --enable-lookahead-fsts --enable-mpdt --enable-ngram-fsts
+  --enable-pdt --enable-python PYTHON=python #   postscript: | #      install -d ${pkgupd_pkgdir}/etc/ld.so.conf.d
+  #      echo ''/usr/lib/fst'' > ${pkgupd_pkgdir}/etc/ld.so.cond.d/openfst.conf
+
+  '

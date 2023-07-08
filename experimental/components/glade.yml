@@ -1,0 +1,20 @@
+id: glade
+version: 3.36
+about: User Interface Builder for GTK+ applications
+sources:
+- https://gitlab.gnome.org/GNOME/glade/-/archive/glade-3-36/glade-glade-3-36.tar.gz
+build-dir: glade-glade-3-36
+depends:
+  buildtime:
+  - docbook-xsl
+  - gobject-introspection
+  - itstool
+  - meson
+  - py-gobject
+  runtime:
+  - gtk
+  - libxml2
+  - gjs
+  - libglade
+pre-script: 'sed -i "s|dependency(''python-3.8-embed'', version: ''>= 3.8'')|import(''python'').find_installation().dependency(embed:
+  true)|" meson.build'

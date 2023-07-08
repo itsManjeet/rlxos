@@ -1,0 +1,19 @@
+id: cairo
+version: 1.17.4
+about: A 2D graphics library with support for multiple output devices
+sources:
+- https://www.cairographics.org/snapshots/cairo-1.17.4.tar.xz
+build-dir: cairo-1.17.4
+depends:
+  buildtime:
+  - meson
+  runtime:
+  - libpng
+  - pixman
+  - fontconfig
+  - glib
+  - xorg-libs
+  - lzo
+configure: '-D spectre=disabled -D tee=enabled -D test=disabled
+
+  '

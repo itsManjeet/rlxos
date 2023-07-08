@@ -1,0 +1,11 @@
+id: exo
+version: 4.16.2
+about: Support library for xfce
+sources:
+- https://archive.xfce.org/src/xfce/exo/4.16/exo-4.16.2.tar.bz2
+build-dir: exo-4.16.2
+depends:
+  buildtime:
+  - intltool
+  runtime:
+  - libxfce4ui

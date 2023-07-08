@@ -1,0 +1,12 @@
+id: lua
+version: 5.3.5
+about: A powerful light-weight programming language designed for extending applications
+sources:
+- https://www.lua.org/ftp/lua-5.3.5.tar.gz
+- https://www.linuxfromscratch.org/patches/blfs/9.1/lua-5.3.5-shared_library-1.patch
+build-dir: lua-5.3.5
+script: "patch -Np1 -i ../lua-5.3.5-shared_library-1.patch\nsed -i '/#define LUA_ROOT/s:/usr/local/:/usr/:'\
+  \ src/luaconf.h\nmake MYCFLAGS=\"-DLUA_COMPAT_5_2 -DLUA_COMPAT_5_1\" linux\nmake\
+  \ INSTALL_TOP=${pkgupd_pkgdir}/usr \\\n  INSTALL_DATA=\"cp -d\" \\\n  INSTALL_MAN=${pkgupd_pkgdir}/usr/share/man/man1\
+  \ \\\n  TO_LIB=\"liblua.so liblua.so.5.3 liblua.so.5.3.4\" \\\n  install\n\ninstall\
+  \ -v -D -m 644 ${FILES}/lua/lua.pc -t ${pkgupd_pkgdir}/usr/lib/pkgconfig/\n"

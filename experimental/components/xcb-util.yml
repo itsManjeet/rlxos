@@ -1,0 +1,9 @@
+id: xcb-util
+version: 0.4.0
+about: Additional extensions to the XCB library
+sources:
+- https://xcb.freedesktop.org/dist/xcb-util-0.4.0.tar.bz2
+build-dir: xcb-util-0.4.0
+depends:
+  runtime:
+  - libxcb

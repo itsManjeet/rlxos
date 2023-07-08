@@ -1,0 +1,12 @@
+id: gtkmm
+version: 3.24.5
+about: A C++ interface to GTK+ 3
+sources:
+- https://download.gnome.org/sources/gtkmm/3.24/gtkmm-3.24.5.tar.xz
+build-dir: gtkmm-3.24.5
+depends:
+  runtime:
+  - atkmm
+  - gtk
+  - pangomm
+pre-script: rm autogen.sh

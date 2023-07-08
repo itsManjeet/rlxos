@@ -1,0 +1,26 @@
+id: xorg-server
+version: 1.20.12
+about: Core of the X Window system
+sources:
+- https://www.x.org/pub/individual/xserver/xorg-server-1.20.12.tar.xz
+build-dir: xorg-server-1.20.12
+depends:
+  buildtime:
+  - mesa
+  - meson
+  runtime:
+  - pixman
+  - xkeyboard-config
+  - libepoxy
+  - wayland-protocols
+  - systemd
+  - xcb-util-keysyms
+  - xcb-util-image
+  - xcb-util-renderutil
+  - xcb-util-wm
+  - nettle
+  - xorg-libs
+configure: '--enable-glamor --enable-kdrive --enable-suid-wrapper --localstatedir=/var
+  --with-xkb-output=/var/lib/xkb
+
+  '

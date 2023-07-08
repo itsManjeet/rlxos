@@ -1,0 +1,14 @@
+id: libwebp
+version: 1.2.0
+about: A library and support programs to encode and decode images in WebP format
+sources:
+- http://downloads.webmproject.org/releases/webp/libwebp-1.2.0.tar.gz
+build-dir: libwebp-1.2.0
+depends:
+  runtime:
+  - libjpeg-turbo
+  - libpng
+  - libtiff
+  - sdl
+configure: --enable-libwebpmux --enable-libwebpdemux --enable-libwebpdecoder --enable-libwebpextras
+  --enable-swap-16bit-csp --disable-static

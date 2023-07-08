@@ -1,0 +1,11 @@
+id: xorgproto
+version: 2021.4
+about: combined X.Org X11 Protocol headers
+sources:
+- https://xorg.freedesktop.org/archive/individual/proto/xorgproto-2021.4.tar.bz2
+build-dir: xorgproto-2021.4
+depends:
+  buildtime:
+  - meson
+  - util-macros
+configure: -Dlegacy=true

@@ -1,0 +1,14 @@
+id: py-mako
+version: 1.1.4
+about: Python module that implements hyperfast and lightweight templating for the
+  Python platform
+sources:
+- https://files.pythonhosted.org/packages/source/M/Mako/Mako-1.1.4.tar.gz
+build-dir: Mako-1.1.4
+depends:
+  runtime:
+  - py-markupsafe
+  - py-setuptools
+script: 'python3 setup.py install --optimize=1 --root=${pkgupd_pkgdir}
+
+  '

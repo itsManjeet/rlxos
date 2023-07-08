@@ -1,0 +1,23 @@
+id: eog
+version: 40.3
+about: An application used for viewing and cataloging image files on the GNOME Desktop.
+  It also has basic editing capabilites
+sources:
+- https://download.gnome.org/sources/eog/40/eog-40.3.tar.xz
+build-dir: eog-40.3
+depends:
+  buildtime:
+  - gobject-introspection
+  runtime:
+  - adwaita-icon-theme
+  - exempi
+  - gnome-desktop
+  - itstool
+  - libjpeg-turbo
+  - libpeas
+  - shared-mime-info
+  - lcms
+  - libexif
+  - librsvg
+  - libportal
+configure: --buildtype=release -D libportal=false

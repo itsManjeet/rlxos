@@ -1,0 +1,33 @@
+id: mesa
+version: 21.1.5
+about: OpenGL compatible 3D graphics library
+sources:
+- https://mesa.freedesktop.org/archive/mesa-21.1.5.tar.xz
+build-dir: mesa-21.1.5
+depends:
+  buildtime:
+  - py-mako
+  - cmake
+  - libva
+  - libvdpau
+  - libxml2
+  - xorgproto
+  - flex
+  - bison
+  - llvm
+  runtime:
+  - xorg-libs
+  - libllvm
+  - libdrm
+  - libelf
+  - wayland-protocols
+  - libxml2
+pre-script: 'sed "1s/python/&3/" -i bin/symbols-check.py
+
+  '
+configure: '-D valgrind=false -D glx=dri -D egl=enabled -D osmesa=true -D gallium-nine=true
+  -D platform=x11,wayland -D llvm=enabled -D b_lto=true -D b_ndebug=true -D dri-drivers=i965,nouveau
+  -D gallium-drivers=i915,iris,nouveau,r600,radeonsi,svga,swrast,virgl -D dri3=enabled
+  -D builtype=release
+
+  '

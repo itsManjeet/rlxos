@@ -1,0 +1,12 @@
+id: pcaudiolib
+version: 1.2
+about: Portable C audio library
+sources:
+- https://github.com/espeak-ng/pcaudiolib/archive/{{version}}/pcaudiolib-{{version}}.tar.gz
+build-dir: pcaudiolib-{{version}}
+depends:
+  runtime:
+  - alsa-lib
+  - pulseaudio
+script: "./autogen.sh\n./configure --prefix=/usr\n\nmake \n\nmake DESTDIR=${pkgupd_pkgdir}\
+  \ install"

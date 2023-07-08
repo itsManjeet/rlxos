@@ -1,6 +1,0 @@
-#!/bin/sh
-HERE="$(dirname "$(readlink -f "${0}")")"
-export SNAP_NAME="firefox"
-export MOZ_LEGACY_PROFILES=1
-EXEC=${HERE}/firefox
-exec ${EXEC} "$@"

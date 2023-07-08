@@ -1,0 +1,12 @@
+id: texinfo
+version: 6.8
+about: Programs for reading, writing, and converting info pages
+sources:
+- https://ftp.gnu.org/gnu/texinfo/texinfo-6.8.tar.xz
+build-dir: texinfo-6.8
+depends:
+  runtime:
+  - gzip
+  - ncurses
+  - perl
+  - bash

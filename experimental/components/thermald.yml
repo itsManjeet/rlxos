@@ -1,0 +1,18 @@
+id: thermald
+version: 2.4.6
+about: Linux Thermal Daemon program
+sources:
+- https://github.com/intel/thermal_daemon/archive/v2.4.6/thermald-2.4.6.tar.gz
+build-dir: thermal_daemon-2.4.6
+depends:
+  buildtime:
+  - gtk-doc
+  runtime:
+  - dbus-glib
+  - libxml2
+  - libevdev
+  - upower
+  - autoconf-archive
+script: "./autogen.sh\n./configure --prefix=/usr \\\n  --sysconfdir=/etc \\\n  --with-dbus-sys-dir=/usr/share/dbus-1/system.d\
+  \ \\\n  --localstatedir=/var \\\n  --sbindir=/usr/bin\n\nmake \nmake DESTDIR=${pkgupd_pkgdir}\
+  \ install\n"

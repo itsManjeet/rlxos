@@ -1,0 +1,11 @@
+id: intltool
+version: 0.51.0
+about: An internationalization tool used for extracting translatable strings from
+  source files
+sources:
+- https://launchpad.net/intltool/trunk/0.51.0/+download/intltool-0.51.0.tar.gz
+build-dir: intltool-0.51.0
+depends:
+  runtime:
+  - perl-xml-parser
+pre-script: sed -i "s:\\\${:\\\$\\{:" intltool-update.in

@@ -1,0 +1,12 @@
+id: at-spi2-core
+version: 2.40.3
+about: Service Provider Interface for the Assistive Technologies
+sources:
+- https://download.gnome.org/sources/at-spi2-core/2.40/at-spi2-core-2.40.3.tar.xz
+build-dir: at-spi2-core-2.40.3
+depends:
+  runtime:
+  - dbus
+  - glib
+  - xorg-libs
+  - gobject-introspection

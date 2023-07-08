@@ -1,0 +1,13 @@
+id: gsound
+version: 1.0.2
+about: A  small library for playing system sounds
+sources:
+- https://download.gnome.org/sources/gsound/1.0/gsound-1.0.2.tar.xz
+build-dir: gsound-1.0.2
+depends:
+  buildtime:
+  - gobject-introspection
+  - vala
+configure: '--disable-static
+
+  '

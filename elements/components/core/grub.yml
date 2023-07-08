@@ -1,0 +1,54 @@
+id: grub
+version: 2.06
+release: 4
+about: GRand Unified Bootloader
+
+environ:
+  - PYTHON=python3
+  - CFLAGS=""
+
+configure: >
+  --disable-werror
+  --disable-efiemu
+  --enable-grub-mkfont
+  --with-platform=efi
+  --target=x86_64
+  --sysconfdir=/etc
+  --with-bootdir=/boot/
+  --enable-quiet-boot
+  --enable-quick-boot
+  --enable-boot-time
+  --disable-silent-rules
+  --enable-mm-debug
+  --enable-cache-stats
+  CFLAGS="-Os"
+  CXXFLAGS="${CFLAGS}"
+
+pre-script: |
+  patch util/grub-mkconfig.in < %{build-root}/0001-RLXOS-CONFIG-PATCH-TO-SUPPORT-OVERLAY-FS.patch
+  install -v -D -m 0644 %{build-root}/grub.default %{install-root}/etc/default/grub
+  install -v -D -m 0755 %{build-root}/update-grub.sh %{install-root}/usr/bin/update-grub
+  install -v -D  %{build-root}/unicode.pf2 %{install-root}/usr/share/grub/unicode.pf2
+
+depends:
+  - components/core/gettext.yml
+  - components/core/bash.yml
+  - components/core/xz.yml
+  - components/core/efibootmgr.yml
+  - components/core/freetype.yml
+  - components/core/libisoburn.yml
+  - components/core/dosfstools.yml
+  - components/core/grub-i386.yml
+
+build-time:
+  - components/core/python.yml
+  - components/core/flex.yml
+  - components/core/m4.yml
+  - components/core/bison.yml
+
+sources:
+  - http://ftp.gnu.org/gnu/grub/grub-%{version}.tar.xz
+  - files/core/grub/update-grub.sh
+  - files/core/grub/unicode.pf2
+  - files/core/grub/grub.default
+  - files/core/grub/0001-RLXOS-CONFIG-PATCH-TO-SUPPORT-OVERLAY-FS.patch

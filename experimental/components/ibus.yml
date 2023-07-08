@@ -1,0 +1,19 @@
+id: ibus
+version: 1.5.24
+about: A new input framework for the Linux OS
+sources:
+- https://github.com/ibus/ibus/releases/download/1.5.24/ibus-1.5.24.tar.gz
+build-dir: ibus-1.5.24
+depends:
+  buildtime:
+  - vala
+  - gobject-introspection
+  runtime:
+  - dconf
+  - iso-codes
+  - gtk2
+  - libnotify
+pre-script: "sed -i \"s@/desktop/ibus@/org/freedesktop/ibus@g\" \\\n    data/dconf/org.freedesktop.ibus.gschema.xml\n"
+configure: '--disable-unicode-dict --disable-emoji-dict
+
+  '

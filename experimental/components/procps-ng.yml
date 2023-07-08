@@ -1,0 +1,20 @@
+id: procps-ng
+version: 3.3.17
+about: Programs for monitoring processes
+sources:
+  - https://sourceforge.net/projects/procps-ng/files/Production/procps-ng-3.3.17.tar.xz
+build-dir: procps-3.3.17
+depends:
+  runtime:
+    - glibc
+    - ncurses
+    - systemd
+script: |
+  ./configure --prefix=%{prefix}  \
+    --libdir=%{libdir}            \
+    --bindir=%{bindir}            \
+    --sbindir=%{sbindir}          \
+    --disable-static --disable-kill --with-systemd
+
+  make ${MAKEFLAGS}
+  make install DESTDIR=%{install-root}

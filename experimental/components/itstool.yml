@@ -1,0 +1,14 @@
+id: itstool
+version: 2.0.6
+about: Extracts messages from XML files and outputs PO template files, then merges
+  translations from MO files to create translated XML files
+sources:
+- http://files.itstool.org/itstool/itstool-2.0.6.tar.bz2
+build-dir: itstool-2.0.6
+depends:
+  runtime:
+  - docbook-xml
+  - libxml2
+  - python
+environ:
+- PYTHON=/usr/bin/python3

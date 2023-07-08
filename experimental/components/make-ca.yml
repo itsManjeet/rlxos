@@ -1,0 +1,13 @@
+id: make-ca
+version: 1.7
+about: MakeCA
+sources:
+- https://github.com/djlucas/make-ca/releases/download/v1.7/make-ca-1.7.tar.xz
+build-dir: make-ca-1.7
+depends:
+  runtime:
+  - p11-kit
+  - nss
+script: 'install -v -D -m 0644 ${FILES}/certdata.txt -t ${pkgupd_pkgdir}/etc/ssl/
+
+  make install LIBEXECDIR=/usr/lib SBINDIR=/usr/bin DESTDIR=${pkgupd_pkgdir}'

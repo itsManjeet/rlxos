@@ -1,0 +1,12 @@
+id: rest
+version: 0.8.1
+about: A library that was designed to make it easier to access web services
+sources:
+- https://download.gnome.org/sources/rest/0.8/rest-0.8.1.tar.xz
+build-dir: rest-0.8.1
+depends:
+  buildtime:
+  - gobject-introspection
+  runtime:
+  - libsoup
+configure: --with-ca-certificates=/etc/pki/tls/certs/ca-bundle.crt

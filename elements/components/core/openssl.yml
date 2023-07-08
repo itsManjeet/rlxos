@@ -1,0 +1,18 @@
+id: openssl
+version: 3.1.1
+about: Package contains management tools and libraries relating to cryptography
+
+script: |
+  ./config \
+    --prefix=%{prefix}  \
+    --openssldir=%{sysconfdir}/ssl \
+    --libdir=lib  \
+    shared zlib-dynamic
+
+depends:
+  - components/core/glibc.yml
+  - components/core/perl.yml
+ 
+
+sources:
+  - https://www.openssl.org/source/openssl-%{version}.tar.gz

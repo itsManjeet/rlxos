@@ -1,0 +1,12 @@
+id: glib-networking
+version: 2.68.1
+about: GLib Networking package contains Network related gio modules for GLib
+sources:
+- https://download.gnome.org/sources/glib-networking/2.68/glib-networking-2.68.1.tar.xz
+build-dir: glib-networking-2.68.1
+depends:
+  runtime:
+  - glib
+  - gnutls
+  - gsettings-desktop-schemas
+configure: --buildtype=release -D libproxy=disabled

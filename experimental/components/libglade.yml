@@ -1,0 +1,11 @@
+id: libglade
+version: 2.6.4
+about: Library for loading Glade interface files in a program at runtime
+sources:
+- https://download.gnome.org/sources/libglade/2.6/libglade-2.6.4.tar.bz2
+build-dir: libglade-2.6.4
+depends:
+  runtime:
+  - libxml2
+  - gtk2
+pre-script: sed -i "/DG_DISABLE_DEPRECATED/d" glade/Makefile.in

@@ -1,0 +1,32 @@
+id: gnome-settings-daemon
+version: 40.0.1
+about: Daemon responsible for setting various parameters of a GNOME Session
+sources:
+- https://download.gnome.org/sources/gnome-settings-daemon/40/gnome-settings-daemon-40.0.1.tar.xz
+build-dir: gnome-settings-daemon-40.0.1
+depends:
+  runtime:
+  - alsa-lib
+  - colord
+  - fontconfig
+  - gcr
+  - geoclue
+  - geocode-glib
+  - gnome-desktop
+  - lcms
+  - libcanberra
+  - libgweather
+  - libnotify
+  - librsvg
+  - libwacom
+  - pulseaudio
+  - systemd
+  - upower
+  - alsa-lib
+  - cups
+  - networkmanager
+  - nss
+  - wayland
+configure: '--buildtype=release -Dwwan=false
+
+  '

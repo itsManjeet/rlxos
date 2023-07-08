@@ -1,0 +1,9 @@
+id: vaapi-driver
+version: 2.4.1
+about: VAAPI driver
+sources:
+- https://github.com/intel/intel-vaapi-driver/releases/download/2.4.1/intel-vaapi-driver-2.4.1.tar.bz2
+build-dir: intel-vaapi-driver-2.4.1
+depends:
+  runtime:
+  - libva

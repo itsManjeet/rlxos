@@ -1,0 +1,28 @@
+id: kmod
+version: 30
+about: Libraries and utilities for loading kernel modules
+
+configure: >-
+  --with-xz 
+  --with-zstd 
+  --with-zlib
+
+post-script: |
+  for target in depmod insmod modinfo modprobe rmmod; do
+    ln -sfv ../bin/kmod %{install-root}/usr/bin/$target
+  done
+  
+  ln -sfv kmod %{install-root}/usr/bin/lsmod
+
+sources:
+  - https://www.kernel.org/pub/linux/utils/kernel/kmod/kmod-%{version}.tar.xz
+
+depends:
+  - components/core/openssl.yml
+  - components/core/xz.yml
+  - components/core/zlib.yml
+  - components/core/zstd.yml
+
+build-time:
+  - components/core/pkg-config.yml
+  - components/core/patch.yml

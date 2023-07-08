@@ -1,0 +1,12 @@
+id: xz
+version: 5.4.3
+about: Compressing and Decompressing files
+
+sources:
+  - https://tukaani.org/xz/xz-%{version}.tar.xz
+
+depends:
+  - components/core/glibc.yml
+  
+configure: >
+  --disable-static

@@ -1,0 +1,10 @@
+id: findutils
+version: 4.8.0
+about: Programs to find files
+sources:
+- https://ftp.gnu.org/gnu/findutils/findutils-4.8.0.tar.xz
+build-dir: findutils-4.8.0
+depends:
+  runtime:
+  - glibc
+configure: --localstatedir=/var/lib/locate --libexecdir=/usr/lib

@@ -1,0 +1,15 @@
+id: volume_key
+version: 0.13.12
+about: A library for manipulating storage volume encryption keys and storing them
+  separately from volumes to handle forgotten passphrases
+sources:
+- https://github.com/felixonmars/volume_key/archive/volume_key-0.3.12.tar.gz
+build-dir: volume_key-volume_key-0.3.12
+depends:
+  runtime:
+  - cryptsetup
+  - glib
+  - gpgme
+  - nss
+pre-script: "autoreconf -fiv  \n"
+configure: --without-python --without-python3

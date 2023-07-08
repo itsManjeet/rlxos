@@ -1,0 +1,12 @@
+id: glu
+version: 9.0.2
+about: The Mesa OpenGL Utility library
+sources:
+- https://mesa.freedesktop.org/archive/glu/glu-9.0.2.tar.xz
+build-dir: glu-9.0.2
+depends:
+  runtime:
+  - mesa
+configure: '-D gl_provider=gl --buildtype=release
+
+  '

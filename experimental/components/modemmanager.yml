@@ -1,0 +1,14 @@
+id: modemmanager
+version: 1.16.10
+about: A unified high level API for communicating with mobile broadband modems, regardless
+  of the protocol used to communicate with the actual device
+sources:
+- https://www.freedesktop.org/software/ModemManager/ModemManager-1.16.10.tar.xz
+build-dir: ModemManager-1.16.10
+depends:
+  runtime:
+  - libgudev
+configure: '--with-systemd-journal --with-systemd-suspend-resume --without-mbim --without-qmi
+  --disable-static
+
+  '

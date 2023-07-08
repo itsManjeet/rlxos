@@ -1,44 +1,10 @@
 id: core
 version: 2307
-about: core packages for rlxos
+about: rlxos core components
+
+script: echo %{version} > %{install-root}/.version
 
 depends:
-  runtime:
-    - glibc
-    - tzdata
-    - file
-    - readline
-    - gcc:lib
-    - shadow
-    - pam-config
-    - bash
-    - grep
-    - sed
-    - psmisc
-    - libtool
-    - xz
-    - kmod
-    - coreutils
-    - diffutils
-    - findutils
-    - which
-    - inetutils
-    - procps-ng
-    - e2fsprogs
-    - less
-    - gzip
-    - iproute2
-    - kbd
-    - man-db
-    - vim
-    - util-linux
-    - pkgupd
-    - systemd
-    - dbus
-    - sudo
-    - wget
-    - selftest
-
-script: |
-  mkdir -p ${pkgupd_pkgdir}/usr/share/rlxos/
-  echo {{version}} > ${pkgupd_pkgdir}/usr/share/rlxos/version
+  - components/core/glibc.yml
+  - components/core/coreutils.yml
+  - components/core/systemd.yml

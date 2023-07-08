@@ -1,0 +1,14 @@
+id: gnome-weather
+version: 40.0
+about: A small application that allows you to monitor the current weather conditions
+  for your city, or anywhere in the world, and to access updated forecasts provided
+  by various internet services
+sources:
+- https://download.gnome.org/sources/gnome-weather/40/gnome-weather-40.0.tar.xz
+build-dir: gnome-weather-40.0
+depends:
+  runtime:
+  - gjs
+  - libgweather
+  - libhandy
+configure: --buildtype=release

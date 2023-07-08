@@ -1,9 +1,0 @@
-[Desktop Entry]
-Version=1.0
-Name=evtest
-Comment=Input device event monitor and query tool
-Exec=@@exec@@
-Icon=evtest
-Terminal=true
-Type=Application
-Categories=System;

@@ -1,0 +1,15 @@
+id: fontconfig
+version: 2.13.1
+about: Library and support programs used for configuring and customizing font access
+sources:
+- https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.13.1.tar.bz2
+build-dir: fontconfig-2.13.1
+depends:
+  buildtime:
+  - gperf
+  runtime:
+  - freetype
+post-script: 'install -v -D -m 644 ${FILES}/triggers/fonts.yml -t ${pkgupd_pkgdir}/usr/share/pkgupd/triggers/
+
+  '
+configure: --sysconfdir=/etc

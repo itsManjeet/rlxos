@@ -1,0 +1,10 @@
+id: taglib
+version: 1.12
+about: A library used for reading, writing and manipulating audio file tags
+sources:
+- https://taglib.github.io/releases/taglib-1.12.tar.gz
+build-dir: taglib-1.12
+depends:
+  buildtime:
+  - cmake
+configure: -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release

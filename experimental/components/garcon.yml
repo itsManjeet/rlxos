@@ -1,0 +1,9 @@
+id: garcon
+version: 4.16.1
+about: freedesktop compliant menu implementation based on GLib and GIO
+sources:
+- https://archive.xfce.org/src/xfce/garcon/4.16/garcon-4.16.1.tar.bz2
+build-dir: garcon-4.16.1
+depends:
+  runtime:
+  - libxfce4ui

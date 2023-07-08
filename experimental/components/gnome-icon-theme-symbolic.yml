@@ -1,0 +1,9 @@
+id: gnome-icon-theme-symbolic
+version: 3.12.0
+about: GNOME Icon Theme Symbolic package
+sources:
+- https://download.gnome.org/sources/gnome-icon-theme-symbolic/3.12/gnome-icon-theme-symbolic-3.12.0.tar.xz
+build-dir: gnome-icon-theme-symbolic-3.12.0
+depends:
+  runtime:
+  - gnome-icon-theme

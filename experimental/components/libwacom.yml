@@ -1,0 +1,13 @@
+id: libwacom
+version: 1.11
+about: A library used to identify wacom tablets and their model-specific features
+sources:
+- https://github.com/linuxwacom/libwacom/releases/download/libwacom-1.11/libwacom-1.11.tar.bz2
+build-dir: libwacom-1.11
+depends:
+  runtime:
+  - libgudev
+  - libxml2
+configure: '--buildtype=release -D tests=disabled
+
+  '

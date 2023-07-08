@@ -1,0 +1,26 @@
+id: conky
+version: 1.12.2
+about: Lightweight system monitor for X
+sources:
+- conky-1.12.2.tar.gz::https://github.com/brndnmtthws/conky/archive/refs/tags/v1.12.2.tar.gz
+build-dir: conky-1.12.2
+depends:
+  buildtime:
+  - cmake
+  - git
+  runtime:
+  - curl
+  - glib
+  - imlib2
+  - xorg-libs
+  - lua
+  - ncurses
+  - desktop-file-utils
+post-script: "install -Dm 644 extras/vim/syntax/conkyrc.vim -t \"${pkgupd_pkgdir}\"\
+  /usr/share/vim/vimfiles/syntax\ninstall -Dm 644 extras/vim/ftdetect/conkyrc.vim\
+  \ -t \"${pkgupd_pkgdir}\"/usr/share/vim/vimfiles/ftdetect\n    \n"
+configure: '-D MAINTAINER_MODE=ON -D BUILD_XSHAPE=ON -D BUILD_XDBE=ON -D BUILD_CURL=ON
+  -D BUILD_IMLIB2=ON -D BUILD_CURL=ON -D BUILD_RSS=ON -D BUILD_WEATHER_METAR=ON -D
+  BUILD_PULSEAUDIO=ON -D BUILD_JOURNAL=ON -D CMAKE_BUILD_TYPE=Release -Wno-dev
+
+  '

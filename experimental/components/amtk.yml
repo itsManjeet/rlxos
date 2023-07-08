@@ -1,0 +1,9 @@
+id: amtk
+version: 5.2.0
+about: A basic GTKUIManager replacement based on GAction
+sources:
+  - https://download.gnome.org/sources/amtk/5.2/amtk-5.2.0.tar.xz
+build-dir: amtk-5.2.0
+depends:
+  runtime:
+    - gtk

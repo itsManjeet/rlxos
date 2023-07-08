@@ -1,0 +1,9 @@
+id: xcb-util-image
+version: 0.4.0
+about: Additional extensions to the XCB library
+sources:
+- https://xcb.freedesktop.org/dist/xcb-util-image-0.4.0.tar.bz2
+build-dir: xcb-util-image-0.4.0
+depends:
+  runtime:
+  - xcb-util

@@ -1,0 +1,6 @@
+id: mtools
+version: 4.0.32
+about: Utilities to access MS-DOS disks without mounting them
+sources:
+- https://ftp.gnu.org/gnu/mtools/mtools-4.0.32.tar.bz2
+build-dir: mtools-4.0.32

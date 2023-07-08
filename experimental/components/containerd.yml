@@ -1,0 +1,23 @@
+id: containerd
+version: 1.5.2
+about: An open and reliable container runtime
+sources:
+- https://github.com/containerd/containerd/releases/download/v1.5.2/containerd-1.5.2-linux-amd64.tar.gz
+build-dir: .
+depends:
+  buildtime:
+  - go
+  - git
+  runtime:
+  - runc
+  - btrfs-progs
+  - libseccomp
+script: 'export GOPATH=${pkgupd_srcdir}
+
+  mkdir -p ${pkgupd_pkgdir}/usr
+
+  cp -a bin ${pkgupd_pkgdir}/usr/
+
+  '
+environ:
+- GO111MODULE=auto

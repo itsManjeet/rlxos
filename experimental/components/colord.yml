@@ -1,0 +1,33 @@
+id: colord
+version: 1.4.5
+about: A system service that makes it easy to manage, install, and generate color
+  profiles
+sources:
+- https://www.freedesktop.org/software/colord/releases/colord-1.4.5.tar.xz
+build-dir: colord-1.4.5
+depends:
+  buildtime:
+  - gobject-introspection
+  - vala
+  runtime:
+  - dbus
+  - glib
+  - lcms
+  - polkit
+  - sqlite
+  - libgudev
+  - libgusb
+  - systemd
+users:
+- id: 71
+  name: colord
+  group: 71
+  about: Color Daemon Owner
+  dir: /var/lib/colord
+  shell: /bin/false
+groups:
+- id: 71
+  name: colord
+configure: --buildtype=release -D daemon_user=colord -D vapi=true -D systemd=true
+  -D libcolordcompact=true -D argullcms_sensor=false -D bash_completion=false -D docs=false
+  -D man=false

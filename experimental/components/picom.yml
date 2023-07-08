@@ -1,0 +1,25 @@
+id: picom
+version: 8.2
+about: X compositor
+sources:
+- picom-8.2.tar.gz::https://github.com/yshui/picom/archive/refs/tags/v8.2.tar.gz
+build-dir: picom-8.2
+depends:
+  buildtime:
+  - mesa
+  - meson
+  - ninja
+  - uthash
+  runtime:
+  - hicolor-icon-theme
+  - libconfig
+  - dbus
+  - libev
+  - pcre
+  - pixman
+  - xcb-util-image
+  - xcb-util-renderutil
+post-script: install -D -m 644 picom.sample.conf ${pkgupd_pkgdir}/etc/xdg/picom.conf
+configure: '-D b_ndebug=true -D with_docs=false
+
+  '

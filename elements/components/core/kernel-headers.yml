@@ -1,0 +1,17 @@
+id: kernel-headers
+version: 6.3.8
+about: Linux kernel, modules and headers
+
+no-strip: true
+
+script: |
+  make mrproper
+  make headers
+
+  find usr/include - nme ".*" -delete
+  rm usr/include/Makefile
+  mkdir -p %{install-root}/usr/include/
+  cp -rv usr/include/* %{install-root}/usr/include/
+
+sources:
+  - https://www.kernel.org/pub/linux/kernel/v6.x/linux-%{version}.tar.xz

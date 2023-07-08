@@ -1,0 +1,14 @@
+id: p7zip
+version: 17.04
+about: commandline file archive with high compression ratio
+sources:
+- https://github.com/jinfeihan57/p7zip/archive/v17.04/p7zip-v17.04.tar.gz
+build-dir: p7zip-17.04
+depends:
+  runtime:
+  - glibc
+script: 'make 7z 7zr 7za
+
+  make install DEST_DIR=${pkgupd_pkgdir} DEST_HOME=/usr DEST_MAN=/usr/share/man
+
+  '

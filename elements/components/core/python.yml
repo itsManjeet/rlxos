@@ -1,0 +1,38 @@
+id: python
+version: 3.11.4
+about: Python development environment
+
+build-dir: Python-%{version}
+
+environ:
+  - CFLAGS=$CFLAGS -O3 -pipe -march=x86-64 -fno-semantic-interposition
+  - LDFLAGS=$CFLAGS -fno-semantic-interposition
+
+build-type: autotools
+
+configure: >-
+  --enable-shared 
+  --with-system-expat 
+  --with-system-ffi 
+  --without-ensurepip
+  --enable-optimizations 
+  --with-lto 
+  --enable-ipv6 
+  --with-tzpath=%{datadir}/zoneinfo
+  --enable-loadable-sqlite-extensions
+
+
+post-script: |
+  ln -sfv python3 %{install-root}/%{bindir}/python
+  ln -sfv python3 %{install-root}/%{bindir}/py
+
+sources:
+  - https://www.python.org/ftp/python/%{version}/Python-%{version}.tar.xz
+
+depends:
+  - components/core/bzip2.yml
+  - components/core/expat.yml
+  - components/core/gdbm.yml
+  - components/core/libffi.yml
+  - components/core/openssl.yml
+  - components/core/sqlite.yml

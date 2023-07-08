@@ -1,0 +1,13 @@
+id: xine-lib
+version: 1.2.11
+about: Library for interfacing with external plug-ins that allow the flow of information
+  from the source to the audio and video hardware.
+sources:
+- https://downloads.sourceforge.net/xine/xine-lib-1.2.11.tar.xz
+build-dir: xine-lib-1.2.11
+depends:
+  runtime:
+  - xorg-libs
+  - ffmpeg
+  - pulseaudio
+configure: --disable-vcd

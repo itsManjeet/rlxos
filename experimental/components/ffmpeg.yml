@@ -1,0 +1,37 @@
+id: ffmpeg
+version: 4.4
+about: A solution to record, convert and stream audio and video
+sources:
+- https://ffmpeg.org/releases/ffmpeg-4.4.tar.xz
+build-dir: ffmpeg-4.4
+depends:
+  buildtime:
+  - yasm
+  runtime:
+  - libass
+  - fdk-aac
+  - freetype
+  - lame
+  - libtheora
+  - libvorbis
+  - libvpx
+  - opus
+  - x264
+  - x265
+  - alsa-lib
+  - libva
+  - libvdpau
+  - pulseaudio
+  - sdl2
+post-script: '# enable qt-faststart
+
+  gcc tools/qt-faststart.c -o ${pkgupd_pkgdir}/usr/bin/qt-faststart'
+pre-script: 'sed -i "s/-lflite\"/-lflite -lasound\"/" configure
+
+  '
+configure: '--prefix=/usr --enable-gpl --enable-version3 --disable-static --enable-shared
+  --disable-debug --enable-avresample --enable-libass --enable-libfreetype --enable-libmp3lame
+  --enable-libopus --enable-libtheora --enable-libvorbis --enable-libvpx --enable-libx264
+  --enable-libx265 --enable-libpulse
+
+  '

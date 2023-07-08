@@ -1,0 +1,22 @@
+id: rsync
+version: 3.2.3
+about: Utility to sync large files archives over a network
+sources:
+- https://www.samba.org/ftp/rsync/src/rsync-3.2.3.tar.gz
+build-dir: rsync-3.2.3
+depends:
+  runtime:
+  - popt
+  - zstd
+post-script: 'install -Dm0644 packaging/lsb/rsync.xinetd "${pkgupd_pkgdir}/etc/xinetd.d/rsync"
+
+  install -Dm0644 packaging/systemd/rsync.service "${pkgupd_pkgdir}/usr/lib/systemd/system/rsyncd.service"
+
+  install -Dm0644 packaging/systemd/rsync.socket "${pkgupd_pkgdir}/usr/lib/systemd/system/rsyncd.socket"
+
+  install -Dm0644 packaging/systemd/rsync@.service "${pkgupd_pkgdir}/usr/lib/systemd/system/rsyncd@.service"
+
+  install -Dm0755 support/rrsync "${pkgupd_pkgdir}/usr/lib/rsync/rrsync"'
+configure: '--disable-lz4 --disable-xxhash --without-included-zlib
+
+  '

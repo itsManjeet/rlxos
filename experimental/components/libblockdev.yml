@@ -1,0 +1,17 @@
+id: libblockdev
+version: 2.25
+about: A C library supporting GObject Introspection for manipulation of block devices
+sources:
+- https://github.com/storaged-project/libblockdev/releases/download/2.25-1/libblockdev-2.25.tar.gz
+build-dir: libblockdev-2.25
+depends:
+  runtime:
+  - gobject-introspection
+  - libbytesize
+  - libyaml
+  - parted
+  - volume_key
+pre-script: 'sed "s/g_memdup/&2/" -i src/lib/plugin_apis/vdo.{c,api} src/plugins/vdo.c
+
+  '
+configure: --with-python3 --without-gtk-doc --without-nvdimm --without-dm

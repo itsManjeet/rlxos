@@ -1,0 +1,15 @@
+id: gnome-system-monitor
+version: 40.1
+about: GNOME System Monitor
+sources:
+- https://download.gnome.org/sources/gnome-system-monitor/40/gnome-system-monitor-40.1.tar.xz
+build-dir: gnome-system-monitor-40.1
+depends:
+  runtime:
+  - adwaita-icon-theme
+  - gtkmm
+  - itstool
+  - libgtop
+  - librsvg
+  - desktop-file-utils
+configure: --buildtype=release

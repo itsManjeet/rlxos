@@ -1,0 +1,24 @@
+id: android-tools
+version: 31.0.3p2
+about: Android platform tools
+license: Apache MIT
+depends:
+  runtime:
+    - android-udev
+    - libusb
+    - zstd
+    - brotli
+    - protobuf
+    - pcre2
+  buildtime:
+    - cmake
+    - git
+    - go
+    - ninja
+    - pcre
+    - gtest
+sources:
+  - https://github.com/nmeum/android-tools/releases/download/{{version}}/android-tools-{{version}}.tar.xz
+
+configure: >
+  -DCMAKE_BUILD_TYPE=Release

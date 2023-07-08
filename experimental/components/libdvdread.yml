@@ -1,0 +1,7 @@
+id: libdvdread
+version: 6.1.2
+about: A library which provides a simple foundation for reading DVDs
+sources:
+- https://get.videolan.org/libdvdread/6.1.2/libdvdread-6.1.2.tar.bz2
+build-dir: libdvdread-6.1.2
+configure: --disable-static --docdir=/usr/share/doc/libdvdread

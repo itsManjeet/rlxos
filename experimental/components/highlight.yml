@@ -1,0 +1,18 @@
+id: highlight
+version: 4.1
+about: An utility that converts source code to formatted text with syntax highlighting
+sources:
+- http://www.andre-simon.de/zip/highlight-4.1.tar.bz2
+build-dir: highlight-4.1
+depends:
+  buildtime:
+  - boost
+  runtime:
+  - lua
+script: 'sed -i "/GZIP/s/^/#/" makefile
+
+  make
+
+  make doc_dir=/usr/share/doc/highlight install DESTDIR=${pkgupd_pkgdir}
+
+  '

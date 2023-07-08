@@ -1,0 +1,20 @@
+name: Build and Release
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  generate-image:
+    name: Generate Image
+    runs-on: self-hosted
+    timeout-minutes: 46000
+    strategy:
+      matrix:
+        board:
+          - amd64
+    steps:
+      - uses: actions/checkout@v1
+      - name: Generating Board Image
+        run: |
+          go run rlxos/cmd/pkgupd-builder build boards/${{matrix.board}}/image.yml

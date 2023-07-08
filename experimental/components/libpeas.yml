@@ -1,0 +1,16 @@
+id: libpeas
+version: 1.30.0
+about: GObject based plugins engine,
+sources:
+- https://download.gnome.org/sources/libpeas/1.30/libpeas-1.30.0.tar.xz
+build-dir: libpeas-1.30.0
+depends:
+  buildtime:
+  - gobject-introspection
+  - vala
+  - glade
+  runtime:
+  - gtk
+  - libxml2
+  - py-gobject
+configure: --buildtype=release

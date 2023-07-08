@@ -1,0 +1,6 @@
+id: nettle
+version: 3.7.3
+about: A low-level cryptographic library that is designed to fit easily in many contexts
+sources:
+- https://ftp.gnu.org/gnu/nettle/nettle-3.7.3.tar.gz
+build-dir: nettle-3.7.3

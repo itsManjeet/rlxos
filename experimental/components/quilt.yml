@@ -1,0 +1,20 @@
+id: quilt
+version: 0.66
+about: Manage a series of patches by keeping track of changes each patch makes
+sources:
+- https://savannah.nongnu.org/download/quilt/quilt-0.66.tar.gz
+build-dir: quilt-0.66
+depends:
+  runtime:
+  - bash
+  - bzip2
+  - diffutils
+  - gawk
+script: './configure --prefix=/usr --sysconfdir=/etc --without-rpmbuild
+
+  make
+
+
+  make BUILD_ROOT=${pkgupd_pkgdir} install
+
+  '

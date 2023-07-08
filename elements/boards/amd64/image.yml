@@ -1,0 +1,17 @@
+id: rlxos-amd64-core
+version: 2307
+about: rlxos core system image
+no-strip: true
+build-type: system
+include:
+  - components/core.yml
+  - components/core/grub.yml
+
+depends:
+  - components/core/grub.yml
+  - components/core/squashfs-tools.yml
+  - components/core/linux.yml
+
+script: |
+  systemd-tmpfiles
+  systemd-sysusers

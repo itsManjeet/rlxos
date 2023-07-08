@@ -1,0 +1,16 @@
+id: py-pip
+version: 21.2.4
+about: PyPA recommended tool for installing python packages
+sources:
+- pip-21.2.4.tar.gz::https://github.com/pypa/pip/archive/21.2.4.tar.gz
+build-dir: pip-21.2.4
+depends:
+  runtime:
+  - python
+  - py-setuptools
+script: 'py setup.py build
+
+  py setup.py install --prefix=/usr --root=${pkgupd_pkgdir} --optimize=1
+
+  find ${pkgupd_pkgdir}/usr/lib/python3.9/site-packages -type f -exec chmod o-w ''{}''
+  \+'

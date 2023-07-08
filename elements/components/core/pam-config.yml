@@ -1,0 +1,14 @@
+id: pam-config
+version: 1.5.1
+release: 2
+about: |
+  rlxos pam configuration module
+
+script: |
+  for i in other \
+      system-account \
+      system-auth \
+      system-password \
+      system-session ; do
+    install -v -D -m 644 /files/core/pam/${i} -t %{install-root}/etc/pam.d/
+  done

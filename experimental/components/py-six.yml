@@ -1,0 +1,10 @@
+id: py-six
+version: 1.16.0
+about: Python 2 and 3 compatibility library
+sources:
+- https://files.pythonhosted.org/packages/source/s/six/six-1.16.0.tar.gz
+build-dir: six-1.16.0
+depends:
+  runtime:
+  - python
+script: python3 setup.py install --optimize=1 --root=${pkgupd_pkgdir}

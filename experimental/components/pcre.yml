@@ -1,0 +1,17 @@
+id: pcre
+version: 8.45
+about: |
+  Perl Compatible Regular Expression libraries
+
+sources:
+  - https://sourceforge.net/projects/pcre/files/pcre/{{version}}/pcre-{{version}}.tar.bz2
+
+build-type: autoconf
+configure: >
+  --enable-unicode-properties
+  --enable-pcre16
+  --enable-pcre32
+  --enable-pcregrep-libz
+  --enable-pcregrep-libbz2
+  --enable-pcretest-libreadline
+  --disable-static

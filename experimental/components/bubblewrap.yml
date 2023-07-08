@@ -1,0 +1,7 @@
+id: bubblewrap
+version: 0.4.1
+about: A setuid implementation of user namespaces, or sandboxing, that provides access
+  to a subset of kernel user namespace features
+sources:
+- https://github.com/projectatomic/bubblewrap/releases/download/v0.4.1/bubblewrap-0.4.1.tar.xz
+build-dir: bubblewrap-0.4.1

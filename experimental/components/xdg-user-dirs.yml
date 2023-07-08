@@ -1,0 +1,6 @@
+id: xdg-user-dirs
+version: 0.17
+about: A tool to help manage well known user directories
+sources:
+- https://user-dirs.freedesktop.org/releases/xdg-user-dirs-0.17.tar.gz
+build-dir: xdg-user-dirs-0.17

@@ -1,0 +1,14 @@
+id: pinentry
+version: 1.1.1
+about: A collection of simple PIN or pass-phrase entry dialogs which utilize the Assuan
+  protocol as described by the Agypten project
+sources:
+- https://www.gnupg.org/ftp/gcrypt/pinentry/pinentry-1.1.1.tar.bz2
+build-dir: pinentry-1.1.1
+depends:
+  runtime:
+  - libassuan
+  - libgpg-error
+  - gtk
+  - libsecret
+configure: --enable-pinentry-tty

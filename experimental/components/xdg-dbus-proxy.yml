@@ -1,0 +1,10 @@
+id: xdg-dbus-proxy
+version: 0.1.2
+about: Filtering proxy for D-Bus connections
+sources:
+- https://github.com/flatpak/xdg-dbus-proxy/releases/download/0.1.2/xdg-dbus-proxy-0.1.2.tar.xz
+build-dir: xdg-dbus-proxy-0.1.2
+depends:
+  runtime:
+  - dbus
+  - glib

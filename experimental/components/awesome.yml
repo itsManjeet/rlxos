@@ -1,0 +1,36 @@
+id: awesome
+version: 4.3
+about: Highly configurable framework window manager
+license: GPL2
+url: https://awesomewm.org
+depends:
+  runtime:
+    - cairo
+    - dbus
+    - gdk-pixbuf
+    - imlib2
+    - libxdg-basedir
+    - libxkbcommon
+    - lua
+    - lua-lgi
+    - pango
+    - startup-notification
+    - xcb-util-cursor
+    - xcb-util-keysyms
+    - xcb-util-wm
+    - xcb-util-xrm
+    - xorg-apps
+    - libpng
+  buildtime:
+    - cmake
+    - imagemagick
+    - xmlto
+sources:
+  - https://github.com/awesomeWM/awesome/releases/download/v{{version}}/awesome-{{version}}.tar.xz
+environ:
+  - CFLAGS+=' -fcommon'
+configure: >
+  -DCMAKE_BUILD_TYPE=RELEASE
+  -DSYSCONFDIR=/etc
+post-script: |
+  install -v -D -m 0644 -t ${pkgupd_pkgdir}/usr/share/xsession awesome.desktop

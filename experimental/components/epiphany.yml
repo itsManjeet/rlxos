@@ -1,0 +1,21 @@
+id: epiphany
+version: 40.3
+about: A simple yet powerful GNOME web browser targeted at non-technical users
+sources:
+- https://download.gnome.org/sources/epiphany/40/epiphany-40.3.tar.xz
+build-dir: epiphany-40.3
+depends:
+  runtime:
+  - gcr
+  - gnome-desktop
+  - iso-codes
+  - json-glib
+  - libnotify
+  - libportal
+  - nettle
+  - webkitgtk
+  - libdazzle
+  - libhandy
+  - gnome-keyring
+  - make-ca
+configure: --buildtype=release

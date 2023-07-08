@@ -1,0 +1,13 @@
+id: py-pygments
+version: 2.10.0
+about: Python Syntax highlighter
+sources:
+- https://pypi.org/packages/source/P/Pygments/Pygments-2.10.0.tar.gz
+build-dir: Pygments-2.10.0
+depends:
+  runtime:
+  - python
+  - py-setuptools
+script: 'python3 setup.py install --root=${pkgupd_pkgdir} -O1
+
+  '

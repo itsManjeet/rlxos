@@ -1,0 +1,25 @@
+id: python2
+version: 2.7.18
+about: Python2 development environment
+sources:
+- https://www.python.org/ftp/python/2.7.18/Python-2.7.18.tar.xz
+- https://www.linuxfromscratch.org/patches/blfs/svn/Python-2.7.18-security_fixes-1.patch
+build-dir: Python-2.7.18
+depends:
+  runtime:
+  - bzip2
+  - expat
+  - gdbm
+  - libffi
+  - openssl
+  - zlib
+post-script: rm ${pkgupd_pkgdir}/usr/bin/python
+pre-script: 'sed -i "/2to3/d" ./setup.py
+
+  patch -Np1 -i ../Python-2.7.18-security_fixes-1.patch
+
+  '
+configure: '--enable-shared --with-system-expat --with-system-ffi --without-ensurepip
+  --enable-optimization --with-lto --with-tzpath=/usr/share/zoneinfo --enable-loadable-sqlite-extensions
+
+  '

@@ -1,0 +1,12 @@
+id: dconf-editor
+version: 0.40.0
+about: A low-level configuration system editor
+sources:
+- https://download.gnome.org/sources/dconf-editor/3.38/dconf-editor-3.38.3.tar.xz
+build-dir: dconf-editor-3.38.3
+depends:
+  buildtime:
+  - vala
+  runtime:
+  - gtk
+  - dconf

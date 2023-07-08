@@ -1,0 +1,6 @@
+id: which
+version: 2.21
+about: utility to show full path of command
+sources:
+- https://ftp.gnu.org/gnu/which/which-2.21.tar.gz
+build-dir: which-2.21

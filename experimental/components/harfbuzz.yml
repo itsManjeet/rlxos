@@ -1,0 +1,16 @@
+id: harfbuzz
+version: 2.8.2
+about: OpenType text shaping engine
+sources:
+- https://github.com/harfbuzz/harfbuzz/releases/download/2.8.2/harfbuzz-2.8.2.tar.xz
+build-dir: harfbuzz-2.8.2
+depends:
+  buildtime:
+  - meson
+  - gobject-introspection
+  runtime:
+  - glib
+  - cairo
+  - graphite2
+configure: --buildtype=release -D graphite=enabled -D benchmark=disabled -D docs=disabled
+  -D icu=disabled

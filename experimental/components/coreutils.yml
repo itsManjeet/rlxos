@@ -1,0 +1,25 @@
+id: coreutils
+version: 8.32
+about: Utilities for showing and setting the basic system characteristics
+sources:
+- https://ftp.gnu.org/gnu/coreutils/coreutils-8.32.tar.xz
+build-dir: coreutils-8.32
+depends:
+  buildtime:
+  - automake
+  runtime:
+  - acl
+  - attr
+  - glibc
+  - libgmp
+  - libcap
+  - openssl
+  - gettext
+pre-script: 'sed -i "/test.lock/s/^/#/" gnulib-tests/gnulib.mk
+
+  autoreconf -fiv
+
+  '
+environ:
+- FORCE_UNSAFE_CONFIGURE=1
+configure: --enable-no-install-program=kill,uptime --with-openssl --libexecdir=/usr/lib

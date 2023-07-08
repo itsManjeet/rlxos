@@ -1,0 +1,13 @@
+id: iana-etc
+version: 20230524
+about: Provides data for network services and protocols
+
+no-strip: true
+
+build-dir: iana-etc-%{version}
+
+script: |
+  install -v -D -m 644 services protocols -t ${pkgupd_pkgdir}/etc/
+
+sources:
+  - https://github.com/Mic92/iana-etc/releases/download/%{version}/iana-etc-%{version}.tar.gz

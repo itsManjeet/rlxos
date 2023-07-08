@@ -1,0 +1,11 @@
+id: glibmm
+version: 2.66.1
+about: A set of C++ bindings for GLib
+sources:
+- https://download.gnome.org/sources/glibmm/2.66/glibmm-2.66.1.tar.xz
+build-dir: glibmm-2.66.1
+depends:
+  runtime:
+  - glib
+  - libsigc++
+pre-script: rm autogen.sh

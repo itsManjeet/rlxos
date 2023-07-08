@@ -1,0 +1,16 @@
+id: libxfce4ui
+version: 4.16.1
+about: GTK+2 widgets library for Xfce
+sources:
+- https://archive.xfce.org/src/xfce/libxfce4ui/4.16/libxfce4ui-4.16.1.tar.bz2
+build-dir: libxfce4ui-4.16.1
+depends:
+  buildtime:
+  - gobject-introspection
+  - libgtop
+  - libgudev
+  runtime:
+  - gtk
+  - xfconf
+  - startup-notification
+configure: --enable-vala=no

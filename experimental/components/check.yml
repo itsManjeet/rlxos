@@ -1,0 +1,14 @@
+id: check
+version: 0.15.2
+about: A unit testing framework for C
+sources:
+- https://github.com/libcheck/check/releases/download/0.15.2/check-0.15.2.tar.gz
+build-dir: check-0.15.2
+depends:
+  buildtime:
+  - cmake
+  runtime:
+  - gawk
+configure: '-DCMAKE_BUILD_TYPE=None -DCHECK_ENABLE_TIMEOUT_TESTS=OFF -DAWK_SUB_DBL_BSLASH=''\\\''
+
+  '

@@ -1,0 +1,15 @@
+id: xkeyboard-config
+version: 2.33
+about: Keyboard configuration database for the X Window System
+sources:
+- https://www.x.org/pub/individual/data/xkeyboard-config/xkeyboard-config-2.33.tar.bz2
+build-dir: xkeyboard-config-2.33
+depends:
+  buildtime:
+  - libxslt
+  - meson
+  - python
+  - xorg-libs
+configure: '--with-xkb-rules-symlink=xorg
+
+  '

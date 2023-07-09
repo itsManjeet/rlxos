@@ -34,3 +34,4 @@ depends:
   - components/core/shadow.yml
 build-time:
   - components/core/meson.yml
+  - components/core/gcc.yml

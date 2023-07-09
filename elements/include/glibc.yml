@@ -46,9 +46,3 @@ post-script: |
 sources:
   - https://ftp.gnu.org/gnu/glibc/glibc-%{version}.tar.xz
   - patches/core/glibc/glibc-%{version}-fhs-1.patch
-
-depends:
-  - components/core/filesystem.yml
-
-build-time:
-  - components/core/kernel-headers.yml

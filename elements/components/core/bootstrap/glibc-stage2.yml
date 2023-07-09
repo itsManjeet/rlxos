@@ -1,0 +1,3 @@
+id: glibc-stage2
+merge:
+  - elements/include/glibc.yml

@@ -1,3 +1,3 @@
-id: binutils
+id: binutils-stage1
 merge:
   - elements/include/binutils.yml

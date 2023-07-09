@@ -1,0 +1,45 @@
+version: 13.1.0
+release: 1
+about: The GNU compiler collection, which includes the C and C++ compilers
+
+pre-script: |
+  sed -e '/m64=/s/lib64/lib/' \
+        -i.orig gcc/config/i386/t-linux64
+
+configure: >
+  LD=ld 
+  --enable-languages=c,c++
+  --enable-default-pie
+  --enable-default-ssp
+  --disable-multilib
+  --disable-bootstrap
+  --disable-fixincludes
+  --with-system-zlib
+
+post-script: |
+  [[ -d ${pkgupd_pkgdir}/usr/lib/gcc/x86_64-pc-linux-gnu/%{version}/include-fixes/bits/ ]] && \
+  rm -r ${pkgupd_pkgdir}/usr/lib/gcc/x86_64-pc-linux-gnu/%{version}/include-fixes/bits/
+
+  mkdir -p ${pkgupd_pkgdir}/usr/lib/bfd-plugins/
+  ln -sv ../bin/cpp ${pkgupd_pkgdir}/usr/lib/
+  ln -sfv ../../lib/gcc/x86_64-pc-linux-gnu/%{version}/liblto_plugin.so \
+    ${pkgupd_pkgdir}/usr/lib/bfd-plugins/
+
+  ln -sv gcc ${pkgupd_pkgdir}/usr/bin/cc
+
+  if [[ -d ${pkgupd_pkgdir}/lib ]] ; then
+    cp ${pkgupd_pkgdir}/lib/* ${pkgupd_pkgdir}/usr/lib/ -a
+    rm ${pkgupd_pkgdir}/lib -r
+  fi
+
+depends:
+  - components/core/zlib.yml
+  - components/core/libmpc.yml
+  - components/core/libmpfr.yml
+  - components/core/libgmp.yml
+
+build-time:
+  - components/core/binutils.yml
+
+sources:
+  - https://ftp.gnu.org/gnu/gcc/gcc-%{version}/gcc-%{version}.tar.xz

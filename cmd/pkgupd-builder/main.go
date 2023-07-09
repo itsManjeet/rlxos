@@ -36,6 +36,8 @@ func status(b *builder.Builder, id string) {
 	for _, pair := range pairs {
 		fmt.Println("    ["+pair.State.String()+"] ", pair.Path)
 	}
+
+	log.Println(pairs[len(pairs)-1].Value)
 }
 
 func listfiles(b *builder.Builder, id string) {
@@ -88,6 +90,8 @@ func main() {
 	if err != nil {
 		log.Panicln(err)
 	}
+
+	log.Println("CONFIG", b)
 
 	if len(task) == 0 {
 		printHelp()

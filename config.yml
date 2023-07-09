@@ -1,4 +1,4 @@
-container: archlinux:base-devel
+container: itsmanjeet/devel-docker:2200-3
 merge:
   - include/environ.yml
   - include/variables.yml

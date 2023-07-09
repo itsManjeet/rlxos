@@ -83,6 +83,16 @@ func Open(filepath string, environ []string, variables map[string]string) (*Elem
 		return nil, err
 	}
 
+	for _, merge := range e.Merge {
+		mergingElement, err := Open(merge, e.Environ, e.Variables)
+		if err != nil {
+			return nil, err
+		}
+		if err := mergo.Merge(&e, mergingElement); err != nil {
+			return nil, err
+		}
+	}
+
 	if e.Variables == nil {
 		e.Variables = map[string]string{}
 	}
@@ -96,16 +106,6 @@ func Open(filepath string, environ []string, variables map[string]string) (*Elem
 
 	for key, value := range variables {
 		e.Variables[key] = value
-	}
-
-	for _, merge := range e.Merge {
-		mergingElement, err := Open(merge, e.Environ, e.Variables)
-		if err != nil {
-			return nil, err
-		}
-		if err := mergo.Merge(&e, mergingElement); err != nil {
-			return nil, err
-		}
 	}
 
 	for i := range e.Sources {

@@ -32,14 +32,5 @@ post-script: |
     rm ${pkgupd_pkgdir}/lib -r
   fi
 
-depends:
-  - components/core/zlib.yml
-  - components/core/libmpc.yml
-  - components/core/libmpfr.yml
-  - components/core/libgmp.yml
-
-build-time:
-  - components/core/binutils.yml
-
 sources:
   - https://ftp.gnu.org/gnu/gcc/gcc-%{version}/gcc-%{version}.tar.xz

@@ -1,58 +1,20 @@
 package builder
 
 import (
-	"fmt"
 	"io"
 	"log"
-	"net/http"
 	"os"
-	"strings"
-
-	"github.com/dustin/go-humanize"
+	"os/exec"
 )
 
-type WriteCounter struct {
-	Total uint64
-}
-
-func (wc *WriteCounter) Write(p []byte) (int, error) {
-	n := len(p)
-	wc.Total += uint64(n)
-	wc.PrintProgress()
-	return n, nil
-}
-
-func (wc WriteCounter) PrintProgress() {
-	if len(os.Getenv("$GITHUB_ACTIONS")) == 0 {
-		fmt.Printf("\r%s", strings.Repeat(" ", 35))
-		fmt.Printf("\rDownloading... %s complete", humanize.Bytes(wc.Total))
-	}
-}
-
 func DownloadFile(filepath string, url string) error {
-	out, err := os.Create(filepath + ".tmp")
-	if err != nil {
-		return err
+	cmd := exec.Command("wget", "-nc", "-c", "-O", filepath, url)
+	if len(os.Getenv("GITHUB_ACTIONS")) == 0 {
+		cmd.Stdout = os.Stdout
 	}
-	defer out.Close()
-
-	resp, err := http.Get(url)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
-	counter := &WriteCounter{}
-	if _, err = io.Copy(out, io.TeeReader(resp.Body, counter)); err != nil {
-		return err
-	}
-
-	fmt.Print("\n")
-
-	if err = os.Rename(filepath+".tmp", filepath); err != nil {
-		return err
-	}
-	return nil
+	cmd.Stdin = os.Stdin
+	cmd.Stderr = os.Stderr
+	return cmd.Run()
 }
 
 func CopyFile(src, dest string) error {

@@ -62,13 +62,6 @@ script: |
   echo "Adding symlink..."
   mkdir -p "%{install-root}/usr/src"
   ln -sr "$builddir" "%{install-root}/usr/src/%{id}"
-split:
-  - into: linux-dev
-    about: Headers and scripts for building modules for the Linux kernel
-
-    files:
-      - boot/modules/%{version}/build/
-      - usr/src/%{id}
 
 build-time:
   - components/core/coreutils.yml

@@ -15,6 +15,7 @@ import (
 	"rlxos/internal/element"
 	"strings"
 
+	"dario.cat/mergo"
 	"gopkg.in/yaml.v2"
 )
 
@@ -46,6 +47,7 @@ type Builder struct {
 	Variables   map[string]string `yaml:"variables"`
 	Environ     []string          `yaml:"environ"`
 	BuildTools  []BuildTool       `yaml:"build-tools"`
+	Merge       []string          `yaml:"merge"`
 	projectPath string
 	cachePath   string
 	pool        map[string]*element.Element
@@ -66,6 +68,20 @@ func New(projectPath string, cachePath string) (*Builder, error) {
 	var b Builder
 	if err := yaml.Unmarshal(data, &b); err != nil {
 		return nil, err
+	}
+
+	for _, mergefile := range b.Merge {
+		data, err := os.ReadFile(path.Join(projectPath, mergefile))
+		if err != nil {
+			return nil, err
+		}
+		var mergingConfig Builder
+		if err := yaml.Unmarshal(data, &mergingConfig); err != nil {
+			return nil, err
+		}
+		if err := mergo.Merge(&b, mergingConfig); err != nil {
+			return nil, err
+		}
 	}
 
 	b.pool = map[string]*element.Element{}

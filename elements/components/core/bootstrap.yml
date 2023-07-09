@@ -1,0 +1,12 @@
+id: bootstrap
+version: 2307
+about: rlxos bootstrap toolchain
+
+build-depends:
+  - components/core/kernel-headers.yml
+  - components/core/bootstrap/glibc-stage1.yml
+  - components/core/bootstrap/binutils-stage1.yml
+  - components/core/bootstrap/gcc-stage1.yml
+  - components/core/bootstrap/glibc-stage2.yml
+  - components/core/bootstrap/binutils-stage2.yml
+  - components/core/bootstrap/gcc-stage2.yml

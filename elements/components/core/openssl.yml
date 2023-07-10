@@ -3,11 +3,18 @@ version: 3.1.1
 about: Package contains management tools and libraries relating to cryptography
 
 script: |
-  ./config \
+  ./Configure \
     --prefix=%{prefix}  \
     --openssldir=%{sysconfdir}/ssl \
     --libdir=lib  \
-    shared zlib-dynamic
+    shared zlib-dynamic "-Wa,--noexecstack ${CXXFLAGS} ${CFLAGS} ${LDFLAGS}"
+
+  make depend
+  make ${MAKEFLAGS}
+
+  make DESTDIR=%{install-root} MANDIR=%{datadir}/man MANSUFFIX=ssl install_sw install_ssldirs install_man_docs
+
+
 
 depends:
   - components/core/glibc.yml

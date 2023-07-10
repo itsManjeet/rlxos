@@ -52,8 +52,6 @@ func CreateContainer(image string, environ []string, mounts map[string]string) (
 	for _, i := range []string{"/etc/hosts", "/etc/hostname", "/etc/resolv.conf"} {
 		exec.Command(backend, "exec", "-i", c.name, "umount", i).CombinedOutput()
 	}
-	exec.Command(backend, "exec", "-i", c.name, "systemd-sysusers").Run()
-	exec.Command(backend, "exec", "-i", c.name, "systemd-tmpfiles", "--create").Run()
 
 	return c, nil
 }

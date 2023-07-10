@@ -5,6 +5,7 @@ about: rlxos core components
 script: echo %{version} > %{install-root}/.version
 
 depends:
+  - components/core/busybox.yml
   - components/core/glibc.yml
   - components/core/coreutils.yml
   - components/core/systemd.yml

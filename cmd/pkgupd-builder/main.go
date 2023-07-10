@@ -40,6 +40,12 @@ func status(b *builder.Builder, id string) {
 	log.Println(pairs[len(pairs)-1].Value)
 }
 
+func file(b *builder.Builder, id string) {
+	e := b.Get(id)
+	cachefile, err := b.CacheFile(e)
+	log.Println("file:", cachefile, err)
+}
+
 func listfiles(b *builder.Builder, id string) {
 	e := b.Get(id)
 	if e == nil {
@@ -108,5 +114,8 @@ func main() {
 	case "list-files":
 		checkArgs(args, 1)
 		listfiles(b, args[0])
+	case "file":
+		checkArgs(args, 1)
+		file(b, args[0])
 	}
 }

@@ -9,6 +9,10 @@ build-type: autotools
 
 pre-script: |
   sed -i '/test_mkfds/s/^/#/' tests/helpers/Makemodule.am
+  
+  # TODO Fix this in filesystem intergation command
+  systemd-sysusers
+  systemd-tmpfiles --create || true
 
 configure: >-
   --disable-chfn-chsh

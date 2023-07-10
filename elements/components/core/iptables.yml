@@ -1,5 +1,5 @@
 id: iptables
-version: 1.8.7
+version: 1.8.9
 about: |
   Linux kernel packet control tool (using legacy interface)
 
@@ -13,15 +13,12 @@ kernel:
   - CONFIG_IP_NF_IPTABLES
 
 depends:
-  runtime:
-    - bash
-    - libcap
+  - components/core/bash.yml
+  - components/core/libcap.yml
 
 sources:
-  - http://www.netfilter.org/projects/iptables/files/iptables-{{version}}.tar.bz2
+  - http://www.netfilter.org/projects/iptables/files/iptables-%{version}.tar.xz
 
-build-type: autoconf
 configure: >
   --disable-nftables
   --enable-libipq
-

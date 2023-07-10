@@ -32,6 +32,8 @@ type Element struct {
 
 	BuildType string `yaml:"build-type"`
 
+	Check []string `yaml:"check"`
+
 	Config struct {
 		Source string `yaml:"source"`
 		Target string `yaml:"target"`

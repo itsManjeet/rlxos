@@ -276,7 +276,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 	defer os.RemoveAll(workdir)
 	srcdir := path.Join(workdir, "src")
 	pkgdir := path.Join(workdir, "pkg", e.Id)
-	for _, dir := range []string{sourcesDir, packagesDir, srcdir, pkgdir, logDir} {
+	for _, dir := range []string{sourcesDir, packagesDir, srcdir, logDir} {
 		if err := os.MkdirAll(dir, 0755); err != nil {
 			return err
 		}
@@ -325,6 +325,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 			return err
 		}
 		if len(includeList) > 1 {
+			container.Run(logWriter, []string{"mkdir", "-p", path.Join("/", "pkg", e.Id)}, "/", []string{})
 			for _, l := range includeList {
 				if err := b.integrate(l.Value, path.Join("/", "pkg", e.Id), container, logWriter, false); err != nil {
 					return err

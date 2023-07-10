@@ -13,5 +13,5 @@ depends:
   - components/core/linux.yml
 
 script: |
-  systemd-tmpfiles
+  systemd-tmpfiles --create || true
   systemd-sysusers

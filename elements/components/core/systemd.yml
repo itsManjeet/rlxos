@@ -31,6 +31,9 @@ depends:
   - components/core/bash.yml
   - components/core/coreutils.yml
   - components/core/util-linux.yml
+  - components/core/openssl.yml
+  - components/core/iptables.yml
+  - components/core/kmod.yml
   - components/core/diffutils.yml
   - components/core/grep.yml
   - components/core/openssl.yml

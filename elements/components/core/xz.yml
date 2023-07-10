@@ -7,6 +7,12 @@ sources:
 
 depends:
   - components/core/glibc.yml
+
+script: |
+  ./configure --prefix=%{prefix} \
+    --disable-rpath \
+    --enable-werror
   
-configure: >
-  --disable-static
+  make ${MAKEFLAGS}
+
+  make install DESTDIR=%{install-root}

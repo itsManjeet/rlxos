@@ -12,4 +12,5 @@ build-time:
   - components/core/bootstrap/gcc-stage2.yml
 
 script: |
+  mkdir -p %{install-root}
   echo %{version} > %{install-root}/.bootstrap

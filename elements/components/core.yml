@@ -2,7 +2,9 @@ id: core
 version: 2307
 about: rlxos core components
 
-script: echo %{version} > %{install-root}/.version
+script: |
+  mkdir -p %{install-root}/
+  echo %{version} > %{install-root}/.version
 
 depends:
   - components/core/busybox.yml

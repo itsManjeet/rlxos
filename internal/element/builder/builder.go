@@ -327,7 +327,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 		if len(includeList) > 1 {
 			container.Run(logWriter, []string{"mkdir", "-p", path.Join("/", "pkg", e.Id)}, "/", []string{})
 			for _, l := range includeList {
-				if err := b.integrate(l.Value, path.Join("/", "pkg", e.Id), container, logWriter, false); err != nil {
+				if err := b.integrate(l.Value, path.Join("/", "pkg", e.Id), container, logWriter, true); err != nil {
 					return err
 				}
 			}
@@ -606,6 +606,14 @@ func (b *Builder) integrate(e *element.Element, rootdir string, container *Conta
 				container.RescueShell()
 				return err
 			}
+		}
+	} else if len(e.Integration) > 0 {
+		if err := container.Run(logWriter, []string{"mkdir", "-p", path.Join(rootdir, "var", "lib", "integrations")}, "/", []string{}); err != nil {
+			return fmt.Errorf("failed to create intergations dir %v", err)
+		}
+
+		if err := container.Run(logWriter, []string{"sh", "-ce", fmt.Sprintf("echo '%s' | tee %s", resolveVariables(e.Integration, e.Variables), path.Join(rootdir, "var", "lib", "integrations", e.Id))}, "/", []string{}); err != nil {
+			return fmt.Errorf("failed to create intergations dir %v", err)
 		}
 	}
 

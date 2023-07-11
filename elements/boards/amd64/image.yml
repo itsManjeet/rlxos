@@ -5,13 +5,31 @@ no-strip: true
 build-type: system
 include:
   - components/core.yml
+  - components/core/strace.yml
   - components/core/grub.yml
 
 depends:
   - components/core/grub.yml
   - components/core/squashfs-tools.yml
   - components/core/linux.yml
+  - components/core/systemd.yml
 
 script: |
-  systemd-tmpfiles --create || true
+  # executing integration scripts
+  if [ -d %{localstatedir}/lib/integrations ] ; then
+    for i in %{localstatedir}/lib/integrations/* ; do
+      echo "=> integrating $(basename $i)"
+      sh -e $i
+    done
+  fi
+
+  # create locale
+  mkdir -p %{libdir}/locale
+  while read loc format ; do
+    localedef -i ${loc} -f ${format} ${loc}.${format} || true
+  done < %{datadir}/i18n/SUPPORTED
+
   systemd-sysusers
+  systemd-tmpfiles --create || true
+  systemctl preset-all
+  systemctl --global preset-all

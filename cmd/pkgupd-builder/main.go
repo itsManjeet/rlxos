@@ -97,7 +97,7 @@ func main() {
 		log.Panicln(err)
 	}
 
-	log.Println("CONFIG", b)
+	// log.Println("CONFIG", b)
 
 	if len(task) == 0 {
 		printHelp()

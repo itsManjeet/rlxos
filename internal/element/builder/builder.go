@@ -320,11 +320,11 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 	}
 
 	if len(e.Include) > 0 {
-		includeList, err := b.List(element.DependencyAll, e.Include...)
+		includeList, err := b.List(element.DependencyRunTime, e.Include...)
 		if err != nil {
 			return err
 		}
-		if len(includeList) > 1 {
+		if len(includeList) > 0 {
 			container.Run(logWriter, []string{"mkdir", "-p", path.Join("/", "pkg", e.Id)}, "/", []string{})
 			for _, l := range includeList {
 				if err := b.integrate(l.Value, path.Join("/", "pkg", e.Id), container, logWriter, true); err != nil {
@@ -593,10 +593,18 @@ func (b *Builder) integrate(e *element.Element, rootdir string, container *Conta
 		return err
 	}
 
-	log.Println("Integrating", e.Id, path.Base(cachefile))
-	if err := container.Run(logWriter, []string{"tar", "-xf", path.Join("/", "cache", path.Base(cachefile)), "-C", rootdir}, "/", []string{}); err != nil {
-		container.RescueShell()
-		return err
+	if e.BuildType == "system" {
+		if err := container.Run(logWriter, []string{"cp", path.Join("/", "cache", path.Base(cachefile)), path.Join(rootdir, e.Id)}, "/", []string{}); err != nil {
+			container.RescueShell()
+			return err
+		}
+	} else {
+		log.Println("Integrating", e.Id, path.Base(cachefile))
+		if err := container.Run(logWriter, []string{"tar", "-xf", path.Join("/", "cache", path.Base(cachefile)), "-C", rootdir}, "/", []string{}); err != nil {
+			container.RescueShell()
+			return err
+		}
+
 	}
 
 	if !noIntegrate {

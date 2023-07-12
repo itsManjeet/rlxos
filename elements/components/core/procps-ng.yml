@@ -1,0 +1,18 @@
+id: procps-ng
+version: 4.0.3
+about: Programs for monitoring processes
+sources:
+  - https://sourceforge.net/projects/procps-ng/files/Production/procps-ng-%{version}.tar.xz
+
+depends:
+  - components/core/glibc.yml
+  - components/core/ncurses.yml
+  - components/core/systemd.yml
+
+script: |
+  ./configure --prefix=%{prefix} \
+    --disable-static  \
+    --disable-kill  \
+    --with-systemd
+  make ${MAKEFLAGS}
+  make install DESTDIR=%{install-root}

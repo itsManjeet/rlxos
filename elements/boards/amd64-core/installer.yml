@@ -1,0 +1,50 @@
+id: amd64-core-installer
+version: 2307
+about: rlxos core installer
+no-strip: true
+
+variables:
+  installer-volume-id: RLXOS
+
+build-time:
+  - components/core.yml
+  - components/core/linux.yml
+  - components/core/dracut.yml
+  - components/core/mtools.yml
+  - components/core/grub.yml
+  - components/core/squashfs-tools.yml
+
+include:
+  - boards/amd64-core/image.yml
+
+script: |
+  mkdir -p ISO/boot/grub
+  mkdir -p ISO/LiveOS
+
+  mv %{install-root}/amd64-core-image ISO/LiveOS/squashfs.img
+  kerver=$(ls /boot/modules | head -n1)
+  cp /boot/modules/${kerver}/vmlinuz ISO/boot/vmlinuz-${kerver}
+
+  ln -sv /boot/modules/ /lib/modules
+
+  echo "
+  set timeout=5
+  set default='rlxos GNU/Linux'
+
+  insmod all_video
+
+  menuentry 'rlxos GNU/Linux' {
+    linux /boot/vmlinuz-${kerver} rw debug root=live:LABEL=%{installer-volume-id}
+    initrd /boot/initramfs-${kerver}
+  }" > ISO/boot/grub/grub.cfg
+
+  dracut --no-machineid \
+    --kver ${kerver} \
+    --add dmsquash-live \
+    --install grep \
+    --install head \
+    --install tail \
+    --install less \
+    --omit lvm ISO/boot/initramfs-${kerver}
+
+  grub-mkrescue -o %{install-root}/rlxos-%{id}.iso ISO/

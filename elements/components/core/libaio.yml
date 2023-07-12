@@ -1,0 +1,13 @@
+id: libaio
+version: 0.3.113
+about: An asynchronous I/O facility ("async I/O", or "aio") that has a richer API and capability set than the simple POSIX async I/O facility
+sources:
+  - https://pagure.io/libaio/archive/%{id}-%{version}/%{id}-%{id}-%{version}.tar.gz
+
+depends:
+  - components/core/glibc.yml
+
+script: |
+  sed -i "/install.*libaio.a/s/^/#/" src/Makefile
+  make
+  make install DESTDIR=%{install-root}

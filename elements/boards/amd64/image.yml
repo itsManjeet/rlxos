@@ -23,12 +23,6 @@ script: |
     done
   fi
 
-  # create locale
-  mkdir -p %{libdir}/locale
-  while read loc format ; do
-    localedef -i ${loc} -f ${format} ${loc}.${format} || true
-  done < %{datadir}/i18n/SUPPORTED
-
   systemd-sysusers
   systemd-tmpfiles --create || true
   systemctl preset-all

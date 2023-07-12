@@ -10,5 +10,6 @@ depends:
   - components/core/busybox.yml
   - components/core/gzip.yml
   - components/core/glibc.yml
+  - components/core/locales.yml
   - components/core/coreutils.yml
   - components/core/systemd.yml

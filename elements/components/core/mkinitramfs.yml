@@ -1,0 +1,14 @@
+id: mkinitramfs
+version: 0.0.5
+about: Script to build initramfs
+depends:
+  - components/core.yml
+  - components/core/procps-ng.yml
+  - components/core/lvm2.yml
+  - components/core/busybox.yml
+  - components/core/cpio.yml
+  - components/core/zstd.yml
+
+script: |
+  install -v -D -m 644 /files/core/initramfs/init.in  %{install-root}/%{datadir}/initramfs/init.in
+  install -v -D -m 755 /files/core/initramfs/mkinitramfs.sh.in  %{install-root}/%{bindir}/mkinitramfs

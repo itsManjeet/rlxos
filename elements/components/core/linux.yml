@@ -10,7 +10,6 @@ script: |
   make mrproper
   cp /files/core/linux/config ./.config
   mkdir -p %{install-root}/{boot,lib}
-  ln -sv ../lib/modules %{install-root}/boot/modules
   make olddefconfig
   cp ./.config /files/core/linux/config
   make bzImage modules
@@ -18,16 +17,14 @@ script: |
        INSTALL_MOD_STRIP=1 \
        modules_install
   
-  install -D -m 644 "$(make -s image_name)" %{install-root}/boot/modules/%{version}/vmlinuz
+  install -D -m 644 "$(make -s image_name)" %{install-root}/lib/modules/%{version}/vmlinuz
 
-  rm %{install-root}/boot/modules/%{version}/{build,source}
-  rm %{install-root}/boot/modules
-  mv %{install-root}/{lib,boot}/modules
-  rmdir %{install-root}/lib
-
+  rm %{install-root}/lib/modules/%{version}/{build,source}
+  rm %{install-root}/lib/modules
+  
 
   echo "installing build files"
-  builddir="%{install-root}/boot/modules/%{version}/build"
+  builddir="%{install-root}/lib/modules/%{version}/build"
   install -D -t "${builddir}" -m644 .config Makefile Module.symvers System.map vmlinux
   install -Dt "$builddir/kernel" -m644 kernel/Makefile
   install -Dt "$builddir/arch/x86" -m644 arch/x86/Makefile

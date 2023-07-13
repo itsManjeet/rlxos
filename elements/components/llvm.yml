@@ -1,0 +1,34 @@
+id: llvm
+version: 15.0.7
+about: |
+  A collection of modular and reusable compiler and toolchain technologies
+
+depends:
+  - components/core.yml
+build-time:
+  - components/cmake.yml
+
+sources:
+  - https://github.com/llvm/llvm-project/releases/download/llvmorg-%{version}/llvm-%{version}.src.tar.xz
+  - https://github.com/llvm/llvm-project/releases/download/llvmorg-%{version}/clang-%{version}.src.tar.xz
+  - https://github.com/llvm/llvm-project/releases/download/llvmorg-%{version}/compiler-rt-%{version}.src.tar.xz
+
+build-dir: llvm-%{version}.src
+pre-script: |
+  ls ../
+  mv ../clang-%{version}.src tools/clang
+  mv ../compiler-rt-%{version}.src projects/compiler-rt
+
+  grep -rl "#!.*python" | xargs sed -i "1s/python$/python3/"
+
+configure: >
+  -DCMAKE_LIBEXECDIR=/usr/lib
+  -DLLVM_ENABLE_FFI=ON
+  -DCMAKE_BUILD_TYPE=Release
+  -DLLVM_BUILD_LLVM_DYLIB=ON
+  -DLLVM_LINK_LLVM_DYLIB=ON
+  -DLLVM_ENABLE_RTTI=ON
+  -DLLVM_TARGETS_TO_BUILD="X86;AMDGPU;BPF"
+  -DLLVM_BUILD_TESTS=ON
+  -DLLVM_BINUTILS_INCDIR=/usr/include
+  -Wno-dev -G Ninja

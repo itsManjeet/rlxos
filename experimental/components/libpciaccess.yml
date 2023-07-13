@@ -1,6 +1,0 @@
-id: libpciaccess
-version: '7'
-about: xorg library libpciaccess
-build-dir: libpciaccess-0.16
-sources:
-- https://www.x.org/pub/individual/lib/libpciaccess-0.16.tar.bz2

@@ -1,0 +1,19 @@
+id: wayland
+version: 1.22.0
+about: Computer display server protocol
+
+depends:
+  - components/core/libxml2.yml
+  - components/core/expat.yml
+  - components/core/glibc.yml
+  - components/core/libffi.yml
+
+build-time:
+  - components/core/meson.yml
+
+sources:
+  - https://gitlab.freedesktop.org/wayland/wayland/-/releases/%{version}/downloads/wayland-%{version}.tar.xz
+
+configure: >
+  -D documentation=false
+  --buildtype=release

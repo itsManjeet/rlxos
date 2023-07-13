@@ -14,6 +14,9 @@ build-time:
   - components/core/linux.yml
   - components/core/systemd.yml
 
+variables:
+  root-password: rlxos
+
 script: |
   # executing integration scripts
   if [ -d %{localstatedir}/lib/integrations ] ; then
@@ -27,6 +30,11 @@ script: |
   systemd-tmpfiles --create || true
   systemctl preset-all
   systemctl --global preset-all
+
+  pwconv
+  grpconv
+
+  echo "%{root-password}" | passwd --stdin
 
   for d in opt srv/http run dev; do
     install -d -m755 $d

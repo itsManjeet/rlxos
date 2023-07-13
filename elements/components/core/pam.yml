@@ -4,8 +4,6 @@ about: Pluggable Authentication Modules library
 
 depends:
   - components/core/glibc.yml
-
-run-time:
   - components/core/pam-config.yml
 
 sources:

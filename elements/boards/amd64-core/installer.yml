@@ -40,6 +40,7 @@ script: |
 
   dracut --no-machineid \
     --kver ${kerver} \
+    --kernel-cmdline 'rw debug root=live:LABEL=%{installer-volume-id}' \
     --add dmsquash-live \
     --install grep \
     --install head \

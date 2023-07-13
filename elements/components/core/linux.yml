@@ -20,7 +20,6 @@ script: |
   install -D -m 644 "$(make -s image_name)" %{install-root}/lib/modules/%{version}/vmlinuz
 
   rm %{install-root}/lib/modules/%{version}/{build,source}
-  rm %{install-root}/lib/modules
   
 
   echo "installing build files"

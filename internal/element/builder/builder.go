@@ -202,6 +202,10 @@ func (b *Builder) CacheFile(e *element.Element) (string, error) {
 	s := sha256.New()
 	s.Write([]byte(sum))
 	depends := e.AllDepends(element.DependencyRunTime)
+	if len(e.Include) > 0 {
+		depends = append(depends, e.Include...)
+	}
+
 	for _, dep := range depends {
 		dep, _ = b.parseId(dep)
 		dep_e, ok := b.pool[dep]

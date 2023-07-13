@@ -1,0 +1,13 @@
+id: curl
+version: 8.1.2
+about: Utility and a library used for transferring files
+sources:
+  - https://curl.haxx.se/download/curl-%{version}.tar.xz
+
+depends:
+  - components/core.yml
+  - components/core/ca-certificates.yml
+configure: >-
+  --enable-threaded-resolver
+  --with-ca-bundle=/etc/ssl/cert.pem
+  --with-openssl

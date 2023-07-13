@@ -1,0 +1,14 @@
+id: cmake
+version: 3.26.4
+about: Modern toolset used for generating Makefiles
+sources:
+  - https://cmake.org/files/v3.26/cmake-%{version}.tar.gz
+
+depends:
+  - components/libuv.yml
+  - components/curl.yml
+  - components/libarchive.yml
+configure: >-
+  --no-system-jsoncpp 
+  --no-system-librhash
+  --docdir=/share/doc/cmake

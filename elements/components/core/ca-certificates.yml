@@ -1,0 +1,14 @@
+id: ca-certificates
+version: 2023-05-30
+about: |
+  CA Root certificates bundle from Mozilla
+
+sources:
+  - https://curl.se/ca/cacert-%{version}.pem
+
+script: |
+  install -D -m 644 %{build-root}/cacert-%{version}.pem \
+    %{install-root}/%{sysconfdir}/ssl/cert.pem
+
+  install -d %{install-root}/%{sysconfdir}/ssl/certs
+  ln -s /etc/ssl/cert.pem %{install-root}/%{sysconfdir}/ssl/certs/ca-certificates.crt

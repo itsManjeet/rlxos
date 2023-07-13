@@ -8,6 +8,7 @@ include:
   - components/core/strace.yml
   - components/core/grub.yml
   - components/core/mkinitramfs.yml
+  - components/core/wlroots.yml
 
 build-time:
   - components/core/grub.yml

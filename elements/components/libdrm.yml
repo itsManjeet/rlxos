@@ -1,0 +1,14 @@
+id: libdrm
+version: 2.4.115
+about: Library for accessing the DRM
+sources:
+  - https://dri.freedesktop.org/libdrm/libdrm-%{version}.tar.xz
+
+depends:
+  - components/core.yml
+build-time:
+  - components/core/meson.yml
+configure: >-
+  --buildtype=release 
+  -D udev=true 
+  -D valgrind=disabled

@@ -1,11 +1,7 @@
 id: libva
-version: 2.12.0
-about: Package contains a library which provides access to hardware accelerated video
-  processing
+version: 2.18.0
+about: Package contains a library which provides access to hardware accelerated video processing
 sources:
-- https://github.com/intel/libva/releases/download/2.12.0/libva-2.12.0.tar.bz2
-build-dir: libva-2.12.0
+  - https://github.com/intel/libva/releases/download/%{version/libva-%{version}.tar.bz2
 depends:
-  runtime:
-  - libdrm
-  - mesa
+  - components/libdrm.yml

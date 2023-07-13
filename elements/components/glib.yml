@@ -1,0 +1,26 @@
+id: glib
+version: 2.76.4
+about: Package contains low-level libraries useful for providing data structure handling for C, portability wrappers and interfaces for such runtime functionality as an event loop, threads, dynamic loading and an object system
+
+depends:
+  - components/core/libffi.yml
+  - components/core/util-linux.yml
+  - components/core/zlib.yml
+  - components/core/libelf.yml
+  - components/core/libxslt.yml
+  - components/core/pcre2.yml
+
+build-time:
+  - components/core/meson.yml
+
+sources:
+  - https://download.gnome.org/sources/glib/2.76/glib-%{version}.tar.xz
+
+configure: >-
+  -D man=false 
+  -D selinux=disabled 
+  --buildtype=release
+
+integration: |
+  glib-compile-schemas %{datadir}/glib-2.0/schemas
+  gio-querymodules %{libdir}/gio/modules

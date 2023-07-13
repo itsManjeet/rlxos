@@ -1,0 +1,10 @@
+id: xkeyboard-config
+version: 2.39
+about: Keyboard configuration database for the X Window System
+sources:
+  - https://xorg.freedesktop.org/archive/individual/data/%{id}/%{id}-%{version}.tar.xz
+
+build-time:
+  - components/core/libxslt.yml
+  - components/core/meson.yml
+  - components/core/python.yml

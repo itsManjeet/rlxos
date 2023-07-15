@@ -9,6 +9,7 @@ depends:
   - components/mesa.yml
   - components/seatd.yml
   - components/libxkbcommon.yml
+  - components/hwdata.yml
 build-time:
   - components/wayland-protocols.yml
   - components/core/meson.yml

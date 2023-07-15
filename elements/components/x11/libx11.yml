@@ -1,0 +1,15 @@
+id: libx11
+version: 1.8.6
+about: X11 client-side library
+
+depends:
+  - components/core.yml
+  - components/x11/libxcb.yml
+  - components/x11/xorgproto.yml
+
+build-time:
+  - components/x11/util-macros.yml
+  - components/x11/xtrans.yml
+
+sources:
+  - https://www.x.org/archive//individual/lib/libX11-%{version}.tar.xz

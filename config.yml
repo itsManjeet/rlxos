@@ -1,4 +1,4 @@
-container: itsmanjeet/devel-docker:2200-3
+container: itsmanjeet/rlxos:2307
 merge:
   - include/environ.yml
   - include/variables.yml

@@ -9,3 +9,5 @@ sources:
 
 depends:
   - components/core/glibc.yml
+
+post-script: ln -sv pkgconf %{install-root}/usr/bin/pkg-config

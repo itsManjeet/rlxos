@@ -71,3 +71,4 @@ build-time:
   - components/core/tar.yml
   - components/core/libelf.yml
   - components/core/zstd.yml
+  - components/core/findutils.yml

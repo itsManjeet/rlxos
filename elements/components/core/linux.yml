@@ -59,6 +59,8 @@ script: |
   mkdir -p "%{install-root}/usr/src"
   ln -sr "$builddir" "%{install-root}/usr/src/%{id}"
 
+  mv %{install-root}/lib %{install-root}/usr/
+
 build-time:
   - components/core/coreutils.yml
   - components/core/kmod.yml

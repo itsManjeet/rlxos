@@ -10,34 +10,38 @@ depends:
   - components/llvm.yml
   - components/libdrm.yml
   - components/wayland.yml
+  - components/x11/libxdamage.yml
+  - components/x11/libxrandr.yml
+  - components/x11/libxshmfence.yml
+  - components/x11/libxxf86vm.yml
+  - components/libpciaccess.yml
 build-time:
   - components/wayland-protocols.yml
   - components/py/py-mako.yml
   - components/cmake.yml
   - components/core/flex.yml
   - components/core/bison.yml
+  - components/glslang.yml
 
 configure: >-
-  -D valgrind=false 
-  -D glx=dri 
+  -D valgrind=disabled
+  -D glx=dri
   -D egl=enabled 
   -D osmesa=true 
-  -D platform=wayland 
+  -D platforms=x11,wayland 
   -D llvm=enabled 
   -D b_lto=true 
   -D b_ndebug=true 
-  -D dri-drivers=i965,nouveau
   -D gallium-drivers=i915,iris,nouveau,r600,radeonsi,svga,swrast,virgl 
   -D gallium-extra-hud=true
   -D gallium-nine=true
-  -D gallium-omx=bellagio
-  -D gallium-opencl=icd
-  -D gallium-va=enabled
-  -D gallium-vdpau=enabled
-  -D gallium-xa=enabled
   -D gbm=enabled
   -D gles1=disabled
   -D gles2=enabled
   -D dri3=enabled
-  -D builtype=release
-  -D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc
+  -D buildtype=release
+
+# TODO add vdpau support
+# -D gallium-va=enabled
+# -D gallium-vdpau=enabled
+# -D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc

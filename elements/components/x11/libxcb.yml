@@ -1,0 +1,19 @@
+id: libxcb
+version: 1.15
+about: X11 client-side library
+
+pre-script: rm autogen.sh
+
+sources:
+  - https://www.x.org/pub/individual/lib/libxcb-%{version}.tar.xz
+
+depends:
+  - components/x11/libxau.yml
+  - components/x11/libxdmcp.yml
+  - components/x11/xcb-proto.yml
+
+build-time:
+  - components/core/libxslt.yml
+  - components/core/python.yml
+  - components/core/pkg-config.yml
+  - components/x11/util-macros.yml

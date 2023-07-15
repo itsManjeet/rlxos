@@ -1,0 +1,22 @@
+id: spirv-tools
+version: 2022.4
+about: API and commands for processing SPIR-V modules
+
+configure: >
+  -GNinja
+  -DCMAKE_BUILD_TYPE=Release
+  -DSPIRV_WERROR=Off
+  -DSPIRV-Headers_SOURCE_DIR=%{prefix}
+
+sources:
+  - https://github.com/KhronosGroup/SPIRV-Tools/archive/refs/tags/v%{version}.tar.gz
+
+depends:
+  - components/core.yml
+  - components/core/gcc.yml
+
+build-time:
+  - components/cmake.yml
+  - components/core/ninja.yml
+  - components/core/python.yml
+  - components/spirv-headers.yml

@@ -1,6 +1,0 @@
-id: libXfixes
-version: '7'
-about: xorg library libXfixes
-build-dir: libXfixes-6.0.0
-sources:
-- https://www.x.org/pub/individual/lib/libXfixes-6.0.0.tar.bz2

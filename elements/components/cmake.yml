@@ -8,7 +8,11 @@ depends:
   - components/libuv.yml
   - components/curl.yml
   - components/libarchive.yml
+
+pre-script: |
+  sed -i '/"lib64"/s/64//' Modules/GNUInstallDirs.cmake
 configure: >-
+  --system-libs
   --no-system-jsoncpp 
   --no-system-librhash
   --docdir=/share/doc/cmake

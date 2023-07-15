@@ -1,0 +1,18 @@
+id: glslang
+version: 12.2.0
+about: OpenGL and OpenGL ES shader front end and validator
+
+environ:
+  - CXXFLAGS="${CFLAGS} -ffat-lto-objects"
+
+sources:
+  - https://github.com/KhronosGroup/glslang/archive/%{version}.tar.gz
+
+depends:
+  - components/core.yml
+
+build-time:
+  - components/core/ninja.yml
+  - components/cmake.yml
+  - components/spirv-headers.yml
+  - components/spirv-tools.yml

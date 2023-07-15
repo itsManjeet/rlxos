@@ -1,0 +1,15 @@
+id: libxdmcp
+version: 1.1.4
+about: X Display Manager Control Protocol
+
+pre-script: rm autogen.sh
+
+sources:
+  - https://www.x.org/pub/individual/lib/libXdmcp-%{version}.tar.xz
+
+depends:
+  - components/core.yml
+
+build-time:
+  - components/x11/xorgproto.yml
+  - components/x11/util-macros.yml

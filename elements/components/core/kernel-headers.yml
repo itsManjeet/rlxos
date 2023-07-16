@@ -5,7 +5,17 @@ about: Linux kernel, modules and headers
 no-strip: true
 
 script: |
-  make mrproper
+  # TODO fix in container
+  mkdir /usr/include/linux
+  touch /usr/include/linux/errno.h
+
+  make headers
+
+  find usr/include -name ".*" -delete
+  rm usr/include/Makefile
+  mkdir -p %{install-root}/usr/include/
+  cp -rv usr/include/* %{install-root}/usr/include/
+
   make headers
 
   find usr/include -name ".*" -delete

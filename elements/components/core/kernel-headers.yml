@@ -10,11 +10,7 @@ script: |
   touch /usr/include/linux/errno.h
 
   make headers
-
-  find usr/include -name ".*" -delete
-  rm usr/include/Makefile
-  mkdir -p %{install-root}/usr/include/
-  cp -rv usr/include/* %{install-root}/usr/include/
+  cp -rv usr/include/* /usr/include/
 
   make headers
 

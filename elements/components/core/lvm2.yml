@@ -10,6 +10,8 @@ depends:
   - components/core/libaio.yml
 script: |
   ./configure --prefix=%{prefix} \
+  --sbindir=%{bindir} \
+  --libexecdir=%{libexecdir} \
   --enable-cmdline \
   --enable-pkgconfig \
   --enable-udev_sync

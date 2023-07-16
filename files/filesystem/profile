@@ -7,7 +7,7 @@ append_path() {
         *:"$1":*)
             ;;
         *)
-            PATH="${PATH:+$PATH}$1"
+            PATH="${PATH:+$PATH:}$1"
     esac
 }
 

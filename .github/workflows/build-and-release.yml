@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: Generating Board Image
         run: |
-          go run rlxos/cmd/pkgupd-builder -cache-path ${CACHE_PATH} build boards/${{matrix.board}}/image.yml
+          go run rlxos/cmd/builder -cache-path ${CACHE_PATH} build boards/${{matrix.board}}/image.yml
       - name: Generating Installer image
         run: |
-          go run rlxos/cmd/pkgupd-builder -cache-path ${CACHE_PATH} build boards/${{matrix.board}}/installer.yml
+          go run rlxos/cmd/builder -cache-path ${CACHE_PATH} build boards/${{matrix.board}}/installer.yml

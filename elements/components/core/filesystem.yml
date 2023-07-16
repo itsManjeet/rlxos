@@ -1,5 +1,6 @@
 id: filesystem
 version: 2307
+release: 2
 about: rlxos filesystem
 
 no-strip: true

@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"rlxos/internal/element"
 	"rlxos/internal/element/builder"
 	"rlxos/pkg/cmd"
 	"rlxos/pkg/cmd/flag"
@@ -98,6 +99,28 @@ func main() {
 					return fmt.Errorf("%s, %v", string(data), err)
 				}
 				fmt.Println(string(data))
+
+				return nil
+			})).
+		Sub(cmd.New("status").
+			About("List status of caches").
+			Handler(func(c *cmd.Command, s []string) error {
+				if err := checkArgs(s, 1); err != nil {
+					return err
+				}
+				b, err := getBuilder()
+				if err != nil {
+					return err
+				}
+
+				pairs, err := b.List(element.DependencyAll, s[0])
+				if err != nil {
+					return err
+				}
+
+				for _, p := range pairs {
+					fmt.Printf("[%s]    %s\n", p.State, p.Path)
+				}
 
 				return nil
 			})).

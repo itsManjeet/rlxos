@@ -7,7 +7,7 @@ sources:
 depends:
   - components/core/libelf.yml
   - components/core/libxml2.yml
-  - components/llvm.yml
+  - components/libllvm.yml
   - components/libdrm.yml
   - components/wayland.yml
   - components/x11/libxdamage.yml
@@ -22,6 +22,7 @@ build-time:
   - components/core/flex.yml
   - components/core/bison.yml
   - components/glslang.yml
+  - components/llvm.yml
 
 configure: >-
   -D valgrind=disabled

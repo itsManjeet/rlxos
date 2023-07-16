@@ -12,6 +12,7 @@ depends:
 
 build-time:
   - components/core/meson.yml
+  - components/core/gettext.yml
 
 sources:
   - https://download.gnome.org/sources/glib/2.76/glib-%{version}.tar.xz

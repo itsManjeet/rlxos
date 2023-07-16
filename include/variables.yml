@@ -10,3 +10,6 @@ variables:
   triplet: "x86_64-linux-gnu"
 
   arch: "x86_64"
+
+  skip-autogen: true
+  no-build-dir: false

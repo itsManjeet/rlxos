@@ -15,3 +15,11 @@ depends:
   - components/core/coreutils.yml
   - components/core/systemd.yml
   - components/core/tar.yml
+  - components/core/findutils.yml
+  - components/core/diffutils.yml
+  - components/core/grep.yml
+  - components/core/gzip.yml
+  - components/core/less.yml
+  - components/core/util-linux.yml
+  - components/core/xz.yml
+  - components/core/zstd.yml

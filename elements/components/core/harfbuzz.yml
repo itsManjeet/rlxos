@@ -1,0 +1,22 @@
+id: harfbuzz
+version: 8.0.1
+about: OpenType text shaping engine
+
+depends:
+  - components/glib.yml
+
+build-time:
+  - components/core/icu.yml
+  - components/cairo.yml
+  - components/gobject-introspection.yml
+  - components/core/meson.yml
+
+sources:
+  - https://github.com/harfbuzz/harfbuzz/releases/download/{{version}}/harfbuzz-{{version}}.tar.xz
+build-type: meson
+configure: >-
+  --buildtype=release 
+  -Dgraphite=enabled
+  -Dbenchmark=disabled
+  -Ddocs=disabled
+  -Dicu=enabled

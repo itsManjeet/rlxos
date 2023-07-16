@@ -1,0 +1,10 @@
+id: fontconfig
+version: 2.14.2
+about: Library and support programs used for configuring and customizing font access
+sources:
+  - https://www.freedesktop.org/software/fontconfig/release/fontconfig-%{version}.tar.bz2
+depends:
+  - components/core/freetype.yml
+
+configure: >-
+  --sysconfdir=/etc

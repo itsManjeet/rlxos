@@ -16,6 +16,7 @@ include:
   - components/core/strace.yml
   - components/core/bison.yml
   - components/core/flex.yml
+  - components/cmake.yml
 
 build-time:
   - components/core/squashfs-tools.yml

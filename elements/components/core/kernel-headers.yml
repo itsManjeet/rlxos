@@ -5,13 +5,6 @@ about: Linux kernel, modules and headers
 no-strip: true
 
 script: |
-  # TODO fix in container
-  mkdir /usr/include/linux
-  touch /usr/include/linux/errno.h
-
-  make headers
-  cp -rv usr/include/* /usr/include/
-
   make headers
 
   find usr/include -name ".*" -delete

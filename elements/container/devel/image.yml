@@ -16,6 +16,8 @@ include:
   - components/core/strace.yml
   - components/core/bison.yml
   - components/core/flex.yml
+  - components/core/kernel-headers.yml
+  - components/core/texinfo.yml
   - components/cmake.yml
 
 build-time:

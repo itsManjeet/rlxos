@@ -7,8 +7,8 @@ import (
 	"path"
 	"rlxos/internal/element"
 	"rlxos/internal/element/builder"
-	"rlxos/pkg/cmd"
-	"rlxos/pkg/cmd/flag"
+	"rlxos/pkg/app"
+	"rlxos/pkg/app/flag"
 )
 
 var (
@@ -18,7 +18,7 @@ var (
 
 func main() {
 	projectPath, _ = os.Getwd()
-	if err := cmd.New("builder").
+	if err := app.New("builder").
 		About("rlxos os build repository").
 		Usage("<TASK> <FLAGS?> <ARGS...>").
 		Flag(flag.New("path").
@@ -35,12 +35,12 @@ func main() {
 				cachePath = s[0]
 				return nil
 			})).
-		Handler(func(c *cmd.Command, args []string) error {
+		Handler(func(c *app.Command, args []string) error {
 			return c.Help()
 		}).
-		Sub(cmd.New("build").
+		Sub(app.New("build").
 			About("build element").
-			Handler(func(c *cmd.Command, s []string) error {
+			Handler(func(c *app.Command, s []string) error {
 				if err := checkArgs(s, 1); err != nil {
 					return err
 				}
@@ -51,9 +51,9 @@ func main() {
 
 				return b.Build(s[0])
 			})).
-		Sub(cmd.New("file").
+		Sub(app.New("file").
 			About("Get path of build cache").
-			Handler(func(c *cmd.Command, s []string) error {
+			Handler(func(c *app.Command, s []string) error {
 				if err := checkArgs(s, 1); err != nil {
 					return err
 				}
@@ -74,9 +74,9 @@ func main() {
 
 				return nil
 			})).
-		Sub(cmd.New("list-files").
+		Sub(app.New("list-files").
 			About("List files of build cache").
-			Handler(func(c *cmd.Command, s []string) error {
+			Handler(func(c *app.Command, s []string) error {
 				if err := checkArgs(s, 1); err != nil {
 					return err
 				}
@@ -102,9 +102,9 @@ func main() {
 
 				return nil
 			})).
-		Sub(cmd.New("status").
+		Sub(app.New("status").
 			About("List status of caches").
-			Handler(func(c *cmd.Command, s []string) error {
+			Handler(func(c *app.Command, s []string) error {
 				if err := checkArgs(s, 1); err != nil {
 					return err
 				}
@@ -113,7 +113,18 @@ func main() {
 					return err
 				}
 
-				pairs, err := b.List(element.DependencyAll, s[0])
+				e := b.Get(s[0])
+				if e == nil {
+					return fmt.Errorf("missing %s", s[0])
+				}
+
+				tolist := []string{}
+				if len(e.Include) > 0 {
+					tolist = append(tolist, e.Include...)
+				}
+				tolist = append(tolist, s[0])
+
+				pairs, err := b.List(element.DependencyAll, tolist...)
 				if err != nil {
 					return err
 				}

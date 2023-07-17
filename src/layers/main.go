@@ -7,8 +7,8 @@ import (
 	"os"
 	"os/exec"
 	"path"
-	"rlxos/pkg/cmd"
-	"rlxos/pkg/cmd/flag"
+	"rlxos/pkg/app"
+	"rlxos/pkg/app/flag"
 	"strings"
 	"syscall"
 )
@@ -27,7 +27,7 @@ var (
 )
 
 func main() {
-	if err := cmd.New("layers").
+	if err := app.New("layers").
 		About("Add and/or remove package layers over rootfilesystem").
 		Usage("<TASK> <FLAGS?> <ARGS...>").
 		Flag(flag.New("search-path").
@@ -44,12 +44,12 @@ func main() {
 				rootDir = s[0]
 				return nil
 			})).
-		Handler(func(c *cmd.Command, s []string) error {
+		Handler(func(c *app.Command, s []string) error {
 			return c.Help()
 		}).
-		Sub(cmd.New("list").
+		Sub(app.New("list").
 			About("List All available layers").
-			Handler(func(c *cmd.Command, args []string) error {
+			Handler(func(c *app.Command, args []string) error {
 				mountedLayers, _, err := parseMountData()
 				if err != nil {
 					return err
@@ -78,9 +78,9 @@ func main() {
 				}
 				return nil
 			})).
-		Sub(cmd.New("refresh").
+		Sub(app.New("refresh").
 			About("Refresh the layers").
-			Handler(func(c *cmd.Command, args []string) error {
+			Handler(func(c *app.Command, args []string) error {
 				var flag uintptr = 0
 				isMounted, err := checkIsMounted()
 				if err != nil {

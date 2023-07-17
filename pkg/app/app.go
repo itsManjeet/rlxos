@@ -1,8 +1,8 @@
-package cmd
+package app
 
 import (
 	"fmt"
-	"rlxos/pkg/cmd/flag"
+	"rlxos/pkg/app/flag"
 )
 
 type Handler func(*Command, []string) error
@@ -76,7 +76,7 @@ func (c *Command) handleFlag(args []string) (int, error) {
 			if i.GetCount() > len(args[1:]) {
 				return 0, fmt.Errorf("%s expect %d arguments but %d provided", i.GetId(), i.GetCount(), len(args[1:]))
 			}
-			if err := i.GetHandler()(args[1:i.GetCount()+1]); err != nil {
+			if err := i.GetHandler()(args[1 : i.GetCount()+1]); err != nil {
 				return 0, err
 			}
 			return i.GetCount(), nil

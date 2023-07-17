@@ -18,6 +18,8 @@ include:
   - components/core/flex.yml
   - components/core/kernel-headers.yml
   - components/core/texinfo.yml
+# TODO: update gettext dependencies to add libunistring.yml
+  - components/core/libunistring.yml
   - components/cmake.yml
 
 build-time:

@@ -22,6 +22,7 @@ post-script: |
 
 depends:
   - components/core/acl.yml
+  - components/core/libunistring.yml
   - components/core/libxml2.yml
 
 sources:

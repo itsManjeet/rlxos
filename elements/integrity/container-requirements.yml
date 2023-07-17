@@ -76,6 +76,18 @@ script: |
   alias_check yacc Bison
   alias_check sh Bash
 
+  HAS_ERROR=0
+  for bin in /bin/* ; do
+    ldd ${bin} &>/dev/null | grep "not found" && {
+      echo "LIBRARY MISSING for $bin"
+      HAS_ERROR=1
+    }
+  done
+
+  if [ $HAS_ERROR -eq 1 ] ; then
+    exit 1
+  fi
+
   echo "Compiler check:"
   if printf "int main(){}" | g++ -x c++ -
   then echo "OK:    g++ works";

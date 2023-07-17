@@ -4,6 +4,7 @@ about: Utility and a library used for transferring files
 sources:
   - https://curl.haxx.se/download/curl-%{version}.tar.xz
 
+build-type: autotools
 depends:
   - components/core.yml
   - components/core/ca-certificates.yml

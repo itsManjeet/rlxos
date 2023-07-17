@@ -1,0 +1,11 @@
+id: texinfo
+version: 7.0
+about: Programs for reading, writing, and converting info pages
+sources:
+  - https://ftp.gnu.org/gnu/texinfo/texinfo-%{version}.tar.xz
+
+depends:
+  - components/core/gzip.yml
+  - components/core/ncurses.yml
+  - components/core/perl.yml
+  - components/core/bash.yml

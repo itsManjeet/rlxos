@@ -9,10 +9,14 @@ depends:
   - components/curl.yml
   - components/libarchive.yml
 
+build-type: autotools
 pre-script: |
   sed -i '/"lib64"/s/64//' Modules/GNUInstallDirs.cmake
-configure: >-
-  --system-libs
-  --no-system-jsoncpp 
-  --no-system-librhash
-  --docdir=/share/doc/cmake
+script: |
+  ./configure --prefix=%{prefix}  \
+  --system-libs       \
+  --no-system-jsoncpp   \
+  --no-system-librhash  \
+  --docdir=/share/doc/%{id}
+  make ${MAKEFLAGS}
+  make install DESTDIR=%{install-root}

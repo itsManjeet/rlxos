@@ -75,3 +75,12 @@ build-tools:
 
       make -j4 %{compile}
       make install %{install} DESTDIR=%{install-root}
+
+  - id: go-pkg
+    target-files:
+      - go.mod
+
+    script: |
+      _pkg_name=$(basename %{go-pkg})
+      mkdir -p %{install-root}/usr/bin/
+      (cd /go/src/%{go-pkg}; go build -o %{install-root}/usr/bin/$_pkg_name)

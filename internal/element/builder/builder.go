@@ -223,23 +223,25 @@ func (b *Builder) CacheFile(e *element.Element) (string, error) {
 func (b *Builder) Build(id string) error {
 	id, _ = b.parseId(id)
 
-	list, err := b.List(element.DependencyBuildTime, id)
+	e := b.Get(id)
+	if e == nil {
+		return fmt.Errorf("missing %s", id)
+	}
+
+	tolist := []string{}
+	if len(e.Include) > 0 {
+		tolist = append(tolist, e.Include...)
+	}
+	tolist = append(tolist, id)
+
+	list, err := b.List(element.DependencyBuildTime, tolist...)
 	if err != nil {
 		return err
 	}
 
-	e := list[len(list)-1]
-	includeList, err := b.List(element.DependencyAll, e.Value.Include...)
-	if err != nil {
-		return err
-	}
-	if len(list) > 1 || len(includeList) > 1 {
+	if len(list) > 1 {
 		if len(list) > 1 {
 			list = list[:len(list)-1]
-		}
-
-		if len(includeList) > 1 {
-			list = append(list, includeList[:len(includeList)-1]...)
 		}
 
 		for _, l := range list {
@@ -251,12 +253,7 @@ func (b *Builder) Build(id string) error {
 		}
 	}
 
-	if e.State == BuildStatusCached {
-		fmt.Println(e.Path, "is already cached")
-		return nil
-	}
-
-	if err := b.buildElement(e.Value, id); err != nil {
+	if err := b.buildElement(e, id); err != nil {
 		return err
 	}
 	return nil
@@ -298,12 +295,16 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 	environ = b.setEnv(environ, "pkgupd_srcdir=/src")
 	environ = b.setEnv(environ, "FILES=/files")
 	environ = b.setEnv(environ, "FILES_DIR=/files/"+e.Id)
+	environ = b.setEnv(environ, "GO111MODULE=off")
+	environ = b.setEnv(environ, "GOPATH=/go")
 
 	container, err := CreateContainer(b.Container, environ, map[string]string{
-		"/src":   srcdir,
-		"/pkg":   path.Dir(pkgdir),
-		"/cache": packagesDir,
-		"/files": path.Join(b.projectPath, "files"),
+		"/src":              srcdir,
+		"/pkg":              path.Dir(pkgdir),
+		"/cache":            packagesDir,
+		"/files":            path.Join(b.projectPath, "files"),
+		"/go/src/rlxos/pkg": path.Join(b.projectPath, "pkg"),
+		"/go/src/rlxos/src": path.Join(b.projectPath, "src"),
 	})
 	if err != nil {
 		return fmt.Errorf("failed to create container %v", err)

@@ -18,4 +18,3 @@ depends:
   - components/core/bzip2.yml
   - components/core/libpng.yml
   - components/core/zlib.yml
-  - components/core/harfbuzz.yml

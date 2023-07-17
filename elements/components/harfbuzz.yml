@@ -6,7 +6,7 @@ depends:
   - components/glib.yml
 
 build-time:
-  - components/core/icu.yml
+  - components/icu.yml
   - components/cairo.yml
   - components/gobject-introspection.yml
   - components/core/meson.yml

@@ -13,6 +13,7 @@ import (
 	"path"
 	"path/filepath"
 	"rlxos/internal/element"
+	"rlxos/pkg/utils"
 	"strings"
 
 	"dario.cat/mergo"
@@ -290,6 +291,13 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 	defer logfile.Close()
 	logWriter := bufio.NewWriter(logfile)
 
+	errfile, err := os.OpenFile(path.Join(logDir, e.Id+".err"), os.O_WRONLY|os.O_CREATE, 0644)
+	if err != nil {
+		return fmt.Errorf("failed to open log file %v", err)
+	}
+	defer errfile.Close()
+	errWriter := bufio.NewWriter(errfile)
+
 	environ := e.Environ
 	environ = b.setEnv(environ, "pkgupd_pkgdir=/pkg/"+e.Id)
 	environ = b.setEnv(environ, "pkgupd_srcdir=/src")
@@ -303,6 +311,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 		"/pkg":              path.Dir(pkgdir),
 		"/cache":            packagesDir,
 		"/files":            path.Join(b.projectPath, "files"),
+		"/patches":          path.Join(b.projectPath, "patches"),
 		"/go/src/rlxos/pkg": path.Join(b.projectPath, "pkg"),
 		"/go/src/rlxos/src": path.Join(b.projectPath, "src"),
 	})
@@ -318,7 +327,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 	if len(list) > 1 {
 		list = list[:len(list)-1]
 		for _, l := range list {
-			if err := b.integrate(l.Value, "/", container, logWriter, false); err != nil {
+			if err := b.integrate(l.Value, "/", container, logWriter, errWriter, false); err != nil {
 				return err
 			}
 		}
@@ -330,9 +339,9 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 			return err
 		}
 		if len(includeList) > 0 {
-			container.Run(logWriter, []string{"mkdir", "-p", path.Join("/", "pkg", e.Id)}, "/", []string{})
+			container.Run(logWriter, errWriter, []string{"mkdir", "-p", path.Join("/", "pkg", e.Id)}, "/", []string{})
 			for _, l := range includeList {
-				if err := b.integrate(l.Value, path.Join("/", "pkg", e.Id), container, logWriter, true); err != nil {
+				if err := b.integrate(l.Value, path.Join("/", "pkg", e.Id), container, logWriter, errWriter, true); err != nil {
 					return err
 				}
 			}
@@ -366,13 +375,13 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 		if _, err := os.Stat(filepath); err != nil {
 			if isUrl(url) {
 				log.Printf("Getting %s from %s\n", filename, url)
-				if err := DownloadFile(filepath, url); err != nil {
+				if err := utils.DownloadFile(filepath, url); err != nil {
 					return err
 				}
 			} else {
 				url = path.Join(b.projectPath, url)
 				log.Printf("Copying %s from %s\n", filename, url)
-				if err := CopyFile(url, filepath); err != nil {
+				if err := utils.CopyFile(url, filepath); err != nil {
 					return err
 				}
 			}
@@ -407,7 +416,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 	absBuildPath := path.Join(srcdir, builddir)
 	containerWordDir := path.Join("/", "src", builddir)
 	if len(e.PreScript) != 0 {
-		if err := container.Run(logWriter, []string{"sh", "-ec", resolveVariables(e.PreScript, variables)}, containerWordDir, environ); err != nil {
+		if err := container.Run(logWriter, errWriter, []string{"sh", "-ec", resolveVariables(e.PreScript, variables)}, containerWordDir, environ); err != nil {
 			container.RescueShell()
 			return err
 		}
@@ -423,7 +432,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 		}
 
 	case "system":
-		if err := container.Run(logWriter, []string{"chroot", path.Join("/", "pkg", path.Base(pkgdir)), "/bin/bash", "-ec", resolveVariables(e.Script, variables)}, "/", environ); err != nil {
+		if err := container.Run(logWriter, errWriter, []string{"chroot", path.Join("/", "pkg", path.Base(pkgdir)), "/bin/bash", "-ec", resolveVariables(e.Script, variables)}, "/", environ); err != nil {
 			log.Println("ERROR:", err)
 			container.RescueShell()
 			return err
@@ -477,14 +486,14 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 
 			script = t.Script
 		}
-		if err := container.Run(logWriter, []string{"sh", "-ec", resolveVariables(script, variables)}, containerWordDir, environ); err != nil {
+		if err := container.Run(logWriter, errWriter, []string{"sh", "-ec", resolveVariables(script, variables)}, containerWordDir, environ); err != nil {
 			container.RescueShell()
 			return err
 		}
 	}
 
 	if len(e.PostScript) != 0 {
-		if err := container.Run(logWriter, []string{"sh", "-ec", resolveVariables(e.PostScript, variables)}, containerWordDir, environ); err != nil {
+		if err := container.Run(logWriter, errWriter, []string{"sh", "-ec", resolveVariables(e.PostScript, variables)}, containerWordDir, environ); err != nil {
 			container.RescueShell()
 			return err
 		}
@@ -523,7 +532,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 	done`
 	if e.BuildType == "system" {
 		log.Println("compressing image", path.Base(cachefile), " from ", pkgdir)
-		if err := container.Run(logWriter, []string{"mksquashfs", path.Join("/", "pkg", path.Base(pkgdir)), path.Join("/", "cache", path.Base(cachefile)), "-comp", "zstd", "-Xcompression-level", "19", "-noappend"}, path.Join("/pkg"), environ); err != nil {
+		if err := container.Run(logWriter, errWriter, []string{"mksquashfs", path.Join("/", "pkg", path.Base(pkgdir)), path.Join("/", "cache", path.Base(cachefile)), "-comp", "zstd", "-Xcompression-level", "19", "-noappend"}, path.Join("/pkg"), environ); err != nil {
 			container.RescueShell()
 			return err
 		}
@@ -533,14 +542,14 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 			if len(e.SkipStrip) > 0 {
 				environ = append(environ, "nostrip="+strings.Join(e.SkipStrip, " "))
 			}
-			if err := container.Run(logWriter, []string{"sh", "-c", resolveVariables(STRIP_COMMAND, variables)}, path.Join("/pkg"), environ); err != nil {
+			if err := container.Run(logWriter, errWriter, []string{"sh", "-c", resolveVariables(STRIP_COMMAND, variables)}, path.Join("/pkg"), environ); err != nil {
 				container.RescueShell()
 				return err
 			}
 		}
 
 		log.Println("compressing package", path.Base(cachefile), " from ", pkgdir)
-		if err := container.Run(logWriter, []string{"tar", "-caf", path.Join("/", "cache", path.Base(cachefile)), "-C", path.Join("/", "pkg", path.Base(pkgdir)), "."}, path.Join("/pkg"), environ); err != nil {
+		if err := container.Run(logWriter, errWriter, []string{"tar", "-caf", path.Join("/", "cache", path.Base(cachefile)), "-C", path.Join("/", "pkg", path.Base(pkgdir)), "."}, path.Join("/pkg"), environ); err != nil {
 			container.RescueShell()
 			return err
 		}
@@ -553,15 +562,15 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 			for _, file := range split.Files {
 				splitSourceDir := path.Join("/", "pkg", e.Id, file)
 				splitTargetDir := path.Join(splitDir, file)
-				if err := container.Run(logWriter, []string{"mkdir", "-p", path.Dir(splitTargetDir)}, "/", []string{}); err != nil {
+				if err := container.Run(logWriter, errWriter, []string{"mkdir", "-p", path.Dir(splitTargetDir)}, "/", []string{}); err != nil {
 					return fmt.Errorf("failed to create new dir %s %v", path.Dir(splitTargetDir), err)
 				}
 
-				if err := container.Run(logWriter, []string{"mv", splitSourceDir, splitTargetDir}, "/", []string{}); err != nil {
+				if err := container.Run(logWriter, errWriter, []string{"mv", splitSourceDir, splitTargetDir}, "/", []string{}); err != nil {
 					return fmt.Errorf("failed to move split file %s -> %s, %v", splitSourceDir, splitTargetDir, err)
 				}
 			}
-			if err := container.Run(logWriter, []string{"tar", "-caf", path.Join("/", "cache", path.Base(cachefile)+":"+split.Into), "-C", path.Join("/", "pkg", splitDir), "."}, path.Join("/pkg"), environ); err != nil {
+			if err := container.Run(logWriter, errWriter, []string{"tar", "-caf", path.Join("/", "cache", path.Base(cachefile)+":"+split.Into), "-C", path.Join("/", "pkg", splitDir), "."}, path.Join("/pkg"), environ); err != nil {
 				container.RescueShell()
 				return err
 			}
@@ -592,20 +601,20 @@ func resolveVariables(v string, variables map[string]string) string {
 	return v
 }
 
-func (b *Builder) integrate(e *element.Element, rootdir string, container *Container, logWriter io.Writer, noIntegrate bool) error {
+func (b *Builder) integrate(e *element.Element, rootdir string, container *Container, logWriter io.Writer, errWriter io.Writer, noIntegrate bool) error {
 	cachefile, err := b.CacheFile(e)
 	if err != nil {
 		return err
 	}
 
 	if e.BuildType == "system" {
-		if err := container.Run(logWriter, []string{"cp", path.Join("/", "cache", path.Base(cachefile)), path.Join(rootdir, e.Id)}, "/", []string{}); err != nil {
+		if err := container.Run(logWriter, errWriter, []string{"cp", path.Join("/", "cache", path.Base(cachefile)), path.Join(rootdir, e.Id)}, "/", []string{}); err != nil {
 			container.RescueShell()
 			return err
 		}
 	} else {
 		log.Println("Integrating", e.Id, path.Base(cachefile))
-		if err := container.Run(logWriter, []string{"tar", "-xf", path.Join("/", "cache", path.Base(cachefile)), "-C", rootdir}, "/", []string{}); err != nil {
+		if err := container.Run(logWriter, errWriter, []string{"tar", "-xf", path.Join("/", "cache", path.Base(cachefile)), "-C", rootdir}, "/", []string{}); err != nil {
 			container.RescueShell()
 			return err
 		}
@@ -615,17 +624,17 @@ func (b *Builder) integrate(e *element.Element, rootdir string, container *Conta
 	if !noIntegrate {
 		if len(e.Integration) != 0 {
 			log.Println("Executing integration command")
-			if err := container.Run(logWriter, []string{"sh", "-ec", resolveVariables(e.Integration, e.Variables)}, "/", []string{}); err != nil {
+			if err := container.Run(logWriter, errWriter, []string{"sh", "-ec", resolveVariables(e.Integration, e.Variables)}, "/", []string{}); err != nil {
 				container.RescueShell()
 				return err
 			}
 		}
 	} else if len(e.Integration) > 0 {
-		if err := container.Run(logWriter, []string{"mkdir", "-p", path.Join(rootdir, "var", "lib", "integrations")}, "/", []string{}); err != nil {
+		if err := container.Run(logWriter, errWriter, []string{"mkdir", "-p", path.Join(rootdir, "var", "lib", "integrations")}, "/", []string{}); err != nil {
 			return fmt.Errorf("failed to create intergations dir %v", err)
 		}
 
-		if err := container.Run(logWriter, []string{"sh", "-ce", fmt.Sprintf("echo '%s' | tee %s", resolveVariables(e.Integration, e.Variables), path.Join(rootdir, "var", "lib", "integrations", e.Id))}, "/", []string{}); err != nil {
+		if err := container.Run(logWriter, errWriter, []string{"sh", "-ce", fmt.Sprintf("echo '%s' | tee %s", resolveVariables(e.Integration, e.Variables), path.Join(rootdir, "var", "lib", "integrations", e.Id))}, "/", []string{}); err != nil {
 			return fmt.Errorf("failed to create intergations dir %v", err)
 		}
 	}

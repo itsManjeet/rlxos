@@ -31,7 +31,6 @@ depends:
   - components/core/gettext.yml
   - components/core/bash.yml
   - components/core/xz.yml
-  - components/core/efibootmgr.yml
   - components/core/freetype.yml
   - components/core/libisoburn.yml
   - components/core/dosfstools.yml

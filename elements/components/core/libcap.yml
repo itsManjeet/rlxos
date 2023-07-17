@@ -4,7 +4,17 @@ about: User-space interfaces to the POSIX 1003.1e capabilities available in Linu
 
 build-dir: libcap-%{version}
 
+environ:
+  - CGO_CPPFLAGS="$CPPFLAGS"
+  - CGO_CFLAGS="$CFLAGS"
+  - CGO_CXXFLAGS="$CXXFLAGS"
+  - CGO_LDFLAGS="$LDFLAGS"
+  - CGO_REQUIRED="1"
+  - GOFLAGS="-buildmode=pie -trimpath -ldflags=-linkmode=external -mod=readonly -modcacherw"
+
+
 script: |
+  patch -Np1 -i /patches/core/libcap/libcap-2.68-cgo_flags.patch
   sed -i '/install -m.*STA/d' libcap/Makefile
   make DYNAMIC=yes KERNEL_HEADERS='/usr/include' prefix=%{prefix} lib=lib sbin=bin
   make DESTDIR=%{install-root} RAISE_SETFCAP='no' lib='lib' sbin=bin prefix='%{prefix}' install
@@ -12,6 +22,7 @@ script: |
 
 depends:
   - components/core/acl.yml
+  - components/core/pam.yml
 
 sources:
   - https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-%{version}.tar.xz

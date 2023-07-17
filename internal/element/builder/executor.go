@@ -66,7 +66,7 @@ func (c *Container) RescueShell() {
 	e.Run()
 }
 
-func (c *Container) Run(l io.Writer, cmd []string, dir string, environ []string) error {
+func (c *Container) Run(lw io.Writer, ew io.Writer, cmd []string, dir string, environ []string) error {
 	args := []string{
 		"exec",
 	}
@@ -75,15 +75,21 @@ func (c *Container) Run(l io.Writer, cmd []string, dir string, environ []string)
 	}
 	args = append(args, "-w", dir, "-i", c.name)
 	args = append(args, cmd...)
-	mw := io.MultiWriter(os.Stdout, l)
-	fmt.Fprintln(l, "COMMAND:", args)
+	logStdoutWriter := io.MultiWriter(os.Stdout, lw)
+	logStderrWriter := io.MultiWriter(os.Stderr, ew)
+	fmt.Fprintln(lw, "COMMAND:", args)
 
 	log.Println(backend, args)
 	e := exec.Command(backend, args...)
-	e.Stdout = mw
+	e.Stdout = logStdoutWriter
+	e.Stderr = logStderrWriter
 	e.Stdin = os.Stdin
-	e.Stderr = mw
-	if err := e.Run(); err != nil {
+	err := e.Run()
+
+	fmt.Fprint(lw, "\n")
+	fmt.Fprint(ew, "\n")
+
+	if err != nil {
 		return fmt.Errorf("command failed with %v", err)
 	}
 	return nil

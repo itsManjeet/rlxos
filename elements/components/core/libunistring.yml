@@ -1,0 +1,10 @@
+id: libunistring
+version: 1.1
+about: Library for manipulating Unicode strings and C strings
+sources:
+  - https://ftp.gnu.org/gnu/libunistring/libunistring-%{version}.tar.xz
+depends:
+  - components/core/glibc.yml
+
+configure: >-
+  --disable-static

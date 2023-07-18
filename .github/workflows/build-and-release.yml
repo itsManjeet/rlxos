@@ -23,7 +23,7 @@ jobs:
       - name: Checkout system image
         run: |
           system_image=$(${BUILDER} file boards/${{matrix.board}}/image.yml)
-          mv $system_image ${CACHE_PATH}/releases/${{matrix.board}}.sfs
+          cp $system_image ${CACHE_PATH}/releases/${{matrix.board}}.sfs
 
       - name: Generating Installer image
         run: |

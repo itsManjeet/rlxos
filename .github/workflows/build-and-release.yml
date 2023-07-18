@@ -13,11 +13,23 @@ jobs:
           - amd64-core
     env:
       CACHE_PATH: ${{ secrets.CACHE_PATH }}
+      BUILDER: go run rlxos/cmd/builder -cache-path ${{ secrets.CACHE_PATH }}
     steps:
       - uses: actions/checkout@v1
       - name: Generating Board Image
         run: |
-          go run rlxos/cmd/builder -cache-path ${CACHE_PATH} build boards/${{matrix.board}}/image.yml
+          ${BUILDER} build boards/${{matrix.board}}/image.yml
+
+      - name: Checkout system image
+        run: |
+          system_image=$(${BUILDER} file boards/${{matrix.board}}/image.yml)
+          mv $system_image ${CACHE_PATH}/releases/${{matrix.board}}.sfs
+
       - name: Generating Installer image
         run: |
-          go run rlxos/cmd/builder -cache-path ${CACHE_PATH} build boards/${{matrix.board}}/installer.yml
+          ${BUILDER} build boards/${{matrix.board}}/installer.yml
+      
+      - name: Checkout Installer image
+        run: |
+          installer_image=$(${BUILDER} file boards/${{matrix.board}}/image.yml)
+          tar -xf $installer_image -C ${CACHE_PATH}/releases/

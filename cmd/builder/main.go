@@ -62,8 +62,8 @@ func main() {
 					return err
 				}
 
-				el := b.Get(s[0])
-				if el == nil {
+				el, ok := b.Get(s[0])
+				if !ok {
 					return fmt.Errorf("missing element %s", s[0])
 				}
 				cachefile, err := b.CacheFile(el)
@@ -85,8 +85,8 @@ func main() {
 					return err
 				}
 
-				el := b.Get(s[0])
-				if el == nil {
+				el, ok := b.Get(s[0])
+				if !ok {
 					return fmt.Errorf("missing element %s", s[0])
 				}
 				cachefile, err := b.CacheFile(el)
@@ -113,8 +113,8 @@ func main() {
 					return err
 				}
 
-				e := b.Get(s[0])
-				if e == nil {
+				e, ok := b.Get(s[0])
+				if !ok {
 					return fmt.Errorf("missing %s", s[0])
 				}
 

@@ -31,5 +31,5 @@ jobs:
       
       - name: Checkout Installer image
         run: |
-          installer_image=$(${BUILDER} file boards/${{matrix.board}}/image.yml)
+          installer_image=$(${BUILDER} file boards/${{matrix.board}}/installer.yml)
           tar -xf $installer_image -C ${CACHE_PATH}/releases/

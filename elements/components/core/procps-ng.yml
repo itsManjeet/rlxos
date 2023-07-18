@@ -9,10 +9,7 @@ depends:
   - components/core/ncurses.yml
   - components/core/systemd.yml
 
-script: |
-  ./configure --prefix=%{prefix} \
-    --disable-static  \
-    --disable-kill  \
-    --with-systemd
-  make ${MAKEFLAGS}
-  make install DESTDIR=%{install-root}
+configure: >-
+  --disable-static
+  --disable-kill
+  --with-systemd

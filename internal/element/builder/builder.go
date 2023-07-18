@@ -6,18 +6,13 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/fs"
 	"log"
 	"os"
 	"os/exec"
 	"path"
-	"path/filepath"
 	"rlxos/internal/element"
 	"rlxos/pkg/utils"
 	"strings"
-
-	"dario.cat/mergo"
-	"gopkg.in/yaml.v2"
 )
 
 type BuildStatus int
@@ -60,142 +55,9 @@ type BuildTool struct {
 	Script      string   `yaml:"script"`
 }
 
-func New(projectPath string, cachePath string) (*Builder, error) {
-	data, err := os.ReadFile(path.Join(projectPath, "config.yml"))
-	if err != nil {
-		return nil, err
-	}
-
-	var b Builder
-	if err := yaml.Unmarshal(data, &b); err != nil {
-		return nil, err
-	}
-
-	for _, mergefile := range b.Merge {
-		data, err := os.ReadFile(path.Join(projectPath, mergefile))
-		if err != nil {
-			return nil, err
-		}
-		var mergingConfig Builder
-		if err := yaml.Unmarshal(data, &mergingConfig); err != nil {
-			return nil, err
-		}
-		if err := mergo.Merge(&b, mergingConfig); err != nil {
-			return nil, err
-		}
-	}
-
-	b.pool = map[string]*element.Element{}
-
-	if b.Environ == nil {
-		b.Environ = []string{}
-	}
-	if b.Variables == nil {
-		b.Variables = map[string]string{}
-	}
-	b.projectPath = projectPath
-	b.cachePath = cachePath
-
-	log.Println("Loading elements")
-	if err := filepath.WalkDir(path.Join(projectPath, "elements"), func(p string, d fs.DirEntry, err error) error {
-		if path.Ext(p) == ".yml" {
-			e, err := element.Open(p, b.Environ, b.Variables)
-			if err != nil {
-				return fmt.Errorf("failed to load element %s, %v", p, err)
-			}
-			p = strings.TrimPrefix(p, path.Join(projectPath, "elements")+"/")
-			b.pool[p] = e
-		}
-		return nil
-	}); err != nil {
-		return nil, err
-	}
-
-	return &b, nil
-}
-
-func (b *Builder) parseId(id string) (string, string) {
-	var r string
-	if !strings.HasSuffix(id, ".yml") {
-		if idx := strings.Index(id, ":"); idx != -1 {
-			r = id[idx:]
-			id = id[:idx]
-		}
-		id = "components/" + id + ".yml"
-	}
-	return id, r
-}
-
-func (b *Builder) Get(id string) *element.Element {
-	id, _ = b.parseId(id)
-	return b.pool[id]
-}
-
-func (b *Builder) List(dependencyType element.DependencyType, ids ...string) ([]Pair, error) {
-
-	visited := map[string]bool{}
-	pairs := []Pair{}
-
-	var dfs func(p string) error
-	dfs = func(p string) error {
-		visited[p] = true
-		p, rd := b.parseId(p)
-		visited[p] = true
-
-		e := b.pool[p]
-		if e == nil {
-			return fmt.Errorf("MISSING %s", p)
-		}
-
-		for _, dep := range e.AllDepends(dependencyType) {
-			if visited[dep] {
-				continue
-			}
-
-			if err := dfs(dep); err != nil {
-				return fmt.Errorf("%s\n\tTRACEBACK %s", err, p)
-			}
-		}
-
-		cachePath, _ := b.CacheFile(e)
-		cachePath += rd
-		state := BuildStatusWaiting
-		if _, err := os.Stat(cachePath); err == nil {
-			state = BuildStatusCached
-		}
-		isCached := func(id string) bool {
-			for _, p := range pairs {
-				if p.Path == id {
-					if p.State != BuildStatusCached {
-						return false
-					}
-				}
-			}
-			return true
-		}
-		for _, dep := range e.AllDepends(element.DependencyAll) {
-			if !isCached(dep) {
-				state = BuildStatusWaiting
-				break
-			}
-		}
-		pairs = append(pairs, Pair{
-			Path:  p,
-			Value: e,
-			State: state,
-		})
-		return nil
-	}
-
-	for _, id := range ids {
-		id, _ = b.parseId(id)
-		log.Println("Resolving dependencies for", id)
-		if err := dfs(id); err != nil {
-			return nil, err
-		}
-	}
-
-	return pairs, nil
+func (b *Builder) Get(id string) (*element.Element, bool) {
+	e, ok := b.pool[id]
+	return e, ok
 }
 
 func (b *Builder) CacheFile(e *element.Element) (string, error) {
@@ -208,8 +70,7 @@ func (b *Builder) CacheFile(e *element.Element) (string, error) {
 	}
 
 	for _, dep := range depends {
-		dep, _ = b.parseId(dep)
-		dep_e, ok := b.pool[dep]
+		dep_e, ok := b.Get(dep)
 		if !ok {
 			return "", fmt.Errorf("missing required package %s", dep)
 		}
@@ -222,10 +83,8 @@ func (b *Builder) CacheFile(e *element.Element) (string, error) {
 }
 
 func (b *Builder) Build(id string) error {
-	id, _ = b.parseId(id)
-
-	e := b.Get(id)
-	if e == nil {
+	e, ok := b.Get(id)
+	if !ok {
 		return fmt.Errorf("missing %s", id)
 	}
 

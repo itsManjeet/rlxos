@@ -11,5 +11,5 @@ variables:
 
   arch: "x86_64"
 
-  skip-autogen: true
+  run-autogen: true
   no-build-dir: false

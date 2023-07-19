@@ -95,20 +95,29 @@ func Open(filepath string, environ []string, variables map[string]string) (*Elem
 		}
 	}
 
-	if e.Variables == nil {
-		e.Variables = map[string]string{}
+	updatedVariables := variables
+	if updatedVariables == nil {
+		updatedVariables = map[string]string{}
 	}
+
+	if e.Variables == nil {
+		for key, value := range variables {
+			updatedVariables[key] = value
+		}
+	}
+	e.Variables = updatedVariables
 	e.Variables["id"] = e.Id
 	e.Variables["version"] = e.Version
 	// e.Variables["release"] = fmt.Sprint(e.Release)
 
+	mergedEnviron := []string{}
 	if environ != nil {
-		e.Environ = append(e.Environ, environ...)
+		mergedEnviron = append(mergedEnviron, environ...)
 	}
-
-	for key, value := range variables {
-		e.Variables[key] = value
+	if e.Environ != nil {
+		mergedEnviron = append(mergedEnviron, e.Environ...)
 	}
+	e.Environ = mergedEnviron
 
 	for i := range e.Sources {
 		e.Sources[i] = e.resolveVariable(e.Sources[i])

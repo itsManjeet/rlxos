@@ -49,16 +49,16 @@ build-tools:
       - autogen.sh
 
     script: |
-      if [ %{no-build-dir} ] ; then
+      if %{no-build-dir} ; then
           mkdir -p %{build-dir}
       fi
 
-      if [ -e ./autogen.sh ] && [ -z %{skip-autogen} ] ; then
+      if [ -e ./autogen.sh ] && %{run-autogen}; then
           ./autogen.sh
       fi
 
       exec="./configure"
-      if [ %{no-build-dir} ] ; then
+      if %{no-build-dir}; then
           cd %{build-dir}
           exec="../configure"
       fi

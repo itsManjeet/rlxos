@@ -100,8 +100,8 @@ func Open(filepath string, environ []string, variables map[string]string) (*Elem
 		updatedVariables = map[string]string{}
 	}
 
-	if e.Variables == nil {
-		for key, value := range variables {
+	if e.Variables != nil {
+		for key, value := range e.Variables {
 			updatedVariables[key] = value
 		}
 	}

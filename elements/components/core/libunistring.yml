@@ -6,5 +6,8 @@ sources:
 depends:
   - components/core/glibc.yml
 
+variables:
+  seperate-build-dir: false
+
 configure: >-
   --disable-static

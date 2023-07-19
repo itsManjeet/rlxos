@@ -9,6 +9,8 @@ import (
 	"rlxos/internal/element/builder"
 	"rlxos/pkg/app"
 	"rlxos/pkg/app/flag"
+
+	"gopkg.in/yaml.v2"
 )
 
 var (
@@ -98,6 +100,26 @@ func main() {
 				if err != nil {
 					return fmt.Errorf("%s, %v", string(data), err)
 				}
+				fmt.Println(string(data))
+
+				return nil
+			})).
+		Sub(app.New("show").
+			About("Show build configuration for element").
+			Handler(func(c *app.Command, s []string) error {
+				if err := checkArgs(s, 1); err != nil {
+					return err
+				}
+				b, err := getBuilder()
+				if err != nil {
+					return err
+				}
+
+				el, ok := b.Get(s[0])
+				if !ok {
+					return fmt.Errorf("missing element %s", s[0])
+				}
+				data, _ := yaml.Marshal(el)
 				fmt.Println(string(data))
 
 				return nil

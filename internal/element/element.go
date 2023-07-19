@@ -95,9 +95,9 @@ func Open(filepath string, environ []string, variables map[string]string) (*Elem
 		}
 	}
 
-	updatedVariables := variables
-	if updatedVariables == nil {
-		updatedVariables = map[string]string{}
+	updatedVariables := map[string]string{}
+	for key, value := range variables {
+		updatedVariables[key] = value
 	}
 
 	if e.Variables != nil {

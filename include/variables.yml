@@ -12,4 +12,4 @@ variables:
   arch: "x86_64"
 
   run-autogen: true
-  no-build-dir: false
+  seperate-build-dir: true

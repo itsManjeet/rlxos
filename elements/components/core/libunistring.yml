@@ -9,5 +9,7 @@ depends:
 variables:
   seperate-build-dir: false
 
-configure: >-
-  --disable-static
+script: |
+  ./configure --prefix=%{prefix}
+  make ${MAKEFLAGS}
+  make install DESTDIR=%{DESTDIR}

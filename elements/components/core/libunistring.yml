@@ -12,4 +12,4 @@ variables:
 script: |
   ./configure --prefix=%{prefix}
   make ${MAKEFLAGS}
-  make install DESTDIR=%{DESTDIR}
+  make install DESTDIR=${DESTDIR}

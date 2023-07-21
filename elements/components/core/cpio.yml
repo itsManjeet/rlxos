@@ -3,7 +3,7 @@ version: 2.14
 about: A tool to copy files into or out of a cpio or tar archive
 
 environ:
-  - CFLAGS="${CFLAGS} -fcommon"
+  - CFLAGS=-march=x86-64 -mtune=generic -O2 -pipe -fstack-protector-strong -D_FORTIFY_SOURCE=2 --param=ssp-buffer-size=4 -fcommon
 
 post-script: |
   rm -f %{install-root}/%{bindir}/mt

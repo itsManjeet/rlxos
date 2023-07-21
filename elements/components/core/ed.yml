@@ -2,11 +2,6 @@ id: ed
 version: 1.19
 about: A POSIX-compliant line-oriented text editor
 
-configure: >-
-  CFLAGS="${CFLAGS}"
-  CPPFLAGS="${CXXFLAGS}"
-  LDFLAGS="${LDFLAGS}"
-
 sources:
   - https://ftp.gnu.org/gnu/ed/ed-%{version}.tar.lz
 

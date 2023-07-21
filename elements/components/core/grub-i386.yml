@@ -5,7 +5,6 @@ about: GRand Unified Bootloader
 
 environ:
   - PYTHON=python3
-  - CFLAGS=""
 
 sources:
   - http://ftp.gnu.org/gnu/grub/grub-%{version}.tar.xz

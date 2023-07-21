@@ -5,7 +5,6 @@ about: GRand Unified Bootloader
 
 environ:
   - PYTHON=python3
-  - CFLAGS=""
 
 configure: >
   --disable-werror

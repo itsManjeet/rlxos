@@ -3,8 +3,8 @@ on:
   push:
     paths-ignore:
       - 'docs/**'
-      - 'elements/extensions/**'
-      - .github/workflow/update-extensions.yml
+      - 'elements/layers/**'
+      - .github/workflow/update-layers.yml
   workflow_dispatch:
 
 env:

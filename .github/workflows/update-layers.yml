@@ -1,16 +1,16 @@
-name: Update extension
+name: Update layers
 on:
   push:
     paths:
-      - 'elements/extensions/**'
-      - .github/workflow/update-extensions.yml
+      - 'elements/layers/**'
+      - .github/workflow/update-layers.yml
 
 env:
   BST: bst --colors --builders 1
 
 jobs:
-  update-extension:
-    name: Updating extension
+  update-layers:
+    name: Updating layers
     runs-on: self-hosted
     timeout-minutes: 46000
     environment: EXPERIMENTAL
@@ -24,18 +24,15 @@ jobs:
         with:
           format: space-delimited
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Update extensions
+      - name: Update layers
         run: |
           VARIANT=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
           ARCH=$(uname -m)
           for i in ${{ steps.changes.outputs.all }} ; do
-            if [[ $i == "elements/extensions/*/repo.bst" ]] ; then
+            if [[ $i == "elements/layers/*/image.bst" ]] ; then
               i=$(echo $i | cut -d '/' -f2-)
               id=$(echo $i | cut -d '/' -f2)
-              echo "=> generating extension ${id}"
+              echo "=> generating layers ${id}"
               ${BST} -o variant ${VARIANT} build ${i}
-              
-              echo "=> commiting release ${VARIANT} ${REF}"
-              VARIANT=${VARIANT} REF=${i} OSTREE_BRANCH=${ARCH}/${VARIANT}/extension/${id} make update-ostree
             fi
           done

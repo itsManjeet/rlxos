@@ -1,0 +1,19 @@
+name: Docs
+on:
+  push:
+    paths:
+      - 'docs/**'
+      - .github/workflow/update-docs.yml
+
+jobs:
+  update-layers:
+    name: Updating layers
+    runs-on: self-hosted
+    timeout-minutes: 46000
+    env:
+      DOCS_DIR: ${{ secrets.DOCS_DIR }}
+    steps:
+      - uses: actions/checkout@v1
+      - name: Update Docs
+        run: |
+          mdbook build -d ${DOCS_DIR}

@@ -1,0 +1,6 @@
+[book]
+authors = ["itsmanjeet"]
+language = "en"
+multilingual = false
+src = "docs"
+title = "rlxos Handbook"

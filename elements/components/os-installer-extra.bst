@@ -76,7 +76,7 @@ config:
 
   - |
     mkdir -p %{install-root}%{sysconfdir}/sudoers.d/
-    echo "%wheel ALL=(ALL) NOPASSWD: ALL" >  %{install-root}%{sysconfdir}/sudoers.d/wheel
+    echo "os-installer ALL=(ALL) NOPASSWD: ALL" >  %{install-root}%{sysconfdir}/sudoers.d/os-installer
 
 public:
   bst:

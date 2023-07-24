@@ -1,0 +1,38 @@
+name: Update layers
+on:
+  push:
+    paths:
+      - 'elements/layers/**'
+      - .github/workflow/update-layers.yml
+
+env:
+  BST: bst --colors --builders 1
+
+jobs:
+  update-layers:
+    name: Updating layers
+    runs-on: self-hosted
+    timeout-minutes: 46000
+    environment: EXPERIMENTAL
+    env:
+      OSTREE_REPO: ${{ secrets.OSTREE_REPO }}
+      OSTREE_GPG: ${{ secrets.OSTREE_GPG }}
+    steps:
+      - uses: actions/checkout@v1
+      - uses: jitterbit/get-changed-files@v1
+        id: changes
+        with:
+          format: space-delimited
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Update layers
+        run: |
+          VARIANT=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
+          ARCH=$(uname -m)
+          for i in ${{ steps.changes.outputs.all }} ; do
+            if [[ $i == "elements/layers/*/image.bst" ]] ; then
+              i=$(echo $i | cut -d '/' -f2-)
+              id=$(echo $i | cut -d '/' -f2)
+              echo "=> generating layers ${id}"
+              ${BST} -o variant ${VARIANT} build ${i}
+            fi
+          done

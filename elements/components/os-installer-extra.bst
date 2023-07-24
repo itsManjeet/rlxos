@@ -5,7 +5,7 @@ depends:
 - freedesktop-sdk.bst:components/systemd.bst
 
 runtime-depends:
-- installer/os-installer.bst
+- components/os-installer.bst
 - components/gdm.bst
 - components/gnome-backgrounds.bst
 - components/gnome-session.bst

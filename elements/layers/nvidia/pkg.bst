@@ -1,7 +1,7 @@
 kind: manual
 
 build-depends:
-  - proprietary/nvidia/source.bst
+  - extensions/nvidia/source.bst
   - freedesktop-sdk.bst:bootstrap-import.bst
   - components/linux.bst
   - freedesktop-sdk.bst:components/zstd.bst

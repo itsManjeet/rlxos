@@ -88,13 +88,17 @@ if ! [ -d "${OSTREE_REPO}" ]; then
     ostree init --repo="${OSTREE_REPO}" --mode=archive
 fi
 
+echo "=> getting commit init"
 commit="$(ostree --repo="${checkout}" rev-parse "${ref}")"
+echo "GOT commit id ${commit}"
+
+echo "=> pulling from local repository"
 ostree pull-local --repo="${OSTREE_REPO}" "${checkout}" "${commit}"
 
 prev_commit="$(ostree rev-parse "${ref}" 2>/dev/null || true)"
 
-ostree commit ${gpg_opts[*]} \
---branch="${ref}" --tree=ref="${commit}" --skip-if-unchanged ${COMMIT_MESSAGE}
+echo "=> commiting changes ${gpg_opts[*]}"
+ostree commit ${gpg_opts[*]} --branch="${ref}" --tree=ref="${commit}" --skip-if-unchanged ${COMMIT_MESSAGE}
 
 new_commit="$(ostree rev-parse "${ref}")"
 

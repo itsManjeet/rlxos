@@ -19,11 +19,19 @@ Join our [Discussions](https://github.com/itsManjeet/rlxos/discussions) and get 
 | **Directory**  | **Description**                                                                           |
 |----------------|-------------------------------------------------------------------------------------------|
 | **/elements/** | buildstream meta configurations for components                                            |
-| **/files/**    | files and patches required by buildstream meta configuration to build specific components |
+| **/files/**    | files required by buildstream meta configuration to build specific components             |
 | **/include/**  | project configurations                                                                    |
+| **/patches/**  | rlxos specific patches required to make package work on rlxos                             |
 | **/plugins/**  | buildstream elements and source plugins                                                   |
 | **/utils/**    | release and commits utilities                                                             |
 
+
+| **Elements**     | **Description**                                                                         |
+|------------------|-----------------------------------------------------------------------------------------|
+| **boards**       | platform specific buildstream meta configurations and release image                     |
+| **components**   | all package configurations                                                              |
+| **extensions**   | rlxos extension packages and configrations                                              |
+| **system**       | system image and repository configurations                                              |
 
 ### Environment Setup
 

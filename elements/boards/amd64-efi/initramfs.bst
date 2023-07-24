@@ -1,8 +1,8 @@
 kind: script
 
 build-depends:
-- installer/initramfs/deps.bst
-- installer/initramfs/initial-scripts.bst
+- boards/amd64-efi/initramfs/deps.bst
+- boards/amd64-efi/initramfs/initial-scripts.bst
 - freedesktop-sdk.bst:vm/prepare-image.bst
 
 variables:
@@ -24,9 +24,9 @@ config:
     destination: '/var/tmp'
   - element: ''
     destination: '/boot'
-  - element: installer/initramfs/deps.bst
+  - element: boards/amd64-efi/initramfs/deps.bst
     destination: '/'
-  - element: installer/initramfs/initial-scripts.bst
+  - element: boards/amd64-efi/initramfs/initial-scripts.bst
     destination: '/'
   - element: vm/prepare-image.bst
     destination: '/'

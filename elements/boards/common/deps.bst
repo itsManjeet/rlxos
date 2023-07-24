@@ -4,8 +4,8 @@ depends:
 - components/sudoer.bst
 - components/gnome-console.bst
 - components/gparted.bst
-- installer/os-installer-extra.bst
-- installer/installer-dirs.bst
+- components/os-installer-extra.bst
+- boards/common/pseudo-dirs.bst
 
 - components/plymouth.bst
 - components/branding.bst
@@ -15,7 +15,6 @@ depends:
 - freedesktop-sdk.bst:components/wayland.bst
 - freedesktop-sdk.bst:components/systemd.bst
 - components/linux.bst
-- proprietary/nvidia/pkg.bst
 - components/firmware.bst
 
 - freedesktop-sdk.bst:components/shadow.bst

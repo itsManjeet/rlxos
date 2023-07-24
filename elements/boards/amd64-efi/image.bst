@@ -1,11 +1,11 @@
 kind: script
 
 build-depends:
-- installer/iso-build-deps.bst
+- boards/amd64-efi/build-deps.bst
 - system/image.bst
-- installer/filesystem.bst
-- installer/initial-scripts.bst
-- installer/initramfs.bst
+- boards/amd64-efi/filesystem.bst
+- boards/amd64-efi/initial-scripts.bst
+- boards/amd64-efi/initramfs.bst
 
 variables:
   install-root: /build/install-root
@@ -17,13 +17,13 @@ config:
     destination: /tmp
   - element: ''
     destination: /build
-  - element: installer/iso-build-deps.bst
+  - element: boards/amd64-efi/build-deps.bst
     destination: /
-  - element: installer/filesystem.bst
+  - element: boards/amd64-efi/filesystem.bst
     destination: /sysroot
-  - element: installer/initramfs.bst
+  - element: boards/amd64-efi/initramfs.bst
     destination: /sysroot/efi
-  - element: installer/initial-scripts.bst
+  - element: boards/amd64-efi/initial-scripts.bst
     destination: /
   - element: system/image.bst
     destination: /rlxos/images/
@@ -102,7 +102,7 @@ config:
     cd /build/stage-2
     genimage
 
-  - mv /build/images/installer.iso "%{install-root}/%{installer-volume-id}.iso"
+  - mv /build/images/installer.iso "%{install-root}/%{installer-volume-id}-efi.iso"
   - |
     cd %{install-root}/
-    sha512sum %{install-root}/%{installer-volume-id}.iso > %{install-root}/%{installer-volume-id}.iso.sha512sum
+    sha512sum %{install-root}/%{installer-volume-id}-efi.iso > %{install-root}/%{installer-volume-id}-efi.iso.sha512sum

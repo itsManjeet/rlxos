@@ -8,11 +8,9 @@ options:
 
   variant:
     type: enum
-    description: Desktop variant
+    description: Stability stream
     variable: variant
     values:
-      - desktop
-      - workstation
       - experimental
-
-    default: desktop
+      - stable
+    default: experimental

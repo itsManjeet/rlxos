@@ -13,23 +13,20 @@ jobs:
           - amd64-core
     env:
       CACHE_PATH: ${{ secrets.CACHE_PATH }}
-      BUILDER: go run rlxos/cmd/builder -cache-path ${{ secrets.CACHE_PATH }}
+      BUILDER: ./builder -cache-path ${{ secrets.CACHE_PATH }}
     steps:
       - uses: actions/checkout@v1
+      - name: Building pkgupd-builder
+        run: go build -o builder rlxos/cmd/builder
+
       - name: Generating Board Image
-        run: |
-          ${BUILDER} build boards/${{matrix.board}}/image.yml
+        run: ${BUILDER} build boards/${{matrix.board}}/image.yml
 
       - name: Checkout system image
-        run: |
-          system_image=$(${BUILDER} file boards/${{matrix.board}}/image.yml)
-          cp $system_image ${CACHE_PATH}/releases/${{matrix.board}}.sfs
+        run: system_image=$(${BUILDER} file boards/${{matrix.board}}/image.yml) && cp $system_image ${CACHE_PATH}/releases/${{matrix.board}}.sfs
 
       - name: Generating Installer image
-        run: |
-          ${BUILDER} build boards/${{matrix.board}}/installer.yml
+        run: ${BUILDER} build boards/${{matrix.board}}/installer.yml
       
       - name: Checkout Installer image
-        run: |
-          installer_image=$(${BUILDER} file boards/${{matrix.board}}/installer.yml)
-          tar -xf $installer_image -C ${CACHE_PATH}/releases/
+        run: installer_image=$(${BUILDER} file boards/${{matrix.board}}/installer.yml) && tar -xf $installer_image -C ${CACHE_PATH}/releases/

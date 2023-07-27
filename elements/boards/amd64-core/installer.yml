@@ -5,6 +5,7 @@ no-strip: true
 
 variables:
   installer-volume-id: RLXOS
+  include-root: /sysroot
 
 build-time:
   - components/core.yml
@@ -21,9 +22,9 @@ include:
 script: |
   mkdir -p ISO/boot/grub
 
-  mv %{install-root}/amd64-core-image ISO/rootfs.img
+  mv /sysroot/amd64-core-image-%{version}.img ISO/usr.img
   kerver=$(ls /lib/modules | head -n1)
-  cp /lib/modules/${kerver}/vmlinuz ISO/boot/vmlinuz-${kerver}
+  cp /lib/modules/${kerver}/bzImage ISO/boot/vmlinuz-${kerver}
 
   echo "
   set timeout=5
@@ -37,4 +38,5 @@ script: |
   }" > ISO/boot/grub/grub.cfg
 
   mkinitramfs -k=${kerver} --no-plymouth -o=$PWD/ISO/boot/initramfs-${kerver}.img -u
+  mkdir -p %{install-root}/
   grub-mkrescue -volid %{installer-volume-id} -o %{install-root}/rlxos-%{id}.iso ISO/

@@ -27,7 +27,8 @@ modprobe kmod insmod lsmod blkid \
 blkid dmesg findfs tail head \
 switch_root losetup touch install chroot agetty \
 truncate df awk mkfs.ext4 mkfs mkfs.ext2 mkfs.ext3
-udevadm killall cut md5sum unzstd zstd setsid rmdir"
+udevadm killall cut md5sum unzstd zstd setsid rmdir
+systemd-sysusers systemd-tmpfiles"
 
 INITRD_DIR=$(mktemp -d /tmp/initramfs.XXXXXXXXXX)
 INIT_IN=${INIT_IN:-'/usr/share/initramfs/init.in'}
@@ -331,7 +332,7 @@ compress_initrd() {
     
     install_libraries
     
-    AOUT=${AOUT:-"/boot/initrd-${KERNEL}"}
+    AOUT=${AOUT:-"/boot/initramfs-${KERNEL}.img"}
     
     (
         cd "${INITRD_DIR}"

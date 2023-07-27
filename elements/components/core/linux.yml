@@ -6,60 +6,110 @@ about: |
 sources:
   - https://www.kernel.org/pub/linux/kernel/v6.x/linux-%{version}.tar.xz
 
+environ:
+  - ARCH=%{arch}
+  - KBUILD_BUILD_TIMESTAMP=Fri Nov 12 12:00:00 UTC 2011
+  - KBUILD_BUILD_USER=rlxos
+
 script: |
-  make mrproper
-  cp /files/core/linux/config ./.config
-  mkdir -p %{install-root}/{boot,lib}
-  make olddefconfig
-  cp ./.config /files/core/linux/config
-  make bzImage modules
-  make INSTALL_MOD_PATH=%{install-root} \
-       INSTALL_MOD_STRIP=1 \
-       modules_install
-  
-  install -D -m 644 "$(make -s image_name)" %{install-root}/lib/modules/%{version}/vmlinuz
+  has() {
+    state="$(scripts/config --keep-case -s "${1}")"
+    case "${state}" in
+      undef|n)
+        return 1
+      ;;
+      y|m)
+        return 0
+      ;;
+      *)
+        echo "Wrong status for ${1}: ${state}" 1>&2
+        exit 1
+      ;;
+    esac
+  }
+  remove() {
+    scripts/config --keep-case -d "${1}"
+  }
+  module() {
+    echo "${1}" >>expected-configs
+    has "${1}" || scripts/config --keep-case -m "${1}"
+  }
+  enable() {
+    echo "${1}" >>expected-configs
+    scripts/config --keep-case -e "${1}"
+  }
+  value_str() {
+    scripts/config --keep-case --set-str "${1}" "${2}"
+  }
+  value() {
+    scripts/config --keep-case --set-val "${1}" "${2}"
+  }
 
-  rm %{install-root}/lib/modules/%{version}/{build,source}
-  
 
-  echo "installing build files"
-  builddir="%{install-root}/lib/modules/%{version}/build"
-  install -D -t "${builddir}" -m644 .config Makefile Module.symvers System.map vmlinux
-  install -Dt "$builddir/kernel" -m644 kernel/Makefile
-  install -Dt "$builddir/arch/x86" -m644 arch/x86/Makefile
-  cp -t "$builddir" -a scripts
-  # required when STACK_VALIDATION is enabled
-  install -Dt "$builddir/tools/objtool" tools/objtool/objtool
-  echo "Installing headers..."
-  cp -t "$builddir" -a include
-  cp -t "$builddir/arch/x86" -a arch/x86/include
-  install -Dt "$builddir/arch/x86/kernel" -m644 arch/x86/kernel/asm-offsets.s
-  install -Dt "$builddir/drivers/md" -m644 drivers/md/*.h
-  install -Dt "$builddir/net/mac80211" -m644 net/mac80211/*.h
-  install -Dt "$builddir/drivers/media/i2c" -m644 drivers/media/i2c/msp3400-driver.h
-  install -Dt "$builddir/drivers/media/usb/dvb-usb" -m644 drivers/media/usb/dvb-usb/*.h
-  install -Dt "$builddir/drivers/media/dvb-frontends" -m644 drivers/media/dvb-frontends/*.h
-  install -Dt "$builddir/drivers/media/tuners" -m644 drivers/media/tuners/*.h
-  install -Dt "$builddir/drivers/iio/common/hid-sensors" -m644 drivers/iio/common/hid-sensors/*.h
-  echo "Installing KConfig files..."
-  find . -name 'Kconfig*' -exec install -Dm644 {} "$builddir/{}" \;
-  echo "Removing unneeded architectures..."
-  for arch in "$builddir"/arch/*/; do
-    [[ $arch = */x86/ ]] && continue
-    echo "Removing $(basename "$arch")"
-    rm -r "$arch"
+  make defconfig
+
+  # Live boot
+  module SQUASHFS
+  enable SQUASHFS_ZLIB
+  module OVERLAY_FS
+  
+  make -j1 olddefconfig
+
+  missing_configs=0
+  for config in $(cat expected-configs); do
+    if ! has "${config}"; then
+      echo "Missing ${config}" 1>&2
+      missing_configs=1
+    fi
   done
-  echo "Removing documentation..."
-  rm -r "$builddir/Documentation"
-  echo "Removing broken symlinks..."
-  find -L "$builddir" -type l -printf 'Removing %P\n' -delete
-  echo "Removing loose objects..."
-  find "$builddir" -type f -name '*.o' -printf 'Removing %P\n' -delete
-  echo "Adding symlink..."
-  mkdir -p "%{install-root}/usr/src"
-  ln -sr "$builddir" "%{install-root}/usr/src/%{id}"
 
-  mv %{install-root}/lib %{install-root}/usr/
+  [ ${missing_configs} = 0 ]
+
+
+  make ${MAKEFLAGS}
+  
+  make -j1 INSTALL_MOD_PATH='%{install-root}/%{prefix}' modules_install
+  release=$(make -s kernelrelease)
+  image_name=$(make -s image_name)
+
+  install -Dm644 -t %{install-root}/%{libdir}/modules/${release} ${image_name}
+  install -Dm644 -t %{install-root}/%{libdir}/modules/${release} System.map
+  install -Dm644 .config %{install-root}/%{libdir}/modules/${release}/config
+
+  find %{install-root}/%{libdir}/modules/$release -type f -name '*.ko' | xargs -P 4 -n 2 -r xz;
+  targetdir=%{install-root}/%{prefix}/src/linux-$release
+
+  rm %{install-root}/%{libdir}/modules/$release/{source,build}
+
+  to_copy=(
+    Makefile
+    Module.symvers
+    .config
+    "arch/x86/include"
+    "arch/x86/Makefile"
+    scripts
+    include
+  )
+
+  if [ "$(scripts/config -s OBJTOOL)" = y ] ;then
+    to_copy+=(tools/objtool/objtool)
+  fi
+
+  for file in ${to_copy[@]} ; do
+    targetfile=${targetdir}/$file
+    dir=$(dirname $targetfile)
+    [ -d ${dir} ] || install -d $dir
+    cp -aT $file $targetfile
+  done
+
+  ln -sr ${targetdir} %{install-root}%{libdir}/modules/$release/source
+  ln -sr ${targetdir} %{install-root}%{libdir}/modules/$release/build
+
+integration: |
+  cd '%{libdir}/modules'
+  for version in * ; do
+    depmod -b %{prefix} -a $version;
+  done
 
 build-time:
   - components/core/coreutils.yml

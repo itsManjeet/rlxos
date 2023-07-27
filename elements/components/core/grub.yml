@@ -23,6 +23,7 @@ configure: >
   CXXFLAGS="${CFLAGS}"
 
 pre-script: |
+  patch -Np1 -i %{build-root}/grub-2.06-upstream_fixes-1.patch
   patch util/grub-mkconfig.in < %{build-root}/0001-RLXOS-CONFIG-PATCH-TO-SUPPORT-OVERLAY-FS.patch
   install -v -D -m 0644 %{build-root}/grub.default %{install-root}/etc/default/grub
   install -v -D -m 0755 %{build-root}/update-grub.sh %{install-root}/usr/bin/update-grub
@@ -50,3 +51,4 @@ sources:
   - files/core/grub/unicode.pf2
   - files/core/grub/grub.default
   - files/core/grub/0001-RLXOS-CONFIG-PATCH-TO-SUPPORT-OVERLAY-FS.patch
+  - patches/core/grub/grub-2.06-upstream_fixes-1.patch

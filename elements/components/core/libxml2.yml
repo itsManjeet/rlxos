@@ -4,7 +4,11 @@ about: Package contains libraries and utilities used for parsing XML files
 sources:
   - http://xmlsoft.org/sources/libxml2-%{version}.tar.gz
 
+variables:
+  run-autogen: false
+
 build-type: autotools
+
 configure: >-
   --disable-static
   --with-history 
@@ -14,3 +18,4 @@ configure: >-
 depends:
   - components/core/readline.yml
   - components/core/python.yml
+  - components/core/libtool.yml

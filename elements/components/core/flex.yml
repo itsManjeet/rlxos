@@ -9,6 +9,7 @@ sources:
 depends:
   - components/core/glibc.yml
   - components/core/m4.yml
+  - components/core/libtool.yml
 
 
 configure: >

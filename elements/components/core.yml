@@ -24,3 +24,4 @@ depends:
   - components/core/xz.yml
   - components/core/zstd.yml
   - components/core/which.yml
+  - components/core/libtool.yml

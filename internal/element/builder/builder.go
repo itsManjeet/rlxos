@@ -65,9 +65,6 @@ func (b *Builder) CacheFile(e *element.Element) (string, error) {
 	s := sha256.New()
 	s.Write([]byte(sum))
 	depends := e.AllDepends(element.DependencyRunTime)
-	if len(e.Include) > 0 {
-		depends = append(depends, e.Include...)
-	}
 
 	for _, dep := range depends {
 		dep_e, ok := b.Get(dep)
@@ -105,6 +102,10 @@ func (b *Builder) Build(id string) error {
 		}
 
 		for _, l := range list {
+			log.Printf("[%s] %s\n", l.State, l.Path)
+		}
+
+		for _, l := range list {
 			if l.State != BuildStatusCached {
 				if err := b.buildElement(l.Value, l.Path); err != nil {
 					return err
@@ -129,8 +130,12 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 
 	sourcesDir := path.Join(b.cachePath, "sources")
 	packagesDir := path.Join(b.cachePath, "cache")
+	tempdir := path.Join(b.cachePath, "temp")
 	logDir := path.Join(b.cachePath, "logs")
-	workdir, err := os.MkdirTemp(os.TempDir(), fmt.Sprintf("%s-*", e.Id))
+	if err := os.MkdirAll(tempdir, 0755); err != nil {
+		return fmt.Errorf("failed to create %s, %v", tempdir, err)
+	}
+	workdir, err := os.MkdirTemp(tempdir, fmt.Sprintf("%s-*", e.Id))
 	if err != nil {
 		return fmt.Errorf("failed to create temporary dir %s", err)
 	}

@@ -90,7 +90,7 @@ func (c *Container) Run(lw io.Writer, ew io.Writer, cmd []string, dir string, en
 	fmt.Fprint(ew, "\n")
 
 	if err != nil {
-		return fmt.Errorf("command failed with %v", err)
+		return fmt.Errorf("command %v failed with %v", args, err)
 	}
 	return nil
 }

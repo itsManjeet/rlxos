@@ -15,6 +15,7 @@ kernel:
 depends:
   - components/core/bash.yml
   - components/core/libcap.yml
+  - components/core/libtool.yml
 
 sources:
   - http://www.netfilter.org/projects/iptables/files/iptables-%{version}.tar.xz

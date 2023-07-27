@@ -60,6 +60,7 @@ script: |
   ver_check Tar            tar      1.22
   ver_check Texinfo        texi2any 4.7
   ver_check Xz             xz       5.0.0
+  ver_check Libtool        libtoolize 2.4.6 
   ver_kernel 4.14
 
   if mount | grep -q 'devpts on /dev/pts' && [ -e /dev/ptmx ]

@@ -17,9 +17,6 @@ configure: >
   --with-system-zlib
 
 post-script: |
-  [[ -d ${pkgupd_pkgdir}/usr/lib/gcc/x86_64-pc-linux-gnu/%{version}/include-fixes/bits/ ]] && \
-  rm -r ${pkgupd_pkgdir}/usr/lib/gcc/x86_64-pc-linux-gnu/%{version}/include-fixes/bits/
-
   mkdir -p ${pkgupd_pkgdir}/usr/lib/bfd-plugins/
   ln -sv ../bin/cpp ${pkgupd_pkgdir}/usr/lib/
   ln -sfv ../../lib/gcc/x86_64-pc-linux-gnu/%{version}/liblto_plugin.so \

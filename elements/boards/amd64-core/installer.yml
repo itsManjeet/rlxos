@@ -8,7 +8,6 @@ variables:
 
 build-time:
   - components/core.yml
-  - components/core/procps-ng.yml
   - components/core/e2fsprogs.yml
   - components/core/linux.yml
   - components/core/mkinitramfs.yml

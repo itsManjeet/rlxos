@@ -5,7 +5,7 @@ about: Test build tools integrity to skip autogen
 build-type: autotools
 
 variables:
-  skip-autogen: true
+  run-autogen: false
 
 # create autotools environment
 pre-script: |

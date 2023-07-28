@@ -6,6 +6,7 @@ sources:
 
 depends:
   - components/core.yml
+  - components/libpciaccess.yml
 build-time:
   - components/core/meson.yml
 configure: >-

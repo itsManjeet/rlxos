@@ -16,3 +16,6 @@ build-time:
 
 sources:
   - https://gitlab.freedesktop.org/wlroots/wlroots/-/archive/%{version}/wlroots-%{version}.tar.gz
+
+post-script: |
+  install -v -Dm 0755 -t %{install-root}/%{bindir} %{build-dir}/tinywl/tinywl

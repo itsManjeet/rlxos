@@ -1,17 +1,44 @@
-id: amd64-core-image
+id: amd64-core-installer-image
 version: 2307
-about: rlxos core system image
+about: rlxos core installer image
 no-strip: true
+build-type: system
 
-include:
-  - components/core.yml
-  - components/core/strace.yml
-  - components/core/grub.yml
-  - components/core/mkinitramfs.yml
-  - components/core/squashfs-tools.yml
-  - components/core/e2fsprogs.yml
-  - components/core/layers.yml
-  - components/core/linux.yml
+variables:
+  root-password: rlxos
+
+script: |
+  if [ -d %{localstatedir}/lib/integrations ] ; then
+    for i in %{localstatedir}/lib/integrations/* ; do
+      echo "=> integrating $(basename $i)"
+      sh -e $i
+    done
+  fi
+
+  systemd-sysusers
+  systemd-tmpfiles --create || true
+  systemctl preset-all
+  systemctl --global preset-all
+
+  # TODO: NEEDED?
+  pwconv
+  grpconv
+
+  echo -e "%{root-password}\n%{root-password}" | passwd
+  ln -sv %{datadir}/zoneinfo/Asia/Kolkata %{sysconfdir}/localtime
+
+  for d in opt srv/http run dev; do
+    install -d -m755 $d
+  done
+
+  install -d -m555 proc
+  install -d -m555 sys
+  install -d -m0750 root
+  install -d -m1777 tmp
+
+  install -d -m555 -g 11 srv/ftp
+
+  install -d -m1777 var/{tmp,spool/mail}
 
 build-time:
   - components/core/grub.yml
@@ -19,10 +46,14 @@ build-time:
   - components/core/linux.yml
   - components/core/systemd.yml
 
-variables:
-  root-password: rlxos
-  include-root: /sysroot
-
-script: |
-  mkdir -p %{install-root}
-  mksquashfs /sysroot/usr %{install-root}/%{id}-%{version}.img
+include:
+  - components/core.yml
+  - components/core/tzdata.yml
+  - components/core/strace.yml
+  - components/core/grub.yml
+  - components/core/mkinitramfs.yml
+  - components/core/squashfs-tools.yml
+  - components/core/e2fsprogs.yml
+  - components/core/layers.yml
+  - components/core/linux.yml
+  - components/wlroots.yml

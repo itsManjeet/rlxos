@@ -65,3 +65,7 @@ func New(projectPath string, cachePath string) (*Builder, error) {
 
 	return &b, nil
 }
+
+func (b *Builder) Pool() map[string]*element.Element {
+	return b.pool
+}

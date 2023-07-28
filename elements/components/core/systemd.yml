@@ -19,7 +19,7 @@ pre-script: |
 
 configure: >
   -D default-dnssec=no
-  -D firstboot=false
+  -D firstboot=true
   -D install-tests=false
   -D rpmmacrosdir=no
   -D mode=release

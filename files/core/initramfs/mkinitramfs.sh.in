@@ -345,7 +345,7 @@ function main() {
     
     parse_args $@
     
-    echo "generating initrd $KERNEL"
+    echo "generating initramfs $KERNEL"
     prepare_structure
     
     install_udev

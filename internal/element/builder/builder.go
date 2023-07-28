@@ -476,10 +476,17 @@ func (b *Builder) integrate(e *element.Element, rootdir string, container *Conta
 		return err
 	}
 
-	log.Println("Integrating", e.Id, path.Base(cachefile))
-	if err := container.Run(logWriter, errWriter, []string{"tar", "-xf", path.Join("/", "cache", path.Base(cachefile)), "-C", rootdir}, "/", []string{}); err != nil {
-		container.RescueShell()
-		return err
+	if e.BuildType == "system" {
+		if err := container.Run(logWriter, errWriter, []string{"cp", path.Join("/", "cache", path.Base(cachefile)), path.Join(rootdir, e.Id)}, "/", []string{}); err != nil {
+			container.RescueShell()
+			return err
+		}
+	} else {
+		log.Println("Integrating", e.Id, path.Base(cachefile))
+		if err := container.Run(logWriter, errWriter, []string{"tar", "-xf", path.Join("/", "cache", path.Base(cachefile)), "-C", rootdir}, "/", []string{}); err != nil {
+			container.RescueShell()
+			return err
+		}
 	}
 
 	if !noIntegrate {

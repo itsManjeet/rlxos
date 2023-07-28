@@ -8,6 +8,7 @@ depends:
   - components/core/busybox.yml
   - components/core/cpio.yml
   - components/core/zstd.yml
+  - components/core/psmisc.yml
 
 script: |
   install -v -D -m 644 /files/core/initramfs/init.in  %{install-root}/%{datadir}/initramfs/init.in

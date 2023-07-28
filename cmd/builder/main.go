@@ -124,6 +124,53 @@ func main() {
 
 				return nil
 			})).
+		Sub(app.New("checkout").
+			About("Checkout the cache file").
+			Handler(func(c *app.Command, s []string) error {
+				if err := checkArgs(s, 2); err != nil {
+					return err
+				}
+				b, err := getBuilder()
+				if err != nil {
+					return err
+				}
+
+				el, ok := b.Get(s[0])
+				if !ok {
+					return fmt.Errorf("missing element %s", s[0])
+				}
+				cachefile, err := b.CacheFile(el)
+				if err != nil {
+					return err
+				}
+				if _, err := os.Stat(cachefile); err != nil {
+					return fmt.Errorf("failed to stat %s, %v", cachefile, err)
+				}
+
+				checkout_path := s[1]
+				if err := os.MkdirAll(checkout_path, 0755); err != nil {
+					return fmt.Errorf("failed to create checkout directory %s, %v", checkout_path, err)
+				}
+
+				output, err := exec.Command("tar", "-xaf", cachefile, "-C", checkout_path).CombinedOutput()
+				if err != nil {
+					return fmt.Errorf("failed to checkout %s, %s %v", cachefile, string(output), err)
+				}
+
+				fmt.Println(cachefile, "checkout at", checkout_path)
+
+				return nil
+			})).
+		Sub(app.New("dump").
+			About("Dump build cache state").
+			Handler(func(c *app.Command, s []string) error {
+				_, err := getBuilder()
+				if err != nil {
+					fmt.Printf(`{"STATUS": false, "ERROR": "%s"}`, err.Error())
+					return err
+				}
+				return nil
+			})).
 		Sub(app.New("status").
 			About("List status of caches").
 			Handler(func(c *app.Command, s []string) error {

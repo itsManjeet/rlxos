@@ -51,6 +51,8 @@ script: |
   # Live boot
   module SQUASHFS
   enable SQUASHFS_ZLIB
+  enable SQUASHFS_XZ
+  enable SQUASHFS_ZSTD
   module OVERLAY_FS
   
   make -j1 olddefconfig

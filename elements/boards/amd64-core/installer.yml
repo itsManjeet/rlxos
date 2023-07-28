@@ -17,12 +17,15 @@ build-time:
   - components/core/squashfs-tools.yml
 
 include:
+  - boards/amd64-core/usr.yml
   - boards/amd64-core/image.yml
 
 script: |
   mkdir -p ISO/boot/grub
 
   mv /sysroot/amd64-core-image-%{version}.img ISO/usr.img
+  mv /sysroot/%{id}-image ISO/rootfs.img
+
   kerver=$(ls /lib/modules | head -n1)
   cp /lib/modules/${kerver}/bzImage ISO/boot/vmlinuz-${kerver}
 
@@ -33,7 +36,7 @@ script: |
   insmod all_video
 
   menuentry 'rlxos GNU/Linux' {
-    linux /boot/vmlinuz-${kerver} ro quiet fastboot loglevel=3 iso=1 root=LABEL=%{installer-volume-id}
+    linux /boot/vmlinuz-${kerver} rw debug iso=1 root=LABEL=%{installer-volume-id} console=tty0 console=ttyS0
     initrd /boot/initramfs-${kerver}.img
   }" > ISO/boot/grub/grub.cfg
 

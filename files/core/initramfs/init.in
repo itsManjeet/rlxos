@@ -142,15 +142,11 @@ prepare_cdrom() {
     mount -o ro "${root}" /run/iso || rescue_shell "failed to mount iso ${YELLOW}(squa enabled)${RESET}"
     
     _squapoint="/run/initramfs/overlay/squa"
-    _squapoint_usr="$_squapoint/usr"
     # mount squa image -> ${_squapoint}
-    [[ -d "${_squapoint_usr}" ]] || mkdir -p "${_squapoint_usr}"
+    [[ -d "${_squapoint}" ]] || mkdir -p "${_squapoint}"
     [[ -e "/run/iso/${squa}" ]] || rescue_shell "'${squa}' not exist in iso"
     
-    mount -t squashfs "/run/iso/${squa}" "${_squapoint_usr}" || rescue_shell "failed to mount squa ${squa} to ${_squapoint}"
-
-    systemd-sysusers --root=${_squapoint_usr}
-    systemd-tmpfiles --create --root=${_squapoint_usr}
+    mount -t squashfs "/run/iso/${squa}" "${_squapoint}" || rescue_shell "failed to mount squa ${squa} to ${_squapoint}"
     
     if [[ -e "/run/iso/${isoverlay}" ]]; then
         _mpoint="/run/initramfs/overlay/isoverlay"

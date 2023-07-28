@@ -1,0 +1,24 @@
+id: amd64-core-image
+version: 2307
+about: rlxos core system image
+no-strip: true
+
+include:
+  - components/core.yml
+  - components/core/strace.yml
+  - components/core/grub.yml
+  - components/core/mkinitramfs.yml
+  - components/core/squashfs-tools.yml
+  - components/core/e2fsprogs.yml
+  - components/core/layers.yml
+  - components/core/linux.yml
+
+build-time:
+  - components/core/squashfs-tools.yml
+
+variables:
+  include-root: /sysroot
+
+script: |
+  mkdir -p %{install-root}
+  mksquashfs /sysroot/usr %{install-root}/%{id}-%{version}.img

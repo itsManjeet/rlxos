@@ -3,7 +3,7 @@ version: 12.2.0
 about: OpenGL and OpenGL ES shader front end and validator
 
 environ:
-  - CXXFLAGS="${CFLAGS} -ffat-lto-objects"
+  - CXXFLAGS=-march=x86-64 -mtune=generic -O2 -pipe -fstack-protector-strong -D_FORTIFY_SOURCE=2 --param=ssp-buffer-size=4 -ffat-lto-objects
 
 sources:
   - https://github.com/KhronosGroup/glslang/archive/%{version}.tar.gz

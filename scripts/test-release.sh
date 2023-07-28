@@ -9,4 +9,4 @@ shift
 }
 qemu-system-x86_64 -cdrom $ISO  \
     -m 2G -smp 2                \
-    -nographic $@
+    -vnc :0 $@

@@ -1,18 +1,19 @@
 id: dbus
-version: 1.12.20
+version: 1.14.8
 about: A message bus system, a simple way for applications to talk to one another
 sources:
-  - https://dbus.freedesktop.org/releases/dbus/dbus-%{version}.tar.gz
-build-dir: dbus-%{version}
-depends:
-  buildtime:
-    - python
-  runtime:
-    - expat
-    - systemd
+  - https://dbus.freedesktop.org/releases/dbus/dbus-%{version}.tar.xz
 
-pre-script: |
-  rm autogen.sh
+build-time:
+  - components/core/python.yml
+depends:
+  - components/core/expat.yml
+  - components/core/systemd.yml
+
+build-type: autotools
+
+variables:
+  run-autogen: false
 
 configure: >-
   --disable-static 

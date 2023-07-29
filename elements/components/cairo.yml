@@ -19,6 +19,8 @@ depends:
 build-time:
   - components/core/meson.yml
 configure: >-
-  -D spectre=disabled 
-  -D tee=enabled 
-  -D test=disabled
+  -D spectre=disabled
+  -D tests=disabled
+  -D dwrite=disabled
+  -D gtk_doc=false
+  -D symbol-lookup=disabled

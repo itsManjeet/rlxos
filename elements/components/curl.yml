@@ -6,7 +6,7 @@ sources:
 
 build-type: autotools
 depends:
-  - components/core.yml
+  - components/core/glibc.yml
   - components/core/ca-certificates.yml
 configure: >-
   --enable-threaded-resolver

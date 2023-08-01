@@ -12,7 +12,7 @@ sources:
   - https://github.com/KhronosGroup/SPIRV-Tools/archive/refs/tags/v%{version}.tar.gz
 
 depends:
-  - components/core.yml
+  - components/core/glibc.yml
   - components/core/gcc.yml
 
 build-time:

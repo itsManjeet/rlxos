@@ -4,7 +4,7 @@ about: rlxos container developers image
 no-strip: true
 build-type: system
 include:
-  - components/core.yml
+  - components/core/glibc.yml
   - components/core/meson.yml
   - components/core/make.yml
   - components/core/gcc.yml

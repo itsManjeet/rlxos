@@ -1,0 +1,31 @@
+id: dracut
+version: 056
+about: An event driven initramfs infrastructure
+
+sources:
+  - dracut-%{version}.tar.gz::https://github.com/dracutdevs/dracut/archive/refs/tags/%{version}.tar.gz
+
+depends:
+  - components/core/bash.yml
+  - components/core/coreutils.yml
+  - components/core/cpio.yml
+  - components/core/findutils.yml
+  - components/core/grep.yml
+  - components/core/gzip.yml
+  - components/core/kmod.yml
+  - components/core/pkg-config.yml
+  - components/core/procps-ng.yml
+  - components/core/sed.yml
+  - components/core/systemd.yml
+  - components/core/util-linux.yml
+  - components/core/xz.yml
+
+script: |
+  ./configure --prefix=/usr \
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib \
+    --sbindir=/usr/bin --systemdsystemunitdir=%{libdir}/systemd/system \
+    --disable-documentation
+  
+  make ${MAKEFLAGS}
+  make install DESTDIR=%{install-root}

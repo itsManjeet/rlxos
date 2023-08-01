@@ -5,7 +5,6 @@ import (
 	"crypto/sha256"
 	"errors"
 	"fmt"
-	"io"
 	"log"
 	"os"
 	"os/exec"
@@ -148,19 +147,23 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 		}
 	}
 
-	logfile, err := os.OpenFile(path.Join(logDir, e.Id+".log"), os.O_WRONLY|os.O_CREATE, 0644)
+	logfile, err := os.OpenFile(path.Join(logDir, e.Id+".log"), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
 	if err != nil {
 		return fmt.Errorf("failed to open log file %v", err)
 	}
 	defer logfile.Close()
-	logWriter := bufio.NewWriter(logfile)
 
-	errfile, err := os.OpenFile(path.Join(logDir, e.Id+".err"), os.O_WRONLY|os.O_CREATE, 0644)
+	logWriter := bufio.NewWriter(logfile)
+	defer logWriter.Flush()
+
+	errfile, err := os.OpenFile(path.Join(logDir, e.Id+".err"), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
 	if err != nil {
 		return fmt.Errorf("failed to open log file %v", err)
 	}
 	defer errfile.Close()
+
 	errWriter := bufio.NewWriter(errfile)
+	defer errWriter.Flush()
 
 	environ := e.Environ
 	environ = b.setEnv(environ, "pkgupd_pkgdir=/pkg/"+e.Id)
@@ -401,7 +404,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 	done`
 	if e.BuildType == "system" {
 		log.Println("compressing image", path.Base(cachefile), " from ", pkgdir)
-		if err := container.Run(logWriter, errWriter, []string{"mksquashfs", path.Join("/", "pkg", path.Base(pkgdir)), path.Join("/", "cache", path.Base(cachefile)), "-comp", "zstd", "-Xcompression-level", "19", "-noappend"}, path.Join("/pkg"), environ); err != nil {
+		if err := container.Run(logWriter, errWriter, []string{"mksquashfs", path.Join("/", "pkg", path.Base(pkgdir)), path.Join("/", "cache", path.Base(cachefile))}, path.Join("/pkg"), environ); err != nil {
 			container.RescueShell()
 			return err
 		}
@@ -470,7 +473,7 @@ func resolveVariables(v string, variables map[string]string) string {
 	return v
 }
 
-func (b *Builder) integrate(e *element.Element, rootdir string, container *Container, logWriter io.Writer, errWriter io.Writer, noIntegrate bool) error {
+func (b *Builder) integrate(e *element.Element, rootdir string, container *Container, logWriter *bufio.Writer, errWriter *bufio.Writer, noIntegrate bool) error {
 	cachefile, err := b.CacheFile(e)
 	if err != nil {
 		return err

@@ -5,4 +5,4 @@ sources:
   - https://www.x.org/pub/individual/util/util-macros-%{version}.tar.xz
 
 build-time:
-  - components/core.yml
+  - components/core/glibc.yml

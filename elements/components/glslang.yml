@@ -9,7 +9,7 @@ sources:
   - https://github.com/KhronosGroup/glslang/archive/%{version}.tar.gz
 
 depends:
-  - components/core.yml
+  - components/core/glibc.yml
 
 build-time:
   - components/core/ninja.yml

@@ -6,7 +6,6 @@ sources:
 
 depends:
   - components/core/glibc.yml
-  - components/core/systemd.yml
   - components/core/libaio.yml
 script: |
   ./configure --prefix=%{prefix} \

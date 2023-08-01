@@ -4,7 +4,7 @@ about: |
   A collection of modular and reusable compiler and toolchain technologies
 
 depends:
-  - components/core.yml
+  - components/core/glibc.yml
 build-time:
   - components/cmake.yml
 

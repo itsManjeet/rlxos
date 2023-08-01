@@ -1,6 +1,7 @@
 package builder
 
 import (
+	"bufio"
 	"fmt"
 	"io"
 	"log"
@@ -66,7 +67,7 @@ func (c *Container) RescueShell() {
 	e.Run()
 }
 
-func (c *Container) Run(lw io.Writer, ew io.Writer, cmd []string, dir string, environ []string) error {
+func (c *Container) Run(lw *bufio.Writer, ew *bufio.Writer, cmd []string, dir string, environ []string) error {
 	args := []string{
 		"exec",
 	}
@@ -86,8 +87,8 @@ func (c *Container) Run(lw io.Writer, ew io.Writer, cmd []string, dir string, en
 	e.Stdin = os.Stdin
 	err := e.Run()
 
-	fmt.Fprint(lw, "\n")
-	fmt.Fprint(ew, "\n")
+	lw.Flush()
+	ew.Flush()
 
 	if err != nil {
 		return fmt.Errorf("command %v failed with %v", args, err)

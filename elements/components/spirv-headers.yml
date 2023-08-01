@@ -6,5 +6,5 @@ sources:
   - https://github.com/KhronosGroup/SPIRV-Headers/archive/refs/tags/sdk-%{version}.tar.gz
 
 build-time:
-  - components/core.yml
+  - components/core/glibc.yml
   - components/cmake.yml

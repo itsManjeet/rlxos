@@ -27,14 +27,16 @@ script: |
   echo -e "%{root-password}\n%{root-password}" | passwd
   ln -sv %{datadir}/zoneinfo/Asia/Kolkata %{sysconfdir}/localtime
 
-  for d in opt srv/http run dev; do
+  echo "LABEL=RLXOS / iso9660 errors=remount-ro,relatime 0 1" >/etc/fstab
+
+  for d in opt srv/http dev; do
     install -d -m755 $d
   done
 
   install -d -m555 proc
   install -d -m555 sys
   install -d -m0750 root
-  install -d -m1777 tmp
+  install -d -m1777 tmp run
 
   install -d -m555 -g 11 srv/ftp
 
@@ -47,13 +49,12 @@ build-time:
   - components/core/systemd.yml
 
 include:
-  - components/core.yml
+  - components/core/glibc.yml
   - components/core/tzdata.yml
   - components/core/strace.yml
   - components/core/grub.yml
-  - components/core/mkinitramfs.yml
+  - components/dracut.yml
   - components/core/squashfs-tools.yml
   - components/core/e2fsprogs.yml
   - components/core/layers.yml
   - components/core/linux.yml
-  - components/wlroots.yml

@@ -4,21 +4,36 @@ about: rlxos core system image
 no-strip: true
 
 include:
-  - components/core.yml
+  - components/core/glibc.yml
   - components/core/strace.yml
   - components/core/grub.yml
-  - components/core/mkinitramfs.yml
+  - components/dracut.yml
   - components/core/squashfs-tools.yml
   - components/core/e2fsprogs.yml
   - components/core/layers.yml
   - components/core/linux.yml
+  - components/cryptsetup.yml
 
 build-time:
   - components/core/squashfs-tools.yml
+  - components/core/systemd.yml
+  - components/cryptsetup.yml
 
 variables:
   include-root: /sysroot
+  salt: 5ceca5e1f86ae62403b27e66c5160717f1bb88405a1d1d0853241c27f3764843
 
 script: |
   mkdir -p %{install-root}
-  mksquashfs /sysroot/usr %{install-root}/%{id}-%{version}.img
+  mksquashfs /sysroot/usr %{install-root}/usr_%{version}.squashfs
+
+  veritysetup format --salt="%{salt}" "%{install-root}/usr_%{version}.squashfs" "%{install-root}/usr_%{version}.verity" | sed '/^Root hash:[[:space:]]*/{;s///;q;};d' >"%{install-root}/usr-root-hash.txt"
+  
+  usr_part_uuid="$(cat "%{install-root}/usr-root-hash.txt" | sed -E 's/^([0-9a-f]{8})([0-9a-f]{4})([0-9a-f]{4})([0-9a-f]{4})([0-9a-f]{12}).*/\1\2\3\4\5/')"
+  mv "%{install-root}/usr_%{version}.squashfs" "%{install-root}/usr_%{version}_${usr_part_uuid}.squashfs"
+  ln -s "usr_%{version}_${usr_part_uuid}.squashfs" '%{install-root}/usr.squashfs'
+
+  usr_verity_part_uuid="$(cat "%{install-root}/usr-root-hash.txt" | sed -E 's/.*([0-9a-f]{8})([0-9a-f]{4})([0-9a-f]{4})([0-9a-f]{4})([0-9a-f]{12})$/\1\2\3\4\5/')"
+  mv "%{install-root}/usr_%{version}.verity" "%{install-root}/usr_%{version}_${usr_verity_part_uuid}.verity"
+  ln -s "usr_%{version}_${usr_verity_part_uuid}.verity" '%{install-root}/usr.verity'
+

@@ -6,14 +6,18 @@ no-strip: true
 variables:
   installer-volume-id: RLXOS
   include-root: /sysroot
+  root-password: rlxos
+  cmdline: rw root=live:LABEL=RLXOS console=tty0
 
 build-time:
-  - components/core.yml
+  - components/core/glibc.yml
   - components/core/e2fsprogs.yml
   - components/core/linux.yml
-  - components/core/mkinitramfs.yml
+  - components/dracut.yml
   - components/core/mtools.yml
   - components/core/grub.yml
+  - components/core/systemd.yml
+  - components/cryptsetup.yml
   - components/core/squashfs-tools.yml
 
 include:
@@ -22,9 +26,14 @@ include:
 
 script: |
   mkdir -p ISO/boot/grub
+  mkdir -p ISO/LiveOS
 
-  mv /sysroot/amd64-core-image-%{version}.img ISO/usr.img
-  mv /sysroot/%{id}-image ISO/rootfs.img
+  mv /sysroot/*.squashfs ISO/
+  mv /sysroot/*.verity ISO/
+  mv /sysroot/usr-root-hash.txt ISO/
+  mv /sysroot/%{id}-image ISO/LiveOS/squashfs.img
+
+  file ISO/LiveOS/squashfs.img
 
   kerver=$(ls /lib/modules | head -n1)
   cp /lib/modules/${kerver}/bzImage ISO/boot/vmlinuz-${kerver}
@@ -36,10 +45,21 @@ script: |
   insmod all_video
 
   menuentry 'rlxos GNU/Linux' {
-    linux /boot/vmlinuz-${kerver} rw debug iso=1 root=LABEL=%{installer-volume-id} console=tty0 console=ttyS0
+    linux /boot/vmlinuz-${kerver} %{cmdline}
     initrd /boot/initramfs-${kerver}.img
   }" > ISO/boot/grub/grub.cfg
 
-  mkinitramfs -k=${kerver} --no-plymouth -o=$PWD/ISO/boot/initramfs-${kerver}.img -u
+  dracut -v --no-machineid \
+    --kernel-image /boot/vmlinuz \
+    --kver ${kerver} \
+    --kernel-cmdline '%{cmdline}' \
+    --add dmsquash-live \
+    --add bash \
+    --install grep \
+    --install head \
+    --install tail \
+    --install less \
+    --install lsof \
+    --omit lvm ISO/boot/initramfs-${kerver}.img
   mkdir -p %{install-root}/
   grub-mkrescue -volid %{installer-volume-id} -o %{install-root}/rlxos-%{id}.iso ISO/

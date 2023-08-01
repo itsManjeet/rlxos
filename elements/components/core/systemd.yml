@@ -24,7 +24,23 @@ configure: >
   -D rpmmacrosdir=no
   -D mode=release
   -D dev-kvm-mode=0660
+  -D fallback-hostname='rlxos'
   -D docdir=%{datadir}/doc/system-%{version}
+  -Dsbat-distro='rlxos'
+  -Dsbat-distro-summary='rlxos GNU/Linux'
+  -Dsbat-distro-pkgname="%{id}"
+  -Dsbat-distro-version="%{version}"
+  -Dsbat-distro-url="https://rlxos.dev/"
+
+
+post-script: |
+  for i in 10-efi.conf 20-usr-A.conf 21-usr-verity-A.conf 30-usr-B.conf 31-usr-verity-B.conf 50-root.conf ; do
+    install -Dm0644 %{build-root}/${i} -t %{install-root}/%{libdir}/repart.d/
+  done
+  
+  for i in rlxos-kernel.conf rlxos-usr.conf rlxos-usr-verity.conf ; do
+    install -vDm0644 %{build-root}/$i -t %{install-root}/%{libdir}/sysupdate.d/
+  done
 
 depends:
   - components/core/acl.yml
@@ -44,6 +60,7 @@ depends:
   - components/core/gawk.yml
   - components/core/lz4.yml
   - components/core/libseccomp.yml
+  - components/cryptsetup.yml
 
 build-time:
   - components/core/gcc.yml
@@ -54,3 +71,12 @@ build-time:
 
 sources:
   - https://github.com/systemd/systemd/archive/v%{version}/systemd-%{version}.tar.gz
+  - files/core/systemd-sysupdate-config/rlxos-kernel.conf
+  - files/core/systemd-sysupdate-config/rlxos-usr.conf
+  - files/core/systemd-sysupdate-config/rlxos-usr-verity.conf
+  - files/core/systemd-repart-config/10-efi.conf
+  - files/core/systemd-repart-config/20-usr-A.conf
+  - files/core/systemd-repart-config/21-usr-verity-A.conf
+  - files/core/systemd-repart-config/30-usr-B.conf
+  - files/core/systemd-repart-config/31-usr-verity-B.conf
+  - files/core/systemd-repart-config/50-root.conf

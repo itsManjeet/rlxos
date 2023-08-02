@@ -1,0 +1,61 @@
+From 0de18a0d9f9e0654d8d354ea4beedc3593677d52 Mon Sep 17 00:00:00 2001
+From: itsmanjeet <itsmanjeet1998@gmail.com>
+Date: Wed, 2 Aug 2023 13:55:37 +0200
+Subject: [PATCH] rlxos specific modifications
+
+---
+ js/ui/dash.js        | 2 +-
+ js/ui/main.js        | 1 +
+ src/st/st-settings.c | 4 ++--
+ 3 files changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/js/ui/dash.js b/js/ui/dash.js
+index 188308853..abdbb3a8f 100644
+--- a/js/ui/dash.js
++++ b/js/ui/dash.js
+@@ -219,7 +219,7 @@ class ShowAppsIcon extends DashItemContainer {
+ 
+     _createIcon(size) {
+         this._iconActor = new St.Icon({
+-            icon_name: 'view-app-grid-symbolic',
++            icon_name: 'logo_alt',
+             icon_size: size,
+             style_class: 'show-apps-icon',
+             track_hover: true,
+diff --git a/js/ui/main.js b/js/ui/main.js
+index 6ecb1a06b..a532a24d1 100644
+--- a/js/ui/main.js
++++ b/js/ui/main.js
+@@ -360,6 +360,7 @@ function _initializeUI() {
+             let perfOutput = GLib.getenv("SHELL_PERF_OUTPUT");
+             Scripting.runPerfScript(perfModule, perfOutput);
+         }
++        overview.showApps();
+     });
+ }
+ 
+diff --git a/src/st/st-settings.c b/src/st/st-settings.c
+index 04bf68f40..8f0a8a53e 100644
+--- a/src/st/st-settings.c
++++ b/src/st/st-settings.c
+@@ -294,7 +294,7 @@ st_settings_class_init (StSettingsClass *klass)
+   props[PROP_SLOW_DOWN_FACTOR] = g_param_spec_double("slow-down-factor",
+                                                       "Slow down factor",
+                                                       "Factor applied to all animation durations",
+-                                                      EPSILON, G_MAXDOUBLE, 1.0,
++                                                      EPSILON, G_MAXDOUBLE, 0.75,
+                                                       ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+ 
+   /**
+@@ -428,7 +428,7 @@ st_settings_init (StSettings *settings)
+                                                        KEY_MAGNIFIER_ACTIVE);
+   settings->high_contrast = g_settings_get_boolean (settings->a11y_interface_settings,
+                                                     KEY_HIGH_CONTRAST);
+-  settings->slow_down_factor = 1.;
++  settings->slow_down_factor = 0.75;
+   settings->disable_show_password = g_settings_get_boolean (settings->lockdown_settings, KEY_DISABLE_SHOW_PASSWORD);
+ }
+ 
+-- 
+2.34.1
+

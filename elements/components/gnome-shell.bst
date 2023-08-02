@@ -1,11 +1,17 @@
 kind: meson
 
 sources:
-- kind: tar
-  url: gnome_downloads:gnome-shell/44/gnome-shell-44.1.tar.xz
-  ref: 0bfbe4394d267625154d08d01467bdbd99e8157512fc8df45d5c02ddb7551ca6
-- kind: local
-  path: patches/gnome-shell
+- kind: git_tag
+  url: gnome:gnome-shell
+  track: 44.3
+  submodules:
+    subprojects/gvc:
+      checkout: true
+      url: gnome:libgnome-volume-control.git
+      
+  ref: 44.3-0-g60ec50efa693735cb959a3378516a82d2e9df009
+- kind: patch
+  path: patches/gnome-shell/0001-rlxos-specific-modifications.patch
 
 build-depends:
 - components/sassc.bst
@@ -49,10 +55,3 @@ variables:
     -Dextensions_app=false
     -Dextensions-tool:bash_completion=disabled
     -Dtests=false
-
-config:
-  configure-commands:
-    (<):
-    - |
-      patch js/ui/main.js show-apps-on-login.patch
-      patch src/st/st-settings.c speed-up-animation.patch

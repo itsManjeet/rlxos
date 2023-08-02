@@ -13,4 +13,4 @@ tap-to-click=true
 captions=['size', 'none', 'none']
 
 [org.gnome.desktop.wm.preferences]
-button-layout ':minimize,maximize,close'
+button-layout=':minimize,maximize,close'

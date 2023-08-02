@@ -1,9 +1,14 @@
 kind: meson
 
 sources:
-- kind: tar
-  url: gnome_downloads:libadwaita/1.3/libadwaita-1.3.2.tar.xz
-  ref: b38c91658b2d1fcb7eedf687858b0a54de39af6357661912b54271884c8e195e
+- kind: git_tag
+  url: gnome:libadwaita
+  track: 1.3.3
+
+  ref: 1.3.3-0-gf665152a70d5f2c61c0f5a0a947cb38524e64cfe
+- kind: patch
+  path: patches/libadwaita/0001-do-not-override-system-theme.patch
+
 build-depends:
 - components/gi-docgen.bst
 - components/sassc.bst

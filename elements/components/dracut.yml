@@ -8,6 +8,7 @@ sources:
 depends:
   - components/core/bash.yml
   - components/core/coreutils.yml
+  - components/core/binutils.yml
   - components/core/cpio.yml
   - components/core/findutils.yml
   - components/core/grep.yml

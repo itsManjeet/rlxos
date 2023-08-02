@@ -17,8 +17,8 @@ script: |
 
   systemd-sysusers
   systemd-tmpfiles --create || true
-  systemctl preset-all
-  systemctl --global preset-all
+  systemctl preset-all || true
+  systemctl --global preset-all || true
 
   # TODO: NEEDED?
   pwconv

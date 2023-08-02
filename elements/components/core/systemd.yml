@@ -1,5 +1,5 @@
 id: systemd
-version: 253
+version: 252
 about: Package contains programs for controlling the startup, running, and shutdown of the system
 
 environ:
@@ -23,6 +23,11 @@ configure: >
   -D install-tests=false
   -D rpmmacrosdir=no
   -D mode=release
+  -D efi=true
+  -D gnu-efi=true
+  -D nologin-path=%{bindir}/nologin
+  -D debug-shell=%{bindir}/bash
+  -D default-user-shell=%{bindir}/bash
   -D dev-kvm-mode=0660
   -D fallback-hostname='rlxos'
   -D docdir=%{datadir}/doc/system-%{version}
@@ -60,7 +65,9 @@ depends:
   - components/core/gawk.yml
   - components/core/lz4.yml
   - components/core/libseccomp.yml
+  - components/core/libelf.yml
   - components/cryptsetup.yml
+  - components/core/gnu-efi.yml
 
 build-time:
   - components/core/gcc.yml

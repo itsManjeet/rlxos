@@ -305,10 +305,12 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 		}
 
 	case "system":
-		if err := container.Run(logWriter, errWriter, []string{"chroot", path.Join("/", "pkg", path.Base(pkgdir)), "/bin/bash", "-ec", resolveVariables(e.Script, variables)}, "/", environ); err != nil {
-			log.Println("ERROR:", err)
-			container.RescueShell()
-			return err
+		if len(e.Script) > 0 {
+			if err := container.Run(logWriter, errWriter, []string{"chroot", path.Join("/", "pkg", path.Base(pkgdir)), "/bin/bash", "-ec", resolveVariables(e.Script, variables)}, "/", environ); err != nil {
+				log.Println("ERROR:", err)
+				container.RescueShell()
+				return err
+			}
 		}
 
 	default:

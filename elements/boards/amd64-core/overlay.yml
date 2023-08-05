@@ -1,9 +1,12 @@
-id: amd64-core-overlay
+id: amd64-core-installer-overlay
 version: 2307
 about: Live ISO overlay installer
 build-type: system
 sources:
   - /files/core/sysvinit/inittab
+
+build-time:
+  - components/core/squashfs-tools.yml
 
 pre-script: |
   sed -i 's#--noclear#--noclear --autologin root#g' %{build-root}/inittab

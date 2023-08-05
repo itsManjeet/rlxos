@@ -40,3 +40,7 @@ post-script: |
     install -v -D -m 644 /files/core/pam/chage %{install-root}/etc/pam.d/${extra}
     sed -i "s/chage/${extra}/" %{install-root}/etc/pam.d/${extra}
   done
+
+integration: |
+  pwconv
+  grpconv

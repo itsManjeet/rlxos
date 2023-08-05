@@ -1,17 +1,21 @@
 id: sysklogd
-version: 2.5.1
+version: 1.5.1
 about: System Logging service
 
 depends:
   - components/core/glibc.yml
 
 sources:
-  - https://github.com/troglobit/sysklogd/releases/download/v%{version}/sysklogd-%{version}.tar.gz
+  - https://www.infodrom.org/projects/sysklogd/download/sysklogd-%{version}.tar.gz
   - files/core/sysklogd/syslog.conf
 
-configure: >
-  --without-logger
-  --without-systemd
+script: |
+  
+  sed -i '/Error loading kernel symbols/{n;n;d}' ksym_mod.c
+  sed -i 's/union wait/int/' syslogd.c
 
-post-script: |
+  make ${MAKEFLAGS}
+  
+  install -vDm 0755 syslogd klogd -t %{install-root}/%{bindir}/
   install -vDm 0644 -t %{install-root}/%{sysconfdir}/ %{build-root}/syslog.conf
+  

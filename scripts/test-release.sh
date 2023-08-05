@@ -9,5 +9,4 @@ shift
 }
 qemu-system-x86_64 -cdrom $ISO  \
     -m 2G -smp 2                \
-    -nographic -boot d          \
-    -drive file=image.qcow2,index=0,media=disk,format=qcow2 $@
+    -nographic  $@

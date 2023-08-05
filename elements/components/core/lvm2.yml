@@ -6,6 +6,7 @@ sources:
 
 depends:
   - components/core/glibc.yml
+  - components/core/eudev.yml
   - components/core/libaio.yml
 script: |
   ./configure --prefix=%{prefix} \
@@ -18,4 +19,3 @@ script: |
   make ${MAKEFLAGS}
 
   make install DESTDIR=%{install-root}
-  make install_systemd_units DESTDIR=%{install-root}

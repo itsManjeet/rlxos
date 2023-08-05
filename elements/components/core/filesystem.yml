@@ -27,10 +27,6 @@ script: |
   done
 
   ln -s ../proc/self/mounts %{install-root}%{sysconfdir}/mtab
-  for f in gshadow shadow; do
-    install -m600 %{build-root}/$f %{install-root}/%{sysconfdir}
-    install -m600 %{build-root}/$f %{install-root}/%{datadir}/factory/%{sysconfdir}
-  done
 
   echo "%{version}" > %{install-root}/%{sysconfdir}/rlxos-release
   install -Dm644 %{build-root}/os-release %{install-root}/%{libdir}/os-release
@@ -61,10 +57,6 @@ script: |
   ln -s usr/bin %{install-root}/sbin
   ln -s bin %{install-root}/usr/sbin
 
-  install -D -m644 %{build-root}/sysusers %{install-root}/%{libdir}/sysusers.d/rlxos.conf
-  install -D -m644 %{build-root}/tmpfiles %{install-root}/%{libdir}/tmpfiles.d/rlxos.conf
-  install -D -m755 %{build-root}/env-generator %{install-root}/%{libdir}/systemd/system-environment-generators/10-rlxos
-
 
 depends:
   - components/core/iana-etc.yml
@@ -74,8 +66,6 @@ sources:
   - files/filesystem/group 
   - files/filesystem/inputrc
   - files/filesystem/issue
-  - files/filesystem/shadow
-  - files/filesystem/gshadow
   - files/filesystem/nsswitch.conf
   - files/filesystem/passwd
   - files/filesystem/profile
@@ -86,6 +76,3 @@ sources:
   - files/filesystem/securetty
   - files/filesystem/lsb-release
   - files/filesystem/os-release
-  - files/filesystem/sysusers
-  - files/filesystem/tmpfiles
-  - files/filesystem/env-generator

@@ -4,7 +4,7 @@ about: rlxos container developers image
 no-strip: true
 build-type: system
 include:
-  - components/core/glibc.yml
+  - components/core.yml
   - components/core/meson.yml
   - components/core/make.yml
   - components/core/gcc.yml
@@ -34,11 +34,6 @@ script: |
       sh -e $i
     done
   fi
-
-  systemd-sysusers
-  systemd-tmpfiles --create || true
-  systemctl preset-all
-  systemctl --global preset-all
 
   pwconv
   grpconv

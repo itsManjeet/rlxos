@@ -4,7 +4,6 @@ about: GObject bindings for libudev.
 
 depends:
   - components/glib.yml
-  - components/core/systemd.yml
   - components/gobject-introspection.yml
 
 build-time:

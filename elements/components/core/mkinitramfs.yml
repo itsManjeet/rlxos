@@ -8,6 +8,7 @@ depends:
   - components/core/busybox.yml
   - components/core/cpio.yml
   - components/core/zstd.yml
+  - components/core/libseccomp.yml
   - components/core/psmisc.yml
 
 script: |

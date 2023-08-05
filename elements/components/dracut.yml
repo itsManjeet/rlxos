@@ -17,7 +17,6 @@ depends:
   - components/core/pkg-config.yml
   - components/core/procps-ng.yml
   - components/core/sed.yml
-  - components/core/systemd.yml
   - components/core/util-linux.yml
   - components/core/xz.yml
 

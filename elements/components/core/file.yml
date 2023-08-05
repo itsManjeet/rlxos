@@ -5,6 +5,7 @@ about: Utility for determining the type of a given file or files.
 depends:
   - components/core/glibc.yml
   - components/core/zlib.yml
+  - components/core/libseccomp.yml
   - components/core/bzip2.yml
 
 sources:

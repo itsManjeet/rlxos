@@ -109,7 +109,7 @@ load_modules() {
         modules="$modules loop cdrom sr_mod isofs overlay"
     fi
     
-    /lib/systemd/systemd-udevd --daemon --resolve-names=never
+    udevd --daemon --resolve-names=never
     udevadm trigger --action=add --type=subsystems
     udevadm trigger --action=add --type=devices
     udevadm trigger --action=change --type=devices
@@ -402,7 +402,7 @@ function main() {
         mount_root
     fi
     
-    killall -w /lib/systemd/systemd-udevd
+    killall -w udevd
     
     debug "checking resume"
     check_resume

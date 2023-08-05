@@ -1,6 +1,6 @@
-id: amd64-core-installer-image
+id: amd64-installer-image
 version: 2307
-about: rlxos core installer image
+about: rlxos installer image
 no-strip: true
 build-type: system
 
@@ -32,3 +32,4 @@ include:
   - components/core/e2fsprogs.yml
   - components/core/layers.yml
   - components/core/linux.yml
+  - components/wlroots.yml

@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         board:
-          - amd64-core
+          - amd64
     env:
       CACHE_PATH: ${{ secrets.CACHE_PATH }}
       BUILDER: ./builder -cache-path ${{ secrets.CACHE_PATH }}

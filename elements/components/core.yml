@@ -13,6 +13,10 @@ depends:
   - components/core/libgcc.yml
   - components/core/locales.yml
   - components/core/coreutils.yml
+  - components/core/kmod.yml
+  - components/core/eudev.yml
+  - components/core/inetutils.yml
+  - components/core/iproute2.yml
   - components/core/sed.yml
   - components/core/grep.yml
   - components/core/grep.yml
@@ -20,6 +24,7 @@ depends:
   - components/core/tar.yml
   - components/core/findutils.yml
   - components/core/diffutils.yml
+  - components/core/inetutils.yml
   - components/core/less.yml
   - components/core/util-linux.yml
   - components/core/xz.yml

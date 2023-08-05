@@ -1,8 +1,13 @@
-#
-# /etc/fstab: File System Table
-# Listed filesystems with automount at boot
+# file system  mount-point  type     options             dump  fsck
+#                                                              order
 
+#/dev/<xxx>     /            <fff>    defaults            1     1
+#/dev/<yyy>     swap         swap     pri=1               0     0
+proc           /proc        proc     nosuid,noexec,nodev 0     0
+sysfs          /sys         sysfs    nosuid,noexec,nodev 0     0
+devpts         /dev/pts     devpts   gid=5,mode=620      0     0
+tmpfs          /run         tmpfs    defaults            0     0
+devtmpfs       /dev         devtmpfs mode=0755,nosuid    0     0
+tmpfs          /dev/shm     tmpfs    nosuid,nodev        0     0
 
-# Filesystem    MountPoint  Type    Options     Dump    FsckOrder
-# /dev/???          /home    ??     defaults     1          2
-#
+# End /etc/fstab

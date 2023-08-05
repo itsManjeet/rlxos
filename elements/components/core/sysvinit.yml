@@ -23,3 +23,5 @@ script: |
   mkdir -p %{install-root}/%{libdir}
   mv %{install-root}/lib/* %{install-root}/%{libdir}/
   rmdir %{install-root}/bin %{install-root}/sbin %{install-root}/lib
+
+  install -vDm0644 -o root -g root /files/core/sysvinit/inittab -t %{install-root}/%{sysconfdir}/

@@ -8,7 +8,6 @@ build-time:
   - components/core/python.yml
 depends:
   - components/core/expat.yml
-  - components/core/systemd.yml
 
 build-type: autotools
 

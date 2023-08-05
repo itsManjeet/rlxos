@@ -26,9 +26,8 @@ umount sed sleep ln ldd rm uname readlink basename \
 modprobe kmod insmod lsmod blkid \
 blkid dmesg findfs tail head \
 switch_root losetup touch install chroot agetty \
-truncate df awk mkfs.ext4 mkfs mkfs.ext2 mkfs.ext3
-udevadm killall cut md5sum unzstd zstd setsid rmdir
-systemd-sysusers systemd-tmpfiles"
+truncate df awk mkfs.ext4 mkfs mkfs.ext2 mkfs.ext3 \
+udevadm killall cut md5sum unzstd zstd setsid rmdir udevd"
 
 INITRD_DIR=$(mktemp -d /tmp/initramfs.XXXXXXXXXX)
 INIT_IN=${INIT_IN:-'/usr/share/initramfs/init.in'}
@@ -102,15 +101,12 @@ install_binary() {
 # install_libraries
 # install libraries required by binaries installed from $(install_binary)
 install_libraries() {
-    local _systemd_version=$(cat /lib/pkgconfig/libsystemd.pc  | grep Version: | awk '{print $2}')
     copy /usr/lib/ld-linux-x86-64.so.2
-    copy /usr/lib/systemd/libsystemd-shared-${_systemd_version}.so
     
     sort $unsorted | uniq | while read library; do
         if [[ "$library" == linux-vdso.so.1 ]] ||
         [[ "$library" == linux-gate.so.1 ]] ||
-        [[ "$library" =~ ld-linux-x86-64.so.2 ]] ||
-        [[ "$library" =~ libsystemd-shared-${_systemd_version}.so ]]; then
+        [[ "$library" =~ ld-linux-x86-64.so.2 ]]; then
             
             continue
         fi
@@ -195,9 +191,7 @@ prepare_structure() {
 # install udev daemon for dynamic module loading
 # required when booting from non native system (iso, live booting)
 install_udev() {
-    
-    install_binary /lib/systemd/systemd-udevd
-    
+        
     for i in ata_id scsi_id cdrom_id mtd_probe v4l_id; do
         install_binary /usr/lib/udev/${i}
     done

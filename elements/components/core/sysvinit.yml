@@ -1,0 +1,25 @@
+id: sysvinit
+version: 3.06
+about: System Initialization tools
+
+depends:
+  - components/core/glibc.yml
+
+sources:
+  - https://github.com/slicer69/sysvinit/releases/download/%{version}/sysvinit-%{version}.tar.xz
+  - https://www.linuxfromscratch.org/lfs/downloads/11.3/lfs-bootscripts-20230101.tar.xz
+  - patches/core/sysvinit/sysvinit-%{version}-consolidated-1.patch
+
+script: |
+  patch -Np1 -i %{build-root}/sysvinit-3.06-consolidated-1.patch
+
+  make ${MAKEFLAGS}
+  make install DESTDIR=%{install-root}
+
+  cd %{build-root}/lfs-bootscripts-20230101/
+  make install DESTDIR=%{install-root}
+
+  mv %{install-root}/sbin/* %{install-root}/%{bindir}/
+  mkdir -p %{install-root}/%{libdir}
+  mv %{install-root}/lib/* %{install-root}/%{libdir}/
+  rmdir %{install-root}/bin %{install-root}/sbin %{install-root}/lib

@@ -15,12 +15,6 @@ script: |
     done
   fi
 
-  systemd-sysusers
-  systemd-tmpfiles --create || true
-  systemctl preset-all || true
-  systemctl --global preset-all || true
-
-  # TODO: NEEDED?
   pwconv
   grpconv
 
@@ -46,14 +40,13 @@ build-time:
   - components/core/grub.yml
   - components/core/squashfs-tools.yml
   - components/core/linux.yml
-  - components/core/systemd.yml
 
 include:
   - components/core/glibc.yml
   - components/core/tzdata.yml
   - components/core/strace.yml
   - components/core/grub.yml
-  - components/dracut.yml
+  - components/core/mkinitramfs.yml
   - components/core/squashfs-tools.yml
   - components/core/e2fsprogs.yml
   - components/core/layers.yml

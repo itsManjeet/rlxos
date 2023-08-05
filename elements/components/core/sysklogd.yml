@@ -1,0 +1,17 @@
+id: sysklogd
+version: 2.5.1
+about: System Logging service
+
+depends:
+  - components/core/glibc.yml
+
+sources:
+  - https://github.com/troglobit/sysklogd/releases/download/v%{version}/sysklogd-%{version}.tar.gz
+  - files/core/sysklogd/syslog.conf
+
+configure: >
+  --without-logger
+  --without-systemd
+
+post-script: |
+  install -vDm 0644 -t %{install-root}/%{sysconfdir}/ %{build-root}/syslog.conf

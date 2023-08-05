@@ -1,4 +1,4 @@
-id: amd64-core-installer
+id: amd64-installer
 version: 2307
 about: rlxos core installer
 no-strip: true

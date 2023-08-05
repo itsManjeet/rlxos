@@ -1,4 +1,4 @@
-id: amd64-core-installer-overlay
+id: amd64-installer-overlay
 version: 2307
 about: Live ISO overlay installer
 build-type: system

@@ -1,0 +1,62 @@
+#!/bin/sh
+########################################################################
+# Begin seatd
+#
+# Description : Seat management daemon
+#
+# Author      : Manjeet Singh - admin@rlxos.ev
+#
+# Version     : rlxos 2307
+#
+########################################################################
+
+### BEGIN INIT INFO
+# Provides:            seatd
+# Required-Start:
+# Should-Start:        $syslog dbus
+# Required-Stop:
+# Should-Stop:         $syslog
+# Default-Start:       2 3 4 5
+# Default-Stop:        0 1 6
+# Short-Description:   Seat management daemon.
+# Description:         Seat management daemon.
+### END INIT INFO
+
+. /lib/lsb/init-functions
+
+#$LastChangedBy$
+#$Date$
+
+pidfile=/run/seatd
+
+case "$1" in
+   start)
+      log_info_msg "Starting Seat Daemon..."
+      start_daemon /usr/bin/seatd
+      evaluate_retval
+      ;;
+
+   stop)
+      log_info_msg "Stopping Seat Daemon..."
+      killproc /usr/bin/seatd
+      evaluate_retval
+      rm -f $pidfile
+      ;;
+
+   restart)
+      $0 stop
+      sleep 1
+      $0 start
+      ;;
+
+   status)
+      statusproc /usr/bin/seatd
+      ;;
+
+   *)
+      echo "Usage: $0 {start|stop|restart|status}"
+      exit 1
+      ;;
+esac
+
+# End /etc/init.d/seatd

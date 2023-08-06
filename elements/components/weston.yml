@@ -15,6 +15,7 @@ depends:
   - components/libwebp.yml
   - components/mesa.yml
   - components/lcms.yml
+  - components/pango.yml
 
 sources:
   - https://gitlab.freedesktop.org/wayland/weston/-/releases/%{version}/downloads/weston-%{version}.tar.xz

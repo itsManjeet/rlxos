@@ -32,7 +32,7 @@ pidfile=/run/seatd
 case "$1" in
    start)
       log_info_msg "Starting Seat Daemon..."
-      start_daemon /usr/bin/seatd
+      start_daemon /usr/bin/seatd &
       evaluate_retval
       ;;
 

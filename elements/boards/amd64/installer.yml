@@ -1,6 +1,6 @@
 id: amd64-installer
 version: 2307
-about: rlxos core installer
+about: rlxos installer
 no-strip: true
 
 variables:
@@ -20,8 +20,8 @@ build-time:
   - components/core/squashfs-tools.yml
 
 include:
-  - boards/amd64-core/image.yml
-  - boards/amd64-core/overlay.yml
+  - boards/amd64/image.yml
+  - boards/amd64/overlay.yml
 
 script: |
   mkdir -p ISO/boot/grub

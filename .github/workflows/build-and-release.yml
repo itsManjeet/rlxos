@@ -20,6 +20,7 @@ jobs:
         run: |
           go mod tidy
           go mod vendor
+          mkdir -p vendor/rlxos/{src,pkg}
           go build -o builder rlxos/cmd/builder
 
       - name: Generating Board Image
@@ -28,7 +29,7 @@ jobs:
       - name: Generating Updates
         run: ${BUILDER} build boards/${{matrix.board}}/updates.yml
       
-      - name: Checkout Updatess
+      - name: Checkout Updates
         run: ${BUILDER} checkout boards/${{matrix.board}}/updates.yml ${CACHE_PATH}/daily/
 
       - name: Generating Installer image

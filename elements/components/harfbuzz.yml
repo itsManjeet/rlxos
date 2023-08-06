@@ -8,11 +8,12 @@ depends:
 build-time:
   - components/icu.yml
   - components/cairo.yml
+  - components/graphite2.yml
   - components/gobject-introspection.yml
   - components/core/meson.yml
 
 sources:
-  - https://github.com/harfbuzz/harfbuzz/releases/download/{{version}}/harfbuzz-{{version}}.tar.xz
+  - https://github.com/harfbuzz/harfbuzz/releases/download/%{version}/harfbuzz-%{version}.tar.xz
 build-type: meson
 configure: >-
   --buildtype=release 

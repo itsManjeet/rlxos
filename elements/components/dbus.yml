@@ -38,6 +38,7 @@ post-script: |
   install -vDm0754 /files/dbus/service %{install-root}/%{sysconfdir}/rc.d/init.d/dbus
 
 integration: |
+  mkdir -p %{sysconfdir}/rc.d/rc{0..6}.d/
   ln -sf  ../init.d/dbus %{sysconfdir}/rc.d/rc0.d/K30dbus
   ln -sf  ../init.d/dbus %{sysconfdir}/rc.d/rc1.d/K30dbus
   ln -sf  ../init.d/dbus %{sysconfdir}/rc.d/rc2.d/S29dbus

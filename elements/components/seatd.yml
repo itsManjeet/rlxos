@@ -15,4 +15,14 @@ configure: >-
   -Dlibseat-logind=elogind
 
 post-script: |
-  install -Dm644 /files/seatd/sysuser.conf %{install-root}/%{libdir}/sysusers.d/%{id}.conf
+  install -Dm644 /files/seatd/service %{install-root}/%{sysconfdir}/rc.d/init.d/seatd
+
+integration: |
+  mkdir -p %{sysconfdir}/rc.d/rc{0..6}.d/
+  ln -sf  ../init.d/seatd %{sysconfdir}/rc.d/rc0.d/K30seatd
+  ln -sf  ../init.d/seatd %{sysconfdir}/rc.d/rc1.d/K30seatd
+  ln -sf  ../init.d/seatd %{sysconfdir}/rc.d/rc2.d/S29seatd
+  ln -sf  ../init.d/seatd %{sysconfdir}/rc.d/rc3.d/S29seatd
+  ln -sf  ../init.d/seatd %{sysconfdir}/rc.d/rc4.d/S29seatd
+  ln -sf  ../init.d/seatd %{sysconfdir}/rc.d/rc5.d/S29seatd
+  ln -sf  ../init.d/seatd %{sysconfdir}/rc.d/rc6.d/K30seatd

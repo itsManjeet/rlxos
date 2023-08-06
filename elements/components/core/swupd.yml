@@ -1,0 +1,7 @@
+id: swupd
+version: 0.0.1
+about: software update manager
+
+build-type: go-pkg
+variables:
+  go-pkg: rlxos/src/swupd

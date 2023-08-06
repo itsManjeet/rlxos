@@ -6,6 +6,7 @@ sources:
 
 depends:
   - components/core/libxml2.yml
+  - components/core/libgcrypt.yml
 
 configure: >-
   --disable-static

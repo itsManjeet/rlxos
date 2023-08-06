@@ -40,4 +40,6 @@ script: |
   mkinitramfs -u -k=${kerver} --no-plymouth -o=$(pwd)/ISO/boot/initramfs-${kerver}.img
 
   mkdir -p %{install-root}/
-  grub-mkrescue -volid %{installer-volume-id} -o %{install-root}/rlxos-%{id}.iso ISO/
+  grub-mkrescue -volid %{installer-volume-id} -o %{install-root}/rlxos-%{id}-installer.iso ISO/
+  cd %{install-root}
+  sha256sum rlxos-%{id}-installer.iso >rlxos-%{id}-installer.iso.sha265sum

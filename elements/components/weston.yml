@@ -31,3 +31,5 @@ configure: >
   -D xwayland=false
   -D remoting=false
   -D pipewire=false
+  -D systemd=false
+  -D dbus=true

@@ -1,0 +1,8 @@
+id: cantarell
+version: 0.303.1
+about: Humanist sans serif font
+sources:
+  - https://download.gnome.org/sources/cantarell-fonts/0.303/cantarell-fonts-%{version}.tar.xz
+
+configure: >
+  -D useprebuilt=true

@@ -33,4 +33,6 @@ include:
   - components/core/layers.yml
   - components/core/linux.yml
   - components/weston.yml
-  - components/wlroots.yml
+
+  # Fonts
+  - components/fonts/cantarell.yml

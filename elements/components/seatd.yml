@@ -15,7 +15,7 @@ configure: >-
   -Dlibseat-logind=elogind
 
 post-script: |
-  install -Dm644 /files/seatd/service %{install-root}/%{sysconfdir}/rc.d/init.d/seatd
+  install -Dm0755 /files/seatd/service %{install-root}/%{sysconfdir}/rc.d/init.d/seatd
 
 integration: |
   mkdir -p %{sysconfdir}/rc.d/rc{0..6}.d/

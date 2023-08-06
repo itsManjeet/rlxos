@@ -1,0 +1,22 @@
+merge: [version.yml]
+no-strip: true
+
+variables:
+  include-root: /sysroot
+
+script: |
+  mkdir -p %{install-root} && cd %{install-root}
+  mv /sysroot/%{id}-image rlxos-%{id}-%{version}-%{release}.img
+  sha256sum rlxos-%{id}-%{version}-%{release}.img > rlxos-%{id}-%{version}-%{release}.img.sha256sum
+
+  cat >%{release}<<EOF
+  {
+    "updates": [
+      {
+        "url": "https://storage.rlxos.dev/releases/rlxos-%{id}-%{version}-%{release}.img",
+        "changelog": "%{changelog}",
+        "version": %{version}
+      }
+    ]
+  }
+  EOF

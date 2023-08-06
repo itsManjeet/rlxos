@@ -17,8 +17,10 @@ type UpdatesResponse struct {
 }
 
 func (b *Backend) listUpdates() ([]config.UpdateInfo, error) {
-	r := &UpdatesResponse{}
-	if err := b.request(path.Join(b.config.Server, "updates", b.config.Channel), r); err != nil {
+	r := UpdatesResponse{}
+	url := fmt.Sprintf("%s/releases/%s", b.config.Server, b.config.Channel)
+	log.Println("url", url)
+	if err := b.request(url, &r); err != nil {
 		return nil, err
 	}
 	if len(r.Updates) == 0 {
@@ -30,7 +32,7 @@ func (b *Backend) listUpdates() ([]config.UpdateInfo, error) {
 	return r.Updates, nil
 }
 
-func (b *Backend) getCurrentVersion() (int, error) {
+func GetCurrentVersion() (int, error) {
 	data, err := os.ReadFile(path.Join("/", "usr", ".version"))
 	if err != nil {
 		return 0, err
@@ -44,7 +46,7 @@ func (b *Backend) Check() (*config.UpdateInfo, error) {
 	if err != nil {
 		return nil, err
 	}
-	curver, err := b.getCurrentVersion()
+	curver, err := GetCurrentVersion()
 	if err != nil {
 		return nil, err
 	}

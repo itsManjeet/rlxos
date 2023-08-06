@@ -1,0 +1,38 @@
+merge: [version.yml]
+no-strip: true
+build-type: system
+
+variables:
+  root-password: rlxos
+
+script: |
+  if [ -d %{localstatedir}/lib/integrations ] ; then
+    for i in %{localstatedir}/lib/integrations/* ; do
+      echo "=> integrating $(basename $i)"
+      sh -e $i
+    done
+  fi
+
+build-time:
+  - components/core/grub.yml
+  - components/core/squashfs-tools.yml
+  - components/core/linux.yml
+
+include:
+  - components/core.yml
+  - components/core/swupd.yml
+  - components/core/layers.yml
+
+  - components/core/sysvinit.yml
+  - components/core/sysklogd.yml
+  - components/core/tzdata.yml
+  - components/core/strace.yml
+  - components/core/grub.yml
+  - components/core/mkinitramfs.yml
+  - components/core/squashfs-tools.yml
+  - components/core/e2fsprogs.yml
+  - components/core/linux.yml
+  - components/weston.yml
+
+  # Fonts
+  - components/fonts/cantarell.yml

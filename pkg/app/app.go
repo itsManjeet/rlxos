@@ -5,7 +5,9 @@ import (
 	"rlxos/pkg/app/flag"
 )
 
-type Handler func(*Command, []string) error
+type Handler func(*Command, []string, interface{}) error
+
+type InitMethod func() (interface{}, error)
 
 type Command struct {
 	id        string
@@ -15,14 +17,15 @@ type Command struct {
 	selfPath  string
 	handler   Handler
 
-	flags []*flag.Flag
-
+	flags       []*flag.Flag
+	initMethod  InitMethod
 	subCommands []*Command
 }
 
 func New(id string) *Command {
 	return &Command{
-		id: id,
+		id:         id,
+		initMethod: nil,
 	}
 }
 
@@ -53,6 +56,11 @@ func (c *Command) Sub(sub *Command) *Command {
 
 func (c *Command) Flag(f *flag.Flag) *Command {
 	c.flags = append(c.flags, f)
+	return c
+}
+
+func (c *Command) Init(i InitMethod) *Command {
+	c.initMethod = i
 	return c
 }
 
@@ -93,7 +101,7 @@ func (c *Command) Run(args []string) error {
 		return c.Help()
 	}
 
-	requiredArgs := []string{}
+	var requiredArgs []string
 
 	var cmd *Command = c
 	var foundTask bool = false
@@ -122,5 +130,13 @@ func (c *Command) Run(args []string) error {
 		}
 		requiredArgs = append(requiredArgs, arg)
 	}
-	return cmd.handler(cmd, requiredArgs)
+	var result interface{}
+	if c.initMethod != nil {
+		var err error
+		result, err = c.initMethod()
+		if err != nil {
+			return err
+		}
+	}
+	return cmd.handler(cmd, requiredArgs, result)
 }

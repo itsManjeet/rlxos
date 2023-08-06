@@ -142,7 +142,10 @@ func Open(filepath string, environ []string, variables map[string]string) (*Elem
 
 func (e *Element) resolveVariable(v string) string {
 	for key, value := range e.Variables {
-		v = strings.ReplaceAll(v, "%{"+key+"}", value)
+		if len(value) != 0 {
+			v = strings.ReplaceAll(v, "%{"+key+"}", value)
+		}
+
 	}
 	return v
 }

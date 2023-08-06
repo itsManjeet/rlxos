@@ -180,6 +180,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 		"/files":            path.Join(b.projectPath, "files"),
 		"/patches":          path.Join(b.projectPath, "patches"),
 		"/go/src/rlxos/pkg": path.Join(b.projectPath, "pkg"),
+		"/go/src/":          path.Join(b.projectPath, "vendor"),
 		"/go/src/rlxos/src": path.Join(b.projectPath, "src"),
 	})
 	if err != nil {

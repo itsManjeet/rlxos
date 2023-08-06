@@ -44,12 +44,12 @@ func main() {
 				rootDir = s[0]
 				return nil
 			})).
-		Handler(func(c *app.Command, s []string) error {
+		Handler(func(c *app.Command, s []string, b interface{}) error {
 			return c.Help()
 		}).
 		Sub(app.New("list").
 			About("List All available layers").
-			Handler(func(c *app.Command, args []string) error {
+			Handler(func(c *app.Command, args []string, b interface{}) error {
 				mountedLayers, _, err := parseMountData()
 				if err != nil {
 					return err
@@ -80,7 +80,7 @@ func main() {
 			})).
 		Sub(app.New("refresh").
 			About("Refresh the layers").
-			Handler(func(c *app.Command, args []string) error {
+			Handler(func(c *app.Command, args []string, b interface{}) error {
 				var flag uintptr = 0
 				isMounted, err := checkIsMounted()
 				if err != nil {

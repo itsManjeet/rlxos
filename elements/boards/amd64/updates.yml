@@ -1,0 +1,6 @@
+id: boards-amd64
+about: AMD64 Board Updates
+merge: [elements/boards/common/updates.yml]
+
+include:
+  - boards/amd64/image.yml

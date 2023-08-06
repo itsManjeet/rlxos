@@ -1,0 +1,7 @@
+id: installer
+version: 2307
+about: Software Installer
+
+build-type: go-pkg
+variables:
+  go-pkg: rlxos/src/installer

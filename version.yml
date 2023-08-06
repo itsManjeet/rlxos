@@ -1,0 +1,4 @@
+version: 2307
+variables:
+  release: stable
+  changelog: unlocked system image

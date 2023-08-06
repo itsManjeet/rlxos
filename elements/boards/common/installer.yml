@@ -1,0 +1,43 @@
+merge: [version.yml]
+no-strip: true
+
+variables:
+  installer-volume-id: RLXOS
+  include-root: /sysroot
+  root-password: rlxos
+  cmdline: rw iso=1 root=LABEL=RLXOS console=tty0 console=ttyS0
+
+build-time:
+  - components/core.yml
+  - components/core/e2fsprogs.yml
+  - components/core/linux.yml
+  - components/core/mkinitramfs.yml
+  - components/core/mtools.yml
+  - components/core/grub.yml
+  - components/cryptsetup.yml
+  - components/core/squashfs-tools.yml
+
+script: |
+  mkdir -p ISO/boot/grub
+
+  mv /sysroot/%{id}-image ISO/rootfs.img
+  mv /sysroot/%{id}-overlay ISO/iso.img
+
+  kerver=$(ls /lib/modules | head -n1)
+  cp /lib/modules/${kerver}/bzImage ISO/boot/vmlinuz-${kerver}
+
+  echo "
+  set timeout=5
+  set default='rlxos GNU/Linux'
+
+  insmod all_video
+
+  menuentry 'rlxos GNU/Linux' {
+    linux /boot/vmlinuz-${kerver} %{cmdline}
+    initrd /boot/initramfs-${kerver}.img
+  }" > ISO/boot/grub/grub.cfg
+
+  mkinitramfs -u -k=${kerver} --no-plymouth -o=$(pwd)/ISO/boot/initramfs-${kerver}.img
+
+  mkdir -p %{install-root}/
+  grub-mkrescue -volid %{installer-volume-id} -o %{install-root}/rlxos-%{id}.iso ISO/

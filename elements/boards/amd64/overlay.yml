@@ -1,13 +1,3 @@
-id: amd64-installer-overlay
-version: 2307
-about: Live ISO overlay installer
-build-type: system
-sources:
-  - /files/core/sysvinit/inittab
-
-build-time:
-  - components/core/squashfs-tools.yml
-
-pre-script: |
-  sed -i 's#--noclear#--noclear --autologin root#g' %{build-root}/inittab
-  install -vDm0644 -t %{install-root}/%{sysconfdir} %{build-root}/inittab
+id: boards-amd64-overlay
+about: AMD64 Board Installer overlay
+merge: [elements/boards/common/overlay.yml]

@@ -37,12 +37,12 @@ func main() {
 				cachePath = s[0]
 				return nil
 			})).
-		Handler(func(c *app.Command, args []string) error {
+		Handler(func(c *app.Command, args []string, i interface{}) error {
 			return c.Help()
 		}).
 		Sub(app.New("build").
 			About("build element").
-			Handler(func(c *app.Command, s []string) error {
+			Handler(func(c *app.Command, s []string, i interface{}) error {
 				if err := checkArgs(s, 1); err != nil {
 					return err
 				}
@@ -55,7 +55,7 @@ func main() {
 			})).
 		Sub(app.New("file").
 			About("Get path of build cache").
-			Handler(func(c *app.Command, s []string) error {
+			Handler(func(c *app.Command, s []string, i interface{}) error {
 				if err := checkArgs(s, 1); err != nil {
 					return err
 				}
@@ -78,7 +78,7 @@ func main() {
 			})).
 		Sub(app.New("list-files").
 			About("List files of build cache").
-			Handler(func(c *app.Command, s []string) error {
+			Handler(func(c *app.Command, s []string, i interface{}) error {
 				if err := checkArgs(s, 1); err != nil {
 					return err
 				}
@@ -106,7 +106,7 @@ func main() {
 			})).
 		Sub(app.New("show").
 			About("Show build configuration for element").
-			Handler(func(c *app.Command, s []string) error {
+			Handler(func(c *app.Command, s []string, i interface{}) error {
 				if err := checkArgs(s, 1); err != nil {
 					return err
 				}
@@ -126,7 +126,7 @@ func main() {
 			})).
 		Sub(app.New("checkout").
 			About("Checkout the cache file").
-			Handler(func(c *app.Command, s []string) error {
+			Handler(func(c *app.Command, s []string, i interface{}) error {
 				if err := checkArgs(s, 2); err != nil {
 					return err
 				}
@@ -163,7 +163,7 @@ func main() {
 			})).
 		Sub(app.New("dump").
 			About("Dump build cache state").
-			Handler(func(c *app.Command, s []string) error {
+			Handler(func(c *app.Command, s []string, i interface{}) error {
 				_, err := getBuilder()
 				if err != nil {
 					fmt.Printf(`{"STATUS": false, "ERROR": "%s"}`, err.Error())
@@ -173,7 +173,7 @@ func main() {
 			})).
 		Sub(app.New("status").
 			About("List status of caches").
-			Handler(func(c *app.Command, s []string) error {
+			Handler(func(c *app.Command, s []string, i interface{}) error {
 				if err := checkArgs(s, 1); err != nil {
 					return err
 				}

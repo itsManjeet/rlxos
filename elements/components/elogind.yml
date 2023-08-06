@@ -1,0 +1,34 @@
+id: elogind
+version: 246.10
+about: Standalone logind daemon
+
+sources:
+  - https://github.com/elogind/elogind/archive/v%{version}/elogind-%{version}.tar.gz
+
+depends:
+  - components/dbus-nologind.yml
+  - components/core/pam.yml
+
+build-time:
+  - components/core/docbook-xsl.yml
+  - components/core/libxslt.yml
+  - components/core/gperf.yml
+
+pre-script: |
+  sed -i '/Disable polkit/,+8 d' meson.build
+  sed '/request_name/i\
+  r = sd_bus_set_exit_on_disconnect(m->bus, true);\
+  if (r < 0)\
+      return log_error_errno(r, "Failed to set exit on disconnect: %m");' \
+      -i src/login/logind.c
+
+configure: >
+  -D cgroup-controller=elogind
+  -D dbuspolicydir=%{sysconfdir}/dbus-1/system.d
+  -D man=auto
+
+post-script: |
+  ln -sfv  libelogind.pc %{install-root}/%{libdir}/pkgconfig/libsystemd.pc
+  ln -sfnv elgoind %{install-root}/%{prefix}/include/systemd
+
+  install -vDm 0644 -t %{install-root}/%{sysconfdir}/pam.d/ /files/core/elogind/elogind-user

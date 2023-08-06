@@ -1,0 +1,66 @@
+#!/bin/sh
+########################################################################
+# Begin dbus
+#
+# Description : Start dbus daemon
+#
+# Author      : Bruce Dubbs - bdubbs@linuxfromscratch.org
+#
+# Version     : BLFS 7.0
+#
+########################################################################
+
+### BEGIN INIT INFO
+# Provides:            dbus messagebus
+# Required-Start:
+# Should-Start:        $syslog random
+# Required-Stop:
+# Should-Stop:         $syslog
+# Default-Start:       2 3 4 5
+# Default-Stop:        0 1 6
+# Short-Description:   Starts message bus.
+# Description:         Starts message bus.
+# X-LFS-Provided-By:   BLFS
+### END INIT INFO
+
+. /lib/lsb/init-functions
+
+#$LastChangedBy$
+#$Date$
+
+pidfile=/run/dbus/pid
+socket=/run/dbus/system_bus_socket
+
+case "$1" in
+   start)
+      log_info_msg "Starting the D-Bus Messagebus Daemon..."
+      mkdir -p /run/dbus
+      /usr/bin/dbus-uuidgen --ensure
+      start_daemon /usr/bin/dbus-daemon --system
+      evaluate_retval
+      ;;
+
+   stop)
+      log_info_msg "Stopping the D-Bus Messagebus Daemon..."
+      killproc /usr/bin/dbus-daemon
+      evaluate_retval
+      rm -f $socket $pidfile
+      ;;
+
+   restart)
+      $0 stop
+      sleep 1
+      $0 start
+      ;;
+
+   status)
+      statusproc /usr/bin/dbus-daemon
+      ;;
+
+   *)
+      echo "Usage: $0 {start|stop|restart|status}"
+      exit 1
+      ;;
+esac
+
+# End /etc/init.d/dbus

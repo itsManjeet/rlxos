@@ -4,13 +4,15 @@ about: A minimal seat management daemon and universal seat management library
 sources:
   - https://git.sr.ht/~kennylevinsen/seatd/archive/%{version}.tar.gz
 
+depends:
+  - components/elogind.yml
 build-time:
   - components/core/meson.yml
 
 configure: >-
   -Dexamples=disabled 
   -Dserver=enabled 
-  -Dlibseat-logind=systemd 
+  -Dlibseat-logind=elogind
 
 post-script: |
   install -Dm644 /files/seatd/sysuser.conf %{install-root}/%{libdir}/sysusers.d/%{id}.conf

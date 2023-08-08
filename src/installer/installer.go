@@ -14,7 +14,7 @@ func main() {
 		About("rlxos system installer").
 		Usage("<TASK> <ARGS...> <FLAGS>").
 		Init(func() (interface{}, error) {
-			back, err := backend.New()
+			back, err := backend.New(nil)
 			if err != nil {
 				return nil, fmt.Errorf("failed to create installer backend %v", err)
 			}

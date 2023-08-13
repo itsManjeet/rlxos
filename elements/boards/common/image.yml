@@ -13,6 +13,8 @@ script: |
     done
   fi
 
+  echo -n %{version} > %{prefix}/.version
+
 build-time:
   - components/core/grub.yml
   - components/core/squashfs-tools.yml
@@ -32,7 +34,7 @@ include:
   - components/core/squashfs-tools.yml
   - components/core/e2fsprogs.yml
   - components/core/linux.yml
-  - components/weston.yml
+  - components/wlroots.yml
 
   # Fonts
   - components/fonts/cantarell.yml

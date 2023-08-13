@@ -22,6 +22,7 @@ type Backend struct {
 	KernelVersion string
 	Timeout       int
 	PrettyName    string
+	ISOLabel      string
 	Progress      ProgressFunction
 }
 
@@ -39,6 +40,7 @@ func New(progress ProgressFunction) (*Backend, error) {
 		ImageVersion:  imageVersion,
 		KernelVersion: string(kernelVersion),
 		Progress:      progress,
+		ISOLabel:      "RLXOS",
 		PrettyName:    "RLXOS Linux",
 		Timeout:       10,
 	}, nil
@@ -71,9 +73,27 @@ func (b *Backend) Install(part string) error {
 		}
 	}
 
+	log.Println("Mounting ISO")
+	isoDeviceLabelPath := path.Join("/", "dev", "disk-by", "label", b.ISOLabel)
+	isoDevice, err := os.Readlink(isoDeviceLabelPath)
+	if err != nil {
+		return fmt.Errorf("failed to read ISO link %s, %v", isoDeviceLabelPath, err)
+	}
+	ISO_PATH := path.Join("/", "run", "iso")
+	if err := os.MkdirAll(ISO_PATH, 0755); err != nil {
+		return fmt.Errorf("failed to create mkdir %s, %v", ISO_PATH, err)
+	}
+	defer os.RemoveAll(ISO_PATH)
+
+	isoDevice = path.Join(path.Dir(isoDeviceLabelPath), isoDevice)
+	if err := syscall.Mount(isoDevice, ISO_PATH, "iso9660", syscall.MS_RDONLY, ""); err != nil {
+		return fmt.Errorf("failed to mount ISO, %s, %v", isoDevice, err)
+	}
+	defer syscall.Unmount(isoDevice, syscall.MNT_FORCE)
+
 	log.Println("Installing system image")
-	rootfs := path.Join("/run/iso/rootfs.img")
-	if err := utils.CopyFile(rootfs, path.Join(sysroot, "system", fmt.Sprint(b.ImageVersion))); err != nil {
+	rootfs := path.Join(ISO_PATH, "rootfs.img")
+	if err := utils.CopyFile(rootfs, path.Join(sysroot, "rlxos", "system", fmt.Sprint(b.ImageVersion))); err != nil {
 		return fmt.Errorf("failed to install system image %v", err)
 	}
 
@@ -112,7 +132,7 @@ set timeout=%d
 set default="%s Installer"
 
 menuentry "%s Installer" {
-	linux /boot/vmlinuz-%s rw system=%d root=UUID=%s
+	linux /boot/vmlinuz-%s rw system=%d root=%s
 	initrd /boot/initramfs-%s.img
 }
 

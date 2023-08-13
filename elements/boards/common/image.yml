@@ -25,8 +25,7 @@ include:
   - components/core/swupd.yml
   - components/core/layers.yml
 
-  - components/core/sysvinit.yml
-  - components/core/sysklogd.yml
+  - components/core/init.yml
   - components/core/tzdata.yml
   - components/core/strace.yml
   - components/core/grub.yml

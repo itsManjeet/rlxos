@@ -38,7 +38,7 @@ func New(progress ProgressFunction) (*Backend, error) {
 	return &Backend{
 		ParititonType: "ext4",
 		ImageVersion:  imageVersion,
-		KernelVersion: string(kernelVersion),
+		KernelVersion: strings.TrimSuffix(string(kernelVersion), "\n"),
 		Progress:      progress,
 		ISOLabel:      "RLXOS",
 		PrettyName:    "RLXOS Linux",
@@ -74,7 +74,7 @@ func (b *Backend) Install(part string) error {
 	}
 
 	log.Println("Mounting ISO")
-	isoDeviceLabelPath := path.Join("/", "dev", "disk-by", "label", b.ISOLabel)
+	isoDeviceLabelPath := path.Join("/", "dev", "disk", "by-label", b.ISOLabel)
 	isoDevice, err := os.Readlink(isoDeviceLabelPath)
 	if err != nil {
 		return fmt.Errorf("failed to read ISO link %s, %v", isoDeviceLabelPath, err)
@@ -129,9 +129,9 @@ func (b *Backend) Install(part string) error {
 	log.Println("Writing bootloader configuration")
 	if err := ioutil.WriteFile(path.Join(sysroot, "boot", "grub", "grub.cfg"), []byte(fmt.Sprintf(`
 set timeout=%d
-set default="%s Installer"
+set default="%s"
 
-menuentry "%s Installer" {
+menuentry "%s" {
 	linux /boot/vmlinuz-%s rw system=%d root=%s
 	initrd /boot/initramfs-%s.img
 }

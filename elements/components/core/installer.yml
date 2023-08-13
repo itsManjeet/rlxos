@@ -1,5 +1,6 @@
 id: installer
 version: 2307
+release: 2
 about: Software Installer
 
 build-type: go-pkg

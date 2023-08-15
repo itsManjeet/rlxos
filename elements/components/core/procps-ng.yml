@@ -9,8 +9,9 @@ variables:
 depends:
   - components/core/glibc.yml
   - components/core/ncurses.yml
+  - components/core/systemd.yml
 
 configure: >-
   --disable-static
   --disable-kill
-  --without-systemd
+  --with-systemd

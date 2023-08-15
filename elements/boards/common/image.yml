@@ -13,12 +13,27 @@ script: |
     done
   fi
 
-  echo -n %{version} > %{prefix}/.version
+  systemd-sysusers
+  systemd-tmpfiles --create || true
+  systemctl preset-all || true
+  systemctl --global preset-all || true
+
+  # TODO: NEEDED?
+  pwconv
+  grpconv
+
+  echo -e "%{root-password}\n%{root-password}" | passwd
+  ln -sv %{datadir}/zoneinfo/Asia/Kolkata %{sysconfdir}/localtime
+
+  echo "LABEL=RLXOS / iso9660 errors=remount-ro,relatime 0 1" >/etc/fstab
+
+  echo -n "%{version}" > /usr/.version
 
 build-time:
   - components/core/grub.yml
   - components/core/squashfs-tools.yml
   - components/core/linux.yml
+  - components/core/systemd.yml
 
 include:
   - components/core.yml
@@ -29,7 +44,7 @@ include:
   - components/core/tzdata.yml
   - components/core/strace.yml
   - components/core/grub.yml
-  - components/core/mkinitramfs.yml
+  - components/dracut.yml
   - components/core/squashfs-tools.yml
   - components/core/e2fsprogs.yml
   - components/core/linux.yml

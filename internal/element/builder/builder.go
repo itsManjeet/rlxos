@@ -245,19 +245,18 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 			url = url[idx+2:]
 		}
 		filepath := path.Join(sourcesDir, filename)
-		if isUrl(url) {
-			if _, err := os.Stat(filepath); err != nil {
+		if _, err := os.Stat(filepath); err != nil {
+			if isUrl(url) {
 				log.Printf("Getting %s from %s\n", filename, url)
 				if err := utils.DownloadFile(filepath, url); err != nil {
 					return err
 				}
-			}
-
-		} else {
-			url = path.Join(b.projectPath, url)
-			log.Printf("Copying %s from %s\n", filename, url)
-			if err := utils.CopyFile(url, filepath); err != nil {
-				return err
+			} else {
+				url = path.Join(b.projectPath, url)
+				log.Printf("Copying %s from %s\n", filename, url)
+				if err := utils.CopyFile(url, filepath); err != nil {
+					return err
+				}
 			}
 		}
 
@@ -408,7 +407,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 	done`
 	if e.BuildType == "system" {
 		log.Println("compressing image", path.Base(cachefile), " from ", pkgdir)
-		if err := container.Run(logWriter, errWriter, []string{"mksquashfs", path.Join("/", "pkg", path.Base(pkgdir)), path.Join("/", "cache", path.Base(cachefile)), "-comp", "zstd", "-Xcompression-level", "19", "-noappend"}, path.Join("/pkg"), environ); err != nil {
+		if err := container.Run(logWriter, errWriter, []string{"mksquashfs", path.Join("/", "pkg", path.Base(pkgdir)), path.Join("/", "cache", path.Base(cachefile))}, path.Join("/pkg"), environ); err != nil {
 			container.RescueShell()
 			return err
 		}

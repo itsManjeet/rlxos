@@ -6,7 +6,7 @@ about: Utilities for handling the ext2, ext3 and ext4 file system
 depends:
   - components/core/bash.yml
   - components/core/util-linux.yml
-  - components/core/libseccomp.yml
+  - components/core/systemd.yml
 
 sources:
   - https://www.kernel.org/pub/linux/kernel/people/tytso/e2fsprogs/v%{version}/e2fsprogs-%{version}.tar.xz

@@ -4,7 +4,7 @@ about: rlxos container developers image
 no-strip: true
 build-type: system
 include:
-  - components/core.yml
+  - components/core/glibc.yml
   - components/core/meson.yml
   - components/core/make.yml
   - components/core/gcc.yml
@@ -18,6 +18,7 @@ include:
   - components/core/flex.yml
   - components/core/kernel-headers.yml
   - components/core/texinfo.yml
+  - components/core/systemd.yml
   - components/cmake.yml
 
 build-time:
@@ -34,6 +35,14 @@ script: |
       sh -e $i
     done
   fi
+
+  systemd-sysusers
+  systemd-tmpfiles --create || true
+  systemctl preset-all
+  systemctl --global preset-all
+
+  pwconv
+  grpconv
 
   echo -e "%{root-password}\n%{root-password}" | passwd
 

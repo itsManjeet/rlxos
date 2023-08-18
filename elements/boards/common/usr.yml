@@ -1,6 +1,4 @@
-id: amd64-core-image
-version: 2307
-about: rlxos core system image
+merge: [version.yml]
 no-strip: true
 
 include:

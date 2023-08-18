@@ -33,7 +33,9 @@ jobs:
         run: ${BUILDER} checkout boards/${{matrix.board}}/updates.yml ${CACHE_PATH}/daily/
 
       - name: Generating Installer image
-        run: ${BUILDER} build boards/${{matrix.board}}/installer.yml
+        run: |
+          ${BUILDER} build boards/${{matrix.board}}/overlay.yml
+          ${BUILDER} build boards/${{matrix.board}}/installer.yml
       
       - name: Checkout Installer image
         run: ${BUILDER} checkout boards/${{matrix.board}}/installer.yml ${CACHE_PATH}/daily/

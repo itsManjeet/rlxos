@@ -40,11 +40,10 @@ include:
   - components/core/swupd.yml
   - components/core/layers.yml
 
-  - components/core/init.yml
   - components/core/tzdata.yml
   - components/core/strace.yml
   - components/core/grub.yml
-  - components/dracut.yml
+  - components/core/mkinitramfs.yml
   - components/core/squashfs-tools.yml
   - components/core/e2fsprogs.yml
   - components/core/linux.yml

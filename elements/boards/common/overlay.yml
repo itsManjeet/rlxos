@@ -1,7 +1,5 @@
 merge: [version.yml]
 build-type: system
-sources:
-  - /files/core/sysvinit/inittab
 
 include:
   - components/core/installer.yml
@@ -9,5 +7,9 @@ build-time:
   - components/core/squashfs-tools.yml
 
 pre-script: |
-  sed -i 's#--noclear#--noclear --autologin root#g' %{build-root}/inittab
-  install -vDm0644 -t %{install-root}/%{sysconfdir} %{build-root}/inittab
+  mkdir -p %{install-root}/%{sysconfdir}/systemd/system/getty@tty1.service.d/
+  cat >%{install-root}/%{sysconfdir}/systemd/system/getty@tty1.service.d/autologin.conf << EOF
+  [Service]
+  ExecStart=
+  ExecStart=-/sbin/agetty -o '-p -f -- \\u' --noclear --autologin root %I $TERM
+  EOF

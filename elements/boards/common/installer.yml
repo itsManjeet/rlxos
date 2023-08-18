@@ -11,7 +11,7 @@ build-time:
   - components/core.yml
   - components/core/e2fsprogs.yml
   - components/core/linux.yml
-  - components/dracut.yml
+  - components/core/mkinitramfs.yml
   - components/core/mtools.yml
   - components/core/grub.yml
   - components/core/systemd.yml

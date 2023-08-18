@@ -4,11 +4,10 @@ about: OpenType text shaping engine
 
 depends:
   - components/glib.yml
-
-build-time:
+  - components/graphite2.yml
   - components/icu.yml
   - components/cairo.yml
-  - components/graphite2.yml
+build-time:
   - components/gobject-introspection.yml
   - components/core/meson.yml
 

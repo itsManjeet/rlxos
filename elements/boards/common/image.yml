@@ -51,3 +51,6 @@ include:
 
   # Fonts
   - components/fonts/cantarell.yml
+
+  # Apps
+  - apps/foot.yml

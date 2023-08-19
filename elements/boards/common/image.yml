@@ -39,6 +39,7 @@ include:
   - components/core.yml
   - components/core/swupd.yml
   - components/core/layers.yml
+  - components/core/vim.yml
 
   - components/core/tzdata.yml
   - components/core/strace.yml
@@ -47,6 +48,7 @@ include:
   - components/core/squashfs-tools.yml
   - components/core/e2fsprogs.yml
   - components/core/linux.yml
+  
   - components/wlroots.yml
 
   # Fonts

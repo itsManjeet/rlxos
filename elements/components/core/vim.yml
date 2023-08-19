@@ -1,0 +1,21 @@
+id: vim
+version: 9.0.1736
+about: Vi Improved, a highly configurable, improved version of the vi text editor
+sources:
+  - https://github.com/vim/vim/archive/v%{version}.tar.gz
+
+depends:
+  - components/core/glibc.yml
+  - components/core/acl.yml
+  - components/core/gawk.yml
+
+pre-script: |
+  echo '#define SYS_VIMRC_FILE "/etc/vimrc"' >> src/feature.h
+
+configure: >
+  --enable-multibyte
+  --disable-gui
+  --with-x=no
+
+post-script: |
+  rm %{install-root}/%{datadir}/applications/ -r

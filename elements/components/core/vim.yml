@@ -2,8 +2,10 @@ id: vim
 version: 9.0.1736
 about: Vi Improved, a highly configurable, improved version of the vi text editor
 sources:
-  - https://github.com/vim/vim/archive/v%{version}.tar.gz
+  - vim-%{version}.tar.gz:https://github.com/vim/vim/archive/v%{version}.tar.gz
 
+variables:
+  seperate-build-dir: false
 depends:
   - components/core/glibc.yml
   - components/core/acl.yml

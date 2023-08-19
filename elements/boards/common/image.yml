@@ -25,8 +25,6 @@ script: |
   echo -e "%{root-password}\n%{root-password}" | passwd
   ln -sv %{datadir}/zoneinfo/Asia/Kolkata %{sysconfdir}/localtime
 
-  echo "LABEL=RLXOS / iso9660 errors=remount-ro,relatime 0 1" >/etc/fstab
-
   echo -n "%{version}" > /usr/.version
 
 build-time:

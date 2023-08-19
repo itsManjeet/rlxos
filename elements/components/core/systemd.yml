@@ -75,6 +75,7 @@ build-time:
   - components/core/expat.yml
   - components/core/libxslt.yml
   - components/core/docbook-xsl.yml
+  - components/core/dbus-nosystemd.yml
 
 sources:
   - https://github.com/systemd/systemd/archive/v%{version}/systemd-%{version}.tar.gz

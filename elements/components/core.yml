@@ -25,6 +25,7 @@ depends:
   - components/core/diffutils.yml
   - components/core/inetutils.yml
   - components/core/systemd.yml
+  - components/core/dbus.yml
   - components/core/tar.yml
   - components/core/findutils.yml
   - components/core/diffutils.yml

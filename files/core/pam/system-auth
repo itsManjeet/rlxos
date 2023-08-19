@@ -1,2 +1,2 @@
-auth      sufficient  pam_fprintd.so
+#auth      sufficient  pam_fprintd.so
 auth      required    pam_unix.so

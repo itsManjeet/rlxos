@@ -1,0 +1,33 @@
+id: dbus
+version: 1.14.8
+about: A message bus system, a simple way for applications to talk to one another
+sources:
+  - https://dbus.freedesktop.org/releases/dbus/dbus-%{version}.tar.xz
+
+build-time:
+  - core/python.yml
+depends:
+  - core/expat.yml
+
+build-type: autotools
+
+variables:
+  run-autogen: false
+
+configure: >-
+  --disable-static 
+  --disable-doxygen-docs 
+  --disable-xml-docs
+  --with-console-auth-dir=/run/console 
+  --with-system-pid-file=/run/dbus/pid 
+  --with-system-socket=/run/dbus/system_bus_socket
+  --libexecdir=/usr/lib/dbus-1.0 
+  --localstatedir=/var 
+  --with-systemduserunitdir=no 
+  --with-systemdsystemunitdir=no
+  --without-x runstatedir=/run
+
+post-script: |
+  mkdir -p ${pkgupd_pkgdir}/var/lib/dbus/
+  ln -sfv /etc/machine-id ${pkgupd_pkgdir}/var/lib/dbus/
+  rm -rf ${pkgupd_pkgdir}/var/run

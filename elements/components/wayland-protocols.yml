@@ -3,7 +3,7 @@ version: 1.32
 about: Project to define a protocol for a compositor to talk to its clients as well as a library implementation of the protocol
 
 build-time:
-  - components/core/meson.yml
+  - core/meson.yml
   - components/wayland.yml
 
 sources:

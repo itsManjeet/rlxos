@@ -4,24 +4,24 @@ about: rlxos container developers image
 no-strip: true
 build-type: system
 include:
-  - components/core.yml
-  - components/core/meson.yml
-  - components/core/make.yml
-  - components/core/gcc.yml
-  - components/core/binutils.yml
-  - components/core/automake.yml
-  - components/core/patch.yml
-  - components/core/m4.yml
-  - components/core/pkg-config.yml
-  - components/core/strace.yml
-  - components/core/bison.yml
-  - components/core/flex.yml
-  - components/core/kernel-headers.yml
-  - components/core/texinfo.yml
+  - core.yml
+  - core/meson.yml
+  - core/make.yml
+  - core/gcc.yml
+  - core/binutils.yml
+  - core/automake.yml
+  - core/patch.yml
+  - core/m4.yml
+  - core/pkg-config.yml
+  - core/strace.yml
+  - core/bison.yml
+  - core/flex.yml
+  - core/kernel-headers.yml
+  - core/texinfo.yml
   - components/cmake.yml
 
 build-time:
-  - components/core/squashfs-tools.yml
+  - core/squashfs-tools.yml
 
 variables:
   root-password: rlxos

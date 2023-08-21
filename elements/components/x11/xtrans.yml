@@ -3,7 +3,7 @@ version: 1.5.0
 about: xorg library xtrans
 
 depends:
-  - components/core/glibc.yml
+  - core/glibc.yml
 
 sources:
   - https://www.x.org/pub/individual/lib/xtrans-%{version}.tar.xz

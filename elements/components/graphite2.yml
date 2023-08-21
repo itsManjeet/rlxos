@@ -7,7 +7,7 @@ about:
 sources:
   - https://github.com/silnrsi/graphite/releases/download/%{version}/graphite2-%{version}.tgz
 depends:
-  - components/core/glibc.yml
+  - core/glibc.yml
 build-time:
   - components/cmake.yml
   - components/py/py-setuptools.yml

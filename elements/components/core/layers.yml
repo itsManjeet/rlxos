@@ -1,7 +1,0 @@
-id: layers
-version: 0.0.1
-about: rlxos layers manager
-
-build-type: go-pkg
-variables:
-  go-pkg: rlxos/src/layers

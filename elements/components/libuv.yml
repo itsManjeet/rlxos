@@ -5,4 +5,4 @@ sources:
   - https://dist.libuv.org/dist/v%{version}/libuv-v%{version}.tar.gz
 
 depends:
-  - components/core/glibc.yml
+  - core/glibc.yml

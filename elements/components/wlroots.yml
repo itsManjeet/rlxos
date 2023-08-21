@@ -2,7 +2,7 @@ id: wlroots
 version: 0.16.2
 about: A modular wayland compositor library
 depends:
-  - components/core/systemd.yml
+  - core/systemd.yml
   - components/libinput.yml
   - components/pixman.yml
   - components/wayland.yml
@@ -12,7 +12,7 @@ depends:
   - components/hwdata.yml
 build-time:
   - components/wayland-protocols.yml
-  - components/core/meson.yml
+  - core/meson.yml
 
 sources:
   - https://gitlab.freedesktop.org/wlroots/wlroots/-/archive/%{version}/wlroots-%{version}.tar.gz

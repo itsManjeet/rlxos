@@ -1,0 +1,10 @@
+id: patch
+version: 2.7.6
+about: |
+  A program for modifying or creating files by applying a patch file typically created by the diff program
+
+depends:
+  - core/glibc.yml
+
+sources:
+  - https://ftp.gnu.org/gnu/patch/patch-%{version}.tar.xz

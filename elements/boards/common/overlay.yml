@@ -2,9 +2,9 @@ merge: [version.yml]
 build-type: system
 
 include:
-  - components/core/installer.yml
+  - core/installer.yml
 build-time:
-  - components/core/squashfs-tools.yml
+  - core/squashfs-tools.yml
 
 pre-script: |
   mkdir -p %{install-root}/%{sysconfdir}/systemd/system/getty@tty1.service.d/

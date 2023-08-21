@@ -1,0 +1,25 @@
+id: iptables
+version: 1.8.9
+about: |
+  Linux kernel packet control tool (using legacy interface)
+
+kernel:
+  - CONFIG_NET
+  - CONFIG_NETFILTER
+  - CONFIG_NETFILTER_ADVANCE
+  - CONFIG_NF_CONNTRACK
+  - CONFIG_NETFILER_XTABLES
+  - CONFIG_NETFILTER_XT_TARGET_LOG
+  - CONFIG_IP_NF_IPTABLES
+
+depends:
+  - core/bash.yml
+  - core/libcap.yml
+  - core/libtool.yml
+
+sources:
+  - http://www.netfilter.org/projects/iptables/files/iptables-%{version}.tar.xz
+
+configure: >
+  --disable-nftables
+  --enable-libipq

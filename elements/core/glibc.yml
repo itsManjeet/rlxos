@@ -1,0 +1,10 @@
+id: glibc
+merge:
+  - elements/include/glibc.yml
+
+depends:
+  - core/filesystem.yml
+
+build-time:
+  - bootstrap.yml
+  - core/kernel-headers.yml

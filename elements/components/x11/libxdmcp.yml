@@ -8,7 +8,7 @@ sources:
   - https://www.x.org/pub/individual/lib/libXdmcp-%{version}.tar.xz
 
 depends:
-  - components/core/glibc.yml
+  - core/glibc.yml
 
 build-time:
   - components/x11/xorgproto.yml

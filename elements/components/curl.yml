@@ -6,8 +6,8 @@ sources:
 
 build-type: autotools
 depends:
-  - components/core/glibc.yml
-  - components/core/ca-certificates.yml
+  - core/glibc.yml
+  - core/ca-certificates.yml
 configure: >-
   --enable-threaded-resolver
   --with-ca-bundle=/etc/ssl/cert.pem

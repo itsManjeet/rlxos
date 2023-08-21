@@ -2,7 +2,7 @@ id: hwdata
 version: 0.372
 about: hardware identification databases
 depends:
-  - components/core/glibc.yml
+  - core/glibc.yml
 sources:
   - https://github.com/vcrhonek/hwdata/archive/refs/tags/v%{version}.tar.gz
 

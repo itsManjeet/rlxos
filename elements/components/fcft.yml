@@ -11,4 +11,4 @@ depends:
   - components/pixman.yml
 build-time:
   - components/tllist.yml
-  - components/core/meson.yml
+  - core/meson.yml

@@ -1,0 +1,12 @@
+id: libpng
+version: 1.6.40
+about: Libraries used by other programs for reading and writing PNG files
+sources:
+  - https://downloads.sourceforge.net/libpng/libpng-%{version}.tar.xz
+
+depends:
+  - core/glibc.yml
+
+build-type: autotools
+
+pre-script: rm autogen.sh

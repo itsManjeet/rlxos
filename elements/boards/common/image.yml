@@ -28,24 +28,24 @@ script: |
   echo -n "%{version}" > /usr/.version
 
 build-time:
-  - components/core/grub.yml
-  - components/core/squashfs-tools.yml
-  - components/core/linux.yml
-  - components/core/systemd.yml
+  - core/grub.yml
+  - core/squashfs-tools.yml
+  - core/linux.yml
+  - core/systemd.yml
 
 include:
-  - components/core.yml
-  - components/core/swupd.yml
-  - components/core/layers.yml
-  - components/core/vim.yml
+  - core.yml
+  - core/swupd.yml
+  - core/layers.yml
+  - core/vim.yml
 
-  - components/core/tzdata.yml
-  - components/core/strace.yml
-  - components/core/grub.yml
-  - components/core/mkinitramfs.yml
-  - components/core/squashfs-tools.yml
-  - components/core/e2fsprogs.yml
-  - components/core/linux.yml
+  - core/tzdata.yml
+  - core/strace.yml
+  - core/grub.yml
+  - core/mkinitramfs.yml
+  - core/squashfs-tools.yml
+  - core/e2fsprogs.yml
+  - core/linux.yml
   
   - components/wlroots.yml
 

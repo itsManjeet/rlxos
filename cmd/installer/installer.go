@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 	"rlxos/pkg/app"
-	"rlxos/src/installer/backend"
+	"rlxos/pkg/installer"
 )
 
 func main() {
@@ -14,7 +14,7 @@ func main() {
 		About("rlxos system installer").
 		Usage("<TASK> <ARGS...> <FLAGS>").
 		Init(func() (interface{}, error) {
-			back, err := backend.New(nil)
+			back, err := installer.New(nil)
 			if err != nil {
 				return nil, fmt.Errorf("failed to create installer backend %v", err)
 			}
@@ -29,7 +29,7 @@ func main() {
 				if len(s) != 1 {
 					return fmt.Errorf("no partition specified")
 				}
-				back := i.(*backend.Backend)
+				back := i.(*installer.Backend)
 
 				if err := back.Install(s[0]); err != nil {
 					return fmt.Errorf("installation failed, %v", err)

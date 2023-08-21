@@ -1,4 +1,4 @@
-package backend
+package installer
 
 import (
 	"fmt"
@@ -7,8 +7,8 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"rlxos/pkg/swupd"
 	"rlxos/pkg/utils"
-	swupd "rlxos/src/swupd/backend"
 	"strings"
 	"syscall"
 	"unicode"

@@ -5,4 +5,4 @@ sources:
   - https://bitmath.org/code/mtdev/mtdev-%{version}.tar.bz2
 
 depends:
-  - components/core/glibc.yml
+  - core/glibc.yml

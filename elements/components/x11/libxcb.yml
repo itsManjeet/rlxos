@@ -13,7 +13,7 @@ depends:
   - components/x11/xcb-proto.yml
 
 build-time:
-  - components/core/libxslt.yml
-  - components/core/python.yml
-  - components/core/pkg-config.yml
+  - core/libxslt.yml
+  - core/python.yml
+  - core/pkg-config.yml
   - components/x11/util-macros.yml

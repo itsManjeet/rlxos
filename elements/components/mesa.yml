@@ -5,8 +5,8 @@ sources:
   - https://mesa.freedesktop.org/archive/mesa-%{version}.tar.xz
 
 depends:
-  - components/core/libelf.yml
-  - components/core/libxml2.yml
+  - core/libelf.yml
+  - core/libxml2.yml
   - components/libllvm.yml
   - components/libdrm.yml
   - components/wayland.yml
@@ -19,8 +19,8 @@ build-time:
   - components/wayland-protocols.yml
   - components/py/py-mako.yml
   - components/cmake.yml
-  - components/core/flex.yml
-  - components/core/bison.yml
+  - core/flex.yml
+  - core/bison.yml
   - components/glslang.yml
   - components/llvm.yml
 

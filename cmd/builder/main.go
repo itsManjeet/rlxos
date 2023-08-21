@@ -5,10 +5,11 @@ import (
 	"os"
 	"os/exec"
 	"path"
-	"rlxos/internal/element"
-	"rlxos/internal/element/builder"
 	"rlxos/pkg/app"
 	"rlxos/pkg/app/flag"
+	"rlxos/pkg/color"
+	"rlxos/pkg/element"
+	"rlxos/pkg/element/builder"
 
 	"gopkg.in/yaml.v2"
 )
@@ -35,6 +36,12 @@ func main() {
 			About("Specify cache path").
 			Handler(func(s []string) error {
 				cachePath = s[0]
+				return nil
+			})).
+		Flag(flag.New("no-color").
+			About("No color on output").
+			Handler(func(s []string) error {
+				color.NoColor = true
 				return nil
 			})).
 		Handler(func(c *app.Command, args []string, i interface{}) error {
@@ -199,13 +206,20 @@ func main() {
 				}
 
 				for _, p := range pairs {
-					fmt.Printf("[%s]    %s\n", p.State, p.Path)
+					state := ""
+					switch p.State {
+					case builder.BuildStatusCached:
+						state = color.Green + " CACHED  " + color.Reset
+					case builder.BuildStatusWaiting:
+						state = color.Magenta + " WAITING " + color.Reset
+					}
+					fmt.Printf("[%s]    %s\n", state, color.Bold+p.Path+color.Reset)
 				}
 
 				return nil
 			})).
 		Run(os.Args); err != nil {
-		fmt.Printf("ERROR: %v\n", err)
+		color.Error("%v", err)
 		os.Exit(1)
 	}
 }

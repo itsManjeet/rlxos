@@ -3,16 +3,16 @@ version: 2.76.4
 about: Package contains low-level libraries useful for providing data structure handling for C, portability wrappers and interfaces for such runtime functionality as an event loop, threads, dynamic loading and an object system
 
 depends:
-  - components/core/libffi.yml
-  - components/core/util-linux.yml
-  - components/core/zlib.yml
-  - components/core/libelf.yml
-  - components/core/libxslt.yml
-  - components/core/pcre2.yml
+  - core/libffi.yml
+  - core/util-linux.yml
+  - core/zlib.yml
+  - core/libelf.yml
+  - core/libxslt.yml
+  - core/pcre2.yml
 
 build-time:
-  - components/core/meson.yml
-  - components/core/gettext.yml
+  - core/meson.yml
+  - core/gettext.yml
 
 sources:
   - https://download.gnome.org/sources/glib/2.76/glib-%{version}.tar.xz

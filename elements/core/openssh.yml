@@ -1,0 +1,41 @@
+id: openssh
+version: 9.3p2
+about: ssh clients and the sshd daemon
+
+depends:
+  - core/glibc.yml
+  - core/pam.yml
+
+variables:
+  run-autogen: false
+  seperate-build-dir: false
+
+sources:
+  - https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-%{version}.tar.gz
+  - files/core/openssh/sshd.conf
+  - files/core/openssh/sshd.pam
+  - files/core/openssh/sshd.service
+  - files/core/openssh/sshdgenkeys.service
+
+post-script: |
+  install -vDm755 contrib/ssh-copy-id -t %{install-root}/%{bindir}
+  install -vDm644 %{build-root}/sshd.service -t %{install-root}/%{libdir}/systemd/system/
+  install -vDm644 %{build-root}/sshdgenkeys.service -t %{install-root}/%{libdir}/systemd/system/
+  install -vDm644 %{build-root}/sshd.conf -t %{install-root}/%{libdir}/tmpfiles.d/
+  install -vDm644 %{build-root}/sshd.pam %{install-root}/%{sysconfdir}/pam.d/sshd
+
+script: |
+  ./configure \
+      --prefix=%{prefix}  \
+      --sbindir=%{bindir} \
+      --libexecdir=%{libdir}/ssh \
+      --with-md5-passwords  \
+      --sysconfdir=%{sysconfdir}/ssh \
+      --with-privsep-path=%{localstatedir}/lib/sshd \
+      --with-default-path=%{bindir} \
+      --with-pid-dir=/run \
+      --with-pam \
+      --with-privsep-user=nobody
+  
+  make ${MAKEFLAGS}
+  make DESTDIR=%{install-root} install 

@@ -9,10 +9,10 @@ sources:
   - https://github.com/KhronosGroup/glslang/archive/%{version}.tar.gz
 
 depends:
-  - components/core/glibc.yml
+  - core/glibc.yml
 
 build-time:
-  - components/core/ninja.yml
+  - core/ninja.yml
   - components/cmake.yml
   - components/spirv-headers.yml
   - components/spirv-tools.yml

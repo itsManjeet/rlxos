@@ -5,7 +5,7 @@ sources:
   - https://www.cairographics.org/snapshots/cairo-%{version}.tar.xz
 
 depends:
-  - components/core/libpng.yml
+  - core/libpng.yml
   - components/pixman.yml
   - components/fontconfig.yml
   - components/glib.yml
@@ -13,11 +13,11 @@ depends:
   - components/x11/libxcb.yml
   - components/x11/libxext.yml
   - components/x11/libxrender.yml
-  - components/core/lzo.yml
-  - components/core/zlib.yml
+  - core/lzo.yml
+  - core/zlib.yml
 
 build-time:
-  - components/core/meson.yml
+  - core/meson.yml
 configure: >-
   -D spectre=disabled
   -D tests=disabled

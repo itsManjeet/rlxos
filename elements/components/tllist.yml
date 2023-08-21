@@ -6,7 +6,7 @@ sources:
   - tllist-%{version}.tar.gz::https://codeberg.org/dnkl/tllist/archive/%{version}.tar.gz
 
 depends:
-  - components/core/glibc.yml
+  - core/glibc.yml
 
 build-time:
-  - components/core/meson.yml
+  - core/meson.yml

@@ -1,0 +1,31 @@
+id: ncurses
+version: 6.4
+about: Libraries for terminal-independent handling of character screens
+
+configure: >-
+  --with-shared 
+  --without-debug
+  --without-normal
+  --enable-pc-files
+  --enable-widec
+
+post-script: |
+  mkdir -p ${pkgupd_pkgdir}/usr/lib/pkgconfig
+
+  for lib in ncurses form panel menu ; do
+    rm -vf ${pkgupd_pkgdir}/usr/lib/lib${lib}.so
+    echo "INPUT(-l${lib}w)" > ${pkgupd_pkgdir}/usr/lib/lib${lib}.so
+    ln -sfv ${lib}w.pc  ${pkgupd_pkgdir}/usr/lib/pkgconfig/${lib}.pc
+  done
+
+  rm -vf                     ${pkgupd_pkgdir}/usr/lib/libcursesw.so
+  echo "INPUT(-lncursesw)" > ${pkgupd_pkgdir}/usr/lib/libcursesw.so
+  ln -sfv libncurses.so ${pkgupd_pkgdir}/usr/lib/libcurses.so
+
+  rm -fv ${pkgupd_pkgdir}/usr/lib/libncurses++w.a
+
+sources:
+  - https://ftp.gnu.org/gnu/ncurses/ncurses-%{version}.tar.gz
+
+depends:
+  - core/readline.yml

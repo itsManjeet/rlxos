@@ -3,7 +3,7 @@ version: 1.8.6
 about: X11 client-side library
 
 depends:
-  - components/core/glibc.yml
+  - core/glibc.yml
   - components/x11/libxcb.yml
   - components/x11/xorgproto.yml
 

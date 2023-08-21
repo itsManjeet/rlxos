@@ -1,0 +1,39 @@
+id: core
+version: 2307
+about: rlxos core components
+
+script: |
+  mkdir -p %{install-root}/
+  echo %{version} > %{install-root}/.version
+
+depends:
+  - core/busybox.yml
+  - core/gzip.yml
+  - core/glibc.yml
+  - core/libgcc.yml
+  - core/locales.yml
+  - core/coreutils.yml
+  - core/kmod.yml
+  - core/inetutils.yml
+  - core/iproute2.yml
+  - core/sed.yml
+  - core/grep.yml
+  - core/grep.yml
+  - core/gzip.yml
+  - core/tar.yml
+  - core/findutils.yml
+  - core/diffutils.yml
+  - core/inetutils.yml
+  - core/systemd.yml
+  - core/dbus.yml
+  - core/tar.yml
+  - core/findutils.yml
+  - core/diffutils.yml
+  - core/grep.yml
+  - core/gzip.yml
+  - core/less.yml
+  - core/util-linux.yml
+  - core/xz.yml
+  - core/zstd.yml
+  - core/which.yml
+  - core/libtool.yml

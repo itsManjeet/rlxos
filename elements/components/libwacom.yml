@@ -6,7 +6,7 @@ sources:
 
 depends:
   - components/libgudev.yml
-  - components/core/libxml2.yml
+  - core/libxml2.yml
 
 configure: >-
   --buildtype=release 

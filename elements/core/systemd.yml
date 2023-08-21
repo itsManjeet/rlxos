@@ -1,0 +1,71 @@
+id: systemd
+version: 252
+about: Package contains programs for controlling the startup, running, and shutdown of the system
+
+environ:
+  - LANG=en_IN.UTF-8
+  - PKG_CONFIG_PATH="%{libdir}/pkgconfig"
+
+pre-script: |
+  sed '/bus_message_type_from_string/s/_pure_//' \
+    -i src/libsystemd/sd-bus/bus-internal.h    &&
+  sed '/devt_hash_func/s/_pure_//'               \
+      -i src/basic/hash-funcs.h                  &&
+  sed '/job_get_timeout/s/_pure_//'              \
+      -i src/core/job.h
+
+  sed -i -e 's/GROUP="render"/GROUP="video"/' \
+       -e 's/GROUP="sgx", //' rules.d/50-udev-default.rules.in
+
+configure: >
+  -D default-dnssec=no
+  -D firstboot=true
+  -D install-tests=false
+  -D rpmmacrosdir=no
+  -D mode=release
+  -D efi=true
+  -D gnu-efi=true
+  -D nologin-path=%{bindir}/nologin
+  -D debug-shell=%{bindir}/bash
+  -D default-user-shell=%{bindir}/bash
+  -D dev-kvm-mode=0660
+  -D fallback-hostname='rlxos'
+  -D docdir=%{datadir}/doc/system-%{version}
+  -Dsbat-distro='rlxos'
+  -Dsbat-distro-summary='rlxos GNU/Linux'
+  -Dsbat-distro-pkgname="%{id}"
+  -Dsbat-distro-version="%{version}"
+  -Dsbat-distro-url="https://rlxos.dev/"
+
+depends:
+  - core/acl.yml
+  - core/bash.yml
+  - core/coreutils.yml
+  - core/util-linux.yml
+  - core/openssl.yml
+  - core/iptables.yml
+  - core/kmod.yml
+  - core/diffutils.yml
+  - core/grep.yml
+  - core/openssl.yml
+  - core/libgcrypt.yml
+  - components/py/py-jinja2.yml
+  - core/libcap.yml
+  - core/sed.yml
+  - core/gawk.yml
+  - core/lz4.yml
+  - core/libseccomp.yml
+  - core/libelf.yml
+  - components/cryptsetup.yml
+  - core/gnu-efi.yml
+
+build-time:
+  - core/gcc.yml
+  - core/meson.yml
+  - core/expat.yml
+  - core/libxslt.yml
+  - core/docbook-xsl.yml
+  - core/dbus-nosystemd.yml
+
+sources:
+  - https://github.com/systemd/systemd/archive/v%{version}/systemd-%{version}.tar.gz

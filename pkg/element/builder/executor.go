@@ -3,7 +3,6 @@ package builder
 import (
 	"bufio"
 	"fmt"
-	"io"
 	"log"
 	"math/rand"
 	"os"
@@ -79,14 +78,12 @@ func (c *Container) Run(lw *bufio.Writer, ew *bufio.Writer, cmd []string, dir st
 	}
 	args = append(args, "-w", dir, "-i", c.name)
 	args = append(args, cmd...)
-	logStdoutWriter := io.MultiWriter(os.Stdout, lw)
-	logStderrWriter := io.MultiWriter(os.Stderr, ew)
 	fmt.Fprintln(lw, "COMMAND:", args)
 
 	log.Println(backend, args)
 	e := exec.Command(backend, args...)
-	e.Stdout = logStdoutWriter
-	e.Stderr = logStderrWriter
+	e.Stdout = lw
+	e.Stderr = ew
 	e.Stdin = os.Stdin
 	err := e.Run()
 

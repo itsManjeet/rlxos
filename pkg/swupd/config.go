@@ -1,4 +1,4 @@
-package config
+package swupd
 
 import (
 	"os"
@@ -11,7 +11,7 @@ type Config struct {
 	Channel string `yaml:"channel"`
 }
 
-func Load(configfile string) (*Config, error) {
+func LoadConfig(configfile string) (*Config, error) {
 	data, err := os.ReadFile(configfile)
 	if err != nil {
 		return nil, err

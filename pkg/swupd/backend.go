@@ -1,16 +1,15 @@
-package backend
+package swupd
 
 import (
 	"encoding/json"
 	"net/http"
-	"rlxos/src/swupd/config"
 )
 
 type Backend struct {
-	config *config.Config
+	config *Config
 }
 
-func New(c *config.Config) *Backend {
+func New(c *Config) *Backend {
 	return &Backend{config: c}
 }
 

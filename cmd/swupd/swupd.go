@@ -6,8 +6,7 @@ import (
 	"os"
 	"rlxos/pkg/app"
 	"rlxos/pkg/app/flag"
-	"rlxos/src/swupd/backend"
-	"rlxos/src/swupd/config"
+	"rlxos/pkg/swupd"
 )
 
 var (
@@ -27,11 +26,11 @@ func main() {
 				return nil
 			})).
 		Init(func() (interface{}, error) {
-			conf, err := config.Load(CONFIG_FILE)
+			conf, err := swupd.LoadConfig(CONFIG_FILE)
 			if err != nil {
 				return nil, err
 			}
-			return backend.New(conf), nil
+			return swupd.New(conf), nil
 		}).
 		Handler(func(c *app.Command, s []string, b interface{}) error {
 			return c.Help()
@@ -39,7 +38,7 @@ func main() {
 		Sub(app.New("check").
 			About("Check software update(s)").
 			Handler(func(c *app.Command, s []string, i interface{}) error {
-				back := i.(*backend.Backend)
+				back := i.(*swupd.Backend)
 				updateInfo, err := back.Check()
 				if err != nil {
 					return fmt.Errorf("failed to check updates, %v", err)
@@ -54,7 +53,7 @@ func main() {
 		Sub(app.New("update").
 			About("Perform software update(s)").
 			Handler(func(c *app.Command, s []string, i interface{}) error {
-				back := i.(*backend.Backend)
+				back := i.(*swupd.Backend)
 				updateInfo, err := back.Check()
 				if err != nil {
 					return fmt.Errorf("failed to check updates, %v", err)

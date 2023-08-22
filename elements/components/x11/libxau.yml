@@ -5,5 +5,5 @@ sources:
   - https://www.x.org/pub/individual/lib/libXau-%{version}.tar.xz
 
 depends:
-  - core/glibc.yml
+  - components/glibc.yml
   - components/x11/xorgproto.yml

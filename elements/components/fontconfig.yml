@@ -4,10 +4,10 @@ about: Library and support programs used for configuring and customizing font ac
 sources:
   - https://www.freedesktop.org/software/fontconfig/release/fontconfig-%{version}.tar.xz
 depends:
-  - core/freetype.yml
+  - components/freetype.yml
 
 build-time:
-  - core/gperf.yml
+  - components/gperf.yml
 
 build-type: autotools
 configure: >-

@@ -7,7 +7,7 @@ sources:
 depends:
   - components/libuv.yml
   - components/curl.yml
-  - core/lz4.yml
+  - components/lz4.yml
   - components/libarchive.yml
 
 build-type: autotools

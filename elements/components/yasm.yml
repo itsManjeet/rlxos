@@ -5,6 +5,6 @@ sources:
   - http://www.tortall.net/projects/yasm/releases/yasm-%{version}.tar.gz
 
 depends:
-  - core/glibc.yml
+  - components/glibc.yml
 pre-script: |
   sed -i "s#) ytasm.*#)#" Makefile.in

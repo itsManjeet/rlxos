@@ -6,7 +6,7 @@ sources:
 
 depends:
   - components/libjpeg-turbo.yml
-  - core/libpng.yml
+  - components/libpng.yml
   - components/libtiff.yml
 
 configure: >-

@@ -1,6 +1,8 @@
 name: Build and Release
 on:
   push:
+    tags:
+      - '*'
 
 jobs:
   generate-image:
@@ -16,6 +18,29 @@ jobs:
       BUILDER: ./builder -cache-path ${{ secrets.CACHE_PATH }}
     steps:
       - uses: actions/checkout@v1
+
+      - name: Generating Changelog
+        id: changelog
+        uses: requarks/changelog-action@v1
+        with:
+          token: ${{ github.token }}
+          tag: ${{ github.ref_name }}
+
+      - name: Setup Environment
+        run: |
+          TAG_NAME="${GITHUB_REF#refs/*/}"
+          VERSION="${TAG_NAME%.*}"
+          CODENAME="${TAG_NAME#${VERSION}.}"
+
+          echo "
+          version: ${VERSION}
+          variables:
+            release: stable
+            codename: ${CODENAME}
+            changelog: |
+              ${{ steps.changelog.outputs.changes }}
+          "
+
       - name: Building pkgupd-builder
         run: |
           go mod tidy

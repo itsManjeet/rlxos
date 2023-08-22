@@ -1,0 +1,17 @@
+id: locales
+version: 2307
+about: Locale cache
+
+build-time:
+  - components/glibc.yml
+  - components/bash.yml
+  - components/gzip.yml
+
+script: |
+  mkdir -p %{install-root}/%{libdir}/locale
+
+  grep -v -e "C.UTF-8" %{datadir}/i18n/SUPPORTED | xargs -n 2 bash -c ' echo "Generating ${0}"; \
+    localedef --prefix=%{install-root} --no-archive -i ${0%%.*} -f ${1} ${0}'
+  
+  mkdir -p %{install-root}/%{sysconfdir}
+  echo "LANG=en_IN.UTF-8" > %{install-root}/%{sysconfdir}/locale.conf

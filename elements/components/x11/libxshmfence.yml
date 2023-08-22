@@ -6,7 +6,7 @@ sources:
   - https://www.x.org/pub/individual/lib/libxshmfence-%{version}.tar.xz
 
 depends:
-  - core/glibc.yml
+  - components/glibc.yml
 
 build-time:
   - components/x11/util-macros.yml

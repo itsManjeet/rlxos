@@ -6,8 +6,8 @@ sources:
 
 depends:
   - components/json-c.yml
-  - core/lvm2.yml
-  - core/popt.yml
+  - components/lvm2.yml
+  - components/popt.yml
   - components/libssh.yml
 
 configure: >

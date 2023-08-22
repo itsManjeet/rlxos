@@ -1,8 +1,0 @@
-id: gzip
-version: 1.12
-about: Programs for compressing and decompressing files
-sources:
-  - https://ftp.gnu.org/gnu/gzip/gzip-%{version}.tar.xz
-depends:
-  - core/bash.yml
-  - core/less.yml

@@ -1,0 +1,9 @@
+id: expat
+version: 2.5.0
+about: A stream oriented C library for parsing XML
+
+depends:
+  - components/glibc.yml
+
+sources:
+  - https://master.dl.sourceforge.net/project/expat/expat/%{version}/expat-%{version}.tar.gz

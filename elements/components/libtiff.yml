@@ -5,10 +5,10 @@ sources:
   - https://download.osgeo.org/libtiff/tiff-%{version}.tar.gz
 
 depends:
-  - core/glibc.yml
-  - core/xz.yml
-  - core/zlib.yml
-  - core/zstd.yml
+  - components/glibc.yml
+  - components/xz.yml
+  - components/zlib.yml
+  - components/zstd.yml
 
 build-time:
   - components/cmake.yml

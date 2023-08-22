@@ -4,11 +4,11 @@ about: GObject bindings for libudev.
 
 depends:
   - components/glib.yml
-  - core/systemd.yml
+  - components/systemd.yml
   - components/gobject-introspection.yml
 
 build-time:
-  - core/meson.yml
+  - components/meson.yml
 
 sources:
   - https://download.gnome.org/sources/libgudev/%{version}/libgudev-%{version}.tar.xz

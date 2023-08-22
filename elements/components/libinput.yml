@@ -10,7 +10,7 @@ depends:
   - components/libgudev.yml
 
 build-time:
-  - core/meson.yml
+  - components/meson.yml
   - components/wayland-protocols.yml
 
 sources:

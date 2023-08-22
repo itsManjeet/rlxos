@@ -8,6 +8,6 @@ sources:
   - https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-%{version}.tar.xz
 
 build-time:
-  - core/glibc.yml
-  - core/libxml2.yml
-  - core/python.yml
+  - components/glibc.yml
+  - components/libxml2.yml
+  - components/python.yml

@@ -6,6 +6,6 @@ sources:
   - https://files.pythonhosted.org/packages/source/M/MarkupSafe/MarkupSafe-%{version}.tar.gz
 
 depends:
-  - core/python.yml
+  - components/python.yml
 build-time:
   - components/py/py-setuptools.yml

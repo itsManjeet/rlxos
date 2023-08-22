@@ -5,8 +5,8 @@ sources:
   - https://www.cairographics.org/releases/pixman-%{version}.tar.gz
 
 depends:
-  - core/glibc.yml
+  - components/glibc.yml
 
 build-time:
-  - core/libpng.yml
-  - core/meson.yml
+  - components/libpng.yml
+  - components/meson.yml

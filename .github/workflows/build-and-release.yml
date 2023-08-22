@@ -3,8 +3,8 @@ on:
   push:
     tags:
       - '*'
-    paths-ignore:
-      - 'docs/**'
+    branches:
+      - 'rolling'
 jobs:
   generate-image:
     name: Generate Image
@@ -40,7 +40,7 @@ jobs:
             codename: ${CODENAME}
             changelog: |
               SOME CHANGES
-          "
+          " > version.yml
 
       - name: Building pkgupd-builder
         run: |

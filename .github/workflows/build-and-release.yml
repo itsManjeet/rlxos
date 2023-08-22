@@ -3,7 +3,8 @@ on:
   push:
     tags:
       - '*'
-
+    paths-ignore:
+      - 'docs/**'
 jobs:
   generate-image:
     name: Generate Image
@@ -19,12 +20,12 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - name: Generating Changelog
-        id: changelog
-        uses: requarks/changelog-action@v1
-        with:
-          token: ${{ github.token }}
-          tag: ${{ github.ref_name }}
+      # - name: Generating Changelog
+      #   id: changelog
+      #   uses: requarks/changelog-action@v1
+      #   with:
+      #     token: ${{ github.token }}
+      #     tag: ${{ github.ref_name }}
 
       - name: Setup Environment
         run: |
@@ -38,7 +39,7 @@ jobs:
             release: stable
             codename: ${CODENAME}
             changelog: |
-              ${{ steps.changelog.outputs.changes }}
+              SOME CHANGES
           "
 
       - name: Building pkgupd-builder

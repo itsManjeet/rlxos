@@ -8,6 +8,7 @@ script: |
 
 depends:
   - core/busybox.yml
+  - core/ca-certificates.yml
   - core/gzip.yml
   - core/glibc.yml
   - core/libgcc.yml

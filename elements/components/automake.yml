@@ -1,0 +1,12 @@
+id: automake
+version: 1.16.5
+
+about: Programs for generating Makefiles for use with Autoconf
+
+depends:
+  - components/bash.yml
+  - components/perl.yml
+  - components/autoconf.yml
+  
+sources:
+  - https://ftp.gnu.org/gnu/automake/automake-%{version}.tar.xz

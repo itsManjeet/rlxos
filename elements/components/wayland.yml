@@ -3,13 +3,13 @@ version: 1.22.0
 about: Computer display server protocol
 
 depends:
-  - core/libxml2.yml
-  - core/expat.yml
-  - core/glibc.yml
-  - core/libffi.yml
+  - components/libxml2.yml
+  - components/expat.yml
+  - components/glibc.yml
+  - components/libffi.yml
 
 build-time:
-  - core/meson.yml
+  - components/meson.yml
 
 sources:
   - https://gitlab.freedesktop.org/wayland/wayland/-/releases/%{version}/downloads/wayland-%{version}.tar.xz

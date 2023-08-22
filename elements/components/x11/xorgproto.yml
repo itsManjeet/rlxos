@@ -5,8 +5,8 @@ sources:
   - https://xorg.freedesktop.org/archive/individual/proto/xorgproto-%{version}.tar.xz
 
 build-time:
-  - core/python.yml
-  - core/meson.yml
+  - components/python.yml
+  - components/meson.yml
   - components/x11/util-macros.yml
 
 configure: >-

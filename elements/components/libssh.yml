@@ -2,12 +2,12 @@ id: libssh
 version: 0.10.5
 about: Library for accessing ssh client services through C libraries
 depends:
-  - core/openssl.yml
-  - core/zlib.yml
+  - components/openssl.yml
+  - components/zlib.yml
 build-time:
   - components/cmake.yml
-  - core/openssh.yml
-  - core/python.yml
+  - components/openssh.yml
+  - components/python.yml
 sources:
   - https://www.libssh.org/files/0.10/%{id}-%{version}.tar.xz
 

@@ -5,9 +5,9 @@ about: Common functions for Xorg input drivers
 sources:
   - https://www.freedesktop.org/software/libevdev/libevdev-%{version}.tar.xz
 depends:
-  - core/glibc.yml
+  - components/glibc.yml
 build-time:
-  - core/check.yml
+  - components/check.yml
 kernel:
   - CONFIG_INPUT
   - CONFIG_INPUT_EUDEV

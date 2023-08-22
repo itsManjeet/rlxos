@@ -5,6 +5,6 @@ sources:
   - https://xorg.freedesktop.org/archive/individual/data/%{id}/%{id}-%{version}.tar.xz
 
 build-time:
-  - core/libxslt.yml
-  - core/meson.yml
-  - core/python.yml
+  - components/libxslt.yml
+  - components/meson.yml
+  - components/python.yml

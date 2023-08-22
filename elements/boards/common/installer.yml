@@ -8,15 +8,15 @@ variables:
   cmdline: rw iso=1 root=LABEL=RLXOS console=tty0 console=ttyS0
 
 build-time:
-  - core.yml
-  - core/e2fsprogs.yml
-  - core/linux.yml
-  - core/mkinitramfs.yml
-  - core/mtools.yml
-  - core/grub.yml
-  - core/systemd.yml
+  - components/core.yml
+  - components/e2fsprogs.yml
+  - components/linux.yml
+  - components/mkinitramfs.yml
+  - components/mtools.yml
+  - components/grub.yml
+  - components/systemd.yml
   - components/cryptsetup.yml
-  - core/squashfs-tools.yml
+  - components/squashfs-tools.yml
 
 script: |
   mkdir -p ISO/boot/grub

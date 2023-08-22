@@ -6,9 +6,9 @@ sources:
   - https://xorg.freedesktop.org/releases/individual/lib/%{id}-%{version}.tar.xz
 
 depends:
-  - core/glibc.yml
-  - core/zlib.yml
+  - components/glibc.yml
+  - components/zlib.yml
 
 build-time:
-  - core/meson.yml
+  - components/meson.yml
   - components/x11/util-macros.yml

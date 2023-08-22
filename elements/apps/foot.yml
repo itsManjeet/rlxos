@@ -17,5 +17,5 @@ depends:
 
 build-time:
   - components/llvm.yml
-  - core/meson.yml
+  - components/meson.yml
   - components/wayland-protocols.yml

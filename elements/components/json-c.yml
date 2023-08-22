@@ -4,6 +4,6 @@ about: A reference counting object model that allows you to easily construct JSO
 sources:
   - https://s3.amazonaws.com/json-c_releases/releases/json-c-%{version}.tar.gz
 depends:
-  - core/glibc.yml
+  - components/glibc.yml
 build-time:
   - components/cmake.yml

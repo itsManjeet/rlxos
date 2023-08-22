@@ -5,10 +5,10 @@ sources:
   - https://dri.freedesktop.org/libdrm/libdrm-%{version}.tar.xz
 
 depends:
-  - core/glibc.yml
+  - components/glibc.yml
   - components/libpciaccess.yml
 build-time:
-  - core/meson.yml
+  - components/meson.yml
 configure: >-
   --buildtype=release 
   -D udev=true 

@@ -1,0 +1,12 @@
+id: gcc
+merge:
+  - elements/include/gcc.yml
+
+depends:
+  - components/zlib.yml
+  - components/libmpc.yml
+  - components/libmpfr.yml
+  - components/libgmp.yml
+
+build-time:
+  - components/binutils.yml

@@ -9,7 +9,7 @@ configure: >-
   -Denable-docs=false
 
 depends:
-  - core/libxml2.yml
+  - components/libxml2.yml
   - components/xkeyboard-config.yml
   - components/wayland-protocols.yml
   - components/x11/libxcb.yml

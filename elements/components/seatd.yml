@@ -5,10 +5,10 @@ sources:
   - https://git.sr.ht/~kennylevinsen/seatd/archive/%{version}.tar.gz
 
 depends:
-  - core/systemd.yml
+  - components/systemd.yml
 
 build-time:
-  - core/meson.yml
+  - components/meson.yml
 
 configure: >-
   -Dexamples=disabled 

@@ -6,20 +6,20 @@ sources:
   - dracut-%{version}.tar.gz::https://github.com/dracutdevs/dracut/archive/refs/tags/%{version}.tar.gz
 
 depends:
-  - core/bash.yml
-  - core/coreutils.yml
-  - core/binutils.yml
-  - core/cpio.yml
-  - core/findutils.yml
-  - core/grep.yml
-  - core/gzip.yml
-  - core/kmod.yml
-  - core/pkg-config.yml
-  - core/procps-ng.yml
-  - core/sed.yml
-  - core/systemd.yml
-  - core/util-linux.yml
-  - core/xz.yml
+  - components/bash.yml
+  - components/coreutils.yml
+  - components/binutils.yml
+  - components/cpio.yml
+  - components/findutils.yml
+  - components/grep.yml
+  - components/gzip.yml
+  - components/kmod.yml
+  - components/pkg-config.yml
+  - components/procps-ng.yml
+  - components/sed.yml
+  - components/systemd.yml
+  - components/util-linux.yml
+  - components/xz.yml
 
 script: |
   ./configure --prefix=/usr \

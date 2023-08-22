@@ -9,7 +9,7 @@ depends:
   - components/cairo.yml
 build-time:
   - components/gobject-introspection.yml
-  - core/meson.yml
+  - components/meson.yml
 
 sources:
   - https://github.com/harfbuzz/harfbuzz/releases/download/%{version}/harfbuzz-%{version}.tar.xz

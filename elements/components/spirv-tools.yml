@@ -12,11 +12,11 @@ sources:
   - https://github.com/KhronosGroup/SPIRV-Tools/archive/refs/tags/v%{version}.tar.gz
 
 depends:
-  - core/glibc.yml
-  - core/gcc.yml
+  - components/glibc.yml
+  - components/gcc.yml
 
 build-time:
   - components/cmake.yml
-  - core/ninja.yml
-  - core/python.yml
+  - components/ninja.yml
+  - components/python.yml
   - components/spirv-headers.yml

@@ -32,7 +32,7 @@ script: |
     done
 
 depends:
-  - core/libgcc.yml
+  - components/libgcc.yml
 
 build-time:
   - components/llvm.yml

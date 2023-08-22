@@ -61,19 +61,18 @@ func (b *Backend) Check() (*config.UpdateInfo, error) {
 func (b *Backend) Update(updateInfo *config.UpdateInfo) error {
 	updatefile := path.Base(updateInfo.Url)
 	cachefile := path.Join("/", "var", "cache", "updates", updatefile)
+	if _, err := os.Stat(path.Dir(cachefile)); os.IsNotExist(err) {
+		if err := os.MkdirAll(path.Dir(cachefile), 0755); err != nil {
+			return fmt.Errorf("failed to create cache file path %s, %v", path.Dir(cachefile), err)
+		}
+	}
 	log.Printf("dowloading '%d' %s", updateInfo.Version, updateInfo.Url)
 	if err := utils.DownloadFile(cachefile, updateInfo.Url); err != nil {
 		return err
 	}
-	defer os.Remove(cachefile)
 
-	log.Println("cleaning up previous release")
-	if err := os.RemoveAll(path.Join("/", "usr.0")); err != nil {
-		return fmt.Errorf("failed to cleanup previous release")
-	}
-
-	log.Println("unpacking update file")
-	if err := exec.Command("unsquashfs", "-f", "-d", path.Join("/", "usr.1"), cachefile); err != nil {
+	log.Printf("installing system image %d\n", updateInfo.Version)
+	if err := exec.Command("mv", cachefile, path.Join("/", "run", "initramfs", "rlxos", "system", fmt.Sprint(updateInfo.Version))); err != nil {
 		return fmt.Errorf("failed to extract updates")
 	}
 

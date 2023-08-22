@@ -213,7 +213,7 @@ func main() {
 					case builder.BuildStatusWaiting:
 						state = color.Magenta + " WAITING " + color.Reset
 					}
-					fmt.Printf("[%s]    %s", state, color.Bold+p.Path+color.Reset)
+					fmt.Printf("[%s]    %s\n", state, color.Bold+p.Path+color.Reset)
 				}
 
 				return nil

@@ -1,0 +1,19 @@
+id: iproute2
+version: 6.4.0
+about: IP Routing Utilities
+sources:
+  - https://www.kernel.org/pub/linux/utils/net/iproute2/iproute2-%{version}.tar.xz
+depends:
+  - components/glibc.yml
+  - components/iptables.yml
+  - components/libelf.yml
+  - components/libcap.yml
+build-time:
+  - components/flex.yml
+  - components/bison.yml
+pre-script: |
+  sed -i "s/-Werror//" Makefile
+  sed -i /ARPD/d Makefile
+script: |
+  make
+  make SBINDIR=/usr/bin DESTDIR=%{install-root} install

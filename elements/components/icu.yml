@@ -6,4 +6,4 @@ sources:
 build-dir: icu/source
 
 depends:
-  - core/glibc.yml
+  - components/glibc.yml

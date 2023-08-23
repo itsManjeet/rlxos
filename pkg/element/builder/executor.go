@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"os"
 	"os/exec"
+	"rlxos/pkg/color"
 	"time"
 )
 
@@ -45,7 +46,7 @@ func CreateContainer(image string, environ []string, mounts map[string]string) (
 		args = append(args, "-v", src+":"+dest)
 	}
 	args = append(args, image, "tail", "-f", "/dev/null")
-	log.Println(backend, args)
+	fmt.Println(color.DarkGray, backend, args, color.Reset)
 	if data, err := exec.Command(backend, args...).CombinedOutput(); err != nil {
 		return nil, fmt.Errorf("%v, %s", string(data), err)
 	}
@@ -80,7 +81,7 @@ func (c *Container) Run(lw *bufio.Writer, ew *bufio.Writer, cmd []string, dir st
 	args = append(args, cmd...)
 	fmt.Fprintln(lw, "COMMAND:", args)
 
-	log.Println(backend, args)
+	fmt.Println(color.DarkGray, backend, args, color.Reset)
 	e := exec.Command(backend, args...)
 	e.Stdout = lw
 	e.Stderr = ew

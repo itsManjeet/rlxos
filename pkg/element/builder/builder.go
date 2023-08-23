@@ -5,6 +5,7 @@ import (
 	"crypto/sha256"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"os/exec"
 	"path"
@@ -165,6 +166,21 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 	errWriter := bufio.NewWriter(errfile)
 	defer errWriter.Flush()
 
+	dumpLogs := func() {
+		errLogFile := path.Join(logDir, e.Id+".err")
+		data, err := ioutil.ReadFile(errLogFile)
+		if err != nil {
+			fmt.Printf("failed to read log file %s, %v\n", errLogFile, err)
+			return
+		}
+		lines := strings.Split(string(data), "\n")
+		count := len(lines)
+		if count > 10 {
+			lines = lines[len(lines)-10 : len(lines)-1]
+		}
+		fmt.Println(color.Red + strings.Join(lines, "\n") + color.Reset)
+	}
+
 	environ := e.Environ
 	environ = b.setEnv(environ, "pkgupd_pkgdir=/pkg/"+e.Id)
 	environ = b.setEnv(environ, "pkgupd_srcdir=/src")
@@ -288,6 +304,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 	containerWordDir := path.Join("/", "src", builddir)
 	if len(e.PreScript) != 0 {
 		if err := container.Run(logWriter, errWriter, []string{"sh", "-ec", resolveVariables(e.PreScript, variables)}, containerWordDir, environ); err != nil {
+			dumpLogs()
 			container.RescueShell()
 			return err
 		}
@@ -305,6 +322,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 	case "system":
 		if len(e.Script) > 0 {
 			if err := container.Run(logWriter, errWriter, []string{"chroot", path.Join("/", "pkg", path.Base(pkgdir)), "/bin/bash", "-ec", resolveVariables(e.Script, variables)}, "/", environ); err != nil {
+				dumpLogs()
 				color.Error(err.Error())
 				container.RescueShell()
 				return err
@@ -360,6 +378,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 			script = t.Script
 		}
 		if err := container.Run(logWriter, errWriter, []string{"sh", "-ec", resolveVariables(script, variables)}, containerWordDir, environ); err != nil {
+			dumpLogs()
 			container.RescueShell()
 			return err
 		}
@@ -367,6 +386,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 
 	if len(e.PostScript) != 0 {
 		if err := container.Run(logWriter, errWriter, []string{"sh", "-ec", resolveVariables(e.PostScript, variables)}, containerWordDir, environ); err != nil {
+			dumpLogs()
 			container.RescueShell()
 			return err
 		}

@@ -16,6 +16,8 @@ const (
 	LightGray string = "\033[1;37m"
 	Bold      string = "\033[1m"
 
+	DarkGray string = "\033[1;30m"
+
 	Reset = "\033[0m"
 )
 

@@ -17,6 +17,10 @@ jobs:
     env:
       CACHE_PATH: ${{ secrets.CACHE_PATH }}
       BUILDER: ./builder -cache-path ${{ secrets.CACHE_PATH }}
+      SERVER: ${{ secrets.SERVER_URL }}
+      TAG_NAME: ${GITHUB_REF#refs/*/}
+      VERSION: ${TAG_NAME%.*}
+      CODENAME: ${TAG_NAME#${VERSION}.}
     steps:
       - uses: actions/checkout@v1
 
@@ -29,23 +33,19 @@ jobs:
 
       - name: Setup Environment
         run: |
-          TAG_NAME="${GITHUB_REF#refs/*/}"
-          VERSION="${TAG_NAME%.*}"
-          CODENAME="${TAG_NAME#${VERSION}.}"
-
-          echo "
+          cat > version.yml <<EOF
           version: ${VERSION}
           variables:
-            release: stable
+            release: ${VERSION}
             codename: ${CODENAME}
             changelog: |
               SOME CHANGES
-          " > version.yml
+          EOF
 
           cat > server.yml<<EOF
           variables:
-            server: https://storage.rlxos.dev/
-            channel: rolling
+            server: ${SERVER}
+            channel: ${VERSION}
           EOF
 
       - name: Building pkgupd-builder
@@ -71,3 +71,10 @@ jobs:
       
       - name: Checkout Installer image
         run: ${BUILDER} checkout boards/${{matrix.board}}/installer.yml ${CACHE_PATH}/daily/
+
+      - name: Create Zync file
+        run: |
+          cd ${CACHE_PATH}/daily/
+          for i in *.img ; do
+            zsyncmake -u ${SERVER}/daily/$i $i
+          done

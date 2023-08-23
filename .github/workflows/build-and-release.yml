@@ -18,9 +18,6 @@ jobs:
       CACHE_PATH: ${{ secrets.CACHE_PATH }}
       BUILDER: ./builder -cache-path ${{ secrets.CACHE_PATH }}
       SERVER: ${{ secrets.SERVER_URL }}
-      TAG_NAME: ${GITHUB_REF#refs/*/}
-      VERSION: ${TAG_NAME%.*}
-      CODENAME: ${TAG_NAME#${VERSION}.}
     steps:
       - uses: actions/checkout@v1
 
@@ -33,20 +30,32 @@ jobs:
 
       - name: Setup Environment
         run: |
-          cat > version.yml <<EOF
+          TAG_NAME=${GITHUB_REF#refs/*/}
+          VERSION=${TAG_NAME%.*}
+          CODENAME=${TAG_NAME#${VERSION}.}
+          RELEASE="stable"
+
+          echo "TAG_NAME=${TAG_NAME}" >> $GITHUB_ENV
+          echo "VERSION=${VERSION}"   >> $GITHUB_ENV
+          echo "CODENAME=${CODENAME}" >> $GITHUB_ENV
+
+          [[ "${TAG_NAME}" -eq "rolling" ]] && RELEASE="rolling"
+          echo "RELEASE=${RELEASE}" >> $GITHUB_ENV
+          
+          echo "
           version: ${VERSION}
           variables:
-            release: ${VERSION}
+            release: ${RELEASE}
             codename: ${CODENAME}
             changelog: |
               SOME CHANGES
-          EOF
+          " > version.yml
 
-          cat > server.yml<<EOF
+          echo "
           variables:
             server: ${SERVER}
             channel: ${VERSION}
-          EOF
+          " >"
 
       - name: Building pkgupd-builder
         run: |

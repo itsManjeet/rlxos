@@ -8,33 +8,41 @@ script: |
 
 depends:
   - components/busybox.yml
+
   - components/ca-certificates.yml
-  - components/gzip.yml
-  - components/glibc.yml
-  - components/libgcc.yml
-  - components/locales.yml
   - components/coreutils.yml
-  - components/kmod.yml
+  - components/dbus.yml
+  - components/diffutils.yml
+
+  - components/findutils.yml
+
+  - components/glibc.yml
+  - components/grep.yml
+  - components/gzip.yml
+
   - components/inetutils.yml
   - components/iproute2.yml
-  - components/sed.yml
-  - components/grep.yml
-  - components/grep.yml
-  - components/gzip.yml
-  - components/tar.yml
-  - components/findutils.yml
-  - components/diffutils.yml
-  - components/inetutils.yml
-  - components/systemd.yml
-  - components/dbus.yml
-  - components/tar.yml
-  - components/findutils.yml
-  - components/diffutils.yml
-  - components/grep.yml
-  - components/gzip.yml
+
+  - components/kmod.yml
+
   - components/less.yml
-  - components/util-linux.yml
-  - components/xz.yml
-  - components/zstd.yml
-  - components/which.yml
+  - components/libgcc.yml
   - components/libtool.yml
+  - components/locales.yml
+
+  - components/openssh.yml
+    
+  - components/sed.yml
+  - components/systemd.yml
+
+  - components/tar.yml
+  
+  - components/util-linux.yml
+  
+  - components/which.yml
+
+  - components/xz.yml
+  
+  - components/zstd.yml
+
+  

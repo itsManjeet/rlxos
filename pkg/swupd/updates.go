@@ -12,6 +12,10 @@ import (
 	"strconv"
 )
 
+const (
+	ROLLING_RELEASE = 0
+)
+
 type UpdatesResponse struct {
 	Updates []config.UpdateInfo `json:"updates"`
 }
@@ -37,7 +41,11 @@ func GetCurrentVersion() (int, error) {
 	if err != nil {
 		return 0, err
 	}
-	version, err := strconv.Atoi(string(data))
+	versionString := string(data)
+	if versionString == "rolling" {
+		return ROLLING_RELEASE, nil
+	}
+	version, err := strconv.Atoi(versionString)
 	return version, err
 }
 
@@ -51,7 +59,7 @@ func (b *Backend) Check() (*config.UpdateInfo, error) {
 		return nil, err
 	}
 
-	if list[0].Version == curver {
+	if list[0].Version == curver && curver != ROLLING_RELEASE {
 		return nil, nil
 	}
 

@@ -5,4 +5,4 @@ about: Software Installer
 
 build-type: go-pkg
 variables:
-  go-pkg: rlxos/src/installer
+  go-pkg: cmd/installer

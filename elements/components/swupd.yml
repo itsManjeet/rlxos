@@ -1,7 +1,14 @@
 id: swupd
 version: 0.0.1
 about: software update manager
-
+merge: [server.yml]
 build-type: go-pkg
 variables:
-  go-pkg: rlxos/src/swupd
+  go-pkg: cmd/swupd
+
+post-script: |
+  mkdir -p %{install-root}/%{sysconfdir}
+  cat > %{install-root}/%{sysconfdir}/config.yml << EOF
+  server: %{server}
+  channel: %{channel}
+  EOF

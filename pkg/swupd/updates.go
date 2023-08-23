@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"os/exec"
 	"path"
 	"rlxos/pkg/updates/config"
-	"rlxos/pkg/utils"
 	"sort"
 	"strconv"
+
+	zsync "github.com/AppImageCrafters/libzsync-go"
 )
 
 const (
@@ -67,6 +67,14 @@ func (b *Backend) Check() (*config.UpdateInfo, error) {
 }
 
 func (b *Backend) Update(updateInfo *config.UpdateInfo) error {
+	curver, err := GetCurrentVersion()
+	if err != nil {
+		return fmt.Errorf("failed to read current version")
+	}
+	if curver == updateInfo.Version && curver != ROLLING_RELEASE {
+		return fmt.Errorf("internal error, already update date system")
+	}
+
 	updatefile := path.Base(updateInfo.Url)
 	cachefile := path.Join("/", "var", "cache", "updates", updatefile)
 	if _, err := os.Stat(path.Dir(cachefile)); os.IsNotExist(err) {
@@ -74,14 +82,29 @@ func (b *Backend) Update(updateInfo *config.UpdateInfo) error {
 			return fmt.Errorf("failed to create cache file path %s, %v", path.Dir(cachefile), err)
 		}
 	}
-	log.Printf("dowloading '%d' %s", updateInfo.Version, updateInfo.Url)
-	if err := utils.DownloadFile(cachefile, updateInfo.Url); err != nil {
-		return err
+	sync, err := zsync.NewZSync(updateInfo.Url + ".zsync")
+	if err != nil {
+		return fmt.Errorf("failed to create zsync %v", err)
+	}
+	systemPath := path.Join("/", "run", "initramfs", "rlxos", "system")
+
+	oldPath := path.Join(systemPath, fmt.Sprint(curver))
+	newPath := path.Join(systemPath, fmt.Sprint(updateInfo.Version))
+	var imagefile *os.File
+	if oldPath == newPath {
+		imagefile, err = os.Open(oldPath)
+		if err != nil {
+			return fmt.Errorf("failed to open %s, %v", oldPath, err)
+		}
+	} else {
+		imagefile, err = os.Create(newPath)
+		if err != nil {
+			return fmt.Errorf("failed to create %s, %v", oldPath, err)
+		}
 	}
 
-	log.Printf("installing system image %d\n", updateInfo.Version)
-	if err := exec.Command("mv", cachefile, path.Join("/", "run", "initramfs", "rlxos", "system", fmt.Sprint(updateInfo.Version))); err != nil {
-		return fmt.Errorf("failed to extract updates")
+	if err := sync.Sync(newPath, imagefile); err != nil {
+		return fmt.Errorf("failed to sync image file")
 	}
 
 	return nil

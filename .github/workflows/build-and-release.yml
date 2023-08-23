@@ -55,7 +55,7 @@ jobs:
           variables:
             server: ${SERVER}
             channel: ${VERSION}
-          " >"
+          " > server.yml
 
       - name: Building pkgupd-builder
         run: |

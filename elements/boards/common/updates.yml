@@ -13,7 +13,7 @@ script: |
   {
     "updates": [
       {
-        "url": "https://storage.rlxos.dev/releases/rlxos-%{id}-%{version}-%{release}.img",
+        "url": "https://storage.rlxos.dev/daily/rlxos-%{id}-%{version}-%{release}.img",
         "changelog": "%{changelog}",
         "version": %{version}
       }

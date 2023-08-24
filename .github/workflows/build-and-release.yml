@@ -39,7 +39,7 @@ jobs:
           echo "VERSION=${VERSION}"   >> $GITHUB_ENV
           echo "CODENAME=${CODENAME}" >> $GITHUB_ENV
 
-          [[ "${TAG_NAME}" -eq "rolling" ]] && RELEASE="rolling"
+          [[ "${TAG_NAME}" -eq "rolling" ]] && RELEASE=0
           echo "RELEASE=${RELEASE}" >> $GITHUB_ENV
           
           echo "
@@ -47,8 +47,7 @@ jobs:
           variables:
             release: ${RELEASE}
             codename: ${CODENAME}
-            changelog: |
-              SOME CHANGES
+            changelog: SOME CHANGES
           " > version.yml
 
           echo "

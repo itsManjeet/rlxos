@@ -41,11 +41,7 @@ func GetCurrentVersion() (int, error) {
 	if err != nil {
 		return 0, err
 	}
-	versionString := string(data)
-	if versionString == "rolling" {
-		return ROLLING_RELEASE, nil
-	}
-	version, err := strconv.Atoi(versionString)
+	version, err := strconv.Atoi(string(data))
 	return version, err
 }
 
@@ -91,20 +87,19 @@ func (b *Backend) Update(updateInfo *config.UpdateInfo) error {
 	oldPath := path.Join(systemPath, fmt.Sprint(curver))
 	newPath := path.Join(systemPath, fmt.Sprint(updateInfo.Version))
 	var imagefile *os.File
-	if oldPath == newPath {
-		imagefile, err = os.Open(oldPath)
-		if err != nil {
-			return fmt.Errorf("failed to open %s, %v", oldPath, err)
-		}
-	} else {
-		imagefile, err = os.Create(newPath)
-		if err != nil {
-			return fmt.Errorf("failed to create %s, %v", oldPath, err)
-		}
+
+	imagefile, err = os.Create(newPath + ".tmp")
+	if err != nil {
+		return fmt.Errorf("failed to create %s, %v", oldPath, err)
 	}
 
-	if err := sync.Sync(newPath, imagefile); err != nil {
-		return fmt.Errorf("failed to sync image file")
+	log.Println("Syning image")
+	if err := sync.Sync(oldPath, imagefile); err != nil {
+		return fmt.Errorf("failed to sync image file %v", err)
+	}
+
+	if err := os.Rename(newPath+".tmp", newPath); err != nil {
+		return fmt.Errorf("failed to install new image file")
 	}
 
 	return nil

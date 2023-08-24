@@ -22,7 +22,7 @@ type UpdatesResponse struct {
 
 func (b *Backend) listUpdates() ([]config.UpdateInfo, error) {
 	r := UpdatesResponse{}
-	url := fmt.Sprintf("%s/releases/%s", b.config.Server, b.config.Channel)
+	url := fmt.Sprintf("%s/%s", b.config.Server, b.config.Channel)
 	log.Println("url", url)
 	if err := b.request(url, &r); err != nil {
 		return nil, err

@@ -1,0 +1,15 @@
+{
+    "config": "boot/sys/config",
+    "initrd": {
+        "type": "tar",
+        "gzip": true,
+        "directory": ["boot"]
+    },
+    "iso9660": true,
+    "partitions": [
+        {
+            "type": "boot",
+            "size": 16
+        }
+    ]
+}

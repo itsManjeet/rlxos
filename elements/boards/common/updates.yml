@@ -9,7 +9,7 @@ script: |
   mv /sysroot/%{id}-image rlxos-%{id}-%{version}-%{release}.img
   sha256sum rlxos-%{id}-%{version}-%{release}.img > rlxos-%{id}-%{version}-%{release}.img.sha256sum
 
-  cat >%{release}<<EOF
+  cat >%{codename}<<EOF
   {
     "updates": [
       {

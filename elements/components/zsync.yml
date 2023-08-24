@@ -1,0 +1,16 @@
+id: zsync
+version: 0.6.2
+about: A file transfer program that's able to connect to rsync servers
+
+sources:
+  - http://zsync.moria.org.uk/download/zsync-%{version}.tar.bz2
+
+depends:
+  - components/glibc.yml
+
+script: |
+  ./configure \
+    --prefix=%{prefix}
+
+  make ${MAKEFLAGS}
+  make prefix=%{install-root}/%{prefix} install

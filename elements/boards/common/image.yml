@@ -48,6 +48,7 @@ include:
   - components/linux.yml
   
   - components/wlroots.yml
+  - components/labwc.yml
 
   # Fonts
   - components/fonts/cantarell.yml

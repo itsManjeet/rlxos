@@ -1,7 +1,0 @@
-id: boards-amd64
-about: AMD64 Board Installer
-merge: [elements/boards/common/installer.yml]
-
-include:
-  - boards/amd64/image.yml
-  - boards/amd64/overlay.yml

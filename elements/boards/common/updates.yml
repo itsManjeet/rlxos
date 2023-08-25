@@ -4,17 +4,24 @@ no-strip: true
 variables:
   include-root: /sysroot
 
+depends:
+  - components/zsync.yml
+
+sources:
+  - files/changelog
+
 script: |
   mkdir -p %{install-root} && cd %{install-root}
-  mv /sysroot/%{id}-image rlxos-%{id}-%{version}-%{release}.img
-  sha256sum rlxos-%{id}-%{version}-%{release}.img > rlxos-%{id}-%{version}-%{release}.img.sha256sum
-
+  mv /sysroot/%{id}-image rlxos-%{id}-%{version}.img
+  sha256sum rlxos-%{id}-%{version}.img > rlxos-%{id}-%{version}.img.sha256sum
+  zsyncmake -u %{server}/rlxos-%{id}-%{version}.img rlxos-%{id}-%{version}.img
+  changelog="$(cat %{build-root}/changelog | tr '\n' '%')"
   cat >%{codename}<<EOF
   {
     "updates": [
       {
-        "url": "https://storage.rlxos.dev/daily/rlxos-%{id}-%{version}-%{release}.img",
-        "changelog": "%{changelog}",
+        "url": "%{server}/rlxos-%{id}-%{version}.img",
+        "changelog": "${changelog}",
         "version": %{version}
       }
     ]

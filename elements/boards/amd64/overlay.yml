@@ -1,3 +1,0 @@
-id: boards-amd64-overlay
-about: AMD64 Board Installer overlay
-merge: [elements/boards/common/overlay.yml]

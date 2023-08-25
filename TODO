@@ -1,0 +1,1 @@
+- FIX %{run-autogen} variable [ ./autogen.sh ] should be in /src/<id>

@@ -1,0 +1,14 @@
+id: xcb-util-cursor
+version: 0.1.4
+about: Additional extensions to the XCB library
+sources:
+  - https://xcb.freedesktop.org/dist/xcb-util-cursor-%{version}.tar.xz
+
+variables:
+  run-autogen: false
+depends:
+  - components/x11/libxcb.yml
+  - components/x11/xcb-util-image.yml
+  - components/x11/xcb-util-renderutil.yml
+build-time:
+  - components/x11/xorgproto.yml

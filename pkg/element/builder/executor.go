@@ -70,7 +70,7 @@ func (c *Container) RescueShell() {
 	e.Run()
 }
 
-func (c *Container) Run(lw *bufio.Writer, ew *bufio.Writer, cmd []string, dir string, environ []string) error {
+func (c *Container) Run(lw *bufio.Writer, cmd []string, dir string, environ []string) error {
 	args := []string{
 		"exec",
 	}
@@ -84,12 +84,11 @@ func (c *Container) Run(lw *bufio.Writer, ew *bufio.Writer, cmd []string, dir st
 	fmt.Println(color.DarkGray, backend, args, color.Reset)
 	e := exec.Command(backend, args...)
 	e.Stdout = lw
-	e.Stderr = ew
+	e.Stderr = lw
 	e.Stdin = os.Stdin
 	err := e.Run()
 
 	lw.Flush()
-	ew.Flush()
 
 	if err != nil {
 		return fmt.Errorf("command %v failed with %v", args, err)

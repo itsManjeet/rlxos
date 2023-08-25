@@ -157,17 +157,8 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 	logWriter := bufio.NewWriter(logfile)
 	defer logWriter.Flush()
 
-	errfile, err := os.OpenFile(path.Join(logDir, e.Id+".err"), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
-	if err != nil {
-		return fmt.Errorf("failed to open log file %v", err)
-	}
-	defer errfile.Close()
-
-	errWriter := bufio.NewWriter(errfile)
-	defer errWriter.Flush()
-
 	dumpLogs := func() {
-		errLogFile := path.Join(logDir, e.Id+".err")
+		errLogFile := path.Join(logDir, e.Id+".log")
 		data, err := ioutil.ReadFile(errLogFile)
 		if err != nil {
 			fmt.Printf("failed to read log file %s, %v\n", errLogFile, err)
@@ -209,7 +200,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 	if len(list) > 1 {
 		list = list[:len(list)-1]
 		for _, l := range list {
-			if err := b.integrate(l.Value, "/", container, logWriter, errWriter, false); err != nil {
+			if err := b.integrate(l.Value, "/", container, logWriter, false); err != nil {
 				return err
 			}
 		}
@@ -225,10 +216,10 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 			if !ok {
 				includeRootDir = path.Join("/", "pkg", e.Id)
 			}
-			container.Run(logWriter, errWriter, []string{"mkdir", "-p", includeRootDir}, "/", []string{})
+			container.Run(logWriter, []string{"mkdir", "-p", includeRootDir}, "/", []string{})
 			for _, l := range includeList {
 
-				if err := b.integrate(l.Value, includeRootDir, container, logWriter, errWriter, true); err != nil {
+				if err := b.integrate(l.Value, includeRootDir, container, logWriter, true); err != nil {
 					return err
 				}
 			}
@@ -303,7 +294,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 	absBuildPath := path.Join(srcdir, builddir)
 	containerWordDir := path.Join("/", "src", builddir)
 	if len(e.PreScript) != 0 {
-		if err := container.Run(logWriter, errWriter, []string{"sh", "-ec", resolveVariables(e.PreScript, variables)}, containerWordDir, environ); err != nil {
+		if err := container.Run(logWriter, []string{"sh", "-ec", resolveVariables(e.PreScript, variables)}, containerWordDir, environ); err != nil {
 			dumpLogs()
 			container.RescueShell()
 			return err
@@ -321,7 +312,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 
 	case "system":
 		if len(e.Script) > 0 {
-			if err := container.Run(logWriter, errWriter, []string{"chroot", path.Join("/", "pkg", path.Base(pkgdir)), "/bin/bash", "-ec", resolveVariables(e.Script, variables)}, "/", environ); err != nil {
+			if err := container.Run(logWriter, []string{"chroot", path.Join("/", "pkg", path.Base(pkgdir)), "/bin/bash", "-ec", resolveVariables(e.Script, variables)}, "/", environ); err != nil {
 				dumpLogs()
 				color.Error(err.Error())
 				container.RescueShell()
@@ -354,6 +345,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 				}
 				if t == nil {
 					err := fmt.Errorf("no suitable build file found at %s", absBuildPath)
+					dumpLogs()
 					color.Error(err.Error())
 					container.RescueShell()
 					return err
@@ -377,7 +369,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 
 			script = t.Script
 		}
-		if err := container.Run(logWriter, errWriter, []string{"sh", "-ec", resolveVariables(script, variables)}, containerWordDir, environ); err != nil {
+		if err := container.Run(logWriter, []string{"sh", "-ec", resolveVariables(script, variables)}, containerWordDir, environ); err != nil {
 			dumpLogs()
 			container.RescueShell()
 			return err
@@ -385,7 +377,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 	}
 
 	if len(e.PostScript) != 0 {
-		if err := container.Run(logWriter, errWriter, []string{"sh", "-ec", resolveVariables(e.PostScript, variables)}, containerWordDir, environ); err != nil {
+		if err := container.Run(logWriter, []string{"sh", "-ec", resolveVariables(e.PostScript, variables)}, containerWordDir, environ); err != nil {
 			dumpLogs()
 			container.RescueShell()
 			return err
@@ -425,7 +417,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 	done`
 	if e.BuildType == "system" {
 		color.Process("Compressing image %s from %s", path.Base(cachefile), pkgdir)
-		if err := container.Run(logWriter, errWriter, []string{"mksquashfs", path.Join("/", "pkg", path.Base(pkgdir)), path.Join("/", "cache", path.Base(cachefile)), "-comp", "zstd", "-Xcompression-level", "19", "-noappend"}, path.Join("/pkg"), environ); err != nil {
+		if err := container.Run(logWriter, []string{"mksquashfs", path.Join("/", "pkg", path.Base(pkgdir)), path.Join("/", "cache", path.Base(cachefile)), "-comp", "zstd", "-Xcompression-level", "19", "-noappend"}, path.Join("/pkg"), environ); err != nil {
 			container.RescueShell()
 			return err
 		}
@@ -435,14 +427,14 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 			if len(e.SkipStrip) > 0 {
 				environ = append(environ, "nostrip="+strings.Join(e.SkipStrip, " "))
 			}
-			if err := container.Run(logWriter, errWriter, []string{"sh", "-c", resolveVariables(STRIP_COMMAND, variables)}, path.Join("/pkg"), environ); err != nil {
+			if err := container.Run(logWriter, []string{"sh", "-c", resolveVariables(STRIP_COMMAND, variables)}, path.Join("/pkg"), environ); err != nil {
 				container.RescueShell()
 				return err
 			}
 		}
 
 		color.Process("Compressing package %s from %s", path.Base(cachefile), pkgdir)
-		if err := container.Run(logWriter, errWriter, []string{"tar", "-caf", path.Join("/", "cache", path.Base(cachefile)), "-C", path.Join("/", "pkg", path.Base(pkgdir)), "."}, path.Join("/pkg"), environ); err != nil {
+		if err := container.Run(logWriter, []string{"tar", "-caf", path.Join("/", "cache", path.Base(cachefile)), "-C", path.Join("/", "pkg", path.Base(pkgdir)), "."}, path.Join("/pkg"), environ); err != nil {
 			container.RescueShell()
 			return err
 		}
@@ -455,15 +447,15 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 			for _, file := range split.Files {
 				splitSourceDir := path.Join("/", "pkg", e.Id, file)
 				splitTargetDir := path.Join(splitDir, file)
-				if err := container.Run(logWriter, errWriter, []string{"mkdir", "-p", path.Dir(splitTargetDir)}, "/", []string{}); err != nil {
+				if err := container.Run(logWriter, []string{"mkdir", "-p", path.Dir(splitTargetDir)}, "/", []string{}); err != nil {
 					return fmt.Errorf("failed to create new dir %s %v", path.Dir(splitTargetDir), err)
 				}
 
-				if err := container.Run(logWriter, errWriter, []string{"mv", splitSourceDir, splitTargetDir}, "/", []string{}); err != nil {
+				if err := container.Run(logWriter, []string{"mv", splitSourceDir, splitTargetDir}, "/", []string{}); err != nil {
 					return fmt.Errorf("failed to move split file %s -> %s, %v", splitSourceDir, splitTargetDir, err)
 				}
 			}
-			if err := container.Run(logWriter, errWriter, []string{"tar", "-caf", path.Join("/", "cache", path.Base(cachefile)+":"+split.Into), "-C", path.Join("/", "pkg", splitDir), "."}, path.Join("/pkg"), environ); err != nil {
+			if err := container.Run(logWriter, []string{"tar", "-caf", path.Join("/", "cache", path.Base(cachefile)+":"+split.Into), "-C", path.Join("/", "pkg", splitDir), "."}, path.Join("/pkg"), environ); err != nil {
 				container.RescueShell()
 				return err
 			}
@@ -494,20 +486,20 @@ func resolveVariables(v string, variables map[string]string) string {
 	return v
 }
 
-func (b *Builder) integrate(e *element.Element, rootdir string, container *Container, logWriter *bufio.Writer, errWriter *bufio.Writer, noIntegrate bool) error {
+func (b *Builder) integrate(e *element.Element, rootdir string, container *Container, logWriter *bufio.Writer, noIntegrate bool) error {
 	cachefile, err := b.CacheFile(e)
 	if err != nil {
 		return err
 	}
 
 	if e.BuildType == "system" {
-		if err := container.Run(logWriter, errWriter, []string{"cp", path.Join("/", "cache", path.Base(cachefile)), path.Join(rootdir, e.Id)}, "/", []string{}); err != nil {
+		if err := container.Run(logWriter, []string{"cp", path.Join("/", "cache", path.Base(cachefile)), path.Join(rootdir, e.Id)}, "/", []string{}); err != nil {
 			container.RescueShell()
 			return err
 		}
 	} else {
 		color.Process("Integrating %s, %s", e.Id, path.Base(cachefile))
-		if err := container.Run(logWriter, errWriter, []string{"tar", "-xf", path.Join("/", "cache", path.Base(cachefile)), "-C", rootdir}, "/", []string{}); err != nil {
+		if err := container.Run(logWriter, []string{"tar", "-xf", path.Join("/", "cache", path.Base(cachefile)), "-C", rootdir}, "/", []string{}); err != nil {
 			container.RescueShell()
 			return err
 		}
@@ -516,17 +508,17 @@ func (b *Builder) integrate(e *element.Element, rootdir string, container *Conta
 	if !noIntegrate {
 		if len(e.Integration) != 0 {
 			color.Process("Executing integration command")
-			if err := container.Run(logWriter, errWriter, []string{"sh", "-ec", resolveVariables(e.Integration, e.Variables)}, "/", []string{}); err != nil {
+			if err := container.Run(logWriter, []string{"sh", "-ec", resolveVariables(e.Integration, e.Variables)}, "/", []string{}); err != nil {
 				container.RescueShell()
 				return err
 			}
 		}
 	} else if len(e.Integration) > 0 {
-		if err := container.Run(logWriter, errWriter, []string{"mkdir", "-p", path.Join(rootdir, "var", "lib", "integrations")}, "/", []string{}); err != nil {
+		if err := container.Run(logWriter, []string{"mkdir", "-p", path.Join(rootdir, "var", "lib", "integrations")}, "/", []string{}); err != nil {
 			return fmt.Errorf("failed to create intergations dir %v", err)
 		}
 
-		if err := container.Run(logWriter, errWriter, []string{"sh", "-ce", fmt.Sprintf("echo '%s' | tee %s", resolveVariables(e.Integration, e.Variables), path.Join(rootdir, "var", "lib", "integrations", e.Id))}, "/", []string{}); err != nil {
+		if err := container.Run(logWriter, []string{"sh", "-ce", fmt.Sprintf("echo '%s' | tee %s", resolveVariables(e.Integration, e.Variables), path.Join(rootdir, "var", "lib", "integrations", e.Id))}, "/", []string{}); err != nil {
 			return fmt.Errorf("failed to create intergations dir %v", err)
 		}
 	}

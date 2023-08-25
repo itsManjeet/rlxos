@@ -1,0 +1,12 @@
+id: libXpm
+version: 3.5.16
+about: xorg library libXpm
+
+sources:
+  - https://www.x.org/pub/individual/lib/libXpm-%{version}.tar.xz
+
+depends:
+  - components/x11/libxext.yml
+  - components/x11/libxt.yml
+build-time:
+  - components/x11/util-macros.yml

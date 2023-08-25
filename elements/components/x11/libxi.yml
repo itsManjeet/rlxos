@@ -1,0 +1,17 @@
+id: libxi
+version: 1.8.1
+about: xorg library libXi
+
+sources:
+  - https://www.x.org/pub/individual/lib/libXi-%{version}.tar.xz
+
+variables:
+  run-autogen: false
+
+depends:
+  - components/x11/libxext.yml
+  - components/x11/libxfixes.yml
+
+build-time:
+  - components/x11/util-macros.yml
+  - components/x11/xorgproto.yml

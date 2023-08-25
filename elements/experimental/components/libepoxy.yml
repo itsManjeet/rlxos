@@ -1,9 +1,0 @@
-id: libepoxy
-version: 1.5.8
-about: Library for handling OpenGL function pointer management
-sources:
-- https://github.com/anholt/libepoxy/releases/download/1.5.8/libepoxy-1.5.8.tar.xz
-build-dir: libepoxy-1.5.8
-depends:
-  runtime:
-  - mesa

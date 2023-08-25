@@ -1,0 +1,12 @@
+id: font-util
+version: 1.4.0
+about: xorg fonts xorg-fonts-util
+
+sources:
+  - https://www.x.org/pub/individual/font/font-util-%{version}.tar.xz
+
+depends:
+  - components/glibc.yml
+
+build-time:
+  - components/x11/util-macros.yml

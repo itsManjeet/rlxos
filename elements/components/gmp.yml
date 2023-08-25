@@ -1,0 +1,13 @@
+id: gmp
+version: 6.3.0
+about: A free library for arbitrary precision arithmetic
+
+sources:
+  - https://gmplib.org/download/gmp/gmp-%{version}.tar.lz
+
+depends:
+  - components/libgcc.yml
+
+configure: >
+  --enable-cxx
+  --enable-fat

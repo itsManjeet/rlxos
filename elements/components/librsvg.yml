@@ -1,0 +1,18 @@
+id: librsvg
+version: 2.56.3
+about: A library and tools used to manipulate, convert and view Scalable Vector Graphic
+sources:
+  - https://download.gnome.org/sources/librsvg/2.53/librsvg-%{version}.tar.xz
+
+build-time:
+  - components/gobject-introspection.yml
+  - components/rustc.yml
+  - components/vala.yml
+depends:
+  - components/cairo.yml
+  - components/pango.yml
+  - components/gdk-pixbuf.yml
+
+configure: >
+  --enable-vala 
+  --disable-static

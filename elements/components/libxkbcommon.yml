@@ -10,6 +10,6 @@ configure: >-
 
 depends:
   - components/libxml2.yml
-  - components/xkeyboard-config.yml
+  - components/x11/xkeyboard-config.yml
   - components/wayland-protocols.yml
   - components/x11/libxcb.yml

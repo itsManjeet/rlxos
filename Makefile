@@ -59,7 +59,7 @@ clean:
 	rm -f version.yml server.yml $(REPO_BUILDER)
 
 # TODO: remove only rlxos running containers
-	docker rm -f $(shell docker ps -aq)
+	docker rm -f $(shell docker ps -aq) 2>/dev/null || true
 
 version.yml:
 	@echo "version: $(VERSION)" > $@

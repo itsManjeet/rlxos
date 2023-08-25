@@ -1,3 +1,0 @@
-id: boards-amd64-image
-about: AMD64 Board Image
-merge: [elements/boards/common/image.yml]

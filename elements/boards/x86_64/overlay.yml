@@ -1,0 +1,3 @@
+id: boards-x86_64-overlay
+about: x86_64 Board Installer overlay
+merge: [elements/boards/common/overlay.yml]

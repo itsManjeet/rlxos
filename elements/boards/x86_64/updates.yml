@@ -1,0 +1,6 @@
+id: boards-x86_64
+about: x86_64 Board Updates
+merge: [elements/boards/common/updates.yml]
+
+include:
+  - boards/x86_64/image.yml

@@ -13,76 +13,43 @@ jobs:
     strategy:
       matrix:
         board:
-          - amd64
+          - x86_64
     env:
-      CACHE_PATH: ${{ secrets.CACHE_PATH }}
-      BUILDER: ./builder -cache-path ${{ secrets.CACHE_PATH }}
-      SERVER: ${{ secrets.SERVER_URL }}
+      RELEASE_PATH: ${{ secrets.CACHE_PATH }}/daily
+      SERVER: ${{ secrets.SERVER_URL }}/daily
     steps:
       - uses: actions/checkout@v1
 
-      # - name: Generating Changelog
-      #   id: changelog
-      #   uses: requarks/changelog-action@v1
-      #   with:
-      #     token: ${{ github.token }}
-      #     tag: ${{ github.ref_name }}
 
       - name: Setup Environment
         run: |
           TAG_NAME=${GITHUB_REF#refs/*/}
           VERSION=${TAG_NAME%.*}
           CODENAME=${TAG_NAME#${VERSION}.}
-          RELEASE="stable"
 
           echo "TAG_NAME=${TAG_NAME}" >> $GITHUB_ENV
+
+          [[ "${TAG_NAME}" -eq "rolling" ]] && {
+            VERSION=0
+            CODENAME="rolling"
+          }
+          echo "ARCH=${{matrix.board}}" >> $GITHUB_ENV
           echo "VERSION=${VERSION}"   >> $GITHUB_ENV
           echo "CODENAME=${CODENAME}" >> $GITHUB_ENV
 
-          [[ "${TAG_NAME}" -eq "rolling" ]] && RELEASE=0
-          echo "RELEASE=${RELEASE}" >> $GITHUB_ENV
-          
-          echo "
-          version: ${VERSION}
-          variables:
-            release: ${RELEASE}
-            codename: ${CODENAME}
-            changelog: SOME CHANGES
-          " > version.yml
+          echo "NO CHANGELOG" > files/changelog
 
-          echo "
-          variables:
-            server: ${SERVER}
-            channel: ${VERSION}
-          " > server.yml
-
-      - name: Building pkgupd-builder
-        run: |
-          go mod tidy
-          go mod vendor
-          mkdir -p vendor/rlxos/{src,pkg}
-          go build -o builder rlxos/cmd/builder
-
-      - name: Generating Board Image
-        run: ${BUILDER} build boards/${{matrix.board}}/image.yml
-
-      - name: Generating Updates
-        run: ${BUILDER} build boards/${{matrix.board}}/updates.yml
+      - name: Cleanup build cache
+        run: make clean
       
-      - name: Checkout Updates
-        run: ${BUILDER} checkout boards/${{matrix.board}}/updates.yml ${CACHE_PATH}/daily/
-
-      - name: Generating Installer image
+      - name: Make Board Image
         run: |
-          ${BUILDER} build boards/${{matrix.board}}/overlay.yml
-          ${BUILDER} build boards/${{matrix.board}}/installer.yml
-      
-      - name: Checkout Installer image
-        run: ${BUILDER} checkout boards/${{matrix.board}}/installer.yml ${CACHE_PATH}/daily/
+          for element in image overlay installer updates ; do
+            make component ELEMENT=boards/${{matrix.board}}/${element}.yml
+          done
 
-      - name: Create Zync file
+      - name: Checkout Release
         run: |
-          cd ${CACHE_PATH}/daily/
-          for i in *.img ; do
-            zsyncmake -u ${SERVER}/daily/$i $i
+          for element in installer updates ; do
+            make checkout ELEMENT=boards/${{matrix.board}}/${element}.yml
           done

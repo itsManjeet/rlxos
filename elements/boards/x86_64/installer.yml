@@ -1,0 +1,7 @@
+id: boards-x86_64
+about: x86_64 Board Installer
+merge: [elements/boards/common/installer.yml]
+
+include:
+  - boards/x86_64/image.yml
+  - boards/x86_64/overlay.yml

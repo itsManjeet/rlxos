@@ -1,0 +1,12 @@
+id: xkbcomp
+version: 1.4.6
+about: xorg apps xkbcomp
+
+sources:
+  - https://www.x.org/pub/individual/app/xkbcomp-%{version}.tar.xz
+
+depends:
+  - components/x11/libxkbfile.yml
+
+build-time:
+  - components/x11/util-macros.yml

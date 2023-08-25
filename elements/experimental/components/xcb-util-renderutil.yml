@@ -1,9 +1,0 @@
-id: xcb-util-renderutil
-version: 0.3.9
-about: Additional extensions to the XCB library
-sources:
-- https://xcb.freedesktop.org/dist/xcb-util-renderutil-0.3.9.tar.bz2
-build-dir: xcb-util-renderutil-0.3.9
-depends:
-  runtime:
-  - libxcb

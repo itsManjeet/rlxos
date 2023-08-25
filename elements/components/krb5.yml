@@ -1,0 +1,24 @@
+id: krb5
+version: 1.21.2
+about: A free implementation of Kerberos 5
+sources:
+  - https://kerberos.org/dist/krb5/1.21/krb5-%{version}.tar.gz
+
+build-dir: krb5-%{version}/src
+
+depends:
+  - components/e2fsprogs.yml
+  - components/glibc.yml
+
+build-time:
+  - components/perl.yml
+
+pre-script: |
+  sed -i -e '/eq 0/{N;s/12 //}'    plugins/kdb/db2/libdb2/test/run.test
+
+configure: >
+  --localstatedir=%{localstatedir}
+  --with-system-et 
+  --with-system-ss 
+  --with-system-verto=no
+  --enable-dns-for-realm

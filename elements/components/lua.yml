@@ -1,0 +1,43 @@
+id: lua
+version: 5.3.5
+about: A powerful light-weight programming language designed for extending applications
+sources:
+  - https://www.lua.org/ftp/lua-%{version}.tar.gz
+  - https://www.linuxfromscratch.org/patches/blfs/9.1/lua-%{version}-shared_library-1.patch
+
+script: |
+  patch -Np1 -i ../lua-%{version}-shared_library-1.patch
+  sed -i '/#define LUA_ROOT/s:/usr/local/:/usr/:' \
+    src/luaconf.h
+  make MYCFLAGS="-DLUA_COMPAT_5_2 -DLUA_COMPAT_5_1" linux
+  make \
+    INSTALL_TOP=%{install-root}/%{prefix} \
+    INSTALL_DATA="cp -d" \
+    INSTALL_MAN=%{install-root}/%{datadir}/man/man1   \
+    TO_LIB="liblua.so liblua.so.5.3 liblua.so.5.3.4" \
+    install
+  mkdir -p %{install-root}/%{libdir}/pkgconfig/
+
+  cat >%{install-root}/%{libdir}/pkgconfig/lua.pc<< EOF
+  V=5.3
+  R=%{version}
+
+  prefix=%{prefix}
+  INSTALL_BIN=%{bindir}
+  INSTALL_INC=%{prefix}/include
+  INSTALL_LIB=%{libdir}
+  INSTALL_MAN=%{datadir}/man/man1
+  INSTALL_LMOD=%{datadir}/lua/${V}
+  INSTALL_CMOD=%{libdir}/lua/${V}
+  exec_prefix=%{prefix}
+  libdir=%{libdir}
+  includedir=%{prefix}/include
+
+  Name: Lua
+  Description: An Extensible Extension Language
+  Version: ${R}
+  Requires: 
+  Libs: -L${libdir} -llua -lm
+  Cflags: -I${includedir}
+
+  EOF

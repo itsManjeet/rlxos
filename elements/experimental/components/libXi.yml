@@ -1,6 +1,0 @@
-id: libXi
-version: '7'
-about: xorg library libXi
-build-dir: libXi-1.7.10
-sources:
-- https://www.x.org/pub/individual/lib/libXi-1.7.10.tar.bz2

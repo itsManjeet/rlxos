@@ -1,6 +1,0 @@
-id: xmessage
-version: '7'
-about: xorg apps xmessage
-build-dir: xmessage-1.0.5
-sources:
-- https://www.x.org/pub/individual/app/xmessage-1.0.5.tar.bz2

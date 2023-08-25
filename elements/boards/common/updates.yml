@@ -1,4 +1,7 @@
-merge: [version.yml]
+merge:
+  - version.yml
+  - server.yml
+
 no-strip: true
 
 variables:

@@ -1,6 +1,0 @@
-id: libice
-version: '7'
-about: xorg library libice
-build-dir: libICE-1.0.10
-sources:
-- https://www.x.org/pub/individual/lib/libICE-1.0.10.tar.bz2

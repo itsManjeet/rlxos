@@ -84,7 +84,7 @@ component: $(REPO_BUILDER)
 checkout: $(REPO_BUILDER)
 	@if [ -z $(ELEMENT) ] ;then echo "ERROR: no element specified"; exit 1; fi
 	@if [ ! -f elements/$(ELEMENT) ] ; then echo "ERROR: no element exists elements/$(ELEMENT)"; exit 1; fi
-	$(REPO_BUILDER) checkout -cache-path $(CACHE_PATH) $(ELEMENT) -o $(RELEASE_PATH)
+	$(REPO_BUILDER) checkout -cache-path $(CACHE_PATH) $(ELEMENT) $(RELEASE_PATH)
 
 
 .PHONY: all clean update-vendor component

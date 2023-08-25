@@ -16,8 +16,7 @@ depends:
   - components/nettle.yml
   - components/pixman.yml
   - components/libtirpc.yml
-
-build-time:
+  - components/x11/xkeyboard-config.yml
   - components/libepoxy.yml
   - components/mesa.yml
   - components/x11/libx11.yml
@@ -34,6 +33,8 @@ build-time:
   - components/x11/xcb-util-renderutil.yml
   - components/x11/xcb-util-wm.yml
   - components/x11/xtrans.yml
+
+build-time:
   - components/x11/util-macros.yml
   - components/x11/xorgproto.yml
 

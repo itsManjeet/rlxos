@@ -4,6 +4,9 @@ about: Keyboard configuration database for the X Window System
 sources:
   - https://xorg.freedesktop.org/archive/individual/data/%{id}/%{id}-%{version}.tar.xz
 
+depends:
+  - components/x11/xkbcomp.yml
+
 build-time:
   - components/libxslt.yml
   - components/meson.yml

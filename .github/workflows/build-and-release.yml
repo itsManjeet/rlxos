@@ -15,6 +15,7 @@ jobs:
         board:
           - x86_64
     env:
+      CACHE_PATH: ${{ secrets.CACHE_PATH }}
       RELEASE_PATH: ${{ secrets.CACHE_PATH }}/daily
       SERVER: ${{ secrets.SERVER_URL }}/daily
     steps:

@@ -69,6 +69,7 @@ version.yml:
 server.yml:
 	@echo "variables:" > $@
 	@echo "  server: $(SERVER)" >> $@
+	@echo "  channel: $(CODENAME)" >> $@
 
 update-vendor:
 	$(GOLANG) mod tidy && $(GOLANG) mod vendor

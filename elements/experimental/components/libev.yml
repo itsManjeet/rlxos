@@ -1,9 +1,0 @@
-id: libev
-version: 4.33
-about: A full featured and high performance event loop
-sources:
-- http://dist.schmorp.de/libev/libev-4.33.tar.gz
-build-dir: libev-4.33
-depends:
-  runtime:
-  - glibc

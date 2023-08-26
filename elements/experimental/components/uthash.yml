@@ -1,7 +1,0 @@
-id: uthash
-version: 2.3.0
-about: C preprocessor implementations of a hash table and a linked list
-sources:
-- uthash-2.3.0.tar.gz::https://github.com/troydhanson/uthash/archive/v2.3.0.tar.gz
-build-dir: uthash-2.3.0
-script: install -v -D src/*.h -t ${pkgupd_pkgdir}/usr/include/

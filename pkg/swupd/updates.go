@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	ROLLING_RELEASE = 0
+	ROLLING_RELEASE = 999
 )
 
 type UpdatesResponse struct {

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"os/exec"
@@ -177,6 +178,44 @@ func main() {
 					return err
 				}
 				return nil
+			})).
+		Sub(app.New("metadata").
+			About("Generate metdata for cache").
+			Handler(func(c *app.Command, s []string, i interface{}) error {
+				metadatafile := "metadata.json"
+				if len(s) >= 1 {
+					metadatafile = s[0]
+				}
+				builder, err := getBuilder()
+				if err != nil {
+					fmt.Printf(`{"STATUS": false, "ERROR": "%s"}`, err.Error())
+					return err
+				}
+				allElements := []string{}
+				for el := range builder.Pool() {
+					allElements = append(allElements, el)
+				}
+				pairs, err := builder.List(element.DependencyRunTime, allElements...)
+				if err != nil {
+					return err
+				}
+				metadata := []element.Metadata{}
+				for _, p := range pairs {
+					cachefile, _ := builder.CacheFile(p.Value)
+					metadata = append(metadata, element.Metadata{
+						Id:      p.Path,
+						Version: p.Value.Version,
+						About:   p.Value.About,
+						Depends: p.Value.Depends,
+						Cache:   path.Base(cachefile),
+					})
+				}
+				data, err := json.Marshal(metadata)
+				if err != nil {
+					return err
+				}
+
+				return os.WriteFile(metadatafile, data, 0644)
 			})).
 		Sub(app.New("status").
 			About("List status of caches").

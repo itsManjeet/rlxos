@@ -2,46 +2,41 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
-	"log"
 	"os"
-	"os/exec"
 	"path"
 	"rlxos/pkg/app"
 	"rlxos/pkg/app/flag"
-	"strings"
-	"syscall"
-)
-
-type Layer struct {
-	Id   string
-	Path string
-
-	Active bool
-}
-
-var (
-	searchPath = []string{path.Join("var", "lib", "layers")}
-	rootDir    = "/"
-	layers     = []Layer{}
+	"rlxos/pkg/layers"
 )
 
 func main() {
+	SEARCH_PATH := []string{path.Join("var", "lib", "layers")}
+	ROOT_DIR := "/"
+
 	if err := app.New("layers").
 		About("Add and/or remove package layers over rootfilesystem").
 		Usage("<TASK> <FLAGS?> <ARGS...>").
+		Init(func() (interface{}, error) {
+			m := &layers.Manager{
+				RootDir:    ROOT_DIR,
+				SearchPath: SEARCH_PATH,
+				Layers:     []layers.Layer{},
+			}
+			m.Sync()
+			return m, nil
+		}).
 		Flag(flag.New("search-path").
 			Count(1).
 			About("Append layers search path").
 			Handler(func(s []string) error {
-				searchPath = append(searchPath, s...)
+				SEARCH_PATH = append(SEARCH_PATH, s[0])
 				return nil
 			})).
-		Flag(flag.New("root-dir").
+		Flag(flag.New("root").
 			Count(1).
-			About("Specify root directory").
+			About("set root directory").
 			Handler(func(s []string) error {
-				rootDir = s[0]
+				ROOT_DIR = s[0]
 				return nil
 			})).
 		Handler(func(c *app.Command, s []string, b interface{}) error {
@@ -50,26 +45,16 @@ func main() {
 		Sub(app.New("list").
 			About("List All available layers").
 			Handler(func(c *app.Command, args []string, b interface{}) error {
-				mountedLayers, _, err := parseMountData()
+				m := b.(*layers.Manager)
+				ls, err := m.List()
 				if err != nil {
 					return err
 				}
-				updateLayersList()
-				resLayers := layers
-				for i, l := range resLayers {
-					if contains(mountedLayers, path.Join(rootDir, l.Path)) {
-						resLayers[i].Active = true
-					}
-				}
-				if err != nil {
-					return fmt.Errorf("failed to list layers, %v", err)
+				if len(ls) == 0 {
+					return fmt.Errorf("no layers found in any search paths %v", m.SearchPath)
 				}
 
-				if len(layers) == 0 {
-					return fmt.Errorf("no layers found in any search paths %v", searchPath)
-				}
-
-				for _, l := range layers {
+				for _, l := range ls {
 					state := "ACTIVE  "
 					if !l.Active {
 						state = "INACTIVE"
@@ -81,85 +66,30 @@ func main() {
 		Sub(app.New("refresh").
 			About("Refresh the layers").
 			Handler(func(c *app.Command, args []string, b interface{}) error {
-				var flag uintptr = 0
-				isMounted, err := checkIsMounted()
-				if err != nil {
-					return err
+				m := b.(*layers.Manager)
+				return m.Refresh()
+			})).
+		Sub(app.New("create").
+			About("Create New Layer").
+			Handler(func(c *app.Command, s []string, i interface{}) error {
+				if len(s) != 1 {
+					return fmt.Errorf("no layer name provided")
 				}
-				if isMounted {
-					flag = syscall.MS_REMOUNT | syscall.MS_RDONLY
+				manager := i.(*layers.Manager)
+				return manager.Create(s[0])
+			})).
+		Sub(app.New("remove").
+			About("Remove Layer").
+			Handler(func(c *app.Command, s []string, i interface{}) error {
+				if len(s) != 1 {
+					return fmt.Errorf("no layer name provided")
 				}
-				lower := path.Join(rootDir, "usr")
-				for _, l := range layers {
-					log.Printf("enabling layer %s\n", l.Id)
-					lower += ":" + path.Join(rootDir, l.Path)
-				}
-				log.Println("LOWERDIR", lower)
-				if err := syscall.Mount("overlay", path.Join(rootDir, "usr"), "overlay", flag, "lowerdir="+lower); err != nil {
-					return err
-				}
-
-				return nil
+				manager := i.(*layers.Manager)
+				return manager.Remove(s[0])
 			})).
 		Run(os.Args); err != nil {
 
 		fmt.Printf("ERROR: %v\n", err)
 		os.Exit(1)
 	}
-}
-
-func checkIsMounted() (bool, error) {
-	_, isMounter, err := parseMountData()
-	return isMounter, err
-}
-
-func parseMountData() ([]string, bool, error) {
-	data, err := exec.Command("mount").CombinedOutput()
-	if err != nil {
-		return nil, false, fmt.Errorf("failed to read mount data %v", err)
-	}
-
-	for _, m := range strings.Split(string(data), "\n") {
-		if strings.HasPrefix(m, "overlay on /usr type overlay") {
-			parameters := strings.Split(strings.TrimPrefix(strings.TrimSuffix(strings.Trim(strings.TrimPrefix(m, "overlay on /usr type overlay"), " "), ")"), "("), ",")
-			for _, p := range parameters {
-				if strings.HasPrefix(p, "lowerdir=") {
-					layers := strings.Split(strings.TrimPrefix(p, "lowerdir="), ":")
-					layers = layers[1:] // skip /usr
-					return layers, true, nil
-				}
-			}
-		}
-	}
-	return nil, false, nil
-}
-
-func updateLayersList() {
-	layers = []Layer{}
-	for _, i := range searchPath {
-		dir, err := ioutil.ReadDir(path.Join(rootDir, i))
-		if err != nil {
-			log.Printf("failed to read %s, %v", i, err)
-			continue
-		}
-
-		for _, l := range dir {
-			if l.IsDir() {
-				layers = append(layers, Layer{
-					Id:     l.Name(),
-					Path:   path.Join(i, l.Name()),
-					Active: false,
-				})
-			}
-		}
-	}
-}
-
-func contains(lst []string, v string) bool {
-	for _, i := range lst {
-		if i == v {
-			return true
-		}
-	}
-	return false
 }

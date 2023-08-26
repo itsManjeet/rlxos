@@ -31,7 +31,7 @@ jobs:
           echo "TAG_NAME=${TAG_NAME}" >> $GITHUB_ENV
 
           [[ "${TAG_NAME}" -eq "rolling" ]] && {
-            VERSION=0
+            VERSION=999
             CODENAME="rolling"
           }
           echo "ARCH=${{matrix.board}}" >> $GITHUB_ENV

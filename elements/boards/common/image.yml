@@ -35,6 +35,7 @@ build-time:
 
 include:
   - components/core.yml
+  - components/release-info.yml
   - components/swupd.yml
   - components/layers.yml
   - components/vim.yml

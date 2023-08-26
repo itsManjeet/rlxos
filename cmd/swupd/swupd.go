@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	CONFIG_FILE = "/etc/config.yml"
+	CONFIG_FILE = "/etc/swupd.yml"
 )
 
 func main() {

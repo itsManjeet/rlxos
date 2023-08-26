@@ -1,7 +1,7 @@
 id: filesystem
+version: 0.0.1
 about: rlxos filesystem
 no-strip: true
-merge: [version.yml]
 
 script: |
   for d in boot dev etc home mnt usr var opt srv/http run; do
@@ -16,7 +16,7 @@ script: |
   install -d %{install-root}/%{sysconfdir}/{ld.so.conf.d,skel,profile.d} %{install-root}/%{datadir}/factory/%{sysconfdir}
 
   for f in fstab group host.conf hosts issue nsswitch.conf \
-           passwd resolv.conf securetty shells profile inputrc ; do
+           passwd securetty shells profile inputrc ; do
     install -m644 %{build-root}/$f %{install-root}/%{sysconfdir}
     install -m644 %{build-root}/$f %{install-root}/%{datadir}/factory/%{sysconfdir}
   done
@@ -26,10 +26,6 @@ script: |
     install -m600 %{build-root}/$f %{install-root}/%{sysconfdir}
     install -m600 %{build-root}/$f %{install-root}/%{datadir}/factory/%{sysconfdir}
   done
-
-  echo "%{version}" > %{install-root}/%{sysconfdir}/rlxos-release
-  install -Dm644 %{build-root}/os-release %{install-root}/%{libdir}/os-release
-
   for d in cache local opt log/old lib/misc empty; do
     install -d -m755 %{install-root}/%{localstatedir}/$d
   done
@@ -79,8 +75,6 @@ sources:
   - files/filesystem/host.conf
   - files/filesystem/hosts
   - files/filesystem/securetty
-  - files/filesystem/lsb-release
-  - files/filesystem/os-release
   - files/filesystem/sysusers
   - files/filesystem/tmpfiles
   - files/filesystem/env-generator

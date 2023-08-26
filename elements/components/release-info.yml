@@ -1,0 +1,21 @@
+id: release-info
+merge: [version.yml]
+about: rlxos Release information
+
+script: |
+  mkdir -p %{install-root}/%{sysconfdir}
+
+  cat > %{install-root}/%{sysconfdir}/os-release <<EOF
+  NAME="rlxos %{codename}"
+  VERSION=%{version}
+  ID=rlxos
+  PRETTY_NAME="rlxos GNU/Linux"
+  VERSION_CODENAME="%{codename}"
+  EOF
+
+  cat > %{install-root}/%{sysconfdir}/lsb-release <<EOF
+  DISTRIB_ID="rlxos"
+  DISTRIB_RELEASE="%{version}"
+  DISTRIB_CODENAME="%{codename}"
+  DISTRIB_DESCRIPTION="rlxos %{version} %{codename}"
+  EOF

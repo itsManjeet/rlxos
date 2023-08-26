@@ -4,9 +4,9 @@ about: |
   Perl Compatible Regular Expression libraries
 
 sources:
-  - https://sourceforge.net/projects/pcre/files/pcre/{{version}}/pcre-{{version}}.tar.bz2
+  - https://sourceforge.net/projects/pcre/files/pcre/%{version}/pcre-%{version}.tar.bz2
 
-build-type: autoconf
+build-type: autotools
 configure: >
   --enable-unicode-properties
   --enable-pcre16
@@ -15,3 +15,9 @@ configure: >
   --enable-pcregrep-libbz2
   --enable-pcretest-libreadline
   --disable-static
+
+depends:
+  - components/bash.yml
+  - components/bzip2.yml
+  - components/readline.yml
+  - components/zlib.yml

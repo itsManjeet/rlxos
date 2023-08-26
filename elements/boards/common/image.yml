@@ -48,6 +48,16 @@ include:
   - components/linux.yml
 
   - components/wlroots.yml
+  - components/labwc.yml
+
+  # X Server
+  - components/x11/xserver.yml
+  - components/x11/xf86-input-libinput.yml
+  - components/x11/xinit.yml
+
+  # Window Manager
+  - components/awesome.yml
+  - components/picom.yml
 
   # Fonts
   - components/fonts/cantarell.yml

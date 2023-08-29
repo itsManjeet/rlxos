@@ -31,6 +31,8 @@ MKBOOTIMG		?= $(shell pwd)/scripts/mkbootimg
 REPO_BUILDER	?= $(BUILDDIR)/builder
 RELEASE_PATH	?= $(BUILDDIR)/release
 
+BOARD			?= $(ARCH)
+
 export PATH := $(PATH):$(TOOLCHAIN_PATH)/bin
 
 all: $(REPO_BUILDER)
@@ -76,6 +78,11 @@ update-vendor:
 
 $(REPO_BUILDER): update-vendor version.yml server.yml
 	$(GOLANG) build -o $@ rlxos/cmd/builder
+
+check: $(REPO_BUILDER)
+	@if [ -z $(ELEMENT) ] ;then echo "ERROR: no element specified"; exit 1; fi
+	@if [ ! -f elements/$(ELEMENT) ] ; then echo "ERROR: no element exists elements/$(ELEMENT)"; exit 1; fi
+	$(REPO_BUILDER) status -cache-path $(CACHE_PATH) $(ELEMENT)
 
 component: $(REPO_BUILDER)
 	@if [ -z $(ELEMENT) ] ;then echo "ERROR: no element specified"; exit 1; fi

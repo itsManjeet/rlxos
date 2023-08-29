@@ -48,8 +48,8 @@ include:
   - components/e2fsprogs.yml
   - components/linux.yml
 
-  - components/wlroots.yml
-  - components/labwc.yml
+  # Desktop Environment
+  - components/awesome.yml
 
   # Fonts
   - components/fonts/cantarell.yml

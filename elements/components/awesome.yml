@@ -27,6 +27,10 @@ depends:
   - components/x11/xcb-util-wm.yml
   - components/x11/xcb-util-xrm.yml
   - components/x11/xmessage.yml
+  - components/x11/xserver.yml
+  - components/x11/xinit.yml
+  - components/x11/xf86-video-fbdev.yml
+  - components/x11/xf86-input-libinput.yml
 
 build-time:
   - components/cmake.yml

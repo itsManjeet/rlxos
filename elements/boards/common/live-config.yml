@@ -1,8 +1,6 @@
 merge: [version.yml]
 build-type: system
 
-include:
-  - components/installer.yml
 build-time:
   - components/squashfs-tools.yml
 

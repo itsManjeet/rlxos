@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"os/exec"
 	"path"
@@ -11,6 +12,7 @@ import (
 	"rlxos/pkg/color"
 	"rlxos/pkg/element"
 	"rlxos/pkg/element/builder"
+	"strings"
 
 	"gopkg.in/yaml.v2"
 )
@@ -18,6 +20,10 @@ import (
 var (
 	projectPath string
 	cachePath   string
+)
+
+var (
+	cleanGarbage bool = false
 )
 
 func main() {
@@ -45,6 +51,18 @@ func main() {
 				color.NoColor = true
 				return nil
 			})).
+		Flag(flag.New("clean-garbage").
+			About("Clean Garbage elements").
+			Handler(func(s []string) error {
+				cleanGarbage = true
+				return nil
+			})).
+		Init(func() (interface{}, error) {
+			if len(cachePath) == 0 {
+				cachePath = path.Join(projectPath, "build")
+			}
+			return builder.New(projectPath, cachePath)
+		}).
 		Handler(func(c *app.Command, args []string, i interface{}) error {
 			return c.Help()
 		}).
@@ -216,6 +234,79 @@ func main() {
 				}
 
 				return os.WriteFile(metadatafile, data, 0644)
+			})).
+		Sub(app.New("report").
+			About("Report status").
+			Handler(func(c *app.Command, s []string, i interface{}) error {
+				bldr := i.(*builder.Builder)
+				elements := bldr.Pool()
+				totalElements := 0
+				mmiElements := 0
+				var cachedSize int64 = 0
+				var totalSize int64 = 0
+
+				cachedElements := []string{}
+				garbageElements := []string{}
+
+				for _, el := range elements {
+					cachefile, _ := bldr.CacheFile(el)
+					cachedElements = append(cachedElements, path.Base(cachefile))
+					if stat, err := os.Stat(cachefile); err == nil {
+						cachedSize += stat.Size()
+					}
+
+					isMII := false
+					if len(el.Sources) == 0 {
+						isMII = true
+					} else {
+						for _, u := range el.Sources {
+							if strings.Contains(u, "itsmanjeet") {
+								isMII = true
+								break
+							}
+						}
+					}
+					if isMII {
+						mmiElements++
+					} else {
+						totalElements++
+					}
+				}
+
+				isGarbage := func(e string) bool {
+					for _, c := range cachedElements {
+						if c == e {
+							return false
+						}
+					}
+					return true
+				}
+
+				cachedir, err := ioutil.ReadDir(bldr.CachePath())
+				if err != nil {
+					return fmt.Errorf("failed to read dir %s, %v", bldr.CachePath(), err)
+				}
+
+				for _, cf := range cachedir {
+					if isGarbage(cf.Name()) {
+						garbageElements = append(garbageElements, cf.Name())
+					}
+					if stat, err := os.Stat(path.Join(bldr.CachePath(), cf.Name())); err == nil {
+						totalSize += stat.Size()
+					}
+				}
+
+				fmt.Printf("\n----------------------------------------\n")
+				fmt.Printf("  %sTOTAL ELEMENTS%s   :  %s%d%s\n", color.Bold, color.Reset, color.Green, totalElements, color.Reset)
+				fmt.Printf("  %sMII ELEMENTS%s     :  %s%d%s\n", color.Bold, color.Reset, color.Green, mmiElements, color.Reset)
+				fmt.Printf("  %sMII PERCENTGE%s    :  %s%.2f%%%s\n", color.Bold, color.Reset, color.Green, (float64(mmiElements)/float64(totalElements))*100, color.Reset)
+				fmt.Printf("  %sCACHED SIZE%s      :  %s%.2f GiB%s\n", color.Bold, color.Reset, color.Green, (float64(cachedSize) / (1024 * 1024 * 1024)), color.Reset)
+				fmt.Printf("  %sTOTAL SIZE%s       :  %s%.2f GiB%s\n", color.Bold, color.Reset, color.Green, (float64(totalSize) / (1024 * 1024 * 1024)), color.Reset)
+				fmt.Printf("  %sGARBAGE SIZE%s     :  %s%.2f GiB%s\n", color.Bold, color.Reset, color.Green, (((float64(cachedSize) - float64(totalSize)) / float64(totalSize)) / (1024 * 1024 * 1024)), color.Reset)
+				fmt.Printf("  %sGARBAGE COUNT%s    :  %s%d%s\n", color.Bold, color.Reset, color.Green, len(garbageElements), color.Reset)
+				fmt.Printf("----------------------------------------\n")
+
+				return nil
 			})).
 		Sub(app.New("status").
 			About("List status of caches").

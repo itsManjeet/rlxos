@@ -79,6 +79,9 @@ update-vendor:
 $(REPO_BUILDER): update-vendor version.yml server.yml
 	$(GOLANG) build -o $@ rlxos/cmd/builder
 
+report: $(REPO_BUILDER) 
+	$(REPO_BUILDER) report -cache-path $(CACHE_PATH)
+
 check: $(REPO_BUILDER)
 	@if [ -z $(ELEMENT) ] ;then echo "ERROR: no element specified"; exit 1; fi
 	@if [ ! -f elements/$(ELEMENT) ] ; then echo "ERROR: no element exists elements/$(ELEMENT)"; exit 1; fi

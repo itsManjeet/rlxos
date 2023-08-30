@@ -4,4 +4,4 @@ merge: [elements/boards/common/installer.yml]
 
 include:
   - boards/x86_64/image.yml
-  - boards/x86_64/overlay.yml
+  - boards/x86_64/live-config.yml

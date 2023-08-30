@@ -45,7 +45,7 @@ jobs:
       
       - name: Make Board Image
         run: |
-          for element in image overlay installer updates ; do
+          for element in image live-config installer updates ; do
             make component ELEMENT=boards/${{matrix.board}}/${element}.yml
           done
 

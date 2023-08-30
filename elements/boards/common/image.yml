@@ -1,36 +1,52 @@
 merge: [version.yml]
 no-strip: true
-build-type: system
 
 variables:
-  root-password: rlxos
+  include-root: "/sysroot"
+  salt: 5ceca5e1f86ae62403b27e66c5160717f1bb88405a1d1d0853241c27f3764843
 
 script: |
-  if [ -d %{localstatedir}/lib/integrations ] ; then
-    for i in %{localstatedir}/lib/integrations/* ; do
-      echo "=> integrating $(basename $i)"
-      sh -e $i
-    done
-  fi
+  mkdir -p %{install-root}
 
-  systemd-sysusers
-  systemd-tmpfiles --create || true
-  systemctl preset-all || true
-  systemctl --global preset-all || true
+  [[ -d %{include-root}/%{datadir}/factory/etc ]] && rm -rf %{include-root}/%{datadir}/factory/etc
+  mkdir -p %{include-root}/%{datadir}/factory
+  mv -T %{include-root}/etc %{include-root}/%{datadir}/factory/etc
 
-  # TODO: NEEDED?
-  pwconv
-  grpconv
+  echo "IMAGE_VERSION=%{version}" >>%{include-root}/%{libdir}/os-release
 
-  echo -e "%{root-password}\n%{root-password}" | passwd
-  ln -sv %{datadir}/zoneinfo/Asia/Kolkata %{sysconfdir}/localtime
+  mkdir -p "%{include-root}/%{libdir}/systemd/system/systemd-firstboot.service.d/"
+  cat <<EOF >"%{include-root}/%{libdir}/systemd/system/systemd-firstboot.service.d/no-prompt.conf"
+  [Service]
+  ExecStart=
+  ExecStart=/usr/bin/systemd-firstboot --root-password=root
+  StandardOutput=journal
+  StandardInput=null
+  StandardError=journal
+  EOF
 
-  echo -n "%{version}" > /usr/.version
+  mkdir -p "%{include-root}/%{libdir}/systemd/system/ldconfig.service.d/"
+  cat <<EOF >"%{include-root}/%{libdir}/systemd/system/ldconfig.service.d/after-tmpfiles.conf"
+  [Unit]
+  After=systemd-tmpfiles-setup.service
+  EOF
+
+  cat >%{include-root}/%{libdir}/tmpfiles.d/extra-etc.conf << EOF
+
+  EOF
+
+  mksquashfs %{include-root}/usr %{install-root}/usr_%{version}.squashfs
+
+  usr_part_uuid="$(cat "%{install-root}/usr-root-hash.txt" | sed -E 's/^([0-9a-f]{8})([0-9a-f]{4})([0-9a-f]{4})([0-9a-f]{4})([0-9a-f]{12}).*/\1\2\3\4\5/')"
+  mv "%{install-root}/usr_%{version}.squashfs" "%{install-root}/usr_%{version}_${usr_part_uuid}.squashfs"
+  ln -s "usr_%{version}_${usr_part_uuid}.squashfs" '%{install-root}/usr.squashfs'
+
+  usr_verity_part_uuid="$(cat "%{install-root}/usr-root-hash.txt" | sed -E 's/.*([0-9a-f]{8})([0-9a-f]{4})([0-9a-f]{4})([0-9a-f]{4})([0-9a-f]{12})$/\1\2\3\4\5/')"
+  mv "%{install-root}/usr_%{version}.verity" "%{install-root}/usr_%{version}_${usr_verity_part_uuid}.verity"
+  ln -s "usr_%{version}_${usr_verity_part_uuid}.verity" '%{install-root}/usr.verity'
 
 build-time:
-  - components/grub.yml
+  - components/cryptsetup.yml
   - components/squashfs-tools.yml
-  - components/linux.yml
   - components/systemd.yml
 
 include:

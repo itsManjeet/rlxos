@@ -60,6 +60,10 @@ func (b *Builder) Get(id string) (*element.Element, bool) {
 	return e, ok
 }
 
+func (b *Builder) CachePath() string {
+	return path.Join(b.cachePath, "cache")
+}
+
 func (b *Builder) CacheFile(e *element.Element) (string, error) {
 	sum := fmt.Sprint(e)
 	s := sha256.New()

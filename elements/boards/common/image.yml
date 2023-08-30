@@ -36,6 +36,9 @@ script: |
 
   mksquashfs %{include-root}/usr %{install-root}/usr_%{version}.squashfs
 
+  veritysetup format --salt="%{salt}" "%{install-root}/usr_%{version}.squashfs" "%{install-root}/usr_%{version}.verity" | sed '/^Root hash:[[:space:]]*/{;s///;q;};d' >"%{install-root}/usr-root-hash.txt"
+  
+
   usr_part_uuid="$(cat "%{install-root}/usr-root-hash.txt" | sed -E 's/^([0-9a-f]{8})([0-9a-f]{4})([0-9a-f]{4})([0-9a-f]{4})([0-9a-f]{12}).*/\1\2\3\4\5/')"
   mv "%{install-root}/usr_%{version}.squashfs" "%{install-root}/usr_%{version}_${usr_part_uuid}.squashfs"
   ln -s "usr_%{version}_${usr_part_uuid}.squashfs" '%{install-root}/usr.squashfs'

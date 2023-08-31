@@ -129,7 +129,7 @@ set default="%s"
 
 menuentry "%s" {
 	insmod all_video
-	linux /boot/vmlinuz-%s rw system=%d root=%s
+	linux /boot/vmlinuz-%s rw rd.image=%d root=%s
 	initrd /boot/initramfs-%s.img
 }
 

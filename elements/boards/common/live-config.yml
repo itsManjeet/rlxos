@@ -1,7 +1,7 @@
 merge: [version.yml]
 build-type: system
 
-depends:
+include:
   - components/installer.yml
 
 build-time:

@@ -1,6 +1,0 @@
-id: smproxy
-version: '7'
-about: xorg apps smproxy
-build-dir: smproxy-1.0.6
-sources:
-- https://www.x.org/pub/individual/app/smproxy-1.0.6.tar.bz2

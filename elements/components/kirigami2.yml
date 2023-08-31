@@ -1,0 +1,14 @@
+id: kirigami2
+version: 5.94.0
+about: KF5 kirigami2
+release: 0
+depends:
+- components/qt.yml
+build-time:
+- components/extra-cmake-modules.yml
+- components/kpackage.yml
+sources:
+- https://download.kde.org/stable/frameworks/5.94/%{id}-%{version}.tar.xz
+configure: |
+  -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF -Wno-dev
+

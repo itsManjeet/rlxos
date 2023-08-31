@@ -1,0 +1,33 @@
+id: cifs-utils
+version: "6.14"
+about: CIFS filesystem user-space tools
+release: 0
+depends:
+- components/libcap.yml
+- components/keyutils.yml
+- components/kerberos-v5.yml
+- components/pam.yml
+sources:
+- https://download.samba.org/pub/linux-cifs/cifs-utils/cifs-utils-%{version}.tar.bz2
+script: |-
+  sed -e 's|cd \$(ROOTSBINDIR)|cd $(DESTDIR)$(ROOTSBINDIR)|g' Makefile.am
+  autoreconf -i
+  ./configure --prefix=/usr \
+    --with-libcap=yes \
+    --sbindir=/usr/bin \
+    --disable-systemd
+
+  make
+
+  make DESTDIR=%{install-root} ROOTSBINDIR=/usr/bin install
+
+
+  mkdir -p %{install-root}%{sysconfdir}/request-key.d
+  install -m 0644 contrib/request-key.d/cifs.idmap.conf %{install-root}%{sysconfdir}/request-key.d
+  install -m 0644 contrib/request-key.d/cifs.spnego.conf %{install-root}%{sysconfdir}/request-key.d
+
+  chmod +s %{install-root}/usr/bin/mount.cifs
+
+  mkdir -p %{install-root}%{sysconfdir}/cifs-utils
+  ln -s /usr/lib/cifs-utils/idmapwb.so %{install-root}%{sysconfdir}/cifs-utils/idmap-plugin
+

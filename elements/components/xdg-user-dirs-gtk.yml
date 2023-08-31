@@ -1,0 +1,13 @@
+id: xdg-user-dirs-gtk
+version: "0.10"
+about: Create user dirs and asks to relocalize them
+release: 0
+depends:
+- components/gtk.yml
+- components/xdg-user-dirs.yml
+build-time:
+- components/intltool.yml
+sources:
+- https://download.gnome.org/sources/xdg-user-dirs-gtk/%{version}/xdg-user-dirs-gtk-%{version}.tar.xz
+configure: --disable-more-warnings
+

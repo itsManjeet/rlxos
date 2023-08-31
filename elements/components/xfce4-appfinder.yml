@@ -1,0 +1,15 @@
+id: xfce4-appfinder
+version: 4.16.1
+about: xfce application finder and launcher tool
+release: 0
+depends:
+- components/garcon.yml
+build-time:
+- components/intltool.yml
+sources:
+- https://archive.xfce.org/src/xfce/xfce4-appfinder/4.16/xfce4-appfinder-%{version}.tar.bz2
+pre-script: |-
+  for i in /files/*.patch ; do
+    patch -Np1 -i ${i}
+  done
+

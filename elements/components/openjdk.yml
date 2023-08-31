@@ -1,0 +1,42 @@
+id: openjdk
+version: 18.0.2
+about: open-source implementation of Oracle's Java Standard Edition platform
+release: 0
+depends:
+- components/alsa-lib.yml
+- components/cpio.yml
+- components/cups.yml
+- components/unzip.yml
+- components/which.yml
+- components/xorg-libs.yml
+- components/zip.yml
+- components/make-ca.yml
+- components/giflib.yml
+- components/lcms.yml
+- components/libjpeg-turbo.yml
+- components/libpng.yml
+build-time:
+- components/openjdk-bin.yml
+sources:
+- https://github.com/openjdk/jdk18u/archive/jdk-%{version}-ga.tar.gz
+script: |
+  sh ./configure                    \
+  --enable-unlimited-crypto         \
+  --disable-warnings-as-errors      \
+  --with-stdc++lib=dynamic          \
+  --with-giflib=system              \
+  --with-lcms=system                \
+  --with-libjpeg=system             \
+  --with-libpng=system              \
+  --with-zlib=system                \
+  --with-version-build="8"          \
+  --with-version-pre=""             \
+  --with-version-opt=""             \
+  --with-cacerts-file=${JAVA_HOME}/lib/security/cacerts
+
+  unset MAKEFLAGS
+  make LOG=warn JOBS=$(nproc) images
+
+  mkdir -p %{install-root}/opt/%{id}-%{version}/
+  cp -Rv build/*/images/jdk/* %{install-root}/opt/%{id}-%{version}/
+

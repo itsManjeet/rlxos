@@ -1,0 +1,18 @@
+id: blender
+version: 3.3.0
+about: Blender is the free and open source 3D creation suite. It supports the entirety
+  of the 3D pipeline—modeling, rigging, animation, simulation, rendering, compositing
+  and motion tracking, and video editing
+release: 0
+build-time:
+- components/appimagetool.yml
+sources:
+- https://ftp.nluug.nl/pub/graphics/blender/release/Blender3.3/blender-%{version}-linux-x64.tar.xz
+script: |-
+  mv blender-%{version}-linux-x64 %{install-root}
+  cd %{install-root}
+
+  mv blender AppRun
+  mv blender.svg %{id}.png
+  sed -i '/^PrefersNonDefaultGPU/d' %{id}.desktop
+

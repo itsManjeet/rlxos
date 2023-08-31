@@ -1,0 +1,16 @@
+id: libgepub
+version: 0.6.0
+about: Simple library to read epub files using glib
+release: 0
+depends:
+- components/libarchive.yml
+- components/libgcrypt.yml
+- components/enchant.yml
+- components/webkitgtk.yml
+build-time:
+- components/gobject-introspection.yml
+- components/gtk-doc.yml
+- components/meson.yml
+sources:
+- https://gitlab.gnome.org/GNOME/libgepub/-/archive/%{version}/libgepub-%{version}.tar.gz
+

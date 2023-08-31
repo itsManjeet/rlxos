@@ -1,0 +1,7 @@
+id: xpr
+version: "7"
+about: xorg apps xpr
+release: 0
+sources:
+- https://www.x.org/pub/individual/app/xpr-1.0.5.tar.bz2
+

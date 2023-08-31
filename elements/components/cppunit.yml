@@ -1,0 +1,11 @@
+id: cppunit
+version: 1.15.1
+about: A C++ unit testing framework
+release: 0
+depends:
+- components/gcc:lib.yml
+sources:
+- https://dev-www.libreoffice.org/src/%{id}-%{version}.tar.gz
+configure: |
+  --disable-static
+

@@ -1,0 +1,18 @@
+id: js78
+version: 78.12.0
+about: Mozilla's JavaScript engine written in C
+release: 0
+depends:
+- components/icu.yml
+build-time:
+- components/autoconf-2.13.yml
+- components/rustc.yml
+- components/which.yml
+sources:
+- https://archive.mozilla.org/pub/firefox/releases/78.12.0esr/source/firefox-78.12.0esr.source.tar.xz
+post-script: |-
+  rm -v %{install-root}/usr/lib/libjs_static.ajs
+  sed -i "/@NSPR_CFLAGS@/d" %{install-root}/usr/bin/js78-config
+configure: |
+  --prefix=/usr --with-intl-api --with-system-zlib --with-system-icu --disable-jemalloc --disable-debug-symbols
+

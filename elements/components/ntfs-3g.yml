@@ -1,0 +1,20 @@
+id: ntfs-3g
+version: 2021.8.22
+about: |
+  A stable, read-write open source driver for NTFS partitions
+release: 0
+depends:
+- components/fuse2.yml
+- components/libgcrypt.yml
+- components/gnutls.yml
+- components/libidn2.yml
+sources:
+- https://tuxera.com/opensource/ntfs-3g_ntfsprogs-%{version}.tgz
+pre-script: |
+  sed -i "s|/sbin|\$(rootsbindir)|" {ntfsprogs,src}/Makefile.in
+post-script: |
+  ln -s /usr/bin/ntfs-3g %{install-root}/usr/bin/mount.ntfs
+configure: "--disable-static --with-fuse=external --enable-posix-acls --enable-extras
+  --enable-crypto --disable-ldconfig\n  \n"
+install: rootbindir=/usr/bin rootsbindir=/usr/bin rootlibdir=/usr/lib
+

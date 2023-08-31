@@ -1,0 +1,17 @@
+id: lockdev
+version: 1.0.3
+about: Run-time shared library for locking devices, using _both_ FSSTND and SVr4 methods
+release: 0
+depends:
+- components/glibc.yml
+- components/systemd.yml
+sources:
+- http://ftp.debian.org/debian/pool/main/l/%{id}/%{id}_%{version}.orig.tar.gz
+- lockdev_%{version}-{{patch}}.diff.compressed::http://ftp.debian.org/debian/pool/main/l/%{id}/%{id}_%{version}-{{patch}}.diff.gz
+pre-script: "mv ../%{id}_%{version}-{{patch}}.diff.{compressed,gz}\ngzip -d ../%{id}_%{version}-{{patch}}.diff.gz\npatch
+  -p1 -i ../%{id}_%{version}-{{patch}}.diff\n\nsed -i \"s|CFLAGS\t= -g|CFLAGS\t= -g
+  -fPIC|\" Makefile\npatch -p1 -i /files/build.patch\npatch -p1 -i /files/gcc-4.7.patch\n\nmake
+  CFLAGS=\"${CFLAGS:-} -D_PATH_LOCK=\\\\\\\"/run/lock/lockdev\\\\\\\" -fPIC\"\nmake
+  basedir=%{install-root}/usr install\n\ninstall -dm0755 \"%{install-root}/usr/lib/tmpfiles.d\"\necho
+  'd /run/lock/lockdev 0775 root lock -' > \"$pkgupd_pkgdir/usr/lib/tmpfiles.d/%{id}.conf\"\n"
+

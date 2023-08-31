@@ -1,0 +1,16 @@
+id: egl-wayland
+version: 1.1.11
+about: EGLStream-based Wayland external platform
+release: 0
+depends:
+- components/eglexternalplatform.yml
+- components/wayland.yml
+build-time:
+- components/libglvnd.yml
+- components/wayland-protocols.yml
+sources:
+- egl-wayland-%{version}.tar.gz::https://github.com/NVIDIA/egl-wayland/archive/refs/tags/%{version}.tar.gz
+post-script: |-
+  install -Dt "$pkgupd_pkgdir%{datadir}/egl/egl_external_platform.d" -m644 /files/10_nvidia_wayland.json
+  install -Dt "$pkgupd_pkgdir%{datadir}/doc/%{id}" -m644 COPYING
+

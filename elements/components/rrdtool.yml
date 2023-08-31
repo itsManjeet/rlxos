@@ -1,0 +1,14 @@
+id: rrdtool
+version: 1.7.2
+about: data logging and graphing application
+release: 0
+depends:
+- components/libxml2.yml
+- components/pango.yml
+- components/systemd.yml
+build-time:
+- components/py-setuptools.yml
+sources:
+- https://github.com/oetiker/rrdtool-1.x/releases/download/v%{version}/rrdtool-%{version}.tar.gz
+configure: --disable-rpath --enable-python --disable-libwrap
+

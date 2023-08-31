@@ -1,0 +1,14 @@
+id: appstream-glib
+version: 0.7.18
+about: Objects and methods for reading and writing AppStream metadata
+release: 0
+depends:
+- components/gtk.yml
+- components/libsoup.yml
+- components/libyaml.yml
+- components/librsvg.yml
+- components/curl.yml
+sources:
+- https://github.com/hughsie/appstream-glib/archive/refs/tags/appstream_glib_0_7_18.tar.gz
+configure: -D rpm=false -D stemmer=false
+

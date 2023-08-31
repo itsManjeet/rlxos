@@ -1,6 +1,0 @@
-id: xorg-drivers-evdev
-version: '7'
-about: xorg fonts xorg-drivers-evdev
-build-dir: xf86-input-evdev-2.10.6
-sources:
-- https://www.x.org/pub/individual/driver/xf86-input-evdev-2.10.6.tar.bz2

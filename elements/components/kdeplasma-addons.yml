@@ -1,0 +1,16 @@
+id: kdeplasma-addons
+version: 5.24.5
+about: Plasma kdeplasma-addons
+release: 0
+depends:
+- components/kunitconversion.yml
+- components/plasma-workspace.yml
+- components/purpose.yml
+- components/qt.yml
+build-time:
+- components/extra-cmake-modules.yml
+sources:
+- https://download.kde.org/stable/plasma/%{version}/%{id}-%{version}.tar.xz
+configure: |
+  -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF -Wno-dev
+

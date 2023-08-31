@@ -1,0 +1,15 @@
+id: gnome-initial-setup
+version: "40.2"
+about: Simple, easy, and safe way to prepare a new system
+release: 0
+depends:
+- components/cheese.yml
+- components/gdm.yml
+- components/gnome-online-accounts.yml
+- components/kerberos-v5.yml
+- components/libpwquality.yml
+sources:
+- http://ftp.gnome.org/pub/gnome/sources/gnome-initial-setup/40/gnome-initial-setup-40.2.tar.xz
+post-script: install -v -d -m 0700 -o 68 %{install-root}/run/gnome/initial-setup
+configure: --buildtype=release
+

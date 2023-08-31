@@ -1,0 +1,19 @@
+id: brotli
+version: 1.0.9
+about: Generic purpose lossless compression algorithm
+release: 0
+depends:
+- components/gcc:lib.yml
+- components/glibc.yml
+build-time:
+- components/cmake.yml
+- components/gcc.yml
+- components/py-setuptools.yml
+sources:
+- brotli-1.0.9.tar.gz::https://github.com/google/brotli/archive/refs/tags/v1.0.9.tar.gz
+pre-script: |
+  python setup.py build
+post-script: python setup.py install --skip-build -O1 --root=%{install-root}
+configure: |
+  -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=True
+

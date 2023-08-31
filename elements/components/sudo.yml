@@ -1,0 +1,14 @@
+id: sudo
+version: 1.9.7p2
+about: Allows a system administrator to give certain users (or groups of users) the
+  ability to run some (or all) commands as root or another user while logging the
+  commands and arguments
+release: 0
+sources:
+- https://www.sudo.ws/dist/sudo-1.9.7p2.tar.gz
+post-script: "ln -sfv libsudo_util.so.0.0.0 %{install-root}/usr/lib/sudo/libsudo_util.so.0
+  \n\ninstall -v -D -m 644 /files/sudo -t %{install-root}%{sysconfdir}/sudoers.d/\ninstall
+  -v -D -m 644 /files/pam %{install-root}%{sysconfdir}/pam.d/sudo"
+configure: |
+  --libexecdir=/usr/lib --bindir=/usr/bin --sbindir=/usr/bin --with-secure-path --with-all-insults --with-env-editor --with-pam --with-passprompt="[sudo] password for %p: "
+

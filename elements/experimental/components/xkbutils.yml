@@ -1,6 +1,0 @@
-id: xkbutils
-version: '7'
-about: xorg apps xkbutils
-build-dir: xkbutils-1.0.4
-sources:
-- https://www.x.org/pub/individual/app/xkbutils-1.0.4.tar.bz2

@@ -1,8 +1,0 @@
-id: mailcap
-version: 2.1.53
-about: Helper application and MIME type associations for file types
-sources:
-  - https://pagure.io/mailcap/archive/r2-1-53/mailcap-r2-1-53.tar.gz
-script: |
-  make
-  make DESTDIR=${pkgupd_pkgdir} install

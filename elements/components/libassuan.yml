@@ -1,0 +1,10 @@
+id: libassuan
+version: 2.5.5
+about: An inter process communication library used by some of the other GnuPG related
+  packages
+release: 0
+depends:
+- components/libgpg-error.yml
+sources:
+- https://www.gnupg.org/ftp/gcrypt/libassuan/libassuan-2.5.5.tar.bz2
+

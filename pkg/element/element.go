@@ -15,48 +15,48 @@ type Element struct {
 	About   string `yaml:"about"`
 	Release int    `yaml:"release"`
 
-	Merge []string `yaml:"merge"`
+	Merge []string `yaml:"merge,omitempty"`
 
-	Variables map[string]string `yaml:"variables"`
+	Variables map[string]string `yaml:"variables,omitempty"`
 
 	// Depends dependencies are required both during buildtime and runtime
-	Depends []string `yaml:"depends"`
+	Depends []string `yaml:"depends,omitempty"`
 
 	// BuildTime dependencies are required during buildtime only
-	BuildTime []string `yaml:"build-time"`
+	BuildTime []string `yaml:"build-time,omitempty"`
 
 	// Runtime dependencies are those needed only during runtime
-	Runtime []string `yaml:"run-time"`
+	Runtime []string `yaml:"run-time,omitempty"`
 
-	BuildDir string `yaml:"build-dir"`
+	BuildDir string `yaml:"build-dir,omitempty"`
 
-	BuildType string `yaml:"build-type"`
+	BuildType string `yaml:"build-type,omitempty"`
 
-	Check []string `yaml:"check"`
+	Check []string `yaml:"check,omitempty"`
 
 	Config struct {
-		Source string `yaml:"source"`
-		Target string `yaml:"target"`
-	} `yaml:"config"`
+		Source string `yaml:"source,omitempty"`
+		Target string `yaml:"target,omitempty"`
+	} `yaml:"config,omitempty"`
 
-	Sources []string `yaml:"sources"`
-	Environ []string `yaml:"environ"`
-	Include []string `yaml:"include"`
+	Sources []string `yaml:"sources,omitempty"`
+	Environ []string `yaml:"environ,omitempty"`
+	Include []string `yaml:"include,omitempty"`
 
-	PreScript  string `yaml:"pre-script"`
-	Script     string `yaml:"script"`
-	PostScript string `yaml:"post-script"`
+	PreScript  string `yaml:"pre-script,omitempty"`
+	Script     string `yaml:"script,omitempty"`
+	PostScript string `yaml:"post-script,omitempty"`
 
-	Configure string `yaml:"configure"`
-	Compile   string `yaml:"compile"`
-	Install   string `yaml:"install"`
+	Configure string `yaml:"configure,omitempty"`
+	Compile   string `yaml:"compile,omitempty"`
+	Install   string `yaml:"install,omitempty"`
 
-	Integration string `yaml:"integration"`
+	Integration string `yaml:"integration,omitempty"`
 
-	Split []ElementSplit `yaml:"split"`
+	Split []ElementSplit `yaml:"split,omitempty"`
 
-	NoStrip   bool     `yaml:"no-strip"`
-	SkipStrip []string `yaml:"skip-strip"`
+	NoStrip   bool     `yaml:"no-strip,omitempty"`
+	SkipStrip []string `yaml:"skip-strip,omitempty"`
 }
 
 // ElementSplit holds the information of sub package that can be

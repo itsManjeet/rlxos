@@ -1,0 +1,21 @@
+id: gnome-books
+version: "40.0"
+about: Access and organize your e-books on GNOME
+release: 0
+depends:
+- components/evince.yml
+- components/gjs.yml
+- components/gnome-desktop.yml
+- components/gnome-epub-thumbnailer.yml
+- components/gtk.yml
+- components/libgepub.yml
+- components/tracker-miners.yml
+- components/webkitgtk.yml
+build-time:
+- components/gobject-introspection.yml
+- components/meson.yml
+- components/git.yml
+- components/docbook-xsl.yml
+sources:
+- https://download.gnome.org/sources/gnome-books/40/gnome-books-%{version}.tar.xz
+

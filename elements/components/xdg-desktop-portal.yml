@@ -1,0 +1,13 @@
+id: xdg-desktop-portal
+version: 1.14.1
+about: Desktop integration portals for sandboxed apps
+release: 0
+depends:
+- components/fuse.yml
+- components/glib.yml
+- components/pipewire.yml
+- components/libportal.yml
+- components/geoclue.yml
+sources:
+- https://github.com/flatpak/xdg-desktop-portal/releases/download/%{version}/xdg-desktop-portal-%{version}.tar.xz
+

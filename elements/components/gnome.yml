@@ -1,0 +1,56 @@
+id: gnome
+version: "3.40"
+about: |
+  Gnome Desktop Environment
+release: 0
+depends:
+- components/baobab.yml
+- components/cheese.yml
+- components/eog.yml
+- components/epiphany.yml
+- components/gdm.yml
+- components/gedit.yml
+- components/gnome-backgrounds.yml
+- components/gnome-books.yml
+- components/gnome-boxes.yml
+- components/gnome-calculator.yml
+- components/gnome-calendar.yml
+- components/gnome-contacts.yml
+- components/gnome-characters.yml
+- components/gnome-clocks.yml
+- components/gnome-color-manager.yml
+- components/gnome-control-center.yml
+- components/gnome-disk-utility.yml
+- components/evince.yml
+- components/gnome-font-viewer.yml
+- components/gnome-initial-setup.yml
+- components/gnome-icon-theme.yml
+- components/gnome-icon-theme-extras.yml
+- components/gnome-icon-theme-symbolic.yml
+- components/gnome-keyring.yml
+- components/gnome-logs.yml
+- components/gnome-menus.yml
+- components/gnome-music.yml
+- components/gnome-maps.yml
+- components/gnome-power-manager.yml
+- components/gnome-remote-desktop.yml
+- components/gnome-screenshot.yml
+- components/gnome-shell.yml
+- components/gnome-shell-extensions.yml
+- components/gnome-shell-extension-dash-to-panel.yml
+- components/gnome-shell-extension-blur-me.yml
+- components/gnome-shell-extension-nightmode.yml
+- components/gnome-session.yml
+- components/gnome-system-monitor.yml
+- components/gnome-terminal.yml
+- components/gnome-tweaks.yml
+- components/gnome-todo.yml
+- components/gnome-weather.yml
+- components/nautilus.yml
+- components/totem.yml
+- components/xdg-user-dirs.yml
+- components/ttf-noto.yml
+- components/ttf-opensans.yml
+- components/evolution.yml
+script: mkdir -p %{install-root}/usr/
+

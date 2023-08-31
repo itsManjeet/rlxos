@@ -1,0 +1,13 @@
+id: libevent
+version: 2.1.12
+about: An event notification library
+release: 0
+depends:
+- components/openssl.yml
+- components/python.yml
+build-time:
+- components/cmake.yml
+sources:
+- https://github.com/libevent/libevent/releases/download/release-%{version}-stable/libevent-%{version}-stable.tar.gz
+configure: -DCMAKE_BUILD_TYPE=Release -DEVENT_LIBRARY_TYPE=SHARED
+

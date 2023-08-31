@@ -1,0 +1,17 @@
+id: quilt
+version: "0.66"
+about: Manage a series of patches by keeping track of changes each patch makes
+release: 0
+depends:
+- components/bash.yml
+- components/bzip2.yml
+- components/diffutils.yml
+- components/gawk.yml
+sources:
+- https://savannah.nongnu.org/download/quilt/quilt-0.66.tar.gz
+script: |
+  ./configure --prefix=/usr --sysconfdir=/etc --without-rpmbuild
+  make
+
+  make BUILD_ROOT=%{install-root} install
+

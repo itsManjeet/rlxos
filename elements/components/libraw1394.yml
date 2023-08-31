@@ -1,0 +1,11 @@
+id: libraw1394
+version: 2.1.2
+about: Provides an API to the Linux IEEE1394 (FireWire) driver
+release: 0
+depends:
+- components/glibc.yml
+build-time:
+- components/pkg-config.yml
+sources:
+- https://www.kernel.org/pub/linux/libs/ieee1394/libraw1394-%{version}.tar.xz
+

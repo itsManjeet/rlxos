@@ -1,0 +1,16 @@
+id: pocketsphinx
+version: 5prealpha
+about: Lightweight speech recognition engine
+release: 0
+depends:
+- components/gst-plugins-base.yml
+- components/sphinxbase.yml
+build-time:
+- components/python.yml
+- components/swig.yml
+sources:
+- http://downloads.sourceforge.net/project/cmusphinx/pocketsphinx/%{version}/pocketsphinx-%{version}.tar.gz
+pre-script: |
+  sed -i '753d' src/gst-plugin/gstpocketsphinx.c
+post-script: install -D -m644 LICENSE %{install-root}%{datadir}/licenses/pocketsphinx/LICENSE
+

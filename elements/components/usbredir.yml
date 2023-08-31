@@ -1,0 +1,12 @@
+id: usbredir
+version: 0.12.0
+about: USB traffic redirection protocol
+release: 0
+depends:
+- components/glib.yml
+- components/libusb.yml
+build-time:
+- components/meson.yml
+sources:
+- https://spice-space.org/download/usbredir/%{id}-%{version}.tar.xz
+

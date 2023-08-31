@@ -1,0 +1,12 @@
+id: py-cairo
+version: 1.20.1
+about: Python bindings to cairo
+release: 0
+depends:
+- components/cairo.yml
+sources:
+- https://github.com/pygobject/pycairo/releases/download/v1.20.1/pycairo-1.20.1.tar.gz
+script: |
+  python3 setup.py build
+  python3 setup.py install --skip-build --optimize=1 --root=%{install-root}
+

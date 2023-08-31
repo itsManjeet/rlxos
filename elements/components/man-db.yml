@@ -1,0 +1,16 @@
+id: man-db
+version: 2.9.4
+about: Programs for finding and viewing man pages
+release: 0
+depends:
+- components/bash.yml
+- components/gdbm.yml
+- components/groff.yml
+- components/less.yml
+- components/libpipeline.yml
+- components/zlib.yml
+sources:
+- https://savannah.nongnu.org/download/man-db/man-db-2.9.4.tar.xz
+configure: |
+  --sysconfdir=/etc --libexecdir=/usr/lib --disable-setuid --enable-cache-owner=bin
+

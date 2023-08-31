@@ -1,0 +1,23 @@
+id: cogl
+version: 1.22.8
+about: Modern 3D graphics API with associated utility APIs designed to expose the
+  features of 3D graphics hardware using a direct state access API design, as opposed
+  to the state-machine style of OpenGL
+release: 0
+depends:
+- components/cairo.yml
+- components/gdk-pixbuf.yml
+- components/glu.yml
+- components/mesa.yml
+- components/pango.yml
+- components/wayland.yml
+- components/gst-plugins-base.yml
+- components/sdl.yml
+- components/sdl2.yml
+build-time:
+- components/gobject-introspection.yml
+sources:
+- https://download.gnome.org/sources/cogl/1.22/cogl-1.22.8.tar.xz
+configure: |
+  --enable-gles1 --enable-gles2 --enable-{kms,wayland,xlib}-egl-platform --enable-wayland-egl-server
+

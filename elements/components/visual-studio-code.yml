@@ -1,0 +1,16 @@
+id: visual-studio-code
+version: 1.68.1
+about: <h2>unofficial release</h2> visual studio code release
+release: 0
+build-time:
+- components/appimagetool.yml
+sources:
+- vscode.tar.gz::https://update.code.visualstudio.com/%{version}/linux-x64/stable
+script: |-
+  mv VSCode-linux-x64 %{install-root}
+  cp /files/%{id}.svg %{install-root}/visual-studio-code.png
+  cp /files/AppRun %{install-root}/
+  chmod +x %{install-root}/AppRun
+
+  cp /files/%{id}.desktop %{install-root}
+

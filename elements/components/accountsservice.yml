@@ -1,0 +1,18 @@
+id: accountsservice
+version: 0.6.55
+about: D-Bus interface for user account query and manipulation
+release: 0
+depends:
+- components/glib.yml
+- components/polkit.yml
+- components/shadow.yml
+- components/systemd.yml
+- components/libgcrypt.yml
+build-time:
+- components/xmlto.yml
+- components/meson.yml
+- components/gobject-introspection.yml
+sources:
+- https://www.freedesktop.org/software/accountsservice/accountsservice-%{version}.tar.xz
+configure: -D admin_group=adm  -D systemd=true
+

@@ -1,0 +1,13 @@
+id: dmidecode
+version: "3.3"
+about: Desktop Management Interface table related utilities
+release: 0
+depends:
+- components/glibc.yml
+sources:
+- https://download.savannah.nongnu.org/releases/%{id}/%{id}-%{version}.tar.xz
+script: |-
+  sed -i "s:sbin:bin:g" Makefile
+  make prefix=/usr CFLAGS="${CFLAGS}"
+  make prefix=/usr DESTDIR="%{install-root}" install
+

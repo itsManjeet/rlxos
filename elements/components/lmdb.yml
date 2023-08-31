@@ -1,0 +1,11 @@
+id: lmdb
+version: 0.9.29
+about: A fast, compact, key-value embedded data store
+release: 0
+sources:
+- https://github.com/LMDB/lmdb/archive/LMDB_0.9.29.tar.gz
+script: |-
+  make
+  sed -i "s| liblmdb.a||" Makefile
+  make prefix=/usr DESTDIR=%{install-root} install
+

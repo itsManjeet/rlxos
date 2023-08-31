@@ -1,0 +1,17 @@
+id: xfce4-docklike-plugin
+version: 0.4.0
+about: A Modern, docklike, minimaslist taskbar for XFCE
+release: 0
+depends:
+- components/cairo.yml
+- components/exo.yml
+- components/glib.yml
+- components/gtk.yml
+- components/libwnck.yml
+- components/xfce4-panel.yml
+build-time:
+- components/intltool.yml
+- components/cmake.yml
+sources:
+- https://archive.xfce.org/src/panel-plugins/xfce4-docklike-plugin/0.4/xfce4-docklike-plugin-%{version}.tar.bz2
+

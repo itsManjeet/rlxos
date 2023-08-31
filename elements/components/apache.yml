@@ -1,0 +1,26 @@
+id: apache
+version: 2.4.53
+about: |
+  Apache HTTP server version 2.4.x
+release: 0
+depends:
+- components/apr.yml
+- components/apr-utils.yml
+- components/pcre.yml
+- components/openssl.yml
+- components/libxml2.yml
+sources:
+- https://downloads.apache.org/httpd/httpd-%{version}.tar.gz
+pre-script: |
+  patch -Np1 -i /files/apache/layout-%{version}.patch
+  sed '/dir.*CFG_PREFIX/s@^@#@' -i support/apxs.in
+post-script: |
+  install -v -d -m 0755 %{install-root}/run/httpd
+  # mv -v %{install-root}/usr/bin/suexec %{install-root}/usr/lib/httpd/suexec
+  # chgrp 25 %{install-root}/usr/lib/httpd/suexec
+  # chmod 4754 %{install-root}/usr/lib/httpd/suexec
+  install -v -d -m 0755 -o 25 -g 25 %{install-root}/srv/www
+  install -v -D -m 0644 /files/apache/service %{install-root}/usr/lib/systemd/system/httpd.service
+configure: |
+  --enable-authz-fcgi --enable-layout=RLXOS --enable-mods-shared="all cgi" --enable-mpms-shared=all --enable-suexec=shared --with-apr=/usr/bin/apr-1-config --with-apr-util=/usr/bin/apu-1-config --with-suexec-bin=/usr/lib/httpd/suexec --with-suexec-caller=apache --with-suexec-docroot=/srv/www --with-suexec-logfile=/var/log/httpd/suexec.log --with-suexec-uidmin=100 --with-suexec-userdir=public_html
+

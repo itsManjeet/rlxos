@@ -1,0 +1,19 @@
+id: fftw
+version: 3.3.10
+about: A library for computing the discrete Fourier transform (DFT)
+release: 0
+depends:
+- components/bash.yml
+- components/gcc:lib.yml
+- components/glibc.yml
+- components/openmpi.yml
+build-time:
+- components/cmake.yml
+sources:
+- http://www.fftw.org/%{id}-%{version}.tar.gz
+pre-script: |
+  sed -e 's/3.6.9/3.6.10/' -i CMakeLists.txt
+post-script: install -vDm 644 _pkgupd_builddir/FFTW3LibraryDepends.cmake -t "$pkgupd_pkgdir/usr/lib/cmake/fftw3/"
+configure: |
+  -DCMAKE_BUILD_TYPE=None -DENABLE_OPENMP=ON -DENABLE_THREADS=ON -DENABLE_FLOAT=ON -DENABLE_LONG_DOUBLE=ON
+

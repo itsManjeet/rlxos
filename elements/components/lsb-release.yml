@@ -1,0 +1,10 @@
+id: lsb-release
+version: "2.0"
+about: LSB version query program
+release: 0
+depends:
+- components/bash.yml
+script: |-
+  install -v -D -m 0755 /files/lsb-release.sh %{install-root}/usr/bin/lsb-release
+  install -v -D -m 0644 /files/lsb-release -t %{install-root}/etc
+

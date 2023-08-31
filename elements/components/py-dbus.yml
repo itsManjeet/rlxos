@@ -1,0 +1,15 @@
+id: py-dbus
+version: 1.2.18
+about: Python bindings for DBUS
+release: 0
+depends:
+- components/dbus.yml
+- components/glib.yml
+build-time:
+- components/autoconf-archive.yml
+- components/python.yml
+sources:
+- https://dbus.freedesktop.org/releases/dbus-python/dbus-python-1.2.18.tar.gz
+pre-script: |
+  autoreconf -vfi
+

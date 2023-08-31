@@ -1,0 +1,13 @@
+id: tlp
+version: 1.4.0
+about: Linux advanced power management
+release: 0
+depends:
+- components/pciutils.yml
+- components/perl.yml
+- components/systemd.yml
+- components/networkmanager.yml
+sources:
+- tlp-1.4.0.tar.gz::https://github.com/linrunner/TLP/archive/refs/tags/1.4.0.tar.gz
+script: make DESTDIR="%{install-root}" install tlp install-man-tlp install-rdw install-man-rdw
+

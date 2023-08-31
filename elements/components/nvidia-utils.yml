@@ -1,0 +1,175 @@
+id: nvidia-utils
+version: 515.65.01
+about: NVIDIA drivers utilities
+release: 0
+depends:
+- components/egl-wayland.yml
+- components/libglvnd.yml
+- components/xorg-server.yml
+sources:
+- https://us.download.nvidia.com/XFree86/Linux-x86_64/%{version}/NVIDIA-Linux-x86_64-%{version}.run
+script: |-
+  sh NVIDIA-Linux-x86_64-%{version}.run --extract-only
+  cd NVIDIA-Linux-x86_64-%{version}
+  bsdtar -xf nvidia-persistenced-init.tar.bz2
+
+  cd kernel
+  sed -i "s/__VERSION_STRING/%{version}/" dkms.conf
+  sed -i 's/__JOBS/`nproc`/' dkms.conf
+  sed -i 's/__DKMS_MODULES//' dkms.conf
+  sed -i '$iBUILT_MODULE_NAME[0]="nvidia"\
+  DEST_MODULE_LOCATION[0]="/kernel/drivers/video"\
+  BUILT_MODULE_NAME[1]="nvidia-uvm"\
+  DEST_MODULE_LOCATION[1]="/kernel/drivers/video"\
+  BUILT_MODULE_NAME[2]="nvidia-modeset"\
+  DEST_MODULE_LOCATION[2]="/kernel/drivers/video"\
+  BUILT_MODULE_NAME[3]="nvidia-drm"\
+  DEST_MODULE_LOCATION[3]="/kernel/drivers/video"\
+  BUILT_MODULE_NAME[4]="nvidia-peermem"\
+  DEST_MODULE_LOCATION[4]="/kernel/drivers/video"' dkms.conf
+
+  # Gift for linux-rt guys
+  sed -i 's/NV_EXCLUDE_BUILD_MODULES/IGNORE_PREEMPT_RT_PRESENCE=1 NV_EXCLUDE_BUILD_MODULES/' dkms.conf
+
+  cd ..
+  install -Dm644 nvidia.icd "%{install-root}%{sysconfdir}/OpenCL/vendors/nvidia.icd"
+  install -Dm755 "libnvidia-compiler.so.%{version}" "%{install-root}/usr/lib/libnvidia-compiler.so.%{version}"
+  install -Dm755 "libnvidia-opencl.so.%{version}" "%{install-root}/usr/lib/libnvidia-opencl.so.%{version}"
+
+  find "%{install-root}" -type f -name '*.so*' ! -path '*xorg/*' -print0 | while read -d $'\0' _lib; do
+    _soname=$(dirname "${_lib}")/$(readelf -d "${_lib}" | grep -Po 'SONAME.*: \[\K[^]]*' || true)
+    _base=$(echo ${_soname} | sed -r 's/(.*)\.so.*/\1.so/')
+    [[ -e "${_soname}" ]] || ln -s $(basename "${_lib}") "${_soname}"
+    [[ -e "${_base}" ]] || ln -s $(basename "${_soname}") "${_base}"
+  done
+
+  install -dm 755 "%{install-root}"/usr/src
+  cp -dr --no-preserve='ownership' kernel "%{install-root}/usr/src/nvidia-%{version}"
+
+  install -Dm755 nvidia_drv.so "%{install-root}/usr/lib/xorg/modules/drivers/nvidia_drv.so"
+
+  # Wayland/GBM
+  install -Dm755 libnvidia-egl-gbm.so.1* -t "%{install-root}/usr/lib/"
+  install -Dm644 15_nvidia_gbm.json "%{install-root}%{datadir}/egl/egl_external_platform.d/15_nvidia_gbm.json"
+  mkdir -p "%{install-root}/usr/lib/gbm"
+  ln -sr "%{install-root}/usr/lib/libnvidia-allocator.so.%{version}" "%{install-root}/usr/lib/gbm/nvidia-drm_gbm.so"
+
+  # firmware
+  install -Dm644 firmware/gsp.bin "%{install-root}/usr/lib/firmware/nvidia/%{version}/gsp.bin"
+
+  # GLX extension module for X
+  install -Dm755 "libglxserver_nvidia.so.%{version}" "%{install-root}/usr/lib/nvidia/xorg/libglxserver_nvidia.so.%{version}"
+  # Ensure that X finds glx
+  ln -s "libglxserver_nvidia.so.%{version}" "%{install-root}/usr/lib/nvidia/xorg/libglxserver_nvidia.so.1"
+  ln -s "libglxserver_nvidia.so.%{version}" "%{install-root}/usr/lib/nvidia/xorg/libglxserver_nvidia.so"
+
+  install -Dm755 "libGLX_nvidia.so.%{version}" "%{install-root}/usr/lib/libGLX_nvidia.so.%{version}"
+
+  # OpenGL libraries
+  install -Dm755 "libEGL_nvidia.so.%{version}" "%{install-root}/usr/lib/libEGL_nvidia.so.%{version}"
+  install -Dm755 "libGLESv1_CM_nvidia.so.%{version}" "%{install-root}/usr/lib/libGLESv1_CM_nvidia.so.%{version}"
+  install -Dm755 "libGLESv2_nvidia.so.%{version}" "%{install-root}/usr/lib/libGLESv2_nvidia.so.%{version}"
+  install -Dm644 "10_nvidia.json" "%{install-root}%{datadir}/glvnd/egl_vendor.d/10_nvidia.json"
+
+  # OpenGL core library
+  install -Dm755 "libnvidia-glcore.so.%{version}" "%{install-root}/usr/lib/libnvidia-glcore.so.%{version}"
+  install -Dm755 "libnvidia-eglcore.so.%{version}" "%{install-root}/usr/lib/libnvidia-eglcore.so.%{version}"
+  install -Dm755 "libnvidia-glsi.so.%{version}" "%{install-root}/usr/lib/libnvidia-glsi.so.%{version}"
+
+  # misc
+  install -Dm755 "libnvidia-fbc.so.%{version}" "%{install-root}/usr/lib/libnvidia-fbc.so.%{version}"
+  install -Dm755 "libnvidia-encode.so.%{version}" "%{install-root}/usr/lib/libnvidia-encode.so.%{version}"
+  install -Dm755 "libnvidia-cfg.so.%{version}" "%{install-root}/usr/lib/libnvidia-cfg.so.%{version}"
+  install -Dm755 "libnvidia-ml.so.%{version}" "%{install-root}/usr/lib/libnvidia-ml.so.%{version}"
+  install -Dm755 "libnvidia-glvkspirv.so.%{version}" "%{install-root}/usr/lib/libnvidia-glvkspirv.so.%{version}"
+  install -Dm755 "libnvidia-allocator.so.%{version}" "%{install-root}/usr/lib/libnvidia-allocator.so.%{version}"
+  install -Dm755 "libnvidia-vulkan-producer.so.%{version}" "%{install-root}/usr/lib/libnvidia-vulkan-producer.so.%{version}"
+  # Sigh libnvidia-vulkan-producer.so has no SONAME set so create_links doesn't catch it. NVIDIA please fix!
+  ln -s "libnvidia-vulkan-producer.so.%{version}" "%{install-root}/usr/lib/libnvidia-vulkan-producer.so.1"
+  ln -s "libnvidia-vulkan-producer.so.%{version}" "%{install-root}/usr/lib/libnvidia-vulkan-producer.so"
+
+  # Vulkan ICD
+  install -Dm644 "nvidia_icd.json" "%{install-root}%{datadir}/vulkan/icd.d/nvidia_icd.json"
+  install -Dm644 "nvidia_layers.json" "%{install-root}%{datadir}/vulkan/implicit_layer.d/nvidia_layers.json"
+
+  # VDPAU
+  install -Dm755 "libvdpau_nvidia.so.%{version}" "%{install-root}/usr/lib/vdpau/libvdpau_nvidia.so.%{version}"
+
+  # nvidia-tls library
+  install -Dm755 "libnvidia-tls.so.%{version}" "%{install-root}/usr/lib/libnvidia-tls.so.%{version}"
+
+  # CUDA
+  install -Dm755 "libcuda.so.%{version}" "%{install-root}/usr/lib/libcuda.so.%{version}"
+  install -Dm755 "libnvcuvid.so.%{version}" "%{install-root}/usr/lib/libnvcuvid.so.%{version}"
+
+  # PTX JIT Compiler (Parallel Thread Execution (PTX) is a pseudo-assembly language for CUDA)
+  install -Dm755 "libnvidia-ptxjitcompiler.so.%{version}" "%{install-root}/usr/lib/libnvidia-ptxjitcompiler.so.%{version}"
+
+  # raytracing
+  install -Dm755 "libnvoptix.so.%{version}" "%{install-root}/usr/lib/libnvoptix.so.%{version}"
+  install -Dm755 "libnvidia-rtcore.so.%{version}" "%{install-root}/usr/lib/libnvidia-rtcore.so.%{version}"
+
+  # NGX
+  install -Dm755 nvidia-ngx-updater "%{install-root}/usr/bin/nvidia-ngx-updater"
+  install -Dm755 "libnvidia-ngx.so.%{version}" "%{install-root}/usr/lib/libnvidia-ngx.so.%{version}"
+  install -Dm755 _nvngx.dll "%{install-root}/usr/lib/nvidia/wine/_nvngx.dll"
+  install -Dm755 nvngx.dll "%{install-root}/usr/lib/nvidia/wine/nvngx.dll"
+
+  # Optical flow
+  install -Dm755 "libnvidia-opticalflow.so.%{version}" "%{install-root}/usr/lib/libnvidia-opticalflow.so.%{version}"
+
+  # DEBUG
+  install -Dm755 nvidia-debugdump "%{install-root}/usr/bin/nvidia-debugdump"
+
+  # nvidia-xconfig
+  install -Dm755 nvidia-xconfig "%{install-root}/usr/bin/nvidia-xconfig"
+  install -Dm644 nvidia-xconfig.1.gz "%{install-root}%{datadir}/man/man1/nvidia-xconfig.1.gz"
+
+  # nvidia-bug-report
+  install -Dm755 nvidia-bug-report.sh "%{install-root}/usr/bin/nvidia-bug-report.sh"
+
+  # nvidia-smi
+  install -Dm755 nvidia-smi "%{install-root}/usr/bin/nvidia-smi"
+  install -Dm644 nvidia-smi.1.gz "%{install-root}%{datadir}/man/man1/nvidia-smi.1.gz"
+
+  # nvidia-cuda-mps
+  install -Dm755 nvidia-cuda-mps-server "%{install-root}/usr/bin/nvidia-cuda-mps-server"
+  install -Dm755 nvidia-cuda-mps-control "%{install-root}/usr/bin/nvidia-cuda-mps-control"
+  install -Dm644 nvidia-cuda-mps-control.1.gz "%{install-root}%{datadir}/man/man1/nvidia-cuda-mps-control.1.gz"
+
+  # nvidia-modprobe
+  # This should be removed if nvidia fixed their uvm module!
+  install -Dm4755 nvidia-modprobe "%{install-root}/usr/bin/nvidia-modprobe"
+  install -Dm644 nvidia-modprobe.1.gz "%{install-root}%{datadir}/man/man1/nvidia-modprobe.1.gz"
+
+  # nvidia-persistenced
+  install -Dm755 nvidia-persistenced "%{install-root}/usr/bin/nvidia-persistenced"
+  install -Dm644 nvidia-persistenced.1.gz "%{install-root}%{datadir}/man/man1/nvidia-persistenced.1.gz"
+  install -Dm644 nvidia-persistenced-init/systemd/nvidia-persistenced.service.template "%{install-root}/usr/lib/systemd/system/nvidia-persistenced.service"
+  sed -i 's/__USER__/nvidia-persistenced/' "%{install-root}/usr/lib/systemd/system/nvidia-persistenced.service"
+
+  # application profiles
+  install -Dm644 nvidia-application-profiles-%{version}-rc "%{install-root}%{datadir}/nvidia/nvidia-application-profiles-%{version}-rc"
+  install -Dm644 nvidia-application-profiles-%{version}-key-documentation "%{install-root}%{datadir}/nvidia/nvidia-application-profiles-%{version}-key-documentation"
+
+  install -Dm644 LICENSE "%{install-root}%{datadir}/licenses/nvidia-utils/LICENSE"
+  install -Dm644 README.txt "%{install-root}%{datadir}/doc/nvidia/README"
+  install -Dm644 NVIDIA_Changelog "%{install-root}%{datadir}/doc/nvidia/NVIDIA_Changelog"
+  cp -r html "%{install-root}%{datadir}/doc/nvidia/"
+  ln -s nvidia "%{install-root}%{datadir}/doc/nvidia-utils"
+
+  # new power management support
+  install -Dm644 systemd/system/*.service -t "%{install-root}/usr/lib/systemd/system"
+  install -Dm755 systemd/system-sleep/nvidia "%{install-root}/usr/lib/systemd/system-sleep/nvidia"
+  install -Dm755 systemd/nvidia-sleep.sh "%{install-root}/usr/bin/nvidia-sleep.sh"
+  install -Dm755 nvidia-powerd "%{install-root}/usr/bin/nvidia-powerd"
+  install -Dm644 nvidia-dbus.conf "%{install-root}"%{datadir}/dbus-1/system.d/nvidia-dbus.conf
+
+  # distro specific files must be installed in %{datadir}/X11/xorg.conf.d
+  install -Dm644 "/files/nvidia-drm-outputclass.conf" "%{install-root}%{datadir}/X11/xorg.conf.d/10-nvidia-drm-outputclass.conf"
+
+  install -Dm644 "/files/nvidia.rules" "%{install-root}"/usr/lib/udev/rules.d/60-nvidia.rules
+
+  echo "blacklist nouveau" | install -Dm644 /dev/stdin "%{install-root}/usr/lib/modprobe.d/%{id}.conf"
+  echo "nvidia-uvm" | install -Dm644 /dev/stdin "%{install-root}/usr/lib/modules-load.d/%{id}.conf"
+

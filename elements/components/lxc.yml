@@ -1,0 +1,25 @@
+id: lxc
+version: 4.0.12
+about: Linux containers
+release: 0
+depends:
+- components/libcap.yml
+- components/libseccomp.yml
+- components/perl.yml
+- components/python.yml
+- components/rsync.yml
+- components/wget.yml
+build-time:
+- components/lua.yml
+- components/py-setuptools.yml
+sources:
+- https://linuxcontainers.org/downloads/lxc/lxc-%{version}.tar.gz
+pre-script: ./autogen.sh
+post-script: |-
+  install -d -m755 "%{install-root}/var/lib/lxc"
+  install -d -m755 "%{install-root}/usr/lib/lxc/rootfs/dev"
+  install -D -m644 /files/lxc/lxc.service "%{install-root}"/usr/lib/systemd/system/lxc@.service
+  install -D -m644 /files/lxc/lxc-auto.service "%{install-root}"/usr/lib/systemd/system/lxc-auto.service
+configure: |
+  --enable-seccomp --enable-capabilities --enable-pam --with-pamdir=/usr/lib/security --disable-werror --with-init-script=systemd --with-systemdsystemunitdir=/usr/lib/systemd/system
+

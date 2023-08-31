@@ -1,0 +1,14 @@
+id: perl-timedate
+version: "2.33"
+about: |
+  Date formating subroutines
+release: 0
+depends:
+- components/perl.yml
+sources:
+- https://cpan.metacpan.org/authors/id/A/AT/ATOOMIC/TimeDate-%{version}.tar.gz
+script: |
+  perl Makefile.PL INSTALLDIRS=vendor
+  make
+  make install DESTDIR=%{install-root}
+

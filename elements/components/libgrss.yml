@@ -1,0 +1,14 @@
+id: libgrss
+version: 0.7.0
+about: |
+  A library designed to manipulate RSS and Atom feeds
+release: 0
+depends:
+- components/libsoup.yml
+sources:
+- https://download.gnome.org/sources/libgrss/0.7/libgrss-0.7.0.tar.xz
+pre-script: |
+  patch -Np1 -i /files/libgrss/libgrss-0.7.0-bugfixes-2.patch
+  autoreconf -fv
+configure: --disable-static
+

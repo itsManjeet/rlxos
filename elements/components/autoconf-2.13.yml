@@ -1,0 +1,11 @@
+id: autoconf-2.13
+version: "2.13"
+about: An old version of Autoconf
+release: 0
+sources:
+- https://ftp.gnu.org/gnu/autoconf/autoconf-2.13.tar.gz
+- https://www.linuxfromscratch.org/patches/blfs/svn/autoconf-2.13-consolidated_fixes-1.patch
+pre-script: "patch -Np1 -i ../autoconf-2.13-consolidated_fixes-1.patch\nmv -v autoconf.texi
+  autoconf213.texi \nrm -v autoconf.info    \n"
+configure: --program-suffix=2.13
+

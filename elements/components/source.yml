@@ -1,0 +1,14 @@
+id: source
+version: "2200"
+about: A easy to learn dynamically typed programming language
+release: 0
+build-time:
+- components/boost.yml
+- components/appimagetool.yml
+sources:
+- source-{{commit}}.tar.gz::https://github.com/itsManjeet/src/archive/{{commit}}.tar.gz
+post-script: |-
+  cp assets/logo.png %{install-root}/%{id}.png
+  cp /files/%{id}.desktop %{install-root}/%{id}.desktop
+  install -v -D -m 0755 /files/AppRun -t %{install-root}/
+

@@ -1,7 +1,0 @@
-id: libva
-version: 2.18.0
-about: Package contains a library which provides access to hardware accelerated video processing
-sources:
-  - https://github.com/intel/libva/releases/download/%{version/libva-%{version}.tar.bz2
-depends:
-  - components/libdrm.yml

@@ -1,0 +1,18 @@
+id: libfprint
+version: 1.94.4
+about: Library for fingerprint readers
+release: 0
+depends:
+- components/libgudev.yml
+- components/libgusb.yml
+- components/nss.yml
+- components/pixman.yml
+- components/systemd.yml
+build-time:
+- components/gobject-introspection.yml
+- components/cairo.yml
+- components/meson.yml
+- components/gtk-doc.yml
+sources:
+- https://gitlab.freedesktop.org/libfprint/libfprint/-/archive/v%{version}/libfprint-v%{version}.tar.gz
+

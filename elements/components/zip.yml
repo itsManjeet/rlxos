@@ -1,0 +1,13 @@
+id: zip
+version: 3.0.9
+about: Compressor/archiver for creating and modifiying zipfiles
+release: 0
+sources:
+- https://downloads.sourceforge.net/infozip/zip30.tar.gz
+script: |-
+  make -f unix/Makefile prefix=/usr generic_gcc
+
+  make -f unix/Makefile prefix=%{install-root}/usr \
+    MANDIR=%{install-root}%{datadir}/man/man1 \
+    install
+

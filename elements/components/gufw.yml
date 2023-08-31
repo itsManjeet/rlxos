@@ -1,0 +1,21 @@
+id: gufw
+version: "22.04"
+about: Uncomplicated way to manage linux firwall
+release: 0
+depends:
+- components/desktop-file-utils.yml
+- components/gtk.yml
+- components/polkit.yml
+- components/python.yml
+- components/py-gobject.yml
+- components/ufw.yml
+- components/webkitgtk.yml
+build-time:
+- components/intltool.yml
+- components/py-distutils-extra.yml
+sources:
+- https://github.com/costales/gufw/archive/%{version}/gufw-%{version}.tar.gz
+pre-script: |
+  PYTHONVERSION="$(python -c 'import sys; print("{}.{}".format(sys.version_info.major, sys.version_info.minor))')"
+  sed 's|%{datadir}/gufw/gufw/gufw.py $1|/usr/lib/python'"${PYTHONVERSION}"'/site-packages/gufw/gufw.py "$@"|' -i bin/gufw-pkexec
+

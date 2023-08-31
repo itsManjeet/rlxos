@@ -1,0 +1,11 @@
+id: poppler-data
+version: 21.07.0
+about: |
+  Poppler data
+release: 0
+depends:
+- components/poppler.yml
+sources:
+- https://poppler.freedesktop.org/poppler-data-0.4.10.tar.gz
+script: make prefix=/usr DESTDIR=%{install-root} install
+

@@ -1,0 +1,11 @@
+id: liberation-fonts
+version: 2.1.5
+about: Font family which aims at metric compatibility with arial, Times New Roman
+  and Courier New
+release: 0
+sources:
+- https://github.com/liberationfonts/liberation-fonts/files/7261482/liberation-fonts-ttf-%{version}.tar.gz
+script: |-
+  mkdir -p %{install-root}%{datadir}/fonts/%{id}
+  mv *.ttf %{install-root}%{datadir}/fonts/%{id}/
+

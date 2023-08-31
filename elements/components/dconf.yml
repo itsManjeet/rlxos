@@ -1,0 +1,15 @@
+id: dconf
+version: 0.40.0
+about: A low-level configuration system
+release: 0
+depends:
+- components/dbus.yml
+- components/glib.yml
+- components/libxml2.yml
+- components/libxslt.yml
+build-time:
+- components/vala.yml
+sources:
+- https://download.gnome.org/sources/dconf/0.40/dconf-0.40.0.tar.xz
+configure: -D bash_completion=false
+

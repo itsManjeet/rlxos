@@ -1,0 +1,20 @@
+id: openjdk-bin
+version: 18.0.2.1
+about: Java programming language [Binary]
+release: 0
+depends:
+- components/alsa-lib.yml
+- components/cups.yml
+- components/giflib.yml
+- components/xorg-libs.yml
+sources:
+- https://storage.rlxos.dev/sources/openjdk-%{version}_linux-x64_bin.tar.gz
+script: |
+  JAVA_HOME=/opt/openjdk-bin-%{version}
+  install -v -d -m 0755 %{install-root}/${JAVA_HOME}
+  mv * %{install-root}/${JAVA_HOME}
+  chown -R root:root %{install-root}/${JAVA_HOME}
+
+  install -v -D -m 0755 /files/source %{install-root}/${JAVA_HOME}/source
+  sed -i "s#@@install_dir@@#${JAVA_HOME}#g" %{install-root}/${JAVA_HOME}/source
+

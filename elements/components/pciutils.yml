@@ -1,0 +1,17 @@
+id: pciutils
+version: 3.7.0
+about: Tools for listing PCI devices, inspecting their status and setting their configuration
+  registers
+release: 0
+depends:
+- components/glibc.yml
+- components/kmod.yml
+sources:
+- https://www.kernel.org/pub/software/utils/pciutils/pciutils-3.7.0.tar.xz
+script: |-
+  make PREFIX=/usr SHARED=yes SBINDIR=/usr/bin SHAREDIR=%{datadir}/hwdata MANDIR=%{datadir}/man
+  make PREFIX=/usr SHARED=yes SBINDIR=/usr/bin SHAREDIR=%{datadir}/hwdata MANDIR=%{datadir}/man install install-lib DESTDIR=%{install-root}
+  chmod -v 755 %{install-root}/usr/lib/libpci.so
+
+  install -v -D -m 0644 /files/pciutils/update-pciids.* -t %{install-root}/usr/lib/systemd/system/
+

@@ -1,0 +1,18 @@
+id: debootstrap
+version: 1.0.124
+about: Bootstrap a basic debian system
+release: 0
+depends:
+- components/binutils.yml
+- components/perl.yml
+- components/wget.yml
+- components/gnupg.yml
+sources:
+- https://salsa.debian.org/installer-team/debootstrap/-/archive/1.0.124/debootstrap-1.0.124.tar.bz2
+script: |
+  sed -i 's/sbin/bin/g' Makefile
+  sed -i 's|export PATH|export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"|' debootstrap
+
+  make install DESTDIR=%{install-root}
+  install -Dm644 debootstrap.8 "$pkgupd_pkgdir"%{datadir}/man/man8/debootstrap.8
+

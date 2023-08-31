@@ -1,0 +1,6 @@
+id: libXcomposite
+version: "7"
+about: xorg library libXcomposite
+release: 0
+sources:
+  - https://www.x.org/pub/individual/lib/libXcomposite-0.4.5.tar.bz2

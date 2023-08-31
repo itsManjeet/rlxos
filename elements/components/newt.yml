@@ -1,0 +1,14 @@
+id: newt
+version: 0.52.21
+about: Library for color text mode, widget based user interfaces
+release: 0
+depends:
+- components/popt.yml
+- components/slang.yml
+sources:
+- https://releases.pagure.org/newt/newt-0.52.21.tar.gz
+script: |-
+  ./configure --prefix=/usr --with-python=python3.9
+  make
+  make install DESTDIR=%{install-root}
+

@@ -1,0 +1,14 @@
+id: keyutils
+version: 1.6.3
+about: Linux key management utilities
+release: 0
+depends:
+- components/glibc.yml
+sources:
+- http://rlxos.cloudtb.online/sources/keyutils-%{version}.tar.gz
+pre-script: |
+  sed -i "s:\$(LIBDIR)/\$(PKGCONFIG_DIR):/usr/lib/pkgconfig:" Makefile
+script: |
+  make
+  make DESTDIR=%{install-root} NO_ARLIB=1 LIBDIR=/usr/lib BINDIR=/usr/bin SBINDIR=/usr/bin install
+

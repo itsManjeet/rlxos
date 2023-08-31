@@ -1,0 +1,7 @@
+id: x11perf
+version: "7"
+about: xorg apps x11perf
+release: 0
+sources:
+- https://www.x.org/pub/individual/app/x11perf-1.6.1.tar.bz2
+

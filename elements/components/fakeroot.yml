@@ -1,0 +1,16 @@
+id: fakeroot
+version: "1.29"
+about: Tool for simulating superuser privileges
+release: 0
+depends:
+- components/filesystem.yml
+- components/glibc.yml
+- components/sed.yml
+- components/util-linux.yml
+build-time:
+- components/po4a.yml
+- components/systemd.yml
+sources:
+- https://deb.debian.org/debian/pool/main/f/%{id}/%{id}_%{version}.orig.tar.gz
+configure: --disable-static --with-ipc=sysv
+

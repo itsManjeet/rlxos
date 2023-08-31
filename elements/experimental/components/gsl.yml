@@ -1,7 +1,0 @@
-id: gsl
-version: 2.7
-about: A numerical library for C and C++ programmers
-sources:
-- https://ftp.gnu.org/gnu/gsl/gsl-2.7.tar.gz
-build-dir: gsl-2.7
-configure: --disable-static

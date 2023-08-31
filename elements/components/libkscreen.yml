@@ -1,0 +1,15 @@
+id: libkscreen
+version: 5.24.5
+about: Plasma libkscreen
+release: 0
+depends:
+- components/kwayland.yml
+- components/qt.yml
+build-time:
+- components/extra-cmake-modules.yml
+- components/plasma-wayland-protocols.yml
+sources:
+- https://download.kde.org/stable/plasma/%{version}/%{id}-%{version}.tar.xz
+configure: |
+  -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF -Wno-dev
+

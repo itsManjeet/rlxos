@@ -1,0 +1,25 @@
+id: sof-firmware
+version: 2.2.1
+about: Source open firmware
+release: 0
+sources:
+- https://github.com/thesofproject/sof-bin/releases/download/{{ binver }}/sof-bin-{{
+  binver }}.tar.gz
+- https://github.com/thesofproject/sof-bin/releases/download/{{ tplgver }}/sof-tplg-{{
+  tplgver }}.tar.gz
+script: |
+  fwdir=%{install-root}/usr/lib/firmware/intel
+  mkdir -p ${fwdir}
+
+  cp -at ${fwdir} sof-tplg-{{tplgver}}/
+  ln -sr ${fwdir}/sof-tplg-{{tplgver}} ${fwdir}/sof-tplg
+
+  cd sof-bin-{{binver}}
+  cp -at ${fwdir} sof-{{binver}}
+  ln -sr ${fwdir}/sof-{{binver}} ${fwdir}/sof
+
+  install -Dt %{install-root}%{datadir}/doc/%{id} -m644 LICENCE* Notice*
+
+  install -Dt %{install-root}/usr/bin tools-{{binver}}/*
+  install -Dt %{install-root}%{datadir}/doc/sof-tools -m644 LICENCE* Notice*
+

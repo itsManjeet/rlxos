@@ -1,0 +1,15 @@
+id: sassc
+version: 3.6.2
+about: |
+  A CSS pre-processor language
+release: 0
+depends:
+- components/libsass.yml
+sources:
+- https://github.com/sass/sassc/archive/3.6.2/sassc-3.6.2.tar.gz
+script: |
+  autoreconf -fi
+  ./configure --prefix=/usr
+  make
+  make DESTDIR=%{install-root} install
+

@@ -1,0 +1,14 @@
+id: gnome-autoar
+version: 0.4.0
+about: Package provides a framework for automatic archive extraction, compression,
+  and management
+release: 0
+depends:
+- components/libarchive.yml
+- components/gtk.yml
+build-time:
+- components/vala.yml
+sources:
+- https://download.gnome.org/sources/gnome-autoar/0.4/gnome-autoar-0.4.0.tar.xz
+configure: --buildtype=release -D vapi=true -D tests=true
+

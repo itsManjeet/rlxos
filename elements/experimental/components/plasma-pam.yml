@@ -1,6 +1,0 @@
-id: plasma-pam
-version: 5
-about: Plasma pam permissions
-script: |
-  mkdir -p ${pkgupd_pkgdir}/etc/pam.d/
-  cp ${FILES_DIR}/{kde,kde-np,kscreensaver} ${pkgupd_pkgdir}/etc/pam.d/

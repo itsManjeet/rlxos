@@ -1,9 +1,0 @@
-id: cabextract
-version: 1.9.1
-about: A program to extract Microsoft cabinet (.CAB) files
-license: GPL
-depends:
-  runtime:
-    - glibc
-sources:
-  - https://cabextract.org.uk/cabextract-{{version}}.tar.gz

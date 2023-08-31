@@ -1,0 +1,12 @@
+id: graphene
+version: 1.10.6
+about: A thin layer of types for graphics libraries
+release: 0
+depends:
+- components/glib.yml
+build-time:
+- components/gobject-introspection.yml
+sources:
+- https://github.com/ebassi/graphene/releases/download/1.10.6/graphene-1.10.6.tar.xz
+configure: --buildtype=release
+

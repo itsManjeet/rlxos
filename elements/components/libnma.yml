@@ -1,0 +1,16 @@
+id: libnma
+version: 1.8.30
+about: An implementation of the NetworkManager GUI functions
+release: 0
+depends:
+- components/gcr.yml
+- components/gtk.yml
+- components/iso-codes.yml
+- components/networkmanager.yml
+build-time:
+- components/vala.yml
+sources:
+- https://download.gnome.org/sources/libnma/1.8/libnma-1.8.30.tar.xz
+configure: |
+  -D gtk_doc=false -D mobile_broadband_provider_info=false --buildtype=release
+

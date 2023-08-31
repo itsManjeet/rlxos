@@ -1,0 +1,28 @@
+id: parole
+version: 4.16.0
+about: Modern media player based on GStreamer framework
+release: 0
+build-time:
+- components/intltool.yml
+- components/python.yml
+- components/dbus-glib.yml
+- components/gst-plugins-base.yml
+- components/gst-plugins-good.yml
+- components/libnotify.yml
+- components/libxfce4ui.yml
+- components/gst-libav.yml
+- components/gst-plugins-bad.yml
+- components/appimagetool.yml
+sources:
+- https://archive.xfce.org/src/apps/parole/4.16/parole-%{version}.tar.bz2
+post-script: |-
+  cd %{install-root}
+
+  cp /files/AppRun .
+  chmod +x ./AppRun
+
+  cp usr/share/applications/org.xfce.Parole.desktop %{id}.desktop
+  cp usr/share/icons/hicolor/scalable/apps/org.xfce.parole.svg %{id}.png
+  sed -i 's#org.xfce.parole#%{id}#' %{id}.desktop
+  rm -r usr/include
+

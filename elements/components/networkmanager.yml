@@ -1,0 +1,26 @@
+id: networkmanager
+version: 1.32.4
+about: |
+  A set of co-operative tools that make networking simple and straightforward
+release: 0
+depends:
+- components/jansson.yml
+- components/libndp.yml
+- components/curl.yml
+- components/gobject-introspection.yml
+- components/iptables.yml
+- components/newt.yml
+- components/nss.yml
+- components/polkit.yml
+- components/py-gobject.yml
+- components/systemd.yml
+- components/upower.yml
+- components/wpa_supplicant.yml
+sources:
+- https://download.gnome.org/sources/NetworkManager/1.32/NetworkManager-%{version}.tar.xz
+post-script: |
+  install -v -D -m 644 /files/networkmanager/org.freedesktop.NetworkManager.rules -t \
+    %{install-root}%{datadir}/polkit-1/rules.d/
+configure: -Dlibaudit=no -Dlibpsl=false -Dnmtui=true -Dovs=false -Dppp=false -Dselinux=false
+  -Dqt=false -Dsession_tracking=systemd -Dmodem_manager=false
+

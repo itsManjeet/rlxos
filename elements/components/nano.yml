@@ -1,0 +1,11 @@
+id: nano
+version: "6.3"
+about: Pico editor clone with enhancements
+release: 0
+depends:
+- components/file.yml
+- components/ncurses.yml
+sources:
+- https://www.nano-editor.org/dist/v6/nano-%{version}.tar.xz
+configure: --enable-color --enable-nanorc --enable-multibuffer
+

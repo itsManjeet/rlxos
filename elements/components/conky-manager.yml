@@ -1,0 +1,21 @@
+id: conky-manager
+version: "2.4"
+about: GUI for managing conky config files with options to browse and edit themes
+release: 0
+depends:
+- components/conky.yml
+- components/cairo.yml
+- components/desktop-file-utils.yml
+- components/gtk.yml
+- components/imagemagick.yml
+- components/json-glib.yml
+- components/libgee.yml
+- components/p7zip.yml
+build-time:
+- components/vala.yml
+sources:
+- conky-manager-2.4.tar.gz::https://github.com/teejee2008/conky-manager/archive/refs/tags/v2.4.tar.gz
+script: |-
+  make
+  make DESTDIR=%{install-root} install
+

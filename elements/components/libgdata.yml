@@ -1,0 +1,17 @@
+id: libgdata
+version: 0.18.1
+about: A GLib-based library for accessing online service
+release: 0
+depends:
+- components/libsoup.yml
+- components/gnome-online-accounts.yml
+- components/gtk.yml
+- components/json-glib.yml
+- components/gcr.yml
+build-time:
+- components/vala.yml
+- components/gobject-introspection.yml
+sources:
+- https://download.gnome.org/sources/libgdata/0.18/libgdata-0.18.1.tar.xz
+configure: --buildtype=release -D gtk_doc=false -D always_build_tests=false
+

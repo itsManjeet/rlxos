@@ -1,0 +1,12 @@
+id: cracklib
+version: 2.9.7
+about: A library used to enforce strong passwords by comparing user selected passwords
+  to words in chosen word lists
+release: 0
+sources:
+- https://github.com/cracklib/cracklib/releases/download/v2.9.7/cracklib-2.9.7.tar.bz2
+pre-script: |
+  sed -i "/skipping/d" util/packer.c
+configure: |
+  --with-default-dict=/usr/lib/cracklib/pw_dict
+

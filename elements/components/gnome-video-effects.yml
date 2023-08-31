@@ -1,0 +1,8 @@
+id: gnome-video-effects
+version: 0.5.0
+about: A collection of GStreamer effects
+release: 0
+sources:
+- https://download.gnome.org/sources/gnome-video-effects/0.5/gnome-video-effects-0.5.0.tar.xz
+configure: --buildtype=release
+

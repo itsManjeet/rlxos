@@ -1,0 +1,16 @@
+id: glm
+version: 0.9.9.8
+about: C++ mathematics library for 3D software based on the OpenGL Shading Language
+  (GLSL) specification
+release: 0
+build-time:
+- components/unzip.yml
+sources:
+- https://github.com/g-truc/glm/releases/download/%{version}/glm-%{version}.zip
+script: "mkdir -p %{install-root}/usr/include\ncp -r glm/glm %{install-root}/usr/include/
+  \nmkdir -p %{install-root}/usr/lib/pkgconfig/\nsed \"s/@VERSION@/%{version}/\" /files/glm.pc.in
+  > %{install-root}/usr/lib/pkgconfig/glm.pc\n\nmkdir -p %{install-root}/usr/lib/cmake/glm/\nsed
+  \"s/@VERSION@/%{version}/\" /files/glmConfigVersion.cmake.in > %{install-root}/usr/lib/cmake/glm/glmConfigVersion.cmake\nsed
+  \"s/@VERSION@/%{version}/\" /files/glmConfig.cmake.in > %{install-root}/usr/lib/cmake/glm/glmConfig.cmake\ninstall
+  -Dm644 /files/glmTargets.cmake %{install-root}/usr/lib/cmake/glm/glmTargets.cmake"
+

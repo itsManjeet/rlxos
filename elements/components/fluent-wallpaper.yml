@@ -1,0 +1,11 @@
+id: fluent-wallpaper
+version: "2021-08-08"
+about: Fluent wallpapers collection
+release: 0
+sources:
+- fluent-wallpaper-2021-08-08.tar.gz::https://github.com/vinceliuice/Fluent-gtk-theme/archive/refs/heads/Wallpaper.tar.gz
+script: |-
+  sed -i '4d' install-wallpapers.sh
+  WALLPAPER_DIR=%{install-root}%{datadir}/backgrounds ./install-wallpapers.sh -t building
+  WALLPAPER_DIR=%{install-root}%{datadir}/backgrounds ./install-wallpapers.sh -t mountain
+

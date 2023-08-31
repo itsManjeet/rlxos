@@ -1,0 +1,15 @@
+id: chromaprint
+version: 1.5.1
+about: Library for extracting fingerprints from any audio source
+release: 0
+depends:
+- components/gcc:lib.yml
+- components/glibc.yml
+- components/ffmpeg.yml
+build-time:
+- components/cmake.yml
+sources:
+- https://github.com/acoustid/chromaprint/archive/v%{version}/chromaprint-%{version}.tar.gz
+configure: |
+  -DCMAKE_BUILD_TYPE='None' -DBUILD_TESTS=ON -DBUILD_TOOLS=ON -Wno-dev
+

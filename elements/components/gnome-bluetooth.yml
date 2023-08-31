@@ -1,0 +1,16 @@
+id: gnome-bluetooth
+version: 3.34.5
+about: Tools for managing and manipulating Bluetooth devices using the GNOME Desktop
+release: 0
+depends:
+- components/gtk.yml
+- components/itstool.yml
+- components/libcanberra.yml
+- components/libnotify.yml
+- components/bluez.yml
+- components/systemd.yml
+build-time:
+- components/gobject-introspection.yml
+sources:
+- https://download.gnome.org/sources/gnome-bluetooth/3.34/gnome-bluetooth-3.34.5.tar.xz
+

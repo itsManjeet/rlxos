@@ -1,6 +1,0 @@
-id: xwininfo
-version: '7'
-about: xorg apps xwininfo
-build-dir: xwininfo-1.1.5
-sources:
-- https://www.x.org/pub/individual/app/xwininfo-1.1.5.tar.bz2

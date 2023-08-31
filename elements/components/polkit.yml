@@ -1,0 +1,25 @@
+id: polkit
+version: "0.119"
+about: |
+  Toolkit for defining and handling authorizations
+release: 0
+depends:
+- components/glib.yml
+- components/js78.yml
+- components/pam.yml
+- components/systemd.yml
+- components/intltool.yml
+- components/gobject-introspection.yml
+build-time:
+- components/docbook-xsl.yml
+sources:
+- https://www.freedesktop.org/software/polkit/releases/polkit-%{version}.tar.gz
+pre-script: |
+  sed -i "s:/sys/fs/cgroup/systemd/:/sys:g" configure
+post-script: "install -v -D -m 644 /files/pam/polkit-1 %{install-root}%{sysconfdir}/pam.d/polkit-1\ninstall
+  -v -d -m 0750 -o 27 %{install-root}/{etc,usr/share}/polkit-1/rules.d\n\n# set adm
+  as default polkit admin\nsed -i 's|wheel|adm|' %{install-root}%{sysconfdir}/polkit-1/rules.d/50-default.rules\n
+  \   "
+configure: |
+  --disable-static --with-os-type=LFS --disable-man-pages
+

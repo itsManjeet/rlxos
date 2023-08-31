@@ -1,0 +1,15 @@
+id: libcanberra
+version: "0.3"
+about: A small and lightweight implementation of the XDG Sound Theme Specification
+release: 0
+depends:
+- components/alsa-lib.yml
+- components/libvorbis.yml
+- components/gstreamer.yml
+- components/gtk.yml
+- components/pulseaudio.yml
+sources:
+- http://0pointer.de/lennart/projects/libcanberra/libcanberra-0.30.tar.xz
+- https://www.linuxfromscratch.org/patches/blfs/svn/libcanberra-0.30-wayland-1.patch
+configure: --disable-oss --disable-gtk
+

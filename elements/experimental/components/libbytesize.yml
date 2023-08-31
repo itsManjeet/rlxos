@@ -1,9 +1,0 @@
-id: libbytesize
-version: 2.6
-about: A library which facilitates the common operations with sizes in bytes
-sources:
-- https://github.com/storaged-project/libbytesize/releases/download/2.6/libbytesize-2.6.tar.gz
-build-dir: libbytesize-2.6
-depends:
-  runtime:
-  - pcre2

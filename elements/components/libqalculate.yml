@@ -1,0 +1,14 @@
+id: libqalculate
+version: 4.2.0
+about: Multi purpose desktop calculator
+release: 0
+depends:
+- components/curl.yml
+- components/libxml2.yml
+- components/libmpfr.yml
+- components/icu.yml
+build-time:
+- components/intltool.yml
+sources:
+- https://github.com/Qalculate/libqalculate/releases/download/v%{version}/%{id}-%{version}.tar.gz
+

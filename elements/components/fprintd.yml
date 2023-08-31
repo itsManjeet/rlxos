@@ -1,0 +1,22 @@
+id: fprintd
+version: 1.94.2
+about: D-Bus service to access fingerprint readers
+release: 0
+depends:
+- components/dbus.yml
+- components/dbus-glib.yml
+- components/glib.yml
+- components/libfprint.yml
+- components/polkit.yml
+- components/systemd.yml
+build-time:
+- components/gtk-doc.yml
+- components/meson.yml
+- components/py-cairo.yml
+- components/pam_wrapper.yml
+- components/py-dbus.yml
+- components/py-dbusmock.yml
+sources:
+- https://gitlab.freedesktop.org/libfprint/fprintd/-/archive/v%{version}/fprintd-v%{version}.tar.gz
+configure: -D pam_modules_dir=/usr/lib/security -D gtk_doc=true
+

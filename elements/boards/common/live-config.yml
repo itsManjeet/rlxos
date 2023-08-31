@@ -12,7 +12,7 @@ pre-script: |
   cat >%{install-root}/%{sysconfdir}/systemd/system/getty@tty1.service.d/autologin.conf << EOF
   [Service]
   ExecStart=
-  ExecStart=-/sbin/agetty -o '-p -f -- \\u' --noclear --autologin root %I $TERM
+  ExecStart=-/usr/bin/agetty --autologin root --noclear %I $TERM
   EOF
 
   cp -rap %{install-root}/%{prefix}/* %{install-root}/

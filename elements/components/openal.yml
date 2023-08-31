@@ -3,7 +3,7 @@ version: 1.22.0
 about: cross-platform 3D audio library, software implementation
 release: 0
 depends:
-- components/gcc:lib.yml
+- components/libgcc.yml
 - components/qt.yml
 build-time:
 - components/alsa-lib.yml

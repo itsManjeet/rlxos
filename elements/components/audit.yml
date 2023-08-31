@@ -4,7 +4,7 @@ about: Userspace components of the audit framework
 release: 0
 depends:
 - components/glibc.yml
-- components/kerberos-v5.yml
+- components/krb5.yml
 - components/libcap-ng.yml
 - components/libldap.yml
 build-time:

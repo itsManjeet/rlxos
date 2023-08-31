@@ -3,14 +3,12 @@ version: "5.4"
 about: A utility library for X keyboard
 release: 0
 depends:
-- components/glib.yml
-- components/iso-codes.yml
-- components/libxml2.yml
-- components/xorg-libs.yml
-- components/x11/xkeyboard-config.yml
+  - components/glib.yml
+  - components/iso-codes.yml
+  - components/libxml2.yml
+  - components/x11/xkeyboard-config.yml
 build-time:
-- components/gobject-introspection.yml
-- components/vala.yml
+  - components/gobject-introspection.yml
+  - components/vala.yml
 sources:
-- https://people.freedesktop.org/~svu/libxklavier-5.4.tar.bz2
-
+  - https://people.freedesktop.org/~svu/libxklavier-5.4.tar.bz2

@@ -3,10 +3,10 @@ version: 6.0.300
 about: Binary release of .NET
 release: 0
 depends:
-- components/gcc:lib.yml
+- components/libgcc.yml
 - components/glibc.yml
 - components/icu.yml
-- components/kerberos-v5.yml
+- components/krb5.yml
 - components/openssl.yml
 - components/zlib.yml
 sources:

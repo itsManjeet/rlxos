@@ -21,7 +21,7 @@ build-time:
 - components/iproute2.yml
 - components/libxslt.yml
 - components/meson.yml
-- components/py-pip.yml
+- components/py/py-pip.yml
 sources:
 - https://libvirt.org/sources/%{id}-%{version}.tar.xz
 pre-script: |

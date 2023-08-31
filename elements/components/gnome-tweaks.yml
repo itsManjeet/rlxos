@@ -6,7 +6,7 @@ depends:
 - components/gtk.yml
 - components/gsettings-desktop-schemas.yml
 - components/libhandy.yml
-- components/py-gobject.yml
+- components/py/py-gobject.yml
 - components/sound-theme-freedesktop.yml
 sources:
 - https://download.gnome.org/sources/gnome-tweaks/40/gnome-tweaks-40.0.tar.xz

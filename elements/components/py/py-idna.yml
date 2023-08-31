@@ -5,7 +5,7 @@ release: 0
 depends:
 - components/python.yml
 build-time:
-- components/py-setuptools.yml
+- components/py/py-setuptools.yml
 sources:
 - https://pypi.io/packages/source/i/idna/idna-%{version}.tar.gz
 

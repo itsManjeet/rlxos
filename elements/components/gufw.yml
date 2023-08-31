@@ -7,12 +7,12 @@ depends:
 - components/gtk.yml
 - components/polkit.yml
 - components/python.yml
-- components/py-gobject.yml
+- components/py/py-gobject.yml
 - components/ufw.yml
 - components/webkitgtk.yml
 build-time:
 - components/intltool.yml
-- components/py-distutils-extra.yml
+- components/py/py-distutils-extra.yml
 sources:
 - https://github.com/costales/gufw/archive/%{version}/gufw-%{version}.tar.gz
 pre-script: |

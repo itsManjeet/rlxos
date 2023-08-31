@@ -3,12 +3,12 @@ version: 8.1.1
 about: Open-source formatting library for C++
 release: 0
 depends:
-- components/gcc:lib.yml
+- components/libgcc.yml
 build-time:
 - components/cmake.yml
 - components/ninja.yml
 - components/nodejs.yml
-- components/py-pip.yml
+- components/py/py-pip.yml
 sources:
 - fmt-%{version}.tar.gz::https://github.com/fmtlib/fmt/archive/refs/tags/%{version}.tar.gz
 post-script: install -v -D -m 0644 LICENSE.rst -t %{install-root}%{datadir}/doc/%{id}/

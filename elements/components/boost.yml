@@ -4,9 +4,9 @@ about: |
   A set of free peer-reviewed portable C++ source libraries
 release: 0
 depends:
-- components/which.yml
+  - components/which.yml
 sources:
-- https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.bz2
+  - https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.bz2
 script: |
   cd tools/build
   ./bootstrap.sh --cxxflags="${CXXFLAGS:-} ${LDFLAGS:-}"
@@ -23,4 +23,3 @@ script: |
     toolset=gcc \
     --layout=system \
     --prefix=%{install-root}/usr install
-

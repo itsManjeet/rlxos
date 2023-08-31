@@ -3,7 +3,7 @@ version: "1.23"
 about: A lossless file compressor based on the LZMA algorithm
 release: 0
 depends:
-- components/gcc:lib.yml
+- components/libgcc.yml
 sources:
 - https://download.savannah.gnu.org/releases/%{id}/%{id}-%{version}.tar.gz
 

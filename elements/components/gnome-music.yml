@@ -12,8 +12,8 @@ build-time:
 - components/libdmapsharing.yml
 - components/libhandy.yml
 - components/libmediaart.yml
-- components/py-cairo.yml
-- components/py-gobject.yml
+- components/py/py-cairo.yml
+- components/py/py-gobject.yml
 - components/tracker-miners.yml
 - components/gst-libav.yml
 - components/gst-plugins-bad.yml

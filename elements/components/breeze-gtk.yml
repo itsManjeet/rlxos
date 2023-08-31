@@ -6,7 +6,7 @@ depends:
 - components/breeze.yml
 build-time:
 - components/extra-cmake-modules.yml
-- components/py-cairo.yml
+- components/py/py-cairo.yml
 - components/sassc.yml
 sources:
 - https://download.kde.org/stable/plasma/%{version}/%{id}-%{version}.tar.xz

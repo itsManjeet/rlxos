@@ -15,7 +15,7 @@ depends:
 - components/polkit.yml
 - components/python.yml
 - components/systemd.yml
-- components/py-parsing.yml
+- components/py/py-parsing.yml
 - components/xdg-dbus-proxy.yml
 - components/xdg-desktop-portal.yml
 - components/libseccomp.yml

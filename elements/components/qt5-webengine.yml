@@ -15,7 +15,7 @@ depends:
 - components/libxslt.yml
 - components/opus.yml
 - components/libevent.yml
-- components/kerberos-v5.yml
+- components/krb5.yml
 - components/pipewire.yml
 - components/poppler.yml
 build-time:

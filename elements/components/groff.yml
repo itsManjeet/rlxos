@@ -4,7 +4,7 @@ about: |
   Programs for processing and formatting text
 release: 0
 depends:
-- components/gcc:lib.yml
+- components/libgcc.yml
 - components/perl.yml
 - components/texinfo.yml
 sources:

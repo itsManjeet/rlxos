@@ -8,13 +8,13 @@ depends:
 - components/iso-codes.yml
 - components/libcanberra.yml
 - components/x11/libxkbfile.yml
-- components/py-cairo.yml
-- components/py-dbus.yml
-- components/py-gobject.yml
+- components/py/py-cairo.yml
+- components/py/py-dbus.yml
+- components/py/py-gobject.yml
 - components/systemd.yml
 - components/dconf.yml
 build-time:
-- components/py-distutils-extra.yml
+- components/py/py-distutils-extra.yml
 - components/intltool.yml
 sources:
 - https://launchpad.net/onboard/1.4/%{version}/+download/onboard-%{version}.tar.gz

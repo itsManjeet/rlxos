@@ -3,7 +3,7 @@ version: 1.7.0
 about: Spell checker and morphological analyzer library and program
 release: 0
 depends:
-- components/gcc:lib.yml
+- components/libgcc.yml
 - components/readline.yml
 sources:
 - hunspell-%{version}.tar.gz::https://github.com/hunspell/hunspell/archive/v%{version}.tar.gz

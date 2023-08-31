@@ -3,10 +3,9 @@ version: 1.4.2
 about: Easy to use task manager
 release: 0
 depends:
-- components/libwnck.yml
-- components/xorg-libs.yml
+  - components/libwnck.yml
+  - components/libxfce4util.yml
 build-time:
-- components/intltool.yml
+  - components/intltool.yml
 sources:
-- https://archive.xfce.org/src/apps/xfce4-taskmanager/1.4/xfce4-taskmanager-%{version}.tar.bz2
-
+  - https://archive.xfce.org/src/apps/xfce4-taskmanager/1.4/xfce4-taskmanager-%{version}.tar.bz2

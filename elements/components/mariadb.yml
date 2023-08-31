@@ -8,7 +8,7 @@ depends:
 - components/libboost.yml
 - components/libxml2.yml
 - components/pam.yml
-- components/kerberos-v5.yml
+- components/krb5.yml
 - components/pcre2.yml
 build-time:
 - components/cmake.yml

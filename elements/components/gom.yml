@@ -8,7 +8,7 @@ depends:
 build-time:
 - components/gdk-pixbuf.yml
 - components/gobject-introspection.yml
-- components/py-gobject.yml
+- components/py/py-gobject.yml
 sources:
 - https://gitlab.gnome.org/GNOME/gom/-/archive/%{version}/gom-%{version}.tar.gz
 

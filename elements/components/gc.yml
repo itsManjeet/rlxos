@@ -3,7 +3,7 @@ version: 8.2.0
 about: A garbage collector for C and C++
 release: 0
 depends:
-- components/gcc:lib.yml
+- components/libgcc.yml
 sources:
 - https://github.com/ivmai/bdwgc/releases/download/v%{version}/gc-%{version}.tar.gz
 - gc-missing-header.patch::https://github.com/ivmai/bdwgc/commit/c876dc2b.patch

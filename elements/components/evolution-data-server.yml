@@ -19,7 +19,7 @@ depends:
 - components/libgweather.yml
 - components/libldap.yml
 - components/enchant.yml
-- components/kerberos-v5.yml
+- components/krb5.yml
 build-time:
 - components/vala.yml
 - components/gtk-doc.yml

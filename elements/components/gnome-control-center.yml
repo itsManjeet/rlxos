@@ -13,7 +13,7 @@ depends:
 - components/libgtop.yml
 - components/libpwquality.yml
 - components/shared-mime-info.yml
-- components/kerberos-v5.yml
+- components/krb5.yml
 - components/udisks.yml
 - components/cheese.yml
 - components/cups.yml

@@ -3,9 +3,11 @@ version: 2.0.14
 about: Simple DirectMedia Layer Version 2
 release: 0
 depends:
-- components/xorg-libs.yml
-- components/alsa-lib.yml
-- components/pulseaudio.yml
+  - components/x11/libx11.yml
+  - components/x11/libxcursor.yml
+  - components/x11/libxext.yml
+  - components/x11/libxrender.yml
+  - components/alsa-lib.yml
+  - components/pulseaudio.yml
 sources:
-- https://www.libsdl.org/release/SDL2-2.0.14.tar.gz
-
+  - https://www.libsdl.org/release/SDL2-2.0.14.tar.gz

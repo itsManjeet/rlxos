@@ -6,7 +6,7 @@ release: 0
 depends:
 - components/lzo.yml
 build-time:
-- components/py-setuptools.yml
+- components/py/py-setuptools.yml
 sources:
 - https://www.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/btrfs-progs-v5.13.tar.xz
 script: |

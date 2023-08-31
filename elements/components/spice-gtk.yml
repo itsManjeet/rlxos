@@ -19,8 +19,8 @@ build-time:
 - components/usbutils.yml
 - components/vala.yml
 - components/wayland-protocols.yml
-- components/py-six.yml
-- components/py-parsing.yml
+- components/py/py-six.yml
+- components/py/py-parsing.yml
 sources:
 - https://www.spice-space.org/download/gtk/%{id}-%{version}.tar.xz
 

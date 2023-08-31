@@ -3,7 +3,7 @@ version: 6.1.4
 about: The RAR uncompression program
 release: 0
 depends:
-- components/gcc:lib.yml
+- components/libgcc.yml
 sources:
 - https://www.rarlab.com/rar/unrarsrc-6.1.4.tar.gz
 script: |

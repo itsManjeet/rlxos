@@ -4,7 +4,7 @@ about: Optimized BLAS library based on GotoBlas2 1.13 BSD (providing blas, lapac
   and cblas)
 release: 0
 depends:
-- components/gcc:lib.yml
+- components/libgcc.yml
 build-time:
 - components/gcc.yml
 - components/perl.yml

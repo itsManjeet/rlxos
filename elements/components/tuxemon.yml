@@ -3,7 +3,7 @@ version: 0.4.33
 about: Opensource monster-fighting RPG
 release: 0
 build-time:
-- components/py-pip.yml
+- components/py/py-pip.yml
 - components/appimagetool.yml
 sources:
 - tuxemon-%{version}.tar.gz::https://github.com/Tuxemon/Tuxemon/archive/refs/tags/v%{version}.tar.gz

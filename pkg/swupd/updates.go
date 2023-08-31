@@ -6,10 +6,9 @@ import (
 	"os"
 	"path"
 	"rlxos/pkg/updates/config"
+	"rlxos/pkg/utils"
 	"sort"
 	"strconv"
-
-	zsync "github.com/AppImageCrafters/libzsync-go"
 )
 
 const (
@@ -79,23 +78,13 @@ func (s *Swupd) Update(updateInfo *config.UpdateInfo) error {
 			return fmt.Errorf("failed to create cache file path %s, %v", path.Dir(cachefile), err)
 		}
 	}
-	sync, err := zsync.NewZSync(updateInfo.Url + ".zsync")
-	if err != nil {
-		return fmt.Errorf("failed to create zsync %v", err)
-	}
-	systemPath := path.Join("/", "run", "initramfs", "rlxos", "system")
 
-	oldPath := path.Join(systemPath, fmt.Sprint(curver))
+	systemPath := path.Join("/", "rlxos", "system")
+
 	newPath := path.Join(systemPath, fmt.Sprint(updateInfo.Version))
-	var imagefile *os.File
-
-	imagefile, err = os.Create(newPath + ".tmp")
-	if err != nil {
-		return fmt.Errorf("failed to create %s, %v", oldPath, err)
-	}
 
 	log.Println("Syning image")
-	if err := sync.Sync(oldPath, imagefile); err != nil {
+	if err := utils.DownloadFile(newPath+".tmp", updateInfo.Url); err != nil {
 		return fmt.Errorf("failed to sync image file %v", err)
 	}
 

@@ -130,12 +130,7 @@ else
 
     [[ ! -d ${SYSROOT}/usr ]] && mkdir -p ${SYSROOT}/usr
 
-    RESOLVED_SYSTEM=$(findfs ${SYSTEM})
-    if [[ -z ${RESOLVED_SYSTEM} ]] ; then
-        SYSTEM="${SYSROOT}/rlxos/system/${SYSTEM}"
-    else
-        SYSTEM=${RESOLVED_SYSTEM}
-    fi
+    [[ ! -e ${SYSTEM} ]] && SYSTEM=${SYSROOT}/rlxos/system/${SYSTEM}
 
     dbg "Mounting System Image ${SYSTEM}"
     mount -o ro ${SYSTEM} ${SYSROOT}/usr || rescue "failed to mount ${SYSTEM} on ${SYSROOT}/usr"

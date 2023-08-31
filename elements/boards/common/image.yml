@@ -12,7 +12,8 @@ script: |
   mkdir -p %{include-root}/%{datadir}/factory
   mv -T %{include-root}/etc %{include-root}/%{datadir}/factory/etc
 
-  echo "IMAGE_VERSION=%{version}" >>%{include-root}/%{libdir}/os-release
+  cp %{include-root}/%{datadir}/factory/etc/os-release %{include-root}/%{libdir}/
+  echo "IMAGE_VERSION=%{version}" >> %{include-root}/%{libdir}/os-release
 
   mkdir -p "%{include-root}/%{libdir}/systemd/system/systemd-firstboot.service.d/"
   cat <<EOF >"%{include-root}/%{libdir}/systemd/system/systemd-firstboot.service.d/no-prompt.conf"
@@ -31,7 +32,8 @@ script: |
   EOF
 
   cat >%{include-root}/%{libdir}/tmpfiles.d/extra-etc.conf << EOF
-
+  C /etc/protocols
+  C /etc/services
   EOF
 
   mksquashfs %{include-root}/usr %{install-root}/usr_%{version}.squashfs

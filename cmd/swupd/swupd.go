@@ -30,7 +30,7 @@ func main() {
 			if err != nil {
 				return nil, err
 			}
-			return swupd.New(conf), nil
+			return swupd.New(conf)
 		}).
 		Handler(func(c *app.Command, s []string, b interface{}) error {
 			return c.Help()
@@ -38,7 +38,7 @@ func main() {
 		Sub(app.New("check").
 			About("Check software update(s)").
 			Handler(func(c *app.Command, s []string, i interface{}) error {
-				back := i.(*swupd.Backend)
+				back := i.(*swupd.Swupd)
 				updateInfo, err := back.Check()
 				if err != nil {
 					return fmt.Errorf("failed to check updates, %v", err)
@@ -53,7 +53,7 @@ func main() {
 		Sub(app.New("update").
 			About("Perform software update(s)").
 			Handler(func(c *app.Command, s []string, i interface{}) error {
-				back := i.(*swupd.Backend)
+				back := i.(*swupd.Swupd)
 				updateInfo, err := back.Check()
 				if err != nil {
 					return fmt.Errorf("failed to check updates, %v", err)

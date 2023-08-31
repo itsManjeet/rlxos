@@ -7,8 +7,9 @@ import (
 	"os"
 	"os/exec"
 	"path"
-	"rlxos/pkg/swupd"
+	"rlxos/pkg/osinfo"
 	"rlxos/pkg/utils"
+	"strconv"
 	"strings"
 	"syscall"
 	"unicode"
@@ -27,10 +28,20 @@ type Installer struct {
 }
 
 func New(progress ProgressFunction) (*Installer, error) {
-	imageVersion, err := swupd.GetCurrentVersion()
+	os_release, err := osinfo.Open(path.Join("/", "usr", "lib", "os-release"))
 	if err != nil {
-		return nil, fmt.Errorf("failed to get current version %v", err)
+		return nil, err
 	}
+	curver_str, ok := os_release["IMAGE_VERSION"]
+	if !ok {
+		return nil, fmt.Errorf("missing required key 'IMAGE_VERSION' in os-release")
+	}
+
+	imageVersion, err := strconv.Atoi(curver_str)
+	if err != nil {
+		return nil, err
+	}
+
 	kernelVersion, err := exec.Command("uname", "-r").CombinedOutput()
 	if err != nil {
 		return nil, fmt.Errorf("failed to get kernel version %s, %v", string(kernelVersion), err)
@@ -75,7 +86,9 @@ func (i *Installer) Install(part string) error {
 
 	ISO_PATH := path.Join("/", "/run", "iso")
 	log.Println("Installing system image")
-	rootfs := path.Join(ISO_PATH, "rootfs.img")
+	rootfs := path.Join(ISO_PATH, "usr.squashfs")
+	rootfs, _ = os.Readlink(rootfs)
+	rootfs = path.Join(ISO_PATH, rootfs)
 	if err := utils.CopyFile(rootfs, path.Join(sysroot, "rlxos", "system", fmt.Sprint(i.ImageVersion))); err != nil {
 		return fmt.Errorf("failed to install system image %v", err)
 	}

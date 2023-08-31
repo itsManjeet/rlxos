@@ -20,11 +20,11 @@ type UpdatesResponse struct {
 	Updates []config.UpdateInfo `json:"updates"`
 }
 
-func (b *Backend) listUpdates() ([]config.UpdateInfo, error) {
+func (s *Swupd) listUpdates() ([]config.UpdateInfo, error) {
 	r := UpdatesResponse{}
-	url := fmt.Sprintf("%s/%s", b.config.Server, b.config.Channel)
+	url := fmt.Sprintf("%s/%s", s.config.Server, s.config.Channel)
 	log.Println("url", url)
-	if err := b.request(url, &r); err != nil {
+	if err := s.request(url, &r); err != nil {
 		return nil, err
 	}
 	if len(r.Updates) == 0 {
@@ -36,21 +36,17 @@ func (b *Backend) listUpdates() ([]config.UpdateInfo, error) {
 	return r.Updates, nil
 }
 
-func GetCurrentVersion() (int, error) {
-	data, err := os.ReadFile(path.Join("/", "usr", ".version"))
-	if err != nil {
-		return 0, err
-	}
-	version, err := strconv.Atoi(string(data))
-	return version, err
-}
-
-func (b *Backend) Check() (*config.UpdateInfo, error) {
-	list, err := b.listUpdates()
+func (s *Swupd) Check() (*config.UpdateInfo, error) {
+	list, err := s.listUpdates()
 	if err != nil {
 		return nil, err
 	}
-	curver, err := GetCurrentVersion()
+	curver_str, ok := s.OsInfo["IMAGE_VERSION"]
+	if !ok {
+		return nil, fmt.Errorf("missing required key 'IMAGE_VERSION' in os-release")
+	}
+
+	curver, err := strconv.Atoi(curver_str)
 	if err != nil {
 		return nil, err
 	}
@@ -62,10 +58,15 @@ func (b *Backend) Check() (*config.UpdateInfo, error) {
 	return &list[0], nil
 }
 
-func (b *Backend) Update(updateInfo *config.UpdateInfo) error {
-	curver, err := GetCurrentVersion()
+func (s *Swupd) Update(updateInfo *config.UpdateInfo) error {
+	curver_str, ok := s.OsInfo["IMAGE_VERSION"]
+	if !ok {
+		return fmt.Errorf("missing required key 'IMAGE_VERSION' in os-release")
+	}
+
+	curver, err := strconv.Atoi(curver_str)
 	if err != nil {
-		return fmt.Errorf("failed to read current version")
+		return err
 	}
 	if curver == updateInfo.Version && curver != ROLLING_RELEASE {
 		return fmt.Errorf("internal error, already update date system")

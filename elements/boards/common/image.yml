@@ -8,6 +8,18 @@ variables:
 script: |
   mkdir -p %{install-root}
 
+  chroot %{include-root} /bin/bash << "EOT"
+  if [ -d %{localstatedir}/lib/integrations ] ; then
+    for i in %{localstatedir}/lib/integrations/* ; do
+      echo "=> integrating $(basename $i)"
+      sh -e $i
+    done
+  fi
+
+  kerver=$(ls %{libdir}/modules | head -n1)
+  depmod -a ${kerver}
+  EOT
+
   [[ -d %{include-root}/%{datadir}/factory/etc ]] && rm -rf %{include-root}/%{datadir}/factory/etc
   mkdir -p %{include-root}/%{datadir}/factory
   mv -T %{include-root}/etc %{include-root}/%{datadir}/factory/etc

@@ -1,0 +1,7 @@
+id: xcursorgen
+version: "7"
+about: xorg apps xcursorgen
+release: 0
+sources:
+- https://www.x.org/pub/individual/app/xcursorgen-1.0.7.tar.bz2
+

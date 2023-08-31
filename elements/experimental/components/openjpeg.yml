@@ -1,7 +1,0 @@
-id: openjpeg
-version: 2.4.0
-about: An open-source implementation of the JPEG-2000 standard
-sources:
-- https://github.com/uclouvain/openjpeg/archive/v2.4.0/openjpeg-2.4.0.tar.gz
-build-dir: openjpeg-2.4.0
-configure: -DBUILD_STATIC_LIBS=OFF

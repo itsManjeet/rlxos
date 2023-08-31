@@ -1,0 +1,29 @@
+id: lightdm
+version: 1.30.0
+about: A lightweight display manager based upon GTK
+release: 0
+depends:
+- components/libgcrypt.yml
+- components/itstool.yml
+- components/pam.yml
+- components/pcre.yml
+- components/x11/libxklavier.yml
+- components/accountsservice.yml
+build-time:
+- components/py-distutils-extra.yml
+sources:
+- https://github.com/CanonicalLtd/lightdm/releases/download/1.30.0/lightdm-1.30.0.tar.xz
+- https://github.com/Xubuntu/lightdm-gtk-greeter/releases/download/lightdm-gtk-greeter-2.0.8/lightdm-gtk-greeter-2.0.8.tar.gz
+post-script: |-
+  install -v -D -m 755 tests/src/lightdm-session -t %{install-root}/usr/bin/
+  sed -i "1 s/sh/bash --login/" %{install-root}/usr/bin/lightdm-session
+  rm -rf %{install-root}%{sysconfdir}/init
+  install -v -d -m 755 -o 65 -g 65 %{install-root}/var/lib/lightdm
+  install -v -d -m 755 -o 65 -g 65 %{install-root}/var/lib/lightdm-data
+  install -v -d -m 755 -o 65 -g 65 %{install-root}/var/cache/lightdm
+  install -v -d -m 755 -o 65 -g 65 %{install-root}/var/log/lightdm
+
+  install -v -D -m 644 /files/lightdm/lightdm.service -t %{install-root}/usr/lib/systemd/system
+configure: |
+  --libexecdir=/usr/lib/lightdm --disable-static --disable-tests --with-greeter-user=lightdm --with-greeter-session=lightdm-gtk-greeter
+

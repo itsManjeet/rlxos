@@ -1,6 +1,0 @@
-id: libXft
-version: '7'
-about: xorg library libXft
-build-dir: libXft-2.3.3
-sources:
-- https://www.x.org/pub/individual/lib/libXft-2.3.3.tar.bz2

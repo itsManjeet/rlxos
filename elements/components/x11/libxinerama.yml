@@ -1,0 +1,7 @@
+id: libXinerama
+version: "7"
+about: xorg library libXinerama
+release: 0
+sources:
+- https://www.x.org/pub/individual/lib/libXinerama-1.1.4.tar.bz2
+

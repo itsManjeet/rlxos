@@ -1,0 +1,11 @@
+id: jetring
+version: "0.30"
+about: GPG keyring maintenance using changesets
+release: 0
+depends:
+- components/gnupg.yml
+- components/perl.yml
+sources:
+- https://mirrors.kernel.org/debian/pool/main/j/jetring/jetring_%{version}.tar.xz
+script: make DESTDIR=%{install-root} install
+

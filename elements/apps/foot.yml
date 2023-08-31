@@ -11,7 +11,7 @@ sources:
 depends:
   - components/fcft.yml
   - components/fontconfig.yml
-  - components/libxkbcommon.yml
+  - components/x11/libxkbcommon.yml
   - components/pixman.yml
   - components/wayland.yml
 

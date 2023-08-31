@@ -1,0 +1,23 @@
+id: plasma-systemmonitor
+version: 5.24.5
+about: Plasma plasma-systemmonitor
+release: 0
+depends:
+- components/kconfig.yml
+- components/kdeclarative.yml
+- components/kservice.yml
+- components/kglobalaccel.yml
+- components/kio.yml
+- components/kdbusaddons.yml
+- components/kitemmodels.yml
+- components/knewstuff.yml
+- components/libksysguard.yml
+- components/kirigami2.yml
+build-time:
+- components/ki18n.yml
+- components/extra-cmake-modules.yml
+sources:
+- https://download.kde.org/stable/plasma/%{version}/%{id}-%{version}.tar.xz
+configure: |
+  -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF -Wno-dev
+

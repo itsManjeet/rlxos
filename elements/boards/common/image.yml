@@ -46,6 +46,9 @@ script: |
   cat >%{include-root}/%{libdir}/tmpfiles.d/extra-etc.conf << EOF
   C /etc/protocols
   C /etc/services
+  C /etc/X11
+  C /etc/xdg
+  C /etc/swupd.yml
   EOF
 
   mksquashfs %{include-root}/usr %{install-root}/usr_%{version}.squashfs

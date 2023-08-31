@@ -1,0 +1,10 @@
+id: overlayroot
+version: v0.1
+about: dracut module to permit root fs overlay
+release: 0
+depends:
+- components/dracut.yml
+script: |-
+  install -v -D -t %{install-root}/usr/lib/dracut/modules.d/50overlayroot/ /files/mount-overlayroot.sh /files/module-setup.sh
+  install -v -D -m 0755 /files/overlay-chroot.sh %{install-root}/usr/bin/overlay-chroot
+

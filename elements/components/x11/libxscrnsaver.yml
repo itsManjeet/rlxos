@@ -1,0 +1,7 @@
+id: libxscrnsaver
+version: "7"
+about: xorg library libxscrnsaver
+release: 0
+sources:
+- https://www.x.org/pub/individual/lib/libXScrnSaver-1.2.3.tar.bz2
+

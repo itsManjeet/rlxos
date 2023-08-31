@@ -1,0 +1,15 @@
+id: cairomm
+version: 1.14.0
+about: |
+  A C++ interface to Cairo
+release: 0
+depends:
+- components/cairo.yml
+- components/libsigc++.yml
+build-time:
+- components/boost.yml
+sources:
+- https://www.cairographics.org/releases/cairomm-%{version}.tar.xz
+pre-script: rm autogen.sh
+configure: -D build-tests=false -D boost-shared=true
+

@@ -1,0 +1,26 @@
+id: mono
+version: 6.12.0.122
+about: Free implementation of the .NET platform including runtime and compiler
+release: 0
+depends:
+- components/ca-certificates.yml
+- components/libgdiplus.yml
+- components/python.yml
+- components/zlib.yml
+build-time:
+- components/cmake.yml
+sources:
+- https://download.mono-project.com/sources/mono/mono-%{version}.tar.xz
+script: |
+  ./autogen.sh \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --bindir=/usr/bin \
+    --sbindir=/usr/bin \
+    --with-mcs-docs=no
+
+  make
+  make install DESTDIR=%{install-root}
+
+  mkdir -p %{install-root}/usr/lib/binfmt.d/
+

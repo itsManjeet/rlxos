@@ -1,0 +1,20 @@
+id: xdelta3
+version: 3.1.0
+about: diff utility for binary files
+release: 0
+depends:
+- components/ncompress.yml
+build-time:
+- components/python.yml
+sources:
+- xdelta-%{version}.tar.gz::https://github.com/jmacd/xdelta/archive/refs/tags/v%{version}.tar.gz
+pre-script: |
+  aclocal
+  autoreconf --install
+  libtoolize
+  autoconf
+  autoheader
+  automake --add-missing
+  automake
+configure: --disable-dependency-tracking --with-liblzma
+

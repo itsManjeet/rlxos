@@ -1,0 +1,14 @@
+id: perl-io-string
+version: "1.08"
+about: |
+  io::file interface for in-core strings
+release: 0
+depends:
+- components/perl.yml
+sources:
+- https://cpan.metacpan.org/authors/id/G/GA/GAAS/IO-String-%{version}.tar.gz
+script: |
+  PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+  make
+  make install DESTDIR=%{install-root}
+

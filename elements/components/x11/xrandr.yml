@@ -1,0 +1,7 @@
+id: xrandr
+version: "7"
+about: xorg apps xrandr
+release: 0
+sources:
+- https://www.x.org/pub/individual/app/xrandr-1.5.1.tar.xz
+

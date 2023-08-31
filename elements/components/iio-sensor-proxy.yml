@@ -1,0 +1,15 @@
+id: iio-sensor-proxy
+version: "3.3"
+about: IIO accelerometer sensor to input device proxy
+release: 0
+depends:
+- components/gtk.yml
+- components/libgudev.yml
+- components/systemd.yml
+build-time:
+- components/meson.yml
+sources:
+- https://gitlab.freedesktop.org/hadess/iio-sensor-proxy/-/archive/%{version}/%{id}-%{version}.tar.gz
+configure: -Dsystemdsystemunitdir=/usr/lib/systemd/system -Dudevrulesdir=/usr/lib/udev/rules.d
+  --sysconfdir=%{datadir}
+

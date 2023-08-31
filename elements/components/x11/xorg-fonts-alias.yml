@@ -1,0 +1,7 @@
+id: xorg-fonts-alias
+version: "7"
+about: xorg fonts xorg-fonts-alias
+release: 0
+sources:
+- https://www.x.org/pub/individual/font/font-alias-1.0.4.tar.bz2
+

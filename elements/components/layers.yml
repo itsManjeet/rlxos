@@ -18,8 +18,8 @@ post-script: |
   [Service]
   Type=oneshot
   RemainAfterExit=yes
-  ExecStart=%{bindir/layers refresh
-  ExecReload=%{bindir/layers refresh
+  ExecStart=%{bindir}/layers refresh
+  ExecReload=%{bindir}/layers refresh
 
   [Install]
   WantedBy=sysinit.target

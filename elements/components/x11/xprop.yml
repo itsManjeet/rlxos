@@ -1,0 +1,7 @@
+id: xprop
+version: "7"
+about: xorg apps xprop
+release: 0
+sources:
+- https://www.x.org/pub/individual/app/xprop-1.2.5.tar.bz2
+

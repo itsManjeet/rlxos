@@ -1,9 +1,0 @@
-id: libvdpau
-version: 1.4
-about: A library which implements the VDPAU library
-sources:
-- https://gitlab.freedesktop.org/vdpau/libvdpau/-/archive/1.4/libvdpau-1.4.tar.bz2
-build-dir: libvdpau-1.4
-depends:
-  runtime:
-  - mesa

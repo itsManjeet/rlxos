@@ -1,0 +1,31 @@
+id: gnome-control-center
+version: "40.0"
+about: Control Center package contains the GNOME settings manager
+release: 0
+depends:
+- components/accountsservice.yml
+- components/clutter-gtk.yml
+- components/colord-gtk.yml
+- components/gnome-online-accounts.yml
+- components/gnome-settings-daemon.yml
+- components/grilo.yml
+- components/gsound.yml
+- components/libgtop.yml
+- components/libpwquality.yml
+- components/shared-mime-info.yml
+- components/kerberos-v5.yml
+- components/udisks.yml
+- components/cheese.yml
+- components/cups.yml
+- components/samba.yml
+- components/gnome-bluetooth.yml
+- components/ibus.yml
+- components/libhandy.yml
+- components/libnma.yml
+- components/modemmanager.yml
+sources:
+- https://download.gnome.org/sources/gnome-control-center/40/gnome-control-center-40.0.tar.xz
+pre-script: |
+  sed -i "s|gnome-logo|rlxos-logo|g" panels/info-overview/cc-info-overview-panel.c
+configure: --buildtype=release
+

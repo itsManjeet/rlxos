@@ -1,0 +1,11 @@
+id: abseil-cpp
+version: "20211102.0"
+about: Collection of C++ library code designed to augment the C++ standard library
+release: 0
+build-time:
+- components/cmake.yml
+sources:
+- https://github.com/abseil/abseil-cpp/archive/%{version}/%{id}-%{version}.tar.gz
+configure: |
+  -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_FLAGS="-DNDEBUG" -DCMAKE_CXX_STANDARD=17 -DBUILD_SHARED_LIBS=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+

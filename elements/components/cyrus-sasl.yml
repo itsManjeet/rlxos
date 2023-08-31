@@ -1,0 +1,16 @@
+id: cyrus-sasl
+version: 2.1.27
+about: A Simple Authentication and Security Layer
+release: 0
+depends:
+- components/berkeley-db.yml
+- components/pam.yml
+- components/kerberos-v5.yml
+sources:
+- https://github.com/cyrusimap/cyrus-sasl/releases/download/cyrus-sasl-2.1.27/cyrus-sasl-2.1.27.tar.gz
+post-script: |
+  install -v -dm700 %{install-root}/var/lib/sasl
+configure: |
+  --enable-auth-sasldb --with-dbpath=/var/lib/sasl/sasldb2 --with-sphnix-build=no --with-saslauthd=/var/run/saslauthd
+compile: -j1
+

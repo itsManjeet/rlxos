@@ -1,0 +1,7 @@
+id: xkbutils
+version: "7"
+about: xorg apps xkbutils
+release: 0
+sources:
+- https://www.x.org/pub/individual/app/xkbutils-1.0.4.tar.bz2
+

@@ -1,0 +1,27 @@
+id: postfix
+version: 3.7.2
+about: Postfix package contains a Mail Transport Agent
+release: 0
+depends:
+- components/berkeley-db.yml
+- components/cyrus-sasl.yml
+- components/icu.yml
+- components/pcre2.yml
+- components/libldap.yml
+build-time:
+- components/openldap.yml
+sources:
+- https://ghostarchive.org/postfix/postfix-release/official/postfix-%{version}.tar.gz
+script: "sed -i 's/.\\x08//g' README_FILES/*\nunset DEBUG\ngroupadd -g 32 postfix\ngroupadd
+  -g 33 postdrop \nuseradd -c \"Postfix Daemon User\" -d /var/spool/postfix -g postfix
+  -s /bin/false -u 32 postfix &&\nchown -v postfix:postfix /var/mail\nmake CCARGS='-DNO_NIS
+  \\\n             -DUSE_TLS -I/usr/include/openssl/ \\\n             -DUSE_SASL_AUTH
+  -DUSE_CYRUS_SASL -I/usr/include/sasl \\\n             -DHAS_LDAP \\\n             -DHAS_SQLITE'
+  \\\n    AUXLIBS=\"-lssl -lcrypto -lsasl2 -lldap -lsqlite3 -llber -lpthread -lz -lm\"
+  makefiles\n\nmake\nsh postfix-install -non-interactive \\\n      daemon_directory=/usr/lib/postfix
+  \\\n      manpage_directory=%{datadir}/man \\\n      html_directory=%{datadir}/doc/postfix-%{version}/html
+  \\\n      readme_directory=%{datadir}/doc/postfix-%{version}/readme \\\n      install_root=\"$pkgupd_pkgdir\"\n\ninstall
+  -v -D -m 644 LICENSE -t %{install-root}%{datadir}/doc/%{id}/\ninstall -vDm 644 /files/%{id}.service
+  -t \"$pkgupd_pkgdir/usr/lib/systemd/system/\"\ninstall -vDm 644 /files/%{id}.tmpfiles
+  \"$pkgupd_pkgdir/usr/lib/tmpfiles.d/%{id}.conf\"\n"
+

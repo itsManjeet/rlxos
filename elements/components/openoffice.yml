@@ -1,0 +1,27 @@
+id: openoffice
+version: 4.1.12
+about: A free and open productivity suite
+release: 0
+build-time:
+- components/appimagetool.yml
+sources:
+- https://downloads.apache.org/openoffice/%{version}/binaries/en-US/Apache_OpenOffice_%{version}_Linux_x86-64_install-rpm_en-US.tar.gz
+script: |
+  for file in *.rpm ; do
+    echo "extracting ${file##*/}"
+    bsdtar -xf ${file}
+  done
+
+  for file in desktop-integration/*.rpm ; do
+    echo "extracting ${file##*/}"
+    bsdtar -xf ${file}
+  done
+
+  mv opt/openoffice4 %{install-root}
+
+  cp /files/openoffice.desktop %{install-root}/
+  cp usr/share/icons/hicolor/128x128/apps/openoffice4-main.png %{install-root}/%{id}.png
+  install -v -D -m 0755 /files/AppRun -t %{install-root}/
+
+  cp %{install-root}/%{id}.png /files/
+

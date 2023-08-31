@@ -1,0 +1,8 @@
+id: man-pages
+version: "6.04"
+about: Linux man pages
+release: 0
+sources:
+- https://www.kernel.org/pub/linux/docs/man-pages/man-pages-%{version}.tar.xz
+script: make prefix=/usr DESTDIR=%{install-root} install
+

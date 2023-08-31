@@ -1,0 +1,14 @@
+id: lightdm-gtk-greeter
+version: 2.0.8
+about: Lightdm Gtk Greeter
+release: 0
+depends:
+- components/lightdm.yml
+- components/gtk.yml
+sources:
+- https://github.com/Xubuntu/lightdm-gtk-greeter/releases/download/lightdm-gtk-greeter-2.0.8/lightdm-gtk-greeter-2.0.8.tar.gz
+post-script: |
+  install -v -D /files/lightdm-gtk-greeter/lightdm-gtk-greeter.conf -t %{install-root}%{sysconfdir}/lightdm/
+configure: |
+  --libexecdir=/usr/lib/lightdm --with-libxklavier --enable-kill-on-sigterm --disable-libido --disable-libindicator --disable-static --disable-maintainer-mode
+

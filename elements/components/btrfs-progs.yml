@@ -1,0 +1,19 @@
+id: btrfs-progs
+version: "5.13"
+about: Package contains administration and debugging tools for the B-tree file system
+  (btrfs)
+release: 0
+depends:
+- components/lzo.yml
+build-time:
+- components/py-setuptools.yml
+sources:
+- https://www.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/btrfs-progs-v5.13.tar.xz
+script: |
+  ./configure --prefix=/usr \
+    --disable-documentation
+
+  make
+
+  make DESTDIR=%{install-root} install
+

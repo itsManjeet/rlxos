@@ -1,0 +1,14 @@
+id: perl-json
+version: "4.05"
+about: |
+  JSON provides a simple wrapper for JSON::XS-compatible modules with some additional features.
+release: 0
+depends:
+- components/perl.yml
+sources:
+- https://www.cpan.org/authors/id/I/IS/ISHIGAKI/JSON-%{version}.tar.gz
+script: |-
+  perl Makefile.PL
+  make
+  make install DESTDIR=%{install-root}
+

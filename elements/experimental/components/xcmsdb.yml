@@ -1,6 +1,0 @@
-id: xcmsdb
-version: '7'
-about: xorg apps xcmsdb
-build-dir: xcmsdb-1.0.5
-sources:
-- https://www.x.org/pub/individual/app/xcmsdb-1.0.5.tar.bz2

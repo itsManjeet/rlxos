@@ -1,0 +1,12 @@
+id: thunar-archive-plugin
+version: 0.4.0
+about: Create and extract archives in Thunar
+release: 0
+depends:
+- components/hicolor-icon-theme.yml
+- components/thunar.yml
+build-time:
+- components/xfce4-dev-tools.yml
+sources:
+- https://archive.xfce.org/src/thunar-plugins/thunar-archive-plugin/0.4/thunar-archive-plugin-0.4.0.tar.bz2
+

@@ -1,9 +1,0 @@
-id: libcacard
-version: 2.7.0
-about: (Common Access Card) library thar provides emulation of smart cards to a virtual card reader running in a guest virtual machine
-depends:
-  runtime:
-    - glib
-    - nss
-sources:
-  - https://www.spice-space.org/download/libcacard/libcacard-{{version}}.tar.xz

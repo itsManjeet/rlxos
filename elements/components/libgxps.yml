@@ -1,0 +1,15 @@
+id: libgxps
+version: 0.3.2
+about: Provides an interface to manipulate XPS documents
+release: 0
+depends:
+- components/gtk.yml
+- components/lcms.yml
+- components/libarchive.yml
+- components/libjpeg-turbo.yml
+- components/libtiff.yml
+- components/libxslt.yml
+sources:
+- https://download.gnome.org/sources/libgxps/0.3/libgxps-0.3.2.tar.xz
+configure: --buildtype=release
+

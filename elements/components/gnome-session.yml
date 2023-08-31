@@ -1,0 +1,18 @@
+id: gnome-session
+version: 40.1.1
+about: Package contains the GNOME session manager
+release: 0
+depends:
+- components/dbus-glib.yml
+- components/gnome-desktop.yml
+- components/json-glib.yml
+- components/mesa.yml
+- components/systemd.yml
+- components/upower.yml
+- components/gconf.yml
+sources:
+- https://download.gnome.org/sources/gnome-session/40/gnome-session-40.1.1.tar.xz
+pre-script: |
+  sed "s@/bin/sh@/bin/sh -l@" -i gnome-session/gnome-session.in
+configure: --buildtype=release
+

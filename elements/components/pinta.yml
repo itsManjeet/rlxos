@@ -1,0 +1,30 @@
+id: pinta
+version: 2.0.1
+about: Drawing/editing program modeled after Paint.NET. It's goal is to provide a
+  simplified alternative to GIMP for casual users
+release: 0
+build-time:
+- components/dotnet.yml
+- components/dotnet-runtime.yml
+- components/gtk.yml
+- components/appimagetool.yml
+- components/intltool.yml
+sources:
+- https://github.com/PintaProject/Pinta/releases/download/%{version}/pinta-%{version}.tar.gz
+pre-script: |
+  sed -i '/^PINTA_BUILD_OPTS/ s/$/ -maxcpucount:1/' Makefile.in
+post-script: |
+  cd %{install-root}
+
+  mv usr/share/applications/pinta.desktop .
+  sed -i 's#TryExec=.*##' %{id}.desktop
+  mv /files/%{id}.svg pinta.png
+
+  # install dotnet runtime
+  mkdir -p usr/share/dotnet/
+  cp %{datadir}/dotnet/{shared,host} usr/share/dotnet/ -a
+  cp %{datadir}/dotnet/dotnet usr/share/dotnet/
+
+  cp /files/AppRun .
+  chmod +x AppRun
+

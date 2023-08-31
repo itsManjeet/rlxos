@@ -1,0 +1,17 @@
+id: onlyoffice
+version: 7.1.0
+about: An office suite that combines text, spreadsheet and presentation editors
+release: 0
+build-time:
+- components/appimagetool.yml
+sources:
+- onlyoffice-desktopeditors-%{version}.deb::https://github.com/ONLYOFFICE/DesktopEditors/releases/download/v%{version}/onlyoffice-desktopeditors_amd64.deb
+script: |
+  bsdtar -xf onlyoffice-desktopeditors-%{version}.deb
+  bsdtar -xf data.tar.xz
+
+  mv opt/%{id}/desktopeditors %{install-root}
+  install -v -D -m 0755 /files/AppRun -t %{install-root}/
+  cp /files/%{id}.svg %{install-root}/%{id}.png
+  cp /files/%{id}.desktop %{install-root}
+

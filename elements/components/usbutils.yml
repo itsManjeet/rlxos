@@ -1,0 +1,16 @@
+id: usbutils
+version: "12"
+about: A collection of USB tools to query connected USB devices
+release: 0
+depends:
+- components/glibc.yml
+- components/systemd.yml
+- components/coreutils.yml
+- components/python.yml
+build-time:
+- components/libusb.yml
+sources:
+- https://www.kernel.org/pub/linux/utils/usb/usbutils/usbutils-014.tar.xz
+configure: |
+  --datadir=%{datadir}/hwdata
+

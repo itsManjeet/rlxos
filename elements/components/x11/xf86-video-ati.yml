@@ -1,0 +1,10 @@
+id: xorg-drivers-ati
+version: "7"
+about: xorg fonts xorg-drivers-ati
+release: 0
+sources:
+- https://www.x.org/pub/individual/driver/xf86-video-ati-19.1.0.tar.bz2
+pre-script: |
+  sed -e 's/miPointer/extern &/' \
+    -i src/drmmode_display.h
+

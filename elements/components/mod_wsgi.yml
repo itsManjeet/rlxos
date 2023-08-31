@@ -1,0 +1,18 @@
+id: mod_wsgi
+version: 4.9.0
+about: Python WSGI adapter module for apache
+release: 0
+depends:
+- components/apache.yml
+- components/python.yml
+sources:
+- mod_wsgi-4.9.0.tar.gz::https://github.com/GrahamDumpleton/mod_wsgi/archive/refs/tags/4.9.0.tar.gz
+script: |-
+  ./configure --prefix=/usr \
+    --with-python=/usr/bin/python \
+    --with-apxs=/usr/bin/apxs
+
+  make
+
+  make DESTDIR=%{install-root} install
+

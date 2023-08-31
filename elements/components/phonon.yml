@@ -1,0 +1,13 @@
+id: phonon
+version: 4.11.1
+about: |
+  The multimedia API for KDE
+release: 0
+depends:
+- components/glib.yml
+- components/qt.yml
+build-time:
+- components/extra-cmake-modules.yml
+sources:
+- https://download.kde.org/stable/phonon/%{version}/phonon-%{version}.tar.xz
+

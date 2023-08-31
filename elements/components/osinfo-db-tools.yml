@@ -1,0 +1,14 @@
+id: osinfo-db-tools
+version: 1.10.0
+about: Tools for managing the osinfo database
+release: 0
+depends:
+- components/json-glib.yml
+- components/libarchive.yml
+- components/libsoup.yml
+- components/libxslt.yml
+build-time:
+- components/meson.yml
+sources:
+- https://releases.pagure.org/libosinfo/osinfo-db-tools-%{version}.tar.xz
+

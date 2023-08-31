@@ -1,9 +1,0 @@
-id: firmware
-version: 20230515
-about: Firmware files for Linux
-
-sources:
-  - https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-{{version}}.tar.gz
-
-script: |
-  make DESTDIR=${pkgupd_pkgdir} FIRMWARE=/usr/lib/firmware install

@@ -1,0 +1,22 @@
+id: wpa_supplicant
+version: "2.9"
+about: Wi-Fi Protected Access (WPA) client and IEEE 802.1X supplicant
+release: 0
+depends:
+- components/desktop-file-utils.yml
+- components/libnl.yml
+- components/dbus.yml
+- components/libxml2.yml
+sources:
+- https://w1.fi/releases/wpa_supplicant-2.9.tar.gz
+script: |
+  cp /files/wpa_supplicant/config .config
+  make BINDIR=/usr/bin LIBDIR=/usr/lib
+  install -v -D -m 755 wpa_{cli,passphrase,supplicant} -t %{install-root}/usr/bin/
+  install -v -D -m 644 systemd/*.service -t %{install-root}/usr/lib/systemd/system/
+  install -v -D -m644 dbus/fi.w1.wpa_supplicant1.service \
+            -t  %{install-root}%{datadir}/dbus-1/system-services/
+  install -v -d -m755 %{install-root}%{sysconfdir}/dbus-1/system.d
+  install -v -D -m644 dbus/dbus-wpa_supplicant.conf \
+            %{install-root}%{sysconfdir}/dbus-1/system.d/wpa_supplicant.conf
+

@@ -1,0 +1,19 @@
+id: libgweather
+version: "40.0"
+about: A library used to access weather information from online services for numerous
+  locations
+release: 0
+depends:
+- components/geocode-glib.yml
+- components/gtk.yml
+- components/libsoup.yml
+- components/libxml2.yml
+- components/py-gobject.yml
+build-time:
+- components/vala.yml
+- components/gobject-introspection.yml
+sources:
+- https://download.gnome.org/sources/libgweather/40/libgweather-40.0.tar.xz
+configure: |
+  --buildtype=release
+

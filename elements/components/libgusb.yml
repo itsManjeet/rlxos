@@ -1,0 +1,14 @@
+id: libgusb
+version: 0.3.7
+about: GObject wrappers for libusb-1.0
+release: 0
+depends:
+- components/libusb.yml
+build-time:
+- components/vala.yml
+- components/py-setuptools.yml
+sources:
+- https://github.com/hughsie/libgusb/archive/0.3.7/libgusb-0.3.7.tar.gz
+configure: |
+  --buildtype=release -D docs=false
+

@@ -1,9 +1,0 @@
-id: parted
-version: 3.4
-about: A disk partitioning and partition resizing tool
-sources:
-- https://ftp.gnu.org/gnu/parted/parted-3.4.tar.xz
-build-dir: parted-3.4
-depends:
-  runtime:
-  - lvm2

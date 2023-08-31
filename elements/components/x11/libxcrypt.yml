@@ -1,0 +1,11 @@
+id: libxcrypt
+version: 4.4.28
+about: Modern library for one-way hashing of passwords
+release: 0
+depends:
+- components/glibc.yml
+sources:
+- https://github.com/besser82/libxcrypt/releases/download/v%{version}/libxcrypt-%{version}.tar.xz
+configure: --disable-static --enable-hashes=strong,glibc --enable-obsolete-api=no
+  --disable-failure-tokens
+

@@ -1,0 +1,14 @@
+id: initramfs
+version: 0.3.0
+about: |
+  rlxos initramfs tool
+release: 0
+depends:
+- components/bash.yml
+- components/kmod.yml
+- components/cpio.yml
+- components/zstd.yml
+script: |-
+  install -v -D -m 644 /files/init.in.sh  %{install-root}%{datadir}/initramfs/init.in
+  install -v -D -m 755 /files/mkinitramfs.sh  %{install-root}/usr/bin/mkinitramfs
+

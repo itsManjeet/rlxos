@@ -1,0 +1,13 @@
+id: lftp
+version: 4.9.2
+about: Sophisticated command line based FTP client
+release: 0
+depends:
+- components/expat.yml
+- components/gcc:lib.yml
+- components/openssl.yml
+- components/readline.yml
+sources:
+- http://lftp.yar.ru/ftp/lftp-4.9.2.tar.xz
+configure: --with-openssl --disable-static
+

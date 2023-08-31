@@ -1,6 +1,0 @@
-id: xev
-version: '7'
-about: xorg apps xev
-build-dir: xev-1.2.4
-sources:
-- https://www.x.org/pub/individual/app/xev-1.2.4.tar.bz2

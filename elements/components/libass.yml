@@ -1,0 +1,15 @@
+id: libass
+version: 0.15.1
+about: A portable subtitle renderer for the ASS/SSA
+release: 0
+depends:
+- components/freetype.yml
+- components/fribidi.yml
+- components/fontconfig.yml
+- components/harfbuzz.yml
+build-time:
+- components/nasm.yml
+sources:
+- https://github.com/libass/libass/releases/download/0.15.1/libass-0.15.1.tar.xz
+configure: --disable-static
+

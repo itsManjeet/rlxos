@@ -1,0 +1,25 @@
+id: cheese
+version: 3.38.0
+about: |
+  Take photos and videos with fun graphical effects
+release: 0
+depends:
+- components/clutter-gst.yml
+- components/clutter-gtk.yml
+- components/gnome-desktop.yml
+- components/gst-plugins-bad.yml
+- components/gst-plugins-good.yml
+- components/v4l-utils.yml
+- components/libcanberra.yml
+- components/libgudev.yml
+- components/gnome-video-effects.yml
+build-time:
+- components/gobject-introspection.yml
+- components/vala.yml
+sources:
+- https://download.gnome.org/sources/cheese/3.38/cheese-3.38.0.tar.xz
+pre-script: |
+  patch -Np1 -i /files/cheese/vala.patch
+  sed -i "s/&version;/3.38.0/" docs/reference/cheese{,-docs}.xml
+configure: --buildtype=release -D gtk_doc=false
+

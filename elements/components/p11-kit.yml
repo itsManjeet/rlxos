@@ -1,0 +1,22 @@
+id: p11-kit
+version: 0.24.0
+about: |
+  Provides a way to load and enumerate PKCS #11 (a Cryptographic Token Interface Standard) modules
+release: 0
+depends:
+- components/libtasn1.yml
+sources:
+- https://github.com/p11-glue/p11-kit/releases/download/%{version}/p11-kit-%{version}.tar.xz
+pre-script: |
+  sed "20,$ d" -i trust/trust-extract-compat &&
+  cat >> trust/trust-extract-compat << "EOF"
+  # Copy existing anchor modifications to %{sysconfdir}/ssl/local
+  /usr/lib/make-ca/copy-trust-modifications
+
+  # Generate a new trust store
+  /usr/bin/make-ca -f -g
+  EOF
+post-script: "ln -sfv /usr/lib/p11-kit/trust-extract-compact \\\n  %{install-root}/usr/bin/update-ca-certificates\n\nln
+  -sfv ./pkcs11/p11-kit-trust.so %{install-root}/usr/lib/libnssckbi.so\n    "
+configure: -D trust_paths=%{sysconfdir}/pki/anchors --buildtype=release
+

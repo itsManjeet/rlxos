@@ -1,0 +1,7 @@
+id: libfs
+version: "7"
+about: xorg library libfs
+release: 0
+sources:
+- https://www.x.org/pub/individual/lib/libFS-1.0.8.tar.bz2
+

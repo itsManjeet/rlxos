@@ -1,6 +1,0 @@
-id: libXvMC
-version: '7'
-about: xorg library libXvMC
-build-dir: libXvMC-1.0.12
-sources:
-- https://www.x.org/pub/individual/lib/libXvMC-1.0.12.tar.bz2

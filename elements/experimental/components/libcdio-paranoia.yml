@@ -1,9 +1,0 @@
-id: libcdio-paranoia
-version: 2.1.0
-about: Library for CD-ROM and CD image access
-sources:
-- https://ftp.gnu.org/gnu/libcdio/libcdio-paranoia-10.2+2.0.1.tar.bz2
-build-dir: libcdio-paranoia-10.2+2.0.1
-depends:
-  runtime:
-  - libcdio

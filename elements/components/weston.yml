@@ -10,7 +10,7 @@ depends:
   - components/wayland.yml
   - components/seatd.yml
   - components/graphite2.yml
-  - components/libxkbcommon.yml
+  - components/x11/libxkbcommon.yml
   - components/libinput.yml
   - components/libjpeg-turbo.yml
   - components/libwebp.yml

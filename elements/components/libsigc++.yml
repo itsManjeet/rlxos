@@ -1,0 +1,8 @@
+id: libsigc++
+version: 2.10.7
+about: A typesafe callback system for standard C++
+release: 0
+sources:
+- https://download.gnome.org/sources/libsigc++/2.10/libsigc++-2.10.7.tar.xz
+pre-script: rm autogen.sh
+

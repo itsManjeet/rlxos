@@ -1,0 +1,12 @@
+id: gtk2
+version: 2.24.33
+about: Libraries used for creating graphical user interfaces for applications
+release: 0
+depends:
+- components/atk.yml
+- components/gdk-pixbuf.yml
+- components/pango.yml
+- components/gobject-introspection.yml
+sources:
+- https://download.gnome.org/sources/gtk+/2.24/gtk+-2.24.33.tar.xz
+

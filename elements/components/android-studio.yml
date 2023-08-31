@@ -1,0 +1,17 @@
+id: android-studio
+version: 2021.2.1.14
+about: Android IDE (stable branch)
+release: 0
+build-time:
+- components/appimagetool.yml
+- components/shared-mime-info.yml
+sources:
+- https://dl.google.com/dl/android/studio/ide-zips/%{version}/android-studio-%{version}-linux.tar.gz
+script: |-
+  mv android-studio %{install-root} && cd %{install-root}
+
+  cp /files/%{id}.svg %{id}.png
+  cp /files/%{id}.desktop .
+  cp /files/AppRun .
+  chmod +x AppRun
+

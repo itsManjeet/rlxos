@@ -1,0 +1,21 @@
+id: libical
+version: 3.0.10
+about: |
+  Implementation of the iCalendar protocols and data formats
+release: 0
+depends:
+- components/berkeley-db.yml
+- components/glib.yml
+- components/icu.yml
+- components/libxml2.yml
+build-time:
+- components/cmake.yml
+- components/gtk-doc.yml
+- components/vala.yml
+- components/py-gobject.yml
+- components/gobject-introspection.yml
+sources:
+- https://github.com/libical/libical/releases/download/v%{version}/libical-%{version}.tar.gz
+configure: -DCMAKE_LIBEXECDIR=/usr/lib -DSHARED_ONLY=yes -DICAL_GLIB_VAPI=true -DICAL_BUILD_DOCS=yes
+  -DGOBJECT_INTROSPECTION=true
+

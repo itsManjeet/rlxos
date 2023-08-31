@@ -1,0 +1,13 @@
+id: gnome-screenshot
+version: "40.0"
+about: A utility used for taking screenshots of the entire screen, a window or a user-defined
+  area of the screen, with optional beautifying border effects
+release: 0
+depends:
+- components/gtk.yml
+- components/libcanberra.yml
+- components/libhandy.yml
+sources:
+- https://download.gnome.org/sources/gnome-screenshot/40/gnome-screenshot-40.0.tar.xz
+configure: --buildtype=release
+

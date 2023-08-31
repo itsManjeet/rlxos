@@ -1,0 +1,10 @@
+id: xorg-drivers-intel
+version: "7"
+about: xorg fonts xorg-drivers-intel
+release: 0
+sources:
+- https://anduin.linuxfromscratch.org/BLFS/xf86-video-intel/xf86-video-intel-20210222.tar.xz
+pre-script: ln -sv autogen.sh configure
+configure: |
+  --enable-kms-only --enable-uxa --with-default-dri=3
+

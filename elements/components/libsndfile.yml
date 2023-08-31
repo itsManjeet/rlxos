@@ -1,0 +1,14 @@
+id: libsndfile
+version: 1.0.31
+about: A library of C routines for reading and writing files containing sampled audio
+  data
+release: 0
+depends:
+- components/flac.yml
+- components/opus.yml
+- components/libvorbis.yml
+- components/alsa-lib.yml
+sources:
+- https://github.com/libsndfile/libsndfile/releases/download/1.0.31/libsndfile-1.0.31.tar.bz2
+configure: --disable-static
+

@@ -302,7 +302,7 @@ func main() {
 				fmt.Printf("  %sMII PERCENTGE%s    :  %s%.2f%%%s\n", color.Bold, color.Reset, color.Green, (float64(mmiElements)/float64(totalElements))*100, color.Reset)
 				fmt.Printf("  %sCACHED SIZE%s      :  %s%.2f GiB%s\n", color.Bold, color.Reset, color.Green, (float64(cachedSize) / (1024 * 1024 * 1024)), color.Reset)
 				fmt.Printf("  %sTOTAL SIZE%s       :  %s%.2f GiB%s\n", color.Bold, color.Reset, color.Green, (float64(totalSize) / (1024 * 1024 * 1024)), color.Reset)
-				fmt.Printf("  %sGARBAGE SIZE%s     :  %s%.2f GiB%s\n", color.Bold, color.Reset, color.Green, (((float64(cachedSize) - float64(totalSize)) / float64(totalSize)) / (1024 * 1024 * 1024)), color.Reset)
+				fmt.Printf("  %sGARBAGE SIZE%s     :  %s%.2f GiB%s\n", color.Bold, color.Reset, color.Green, ((float64(totalSize) - float64(cachedSize)) / (1024 * 1024 * 1024)), color.Reset)
 				fmt.Printf("  %sGARBAGE COUNT%s    :  %s%d%s\n", color.Bold, color.Reset, color.Green, len(garbageElements), color.Reset)
 				fmt.Printf("----------------------------------------\n")
 

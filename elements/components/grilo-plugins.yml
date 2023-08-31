@@ -1,0 +1,25 @@
+id: grilo-plugins
+version: 0.3.14
+about: A collection of plugins for the Grilo framework
+release: 0
+depends:
+- components/chromaprint.yml
+- components/gmime.yml
+- components/gom.yml
+- components/grilo.yml
+- components/gst-plugins-bad.yml
+- components/libdmapsharing.yml
+- components/libgdata.yml
+- components/libmediaart.yml
+- components/lua.yml
+- components/tracker.yml
+- components/tracker-miners.yml
+build-time:
+- components/gperf.yml
+- components/meson.yml
+- components/itstool.yml
+- components/py-gobject.yml
+sources:
+- https://gitlab.gnome.org/GNOME/grilo-plugins/-/archive/grilo-plugins-%{version}/grilo-plugins-grilo-plugins-%{version}.tar.gz
+configure: ' -D enable-tracker=no'
+

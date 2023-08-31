@@ -1,0 +1,7 @@
+id: iceauth
+version: "7"
+about: xorg apps iceauth
+release: 0
+sources:
+- https://www.x.org/pub/individual/app/iceauth-1.0.8.tar.bz2
+

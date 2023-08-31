@@ -1,0 +1,7 @@
+id: xrdb
+version: "7"
+about: xorg apps xrdb
+release: 0
+sources:
+- https://www.x.org/pub/individual/app/xrdb-1.2.0.tar.bz2
+

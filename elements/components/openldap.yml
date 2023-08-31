@@ -1,0 +1,29 @@
+id: openldap
+version: 2.6.1
+about: |
+  Open source implementation of the Lightweight Directory Access Protocol
+release: 0
+depends:
+- components/cyrus-sasl.yml
+sources:
+- https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-%{version}.tgz
+pre-script: "# change permission from 0644 to 0755\nsed -i 's|-m 644 $(LIBRARY)|-m
+  755 $(LIBRARY)|' libraries/{liblber,libldap}/Makefile.in\n\n# change rundir to /run/openldap\nsed
+  -i 's|#define LDAPI_SOCK LDAP_RUNDIR LDAP_DIRSEP \"run\" LDAP_DIRSEP \"ldapi\"|#define
+  LDAPI_SOCK LDAP_DIRSEP \"run\" LDAP_DIRSEP \"openldap\" LDAP_DIRSEP \"ldapi\"|'
+  include/ldap_defaults.h\nsed -i 's|%LOCALSTATEDIR%/run|/run/openldap|' servers/slapd/slapd.{conf,ldif}\nsed
+  -i 's|-$(MKDIR) $(DESTDIR)$(localstatedir)/run|-$(MKDIR) $(DESTDIR)/run/openldap|'
+  servers/slapd/Makefile.in\n\nsed -i -e \"s|EnvironmentFile.*|EnvironmentFile=-%{sysconfdir}/conf.d/slapd|\"
+  -e \"s/slapd -d 0/\\0 -u ldap -g ldap/\" servers/slapd/slapd.service\nautoconf\n
+  \ \n"
+post-script: |
+  ln -s ../lib/slapd %{install-root}/usr/bin/slapd
+
+  sed -e "s/\.la/.so/" -i %{install-root}%{sysconfdir}/openldap/slapd.{conf,ldif}{,.default}
+  install -v -dm700 -o 83 -g 83 %{install-root}/var/lib/openldap
+  install -v -dm700 -o 83 -g 83 %{install-root}%{sysconfdir}/openldap/slapd.d
+  chmod -v 640 %{install-root}%{sysconfdir}/openldap/slapd.{conf,ldif}
+  chown -v root:83 %{install-root}%{sysconfdir}/openldap/slapd.{conf,ldif}
+configure: |
+  --disable-static --enable-versioning=yes --disable-debug --with-tls=openssl --with-cyrus-sasl --enable-dynamic --enable-crypt --enable-spasswd --enable-slapd --enable-modules --enable-rlookups --enable-backends=mod --disable-ndb --disable-sql --disable-wt --enable-overlays=mod
+

@@ -1,0 +1,26 @@
+id: xfce4
+version: "4.16"
+about: Xfce4 desktop environment
+release: 0
+depends:
+- components/xfce4-panel.yml
+- components/thunar.yml
+- components/thunar-volman.yml
+- components/xfce4-appfinder.yml
+- components/xfce4-power-manager.yml
+- components/xfce4-settings.yml
+- components/xfconf.yml
+- components/xfdesktop.yml
+- components/xfwm4.yml
+- components/xfce4-session.yml
+- components/mousepad.yml
+- components/xfce4-terminal.yml
+- components/parole.yml
+- components/ristretto.yml
+- components/xfce4-taskmanager.yml
+- components/xfce4-whiskermenu-plugin.yml
+- components/xfce4-xkb-plugin.yml
+- components/xfce4-docklike-plugin.yml
+- components/xfce4-notifyd.yml
+script: mkdir -p %{install-root}/usr
+

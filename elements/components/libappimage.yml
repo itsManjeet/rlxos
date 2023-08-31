@@ -1,0 +1,27 @@
+id: libappimage
+version: 1.0.3
+about: 'Implements functionality for dealing with AppImage files '
+release: 0
+depends:
+- components/cairo.yml
+- components/fuse.yml
+- components/libboost.yml
+- components/libarchive.yml
+- components/librsvg.yml
+- components/fuse2.yml
+- components/desktop-file-utils.yml
+- components/gdk-pixbuf.yml
+build-time:
+- components/automake.yml
+- components/cmake.yml
+- components/libtool.yml
+- components/git.yml
+- components/wget.yml
+- components/boost.yml
+sources:
+- libappimage-1.0.3.tar.gz::https://github.com/AppImage/libappimage/archive/refs/tags/v1.0.3.tar.gz
+pre-script: |
+  patch -Np1 -i /files/appimage/gcc.patch
+configure: -DBUILD_TESTING:bool=False -DUSE_SYSTEM_XZ=ON -DUSE_SYSTEM_LIBARCHIVE=ON
+  -DUSE_SYSTEM_BOOST=ON
+

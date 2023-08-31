@@ -1,0 +1,18 @@
+id: unrar
+version: 6.1.4
+about: The RAR uncompression program
+release: 0
+depends:
+- components/gcc:lib.yml
+sources:
+- https://www.rarlab.com/rar/unrarsrc-6.1.4.tar.gz
+script: |
+  sed -e '/CXXFLAGS=/d' -e '/LDFLAGS=/d' -i unrar/makefile
+
+  cp -a unrar libunrar
+  make -C libunrar lib
+  make -C unrar -j1
+  install -Dm755 unrar/unrar -t %{install-root}/usr/bin/
+  install -Dm755 libunrar/libunrar.so  -t %{install-root}/usr/lib/
+  install -Dm644 libunrar/dll.hpp -t %{install-root}/usr/include/unrar/
+

@@ -1,0 +1,21 @@
+id: avahi
+version: "0.8"
+about: |
+  A system which facilitates service discovery on a local network
+release: 0
+depends:
+- components/expat.yml
+- components/libdaemon.yml
+- components/glib.yml
+- components/libcap.yml
+- components/gdbm.yml
+- components/dbus.yml
+- components/libevent.yml
+build-time:
+- components/gobject-introspection.yml
+sources:
+- https://github.com/lathiat/avahi/releases/download/v%{version}/avahi-%{version}.tar.gz
+post-script: ln -s avahi-compat-libdns_sd/dns_sd.h "$pkgupd_pkgdir/usr/include/dns_sd.h"
+configure: |
+  with_dbus_sys=%{datadir}/dbus-1/system.d --enable-compat-libdns_sd --with-distro=none --with-avahi-priv-access-group=network --with-autoipd-user=avahi --with-autoipd-group=avahi --with-systemdsystemunitdir=/usr/lib/systemd/system --disable-{gtk,gtk3,qt3,qt4,qt5,python,static} --disable-{pygobject,python-dbus,mono,mono-doc}
+

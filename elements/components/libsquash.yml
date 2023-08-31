@@ -1,0 +1,15 @@
+id: libsquash
+version: 0.8.0
+about: Portable, user-land SquashFS that can be easily linked and embedded within
+  your application.
+release: 0
+depends:
+- components/zlib.yml
+build-time:
+- components/cmake.yml
+sources:
+- libsquash-%{version}.tar.gz::https://github.com/pmq20/libsquash/archive/refs/tags/v%{version}.tar.gz
+post-script: |-
+  install -v -D -m 0644 _pkgupd_builddir/libsquash.a -t %{install-root}/usr/lib/
+  cp -a include %{install-root}/usr/
+

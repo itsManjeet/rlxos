@@ -1,0 +1,19 @@
+id: graphviz
+version: 3.0.0
+about: Graph visualization software
+release: 0
+depends:
+- components/pango.yml
+- components/cairo.yml
+- components/fontconfig.yml
+- components/gtk2.yml
+- components/poppler.yml
+- components/librsvg.yml
+sources:
+- https://gitlab.com/graphviz/graphviz/-/archive/%{version}/graphviz-%{version}.tar.bz2
+pre-script: |
+  find /lib/ -name "*.la" -delete
+  sed -i '/LIBPOSTFIX="64"/s/64//' configure.ac
+  ./autogen.sh
+configure: --disable-ocaml --with-qt=no
+

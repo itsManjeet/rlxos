@@ -1,0 +1,22 @@
+id: gdm
+version: "40.1"
+about: |
+  A system service that is responsible for providing graphical logins and managing local and remote displays
+release: 0
+depends:
+- components/accountsservice.yml
+- components/gtk.yml
+- components/iso-codes.yml
+- components/itstool.yml
+- components/libcanberra.yml
+- components/libdaemon.yml
+- components/pam.yml
+- components/systemd.yml
+- components/dconf.yml
+sources:
+- https://download.gnome.org/sources/gdm/40/gdm-40.1.tar.xz
+post-script: |-
+  install -v -d -o 21 -g 21 %{install-root}/var/lib/gdm
+  sed -e "/user = gdm/ s/^#*/#/" -i %{install-root}%{sysconfdir}/pam.d/gdm-launch-environment
+configure: --buildtype=release -D gdm-xsession=true -D default-pam-config=lfs
+

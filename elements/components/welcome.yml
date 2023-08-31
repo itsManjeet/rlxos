@@ -1,0 +1,12 @@
+id: welcome
+version: main
+about: rlxos welcome app
+release: 0
+depends:
+- components/gtk.yml
+build-time:
+- components/go.yml
+sources:
+- welcome-%{version}.tar.gz::https://github.com/itsManjeet/welcome/archive/refs/heads/%{version}.tar.gz
+script: DESTDIR=%{install-root} ./scripts/install.sh
+

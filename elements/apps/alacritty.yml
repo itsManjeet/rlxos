@@ -1,0 +1,19 @@
+id: alacritty
+version: 0.12.2
+about: A cross-platform, GPU-accelerated terminal emulator
+
+sources:
+  - alacritty-%{version}.tar.gz::https://github.com/alacritty/alacritty/archive/refs/tags/v%{version}.tar.gz
+
+depends:
+  - components/fontconfig.yml
+  - components/freetype.yml
+  - components/x11/libxcursor.yml
+  - components/x11/libxi.yml
+  - components/x11/libxkbcommon.yml
+  - components/x11/libxrandr.yml
+
+build-time:
+  - components/desktop-file-utils.yml
+  - components/x11/libxcb.yml
+  - components/rust.yml

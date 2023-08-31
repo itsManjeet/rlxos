@@ -1,0 +1,8 @@
+id: opus
+version: 1.3.1
+about: A lossy audio compression format developed by the Internet Engineering Task
+  Force
+release: 0
+sources:
+- https://archive.mozilla.org/pub/opus/opus-1.3.1.tar.gz
+

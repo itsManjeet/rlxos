@@ -1,0 +1,15 @@
+id: perl-locale-gettext
+version: "1.07"
+about: |
+  Permits access from Perl to the gettext() family of functions
+release: 0
+depends:
+- components/perl.yml
+- components/gettext.yml
+sources:
+- https://cpan.metacpan.org/authors/id/P/PV/PVANDRY/Locale-gettext-%{version}.tar.gz
+script: |
+  PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+  make
+  make install DESTDIR=%{install-root}
+

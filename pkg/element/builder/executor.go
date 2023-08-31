@@ -36,6 +36,7 @@ func CreateContainer(image string, environ []string, mounts map[string]string) (
 		"--net=host",
 		"--hostname=rlxos",
 		"-e", "HOME=/",
+		"-e", "TERM=linux",
 		"-e", "PS1='(rlxos) \\W \\$'",
 	}
 

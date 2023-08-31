@@ -1,0 +1,16 @@
+id: colord-gtk
+version: 0.2.0
+about: GTK+ bindings for Colord
+release: 0
+depends:
+- components/colord.yml
+- components/gtk.yml
+- components/gtk2.yml
+build-time:
+- components/gobject-introspection.yml
+- components/vala.yml
+sources:
+- https://www.freedesktop.org/software/colord/releases/colord-gtk-0.2.0.tar.xz
+configure: |
+  --buildtype=release -D gtk2=true -D vapi=true -D docs=false -D man=false
+

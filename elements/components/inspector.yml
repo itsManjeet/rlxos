@@ -1,0 +1,13 @@
+id: inspector
+version: 0.1.3
+about: |
+  Inspect on Application directory for changes
+release: 0
+depends:
+- components/libnotify.yml
+- components/libappimage.yml
+build-time:
+- components/cmake.yml
+sources:
+- inspector-%{version}-{{commit}}.tar.gz::https://github.com/itsManjeet/inspector/archive/{{commit}}.tar.gz
+

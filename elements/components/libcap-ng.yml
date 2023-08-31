@@ -1,0 +1,15 @@
+id: libcap-ng
+version: 0.8.3
+about: A library for Linux that makes using posix capabilities easy
+release: 0
+depends:
+- components/glibc.yml
+build-time:
+- components/python.yml
+- components/swig.yml
+sources:
+- https://github.com/stevegrubb/libcap-ng/archive/v%{version}/%{id}-%{version}.tar.gz
+pre-script: |
+  ./autogen.sh
+configure: --enable-static=no --without-python --with-python3
+

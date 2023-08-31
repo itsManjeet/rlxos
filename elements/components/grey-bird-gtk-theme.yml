@@ -1,0 +1,12 @@
+id: grey-bird-gtk-theme
+version: 3.22.15
+about: Desktop Suite for Xfce
+release: 0
+build-time:
+- components/librsvg.yml
+- components/meson.yml
+- components/sassc.yml
+- components/gtk.yml
+sources:
+- Greybird-3.22.15.tar.gz::https://github.com/shimmerproject/Greybird/archive/refs/tags/v3.22.15.tar.gz
+

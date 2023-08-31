@@ -1,0 +1,16 @@
+id: sys-setup
+version: 0.1.0
+about: A Simple System Installer for rlxos
+release: 0
+depends:
+- components/gtk.yml
+- components/zenity.yml
+- components/gparted.yml
+build-time:
+- components/go.yml
+sources:
+- sys-setup-0.1.0.tar.gz::https://github.com/rlxos/installer/archive/refs/heads/main.tar.gz
+script: |
+  DESTDIR=%{install-root} ./scripts/install.sh
+  go build -o %{install-root}/usr/bin/sys-setup main.go
+

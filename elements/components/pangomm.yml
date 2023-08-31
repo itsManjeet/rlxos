@@ -1,0 +1,12 @@
+id: pangomm
+version: 2.46.1
+about: A C++ interface to Pango
+release: 0
+depends:
+- components/cairomm.yml
+- components/glibmm.yml
+- components/pango.yml
+sources:
+- https://download.gnome.org/sources/pangomm/2.46/pangomm-2.46.1.tar.xz
+pre-script: rm autogen.sh
+

@@ -1,0 +1,10 @@
+id: libmng
+version: 2.0.3
+about: Programs wanting to read and write Multiple-image Network Graphics (MNG) files
+release: 0
+depends:
+- components/libjpeg-turbo.yml
+- components/lcms.yml
+sources:
+- https://downloads.sourceforge.net/libmng/libmng-2.0.3.tar.xz
+

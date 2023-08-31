@@ -1,6 +1,0 @@
-id: xrefresh
-version: '7'
-about: xorg apps xrefresh
-build-dir: xrefresh-1.0.6
-sources:
-- https://www.x.org/pub/individual/app/xrefresh-1.0.6.tar.bz2

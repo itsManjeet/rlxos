@@ -1,0 +1,14 @@
+id: rtkit
+version: "0.13"
+about: Realtime Policy and watchdog daemon
+release: 0
+depends:
+- components/dbus.yml
+- components/polkit.yml
+- components/systemd.yml
+build-time:
+- components/meson.yml
+- components/vim.yml
+sources:
+- https://github.com/heftig/rtkit/releases/download/v%{version}/rtkit-%{version}.tar.xz
+

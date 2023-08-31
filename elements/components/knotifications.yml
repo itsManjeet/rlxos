@@ -1,0 +1,18 @@
+id: knotifications
+version: 5.94.0
+about: KF5 knotifications
+release: 0
+depends:
+- components/kconfig.yml
+- components/kcoreaddons.yml
+- components/kwindowsystem.yml
+- components/libcanberra.yml
+- components/libdbusmenu-qt.yml
+- components/x11/libxtst.yml
+build-time:
+- components/extra-cmake-modules.yml
+sources:
+- https://download.kde.org/stable/frameworks/5.94/%{id}-%{version}.tar.xz
+configure: |
+  -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF -Wno-dev
+

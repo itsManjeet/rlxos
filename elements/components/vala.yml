@@ -1,0 +1,12 @@
+id: vala
+version: 0.52.4
+about: A new programming language that aims to bring modern programming language features
+  to GNOME developers without imposing any additional runtime requirements and without
+  using a different ABI compared to applications and libraries written in C
+release: 0
+depends:
+- components/glib.yml
+sources:
+- https://download.gnome.org/sources/vala/0.52/vala-0.52.4.tar.xz
+configure: --disable-valadoc
+

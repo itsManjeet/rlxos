@@ -1,0 +1,11 @@
+id: keybinder
+version: 0.3.2
+about: A utility library registering global X keyboard shortcuts for GTK+-3
+release: 0
+depends:
+- components/gtk.yml
+build-time:
+- components/gobject-introspection.yml
+sources:
+- https://github.com/kupferlauncher/keybinder/releases/download/keybinder-3.0-v0.3.2/keybinder-3.0-0.3.2.tar.gz
+

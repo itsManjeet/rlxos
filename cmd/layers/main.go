@@ -12,6 +12,7 @@ import (
 func main() {
 	SEARCH_PATH := []string{path.Join("var", "lib", "layers")}
 	ROOT_DIR := "/"
+	SERVER_URL := "http://storage.rlxos.dev/"
 
 	if err := app.New("layers").
 		About("Add and/or remove package layers over rootfilesystem").
@@ -20,6 +21,7 @@ func main() {
 			m := &layers.Manager{
 				RootDir:    ROOT_DIR,
 				SearchPath: SEARCH_PATH,
+				ServerUrl:  SERVER_URL,
 				Layers:     []layers.Layer{},
 			}
 			m.Sync()
@@ -37,6 +39,13 @@ func main() {
 			About("set root directory").
 			Handler(func(s []string) error {
 				ROOT_DIR = s[0]
+				return nil
+			})).
+		Flag(flag.New("server").
+			Count(1).
+			About("set server url").
+			Handler(func(s []string) error {
+				SERVER_URL = s[0]
 				return nil
 			})).
 		Handler(func(c *app.Command, s []string, b interface{}) error {
@@ -72,11 +81,11 @@ func main() {
 		Sub(app.New("create").
 			About("Create New Layer").
 			Handler(func(c *app.Command, s []string, i interface{}) error {
-				if len(s) != 1 {
+				if len(s) < 1 {
 					return fmt.Errorf("no layer name provided")
 				}
 				manager := i.(*layers.Manager)
-				return manager.Create(s[0])
+				return manager.Create(s[0], s[1:])
 			})).
 		Sub(app.New("remove").
 			About("Remove Layer").

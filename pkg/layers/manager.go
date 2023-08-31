@@ -7,6 +7,7 @@ import (
 )
 
 type Manager struct {
+	ServerUrl  string
 	SearchPath []string
 	RootDir    string
 	Layers     []Layer

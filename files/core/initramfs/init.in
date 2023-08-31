@@ -134,6 +134,12 @@ else
 
     dbg "Mounting System Image ${SYSTEM}"
     mount -o ro ${SYSTEM} ${SYSROOT}/usr || rescue "failed to mount ${SYSTEM} on ${SYSROOT}/usr"
+
+    [[ ! -e ${SYSROOT}/etc      ]] &&  mkdir -p ${SYSROOT}/etc
+    [[ ! -L ${SYSROOT}/lib      ]] && ln -sv usr/lib ${SYSROOT}/lib
+    [[ ! -L ${SYSROOT}/lib64    ]] && ln -sv usr/lib64 ${SYSROOT}/lib64
+    [[ ! -L ${SYSROOT}/bin      ]] && ln -sv usr/bin ${SYSROOT}/bin
+    [[ ! -L ${SYSROOT}/sbin      ]] && ln -sv usr/sbin ${SYSROOT}/sbin
 fi
 
 # TODO: Needed?

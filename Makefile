@@ -82,6 +82,11 @@ $(REPO_BUILDER): update-vendor version.yml server.yml
 report: $(REPO_BUILDER) 
 	$(REPO_BUILDER) report -cache-path $(CACHE_PATH)
 
+list-files: $(REPO_BUILDER)
+	@if [ -z $(ELEMENT) ] ;then echo "ERROR: no element specified"; exit 1; fi
+	@if [ ! -f elements/$(ELEMENT) ] ; then echo "ERROR: no element exists elements/$(ELEMENT)"; exit 1; fi
+	$(REPO_BUILDER) list-files -cache-path $(CACHE_PATH) $(ELEMENT)
+
 check: $(REPO_BUILDER)
 	@if [ -z $(ELEMENT) ] ;then echo "ERROR: no element specified"; exit 1; fi
 	@if [ ! -f elements/$(ELEMENT) ] ; then echo "ERROR: no element exists elements/$(ELEMENT)"; exit 1; fi

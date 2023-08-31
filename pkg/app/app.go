@@ -97,7 +97,7 @@ func (c *Command) Run(args []string) error {
 	c.selfPath = args[0]
 	args = args[1:]
 
-	if len(args) == 0 {
+	if len(args) == 0 && c.handler == nil {
 		return c.Help()
 	}
 

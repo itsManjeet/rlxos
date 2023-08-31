@@ -33,7 +33,7 @@ SYSTEM=
 
 
 dbg() { [ -n "$DEBUG"] && echo "DEBUG: $@"; }
-rescue() { echo "RESCUE: $@"; exec sh; }
+rescue() { echo "RESCUE: $@"; sh; }
 
 dbg "Mounting Pseudo Filesystems..."
 
@@ -103,33 +103,53 @@ mkdir -p ${SYSROOT}
 if [[ -n "${LIVE}" ]] ; then
     dbg "Mounting System in Live Mode"
     ISO_DIR='/run/iso'
+    LIVE_DIR='/run/live'
+
+    mkdir -p ${LIVE_DIR}/rw ${LIVE_DIR}/ro-usr ${LIVE_DIR}/ro ${LIVE_DIR}/work
 
     mkdir -p "${ISO_DIR}"
     dbg "Mounting ISO image"
     mount -o ro "${ROOT}" "${ISO_DIR}" || rescue "failed to mount ${ROOT} ${ISO_DIR}"
 
-    dbg "Copying Live system configuration" || rescue "failed to copy Live system configuration ${ISO_DIR}/${OVERLAY} ${SYSROOT}"
-    unsquashfs -f -d ${SYSROOT} ${ISO_DIR}/${OVERLAY}
-    SYSTEM=$(readlink ${ISO_DIR}/usr.squashfs)
+    SYSTEM=${ISO_DIR}/$(readlink ${ISO_DIR}/usr.squashfs)
+
+    dbg "Mounting System Image"
+    mount ${SYSTEM} ${LIVE_DIR}/ro-usr || rescue "failed to system image ${SYSTEM} ${LIVE_DIR}/ro-usr"
+
+    dbg "Setting up Live Configuration"
+    mount ${ISO_DIR}/live-config.img ${LIVE_DIR}/ro || rescue "failed to live image live-config.img ${LIVE_DIR}/ro"
+
+    dbg "Setting up overlay configuration"
+    mount -t overlay overlay -o lowerdir=${LIVE_DIR}/ro:${LIVE_DIR}/ro-usr,upperdir=${LIVE_DIR}/rw,workdir=${LIVE_DIR}/work ${SYSROOT} || rescue "failed to setup overlay configuration lowerdir=${LIVE_DIR}/ro:${LIVE_DIR}/ro-usr,upperdir=${LIVE_DIR}/rw,workdir=${LIVE_DIR}/work ${SYSROOT}"
+
+    (cd ${SYSROOT}; ln -sv . usr)
+
 else
     dbg "Mounting Root filesystem ${ROOT} ${SYSROOT}"
     mount -o rw ${ROOT} ${SYSROOT} || rescue "failed to mount ${ROOT} ${SYSROOT}"
+
+    [[ ! -d ${SYSROOT}/usr ]] && mkdir -p ${SYSROOT}/usr
+
+    RESOLVED_SYSTEM=$(findfs ${SYSTEM})
+    if [[ -z ${RESOLVED_SYSTEM} ]] ; then
+        SYSTEM="${SYSROOT}/rlxos/system/${SYSTEM}"
+    else
+        SYSTEM=${RESOLVED_SYSTEM}
+    fi
+
+    dbg "Mounting System Image ${SYSTEM}"
+    mount -o ro ${SYSTEM} ${SYSROOT}/usr || rescue "failed to mount ${SYSTEM} on ${SYSROOT}/usr"
 fi
-
-[[ ! -d ${SYSROOT}/usr ]] && mkdir -p ${SYSROOT}/usr
-
-RESOLVED_SYSTEM=$(findfs ${SYSTEM})
-if [[ -z ${RESOLVED_SYSTEM} ]] ; then
-    SYSTEM="${SYSROOT}/rlxos/system/${SYSTEM}"
-else
-    SYSTEM=${RESOLVED_SYSTEM}
-fi
-
-dbg "Mounting System Image ${SYSTEM}"
-mount -o ro ${SYSTEM} ${SYSROOT}/usr || rescue "failed to mount ${SYSTEM} on ${SYSROOT}/usr"
 
 # TODO: Needed?
 killall -w ${UDEVD}
+
+
+mkdir -p ${SYSROOT}/dev ${SYSROOT}/proc ${SYSROOT}/sys ${SYSROOT}/run
+mount --move /proc ${SYSROOT}/proc
+mount --move /sys ${SYSROOT}/sys
+mount --move /dev ${SYSROOT}/dev
+mount --move /run ${SYSROOT}/run
 
 dbg "Switching root"
 exec switch_root ${SYSROOT} ${INIT}

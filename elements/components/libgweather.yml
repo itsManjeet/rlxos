@@ -8,7 +8,7 @@ depends:
 - components/gtk.yml
 - components/libsoup.yml
 - components/libxml2.yml
-- components/py-gobject.yml
+- components/py/py-gobject.yml
 build-time:
 - components/vala.yml
 - components/gobject-introspection.yml

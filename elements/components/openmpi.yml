@@ -3,7 +3,7 @@ version: 4.1.4
 about: High performance message passing library (MPI)
 release: 0
 depends:
-- components/gcc:lib.yml
+- components/libgcc.yml
 - components/glibc.yml
 - components/hwloc.yml
 - components/libevent.yml

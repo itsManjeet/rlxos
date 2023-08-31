@@ -6,7 +6,7 @@ depends:
 - components/dpp.yml
 - components/curl.yml
 - components/systemd.yml
-- components/py-requests.yml
+- components/py/py-requests.yml
 sources:
 - bolt-{{commit}}.tar.gz::https://github.com/itsManjeet/bolt/archive/{{commit}}.tar.gz
 pre-script: |

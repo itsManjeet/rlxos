@@ -3,21 +3,20 @@ version: 4.16.2
 about: collection of programs to adjust xfce preferences
 release: 0
 depends:
-- components/exo.yml
-- components/garcon.yml
-- components/xfconf.yml
-- components/libcanberra.yml
-- components/libnotify.yml
-- components/x11/libxklavier.yml
-- components/colord.yml
-- components/libinput.yml
-- components/upower.yml
+  - components/exo.yml
+  - components/garcon.yml
+  - components/xfconf.yml
+  - components/libcanberra.yml
+  - components/libnotify.yml
+  - components/x11/libxklavier.yml
+  - components/colord.yml
+  - components/libinput.yml
+  - components/upower.yml
 build-time:
-- components/intltool.yml
-- components/xorg-drivers-input.yml
+  - components/intltool.yml
+  - components/x11/xf86-input-libinput.yml
 sources:
-- https://archive.xfce.org/src/xfce/xfce4-settings/4.16/xfce4-settings-%{version}.tar.bz2
+  - https://archive.xfce.org/src/xfce/xfce4-settings/4.16/xfce4-settings-%{version}.tar.bz2
 pre-script: |
   patch xfsettingsd/xsettings.xml < /files/rlxos-theming.patch
 configure: --enable-sound-settings --enable-pluggable-dialogs
-

@@ -3,12 +3,12 @@ version: 1.0.9
 about: Generic purpose lossless compression algorithm
 release: 0
 depends:
-- components/gcc:lib.yml
+- components/libgcc.yml
 - components/glibc.yml
 build-time:
 - components/cmake.yml
 - components/gcc.yml
-- components/py-setuptools.yml
+- components/py/py-setuptools.yml
 sources:
 - brotli-1.0.9.tar.gz::https://github.com/google/brotli/archive/refs/tags/v1.0.9.tar.gz
 pre-script: |

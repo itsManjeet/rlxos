@@ -11,7 +11,7 @@ depends:
 - components/tepl.yml
 - components/gvfs.yml
 - components/iso-codes.yml
-- components/py-gobject.yml
+- components/py/py-gobject.yml
 build-time:
 - components/vala.yml
 - components/git.yml

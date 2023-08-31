@@ -3,7 +3,7 @@ version: "10.2"
 about: GNU debugger
 release: 0
 depends:
-- components/py-six.yml
+- components/py/py-six.yml
 sources:
 - https://ftp.gnu.org/gnu/gdb/gdb-10.2.tar.xz
 configure: |

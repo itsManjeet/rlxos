@@ -3,7 +3,7 @@ version: "6.0"
 about: A scalable distributed SCM tools
 release: 0
 build-time:
-- components/py-pip.yml
+- components/py/py-pip.yml
 sources:
 - https://www.mercurial-scm.org/release/mercurial-%{version}.tar.gz
 script: |-

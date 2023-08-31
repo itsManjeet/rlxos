@@ -10,7 +10,7 @@ depends:
 - components/x11/libxklavier.yml
 - components/accountsservice.yml
 build-time:
-- components/py-distutils-extra.yml
+- components/py/py-distutils-extra.yml
 sources:
 - https://github.com/CanonicalLtd/lightdm/releases/download/1.30.0/lightdm-1.30.0.tar.xz
 - https://github.com/Xubuntu/lightdm-gtk-greeter/releases/download/lightdm-gtk-greeter-2.0.8/lightdm-gtk-greeter-2.0.8.tar.gz

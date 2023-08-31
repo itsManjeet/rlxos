@@ -1,15 +1,15 @@
 id: cppgir
 version: "2200"
 about: GObject Introspection C++ binding wrapper generator
-release: 0
+variables:
+  commit: dfd73420d412e98f137f4e58ec3b454290b77591
 depends:
-- components/fmt.yml
-- components/libboost.yml
+  - components/fmt.yml
+  - components/libboost.yml
 build-time:
-- components/boost.yml
+  - components/boost.yml
 sources:
-- https://gitlab.com/mnauw/cppgir/-/archive/{{commit}}/cppgir-{{commit}}.tar.gz
-- https://github.com/martinmoene/expected-lite/releases/download/v0.6.2/expected.hpp
+  - https://gitlab.com/mnauw/cppgir/-/archive/%{commit}/cppgir-%{commit}.tar.gz
+  - https://github.com/martinmoene/expected-lite/releases/download/v0.6.2/expected.hpp
 pre-script: |
   install -v -D -m 0644 -t expected-lite/include/nonstd/ ../expected.hpp
-

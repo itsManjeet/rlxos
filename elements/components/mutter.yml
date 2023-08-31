@@ -4,23 +4,22 @@ about: |
   The window manager for GNOME
 release: 0
 depends:
-- components/gnome-settings-daemon.yml
-- components/graphene.yml
-- components/x11/libxkbcommon.yml
-- components/pipewire.yml
-- components/zenity.yml
-- components/desktop-file-utils.yml
-- components/startup-notification.yml
-- components/sysprof.yml
-- components/libinput.yml
-- components/wayland.yml
-- components/xorg-server.yml
-- components/gtk.yml
+  - components/gnome-settings-daemon.yml
+  - components/graphene.yml
+  - components/x11/libxkbcommon.yml
+  - components/pipewire.yml
+  - components/zenity.yml
+  - components/desktop-file-utils.yml
+  - components/startup-notification.yml
+  - components/sysprof.yml
+  - components/libinput.yml
+  - components/wayland.yml
+  - components/x11/xserver.yml
+  - components/gtk.yml
 build-time:
-- components/gobject-introspection.yml
+  - components/gobject-introspection.yml
 sources:
-- https://download.gnome.org/sources/mutter/40/mutter-%{version}.tar.xz
+  - https://download.gnome.org/sources/mutter/40/mutter-%{version}.tar.xz
 pre-script: |
   patch data/org.gnome.mutter.gschema.xml.in < /files/center-window.patch
 configure: --buildtype=release
-

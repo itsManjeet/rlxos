@@ -4,32 +4,32 @@ about: |
   A port of the portable web rendering engine WebKit
 release: 0
 depends:
-- components/cairo.yml
-- components/gst-plugins-base.yml
-- components/gst-plugins-bad.yml
-- components/gtk.yml
-- components/harfbuzz-icu.yml
-- components/libgudev.yml
-- components/libsecret.yml
-- components/libsoup.yml
-- components/libtasn1.yml
-- components/libwebp.yml
-- components/libwpe.yml
-- components/mesa.yml
-- components/openjpeg.yml
-- components/sqlite.yml
-- components/libgcrypt.yml
-- components/libnotify.yml
-- components/enchant.yml
-- components/gperf.yml
-- components/wpebackend-fdo.yml
+  - components/cairo.yml
+  - components/gst-plugins-base.yml
+  - components/gst-plugins-bad.yml
+  - components/gtk.yml
+  - components/harfbuzz.yml
+  - components/libgudev.yml
+  - components/libsecret.yml
+  - components/libsoup.yml
+  - components/libtasn1.yml
+  - components/libwebp.yml
+  - components/libwpe.yml
+  - components/mesa.yml
+  - components/openjpeg.yml
+  - components/sqlite.yml
+  - components/libgcrypt.yml
+  - components/libnotify.yml
+  - components/enchant.yml
+  - components/gperf.yml
+  - components/wpebackend-fdo.yml
 build-time:
-- components/cmake.yml
-- components/which.yml
-- components/ruby.yml
+  - components/cmake.yml
+  - components/which.yml
+  - components/ruby.yml
 sources:
-- https://webkitgtk.org/releases/webkitgtk-%{version}.tar.xz
-configure: -DCMAKE_BUILD_TYPE=Release -DCMAKE_SKIP_RPATH=ON -DPORT=GTK -DLIB_INSTALL_DIR=/usr/lib
+  - https://webkitgtk.org/releases/webkitgtk-%{version}.tar.xz
+configure:
+  -DCMAKE_BUILD_TYPE=Release -DCMAKE_SKIP_RPATH=ON -DPORT=GTK -DLIB_INSTALL_DIR=/usr/lib
   -DUSE_LIBHYPHEN=OFF -DENABLE_GAMEPAD=OFF -DENABLE_MINIBROWSER=ON -DUSE_WOFF2=OFF
   -DUSE_WPE_RENDERER=ON -DENABLE_BUBBLEWRAP_SANDBOX=OFF -Wno-dev
-

@@ -12,7 +12,7 @@ build-time:
 - components/cmake.yml
 - components/gtk-doc.yml
 - components/vala.yml
-- components/py-gobject.yml
+- components/py/py-gobject.yml
 - components/gobject-introspection.yml
 sources:
 - https://github.com/libical/libical/releases/download/v%{version}/libical-%{version}.tar.gz

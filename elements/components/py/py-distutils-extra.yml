@@ -3,7 +3,7 @@ version: "2.39"
 about: Python module to enhanc build system
 release: 0
 depends:
-- components/py-setuptools.yml
+- components/py/py-setuptools.yml
 build-time:
 - components/intltool.yml
 sources:

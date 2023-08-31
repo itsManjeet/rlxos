@@ -1,17 +1,20 @@
 id: sdl
 version: 1.2.15
-about: A cross-platform library designed to make it easy to write multimedia software,
+about:
+  A cross-platform library designed to make it easy to write multimedia software,
   such as games and emulators
 release: 0
 depends:
-- components/xorg-libs.yml
-- components/pulseaudio.yml
+  - components/x11/libx11.yml
+  - components/x11/libxcursor.yml
+  - components/x11/libxext.yml
+  - components/x11/libxrender.yml
+  - components/pulseaudio.yml
 build-time:
-- components/mesa.yml
+  - components/mesa.yml
 sources:
-- https://www.libsdl.org/release/SDL-1.2.15.tar.gz
+  - https://www.libsdl.org/release/SDL-1.2.15.tar.gz
 pre-script: |
   sed -e "/_XData32/s:register long:register _Xconst long:" -i src/video/x11/SDL_x11sym.h
 configure: |
   --disable-static
-

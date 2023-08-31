@@ -4,9 +4,9 @@ about: KF5 kapidox
 release: 0
 depends:
 - components/qt.yml
-- components/py-jinja2.yml
+- components/py/py-jinja2.yml
 build-time:
-- components/py-pip.yml
+- components/py/py-pip.yml
 - components/extra-cmake-modules.yml
 sources:
 - https://download.kde.org/stable/frameworks/5.94/%{id}-%{version}.tar.xz

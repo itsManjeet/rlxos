@@ -4,7 +4,7 @@ about: Python bindings to the GObject class from GLib
 release: 0
 depends:
 - components/gobject-introspection.yml
-- components/py-cairo.yml
+- components/py/py-cairo.yml
 sources:
 - https://download.gnome.org/sources/pygobject/3.40/pygobject-3.40.1.tar.xz
 pre-script: mv -v tests/test_gdbus.py{,.nouse}

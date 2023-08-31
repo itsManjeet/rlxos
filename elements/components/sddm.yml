@@ -4,7 +4,7 @@ about: QML based X11 and Wayland display manager
 release: 0
 depends:
 - components/pcre2.yml
-- components/kerberos-v5.yml
+- components/krb5.yml
 - components/qt.yml
 - components/ttf-noto.yml
 - components/xorg-server.yml

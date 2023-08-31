@@ -19,7 +19,7 @@ depends:
 - components/cups.yml
 - components/libldap.yml
 build-time:
-- components/py-pip.yml
+- components/py/py-pip.yml
 - components/openldap.yml
 sources:
 - https://www.samba.org/ftp/samba/stable/samba-%{version}.tar.gz

@@ -6,7 +6,7 @@ depends:
 - components/libusb.yml
 build-time:
 - components/vala.yml
-- components/py-setuptools.yml
+- components/py/py-setuptools.yml
 sources:
 - https://github.com/hughsie/libgusb/archive/0.3.7/libgusb-0.3.7.tar.gz
 configure: |

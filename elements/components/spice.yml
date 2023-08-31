@@ -11,8 +11,8 @@ depends:
 - components/pixman.yml
 build-time:
 - components/libcacard.yml
-- components/py-six.yml
-- components/py-parsing.yml
+- components/py/py-six.yml
+- components/py/py-parsing.yml
 - components/meson.yml
 - components/spice-protocol.yml
 sources:

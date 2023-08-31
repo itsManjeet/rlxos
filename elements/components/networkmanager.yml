@@ -12,7 +12,7 @@ depends:
 - components/newt.yml
 - components/nss.yml
 - components/polkit.yml
-- components/py-gobject.yml
+- components/py/py-gobject.yml
 - components/systemd.yml
 - components/upower.yml
 - components/wpa_supplicant.yml

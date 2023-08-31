@@ -3,12 +3,11 @@ version: 5.24.5
 about: Plasma layer-shell-qt
 release: 0
 depends:
-- components/qt.yml
+  - components/qt.yml
 build-time:
-- components/extra-cmake-modules.yml
-- components/wayland-protocols.yml
+  - components/extra-cmake-modules.yml
+  - components/wayland-protocols.yml
 sources:
-- https://download.kde.org/stable/plasma/%{version}/%{id}-%{version}.tar.xz
+  - https://download.kde.org/stable/plasma/%{version}/%{id}-%{version}.tar.xz
 configure: |
   -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF -Wno-dev
-

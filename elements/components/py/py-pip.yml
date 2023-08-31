@@ -4,7 +4,7 @@ about: PyPA recommended tool for installing python packages
 release: 0
 depends:
 - components/python.yml
-- components/py-setuptools.yml
+- components/py/py-setuptools.yml
 sources:
 - pip-21.2.4.tar.gz::https://github.com/pypa/pip/archive/21.2.4.tar.gz
 script: |-

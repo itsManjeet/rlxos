@@ -3,20 +3,20 @@ version: "14.2"
 about: A sound system for POSIX OSes
 release: 0
 depends:
-- components/libsndfile.yml
-- components/alsa-lib.yml
-- components/dbus.yml
-- components/glib.yml
-- components/libcap.yml
-- components/xorg-libs.yml
-- components/perl-xml-parser.yml
-- components/sbc.yml
-- components/bluez.yml
+  - components/libsndfile.yml
+  - components/alsa-lib.yml
+  - components/dbus.yml
+  - components/glib.yml
+  - components/libcap.yml
+  - components/x11/libxtst.yml
+  - components/perl-xml-parser.yml
+  - components/sbc.yml
+  - components/bluez.yml
 sources:
-- https://www.freedesktop.org/software/pulseaudio/releases/pulseaudio-14.2.tar.xz
+  - https://www.freedesktop.org/software/pulseaudio/releases/pulseaudio-14.2.tar.xz
 pre-script: |
   sed "/doxygen/d" -i meson.build
 post-script: rm -fv %{install-root}%{sysconfdir}/dbus-1/system.d/pulseaudio-system.conf
-configure: --libexecdir=/usr/lib --buildtype=release -D database=gdbm -D bluez5=true
+configure:
+  --libexecdir=/usr/lib --buildtype=release -D database=gdbm -D bluez5=true
   -D tests=false
-

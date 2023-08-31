@@ -3,12 +3,12 @@ version: 2.28.1
 about: Python HTTP for Humans
 release: 0
 depends:
-- components/py-chardet.yml
-- components/py-idna.yml
-- components/py-urllib3.yml
-- components/py-socks.yml
+- components/py/py-chardet.yml
+- components/py/py-idna.yml
+- components/py/py-urllib3.yml
+- components/py/py-socks.yml
 build-time:
-- components/py-setuptools.yml
+- components/py/py-setuptools.yml
 sources:
 - https://github.com/psf/requests/archive/v%{version}/requests-%{version}.tar.gz
 pre-script: |

@@ -13,12 +13,12 @@ depends:
 - components/gst-plugins-base.yml
 - components/gst-plugins-good.yml
 - components/iso-codes.yml
-- components/py-gobject.yml
-- components/py-xdg.yml
+- components/py/py-gobject.yml
+- components/py/py-xdg.yml
 - components/totem-pl-parser.yml
 - components/grilo-plugins.yml
 - components/gst-libav.yml
-- components/py-dbus.yml
+- components/py/py-dbus.yml
 - components/libpeas.yml
 build-time:
 - components/appstream-glib.yml

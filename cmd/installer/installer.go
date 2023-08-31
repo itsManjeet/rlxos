@@ -14,11 +14,11 @@ func main() {
 		About("rlxos system installer").
 		Usage("<TASK> <ARGS...> <FLAGS>").
 		Init(func() (interface{}, error) {
-			back, err := installer.New(nil)
+			i, err := installer.New(nil)
 			if err != nil {
 				return nil, fmt.Errorf("failed to create installer backend %v", err)
 			}
-			return back, nil
+			return i, nil
 		}).
 		Handler(func(c *app.Command, s []string, b interface{}) error {
 			return c.Help()
@@ -29,9 +29,9 @@ func main() {
 				if len(s) != 1 {
 					return fmt.Errorf("no partition specified")
 				}
-				back := i.(*installer.Backend)
+				installer := i.(*installer.Installer)
 
-				if err := back.Install(s[0]); err != nil {
+				if err := installer.Install(s[0]); err != nil {
 					return fmt.Errorf("installation failed, %v", err)
 				}
 				fmt.Println("Installation successful")

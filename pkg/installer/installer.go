@@ -16,7 +16,7 @@ import (
 
 type ProgressFunction func(int, string)
 
-type Backend struct {
+type Installer struct {
 	ParititonType string
 	ImageVersion  int
 	KernelVersion string
@@ -26,7 +26,7 @@ type Backend struct {
 	Progress      ProgressFunction
 }
 
-func New(progress ProgressFunction) (*Backend, error) {
+func New(progress ProgressFunction) (*Installer, error) {
 	imageVersion, err := swupd.GetCurrentVersion()
 	if err != nil {
 		return nil, fmt.Errorf("failed to get current version %v", err)
@@ -35,7 +35,7 @@ func New(progress ProgressFunction) (*Backend, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to get kernel version %s, %v", string(kernelVersion), err)
 	}
-	return &Backend{
+	return &Installer{
 		ParititonType: "ext4",
 		ImageVersion:  imageVersion,
 		KernelVersion: strings.TrimSuffix(string(kernelVersion), "\n"),
@@ -46,11 +46,11 @@ func New(progress ProgressFunction) (*Backend, error) {
 	}, nil
 }
 
-func (b *Backend) partitionToDisk(part string) string {
+func (i *Installer) partitionToDisk(part string) string {
 	return strings.TrimRightFunc(part, unicode.IsDigit)
 }
 
-func (b *Backend) Install(part string) error {
+func (i *Installer) Install(part string) error {
 	log.Println("Setting up installation")
 	sysroot := path.Join("/", "sysroot")
 	if err := os.MkdirAll(path.Join("/", "sysroot"), 0755); err != nil {
@@ -59,8 +59,8 @@ func (b *Backend) Install(part string) error {
 	defer os.Remove(sysroot)
 
 	log.Println("Mounting partition", part)
-	if err := syscall.Mount(part, sysroot, b.ParititonType, 0, ""); err != nil {
-		return fmt.Errorf("failed to mount partition %s (%s) -> %s", part, b.ParititonType, sysroot)
+	if err := syscall.Mount(part, sysroot, i.ParititonType, 0, ""); err != nil {
+		return fmt.Errorf("failed to mount partition %s (%s) -> %s", part, i.ParititonType, sysroot)
 	}
 	defer syscall.Unmount(sysroot, syscall.MNT_FORCE)
 
@@ -76,7 +76,7 @@ func (b *Backend) Install(part string) error {
 	ISO_PATH := path.Join("/", "/run", "iso")
 	log.Println("Installing system image")
 	rootfs := path.Join(ISO_PATH, "rootfs.img")
-	if err := utils.CopyFile(rootfs, path.Join(sysroot, "rlxos", "system", fmt.Sprint(b.ImageVersion))); err != nil {
+	if err := utils.CopyFile(rootfs, path.Join(sysroot, "rlxos", "system", fmt.Sprint(i.ImageVersion))); err != nil {
 		return fmt.Errorf("failed to install system image %v", err)
 	}
 
@@ -84,17 +84,17 @@ func (b *Backend) Install(part string) error {
 	if err := os.MkdirAll(path.Join(sysroot, "boot", "grub"), 0755); err != nil {
 		return fmt.Errorf("failed to create boot directories, %v", err)
 	}
-	if data, err := exec.Command("grub-install", "--recheck", "--root-directory="+sysroot, "--boot-directory="+path.Join(sysroot, "boot"), b.partitionToDisk(part)).CombinedOutput(); err != nil {
+	if data, err := exec.Command("grub-install", "--recheck", "--root-directory="+sysroot, "--boot-directory="+path.Join(sysroot, "boot"), i.partitionToDisk(part)).CombinedOutput(); err != nil {
 		return fmt.Errorf("failed to install bootloader %s, %v", string(data), err)
 	}
 
 	log.Println("Installing kernel image")
-	if err := utils.CopyFile(path.Join("/", "lib", "modules", b.KernelVersion, "bzImage"), path.Join(sysroot, "boot", "vmlinuz-"+b.KernelVersion)); err != nil {
+	if err := utils.CopyFile(path.Join("/", "lib", "modules", i.KernelVersion, "bzImage"), path.Join(sysroot, "boot", "vmlinuz-"+i.KernelVersion)); err != nil {
 		return fmt.Errorf("failed to install kernel image %v", err)
 	}
 
 	log.Println("Generating initramfs")
-	if data, err := exec.Command("mkinitramfs", "-o="+path.Join(sysroot, "boot", "initramfs-"+b.KernelVersion+".img"), "--no-plymouth").CombinedOutput(); err != nil {
+	if data, err := exec.Command("mkinitramfs", "-o="+path.Join(sysroot, "boot", "initramfs-"+i.KernelVersion+".img"), "--no-plymouth").CombinedOutput(); err != nil {
 		return fmt.Errorf("failed to generate initramfs %s, %v", string(data), err)
 	}
 
@@ -120,7 +120,7 @@ menuentry "%s" {
 	initrd /boot/initramfs-%s.img
 }
 
-	`, b.Timeout, b.PrettyName, b.PrettyName, b.KernelVersion, b.ImageVersion, grubRootPath, b.KernelVersion)), 0644); err != nil {
+	`, i.Timeout, i.PrettyName, i.PrettyName, i.KernelVersion, i.ImageVersion, grubRootPath, i.KernelVersion)), 0644); err != nil {
 		return fmt.Errorf("failed to write bootloader configuration %v", err)
 	}
 

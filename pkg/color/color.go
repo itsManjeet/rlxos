@@ -29,26 +29,21 @@ const (
 
 var NoColor = false
 
-func titled(color string, mesg string, s ...interface{}) {
+func Titled(color string, title string, format string, s ...interface{}) {
 	prefix := time.Now().Format("2006/01/02 3:4:5 PM")
-	suffix := "\n"
-	if !NoColor {
-		prefix = fmt.Sprintf("%s[%s%s%s%s]%s%s", color, Reset, Bold, prefix, color, Reset, Bold)
-		suffix = Reset + suffix
-	}
-
-	fmt.Printf(prefix+" "+mesg+suffix, s...)
-
+	fmt.Printf("%s[%s%s%s%s]%s%s %s %s%s", color, Reset, Bold, prefix, color, Reset, color, title, Reset, Bold)
+	fmt.Printf(format, s...)
+	fmt.Println(Reset)
 }
 
-func Process(mesg string, s ...interface{}) {
-	titled(Green, mesg, s...)
+func Process(format string, s ...interface{}) {
+	Titled(Green, "PROCESS", format, s...)
 }
 
-func Error(mesg string, s ...interface{}) {
-	titled(Red, Red+"ERROR: "+Reset+mesg, s...)
+func Error(format string, s ...interface{}) {
+	Titled(Red, "ERROR", format, s...)
 }
 
-func Warn(mesg string, s ...interface{}) {
-	titled(Orange, Orange+"Warn: "+Reset+mesg, s...)
+func Warn(format string, s ...interface{}) {
+	Titled(Orange, "WARN", format, s...)
 }

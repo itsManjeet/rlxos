@@ -16,4 +16,4 @@ depends:
 build-time:
   - components/desktop-file-utils.yml
   - components/x11/libxcb.yml
-  - components/rust.yml
+  - components/rustc.yml

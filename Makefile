@@ -102,5 +102,7 @@ checkout: $(REPO_BUILDER)
 	@if [ ! -f elements/$(ELEMENT) ] ; then echo "ERROR: no element exists elements/$(ELEMENT)"; exit 1; fi
 	$(REPO_BUILDER) checkout -cache-path $(CACHE_PATH) $(ELEMENT) $(RELEASE_PATH)
 
+check-updates: $(REPO_BUILDER)
+	$(REPO_BUILDER) check-updates
 
 .PHONY: all clean update-vendor component

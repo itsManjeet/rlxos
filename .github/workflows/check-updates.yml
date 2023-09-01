@@ -1,0 +1,20 @@
+name: check-updates
+on:
+  schedule:
+    - cron: "* 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  check-updates:
+    name: check-updates
+    runs-on: self-hosted
+    timeout-minutes: 46000
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Cleanup build cache
+        run: make clean
+
+      - name: Check Updates
+        run: make check-updates

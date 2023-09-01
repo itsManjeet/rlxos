@@ -1,0 +1,15 @@
+url: https://release-monitoring.org/api/v2/packages
+skip:
+  - iana-etc
+  - make-ca
+  - gnome-shell-extension-x11gestures
+
+alias:
+  binutils-stage1:  binutils
+  gcc-stage1:       gcc
+  glibc-stage1:     glibc
+  binutils-stage2:  binutils
+  gcc-stage2:       gcc
+  glibc-stage2:     glibc
+  libgmp:           gmp
+  grub-i386:        grub

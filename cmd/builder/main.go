@@ -197,6 +197,55 @@ func main() {
 				}
 				return nil
 			})).
+		Sub(app.New("check-update").
+			About("check and apply update to element").
+			Handler(func(c *app.Command, s []string, i interface{}) error {
+				bldr := i.(*builder.Builder)
+				elements := s
+				if len(elements) == 0 {
+					for key := range bldr.Pool() {
+						if strings.Contains(key, "components/") {
+							elements = append(elements, key)
+						}
+
+					}
+				}
+
+				totalOutDated := 0
+				totalUptoDated := 0
+				totalFailed := 0
+
+				for _, elid := range elements {
+					el, ok := bldr.Get(elid)
+					if !ok {
+						color.Titled(color.Red, "ERROR", "%s MISSING ELEMENT", elid)
+						totalFailed++
+						continue
+					}
+					version, err := bldr.Update(el)
+					if err != nil {
+						color.Titled(color.Red, "ERROR", "%s API REQUEST FAILED, %v", elid, err)
+						totalFailed++
+						continue
+					}
+					if len(version) != 0 {
+						color.Titled(color.Cyan, "OUTDATED", "%s %s => %s", elid, el.Version, version)
+						totalOutDated++
+					} else {
+						color.Titled(color.Green, "UPTODATE", "%s %s", elid, el.Version)
+						totalUptoDated++
+					}
+				}
+
+				fmt.Printf("\n----------------------------------------\n")
+				fmt.Printf("  %sTOTAL ELEMENTS%s   :  %s%d%s\n", color.Bold, color.Reset, color.Green, len(elements), color.Reset)
+				fmt.Printf("  %sTOTAL OUTDATED%s   :  %s%d%s\n", color.Bold, color.Reset, color.Green, totalOutDated, color.Reset)
+				fmt.Printf("  %sTOTAL UPTODATED%s  :  %s%d%s\n", color.Bold, color.Reset, color.Green, totalUptoDated, color.Reset)
+				fmt.Printf("  %sTOTAL FAILED%s     :  %s%d%s\n", color.Bold, color.Reset, color.Green, totalFailed, color.Reset)
+				fmt.Printf("----------------------------------------\n")
+
+				return nil
+			})).
 		Sub(app.New("metadata").
 			About("Generate metdata for cache").
 			Handler(func(c *app.Command, s []string, i interface{}) error {

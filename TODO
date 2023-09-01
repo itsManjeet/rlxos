@@ -1,1 +1,2 @@
 - FIX %{run-autogen} variable [ ./autogen.sh ] should be in /src/<id>
+- FIX Builder.List() Method to list only Runtime dependency for package dependencies

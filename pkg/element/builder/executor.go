@@ -55,6 +55,8 @@ func CreateContainer(image string, environ []string, mounts map[string]string) (
 		exec.Command(backend, "exec", "-i", c.name, "umount", i).CombinedOutput()
 	}
 
+	exec.Command(backend, "exec", "-i", c.name, "bash", "-c", "echo 'nameserver 8.8.8.8' > /etc/resolv.conf").CombinedOutput()
+
 	// TODO: Remove this temporary fix
 	exec.Command(backend, "exec", "-i", c.name, "mkdir", "-p", "/tmp").CombinedOutput()
 

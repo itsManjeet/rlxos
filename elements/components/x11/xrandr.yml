@@ -1,7 +1,13 @@
 id: xrandr
-version: "7"
-about: xorg apps xrandr
-release: 0
-sources:
-- https://www.x.org/pub/individual/app/xrandr-1.5.1.tar.xz
+version: 1.5.2
+about: Primitive commandline interface to RandR extensions
 
+depends:
+  - components/x11/libx11.yml
+  - components/x11/libxrandr.yml
+
+build-time:
+  - components/x11/util-macros.yml
+
+sources:
+  - https://www.x.org/pub/individual/app/xrandr-%{version}.tar.xz

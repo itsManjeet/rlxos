@@ -4,4 +4,4 @@ about: Firmware files for Linux
 sources:
   - https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-%{version}.tar.gz
 script: |
-  make DESTDIR=%{install-root} FIRMWARE=%{libdir}/firmware install
+  make DESTDIR=%{install-root}/%{prefix} FIRMWARE=%{libdir}/firmware install

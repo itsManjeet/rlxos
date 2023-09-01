@@ -97,8 +97,43 @@ func (i *Installer) Install(part string) error {
 	if err := os.MkdirAll(path.Join(sysroot, "boot", "grub"), 0755); err != nil {
 		return fmt.Errorf("failed to create boot directories, %v", err)
 	}
-	if data, err := exec.Command("grub-install", "--recheck", "--root-directory="+sysroot, "--boot-directory="+path.Join(sysroot, "boot"), i.partitionToDisk(part)).CombinedOutput(); err != nil {
-		return fmt.Errorf("failed to install bootloader %s, %v", string(data), err)
+
+	EFI_PARTITION := os.Getenv("EFI_PARTITION")
+	if _, err := os.Stat(path.Join("/", "sys", "firmware", "efi")); os.IsExist(err) || len(EFI_PARTITION) != 0 {
+		log.Println("Setting up EFI partition")
+
+		if len(EFI_PARTITION) == 0 {
+			output, err := exec.Command("sh", "-c", "lsblk -no path,parttypename | grep 'EFI System Partition'").CombinedOutput()
+			if err != nil {
+				return fmt.Errorf("failed to detect EFI partition %s, %v", string(output), err)
+			}
+
+			EFI_PARTITION = strings.Trim(string(output), " \n")
+		}
+		efiPath := path.Join(sysroot, "efi")
+		if err := os.MkdirAll(efiPath, 0755); err != nil {
+			return fmt.Errorf("failed to create EFI directory %s, %v", efiPath, err)
+		}
+
+		EFI_PART_TYPE := "fat32"
+		if len(os.Getenv("EFI_PART_TYPE")) != 0 {
+			EFI_PART_TYPE = os.Getenv("EFI_PART_TYPE")
+		}
+
+		if err := syscall.Mount(EFI_PARTITION, efiPath, EFI_PART_TYPE, 0, ""); err != nil {
+			return fmt.Errorf("failed to mount EFI Partition")
+		}
+	}
+	defer syscall.Unmount(EFI_PARTITION, syscall.MNT_FORCE)
+
+	if len(EFI_PARTITION) == 0 {
+		if data, err := exec.Command("grub-install", "--recheck", "--root-directory="+sysroot, "--boot-directory="+path.Join(sysroot, "boot"), i.partitionToDisk(part)).CombinedOutput(); err != nil {
+			return fmt.Errorf("failed to install bootloader %s, %v", string(data), err)
+		}
+	} else {
+		if data, err := exec.Command("grub-install", "--recheck", "--bootloader-id="+i.PrettyName, "--target=x86_64-efi", "--efi-directory="+path.Join(sysroot, "efi"), "--root-directory="+sysroot, "--boot-directory="+path.Join(sysroot, "boot")).CombinedOutput(); err != nil {
+			return fmt.Errorf("failed to install bootloader %s, %v", string(data), err)
+		}
 	}
 
 	log.Println("Installing kernel image")

@@ -1,21 +1,10 @@
 id: bolt
-version: "2200"
-about: rlxos virtual assistant
-release: 0
-depends:
-- components/dpp.yml
-- components/curl.yml
-- components/systemd.yml
-- components/py/py-requests.yml
-sources:
-- bolt-{{commit}}.tar.gz::https://github.com/itsManjeet/bolt/archive/{{commit}}.tar.gz
-pre-script: |
-  mv assets/icon.svg assets/bolt.svg
-  sed -i 's#install_files#install#' assets/CMakeLists.txt
-  sed -i 's#scalable/#scalable#' assets/CMakeLists.txt
-  sed -i 's#icon.svg#bolt.svg#' assets/CMakeLists.txt
-  sed -i 's#apps/scalable#scalable/apps#' assets/CMakeLists.txt
-post-script: |-
-  install -v -D -m 0644 /files/bolt.conf %{install-root}%{sysconfdir}/bolt.yml
-  install -v -D -m 0644 /files/default.model %{install-root}/var/lib/bolt/distance.model
+version: 0.0.1
+about: Bolt Virtual Assistant
 
+build-type: go-pkg
+variables:
+  go-pkg: cmd/bolt
+
+post-script: |
+  install -vDm0644 -t %{install-root}/%{localstatedir}/lib/bolt/ /files/bolt/responses.txt

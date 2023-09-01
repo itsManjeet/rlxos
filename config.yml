@@ -109,3 +109,10 @@ build-tools:
       _pkg_name=$(basename %{go-pkg})
       mkdir -p %{install-root}/usr/bin/
       (cd /go/src/rlxos/%{go-pkg}; go build -o %{install-root}/usr/bin/$_pkg_name)
+
+  - id: cargo
+    target-files:
+      - Cargo.toml
+    
+    script: |
+      cargo build --release

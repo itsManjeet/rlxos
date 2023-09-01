@@ -15,9 +15,6 @@ script: |
       sh -e $i
     done
   fi
-
-  kerver=$(ls %{libdir}/modules | head -n1)
-  depmod -a ${kerver}
   EOT
 
   [[ -d %{include-root}/%{datadir}/factory/etc ]] && rm -rf %{include-root}/%{datadir}/factory/etc
@@ -54,7 +51,7 @@ script: |
   mksquashfs %{include-root}/usr %{install-root}/usr_%{version}.squashfs
 
   veritysetup format --salt="%{salt}" "%{install-root}/usr_%{version}.squashfs" "%{install-root}/usr_%{version}.verity" | sed '/^Root hash:[[:space:]]*/{;s///;q;};d' >"%{install-root}/usr-root-hash.txt"
-  
+
   usr_part_uuid="$(cat "%{install-root}/usr-root-hash.txt" | sed -E 's/^([0-9a-f]{8})([0-9a-f]{4})([0-9a-f]{4})([0-9a-f]{4})([0-9a-f]{12}).*/\1\2\3\4\5/')"
   mv "%{install-root}/usr_%{version}.squashfs" "%{install-root}/usr_%{version}_${usr_part_uuid}.squashfs"
   ln -s "usr_%{version}_${usr_part_uuid}.squashfs" '%{install-root}/usr.squashfs'
@@ -76,16 +73,19 @@ include:
   - components/firmware.yml
   - components/tzdata.yml
   - components/grub.yml
-  - components/mkinitramfs.yml  
+  - components/mkinitramfs.yml
 
   # Utilities
   - components/e2fsprogs.yml
   - components/vim.yml
-  - components/swupd.yml
-  - components/layers.yml
   - components/squashfs-tools.yml
   - components/wget.yml
-  
+
+  # rlxos
+  - components/swupd.yml
+  - components/layers.yml
+  - components/bolt.yml
+
   # Desktop Environment
   - components/awesome.yml
   - components/picom.yml

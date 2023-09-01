@@ -3,10 +3,10 @@ version: 4.16.0
 about: Xfce4 basic utility library
 release: 0
 depends:
-- components/glib.yml
+  - components/glib.yml
 build-time:
-- components/gobject-introspection.yml
-- components/vala.yml
+  - components/gobject-introspection.yml
+  - components/vala.yml
+  - components/intltool.yml
 sources:
-- https://archive.xfce.org/src/xfce/libxfce4util/4.16/libxfce4util-4.16.0.tar.bz2
-
+  - https://archive.xfce.org/src/xfce/libxfce4util/4.16/libxfce4util-%{version}.tar.bz2

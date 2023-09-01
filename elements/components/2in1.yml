@@ -1,12 +1,11 @@
 id: 2in1
-version: "2200"
+version: 0.0.1
 about: utilities and services for 2 in 1 laptop devices
-release: 0
 depends:
   - components/x11/xrandr.yml
   - components/x11/xinput.yml
   - components/iio-sensor-proxy.yml
 script: |
-  mkdir -p %{install-root}/usr/bin/
-  gcc -O2 /files/2in1.c -o %{install-root}/usr/bin/2in1
-  install -v -D -m 0644 /files/service.ini %{install-root}/usr/lib/systemd/user/2in1.service
+  mkdir -p %{install-root}/%{bindir}/
+  gcc -O2 /files/2in1/2in1.c -o %{install-root}/%{bindir}/2in1
+  install -v -D -m 0644 /files/service.ini %{install-root}/%{libdir}/systemd/user/2in1.service

@@ -1,7 +1,13 @@
-id: libXinerama
-version: "7"
-about: xorg library libXinerama
-release: 0
-sources:
-- https://www.x.org/pub/individual/lib/libXinerama-1.1.4.tar.bz2
+id: libxinerama
+version: 1.1.5
+about: X11 Xinerama extension library
 
+depends:
+  - components/x11/libxext.yml
+
+build-time:
+  - components/x11/util-macros.yml
+  - components/x11/xorgproto.yml
+
+sources:
+  - https://www.x.org/pub/individual/lib/libXinerama-%{version}.tar.xz

@@ -1,7 +1,15 @@
-id: libXtst
-version: "7"
-about: xorg library libXtst
-release: 0
-sources:
-- https://www.x.org/pub/individual/lib/libXtst-1.2.3.tar.bz2
+id: libxtst
+version: 1.2.4
+about: X11 Testing Resource extension library
 
+depends:
+  - components/x11/libxext.yml
+  - components/x11/libxfixes.yml
+  - components/x11/libxi.yml
+
+build-time:
+  - components/x11/util-macros.yml
+  - components/x11/xorgproto.yml
+
+sources:
+  - https://www.x.org/pub/individual/lib/libXtst-%{version}.tar.xz

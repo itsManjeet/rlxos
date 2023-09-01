@@ -1,8 +1,25 @@
 id: gtk
 version: 3.24.30
-about: |
-  Libraries used for creating graphical user interfaces for applications
-release: 0
+about: Libraries used for creating graphical user interfaces for applications
+
+build-type: autotools
+
+variables:
+  run-autogen: false
+
+configure: >
+  --enable-broadway-backend 
+  --enable-x11-backend 
+  --enable-wayland-backend 
+
+integration: gtk-query-immodules-3.0 --update-cache
+
+sources:
+  - https://download.gnome.org/sources/gtk+/3.24/gtk+-%{version}.tar.xz
+
+build-time:
+  - components/gtk-doc.yml
+
 depends:
   - components/at-spi2-atk.yml
   - components/gdk-pixbuf.yml
@@ -11,12 +28,3 @@ depends:
   - components/desktop-file-utils.yml
   - components/x11/libxkbcommon.yml
   - components/wayland-protocols.yml
-sources:
-  - https://download.gnome.org/sources/gtk+/3.24/gtk+-%{version}.tar.xz
-post-script: |
-  install -v -D -m 644 /files/triggers/immodules.yml -t %{install-root}%{datadir}/pkgupd/triggers/
-configure: >
-  --enable-broadway-backend 
-  --enable-x11-backend 
-  --enable-wayland-backend 
-  --disable-gtk-doc

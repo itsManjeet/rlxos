@@ -2,77 +2,76 @@ id: rustc
 version: 1.72.0
 about: Rust programming language is designed to be a safe, concurrent, practical language
 
+variables:
+  date: 2023-07-13
+  rust: 1.71.0
+  cargo: 1.71.0
+  target-triple: x86_64-unknown-linux-gnu
+
 depends:
   - components/curl.yml
   - components/libllvm.yml
   - components/llvm.yml
   - components/libssh.yml
+
 build-time:
   - components/cmake.yml
   - components/gdb.yml
   - components/ninja.yml
+  - components/ca-certificates.yml
+
 sources:
   - https://static.rust-lang.org/dist/rustc-%{version}-src.tar.xz
-script: |
-  cat > config.toml << EOF
-  # see config.toml.example for more possible options
-  # See the 8.4 book for an old example using shipped LLVM
-  # e.g. if not installing clang, or using a version before 13.0
+  - 001::https://static.rust-lang.org/dist/%{date}/rust-std-%{rust}-%{target-triple}.tar.xz
+  - 002::https://static.rust-lang.org/dist/%{date}/rustc-%{rust}-%{target-triple}.tar.xz
+  - 003::https://static.rust-lang.org/dist/%{date}/cargo-%{cargo}-%{target-triple}.tar.xz
 
-  # tell x.py to not keep printing an annoying warning
+script: |
+  patch -d src/tools/cargo -Np1 -i /patches/rustc/0001-cargo-change-libexec-dir.patch
+  patch -Np1 -i /patches/rustc/0001-bootstrap-change-libexec-dir.patch
+  patch -Np1 -i /patches/rustc/0003-compiler-change-LLVM-targets.patch
+  cat > config.toml << EOF
   changelog-seen = 2
 
   [llvm]
-  # by default, rust will build for a myriad of architectures
   targets = "X86"
-
-  # When using system llvm prefer shared libraries
   link-shared = true
 
   [build]
-  # omit docs to save time and space (default is to build them)
   docs = false
-
-  # install extended tools: cargo, clippy, etc
   extended = true
-
-  # Do not query new versions of dependencies online.
   locked-deps = true
-
-  # Specify which extended tools (those from the default install).
   tools = ["cargo", "clippy", "rustdoc", "rustfmt"]
-
-  # Use the source code shipped in the tarball for the dependencies.
-  # The combination of this and the "locked-deps" entry avoids downloading
-  # many crates from Internet, and makes the Rustc build more stable.
   vendor = true
 
   [install]
   prefix = "%{prefix}"
-  docdir = "share/doc/rustc-%{version}"
 
   [rust]
   channel = "stable"
-  description = "rlxos rust release"
+  description = "rlxos GNU/Linux"
 
-  # BLFS used to not install the FileCheck executable from llvm,
-  # so disabled codegen tests.  The assembly tests rely on FileCheck
-  # and cannot easily be disabled, so those will anyway fail if
-  # FileCheck has not been installed.
-  #codegen-tests = false
-
-  [target.x86_64-unknown-linux-gnu]
-  # NB the output of llvm-config (i.e. help options) may be
-  # dumped to the screen when config.toml is parsed.
-  llvm-config = "%{bindir}/llvm-config"
-
-  [target.i686-unknown-linux-gnu]
-  # NB the output of llvm-config (i.e. help options) may be
-  # dumped to the screen when config.toml is parsed.
+  [target.%{target-triple}]
   llvm-config = "%{bindir}/llvm-config"
   EOF
+
+  
+  mkdir -p build/cache/%{date}
+  cp %{build-root}/001 build/cache/%{date}/rust-std-%{rust}-%{target-triple}.tar.xz
+  cp %{build-root}/002 build/cache/%{date}/rustc-%{rust}-%{target-triple}.tar.xz
+  cp %{build-root}/003 build/cache/%{date}/cargo-%{cargo}-%{target-triple}.tar.xz
+
+  mkdir -p %{build-root}/rust
+  export CARGO_HOME=%{build-root}/rust
+  export RUST_BACKTRACE=1
+  export LIBSSH2_SYS_USE_PKG_CONFIG=1
 
   python3 ./x.py build --exclude src/tools/miri
   DESTDIR=%{install-root} python3 ./x.py install
 
   chown -R root:root %{install-root}
+
+  rm -rf %{install-root}/%{libdir}/rustlib/components
+  rm -rf %{install-root}/%{libdir}/rustlib/manifest-rustc
+  rm -rf %{install-root}/%{libdir}/rustlib/rust-installer-version
+  rm -rf %{install-root}/%{sysconfdir}

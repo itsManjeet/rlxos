@@ -1,8 +1,7 @@
 id: firmware
-version: "20230515"
+version: 20230804
 about: Firmware files for Linux
-release: 0
 sources:
-- https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-%{version}.tar.gz
-script: make DESTDIR=%{install-root} FIRMWARE=/usr/lib/firmware install
-
+  - https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-%{version}.tar.gz
+script: |
+  make DESTDIR=%{install-root} FIRMWARE=%{libdir}/firmware install

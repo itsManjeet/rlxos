@@ -13,3 +13,6 @@ alias:
   glibc-stage2:     glibc
   libgmp:           gmp
   grub-i386:        grub
+  firmware:         linux-firmware
+  rustc:            rust
+  py-six:           python-six

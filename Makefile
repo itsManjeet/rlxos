@@ -31,7 +31,10 @@ MKBOOTIMG		?= $(shell pwd)/scripts/mkbootimg
 REPO_BUILDER	?= $(BUILDDIR)/builder
 RELEASE_PATH	?= $(BUILDDIR)/release
 
+CURCOMMIT		:= $(shell git rev-parse HEAD)
+
 BOARD			?= $(ARCH)
+CONTAIN_CHANGES := $(shell git diff-index --quiet HEAD --; echo $$?)
 
 export PATH := $(PATH):$(TOOLCHAIN_PATH)/bin
 
@@ -101,6 +104,31 @@ checkout: $(REPO_BUILDER)
 	@if [ -z $(ELEMENT) ] ;then echo "ERROR: no element specified"; exit 1; fi
 	@if [ ! -f elements/$(ELEMENT) ] ; then echo "ERROR: no element exists elements/$(ELEMENT)"; exit 1; fi
 	$(REPO_BUILDER) checkout -cache-path $(CACHE_PATH) $(ELEMENT) $(RELEASE_PATH)
+
+create-patch: $(REPO_BUILDER)
+	@if [ -z $(SOURCE) ] ; then echo "ERROR: SOURCE commit not specified"; exit 1; fi
+	@if [ -z $(TARGET) ] ; then echo "ERROR: TARGET commit not specified"; exit 1; fi
+	ifeq ($(CONTAIN_CHANGES),1)
+		git stash
+	endif
+
+	@git checkout $(SOURCE)
+	SOURCE_IMAGE_PATH := $(shell $(REPO_BUILDER) file ELEMENT=boards/$(ARCH)/image.yml)
+
+	@git checkout $(TARGET)
+	TARGET_IMAGE_PATH := $(shell $(REPO_BUILDER) file ELEMENT=boards/$(ARCH)/image.yml)
+
+	@git checkout $(CURCOMMIT)
+	ifeq ($(CONTAIN_CHANGES),1)
+		git stash
+	endif
+
+	mkdir -p $(BUILDDIR)/_source $(BUILDDIR)/_target
+
+	squashfuse $(SOURCE_IMAGE_PATH) $(BUILDDIR)_source
+	squashfuse $(TARGER_IMAGE_PATH) $(BUILDDIR)_target
+
+	diff -qr $(BUILDDIR)/_source/ $(BUILDDIR)/_target/ > diffs
 
 check-updates: $(REPO_BUILDER)
 	$(REPO_BUILDER) check-updates

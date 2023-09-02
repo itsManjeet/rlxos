@@ -24,7 +24,7 @@ func (m *Manager) Refresh() error {
 		flag = syscall.MS_REMOUNT
 	}
 
-	lower := m.RootDir + "/usr"
+	lower := ""
 	withReadWrite := ""
 	for _, l := range m.Layers {
 		if strings.HasPrefix(l.Id, ".") || strings.HasPrefix(path.Base(l.Path), ".") {
@@ -41,8 +41,9 @@ func (m *Manager) Refresh() error {
 		}
 
 		log.Printf("enabling layer %s\n", l.Id)
-		lower += ":" + path.Join(m.RootDir, l.Path)
+		lower += path.Join(m.RootDir, l.Path) + ":"
 	}
+	lower += m.RootDir + "/usr"
 	options := "lowerdir=" + lower
 	if len(withReadWrite) != 0 {
 		workdir := path.Join(path.Dir(withReadWrite), "work")

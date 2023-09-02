@@ -159,11 +159,18 @@ create-patch: $(REPO_BUILDER) $(CREATE_PATCH)
 	umount $(BUILDDIR)/source $(BUILDDIR)/target || true
 
 define BUILD_ELEMENT
-@if [[ ! $(1) ~= $(SKIP_ELEMENTS) ]] ; then $(REPO_BUILDER) build -cache-path $(CACHE_PATH) $(1) && { echo "PASSED $(1)" >> passed; } || { echo "FAILED $(1)" >> failed; }; fi;
+
 endef
 
 world: $(REPO_BUILDER)
-	$(foreach element,$(ALL_ELEMENTS),$(call BUILD_ELEMENT,$(element)))
+	for element in $(ALL_ELEMENTS) ; do 										\
+		echo "BUILDING $$element";												\
+		if $(REPO_BUILDER) build -cache-path $(CACHE_PATH) $$element ; then 	\
+			echo "PASSED $$element" >> passed;									\
+		else																	\
+			echo "FAILED $$element" >> failed;									\
+		fi; 																	\
+	done
 
 	@echo -e "\n\n\n\n\n== FAILED ======================="
 	@cat failed

@@ -50,6 +50,8 @@ func (m *Manager) Refresh() error {
 			log.Printf("failed to create workdir %s, %v", workdir, err)
 		}
 		options = fmt.Sprintf("%s,upperdir=%s,workdir=%s", options, withReadWrite, workdir)
+	} else {
+		flag |= syscall.MS_RDONLY
 	}
 	log.Println("OPTIONS", options)
 	if err := syscall.Mount("overlay", m.RootDir+"/usr", "overlay", flag, options); err != nil {

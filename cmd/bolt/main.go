@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"path"
 	"rlxos/pkg/bolt"
 	"rlxos/pkg/bolt/logic"
 	"rlxos/pkg/bolt/logic/bestmatch"
@@ -21,12 +20,7 @@ func main() {
 		Storage: &memory.Storage{},
 	}
 
-	responses := os.Getenv("BOLT_RESPONSES")
-	if len(responses) == 0 {
-		responses = path.Join("/", "var", "lib", "bolt", "responses.txt")
-	}
-
-	if err := bot.Init(responses); err != nil {
+	if err := bot.Init(); err != nil {
 		log.Fatal("failed to init bolt", err)
 	}
 

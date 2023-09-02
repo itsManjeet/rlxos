@@ -1,5 +1,5 @@
 id: bolt
-version: 0.0.1
+version: 0.0.2
 about: Bolt Virtual Assistant
 
 build-type: go-pkg
@@ -7,4 +7,4 @@ variables:
   go-pkg: cmd/bolt
 
 post-script: |
-  install -vDm0644 -t %{install-root}/%{localstatedir}/lib/bolt/ /files/bolt/responses.txt
+  install -vDm0644 /files/bolt/responses.txt %{install-root}/%{datadir}/bolt/responses

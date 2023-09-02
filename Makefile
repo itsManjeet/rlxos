@@ -29,6 +29,7 @@ CACHE_PATH		?= $(BUILDDIR)/cache
 MKBOOTIMG		?= $(shell pwd)/scripts/mkbootimg
 
 REPO_BUILDER	?= $(BUILDDIR)/builder
+CREATE_PATCH	?= $(BUILDDIR)/create-patch
 RELEASE_PATH	?= $(BUILDDIR)/release
 
 CURCOMMIT		:= $(shell git rev-parse HEAD)
@@ -82,6 +83,9 @@ update-vendor:
 $(REPO_BUILDER): update-vendor version.yml server.yml
 	$(GOLANG) build -o $@ rlxos/cmd/builder
 
+$(CREATE_PATCH):
+	$(GOLANG) build -o $@ rlxos/cmd/create-patch
+
 report: $(REPO_BUILDER) 
 	$(REPO_BUILDER) report -cache-path $(CACHE_PATH)
 
@@ -105,30 +109,51 @@ checkout: $(REPO_BUILDER)
 	@if [ ! -f elements/$(ELEMENT) ] ; then echo "ERROR: no element exists elements/$(ELEMENT)"; exit 1; fi
 	$(REPO_BUILDER) checkout -cache-path $(CACHE_PATH) $(ELEMENT) $(RELEASE_PATH)
 
-create-patch: $(REPO_BUILDER)
+filepath: $(REPO_BUILDER)
+	@if [ -z $(ELEMENT) ] ;then echo "ERROR: no element specified"; exit 1; fi
+	@if [ ! -f elements/$(ELEMENT) ] ; then echo "ERROR: no element exists elements/$(ELEMENT)"; exit 1; fi
+	$(REPO_BUILDER) file -cache-path $(CACHE_PATH) $(ELEMENT)
+
+
+create-patch: $(REPO_BUILDER) $(CREATE_PATCH)
 	@if [ -z $(SOURCE) ] ; then echo "ERROR: SOURCE commit not specified"; exit 1; fi
 	@if [ -z $(TARGET) ] ; then echo "ERROR: TARGET commit not specified"; exit 1; fi
-	ifeq ($(CONTAIN_CHANGES),1)
-		git stash
-	endif
-
+	
+	@if [ $(CONTAIN_CHANGES) ] ; then git stash; fi
+	
 	@git checkout $(SOURCE)
-	SOURCE_IMAGE_PATH := $(shell $(REPO_BUILDER) file ELEMENT=boards/$(ARCH)/image.yml)
+	$(eval SOURCE_IMAGE_PATH := $(shell $(REPO_BUILDER) file -cache-path $(CACHE_PATH) boards/$(ARCH)/image.yml | tail -n1))
 
 	@git checkout $(TARGET)
-	TARGET_IMAGE_PATH := $(shell $(REPO_BUILDER) file ELEMENT=boards/$(ARCH)/image.yml)
+	$(eval TARGET_IMAGE_PATH := $(shell $(REPO_BUILDER) file -cache-path $(CACHE_PATH) boards/$(ARCH)/image.yml | tail -n1))
 
 	@git checkout $(CURCOMMIT)
-	ifeq ($(CONTAIN_CHANGES),1)
-		git stash
-	endif
+	@if [ $(CONTAIN_CHANGES) ] ; then git stash pop; fi
 
-	mkdir -p $(BUILDDIR)/_source $(BUILDDIR)/_target
+	rm -rf $(BUILDDIR)/_work
+	
+	umount $(BUILDDIR)/source $(BUILDDIR)/target || true
 
-	squashfuse $(SOURCE_IMAGE_PATH) $(BUILDDIR)_source
-	squashfuse $(TARGER_IMAGE_PATH) $(BUILDDIR)_target
+	mkdir -p $(BUILDDIR)/source $(BUILDDIR)/target
+	mkdir -p $(BUILDDIR)/_work/source
+	mkdir -p $(BUILDDIR)/_work/target
 
-	diff -qr $(BUILDDIR)/_source/ $(BUILDDIR)/_target/ > diffs
+	@echo "SOURCE IMAGE PATH: $(SOURCE_IMAGE_PATH)"
+	@echo "TARGET IMAGE PATH: $(TARGET_IMAGE_PATH)"
+
+	tar --wildcards -xaf $(SOURCE_IMAGE_PATH) -C $(BUILDDIR)/_work/source "*usr*.squashfs"
+	tar --wildcards -xaf $(TARGET_IMAGE_PATH) -C $(BUILDDIR)/_work/target "*usr*.squashfs"
+
+	$(eval SOURCE_IMAGE_SQUASH_PATH := $(shell readlink $(BUILDDIR)/_work/source/usr.squashfs))
+	$(eval TARGET_IMAGE_SQUASH_PATH := $(shell readlink $(BUILDDIR)/_work/target/usr.squashfs))
+
+	squashfuse $(BUILDDIR)/_work/source/$(SOURCE_IMAGE_SQUASH_PATH) $(BUILDDIR)/source
+	squashfuse $(BUILDDIR)/_work/source/$(TARGET_IMAGE_SQUASH_PATH) $(BUILDDIR)/target
+
+	$(CREATE_PATCH) $(BUILDDIR)/source $(BUILDDIR)/target
+
+	rm -rf $(BUILDDIR)/_work
+	umount $(BUILDDIR)/source $(BUILDDIR)/target || true
 
 check-updates: $(REPO_BUILDER)
 	$(REPO_BUILDER) check-updates

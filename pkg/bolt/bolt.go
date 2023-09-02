@@ -2,6 +2,8 @@ package bolt
 
 import (
 	"math/rand"
+	"os"
+	"path"
 	"rlxos/pkg/bolt/logic"
 	"rlxos/pkg/bolt/storage"
 )
@@ -13,8 +15,13 @@ type Bolt struct {
 	previousResponse string
 }
 
-func (b *Bolt) Init(filepath string) error {
-	if err := b.Storage.Init(filepath); err != nil {
+func (b *Bolt) Init() error {
+	datafiles := []string{
+		path.Join(os.Getenv("HOME"), ".config", "bolt", "responses"),
+		path.Join("/", "var", "lib", "bolt", "responses"),
+		path.Join("/", "usr", "share", "bolt", "responses"),
+	}
+	if err := b.Storage.Init(datafiles...); err != nil {
 		return err
 	}
 

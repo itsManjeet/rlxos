@@ -3,6 +3,7 @@ package memory
 import (
 	"io/ioutil"
 	"log"
+	"os"
 	"strings"
 )
 
@@ -15,29 +16,35 @@ type Storage struct {
 	keys      []string
 }
 
-func (s *Storage) Init(filepath string) error {
-	log.Printf("Loading %s storage from %s\n", ID, filepath)
-	s.responses = map[string][]string{}
-	s.keys = []string{}
-	data, err := ioutil.ReadFile(filepath)
-	if err != nil {
-
-		return nil
-	}
-
-	lastQuery := "hello"
-	for _, line := range strings.Split(string(data), "\n") {
-		line = strings.Trim(line, " \n")
-		if len(line) == 0 {
+func (s *Storage) Init(files ...string) error {
+	for _, filepath := range files {
+		if _, err := os.Stat(filepath); os.IsNotExist(err) {
 			continue
 		}
+		log.Printf("Loading %s storage from %s\n", ID, files)
+		s.responses = map[string][]string{}
+		s.keys = []string{}
+		data, err := ioutil.ReadFile(filepath)
+		if err != nil {
 
-		if line[0] == '-' {
-			lastQuery = strings.Trim(line[1:], " ")
-			s.keys = append(s.keys, lastQuery)
-		} else {
-			s.responses[lastQuery] = append(s.responses[lastQuery], line)
+			return nil
 		}
+
+		lastQuery := "hello"
+		for _, line := range strings.Split(string(data), "\n") {
+			line = strings.Trim(line, " \n")
+			if len(line) == 0 {
+				continue
+			}
+
+			if line[0] == '-' {
+				lastQuery = strings.Trim(line[1:], " ")
+				s.keys = append(s.keys, lastQuery)
+			} else {
+				s.responses[lastQuery] = append(s.responses[lastQuery], line)
+			}
+		}
+
 	}
 
 	log.Printf("Found %d responses\n", len(s.responses))

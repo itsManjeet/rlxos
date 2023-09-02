@@ -1,0 +1,8 @@
+#!/bin/sh
+
+echo "Starting Xephyr"
+Xephyr -br -ac -noreset -screen 800x600 :1 &
+sleep 4
+
+echo "Starting awesome"
+(cd files/awesome; DISPLAY=:1 awesome -c rc.lua)

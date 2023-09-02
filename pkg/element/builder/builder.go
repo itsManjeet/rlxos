@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"os/exec"
 	"path"
@@ -87,6 +88,18 @@ func (b *Builder) Build(id string) error {
 	e, ok := b.Get(id)
 	if !ok {
 		return fmt.Errorf("missing %s", id)
+	}
+
+	cachefile, _ := b.CacheFile(e)
+	log.Println("CACHE_FILE:", cachefile)
+	forceNeedRebuild := "false"
+	if val, ok := e.Variables["force-rebuild"]; ok {
+		forceNeedRebuild = val
+	}
+
+	if _, err := os.Stat(cachefile); err == nil && forceNeedRebuild == "false" {
+		log.Printf("Element '%s' already cached '%s'\n", id, cachefile)
+		return nil
 	}
 
 	tolist := []string{}

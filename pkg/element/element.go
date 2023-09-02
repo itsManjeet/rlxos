@@ -145,7 +145,16 @@ func (e *Element) resolveVariable(v string) string {
 		if len(value) != 0 {
 			v = strings.ReplaceAll(v, "%{"+key+"}", value)
 		}
+	}
 
+	if version, ok := e.Variables["version"]; ok {
+		versionInfo := strings.Split(version, ".")
+		if len(versionInfo) > 1 {
+			v = strings.ReplaceAll(v, "%{version:1}", strings.Join(versionInfo[:len(versionInfo)-1], "."))
+		}
+		if len(versionInfo) > 2 {
+			v = strings.ReplaceAll(v, "%{version:2}", strings.Join(versionInfo[:len(versionInfo)-2], "."))
+		}
 	}
 	return v
 }

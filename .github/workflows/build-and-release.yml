@@ -54,3 +54,7 @@ jobs:
           for element in installer updates ; do
             make checkout ELEMENT=boards/${{matrix.board}}/${element}.yml
           done
+
+      - name: Create World
+        run: |
+          make world

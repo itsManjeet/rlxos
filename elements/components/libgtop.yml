@@ -2,6 +2,9 @@ id: libgtop
 version: 2.40.0
 about: A library for collecting system monitoring data
 
+variables:
+  run-autogen: false
+
 depends:
   - components/glib.yml
   - components/x11/libxau.yml

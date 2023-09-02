@@ -37,6 +37,9 @@ CURCOMMIT		:= $(shell git rev-parse HEAD)
 BOARD			?= $(ARCH)
 CONTAIN_CHANGES := $(shell git diff-index --quiet HEAD --; echo $$?)
 
+ALL_ELEMENTS	:= $(wildcard elements/components/*.yml)
+ALL_ELEMENTS	:= $(ALL_ELEMENTS:elements/%=%)
+
 export PATH := $(PATH):$(TOOLCHAIN_PATH)/bin
 
 all: $(REPO_BUILDER)
@@ -154,6 +157,22 @@ create-patch: $(REPO_BUILDER) $(CREATE_PATCH)
 
 	rm -rf $(BUILDDIR)/_work
 	umount $(BUILDDIR)/source $(BUILDDIR)/target || true
+
+define BUILD_ELEMENT
+@if [[ ! $(1) ~= $(SKIP_ELEMENTS) ]] ; then $(REPO_BUILDER) build -cache-path $(CACHE_PATH) $(1) && { echo "PASSED $(1)" >> passed; } || { echo "FAILED $(1)" >> failed; }; fi;
+endef
+
+world: $(REPO_BUILDER)
+	$(foreach element,$(ALL_ELEMENTS),$(call BUILD_ELEMENT,$(element)))
+
+	@echo -e "\n\n\n\n\n== FAILED ======================="
+	@cat failed
+
+	@echo -e "\n\n\n\n\n== PASSED ======================="
+	@cat passed
+
+	@echo "TOTAL FAILED $(shell wc -l failed)"
+	@echo "TOTAL PASSED $(shell wc -l passed)"
 
 check-updates: $(REPO_BUILDER)
 	$(REPO_BUILDER) check-updates

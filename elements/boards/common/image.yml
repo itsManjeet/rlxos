@@ -80,6 +80,7 @@ include:
   - components/vim.yml
   - components/squashfs-tools.yml
   - components/wget.yml
+  - components/sudo.yml
 
   # rlxos
   - components/swupd.yml
@@ -94,4 +95,4 @@ include:
   - components/fonts/cantarell.yml
 
   # Apps
-  - apps/alacritty.yml
+  - components/alacritty.yml

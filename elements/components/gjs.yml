@@ -1,18 +1,16 @@
 id: gjs
 version: 1.68.1
 about: A set of Javascript bindings for GNOME
-release: 0
 depends:
-- components/cairo.yml
-- components/dbus.yml
-- components/js78.yml
-- components/gtk.yml
-- components/gtk4.yml
-- components/sysprof.yml
+  - components/cairo.yml
+  - components/dbus.yml
+  - components/mozjs.yml
+  - components/gtk.yml
+  - components/gtk4.yml
+  - components/sysprof.yml
 build-time:
-- components/gobject-introspection.yml
+  - components/gobject-introspection.yml
 sources:
-- https://download.gnome.org/sources/gjs/1.68/gjs-1.68.1.tar.xz
+  - https://download.gnome.org/sources/gjs/1.68/gjs-1.68.1.tar.xz
 post-script: ln -sfv gjs-console %{install-root}/usr/bin/gjs
 configure: --buildtype=release
-

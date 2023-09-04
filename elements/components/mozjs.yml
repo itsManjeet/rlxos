@@ -1,0 +1,32 @@
+id: mozjs
+version: 102.13.0
+about: Mozilla's JavaScript engine written in C
+
+
+script: |
+  ./js/src/configure.in \
+      --prefix=%{prefix} \
+      --with-intl-api \
+      --enable-readline \
+      --with-system-zlib \
+      --with-system-icu \
+      --disable-jemalloc \
+      --disable-debug-symbols
+  
+  make ${MAKEFLAGS}
+
+  make install DESTDIR=%{install-root}
+  rm -v %{install-root}/%{libdir}/libjs_static.ajs
+  sed -i "/@NSPR_CFLAGS@/d" %{install-root}/%{bindir}/js%{version:2}-config
+
+
+depends:
+  - components/icu.yml
+
+build-time:
+  - components/autoconf-2.13.yml
+  - components/rustc.yml
+  - components/which.yml
+
+sources:
+  - https://archive.mozilla.org/pub/firefox/releases/%{version}esr/source/firefox-%{version}esr.source.tar.xz

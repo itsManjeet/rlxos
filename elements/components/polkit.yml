@@ -1,33 +1,34 @@
 id: polkit
-version: 0.119
+version: 123
 about: Toolkit for defining and handling authorizations
+
+build-type: meson
+
+configure: >
+  -D examples=false
+  -D gtk_doc=true
+  -D man=true
+  -D session_tracking=libsystemd-login
+  -D tests=false
+
+post-script: |
+  install -d -o root -g 102 -m 750 %{install-root}/%{sysconfdir}/polkit-1/rules.d %{install-root}/%{datadir}/polkit-1/rules.d
+  install -Dm644 /dev/stdin "%{install-root}/%{libdir}/sysusers.d/polkit" <<END
+  u polkit 102 "PolicyKit Daemon"
+  m polkit proc
+  END
 
 depends:
   - components/glib.yml
-  - components/js78.yml
+  - components/duktape.yml
   - components/pam.yml
   - components/systemd.yml
   - components/intltool.yml
   - components/gobject-introspection.yml
 build-time:
   - components/docbook-xsl.yml
-sources:
-  - https://www.freedesktop.org/software/polkit/releases/polkit-%{version}.tar.gz
-pre-script: |
-  sed -i "s:/sys/fs/cgroup/systemd/:/sys:g" configure
-post-script: |
-  mkdir -p %{install-root}%{sysconfdir}/pam.d/
-  cat > %{install-root}%{sysconfdir}/pam.d/polkit-1 <<EOF
-  auth     include        system-auth
-  account  include        system-account
-  password include        system-password
-  session  include        system-session
-  EOF
-  install -v -d -m 0750 -o 27 %{install-root}/{etc,usr/share}/polkit-1/rules.d
-  # set adm as default polkit admin
-  sed -i 's|wheel|adm|' %{install-root}%{sysconfdir}/polkit-1/rules.d/50-default.rules
+  - components/gtk-doc.yml
 
-configure: >
-  --disable-static
-  --with-os-type=LFS
-  --disable-man-pages
+sources:
+  - https://gitlab.freedesktop.org/polkit/polkit/-/archive/%{version}/polkit-%{version}.tar.gz
+

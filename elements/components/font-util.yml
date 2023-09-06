@@ -1,9 +1,0 @@
-id: font-util
-version: 1.3.2
-about: X.org font utilities
-release: 0
-build-time:
-- components/x11/util-macros.yml
-sources:
-- https://www.x.org/pub/individual/font/font-util-1.3.2.tar.bz2
-

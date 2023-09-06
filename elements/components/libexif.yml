@@ -1,8 +1,9 @@
 id: libexif
-version: 0.6.23
+version: 0.6.24
 about: A library for parsing, editing, and saving EXIF data
-release: 0
-sources:
-- https://github.com/libexif/libexif/releases/download/v0.6.23/libexif-0.6.23.tar.xz
-configure: --disable-static
 
+depends:
+  - components/glibc.yml
+
+sources:
+  - https://github.com/libexif/libexif/releases/download/v%{version}/libexif-%{version}.tar.xz

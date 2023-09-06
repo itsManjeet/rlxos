@@ -1,17 +1,16 @@
 id: libchamplain
-version: 0.12.20
+version: 0.12.21
 about: A map widget
-release: 0
-depends:
-- components/cairo.yml
-- components/clutter-gtk.yml
-- components/libsoup.yml
-- components/sqlite.yml
-build-time:
-- components/gobject-introspection.yml
-- components/gtk-doc.yml
-- components/meson.yml
-- components/vala.yml
-sources:
-- https://download.gnome.org/sources/%{id}/0.12/%{id}-%{version}.tar.xz
 
+depends:
+  - components/cairo.yml
+  - components/clutter-gtk.yml
+  - components/libsoup.yml
+  - components/sqlite.yml
+build-time:
+  - components/gobject-introspection.yml
+  - components/gtk-doc.yml
+  - components/meson.yml
+  - components/vala.yml
+sources:
+  - https://download.gnome.org/sources/%{id}/%{version:1}/%{id}-%{version}.tar.xz

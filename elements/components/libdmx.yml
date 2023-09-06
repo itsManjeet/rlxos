@@ -1,7 +1,0 @@
-id: libdmx
-version: "7"
-about: xorg library libdmx
-release: 0
-sources:
-- https://www.x.org/pub/individual/lib/libdmx-1.1.4.tar.bz2
-

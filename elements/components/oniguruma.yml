@@ -1,7 +1,9 @@
 id: oniguruma
 version: 6.9.8
 about: Regular expressions library
-release: 0
-sources:
-- https://github.com/kkos/oniguruma/releases/download/v%{version}/onig-%{version}.tar.gz
 
+depends:
+  - components/glibc.yml
+
+sources:
+  - https://github.com/kkos/oniguruma/releases/download/v%{version}/onig-%{version}.tar.gz

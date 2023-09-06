@@ -1,12 +1,9 @@
 id: swig
-version: 4.0.2
+version: 4.1.1
 about: Generate scripting interface to C/C++ code
-release: 0
+
 depends:
   - components/libgcc.yml
   - components/pcre.yml
 sources:
   - https://downloads.sourceforge.net/swig/swig-%{version}.tar.gz
-post-script: |-
-  install -D -m644 LICENSE "%{install-root}"%{datadir}/licenses/swig/LICENSE
-  install -D -m644 LICENSE-UNIVERSITIES "%{install-root}"%{datadir}/licenses/swig/LICENSE-UNIVERSITIES

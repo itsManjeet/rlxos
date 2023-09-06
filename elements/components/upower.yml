@@ -1,14 +1,15 @@
 id: upower
-version: 0.99.12
-about: Package provides an interface to enumerating power devices, listening to device
-  events and querying history and statistics
-release: 0
-depends:
-- components/libgudev.yml
-- components/libusb.yml
-- components/polkit.yml
-- components/gobject-introspection.yml
-sources:
-- https://gitlab.freedesktop.org/upower/upower/uploads/244f5966c58773bbd3b4c507c549560f/upower-0.99.12.tar.xz
-configure: --enable-deprecated --disable-static
+version: 1.90.2
+about: Package provides an interface to enumerating power devices, listening to device events and querying history and statistics
 
+configure: >-
+  --enable-deprecated
+  --disable-static
+
+depends:
+  - components/libgudev.yml
+  - components/libusb.yml
+  - components/polkit.yml
+  - components/gobject-introspection.yml
+sources:
+  - https://gitlab.freedesktop.org/upower/upower/-/archive/v%{version}/upower-v%{version}.tar.gz

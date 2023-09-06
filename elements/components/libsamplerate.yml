@@ -1,15 +1,16 @@
 id: libsamplerate
 version: 0.2.2
 about: An audio sample rate conversion library
-release: 0
+configure: >-
+  -DCMAKE_BUILD_TYPE='None'
+  -DBUILD_SHARED_LIBS=ON
+  -Wno-dev
 depends:
-- components/glibc.yml
+  - components/glibc.yml
 build-time:
-- components/alsa-lib.yml
-- components/cmake.yml
-- components/libsndfile.yml
-- components/opus.yml
+  - components/alsa-lib.yml
+  - components/cmake.yml
+  - components/libsndfile.yml
+  - components/opus.yml
 sources:
-- https://github.com/libsndfile/libsamplerate/releases/download/%{version}/libsamplerate-%{version}.tar.xz
-configure: -DCMAKE_BUILD_TYPE='None' -DBUILD_SHARED_LIBS=ON -Wno-dev
-
+  - https://github.com/libsndfile/libsamplerate/releases/download/%{version}/libsamplerate-%{version}.tar.xz

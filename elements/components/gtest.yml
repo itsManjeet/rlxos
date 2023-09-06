@@ -1,11 +1,12 @@
 id: gtest
-version: 1.11.0
+version: 1.14.0
 about: Google Test C++ testing utility
-release: 0
-build-time:
-- components/cmake.yml
-- components/python.yml
-sources:
-- https://github.com/google/googletest/archive/refs/tags/release-1.11.0.tar.gz
-configure: -DBUILD_SHARED_LIBS=ON
 
+build-time:
+  - components/cmake.yml
+  - components/python.yml
+sources:
+  - https://github.com/google/googletest/archive/refs/tags/release-%{version}.tar.gz
+
+configure: >-
+  -DBUILD_SHARED_LIBS=ON

@@ -1,14 +1,15 @@
 id: clutter-gst
 version: 3.0.27
 about: An integration library for using GStreamer with Clutter
-release: 0
-depends:
-- components/clutter.yml
-- components/gst-plugins-base.yml
-- components/libgudev.yml
-- components/gst-plugins-bad.yml
-build-time:
-- components/gobject-introspection.yml
-sources:
-- https://download.gnome.org/sources/clutter-gst/3.0/clutter-gst-3.0.27.tar.xz
 
+depends:
+  - components/clutter.yml
+  - components/gst-plugins-base.yml
+  - components/libgudev.yml
+  - components/gst-plugins-bad.yml
+
+build-time:
+  - components/gobject-introspection.yml
+
+sources:
+  - https://download.gnome.org/sources/clutter-gst/%{version:1}/clutter-gst-%{version}.tar.xz

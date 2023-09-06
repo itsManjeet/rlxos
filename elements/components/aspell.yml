@@ -1,14 +1,13 @@
 id: aspell
 version: 0.60.8
 about: An interactive spell checking program and the Aspell libraries
-release: 0
+
 depends:
-- components/which.yml
+  - components/which.yml
 sources:
-- https://ftp.gnu.org/gnu/aspell/aspell-%{version}.tar.gz
+  - https://ftp.gnu.org/gnu/aspell/aspell-%{version}.tar.gz
 post-script: |-
-  ln -svfn aspell-0.60 %{install-root}/usr/lib/aspell
+  ln -svfn aspell-%{version:1} %{install-root}/%{libdir}/aspell
 
-  install -v -D -m 0755 scripts/ispell -t %{install-root}/usr/bin
-  install -v -D -m 0755 scripts/spell -t %{install-root}/usr/bin
-
+  install -v -D -m 0755 scripts/ispell -t %{install-root}/%{bindir}
+  install -v -D -m 0755 scripts/spell -t %{install-root}/%{bindir}

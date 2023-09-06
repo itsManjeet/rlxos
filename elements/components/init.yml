@@ -1,7 +1,0 @@
-id: init
-version: 0.0.1
-about: rlxos Init service
-
-build-type: go-pkg
-variables:
-  go-pkg: rlxos/src/init

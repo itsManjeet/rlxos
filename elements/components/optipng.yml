@@ -1,13 +1,14 @@
 id: optipng
 version: 0.7.7
 about: Compresses PNG files to smaller size without losing any information
-release: 0
-depends:
-- components/glibc.yml
-- components/libpng.yml
-- components/zlib.yml
-sources:
-- https://downloads.sourceforge.net/sourceforge/optipng/optipng-%{version}.tar.gz
-configure: |
-  --prefix=/usr --mandir=%{datadir}/man --with-system-libs
 
+configure: >-
+  --mandir=%{datadir}/man
+  --with-system-libs
+
+depends:
+  - components/glibc.yml
+  - components/libpng.yml
+  - components/zlib.yml
+sources:
+  - https://downloads.sourceforge.net/sourceforge/optipng/optipng-%{version}.tar.gz

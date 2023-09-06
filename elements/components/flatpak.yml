@@ -1,32 +1,40 @@
 id: flatpak
-version: 1.12.7
+version: 1.14.4
 about: Linux application sandboxing and distribution framework
-release: 0
-depends:
-- components/appstream-glib.yml
-- components/bubblewrap.yml
-- components/dbus.yml
-- components/glib.yml
-- components/json-glib.yml
-- components/libarchive.yml
-- components/libsoup.yml
-- components/xorg-libs.yml
-- components/ostree.yml
-- components/polkit.yml
-- components/python.yml
-- components/systemd.yml
-- components/py/py-parsing.yml
-- components/xdg-dbus-proxy.yml
-- components/xdg-desktop-portal.yml
-- components/libseccomp.yml
-build-time:
-- components/gtk-doc.yml
-sources:
-- https://github.com/flatpak/flatpak/releases/download/%{version}/flatpak-%{version}.tar.xz
-- https://dl.flathub.org/repo/flathub.flatpakrepo
-post-script: |
-  install -v -D -t %{install-root}%{sysconfdir}/profile.d/ /files/flatpak/flatpak.sh
-  install -v -D -t %{install-root}%{sysconfdir}/flatpak/remotes.d ../flathub.flatpakrepo
-configure: "--disable-static --enable-gtk-doc --with-system-bubblewrap --with-system-dbus-proxy
-  --with-dbus-config-dir=%{datadir}/dbus-1/system.d\n        \n"
 
+post-script: |
+  install -v -D /dev/stdin %{install-root}%{sysconfdir}/profile.d/ << EOF
+
+  EOF
+  install -v -D -t %{install-root}%{sysconfdir}/flatpak/remotes.d ../flathub.flatpakrepo
+configure: >-
+  --disable-static
+  --enable-gtk-doc
+  --with-system-bubblewrap
+  --with-system-dbus-proxy
+  --with-dbus-config-dir=%{datadir}/dbus-1/system.d
+
+depends:
+  - components/appstream-glib.yml
+  - components/bubblewrap.yml
+  - components/dbus.yml
+  - components/glib.yml
+  - components/json-glib.yml
+  - components/libarchive.yml
+  - components/libsoup.yml
+  - components/xorg-libs.yml
+  - components/ostree.yml
+  - components/polkit.yml
+  - components/python.yml
+  - components/systemd.yml
+  - components/py/py-parsing.yml
+  - components/xdg-dbus-proxy.yml
+  - components/xdg-desktop-portal.yml
+  - components/libseccomp.yml
+build-time:
+  - components/gtk-doc.yml
+sources:
+  - https://github.com/flatpak/flatpak/releases/download/%{version}/flatpak-%{version}.tar.xz
+  - https://dl.flathub.org/repo/flathub.flatpakrepo
+
+# TODO: fix configurations

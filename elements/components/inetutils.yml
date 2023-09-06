@@ -2,15 +2,6 @@ id: inetutils
 version: 2.4
 about: Package contains programs for basic networking
 
-depends:
-  - components/glibc.yml
-  - components/libcap.yml
-  - components/pam.yml
-  - components/ncurses.yml
-
-sources:
-  - https://ftp.gnu.org/gnu/inetutils/inetutils-%{version}.tar.xz
-
 configure: >
   --disable-logger
   --disable-whois
@@ -19,3 +10,12 @@ configure: >
   --disable-rlogin
   --disable-rsh
   --disable-servers
+
+depends:
+  - components/glibc.yml
+  - components/libcap.yml
+  - components/pam.yml
+  - components/ncurses.yml
+
+sources:
+  - https://ftp.gnu.org/gnu/inetutils/inetutils-%{version}.tar.xz

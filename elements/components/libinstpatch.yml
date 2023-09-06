@@ -1,15 +1,18 @@
 id: libinstpatch
 version: 1.1.6
 about: Instrument file software library
-release: 0
-depends:
-- components/glibc.yml
-- components/glib.yml
-- components/libsndfile.yml
-build-time:
-- components/cmake.yml
-- components/python.yml
-sources:
-- libinstpatch-%{version}.tar.gz::https://github.com/swami/libinstpatch/archive/v%{version}.tar.gz
-configure: -DLIB_INSTALL_DIR=/usr/lib -DCMAKE_BUILD_TYPE='None' -Wno-dev
 
+configure: >-
+  -DLIB_INSTALL_DIR=%{libdir}
+  -DCMAKE_BUILD_TYPE='None'
+  -Wno-dev
+
+depends:
+  - components/glibc.yml
+  - components/glib.yml
+  - components/libsndfile.yml
+build-time:
+  - components/cmake.yml
+  - components/python.yml
+sources:
+  - libinstpatch-%{version}.tar.gz::https://github.com/swami/libinstpatch/archive/v%{version}.tar.gz

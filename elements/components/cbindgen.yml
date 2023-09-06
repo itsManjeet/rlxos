@@ -1,12 +1,11 @@
 id: cbindgen
-version: 0.24.3
+version: 0.25.0
 about: Cbindgen can be used to generate C bindings for Rust code
-release: 0
-depends:
-- components/rustc.yml
-sources:
-- https://github.com/eqrion/cbindgen/archive/v%{version}/cbindgen-%{version}.tar.gz
-script: |-
-  cargo build --release
-  install -v -D -m 0755 target/release/cbindgen -t %{install-root}/usr/bin/
 
+depends:
+  - components/rustc.yml
+sources:
+  - https://github.com/eqrion/cbindgen/archive/v%{version}/cbindgen-%{version}.tar.gz
+
+post-script: |
+  install -v -D -m 0755 target/release/cbindgen -t %{install-root}/%{bindir}

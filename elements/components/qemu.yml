@@ -1,8 +1,21 @@
 id: qemu
-version: 7.0.0
-about: |
-  A full virtualization solution for Linux on x86 hardware containing virtualization extensions
-release: 0
+version: 8.1.0
+about: A full virtualization solution for Linux on x86 hardware containing virtualization extensions
+
+post-script: |-
+  # install -v -D -m 644 /files/65-kvm.rules -t %{install-root}/usr/lib/udev/rules.d/
+
+  chgrp kvm %{install-root}/usr/lib/qemu-bridge-helper
+  chmod 4750 %{install-root}/usr/lib/qemu-bridge-helper
+
+configure: >-
+  --audio-drv-list=alsa
+  --smbd=/usr/bin/smbd
+  --enable-modules
+  --enable-sdl
+  --enable-gtk
+  --enable-spice
+
 depends:
   - components/glib.yml
   - components/fuse.yml
@@ -25,11 +38,3 @@ build-time:
   - components/spice-protocol.yml
 sources:
   - https://download.qemu-project.org/qemu-%{version}.tar.xz
-post-script: |
-  install -v -D -m 644 /files/65-kvm.rules -t %{install-root}/usr/lib/udev/rules.d/
-
-  chgrp kvm %{install-root}/usr/lib/qemu-bridge-helper
-  chmod 4750 %{install-root}/usr/lib/qemu-bridge-helper
-configure:
-  "--audio-drv-list=alsa --smbd=/usr/bin/smbd --enable-modules --enable-sdl
-  --enable-gtk --enable-spice\n  \n"

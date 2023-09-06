@@ -1,13 +1,12 @@
 id: libsass
 version: 3.6.5
-about: |
-  A CSS pre-processor language
-release: 0
-sources:
-- https://github.com/sass/libsass/archive/%{version}/libsass-%{version}.tar.gz
-script: |
-  autoreconf -fi
-  ./configure --prefix=/usr
-  make
-  make DESTDIR=%{install-root} install
+about: A CSS pre-processor language
 
+pre-script: |-
+  autoreconf -fi
+
+depends:
+  - components/glibc.yml
+
+sources:
+  - https://github.com/sass/libsass/archive/%{version}/libsass-%{version}.tar.gz

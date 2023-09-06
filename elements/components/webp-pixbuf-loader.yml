@@ -1,10 +1,9 @@
 id: webp-pixbuf-loader
-version: 0.0.6
+version: 0.2.4
 about: WebM GDK Pixbuf loader library
-release: 0
-depends:
-- components/gdk-pixbuf.yml
-- components/libwebp.yml
-sources:
-- https://github.com/aruiz/webp-pixbuf-loader/archive/%{version}/webp-pixbuf-loader-%{version}.tar.gz
 
+depends:
+  - components/gdk-pixbuf.yml
+  - components/libwebp.yml
+sources:
+  - https://github.com/aruiz/webp-pixbuf-loader/archive/%{version}/webp-pixbuf-loader-%{version}.tar.gz

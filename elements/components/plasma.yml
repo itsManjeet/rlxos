@@ -1,7 +1,7 @@
 id: plasma
-version: "5.24"
+merge: [elements/include/plasma.yml]
 about: Plasma desktop
-release: 0
+
 depends:
   - components/bluedevil.yml
   - components/breeze.yml

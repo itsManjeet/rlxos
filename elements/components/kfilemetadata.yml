@@ -1,18 +1,12 @@
 id: kfilemetadata
-version: 5.94.0
+merge: [elements/include/kf5.yml]
 about: KF5 kfilemetadata
-release: 0
 depends:
-- components/exiv2.yml
-- components/ffmpeg.yml
-- components/karchive.yml
-- components/kconfig.yml
-- components/kcoreaddons.yml
-- components/ki18n.yml
+  - components/exiv2.yml
+  - components/ffmpeg.yml
+  - components/karchive.yml
+  - components/kconfig.yml
+  - components/kcoreaddons.yml
+  - components/ki18n.yml
 build-time:
-- components/extra-cmake-modules.yml
-sources:
-- https://download.kde.org/stable/frameworks/5.94/%{id}-%{version}.tar.xz
-configure: |
-  -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF -Wno-dev
-
+  - components/extra-cmake-modules.yml

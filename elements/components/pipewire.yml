@@ -1,19 +1,19 @@
 id: pipewire
-version: 0.3.33
+version: 0.3.79
 about: A server and user-space API to handle multimedia pipelines
-release: 0
-depends:
-- components/bluez.yml
-- components/ffmpeg.yml
-- components/gstreamer.yml
-- components/gst-plugins-base.yml
-- components/libva.yml
-- components/pulseaudio.yml
-- components/sbc.yml
-- components/sdl.yml
-- components/v4l-utils.yml
-sources:
-- https://github.com/PipeWire/pipewire/archive/0.3.33/pipewire-0.3.33.tar.gz
-configure: |
+
+configure: >-
   --buildtype=release
 
+depends:
+  - components/bluez.yml
+  - components/ffmpeg.yml
+  - components/gstreamer.yml
+  - components/gst-plugins-base.yml
+  - components/libva.yml
+  - components/pulseaudio.yml
+  - components/sbc.yml
+  - components/sdl.yml
+  - components/v4l-utils.yml
+sources:
+  - https://github.com/PipeWire/pipewire/archive/%{version}/pipewire-%{version}.tar.gz

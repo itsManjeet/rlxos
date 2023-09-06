@@ -1,21 +1,26 @@
 id: cups
-version: 2.3.3op2
+version: 2.4.6
 about: |
   Common Unix Printing System (CUPS) is a print spooler and associated utilities
-release: 0
-depends:
-- components/gnutls.yml
-- components/colord.yml
-- components/dbus.yml
-- components/libusb.yml
-- components/pam.yml
-- components/xdg-utils.yml
-- components/desktop-file-utils.yml
-sources:
-- https://github.com/OpenPrinting/cups/releases/download/v%{version}/cups-%{version}-source.tar.gz
+
+configure: --with-system-groups=lpadmin
+
 post-script: |
   mkdir -p %{install-root}%{sysconfdir}/cups/
   echo "ServerName /run/cups/cups.sock" > %{install-root}%{sysconfdir}/cups/client.conf
-  install -v -D -m 644 /files/pam/cups -t %{install-root}%{sysconfdir}/pam.d/
-configure: --with-system-groups=lpadmin
+  install -v -Dm 644 /dev/stdin %{install-root}%{sysconfdir}/pam.d << "EOF"
 
+  EOF
+
+depends:
+  - components/gnutls.yml
+  - components/colord.yml
+  - components/dbus.yml
+  - components/libusb.yml
+  - components/pam.yml
+  - components/xdg-utils.yml
+  - components/desktop-file-utils.yml
+sources:
+  - https://github.com/OpenPrinting/cups/releases/download/v%{version}/cups-%{version}-source.tar.gz
+
+# TODO: fix pam configuration

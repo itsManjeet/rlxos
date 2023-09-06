@@ -1,8 +1,11 @@
 id: fdk-aac
 version: 2.0.2
 about: Package provides the Fraunhofer FDK AAC library
-release: 0
-sources:
-- https://downloads.sourceforge.net/opencore-amr/fdk-aac-2.0.2.tar.gz
-configure: --disable-static
 
+configure: >-
+  --disable-static
+
+depends:
+  - components/glibc.yml
+sources:
+  - https://downloads.sourceforge.net/opencore-amr/fdk-aac-%{version}.tar.gz

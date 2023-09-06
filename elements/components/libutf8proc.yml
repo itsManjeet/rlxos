@@ -1,15 +1,18 @@
 id: libutf8proc
 version: 2.7.0
 about: C library for processing UTF-8 encoded Unicode strings
-release: 0
-build-time:
-- components/cmake.yml
-- components/git.yml
-- components/ninja.yml
-sources:
-- utf8proc-%{version}.tar.gz::https://github.com/JuliaStrings/utf8proc/archive/refs/tags/v%{version}.tar.gz
-pre-script: |
+
+pre-script: |-
   sed "s#@VERSION@#%{version}#" /files/libutf8proc.pc.in > libutf8proc.pc
-configure: -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_LIBDIR=lib -DBUILD_SHARED_LIBS=ON
+configure: >-
+  -DCMAKE_BUILD_TYPE=Release
+  -DCMAKE_INSTALL_LIBDIR=lib
+  -DBUILD_SHARED_LIBS=ON
   -G Ninja
 
+build-time:
+  - components/cmake.yml
+  - components/git.yml
+  - components/ninja.yml
+sources:
+  - utf8proc-%{version}.tar.gz::https://github.com/JuliaStrings/utf8proc/archive/refs/tags/v%{version}.tar.gz

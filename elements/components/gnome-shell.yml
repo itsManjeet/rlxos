@@ -1,30 +1,27 @@
 id: gnome-shell
-version: "40.3"
-about: |
-  Core user interface for GNOME Desktop Environment
-release: 0
-depends:
-- components/evolution-data-server.yml
-- components/gjs.yml
-- components/gtk4.yml
-- components/mutter.yml
-- components/sassc.yml
-- components/startup-notification.yml
-- components/systemd.yml
-- components/desktop-file-utils.yml
-- components/gnome-bluetooth.yml
-- components/gst-plugins-base.yml
-- components/networkmanager.yml
-- components/gdm.yml
-- components/dconf.yml
-- components/ibus.yml
-- components/gnome-autoar.yml
-- components/libnma.yml
-- components/gnome-menus.yml
-sources:
-- https://download.gnome.org/sources/gnome-shell/40/gnome-shell-%{version}.tar.xz
-pre-script: |
-  patch data/org.gnome.shell.gschema.xml.in < /files/config.patch
-  patch js/ui/main.js < /files/show-apps-on-startup.patch
-configure: --buildtype=release
+version: 44.4
+about: Core user interface for GNOME Desktop Environment
 
+depends:
+  - components/evolution-data-server.yml
+  - components/gjs.yml
+  - components/gtk4.yml
+  - components/mutter.yml
+  - components/sassc.yml
+  - components/startup-notification.yml
+  - components/systemd.yml
+  - components/desktop-file-utils.yml
+  - components/gnome-bluetooth.yml
+  - components/gst-plugins-base.yml
+  - components/networkmanager.yml
+  - components/gdm.yml
+  - components/dconf.yml
+  - components/ibus.yml
+  - components/gnome-autoar.yml
+  - components/libnma.yml
+  - components/gnome-menus.yml
+sources:
+  - https://download.gnome.org/sources/gnome-shell/%{version:1}/gnome-shell-%{version}.tar.xz
+
+configure: >-
+  --buildtype=release

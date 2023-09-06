@@ -1,15 +1,13 @@
 id: sphinxbase
-version: 5prealpha
+version: 0.8
 about: Common library for sphinx speech recognition
-release: 0
-depends:
-- components/openblas-lapack.yml
-- components/pulseaudio.yml
-- components/python.yml
-build-time:
-- components/bison.yml
-- components/swig.yml
-sources:
-- http://downloads.sourceforge.net/project/cmusphinx/sphinxbase/%{version}/sphinxbase-%{version}.tar.gz
-post-script: install -D -m644 LICENSE %{install-root}%{datadir}/licenses/sphinxbase/LICENSE
 
+depends:
+  - components/openblas-lapack.yml
+  - components/pulseaudio.yml
+  - components/python.yml
+build-time:
+  - components/bison.yml
+  - components/swig.yml
+sources:
+  - http://downloads.sourceforge.net/project/cmusphinx/sphinxbase/%{version}/sphinxbase-%{version}.tar.gz

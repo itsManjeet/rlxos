@@ -1,17 +1,21 @@
 id: blueman
-version: 2.2.1
+version: 2.3.5
 about: GTK+ Bluetooth Manager
-release: 0
-depends:
-- components/bluez.yml
-- components/gtk.yml
-- components/py/py-cairo.yml
-- components/py/py-gobject.yml
-build-time:
-- components/intltool.yml
-- components/iproute2.yml
-- components/py/py-cython.yml
-sources:
-- https://github.com/blueman-project/blueman/releases/download/%{version}/blueman-%{version}.tar.xz
-configure: --libexecdir=/usr/lib/blueman --disable-schemas-compile --with-dhcp-config='%{sysconfdir}/dhcpd.conf'
 
+configure: >
+  --libexecdir=%{libdir}/blueman
+  --disable-schemas-compile
+  --with-dhcp-config='%{sysconfdir}/dhcpd.conf'
+
+depends:
+  - components/bluez.yml
+  - components/gtk.yml
+  - components/py/py-cairo.yml
+  - components/py/py-gobject.yml
+build-time:
+  - components/intltool.yml
+  - components/iproute2.yml
+  - components/py/py-cython.yml
+
+sources:
+  - https://github.com/blueman-project/blueman/releases/download/%{version}/blueman-%{version}.tar.xz

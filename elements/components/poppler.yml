@@ -1,20 +1,20 @@
 id: poppler
-version: 21.07.0
-about: |
-  A PDF rendering library and command line tools used to manipulate PDF files
-release: 0
-depends:
-- components/fontconfig.yml
-- components/cairo.yml
-- components/lcms.yml
-- components/libjpeg-turbo.yml
-- components/libpng.yml
-- components/nss.yml
-- components/libboost.yml
-- components/openjpeg.yml
-build-time:
-- components/boost.yml
-sources:
-- https://poppler.freedesktop.org/poppler-21.07.0.tar.xz
-configure: -DENABLE_UNSTABLE_API_ABI_HEADERS=ON
+version: 23.09.0
+about: A PDF rendering library and command line tools used to manipulate PDF files
 
+depends:
+  - components/fontconfig.yml
+  - components/cairo.yml
+  - components/lcms.yml
+  - components/libjpeg-turbo.yml
+  - components/libpng.yml
+  - components/nss.yml
+  - components/libboost.yml
+  - components/openjpeg.yml
+build-time:
+  - components/boost.yml
+sources:
+  - https://poppler.freedesktop.org/poppler-%{version}.tar.xz
+
+configure: >-
+  -DENABLE_UNSTABLE_API_ABI_HEADERS=ON

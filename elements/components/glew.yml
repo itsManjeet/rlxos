@@ -1,15 +1,9 @@
 id: glew
 version: 2.2.0
 about: OpenGL extension wrangler library
-release: 0
-depends:
-- components/glu.yml
-- components/x11/libxi.yml
-- components/x11/libxmu.yml
-sources:
-- https://downloads.sourceforge.net/glew/glew-%{version}.tgz
+
 script: |-
-  patch -Np1 -i /files/glew/glew-install.patch
+  # patch -Np1 -i /files/glew/glew-install.patch
 
   make STRIP= \
     LIBDIR=/usr/lib
@@ -17,3 +11,11 @@ script: |-
   make install.all DESTDIR=%{install-root} \
     LIBDIR=/usr/lib
 
+depends:
+  - components/glu.yml
+  - components/x11/libxi.yml
+  - components/x11/libxmu.yml
+sources:
+  - https://downloads.sourceforge.net/glew/glew-%{version}.tgz
+
+# TODO: fix patch

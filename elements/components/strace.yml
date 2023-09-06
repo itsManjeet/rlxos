@@ -1,5 +1,5 @@
 id: strace
-version: 6.4
+version: 6.5
 about: A diagnostic, debugging and instructional userspace tracer
 
 configure: >-

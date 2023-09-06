@@ -1,13 +1,14 @@
 id: libvpx
-version: 1.10.0
+version: 1.13.0
 about: Reference implementations of the VP8 Codec
-release: 0
-build-time:
-- components/yasm.yml
-- components/which.yml
-sources:
-- https://github.com/webmproject/libvpx/archive/v1.10.0/libvpx-1.10.0.tar.gz
-pre-script: |
-  sed -i "s/cp -p/cp/" build/make/Makefile
-configure: --prefix=/usr --enable-shared --disable-static
 
+build-time:
+  - components/yasm.yml
+  - components/which.yml
+sources:
+  - https://github.com/webmproject/libvpx/archive/v%{version}/libvpx-%{version}.tar.gz
+pre-script: |-
+  sed -i "s/cp -p/cp/" build/make/Makefile
+configure: >-
+  --enable-shared
+  --disable-static

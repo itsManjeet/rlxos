@@ -1,14 +1,11 @@
 id: polkit-qt
 version: 0.114.0
-about: |
-  API to PolicyKit in the Qt environment
-release: 0
+about: API to PolicyKit in the Qt environment
 depends:
-- components/polkit.yml
-- components/qt.yml
+  - components/polkit.yml
+  - components/qt.yml
 build-time:
-- components/cmake.yml
+  - components/cmake.yml
 sources:
-- https://download.kde.org/stable/polkit-qt-1/polkit-qt-1-%{version}.tar.xz
+  - https://download.kde.org/stable/polkit-qt-1/polkit-qt-1-%{version}.tar.xz
 configure: -Wno-dev
-

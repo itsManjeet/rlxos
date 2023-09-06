@@ -1,18 +1,28 @@
 id: wxgtk
-version: 3.0.5.1
+version: 3.2.2.1
 about: GTK+3 implementation of wxWidgets API for GUI
-release: 0
-depends:
-- components/gst-plugins-base.yml
-- components/gtk.yml
-- components/libnotify.yml
-- components/x11/libsm.yml
-- components/x11/libxxf86vm.yml
-- components/webkitgtk.yml
-build-time:
-- components/glu.yml
-sources:
-- https://github.com/wxWidgets/wxWidgets/releases/download/v%{version}/wxWidgets-%{version}.tar.bz2
-configure: |
-  --with-opengl --enable-unicode --with-gtk=3 --enable-graphics_ctx --enable-mediactrl --with-regex=builtin --with-libpng=sys --with-libxpm=sys --with-libjpeg=sys --with-libtiff=sys --disable-precomp-headers
 
+configure: >-
+  --with-opengl
+  --with-gtk=3
+  --with-regex=builtin
+  --with-libpng=sys
+  --with-libxpm=sys
+  --with-libjpeg=sys
+  --with-libtiff=sys
+  --enable-unicode
+  --enable-graphics_ctx
+  --enable-mediactrl
+  --disable-precomp-headers
+
+depends:
+  - components/gst-plugins-base.yml
+  - components/gtk.yml
+  - components/libnotify.yml
+  - components/x11/libsm.yml
+  - components/x11/libxxf86vm.yml
+  - components/webkitgtk.yml
+build-time:
+  - components/glu.yml
+sources:
+  - https://github.com/wxWidgets/wxWidgets/releases/download/v%{version}/wxWidgets-%{version}.tar.bz2

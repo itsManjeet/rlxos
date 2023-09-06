@@ -1,23 +1,29 @@
 id: ostree
-version: "2021.6"
+version: 2023.6
 about: Operating system and container binary deployment and upgrade
-release: 0
-depends:
-- components/fuse2.yml
-- components/glibc.yml
-- components/libarchive.yml
-- components/avahi.yml
-- components/libgpg-error.yml
-- components/openssl.yml
-- components/util-linux.yml
-- components/gpgme.yml
-- components/libsoup.yml
-- components/xz.yml
-- components/zlib.yml
-build-time:
-- components/gtk-doc.yml
-sources:
-- https://github.com/ostreedev/ostree/releases/download/v%{version}/libostree-%{version}.tar.xz
-configure: |
-  --with-builtin-grub2-mkconfig --with-dracut --with-mkinitcpio --with-openssl --enable-experimental-api --disable-static --enable-gtk-doc
 
+configure: >-
+  --with-builtin-grub2-mkconfig
+  --with-dracut
+  --with-mkinitcpio
+  --with-openssl
+  --enable-experimental-api
+  --disable-static
+  --enable-gtk-doc
+
+depends:
+  - components/fuse2.yml
+  - components/glibc.yml
+  - components/libarchive.yml
+  - components/avahi.yml
+  - components/libgpg-error.yml
+  - components/openssl.yml
+  - components/util-linux.yml
+  - components/gpgme.yml
+  - components/libsoup.yml
+  - components/xz.yml
+  - components/zlib.yml
+build-time:
+  - components/gtk-doc.yml
+sources:
+  - https://github.com/ostreedev/ostree/releases/download/v%{version}/libostree-%{version}.tar.xz

@@ -1,13 +1,16 @@
 id: libjit
 version: 0.1.4
 about: Generic jit compiler library
-release: 0
-build-time:
-- components/gawk.yml
-- components/bison.yml
-- components/flex.yml
-sources:
-- http://git.savannah.gnu.org/cgit/libjit.git/snapshot/libjit-%{version}.tar.gz
-pre-script: |
+
+pre-script: |-
   ./bootstrap
 
+depends:
+  - components/glibc.yml
+
+build-time:
+  - components/gawk.yml
+  - components/bison.yml
+  - components/flex.yml
+sources:
+  - http://git.savannah.gnu.org/cgit/libjit.git/snapshot/libjit-%{version}.tar.gz

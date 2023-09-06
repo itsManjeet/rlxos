@@ -1,15 +1,11 @@
 id: xfdesktop
-version: 4.16.0
+version: 4.18.1
 about: Xfce desktop manager
-release: 0
-depends:
-- components/exo.yml
-- components/libwnck.yml
-- components/libnotify.yml
-- components/startup-notification.yml
-- components/thunar.yml
-sources:
-- https://archive.xfce.org/src/xfce/xfdesktop/4.16/xfdesktop-4.16.0.tar.bz2
-post-script: |
-  install -v -D -m 0644 /files/xfdesktop/xfce4-desktop.xml -t %{install-root}%{sysconfdir}/xdg/xfce4/xfconf/xfce-perchannel-xml/
 
+depends:
+  - components/exo.yml
+  - components/libwnck.yml
+  - components/libnotify.yml
+  - components/startup-notification.yml
+sources:
+  - https://archive.xfce.org/src/xfce/xfdesktop/%{version:1}/xfdesktop-%{version}.tar.bz2

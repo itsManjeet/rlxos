@@ -1,16 +1,11 @@
 id: plasma-pa
-version: 5.24.5
+merge: [elements/include/plasma.yml]
 about: Plasma plasma-pa
-release: 0
-depends:
-- components/perl.yml
-- components/plasma-workspace.yml
-- components/pulseaudio.yml
-build-time:
-- components/extra-cmake-modules.yml
-- components/kdoctools.yml
-sources:
-- https://download.kde.org/stable/plasma/%{version}/%{id}-%{version}.tar.xz
-configure: |
-  -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF -Wno-dev
 
+depends:
+  - components/perl.yml
+  - components/plasma-workspace.yml
+  - components/pulseaudio.yml
+build-time:
+  - components/extra-cmake-modules.yml
+  - components/kdoctools.yml

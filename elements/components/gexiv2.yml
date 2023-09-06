@@ -1,12 +1,14 @@
 id: gexiv2
-version: 0.12.3
+version: 0.14.2
 about: GObject-based wrapper around the Exiv2 library
-release: 0
+
+configure: >-
+  --buildtype=release
+
 depends:
-- components/exiv2.yml
+  - components/exiv2.yml
 build-time:
-- components/vala.yml
+  - components/vala.yml
 sources:
-- https://download.gnome.org/sources/gexiv2/0.12/gexiv2-0.12.3.tar.xz
-configure: --buildtype=release
+  - https://download.gnome.org/sources/gexiv2/%{version:1}/gexiv2-%{version}.tar.xz
 

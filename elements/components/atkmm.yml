@@ -1,11 +1,13 @@
 id: atkmm
-version: 2.28.2
+version: 2.36.2
 about: C++ interface for the ATK accessibility toolkit library
-release: 0
+
+variables:
+  run-autogen: false
+
 depends:
-- components/atk.yml
-- components/glibmm.yml
+  - components/atk.yml
+  - components/glibmm.yml
 sources:
-- https://download.gnome.org/sources/atkmm/2.28/atkmm-2.28.2.tar.xz
-pre-script: rm autogen.sh
+  - https://download.gnome.org/sources/atkmm/%{version:1}/atkmm-%{version}.tar.xz
 

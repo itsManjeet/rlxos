@@ -1,15 +1,14 @@
 id: zram-generator
 version: 1.1.2
 about: System unit generator for zram devices
-release: 0
+
 depends:
-- components/systemd.yml
+  - components/systemd.yml
 build-time:
-- components/rustc.yml
+  - components/rustc.yml
 sources:
-- zram-generator-%{version}.tar.gz::https://github.com/systemd/zram-generator/archive/refs/tags/v%{version}.tar.gz
+  - zram-generator-%{version}.tar.gz::https://github.com/systemd/zram-generator/archive/refs/tags/v%{version}.tar.gz
 script: |
   make build CARGOFLAGS="--target-dir=target" NOMAN=1
   make CARGOFLAGS="--target-dir=target" DESTDIR="%{install-root}" install NOMAN=1
   mkdir -p %{install-root}%{sysconfdir}/systemd/
-

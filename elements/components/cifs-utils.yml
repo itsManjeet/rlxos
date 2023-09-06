@@ -1,25 +1,18 @@
 id: cifs-utils
-version: "6.14"
+version: 7.0
 about: CIFS filesystem user-space tools
-release: 0
-depends:
-- components/libcap.yml
-- components/keyutils.yml
-- components/krb5.yml
-- components/pam.yml
-sources:
-- https://download.samba.org/pub/linux-cifs/cifs-utils/cifs-utils-%{version}.tar.bz2
-script: |-
+
+script: |
   sed -e 's|cd \$(ROOTSBINDIR)|cd $(DESTDIR)$(ROOTSBINDIR)|g' Makefile.am
   autoreconf -i
-  ./configure --prefix=/usr \
+  ./configure --prefix=%{prefix} \
     --with-libcap=yes \
-    --sbindir=/usr/bin \
+    --sbindir=%{bindir} \
     --disable-systemd
 
   make
 
-  make DESTDIR=%{install-root} ROOTSBINDIR=/usr/bin install
+  make DESTDIR=%{install-root} ROOTSBINDIR=%{bindir} install
 
 
   mkdir -p %{install-root}%{sysconfdir}/request-key.d
@@ -31,3 +24,14 @@ script: |-
   mkdir -p %{install-root}%{sysconfdir}/cifs-utils
   ln -s /usr/lib/cifs-utils/idmapwb.so %{install-root}%{sysconfdir}/cifs-utils/idmap-plugin
 
+
+depends:
+  - components/libcap.yml
+  - components/keyutils.yml
+  - components/krb5.yml
+  - components/pam.yml
+
+sources:
+  - https://download.samba.org/pub/linux-cifs/cifs-utils/cifs-utils-%{version}.tar.bz2
+
+# TODO check for builtins autotools

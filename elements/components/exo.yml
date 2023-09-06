@@ -1,11 +1,11 @@
 id: exo
-version: 4.16.2
+version: 4.18.0
 about: Support library for xfce
-release: 0
-depends:
-- components/libxfce4ui.yml
-build-time:
-- components/intltool.yml
-sources:
-- https://archive.xfce.org/src/xfce/exo/4.16/exo-4.16.2.tar.bz2
 
+depends:
+  - components/libxfce4ui.yml
+build-time:
+  - components/intltool.yml
+sources:
+  - https://archive.xfce.org/src/xfce/exo/%{version:1}/exo-%{version}.tar.bz2
+# TODO: fix update url

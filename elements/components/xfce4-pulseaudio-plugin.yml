@@ -1,16 +1,15 @@
 id: xfce4-pulseaudio-plugin
-version: 0.4.3
+version: 0.4.7
 about: Pulse audio plugin for xfce4 panel
-release: 0
-depends:
-- components/keybinder.yml
-- components/libnotify.yml
-- components/pavucontrol.yml
-- components/pulseaudio.yml
-- components/xfce4-panel.yml
-build-time:
-- components/intltool.yml
-- components/cmake.yml
-sources:
-- https://archive.xfce.org/src/panel-plugins/xfce4-pulseaudio-plugin/0.4/xfce4-pulseaudio-plugin-%{version}.tar.bz2
 
+depends:
+  - components/keybinder.yml
+  - components/libnotify.yml
+  - components/pavucontrol.yml
+  - components/pulseaudio.yml
+  - components/xfce4-panel.yml
+build-time:
+  - components/intltool.yml
+  - components/cmake.yml
+sources:
+  - https://archive.xfce.org/src/panel-plugins/xfce4-pulseaudio-plugin/%{version:1}/xfce4-pulseaudio-plugin-%{version}.tar.bz2

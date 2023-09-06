@@ -1,8 +1,9 @@
 id: jansson
-version: 2.13.1
+version: 2.14
 about: Package contains a library used to encode, decode, and manipulate JSON data
-release: 0
-sources:
-- https://digip.org/jansson/releases/jansson-2.13.1.tar.gz
-configure: --disable-static
 
+configure: >-
+  --disable-static
+
+sources:
+  - https://digip.org/jansson/releases/jansson-%{version}.tar.gz

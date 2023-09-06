@@ -3,6 +3,15 @@ version: 6.4.0
 about: IP Routing Utilities
 sources:
   - https://www.kernel.org/pub/linux/utils/net/iproute2/iproute2-%{version}.tar.xz
+
+pre-script: |-
+  sed -i "s/-Werror//" Makefile
+  sed -i /ARPD/d Makefile
+
+script: |-
+  make
+  make SBINDIR=%{bindir} DESTDIR=%{install-root} install
+
 depends:
   - components/glibc.yml
   - components/iptables.yml
@@ -11,9 +20,3 @@ depends:
 build-time:
   - components/flex.yml
   - components/bison.yml
-pre-script: |
-  sed -i "s/-Werror//" Makefile
-  sed -i /ARPD/d Makefile
-script: |
-  make
-  make SBINDIR=/usr/bin DESTDIR=%{install-root} install

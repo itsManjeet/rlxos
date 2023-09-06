@@ -4,6 +4,10 @@ about:
   A rendering engine for graphite fonts. These are TrueType fonts with additional
   tables containing smart rendering information and were originally developed to support
   complex non-Roman writing systems
+build-type: cmake
+pre-script: |-
+  sed -i "/cmptest/d" tests/CMakeLists.txt
+
 sources:
   - https://github.com/silnrsi/graphite/releases/download/%{version}/graphite2-%{version}.tgz
 depends:
@@ -11,6 +15,3 @@ depends:
 build-time:
   - components/cmake.yml
   - components/py/py-setuptools.yml
-build-type: cmake
-pre-script: |
-  sed -i "/cmptest/d" tests/CMakeLists.txt

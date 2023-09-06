@@ -1,10 +1,9 @@
 id: extra-cmake-modules
-version: 5.97.0
+version: 5.109.0
 about: |
   Extra Cmake Modules package contains extra CMake modules used by KDE Frameworks 5
-release: 0
-depends:
-- components/cmake.yml
-sources:
-- https://download.kde.org/stable/frameworks/5.97/extra-cmake-modules-%{version}.tar.xz
 
+depends:
+  - components/cmake.yml
+sources:
+  - https://download.kde.org/stable/frameworks/%{version:1}/extra-cmake-modules-%{version}.tar.xz

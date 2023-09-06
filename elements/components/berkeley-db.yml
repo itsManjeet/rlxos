@@ -3,7 +3,7 @@ version: 5.3.28
 about: Berkeley Database
 release: 0
 sources:
-- https://anduin.linuxfromscratch.org/BLFS/bdb/db-5.3.28.tar.gz
+  - https://anduin.linuxfromscratch.org/BLFS/bdb/db-5.3.28.tar.gz
 script: |-
   sed -i "s/\(__atomic_compare_exchange\)/\1_db/" src/dbinc/atomic.h
   cd build_unix
@@ -18,3 +18,5 @@ script: |-
 
   chown -v -R root:root %{install-root}
 
+# TODO: Fix update url
+# TODO: check direct source

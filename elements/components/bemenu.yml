@@ -3,14 +3,14 @@ version: 0.6.10
 about: Dynamic menu library and client program inspired by dmenu
 release: 0
 build-time:
-- components/x11/libxinerama.yml
-- components/x11/libxkbcommon.yml
-- components/ncurses.yml
-- components/pango.yml
-- components/wayland.yml
-- components/wayland-protocols.yml
-- components/wlroots.yml
+  - components/x11/libxinerama.yml
+  - components/x11/libxkbcommon.yml
+  - components/ncurses.yml
+  - components/pango.yml
+  - components/wayland.yml
+  - components/wayland-protocols.yml
+  - components/wlroots.yml
 sources:
-- bemenu-%{version}.tar.gz::https://github.com/Cloudef/bemenu/archive/%{version}.tar.gz
-script: make PREFIX=/usr install DESTDIR=%{install-root}
+  - bemenu-%{version}.tar.gz::https://github.com/Cloudef/bemenu/archive/%{version}.tar.gz
 
+script: make PREFIX=%{prefix} install DESTDIR=%{install-root}

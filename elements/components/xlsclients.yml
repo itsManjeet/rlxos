@@ -1,7 +1,0 @@
-id: xlsclients
-version: "7"
-about: xorg apps xlsclients
-release: 0
-sources:
-- https://www.x.org/pub/individual/app/xlsclients-1.1.4.tar.bz2
-

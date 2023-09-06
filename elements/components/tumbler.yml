@@ -1,17 +1,17 @@
 id: tumbler
-version: 4.16.0
+version: 4.18.1
 about: D-Bus thumbnailing service based on the thumbnail management D-Bus Specification
-release: 0
-depends:
-- components/glib.yml
-- components/freetype.yml
-- components/curl.yml
-- components/gdk-pixbuf.yml
-- components/gst-plugins-base.yml
-- components/libjpeg-turbo.yml
-- components/libgsf.yml
-- components/libpng.yml
-- components/poppler.yml
-sources:
-- https://archive.xfce.org/src/xfce/tumbler/4.16/tumbler-4.16.0.tar.bz2
 
+sources:
+  - https://archive.xfce.org/src/xfce/tumbler/%{version:1}/tumbler-%{version}.tar.bz2
+
+depends:
+  - components/glib.yml
+  - components/freetype.yml
+  - components/curl.yml
+  - components/gdk-pixbuf.yml
+  - components/gst-plugins-base.yml
+  - components/libjpeg-turbo.yml
+  - components/libgsf.yml
+  - components/libpng.yml
+  - components/poppler.yml

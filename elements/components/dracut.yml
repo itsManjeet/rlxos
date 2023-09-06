@@ -27,6 +27,6 @@ script: |
     --libexecdir=/usr/lib \
     --sbindir=/usr/bin --systemdsystemunitdir=%{libdir}/systemd/system \
     --disable-documentation
-  
+
   make ${MAKEFLAGS}
   make install DESTDIR=%{install-root}

@@ -1,8 +1,8 @@
 id: spirv-tools
-version: 2022.4
+version: 2023.2
 about: API and commands for processing SPIR-V modules
 
-configure: >
+configure: >-
   -GNinja
   -DCMAKE_BUILD_TYPE=Release
   -DSPIRV_WERROR=Off

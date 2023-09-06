@@ -1,6 +1,22 @@
 id: sway
-version: 1.6.1
+version: 1.8.1
 about: Tiling Wayland compositor and replacement for the i3 window manager
+
+pre-script: |-
+  sed -i "s/branch \\\'@1@\\\'/rlxos/g" meson.build
+post-script: |-
+  # install -v -D -m 0644 /files/50-systemd-user.conf -t %{install-root}%{sysconfdir}/sway/config.d/
+  install -v -D -m 0644 LICENSE -t %{install-root}%{datadir}/doc/%{id}/
+
+  for i in autoname-workspaces.py inactive-windows-transparency.py grimshot ; do
+  install -D -m 0755 contrib/${i} -t %{install-root}%{datadir}/%{id}/scripts/
+  done
+
+configure: >-
+  -D sd-bus-provider=libsystemd
+  -D werror=false
+  -D b_ndebug=true
+
 depends:
   - components/cairo.yml
   - components/gdk-pixbuf.yml
@@ -21,17 +37,3 @@ build-time:
   - components/wayland-protocols.yml
 sources:
   - https://github.com/swaywm/sway/releases/download/%{version}/sway-%{version}.tar.gz
-pre-script: |
-  sed -i "s/branch \\\'@1@\\\'/rlxos/g" meson.build
-post-script:
-  install -v -D -m 0644 /files/50-systemd-user.conf -t %{install-root}%{sysconfdir}/sway/config.d/
-  install -v -D -m 0644 LICENSE -t %{install-root}%{datadir}/doc/%{id}/
-  
-  for i in autoname-workspaces.py inactive-windows-transparency.py grimshot ; do
-    install -D -m 0755 contrib/${i} -t %{install-root}%{datadir}/%{id}/scripts/
-  done
-
-configure: >
-  -D sd-bus-provider=libsystemd
-  -D werror=false
-  -D b_ndebug=true

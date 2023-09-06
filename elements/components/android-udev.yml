@@ -1,15 +1,14 @@
 id: android-udev
-version: "20220611"
+version: 20220611
 about: Udev rules to connect android devices
-release: 0
+
 depends:
-- components/libmtp.yml
-- components/systemd.yml
+  - components/libmtp.yml
+  - components/systemd.yml
 build-time:
-- components/unzip.yml
+  - components/unzip.yml
 sources:
-- android-udev-%{version}.tar.gz::https://github.com/M0Rf30/android-udev-rules/archive/refs/tags/%{version}.tar.gz
+  - android-udev-%{version}.tar.gz::https://github.com/M0Rf30/android-udev-rules/archive/refs/tags/%{version}.tar.gz
 script: |
   sed -i 's#adbusers#adm#' 51-android.rules
   install -Dm 644 51-android.rules "$pkgupd_pkgdir"/usr/lib/udev/rules.d/51-android.rules
-

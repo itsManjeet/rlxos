@@ -1,8 +1,12 @@
 id: cantarell
 version: 0.303.1
 about: Humanist sans serif font
+
+build-time:
+  - components/meson.yml
+
 sources:
-  - https://download.gnome.org/sources/cantarell-fonts/0.303/cantarell-fonts-%{version}.tar.xz
+  - https://download.gnome.org/sources/cantarell-fonts/%{version:1}/cantarell-fonts-%{version}.tar.xz
 
 configure: >
   -D useprebuilt=true

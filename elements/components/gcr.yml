@@ -1,20 +1,22 @@
 id: gcr
 version: 3.40.0
 about: Libraries used for displaying certificates and accessing key stores
-release: 0
-depends:
-- components/glib.yml
-- components/libgcrypt.yml
-- components/p11-kit.yml
-- components/gnupg.yml
-- components/gtk.yml
-- components/libxslt.yml
-build-time:
-- components/gobject-introspection.yml
-- components/vala.yml
-sources:
-- https://download.gnome.org/sources/gcr/3.40/gcr-3.40.0.tar.xz
-pre-script: |
-  sed -i "s:\"/desktop:\"/org:" schema/*.xml
-configure: -Dgtk_doc=false
 
+pre-script: |-
+  sed -i "s:\"/desktop:\"/org:" schema/*.xml
+
+depends:
+  - components/glib.yml
+  - components/libgcrypt.yml
+  - components/p11-kit.yml
+  - components/gnupg.yml
+  - components/gtk.yml
+  - components/libxslt.yml
+build-time:
+  - components/gobject-introspection.yml
+  - components/vala.yml
+  - components/gtk-doc.yml
+sources:
+  - https://download.gnome.org/sources/gcr/%{version}/gcr-%{version}.tar.xz
+
+# TODO: check and fix update url version

@@ -1,16 +1,18 @@
 id: proot
 version: 5.1.0
 about: chroot, mount --bind, and binfmt_misc without privilege/setup
-release: 0
-depends:
-- components/talloc.yml
-build-time:
-- components/libxslt.yml
-sources:
-- proot-v%{version}.tar.gz::https://github.com/cedric-vincent/proot/archive/v%{version}.tar.gz
-pre-script: |
-  patch -p1 -i /files/0001-Fix-use-of-size.patch
+
+pre-script: |-
+  # patch -p1 -i /files/0001-Fix-use-of-size.patch
 script: |-
   make -f GNUmakefile -C src
-  install -v -D -m 0755 src/%{id} -t %{install-root}/usr/bin/
+  install -v -D -m 0755 src/%{id} -t %{install-root}/%{bindir}
 
+depends:
+  - components/talloc.yml
+build-time:
+  - components/libxslt.yml
+sources:
+  - proot-v%{version}.tar.gz::https://github.com/cedric-vincent/proot/archive/v%{version}.tar.gz
+
+# TODO: fix patch

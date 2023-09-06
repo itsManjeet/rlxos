@@ -1,12 +1,12 @@
 id: gnome-icon-theme
 version: 3.12.0
-about: Package contains an assortment of non-scalable icons of different sizes and
+about:
+  Package contains an assortment of non-scalable icons of different sizes and
   themes
-release: 0
-build-time:
-- components/gtk.yml
-- components/hicolor-icon-theme.yml
-- components/icon-naming-utils.yml
-sources:
-- https://download.gnome.org/sources/gnome-icon-theme/3.12/gnome-icon-theme-3.12.0.tar.xz
 
+build-time:
+  - components/gtk.yml
+  - components/hicolor-icon-theme.yml
+  - components/icon-naming-utils.yml
+sources:
+  - https://download.gnome.org/sources/gnome-icon-theme/%{version:1}/gnome-icon-theme-%{version}.tar.xz

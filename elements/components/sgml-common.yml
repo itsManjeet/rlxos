@@ -1,15 +1,13 @@
 id: sgml-common
 version: 0.6.3
 about: Package for creating and maintaining centralized SGML catalogs
-release: 0
-sources:
-- https://sourceware.org/ftp/docbook-tools/new-trials/SOURCES/sgml-common-0.6.3.tgz
-- https://www.linuxfromscratch.org/patches/blfs/svn/sgml-common-0.6.3-manpage-1.patch
-pre-script: |
-  patch -Np1 -i ../sgml-common-0.6.3-manpage-1.patch
-  autoreconf -f -i
-script: |-
-  ./configure --prefix=/usr --sysconfdir=/etc
-  make
-  make install docdir=%{datadir}/doc DESTDIR=%{install-root}
 
+depends:
+  - components/glibc.yml
+sources:
+  - https://sourceware.org/ftp/docbook-tools/new-trials/SOURCES/sgml-common-%{version}.tgz
+  - https://www.linuxfromscratch.org/patches/blfs/svn/sgml-common-%{version}-manpage-1.patch
+
+pre-script: |
+  patch -Np1 -i ../sgml-common-%{version}-manpage-1.patch
+  autoreconf -f -i

@@ -1,15 +1,17 @@
 id: protobuf
 version: 3.19.4
 about: Protocol buffers - Google's data interchange format
-release: 0
-depends:
-- components/libgcc.yml
-- components/glibc.yml
-- components/zlib.yml
-build-time:
-- components/py/py-setuptools.yml
-- components/unzip.yml
-sources:
-- https://github.com/protocolbuffers/protobuf/releases/download/v3.19.4/protobuf-all-3.19.4.tar.gz
-pre-script: autoreconf -vfi
 
+pre-script: |-
+  autoreconf -vfi
+
+depends:
+  - components/libgcc.yml
+  - components/glibc.yml
+  - components/zlib.yml
+build-time:
+  - components/py/py-setuptools.yml
+  - components/unzip.yml
+sources:
+  - https://github.com/protocolbuffers/protobuf/releases/download/v%{version}/protobuf-all-%{version}.tar.gz
+# TODO: fix update url

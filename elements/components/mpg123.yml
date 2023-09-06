@@ -1,10 +1,9 @@
 id: mpg123
-version: 1.28.2
+version: 1.31.3
 about: Package contains a console-based MP3 player.
-release: 0
-depends:
-- components/alsa-lib.yml
-- components/pulseaudio.yml
-sources:
-- https://downloads.sourceforge.net/mpg123/mpg123-1.28.2.tar.bz2
 
+depends:
+  - components/alsa-lib.yml
+  - components/pulseaudio.yml
+sources:
+  - https://downloads.sourceforge.net/mpg123/mpg123-%{version}.tar.bz2

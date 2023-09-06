@@ -1,13 +1,13 @@
 id: geocode-glib
-version: 3.26.2
+version: 3.26.4
 about: A convenience library for the Yahoo! Place Finder APIs
-release: 0
-depends:
-- components/json-glib.yml
-- components/libsoup.yml
-build-time:
-- components/gobject-introspection.yml
-sources:
-- https://download.gnome.org/sources/geocode-glib/3.26/geocode-glib-3.26.2.tar.xz
-configure: --buildtype=release -D enable-gtk-doc=false
 
+depends:
+  - components/json-glib.yml
+  - components/libsoup.yml
+build-time:
+  - components/gobject-introspection.yml
+  - components/gtk-doc.yml
+
+sources:
+  - https://download.gnome.org/sources/geocode-glib/%{version:1}/geocode-glib-%{version}.tar.xz

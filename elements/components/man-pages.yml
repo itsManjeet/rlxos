@@ -1,8 +1,11 @@
 id: man-pages
-version: "6.04"
+version: 6.05.01
 about: Linux man pages
-release: 0
-sources:
-- https://www.kernel.org/pub/linux/docs/man-pages/man-pages-%{version}.tar.xz
-script: make prefix=/usr DESTDIR=%{install-root} install
 
+depends:
+  - components/glibc.yml
+
+sources:
+  - https://www.kernel.org/pub/linux/docs/man-pages/man-pages-%{version}.tar.xz
+script: |-
+  make prefix=%{prefix} DESTDIR=%{install-root} install

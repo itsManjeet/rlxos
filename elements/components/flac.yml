@@ -1,9 +1,13 @@
 id: flac
-version: 1.3.3
+version: 1.4.3
 about: An audio CODEC similar to MP3, but lossless
-release: 0
-sources:
-- https://downloads.xiph.org/releases/flac/flac-1.3.3.tar.xz
-- https://www.linuxfromscratch.org/patches/blfs/svn/flac-1.3.3-security_fixes-1.patch
-configure: --disable-thorough-tests
 
+configure: >-
+  --disable-thorough-tests
+
+depends:
+  - components/glibc.yml
+
+sources:
+  - https://downloads.xiph.org/releases/flac/flac-%{version}.tar.xz
+  - https://www.linuxfromscratch.org/patches/blfs/svn/flac-%{version}-security_fixes-1.patch

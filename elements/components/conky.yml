@@ -1,23 +1,35 @@
 id: conky
 version: 1.12.2
 about: Lightweight system monitor for X
-release: 0
-depends:
-- components/curl.yml
-- components/glib.yml
-- components/imlib2.yml
-- components/xorg-libs.yml
-- components/lua.yml
-- components/ncurses.yml
-- components/desktop-file-utils.yml
-build-time:
-- components/cmake.yml
-- components/git.yml
-sources:
-- conky-1.12.2.tar.gz::https://github.com/brndnmtthws/conky/archive/refs/tags/v1.12.2.tar.gz
-post-script: "install -Dm 644 extras/vim/syntax/conkyrc.vim -t \"%{install-root}\"%{datadir}/vim/vimfiles/syntax\ninstall
-  -Dm 644 extras/vim/ftdetect/conkyrc.vim -t \"%{install-root}\"%{datadir}/vim/vimfiles/ftdetect\n
-  \   \n"
-configure: |
-  -D MAINTAINER_MODE=ON -D BUILD_XSHAPE=ON -D BUILD_XDBE=ON -D BUILD_CURL=ON -D BUILD_IMLIB2=ON -D BUILD_CURL=ON -D BUILD_RSS=ON -D BUILD_WEATHER_METAR=ON -D BUILD_PULSEAUDIO=ON -D BUILD_JOURNAL=ON -D CMAKE_BUILD_TYPE=Release -Wno-dev
 
+configure: >
+  -D MAINTAINER_MODE=ON
+  -D BUILD_XSHAPE=ON
+  -D BUILD_XDBE=ON
+  -D BUILD_CURL=ON
+  -D BUILD_IMLIB2=ON
+  -D BUILD_CURL=ON
+  -D BUILD_RSS=ON
+  -D BUILD_WEATHER_METAR=ON
+  -D BUILD_PULSEAUDIO=ON
+  -D BUILD_JOURNAL=ON
+  -D CMAKE_BUILD_TYPE=Release
+  -Wno-dev
+
+post-script: |
+  install -Dm 644 extras/vim/syntax/conkyrc.vim -t %{install-root}/%{datadir}/vim/vimfiles/syntax
+  install -Dm 644 extras/vim/ftdetect/conkyrc.vim -t %{install-root}/%{datadir}/vim/vimfiles/ftdetect
+
+depends:
+  - components/curl.yml
+  - components/glib.yml
+  - components/imlib2.yml
+  - components/xorg-libs.yml
+  - components/lua.yml
+  - components/ncurses.yml
+  - components/desktop-file-utils.yml
+build-time:
+  - components/cmake.yml
+  - components/git.yml
+sources:
+  - conky-%{version}.tar.gz::https://github.com/brndnmtthws/conky/archive/refs/tags/v%{version}.tar.gz

@@ -1,13 +1,13 @@
 id: xine-lib
-version: 1.2.11
-about: Library for interfacing with external plug-ins that allow the flow of information
-  from the source to the audio and video hardware.
-release: 0
-depends:
-- components/xorg-libs.yml
-- components/ffmpeg.yml
-- components/pulseaudio.yml
-sources:
-- https://downloads.sourceforge.net/xine/xine-lib-1.2.11.tar.xz
-configure: --disable-vcd
+version: 1.2.13
+about: Library for interfacing with external plug-ins that allow the flow of information from the source to the audio and video hardware.
 
+configure: >-
+  --disable-vcd
+
+depends:
+  - components/xorg-libs.yml
+  - components/ffmpeg.yml
+  - components/pulseaudio.yml
+sources:
+  - https://downloads.sourceforge.net/xine/xine-lib-%{version}.tar.xz

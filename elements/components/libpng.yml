@@ -9,4 +9,5 @@ depends:
 
 build-type: autotools
 
-pre-script: rm autogen.sh
+variables:
+  run-autogen: false

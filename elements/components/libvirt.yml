@@ -1,30 +1,8 @@
 id: libvirt
-version: 8.4.0
+version: 9.7.0
 about: API for controlling virtualization engines (openvz,kvm,qemu,virtualbox,xen,etc)
-release: 0
-depends:
-- components/fuse.yml
-- components/gnutls.yml
-- components/libpciaccess.yml
-- components/libssh.yml
-- components/libxml2.yml
-- components/numactl.yml
-- components/parted.yml
-- components/polkit.yml
-- components/yajl.yml
-- components/dmidecode.yml
-- components/iptables.yml
-- components/gettext.yml
-- components/lvm2.yml
-- components/qemu.yml
-build-time:
-- components/iproute2.yml
-- components/libxslt.yml
-- components/meson.yml
-- components/py/py-pip.yml
-sources:
-- https://libvirt.org/sources/%{id}-%{version}.tar.xz
-pre-script: |
+
+pre-script: |-
   sed -i 's|/sysconfig/|/conf.d/|g' \
     src/remote/libvirtd.service.in \
     tools/{libvirt-guests.service,libvirt-guests.sh,virt-pki-validate}.in \
@@ -35,12 +13,58 @@ pre-script: |
     src/qemu/test_libvirtd_qemu.aug.in
 
   pip install docutils
-post-script: |
+
+configure: >-
+  --libexecdir=lib/libvirt
+  -Drunstatedir=/run
+  -Dqemu_user=libvirt
+  -Dqemu_group=libvirt
+  -Dnetcf=disabled
+  -Dopenwsman=disabled
+  -Dapparmor=disabled
+  -Dapparmor_profiles=disabled
+  -Dselinux=disabled
+  -Dwireshark_dissector=disabled
+  -Ddriver_bhyve=disabled
+  -Ddriver_hyperv=disabled
+  -Ddriver_libxl=disabled
+  -Ddriver_vz=disabled
+  -Dsanlock=disabled
+  -Dsecdriver_apparmor=disabled
+  -Dsecdriver_selinux=disabled
+  -Dstorage_sheepdog=disabled
+  -Dstorage_vstorage=disabled
+  -Ddtrace=disabled
+  -Dnumad=disabled
+  -Dstorage_zfs=enabled
+  -Dstorage_rbd=disabled
+
+post-script: |-
   chown root:polkitd %{install-root}%{datadir}/polkit-1/rules.d
   chown 0750 %{install-root}%{datadir}/polkit-1/rules.d
   chmod 600 %{install-root}%{sysconfdir}/libvirt/nwfilter/*.xml \
     %{install-root}%{sysconfdir}/libvirt/qemu/networks/default.xml
   chmod 700 %{install-root}%{sysconfdir}/libvirt/secrets
-configure: |
-  --libexecdir=lib/libvirt -Drunstatedir=/run -Dqemu_user=libvirt -Dqemu_group=libvirt -Dnetcf=disabled -Dopenwsman=disabled -Dapparmor=disabled -Dapparmor_profiles=disabled -Dselinux=disabled -Dwireshark_dissector=disabled -Ddriver_bhyve=disabled -Ddriver_hyperv=disabled -Ddriver_libxl=disabled -Ddriver_vz=disabled -Dsanlock=disabled -Dsecdriver_apparmor=disabled -Dsecdriver_selinux=disabled -Dstorage_sheepdog=disabled -Dstorage_vstorage=disabled -Ddtrace=disabled -Dnumad=disabled -Dstorage_zfs=enabled -Dstorage_rbd=disabled
 
+depends:
+  - components/fuse.yml
+  - components/gnutls.yml
+  - components/libpciaccess.yml
+  - components/libssh.yml
+  - components/libxml2.yml
+  - components/numactl.yml
+  - components/parted.yml
+  - components/polkit.yml
+  - components/yajl.yml
+  - components/dmidecode.yml
+  - components/iptables.yml
+  - components/gettext.yml
+  - components/lvm2.yml
+  - components/qemu.yml
+build-time:
+  - components/iproute2.yml
+  - components/libxslt.yml
+  - components/meson.yml
+  - components/py/py-pip.yml
+sources:
+  - https://libvirt.org/sources/%{id}-%{version}.tar.xz

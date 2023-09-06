@@ -3,11 +3,13 @@ version: "1.7"
 about: MakeCA
 release: 0
 depends:
-- components/p11-kit.yml
-- components/nss.yml
+  - components/p11-kit.yml
+  - components/nss.yml
 sources:
-- https://github.com/djlucas/make-ca/releases/download/v1.7/make-ca-1.7.tar.xz
+  - https://github.com/djlucas/make-ca/releases/download/v1.7/make-ca-1.7.tar.xz
 script: |-
-  install -v -D -m 0644 /files/certdata.txt -t %{install-root}%{sysconfdir}/ssl/
+  # install -v -D -m 0644 /files/certdata.txt -t %{install-root}%{sysconfdir}/ssl/
   make install LIBEXECDIR=/usr/lib SBINDIR=/usr/bin DESTDIR=%{install-root}
 
+# TODO: fix certdata.txt file
+# TODO: do we need this after ca-certificates

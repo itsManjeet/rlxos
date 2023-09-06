@@ -10,6 +10,6 @@ depends:
   - components/zstd.yml
   - components/psmisc.yml
 
-script: |
+script: |-
   install -v -D -m 644 /files/core/initramfs/init.in  %{install-root}/%{datadir}/initramfs/init.in
   install -v -D -m 755 /files/core/initramfs/mkinitramfs.sh.in  %{install-root}/%{bindir}/mkinitramfs

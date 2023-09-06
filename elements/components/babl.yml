@@ -1,14 +1,13 @@
 id: babl
-version: 0.1.88
+version: 0.1.106
 about: Dynamic, any to any, pixel format conversion library
 release: 0
 depends:
-- components/glibc.yml
-- components/lcms.yml
+  - components/glibc.yml
+  - components/lcms.yml
 build-time:
-- components/gobject-introspection.yml
-- components/meson.yml
-- components/vala.yml
+  - components/gobject-introspection.yml
+  - components/meson.yml
+  - components/vala.yml
 sources:
-- https://download.gimp.org/pub/babl/0.1/babl-%{version}.tar.xz
-
+  - https://download.gimp.org/pub/babl/%{version:1}/babl-%{version}.tar.xz

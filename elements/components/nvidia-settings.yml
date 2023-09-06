@@ -1,23 +1,23 @@
 id: nvidia-settings
 version: 515.65.01
 about: Tool for configuring the NVIDIA graphics driver
-release: 0
+
 depends:
-- components/gtk.yml
-- components/jansson.yml
-- components/libvdpau.yml
-- components/x11/libxv.yml
-- components/nvidia-utils.yml
+  - components/gtk.yml
+  - components/jansson.yml
+  - components/libvdpau.yml
+  - components/x11/libxv.yml
+  - components/nvidia-utils.yml
 build-time:
-- components/gtk2.yml
-- components/inetutils.yml
-- components/jansson.yml
-- components/libvdpau.yml
-- components/x11/libxext.yml
+  - components/gtk2.yml
+  - components/inetutils.yml
+  - components/jansson.yml
+  - components/libvdpau.yml
+  - components/x11/libxext.yml
 sources:
-- nvidia-settings-%{version}.tar.gz::https://github.com/NVIDIA/nvidia-settings/archive/%{version}.tar.gz
+  - nvidia-settings-%{version}.tar.gz::https://github.com/NVIDIA/nvidia-settings/archive/%{version}.tar.gz
 script: |-
-  patch -p0 < /files/libxnvctrl_so.patch
+  # patch -p0 < /files/libxnvctrl_so.patch
   make
   make -C src/libXNVCtrl
   make DESTDIR=%{install-root} install
@@ -36,3 +36,4 @@ script: |-
   install -d "%{install-root}/usr/lib"
   cp -Pr _out/Linux_x86_64/libXNVCtrl.* -t "%{install-root}/usr/lib"
 
+# TODO: check patch

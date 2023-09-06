@@ -1,9 +1,8 @@
 id: parted
-version: "3.4"
+version: 3.6
 about: A disk partitioning and partition resizing tool
-release: 0
-depends:
-- components/lvm2.yml
-sources:
-- https://ftp.gnu.org/gnu/parted/parted-3.4.tar.xz
 
+depends:
+  - components/lvm2.yml
+sources:
+  - https://ftp.gnu.org/gnu/parted/parted-%{version}.tar.xz

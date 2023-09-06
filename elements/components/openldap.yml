@@ -1,13 +1,30 @@
 id: openldap
-version: 2.6.1
-about: |
-  Open source implementation of the Lightweight Directory Access Protocol
-release: 0
+version: 2.6.6
+about: Open source implementation of the Lightweight Directory Access Protocol
+
+configure: >-
+  --disable-static
+  --enable-versioning=yes
+  --disable-debug
+  --with-tls=openssl
+  --with-cyrus-sasl
+  --enable-dynamic
+  --enable-crypt
+  --enable-spasswd
+  --enable-slapd
+  --enable-modules
+  --enable-rlookups
+  --enable-backends=mod
+  --disable-ndb
+  --disable-sql
+  --disable-wt
+  --enable-overlays=mod
+
 depends:
   - components/cyrus-sasl.yml
 sources:
   - https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-%{version}.tgz
-pre-script: |
+pre-script: |-
   # change permission from 0644 to 0755
   sed -i 's|-m 644 $(LIBRARY)|-m 755 $(LIBRARY)|' libraries/{liblber,libldap}/Makefile.in
 
@@ -19,7 +36,7 @@ pre-script: |
 
   autoconf
 
-post-script: |
+post-script: |-
   ln -s ../lib/slapd %{install-root}/usr/bin/slapd
 
   sed -e "s/\.la/.so/" -i %{install-root}%{sysconfdir}/openldap/slapd.{conf,ldif}{,.default}
@@ -27,5 +44,3 @@ post-script: |
   install -v -dm700 -o 83 -g 83 %{install-root}%{sysconfdir}/openldap/slapd.d
   chmod -v 640 %{install-root}%{sysconfdir}/openldap/slapd.{conf,ldif}
   chown -v root:83 %{install-root}%{sysconfdir}/openldap/slapd.{conf,ldif}
-configure: |
-  --disable-static --enable-versioning=yes --disable-debug --with-tls=openssl --with-cyrus-sasl --enable-dynamic --enable-crypt --enable-spasswd --enable-slapd --enable-modules --enable-rlookups --enable-backends=mod --disable-ndb --disable-sql --disable-wt --enable-overlays=mod

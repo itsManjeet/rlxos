@@ -1,7 +1,7 @@
 id: plasma-desktop
-version: 5.24.5
+merge: [elements/include/plasma.yml]
 about: Plasma plasma-desktop
-release: 0
+
 depends:
   - components/baloo.yml
   - components/gawk.yml
@@ -20,7 +20,3 @@ build-time:
   - components/kdoctools.yml
   - components/kinit.yml
   - components/x11/xserver.yml
-sources:
-  - https://download.kde.org/stable/plasma/%{version}/%{id}-%{version}.tar.xz
-configure: |
-  -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF -Wno-dev

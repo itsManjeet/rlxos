@@ -1,8 +1,8 @@
 id: pango
-version: 1.50.4
+version: 1.51.1
 about: Library for laying out and rendering text
 sources:
-  - https://download.gnome.org/sources/pango/1.50/pango-%{version}.tar.xz
+  - https://download.gnome.org/sources/pango/%{version:1}/pango-%{version}.tar.xz
 depends:
   - components/fontconfig.yml
   - components/fribidi.yml

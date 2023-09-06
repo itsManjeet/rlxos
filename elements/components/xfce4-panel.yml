@@ -1,14 +1,15 @@
 id: xfce4-panel
-version: 4.16.3
+version: 4.18.4
 about: xfce4 panel
-release: 0
-depends:
-- components/cairo.yml
-- components/exo.yml
-- components/garcon.yml
-- components/libwnck.yml
-- components/intltool.yml
-sources:
-- https://archive.xfce.org/src/xfce/xfce4-panel/4.16/xfce4-panel-%{version}.tar.bz2
-configure: --enable-vala=no
 
+depends:
+  - components/cairo.yml
+  - components/exo.yml
+  - components/garcon.yml
+  - components/libwnck.yml
+  - components/intltool.yml
+build-time:
+  - components/vala.yml
+sources:
+  - https://archive.xfce.org/src/xfce/xfce4-panel/%{version:1}/xfce4-panel-%{version}.tar.bz2
+# TODO: fix update url

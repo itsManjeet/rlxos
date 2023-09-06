@@ -1,14 +1,13 @@
 id: template-glib
-version: 3.34.1
+version: 3.36.1
 about: A templating library for GLib
-release: 0
-depends:
-- components/glib.yml
-- components/gobject-introspection.yml
-build-time:
-- components/gtk-doc.yml
-- components/meson.yml
-- components/vala.yml
-sources:
-- https://download.gnome.org/sources/%{id}/3.34/%{id}-%{version}.tar.xz
 
+depends:
+  - components/glib.yml
+  - components/gobject-introspection.yml
+build-time:
+  - components/gtk-doc.yml
+  - components/meson.yml
+  - components/vala.yml
+sources:
+  - https://download.gnome.org/sources/%{id}/%{version:1}/%{id}-%{version}.tar.xz

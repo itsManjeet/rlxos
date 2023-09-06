@@ -1,12 +1,14 @@
 id: gnome-power-manager
 version: 3.32.0
-about: Power Manager package contains a tool used to report on power management on
+about:
+  Power Manager package contains a tool used to report on power management on
   the system
-release: 0
-depends:
-- components/gtk.yml
-- components/upower.yml
-sources:
-- https://download.gnome.org/sources/gnome-power-manager/3.32/gnome-power-manager-3.32.0.tar.xz
-configure: --buildtype=release
 
+depends:
+  - components/gtk.yml
+  - components/upower.yml
+sources:
+  - https://download.gnome.org/sources/gnome-power-manager/%{version:1}/gnome-power-manager-%{version}.tar.xz
+
+configure: >-
+  --buildtype=release

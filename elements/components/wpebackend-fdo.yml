@@ -1,12 +1,13 @@
 id: wpebackend-fdo
-version: 1.10.0
+version: 1.14.2
 about: The Freedesktop.org backend for WPE WebKit and the WPE renderer
-release: 0
-depends:
-- components/libepoxy.yml
-- components/libwpe.yml
-- components/wayland.yml
-sources:
-- https://wpewebkit.org/releases/wpebackend-fdo-1.10.0.tar.xz
-configure: --buildtype=release
 
+configure: >-
+  --buildtype=release
+
+depends:
+  - components/libepoxy.yml
+  - components/libwpe.yml
+  - components/wayland.yml
+sources:
+  - https://wpewebkit.org/releases/wpebackend-fdo-%{version}.tar.xz

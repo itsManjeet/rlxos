@@ -1,32 +1,49 @@
 id: ffmpeg
-version: "4.4"
+version: 6.0
 about: A solution to record, convert and stream audio and video
-release: 0
-depends:
-- components/libass.yml
-- components/fdk-aac.yml
-- components/freetype.yml
-- components/lame.yml
-- components/libtheora.yml
-- components/libvorbis.yml
-- components/libvpx.yml
-- components/opus.yml
-- components/x264.yml
-- components/x265.yml
-- components/alsa-lib.yml
-- components/libva.yml
-- components/libvdpau.yml
-- components/pulseaudio.yml
-- components/sdl2.yml
-build-time:
-- components/yasm.yml
-sources:
-- https://ffmpeg.org/releases/ffmpeg-4.4.tar.xz
-pre-script: |
+
+pre-script: |-
   sed -i "s/-lflite\"/-lflite -lasound\"/" configure
+
+configure: >-
+  --enable-gpl
+  --enable-version3
+  --disable-static
+  --enable-shared
+  --disable-debug
+  --enable-avresample
+  --enable-libass
+  --enable-libfreetype
+  --enable-libmp3lame
+  --enable-libopus
+  --enable-libtheora
+  --enable-libvorbis
+  --enable-libvpx
+  --enable-libx264
+  --enable-libx265
+  --enable-libpulse
+
 post-script: |-
   # enable qt-faststart
-  gcc tools/qt-faststart.c -o %{install-root}/usr/bin/qt-faststart
-configure: |
-  --prefix=/usr --enable-gpl --enable-version3 --disable-static --enable-shared --disable-debug --enable-avresample --enable-libass --enable-libfreetype --enable-libmp3lame --enable-libopus --enable-libtheora --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libx265 --enable-libpulse
+  gcc tools/qt-faststart.c -o %{install-root}/%{bindir}/qt-faststart
 
+depends:
+  - components/libass.yml
+  - components/fdk-aac.yml
+  - components/freetype.yml
+  - components/lame.yml
+  - components/libtheora.yml
+  - components/libvorbis.yml
+  - components/libvpx.yml
+  - components/opus.yml
+  - components/x264.yml
+  - components/x265.yml
+  - components/alsa-lib.yml
+  - components/libva.yml
+  - components/libvdpau.yml
+  - components/pulseaudio.yml
+  - components/sdl2.yml
+build-time:
+  - components/yasm.yml
+sources:
+  - https://ffmpeg.org/releases/ffmpeg-%{version}.tar.xz

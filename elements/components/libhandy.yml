@@ -1,16 +1,16 @@
 id: libhandy
-version: 1.2.3
-about: |
-  Provides additional GTK UI widgets for use in developing user interfaces
-release: 0
-depends:
-- components/gtk.yml
-build-time:
-- components/vala.yml
-- components/glade.yml
-- components/gobject-introspection.yml
-- components/meson.yml
-sources:
-- https://download.gnome.org/sources/libhandy/1.2/libhandy-1.2.3.tar.xz
-configure: --buildtype=release
+version: 1.8.2
+about: Provides additional GTK UI widgets for use in developing user interfaces
 
+configure: >-
+  --buildtype=release
+
+depends:
+  - components/gtk.yml
+build-time:
+  - components/vala.yml
+  - components/glade.yml
+  - components/gobject-introspection.yml
+  - components/meson.yml
+sources:
+  - https://download.gnome.org/sources/libhandy/%{version:1}/libhandy-%{version}.tar.xz

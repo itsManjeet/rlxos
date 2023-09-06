@@ -1,10 +1,11 @@
 id: gpgme
-version: 1.16.0
+version: 1.22.0
 about: A C library that allows cryptography support to be added to a program
-release: 0
-depends:
-- components/libassuan.yml
-sources:
-- https://www.gnupg.org/ftp/gcrypt/gpgme/gpgme-1.16.0.tar.bz2
-configure: --disable-gpg-test
 
+configure: >-
+  --disable-gpg-test
+
+depends:
+  - components/libassuan.yml
+sources:
+  - https://www.gnupg.org/ftp/gcrypt/gpgme/gpgme-%{version}.tar.bz2

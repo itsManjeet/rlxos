@@ -1,19 +1,22 @@
 id: libdmapsharing
-version: 2.9.39
+version: 3.9.13
 about: A library that implements that DMAP family of protocols
-release: 0
-depends:
-- components/avahi.yml
-- components/gdk-pixbuf.yml
-- components/gst-plugins-base.yml
-- components/libsoup.yml
-build-time:
-- components/gobject-introspection.yml
-- components/gtk-doc.yml
-sources:
-- https://gitlab.gnome.org/GNOME/libdmapsharing/-/archive/LIBDMAPSHARING_2_9_39/libdmapsharing-LIBDMAPSHARING_2_9_39.tar.gz
-pre-script: |
-  NOCONFIGURE=1 ./autogen.sh
-configure: |
-  --with-mdns=avahi --enable-gtk-doc --disable-tests
 
+environ:
+  - NOCONFIGURE=1
+
+configure: >-
+  --with-mdns=avahi
+  --enable-gtk-doc
+  --disable-tests
+
+depends:
+  - components/avahi.yml
+  - components/gdk-pixbuf.yml
+  - components/gst-plugins-base.yml
+  - components/libsoup.yml
+build-time:
+  - components/gobject-introspection.yml
+  - components/gtk-doc.yml
+sources:
+  - https://gitlab.gnome.org/GNOME/libdmapsharing/-/archive/LIBDMAPSHARING_%{version:_}/libdmapsharing-LIBDMAPSHARING_%{version:_}.tar.gz

@@ -1,14 +1,17 @@
 id: talloc
-version: 2.3.4
+version: 2.4.1
 about: Hierarchical pool based memory allocator with destructors
-release: 0
-depends:
-- components/glibc.yml
-- components/x11/libxcrypt.yml
-build-time:
-- components/python.yml
-- components/docbook-xsl.yml
-sources:
-- https://www.samba.org/ftp/talloc/talloc-%{version}.tar.gz
-configure: --bundled-libraries=NONE --builtin-libraries=replace --enable-talloc-compat1
 
+configure: >-
+  --bundled-libraries=NONE
+  --builtin-libraries=replace
+  --enable-talloc-compat1
+
+depends:
+  - components/glibc.yml
+  - components/x11/libxcrypt.yml
+build-time:
+  - components/python.yml
+  - components/docbook-xsl.yml
+sources:
+  - https://www.samba.org/ftp/talloc/talloc-%{version}.tar.gz

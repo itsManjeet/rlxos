@@ -1,10 +1,9 @@
 id: x265
-version: "3.4"
+version: 3.5
 about: Package provides a library for encoding video streams into the H.265/HEVC format
-release: 0
-build-time:
-- components/nasm.yml
-- components/cmake.yml
-sources:
-- https://anduin.linuxfromscratch.org/BLFS/x265/x265_3.4.tar.gz
 
+build-time:
+  - components/nasm.yml
+  - components/cmake.yml
+sources:
+  - https://anduin.linuxfromscratch.org/BLFS/x265/x265_%{version}.tar.gz

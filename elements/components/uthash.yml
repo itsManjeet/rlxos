@@ -4,4 +4,5 @@ about: C preprocessor implementations of a hash table and a linked list
 sources:
   - uthash-%{version}.tar.gz::https://github.com/troydhanson/uthash/archive/v%{version}.tar.gz
 
-script: install -v -D src/*.h -t %{install-root}/%{prefix}/include/
+script: |-
+  install -v -D src/*.h -t %{install-root}/%{prefix}/include/

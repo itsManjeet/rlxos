@@ -14,7 +14,7 @@ depends:
   - components/x11/libxrandr.yml
   - components/x11/libxshmfence.yml
   - components/x11/libxxf86vm.yml
-  - components/libpciaccess.yml
+  - components/x11/libpciaccess.yml
 build-time:
   - components/wayland-protocols.yml
   - components/py/py-mako.yml

@@ -1,0 +1,25 @@
+id: peek
+version: 1.5.1
+about: Simple screen recoder with an easy to use interface
+
+build-time:
+  - components/ffmpeg.yml
+  - components/gtk.yml
+  - components/keybinder.yml
+  - components/which.yml
+  - components/gst-plugins-good.yml
+  - components/vala.yml
+  - components/cmake.yml
+  - components/imagemagick.yml
+  - components/appimagetool.yml
+sources:
+  - peek-%{version}.tar.gz::https://github.com/phw/peek/archive/refs/tags/%{version}.tar.gz
+post-script: |2-
+
+  # compile glib schemas
+  glib-compile-schemas %{install-root}%{datadir}/glib-2.0/schemas
+
+  cp /files/peek.desktop %{install-root}/
+  cp /files/peek.svg %{install-root}/%{id}.png
+  mkdir -p %{install-root}/usr/lib/
+  install -v -D -m 0755 /files/AppRun -t %{install-root}/

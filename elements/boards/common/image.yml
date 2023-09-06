@@ -88,11 +88,22 @@ include:
   - components/bolt.yml
 
   # Desktop Environment
-  - components/awesome.yml
-  - components/picom.yml
+  - components/xfce4.yml
+
+  # Display Manager
+  - components/lightdm.yml
+  - components/lightdm-gtk-greeter.yml
 
   # Fonts
   - components/fonts/cantarell.yml
+  - components/fonts/adobe-source-code-pro-fonts.yml
+  - components/fonts/gsfonts.yml
+  - components/fonts/inconsolata.yml
+  - components/fonts/liberation-fonts.yml
+  - components/fonts/noto.yml
+  - components/fonts/noto-emoji.yml
+  - components/fonts/noto-cjk.yml
+  - components/fonts/opensans.yml
 
   # Apps
   - components/alacritty.yml

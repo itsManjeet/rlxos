@@ -2,11 +2,11 @@ id: gdb
 version: 13.2
 about: GNU debugger
 
+configure: >-
+  --with-system-readline 
+  --with-python=%{bindir}/python3
+install: -C gdb DESTDIR=%{install-root}
 depends:
   - components/py/py-six.yml
 sources:
   - https://ftp.gnu.org/gnu/gdb/gdb-%{version}.tar.xz
-configure: >
-  --with-system-readline 
-  --with-python=%{bindir}/python3
-install: -C gdb DESTDIR=%{install-root}

@@ -1,11 +1,10 @@
 id: libnih
 version: 1.0.3
 about: Small library for C application development
-release: 0
-depends:
-- components/dbus.yml
-build-time:
-- components/expat.yml
-sources:
-- https://launchpad.net/libnih/1.0/%{version}/+download/libnih-%{version}.tar.gz
 
+depends:
+  - components/dbus.yml
+build-time:
+  - components/expat.yml
+sources:
+  - https://launchpad.net/libnih/%{version:1}/%{version}/+download/libnih-%{version}.tar.gz

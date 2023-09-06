@@ -1,7 +1,27 @@
 id: freerdp
 version: 2.7.0
 about: Free implementation of the Remote Desktop Protocol (RDP)
-release: 0
+
+configure: >-
+  -DPROXY_PLUGINDIR=%{libdir}/freerdp2/server/proxy/plugins
+  -DWITH_DSP_FFMPEG=ON
+  -DWITH_FFMPEG=ON
+  -DWITH_PULSE=ON
+  -DWITH_CUPS=ON
+  -DWITH_PSCS=ON
+  -DWITH_ICU=ON
+  -DWITH_JPEG=ON
+  -DWITH_SERVER=ON
+  -DWITH_SWSCALE=ON
+  -DWITH_CHANNELS=ON
+  -DWITH_CLIENT_CHANNELS=ON
+  -DWITH_SERVER_CHANNELS=ON
+  -DCHANNEL_URBDRC_CLIENT=ON
+  -Wno-dev
+
+post-script: |-
+  install -vD -m 0644 ChangeLog README.md -t %{install-root}%{datadir}/doc/%{id}/
+
 depends:
   - components/dbus-glib.yml
   - components/glibc.yml
@@ -27,6 +47,3 @@ build-time:
   - components/xmlto.yml
 sources:
   - freerdp-%{version}.tar.gz::https://github.com/%{id}/%{id}/archive/%{version}.tar.gz
-post-script: install -vD -m 0644 ChangeLog README.md -t %{install-root}%{datadir}/doc/%{id}/
-configure: |
-  -DPROXY_PLUGINDIR=/usr/lib/freerdp2/server/proxy/plugins -DWITH_DSP_FFMPEG=ON -DWITH_FFMPEG=ON -DWITH_PULSE=ON -DWITH_CUPS=ON -DWITH_PSCS=ON -DWITH_ICU=ON -DWITH_JPEG=ON -DWITH_SERVER=ON -DWITH_SWSCALE=ON -DWITH_CHANNELS=ON -DWITH_CLIENT_CHANNELS=ON -DWITH_SERVER_CHANNELS=ON -DCHANNEL_URBDRC_CLIENT=ON -Wno-dev

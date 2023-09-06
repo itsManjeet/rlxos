@@ -1,5 +1,5 @@
 id: less
-version: 633
+version: 643
 about: A text file viewer
 sources:
   - https://www.greenwoodsoftware.com/less/less-%{version}.tar.gz

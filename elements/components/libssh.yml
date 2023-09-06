@@ -9,7 +9,7 @@ build-time:
   - components/openssh.yml
   - components/python.yml
 sources:
-  - https://www.libssh.org/files/0.10/%{id}-%{version}.tar.xz
+  - https://www.libssh.org/files/%{version:1}/%{id}-%{version}.tar.xz
 
 configure: >
   -DWITH_GSSAPI=OFF

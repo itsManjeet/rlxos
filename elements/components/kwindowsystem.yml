@@ -1,14 +1,9 @@
 id: kwindowsystem
-version: 5.97.0
+merge: [elements/include/kf5.yml]
 about: Access to windowing system
-release: 0
-depends:
-- components/qt.yml
-- components/kwayland.yml
-build-time:
-- components/extra-cmake-modules.yml
-sources:
-- https://download.kde.org/stable/frameworks/5.97/kwindowsystem-%{version}.tar.xz
-configure: |
-  -DBUILD_TESTING=OFF
 
+depends:
+  - components/qt.yml
+  - components/kwayland.yml
+build-time:
+  - components/extra-cmake-modules.yml

@@ -1,11 +1,19 @@
 id: lynx
-version: 2.8.9rel.1
+version: 2.9.0
 about: A text based web browser
-release: 0
-sources:
-- https://invisible-mirror.net/archives/lynx/tarballs/lynx2.8.9rel.1.tar.bz2
-script: "./configure --prefix=/usr \\\n    --sysconfdir=%{sysconfdir}/lynx \\\n    --datadir=%{datadir}/doc/lynx
-  \\\n    --with-zlib \\\n    --with-ssl \\\n    --with-bzlib \\\n    --with-screen=ncursesw
-  \\\n    --enable-locale-charset \\\n    --enable-ipv6 \\\n    --enable-nls\n  make\n\n
-  \ make install-full DESTDIR=%{install-root}\n    \n"
 
+configure: >
+  --with-zlib
+  --with-ssl
+  --with-bzlib
+  --with-screen=ncursesw
+  --enable-locale-charset
+  --enable-ipv6
+  --enable-nls
+
+install: install-full
+
+sources:
+  - https://invisible-mirror.net/archives/lynx/tarballs/lynx%{version}.tar.bz2
+depends:
+  - components/glibc.yml

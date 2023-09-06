@@ -1,25 +1,34 @@
 id: gvfs
-version: 1.48.1
-about: A userspace virtual filesystem designed to work with the I/O abstractions of
+version: 1.51.91
+about:
+  A userspace virtual filesystem designed to work with the I/O abstractions of
   GLib's GIO library
-release: 0
-depends:
-- components/dbus.yml
-- components/glib.yml
-- components/libusb.yml
-- components/libsecret.yml
-- components/libsoup.yml
-- components/gcr.yml
-- components/gtk.yml
-- components/libcdio-paranoia.yml
-- components/libgudev.yml
-- components/systemd.yml
-- components/udisks.yml
-- components/fuse.yml
-- components/libmtp.yml
-- components/openssh.yml
-sources:
-- https://download.gnome.org/sources/gvfs/1.48/gvfs-1.48.1.tar.xz
-configure: |
-  -D fuse=true -D gphoto2=false -D afc=false -D bluray=false -D nfs=false -D mtp=true -D smb=false -D dnssd=false -D goa=false -D google=false
 
+depends:
+  - components/dbus.yml
+  - components/glib.yml
+  - components/libusb.yml
+  - components/libsecret.yml
+  - components/libsoup.yml
+  - components/gcr.yml
+  - components/gtk.yml
+  - components/libcdio-paranoia.yml
+  - components/libgudev.yml
+  - components/systemd.yml
+  - components/udisks.yml
+  - components/fuse.yml
+  - components/libmtp.yml
+  - components/openssh.yml
+sources:
+  - https://download.gnome.org/sources/gvfs/%{version:1}/gvfs-%{version}.tar.xz
+configure: >-
+  -D fuse=true
+  -D gphoto2=false
+  -D afc=false
+  -D bluray=false
+  -D nfs=false
+  -D mtp=true
+  -D smb=false
+  -D dnssd=false
+  -D goa=false
+  -D google=false

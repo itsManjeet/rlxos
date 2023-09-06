@@ -1,11 +1,14 @@
 id: appimagetool
 version: "13"
 about: used to generate an AppImage from an existing AppDir
-release: 0
-depends:
-- components/fuse2.yml
-- components/desktop-file-utils.yml
-sources:
-- https://github.com/AppImage/AppImageKit/releases/download/13/appimagetool-x86_64.AppImage
+
 script: install -v -D -m 0755 appimagetool-x86_64.AppImage %{install-root}/usr/bin/appimagetool
 
+depends:
+  - components/fuse2.yml
+  - components/desktop-file-utils.yml
+sources:
+  - https://github.com/AppImage/AppImageKit/releases/download/13/appimagetool-x86_64.AppImage
+
+# TODO: FIX update url
+# TODO: build from source

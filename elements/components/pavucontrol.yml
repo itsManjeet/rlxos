@@ -1,14 +1,13 @@
 id: pavucontrol
-version: "4.0"
+version: 5.0
 about: A simple GTK based volume control tool ("mixer") for the PulseAudio sound server
-release: 0
-depends:
-- components/gtkmm.yml
-- components/libcanberra.yml
-- components/libsigc++.yml
-- components/pulseaudio.yml
-build-time:
-- components/intltool.yml
-sources:
-- https://freedesktop.org/software/pulseaudio/pavucontrol/pavucontrol-4.0.tar.xz
 
+depends:
+  - components/gtkmm.yml
+  - components/libcanberra.yml
+  - components/libsigc++.yml
+  - components/pulseaudio.yml
+build-time:
+  - components/intltool.yml
+sources:
+  - https://freedesktop.org/software/pulseaudio/pavucontrol/pavucontrol-%{version}.tar.xz

@@ -11,7 +11,7 @@ post-script: |
   for target in depmod insmod modinfo modprobe rmmod; do
     ln -sfv ../bin/kmod %{install-root}/usr/bin/$target
   done
-  
+
   ln -sfv kmod %{install-root}/usr/bin/lsmod
 
 sources:

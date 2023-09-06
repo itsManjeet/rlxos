@@ -1,22 +1,28 @@
 id: openmpi
-version: 4.1.4
+version: 4.1.5
 about: High performance message passing library (MPI)
-release: 0
-depends:
-- components/libgcc.yml
-- components/glibc.yml
-- components/hwloc.yml
-- components/libevent.yml
-- components/libnl.yml
-- components/openpmix.yml
-- components/zlib.yml
-- components/openssh.yml
-- components/perl.yml
-build-time:
-- components/inetutils.yml
-sources:
-- https://www.open-mpi.org/software/ompi/v4.1/downloads/openmpi-%{version}.tar.bz2
-configure: --enable-builtin-atomics --enable-mpi-cxx --enable-mpi-fortran=all --enable-pretty-print-stacktrace
-  --sysconfdir=%{sysconfdir}/openmpi --with-hwloc=external --with-libevent=external
+
+configure: >-
+  --enable-builtin-atomics
+  --enable-mpi-cxx
+  --enable-mpi-fortran=all
+  --enable-pretty-print-stacktrace
+  --sysconfdir=%{sysconfdir}/openmpi
+  --with-hwloc=external
+  --with-libevent=external
   --with-pmix=external
 
+depends:
+  - components/libgcc.yml
+  - components/glibc.yml
+  - components/hwloc.yml
+  - components/libevent.yml
+  - components/libnl.yml
+  - components/openpmix.yml
+  - components/zlib.yml
+  - components/openssh.yml
+  - components/perl.yml
+build-time:
+  - components/inetutils.yml
+sources:
+  - https://www.open-mpi.org/software/ompi/v%{version:1}/downloads/openmpi-%{version}.tar.bz2

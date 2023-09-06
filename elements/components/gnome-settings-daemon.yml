@@ -1,31 +1,32 @@
 id: gnome-settings-daemon
-version: 40.0.1
+version: 44.1
 about: Daemon responsible for setting various parameters of a GNOME Session
-release: 0
-depends:
-- components/alsa-lib.yml
-- components/colord.yml
-- components/fontconfig.yml
-- components/gcr.yml
-- components/geoclue.yml
-- components/geocode-glib.yml
-- components/gnome-desktop.yml
-- components/lcms.yml
-- components/libcanberra.yml
-- components/libgweather.yml
-- components/libnotify.yml
-- components/librsvg.yml
-- components/libwacom.yml
-- components/pulseaudio.yml
-- components/systemd.yml
-- components/upower.yml
-- components/alsa-lib.yml
-- components/cups.yml
-- components/networkmanager.yml
-- components/nss.yml
-- components/wayland.yml
-sources:
-- https://download.gnome.org/sources/gnome-settings-daemon/40/gnome-settings-daemon-40.0.1.tar.xz
-configure: |
-  --buildtype=release -Dwwan=false
 
+configure: >-
+  --buildtype=release
+  -Dwwan=false
+
+depends:
+  - components/alsa-lib.yml
+  - components/colord.yml
+  - components/fontconfig.yml
+  - components/gcr.yml
+  - components/geoclue.yml
+  - components/geocode-glib.yml
+  - components/gnome-desktop.yml
+  - components/lcms.yml
+  - components/libcanberra.yml
+  - components/libgweather.yml
+  - components/libnotify.yml
+  - components/librsvg.yml
+  - components/libwacom.yml
+  - components/pulseaudio.yml
+  - components/systemd.yml
+  - components/upower.yml
+  - components/alsa-lib.yml
+  - components/cups.yml
+  - components/networkmanager.yml
+  - components/nss.yml
+  - components/wayland.yml
+sources:
+  - https://download.gnome.org/sources/gnome-settings-daemon/%{version:1}/gnome-settings-daemon-%{version}.tar.xz

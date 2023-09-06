@@ -1,32 +1,40 @@
 id: evolution-data-server
-version: 3.40.3
+version: 3.48.4
 about: |
   A unified backend for programs that work with contacts, tasks, and calendar information
-release: 0
-depends:
-- components/berkeley-db.yml
-- components/gcr.yml
-- components/libical.yml
-- components/libsecret.yml
-- components/nss.yml
-- components/sqlite.yml
-- components/gnome-online-accounts.yml
-- components/gobject-introspection.yml
-- components/gtk.yml
-- components/icu.yml
-- components/libcanberra.yml
-- components/libgdata.yml
-- components/libgweather.yml
-- components/libldap.yml
-- components/enchant.yml
-- components/krb5.yml
-build-time:
-- components/vala.yml
-- components/gtk-doc.yml
-- components/openldap.yml
-- components/gperf.yml
-sources:
-- https://download.gnome.org/sources/evolution-data-server/3.40/evolution-data-server-%{version}.tar.xz
-configure: |
-  -DENABLE_VALA_BINDINGS=ON -DENABLE_INSTALLED_TESTS=ON -DENABLE_GOOGLE=ON -DWITH_OPENLDAP=ON -DWITH_KRB5=ON -DENABLE_INTROSPECTION=ON -DENABLE_GTK_DOC=OFF -DLIBEXEC_INSTALL_DIR=/usr/lib -DSYSCONF_INSTALL_DIR=/etc
 
+configure: >-
+  -DENABLE_VALA_BINDINGS=ON
+  -DENABLE_INSTALLED_TESTS=ON
+  -DENABLE_GOOGLE=ON
+  -DWITH_OPENLDAP=ON
+  -DWITH_KRB5=ON
+  -DENABLE_INTROSPECTION=ON
+  -DENABLE_GTK_DOC=OFF
+  -DLIBEXEC_INSTALL_DIR=%{libdir}
+  -DSYSCONF_INSTALL_DIR=%{sysconfdir}
+
+depends:
+  - components/berkeley-db.yml
+  - components/gcr.yml
+  - components/libical.yml
+  - components/libsecret.yml
+  - components/nss.yml
+  - components/sqlite.yml
+  - components/gnome-online-accounts.yml
+  - components/gobject-introspection.yml
+  - components/gtk.yml
+  - components/icu.yml
+  - components/libcanberra.yml
+  - components/libgdata.yml
+  - components/libgweather.yml
+  - components/libldap.yml
+  - components/enchant.yml
+  - components/krb5.yml
+build-time:
+  - components/vala.yml
+  - components/gtk-doc.yml
+  - components/openldap.yml
+  - components/gperf.yml
+sources:
+  - https://download.gnome.org/sources/evolution-data-server/%{version:1}/evolution-data-server-%{version}.tar.xz

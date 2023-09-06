@@ -1,11 +1,11 @@
 id: atk
-version: 2.36.0
-about: The set of accessibility interfaces that are implemented by other toolkits
+version: 2.38.0
+about:
+  The set of accessibility interfaces that are implemented by other toolkits
   and applications
-release: 0
-depends:
-- components/glib.yml
-- components/gobject-introspection.yml
-sources:
-- https://download.gnome.org/sources/atk/2.36/atk-2.36.0.tar.xz
 
+depends:
+  - components/glib.yml
+  - components/gobject-introspection.yml
+sources:
+  - https://download.gnome.org/sources/atk/%{version:1}/atk-%{version}.tar.xz

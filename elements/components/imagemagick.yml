@@ -8,12 +8,12 @@ depends:
   - components/fontconfig.yml
   - components/lcms.yml
   - components/libpng.yml
-  # - components/librsvg.yml
+  - components/librsvg.yml
   - components/libwebp.yml
   - components/libxml2.yml
-  # - components/openjpeg.yml
+  - components/openjpeg.yml
   - components/pango.yml
 
 configure: >
-  --sysconfdir=/etc
+  --sysconfdir=%{sysconfdir}
   --enable-shared

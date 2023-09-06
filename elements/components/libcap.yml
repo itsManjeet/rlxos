@@ -2,10 +2,7 @@ id: libcap
 version: 2.69
 about: User-space interfaces to the POSIX 1003.1e capabilities available in Linux kernels
 
-build-dir: libcap-%{version}
-
-script: |
-  patch -Np1 -i /patches/core/libcap/libcap-2.68-cgo_flags.patch
+script: |-
   sed -i '/install -m.*STA/d' libcap/Makefile
   make DYNAMIC=yes KERNEL_HEADERS='/usr/include' prefix=%{prefix} lib=lib sbin=bin GOLANG=no
   make DESTDIR=%{install-root} RAISE_SETFCAP='no' lib='lib' sbin=bin prefix='%{prefix}' GOLANG=no install

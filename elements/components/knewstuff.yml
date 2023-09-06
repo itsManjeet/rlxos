@@ -1,17 +1,12 @@
 id: knewstuff
-version: 5.94.0
+merge: [elements/include/kf5.yml]
 about: KF5 knewstuff
-release: 0
-depends:
-- components/attica.yml
-- components/kio.yml
-- components/kpackage.yml
-- components/syndication.yml
-build-time:
-- components/extra-cmake-modules.yml
-- components/kirigami2.yml
-sources:
-- https://download.kde.org/stable/frameworks/5.94/%{id}-%{version}.tar.xz
-configure: |
-  -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF -Wno-dev
 
+depends:
+  - components/attica.yml
+  - components/kio.yml
+  - components/kpackage.yml
+  - components/syndication.yml
+build-time:
+  - components/extra-cmake-modules.yml
+  - components/kirigami2.yml

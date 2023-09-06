@@ -1,7 +1,19 @@
 id: pulseaudio
-version: "14.2"
+version: 16.1
 about: A sound system for POSIX OSes
-release: 0
+
+pre-script: |-
+  sed "/doxygen/d" -i meson.build
+
+configure: >-
+  --buildtype=release
+  -D database=gdbm
+  -D bluez5=true
+  -D tests=false
+
+post-script: |-
+  rm -fv %{install-root}%{sysconfdir}/dbus-1/system.d/pulseaudio-system.conf
+
 depends:
   - components/libsndfile.yml
   - components/alsa-lib.yml
@@ -9,14 +21,8 @@ depends:
   - components/glib.yml
   - components/libcap.yml
   - components/x11/libxtst.yml
-  - components/perl-xml-parser.yml
+  - components/perl/perl-xml-parser.yml
   - components/sbc.yml
   - components/bluez.yml
 sources:
-  - https://www.freedesktop.org/software/pulseaudio/releases/pulseaudio-14.2.tar.xz
-pre-script: |
-  sed "/doxygen/d" -i meson.build
-post-script: rm -fv %{install-root}%{sysconfdir}/dbus-1/system.d/pulseaudio-system.conf
-configure:
-  --libexecdir=/usr/lib --buildtype=release -D database=gdbm -D bluez5=true
-  -D tests=false
+  - https://www.freedesktop.org/software/pulseaudio/releases/pulseaudio-%{version}.tar.xz

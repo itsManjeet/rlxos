@@ -1,17 +1,18 @@
 id: xfce4-session
-version: 4.16.0
+version: 4.18.3
 about: A session manager for Xfce
-release: 0
-depends:
-- components/libwnck.yml
-- components/libxfce4ui.yml
-- components/desktop-file-utils.yml
-- components/shared-mime-info.yml
-- components/polkit-gnome.yml
-- components/xfdesktop.yml
-- components/x11/xinit.yml
-sources:
-- https://archive.xfce.org/src/xfce/xfce4-session/4.16/xfce4-session-%{version}.tar.bz2
-configure: |
+
+configure: >-
   --disable-legacy-sm
 
+depends:
+  - components/libwnck.yml
+  - components/libxfce4ui.yml
+  - components/desktop-file-utils.yml
+  - components/shared-mime-info.yml
+  - components/polkit-gnome.yml
+  - components/xfdesktop.yml
+  - components/x11/xinit.yml
+sources:
+  - https://archive.xfce.org/src/xfce/xfce4-session/%{version:1}/xfce4-session-%{version}.tar.bz2
+# TODO: fix update url

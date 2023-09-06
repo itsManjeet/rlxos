@@ -1,5 +1,5 @@
 id: weston
-version: 12.0.1
+version: 12.0.2
 about: reference implementation of wayland compositor
 
 depends:
@@ -17,18 +17,17 @@ depends:
   - components/mesa.yml
   - components/lcms.yml
   - components/pango.yml
+  - components/pipewire.yml
 
 sources:
   - https://gitlab.freedesktop.org/wayland/weston/-/releases/%{version}/downloads/weston-%{version}.tar.xz
 
-# TODO: enable vaapi, pipewire, freerdp, xwayland, gstreamer
-
 configure: >
   -D b_lto=false
   -D backend-drm-screencast-vaapi=false
-  -D backend-pipewire=false
   -D backend-rdp=false
   -D backend-vnc=false
   -D xwayland=false
   -D remoting=false
-  -D pipewire=false
+
+# TODO: enable vaapi, pipewire, freerdp, xwayland, gstreamer

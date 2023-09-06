@@ -1,12 +1,12 @@
 id: libdrm
-version: 2.4.115
+version: 2.4.116
 about: Library for accessing the DRM
 sources:
   - https://dri.freedesktop.org/libdrm/libdrm-%{version}.tar.xz
 
 depends:
   - components/glibc.yml
-  - components/libpciaccess.yml
+  - components/x11/libpciaccess.yml
 build-time:
   - components/meson.yml
 configure: >-

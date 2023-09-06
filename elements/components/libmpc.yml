@@ -8,5 +8,5 @@ sources:
 depends:
   - components/libmpfr.yml
 
-configure: >
+configure: >-
   --disable-static

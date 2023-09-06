@@ -1,12 +1,15 @@
 id: qbe
 version: r1258
 about: Small embeddable C compiler backend
-release: 0
-depends:
-- components/glibc.yml
-sources:
-- https://c9x.me/git/qbe.git/snapshot/qbe-{{commit}}.tar.gz
+
+variables:
+  commit: f1b21d145ba03c6052b4b722dc457f8e944e6fca
+
 script: |-
   make
-  make DESTDIR=%{install-root} PREFIX=/usr install
+  make DESTDIR=%{install-root} PREFIX=%{prefix} install
 
+depends:
+  - components/glibc.yml
+sources:
+  - https://c9x.me/git/qbe.git/snapshot/qbe-%{commit}.tar.gz

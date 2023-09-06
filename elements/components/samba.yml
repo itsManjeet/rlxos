@@ -1,41 +1,65 @@
 id: samba
-version: 4.16.0
-about: |
-  Package provides file and print services to SMB/CIFS clients and Windows networking to Linux clients
-release: 0
-depends:
-- components/gnutls.yml
-- components/jansson.yml
-- components/libtirpc.yml
-- components/lmdb.yml
-- components/rpcsvc-proto.yml
-- components/fuse.yml
-- components/gpgme.yml
-- components/libtasn1.yml
-- components/libxslt.yml
-- components/pam.yml
-- components/perl-parse-yapp.yml
-- components/perl-json.yml
-- components/cups.yml
-- components/libldap.yml
-build-time:
-- components/py/py-pip.yml
-- components/openldap.yml
-sources:
-- https://www.samba.org/ftp/samba/stable/samba-%{version}.tar.gz
-script: "python3 -m venv pyenv\n./pyenv/bin/pip3 install cryptography pyasn1 iso8601\n\nPYTHON=$PWD/pyenv/bin/python3
-  \\\nCPPFLAGS=\"-I/usr/lib/tirpc\" \\\n  LDFLAGS=\"-ltirpc\" \\\n./configure --prefix=/usr
-  \\\n    --sysconfdir=/etc \\\n    --sbindir=/usr/bin \\\n    --libdir=/usr/lib \\\n
-  \   --libexecdir=/usr/lib/samba \\\n    --localstatedir=/var \\\n    --with-configdir=%{sysconfdir}/samba
-  \\\n    --with-lockdir=/var/cache/samba \\\n    --with-sockets-dir=/run/samba \\\n
-  \   --with-piddir=/run \\\n    --with-pammodulesdir=/usr/lib/security \\\n    --enable-fhs
-  \\\n    --without-ad-dc \\\n    --enable-selftest\nmake\n\nsed '1s@^.*$@#!/usr/bin/python3@'
-  \\\n  -i ./bin/default/source4/scripting/bin/samba-gpupdate.inst\n\nmake DESTDIR=%{install-root}
-  install\n\ninstall -v -m644 examples/smb.conf.default %{install-root}%{sysconfdir}/samba\nsed
-  -e \"s;log file =.*;log file = /var/log/samba/%m.log;\" \\\n  -e \"s;path = /usr/spool/samba;path
-  = /var/spool/samba;\" \\\n  -i %{install-root}%{sysconfdir}/samba/smb.conf.default\n
-  \ \nmkdir -pv %{install-root}%{sysconfdir}/openldap/schema\ncp examples/LDAP/README
-  %{install-root}%{sysconfdir}/openldap/schema/README.LDAP\ncp examples/LDAP/samba*
-  %{install-root}%{sysconfdir}/openldap/schema/\ncp examples/LDAP/{get*,ol*} %{install-root}%{sysconfdir}/openldap/schema/\n\ninstall
-  -vdm 755 %{install-root}/usr/lib/cups/backend\nln -sf -v /usr/bin/smbspool %{install-root}/usr/lib/cups/backend/smb\n"
+version: 4.19.0
+about: Package provides file and print services to SMB/CIFS clients and Windows networking to Linux clients
 
+script: |-
+  python3 -m venv pyenv
+  ./pyenv/bin/pip3 install cryptography pyasn1 iso8601
+
+  PYTHON=$PWD/pyenv/bin/python3 \
+  CPPFLAGS="-I/%{libdir}/tirpc" \
+  LDFLAGS="-ltirpc"         \
+  ./configure --prefix=%{prefix} \
+      --sysconfdir=%{sysconfdir} \
+      --sbindir=%{bindir} \
+      --libdir=/%{libdir} \   
+      --libexecdir=/%{libdir}/samba \
+      --localstatedir=/var \
+      --with-configdir=%{sysconfdir}/samba \
+      --with-lockdir=/var/cache/samba \
+      --with-sockets-dir=/run/samba \
+      --with-piddir=/run \
+      --with-pammodulesdir=/%{libdir}/security \
+      --enable-fhs \
+      --without-ad-dc \
+      --enable-selftest
+  make
+
+  sed '1s@^.*$@#!%{bindir}/python3@' \
+    -i ./bin/default/source4/scripting/bin/samba-gpupdate.inst
+
+  make DESTDIR=%{install-root} install
+
+  install -v -m644 examples/smb.conf.default %{install-root}%{sysconfdir}/samba
+  sed -e "s;log file =.*;log file = /var/log/samba/%m.log;" \
+      -e "s;path = %{prefix}/spool/samba;path = /var/spool/samba;" \
+      -i %{install-root}%{sysconfdir}/samba/smb.conf.default
+
+  mkdir -pv %{install-root}%{sysconfdir}/openldap/schema
+  cp examples/LDAP/README %{install-root}%{sysconfdir}/openldap/schema/README.LDAP
+  cp examples/LDAP/samba* %{install-root}%{sysconfdir}/openldap/schema/
+  cp examples/LDAP/{get*,ol*} %{install-root}%{sysconfdir}/openldap/schema/
+
+  install -vdm 755 %{install-root}/%{libdir}/cups/backend
+  ln -sf -v %{bindir}/smbspool %{install-root}/%{libdir}/cups/backend/smb
+
+depends:
+  - components/gnutls.yml
+  - components/jansson.yml
+  - components/libtirpc.yml
+  - components/lmdb.yml
+  - components/rpcsvc-proto.yml
+  - components/fuse.yml
+  - components/gpgme.yml
+  - components/libtasn1.yml
+  - components/libxslt.yml
+  - components/pam.yml
+  - components/perl-parse-yapp.yml
+  - components/perl-json.yml
+  - components/cups.yml
+  - components/libldap.yml
+build-time:
+  - components/py/py-pip.yml
+  - components/openldap.yml
+sources:
+  - https://www.samba.org/ftp/samba/stable/samba-%{version}.tar.gz

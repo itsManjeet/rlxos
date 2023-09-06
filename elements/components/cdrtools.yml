@@ -3,10 +3,10 @@ version: 3.02a09
 about: original cdrtools supporting CD, DVD and blueray buring
 release: 0
 depends:
-- components/acl.yml
-- components/libcap.yml
+  - components/acl.yml
+  - components/libcap.yml
 sources:
-- https://downloads.sourceforge.net/cdrtools/cdrtools-%{version}.tar.bz2
+  - https://downloads.sourceforge.net/cdrtools/cdrtools-%{version}.tar.bz2
 script: |-
   sed -i 's|/opt/schily|/usr|g' DEFAULTS/Defaults.linux
   sed -i 's|DEFINSGRP=.*|DEFINSGRP=root|' DEFAULTS/Defaults.linux
@@ -32,4 +32,3 @@ script: |-
   ln -s readcd readom
   ln -s mkisofs genisoimage
   ln -s cdda2wav icedax
-

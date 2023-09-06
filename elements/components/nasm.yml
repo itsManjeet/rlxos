@@ -1,7 +1,9 @@
 id: nasm
-version: 2.15.05
+version: 2.16.01
 about: An 80x86 assembler designed for portability and modularity
-release: 0
-sources:
-- https://www.nasm.us/pub/nasm/releasebuilds/2.15.05/nasm-2.15.05.tar.xz
 
+depends:
+  - components/glibc.yml
+
+sources:
+  - https://www.nasm.us/pub/nasm/releasebuilds/%{version}/nasm-%{version}.tar.xz

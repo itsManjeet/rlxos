@@ -1,14 +1,16 @@
 id: apr
 version: 1.7.0
 about: Apache portable runtime library
-release: 0
-depends:
-- components/util-linux.yml
-- components/expat.yml
-- components/gdbm.yml
-- components/sqlite.yml
-sources:
-- http://www.apache.org/dist/apr/apr-1.7.0.tar.bz2
-post-script: sed -i -r "/^APR_(SOURCE|BUILD)/s|=.*|=|" %{install-root}/usr/bin/apr-1-config
-configure: --with-installbuilddir=%{datadir}/apr-1
 
+configure: >
+  --with-installbuilddir=%{datadir}/apr-1
+
+post-script: sed -i -r "/^APR_(SOURCE|BUILD)/s|=.*|=|" %{install-root}/%{bindir}/apr-1-config
+
+depends:
+  - components/util-linux.yml
+  - components/expat.yml
+  - components/gdbm.yml
+  - components/sqlite.yml
+sources:
+  - http://www.apache.org/dist/apr/apr-%{version}.tar.bz2

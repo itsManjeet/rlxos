@@ -1,5 +1,5 @@
 id: openssh
-version: 9.3p2
+version: 9.4p1
 about: ssh clients and the sshd daemon
 
 depends:
@@ -36,6 +36,8 @@ script: |
       --with-pid-dir=/run \
       --with-pam \
       --with-privsep-user=nobody
-  
+
   make ${MAKEFLAGS}
-  make DESTDIR=%{install-root} install 
+  make DESTDIR=%{install-root} install
+
+# TODO: build with builtin autotools

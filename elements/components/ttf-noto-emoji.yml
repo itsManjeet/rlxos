@@ -1,8 +1,0 @@
-id: ttf-noto-emoji
-version: "2.034"
-about: Google Noto emoji fonts
-release: 0
-sources:
-- noto-emoji-%{version}.tar.gz::https://github.com/googlefonts/noto-emoji/archive/refs/tags/v%{version}.tar.gz
-script: install -v -D -m 0644 fonts/NotoColorEmoji.ttf -t %{install-root}%{datadir}/fonts/noto/
-

@@ -6,9 +6,7 @@ environ:
   - LINKS=/usr/bin/links
 
 sources:
-  - https://releases.pagure.org/xmlto/xmlto-0.0.28.tar.bz2
+  - https://releases.pagure.org/xmlto/xmlto-%{version}.tar.bz2
 
 depends:
   - components/docbook-xsl.yml
-
-

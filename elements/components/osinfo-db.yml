@@ -1,11 +1,12 @@
 id: osinfo-db
-version: "20220516"
-about: Osinfo database of information about operating systems for virtualization provisioning
+version: 20230719
+about:
+  Osinfo database of information about operating systems for virtualization provisioning
   tools
-release: 0
-build-time:
-- components/osinfo-db-tools.yml
-sources:
-- https://releases.pagure.org/libosinfo/osinfo-db-%{version}.tar.xz
-script: osinfo-db-import --root %{install-root} --system ${PKGUPD_SRCDIR}/osinfo-db-%{version}.tar.xz
 
+build-time:
+  - components/osinfo-db-tools.yml
+sources:
+  - osinfo-db::https://releases.pagure.org/libosinfo/osinfo-db-%{version}.tar.xz
+script: |
+  osinfo-db-import --root %{install-root} --system %{build-root}/osinfo-db

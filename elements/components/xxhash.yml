@@ -1,12 +1,10 @@
 id: xxhash
 version: 0.8.1
 about: Extremely fast non-cryptographic hash algorithm
-release: 0
 depends:
-- components/glibc.yml
+  - components/glibc.yml
 sources:
-- xxhash-%{version}.tar.gz::https://github.com/Cyan4973/xxHash/archive/refs/tags/v%{version}.tar.gz
+  - xxhash-%{version}.tar.gz::https://github.com/Cyan4973/xxHash/archive/refs/tags/v%{version}.tar.gz
 script: |-
-  make PREFIX=/usr
-  make PREFIX=/usr DESTDIR=%{install-root} install
-
+  make PREFIX=%{prefix}
+  make PREFIX=%{prefix} DESTDIR=%{install-root} install

@@ -1,7 +1,7 @@
 id: yodl
 version: 4.03.03
 about: Implements a predocument language and tools to process it
-release: 0
+
 depends:
   - components/bash.yml
 build-time:

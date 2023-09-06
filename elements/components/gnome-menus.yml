@@ -1,12 +1,11 @@
 id: gnome-menus
 version: 3.36.0
 about: GNOME menu specifications
-release: 0
-depends:
-- components/glib.yml
-build-time:
-- components/gobject-introspection.yml
-- components/intltool.yml
-sources:
-- https://download.gnome.org/sources/gnome-menus/3.36/gnome-menus-3.36.0.tar.xz
 
+depends:
+  - components/glib.yml
+build-time:
+  - components/gobject-introspection.yml
+  - components/intltool.yml
+sources:
+  - https://download.gnome.org/sources/gnome-menus/%{version:1}/gnome-menus-%{version}.tar.xz

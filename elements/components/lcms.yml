@@ -6,4 +6,3 @@ sources:
 
 depends:
   - components/libtiff.yml
-

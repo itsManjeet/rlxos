@@ -1,20 +1,18 @@
 id: lsof
-version: 4.95.0
+version: 4.98.0
 about: Lists open files for running unix processes
-release: 0
+
 depends:
-- components/glibc.yml
-- components/libtirpc.yml
+  - components/glibc.yml
+  - components/libtirpc.yml
 sources:
-- https://github.com/lsof-org/lsof/archive/%{version}/%{id}-%{version}.tar.gz
-pre-script: |
+  - https://github.com/lsof-org/lsof/archive/%{version}/%{id}-%{version}.tar.gz
+pre-script: |-
   sed -i 's|/\* #define\tHASSECURITY\t1 \*/|#define\tHASSECURITY\t1|' dialects/linux/machine.h
   sed -i "s|.so ./version|.ds VN %{version}|" -i Lsof.8
-script: |
+script: |-
   ./Configure -n linux
   make CC="cc ${CFLAGS}"
 
-  install -D -m 0755 lsof -t %{install-root}/usr/bin/
+  install -D -m 0755 lsof -t %{install-root}/%{bindir}
   install -D -m 0644 Lsof.8 %{install-root}%{datadir}/man/man8/lsof.8
-  install -D -m 0644 /files/LICENSE -t %{install-root}%{datadir}/doc/lsof/
-

@@ -1,12 +1,18 @@
 id: exiv2
-version: 0.27.4
-about: |
-  Library and a command line utility for managing image and video metadata
-release: 0
-build-time:
-- components/cmake.yml
-sources:
-- https://github.com/Exiv2/exiv2/archive/v%{version}/exiv2-%{version}.tar.gz
-configure: |
-  -DCMAKE_BUILD_TYPE=Release -DEXIV2_ENABLE_VIDEO=yes -DEXIV2_ENABLE_WEREADY=yes -DEXIV2_ENABLE_CURL=yes -DEXIV2_BUILD_SAMPLES=no
+version: 0.28.0
+about: Library and a command line utility for managing image and video metadata
 
+configure: >-
+  -DCMAKE_BUILD_TYPE=Release
+  -DEXIV2_ENABLE_VIDEO=yes
+  -DEXIV2_ENABLE_WEREADY=yes
+  -DEXIV2_ENABLE_CURL=yes
+  -DEXIV2_BUILD_SAMPLES=no
+
+depends:
+  - components/glibc.yml
+
+build-time:
+  - components/cmake.yml
+sources:
+  - https://github.com/Exiv2/exiv2/archive/v%{version}/exiv2-%{version}.tar.gz

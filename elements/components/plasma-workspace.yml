@@ -1,39 +1,34 @@
 id: plasma-workspace
-version: 5.24.5
+merge: [elements/include/plasma.yml]
 about: Plasma plasma-workspace
-release: 0
-depends:
-- components/accountsservice.yml
-- components/kactivities-stats.yml
-- components/kio.yml
-- components/knotifyconfig.yml
-- components/kpeople.yml
-- components/kquickcharts.yml
-- components/ktexteditor.yml
-- components/kwin.yml
-- components/libkscreen.yml
-- components/krunner.yml
-- components/kitemmodels.yml
-- components/prison.yml
-- components/x11/xmessage.yml
-- components/x11/xrdb.yml
-- components/x11/xsetroot.yml
-- components/baloo.yml
-- components/kdesu.yml
-- components/libksysguard.yml
-- components/libqalculate.yml
-- components/kholidays.yml
-- components/phonon.yml
-- components/kuserfeedback.yml
-- components/networkmanager-qt.yml
-build-time:
-- components/extra-cmake-modules.yml
-- components/kdoctools.yml
-- components/kinit.yml
-- components/kunitconversion.yml
-- components/plasma-wayland-protocols.yml
-sources:
-- https://download.kde.org/stable/plasma/%{version}/%{id}-%{version}.tar.xz
-configure: |
-  -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF -Wno-dev
 
+depends:
+  - components/accountsservice.yml
+  - components/kactivities-stats.yml
+  - components/kio.yml
+  - components/knotifyconfig.yml
+  - components/kpeople.yml
+  - components/kquickcharts.yml
+  - components/ktexteditor.yml
+  - components/kwin.yml
+  - components/libkscreen.yml
+  - components/krunner.yml
+  - components/kitemmodels.yml
+  - components/prison.yml
+  - components/x11/xmessage.yml
+  - components/x11/xrdb.yml
+  - components/x11/xsetroot.yml
+  - components/baloo.yml
+  - components/kdesu.yml
+  - components/libksysguard.yml
+  - components/libqalculate.yml
+  - components/kholidays.yml
+  - components/phonon.yml
+  - components/kuserfeedback.yml
+  - components/networkmanager-qt.yml
+build-time:
+  - components/extra-cmake-modules.yml
+  - components/kdoctools.yml
+  - components/kinit.yml
+  - components/kunitconversion.yml
+  - components/plasma-wayland-protocols.yml

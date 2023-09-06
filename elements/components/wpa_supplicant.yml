@@ -1,14 +1,13 @@
 id: wpa_supplicant
-version: "2.9"
+version: 2.10
 about: Wi-Fi Protected Access (WPA) client and IEEE 802.1X supplicant
-release: 0
 depends:
-- components/desktop-file-utils.yml
-- components/libnl.yml
-- components/dbus.yml
-- components/libxml2.yml
+  - components/desktop-file-utils.yml
+  - components/libnl.yml
+  - components/dbus.yml
+  - components/libxml2.yml
 sources:
-- https://w1.fi/releases/wpa_supplicant-2.9.tar.gz
+  - https://w1.fi/releases/wpa_supplicant-%{version}.tar.gz
 script: |
   cp /files/wpa_supplicant/config .config
   make BINDIR=/usr/bin LIBDIR=/usr/lib
@@ -19,4 +18,3 @@ script: |
   install -v -d -m755 %{install-root}%{sysconfdir}/dbus-1/system.d
   install -v -D -m644 dbus/dbus-wpa_supplicant.conf \
             %{install-root}%{sysconfdir}/dbus-1/system.d/wpa_supplicant.conf
-

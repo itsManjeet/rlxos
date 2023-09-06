@@ -1,11 +1,10 @@
 id: xfconf
-version: 4.16.0
+version: 4.18.1
 about: Xfce configuration storage system
-release: 0
-depends:
-- components/libxfce4util.yml
-build-time:
-- components/vala.yml
-sources:
-- https://archive.xfce.org/src/xfce/xfconf/4.16/xfconf-4.16.0.tar.bz2
 
+depends:
+  - components/libxfce4util.yml
+build-time:
+  - components/vala.yml
+sources:
+  - https://archive.xfce.org/src/xfce/xfconf/%{version:1}/xfconf-%{version}.tar.bz2

@@ -1,5 +1,5 @@
 id: at-spi2-core
-version: 2.40.3
+version: 2.48.4
 about: Service Provider Interface for the Assistive Technologies
 
 depends:
@@ -10,5 +10,6 @@ depends:
   - components/x11/xprop.yml
   - components/libxml2.yml
   - components/gobject-introspection.yml
+
 sources:
-  - https://download.gnome.org/sources/at-spi2-core/2.40/at-spi2-core-2.40.3.tar.xz
+  - https://download.gnome.org/sources/at-spi2-core/%{version:1}/at-spi2-core-%{version}.tar.xz

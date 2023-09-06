@@ -1,5 +1,5 @@
 id: glib
-version: 2.76.4
+version: 2.76.5
 about: Package contains low-level libraries useful for providing data structure handling for C, portability wrappers and interfaces for such runtime functionality as an event loop, threads, dynamic loading and an object system
 
 depends:
@@ -15,7 +15,7 @@ build-time:
   - components/gettext.yml
 
 sources:
-  - https://download.gnome.org/sources/glib/2.76/glib-%{version}.tar.xz
+  - https://download.gnome.org/sources/glib/%{version:1}/glib-%{version}.tar.xz
 
 configure: >-
   -D man=false 

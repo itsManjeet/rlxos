@@ -1,11 +1,11 @@
 id: snowball
 version: 2.2.0
 about: String processing language for creating stemming algorithms
-release: 0
+
 sources:
-- snowball-%{version}.tar.gz::https://github.com/snowballstem/snowball/archive/refs/tags/v%{version}.tar.gz
+  - snowball-%{version}.tar.gz::https://github.com/snowballstem/snowball/archive/refs/tags/v%{version}.tar.gz
 script: |
-  patch -Np1 -i /files/dynamiclib.diff
+  # patch -Np1 -i /files/dynamiclib.diff
   make
 
   install -Dt %{install-root}/usr/bin/ snowball stemwords
@@ -16,4 +16,3 @@ script: |
   ln -s libstemmer.so.0.0.0 %{install-root}/usr/lib/libstemmer.so.0
   ln -s libstemmer.so.0 %{install-root}/usr/lib/libstemmer.so
   install -Dt %{install-root}%{datadir}/doc/libstemmer/LICENSE -m644 COPYING
-

@@ -1,5 +1,5 @@
 id: libgudev
-version: 237
+version: 238
 about: GObject bindings for libudev.
 
 depends:

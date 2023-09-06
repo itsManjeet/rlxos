@@ -1,22 +1,22 @@
 id: lxd
-version: "4.19"
+version: 5.17
 about: Daemon based on liblxc offering a REST API to manage containers
-release: 0
+
 depends:
-- components/dnsmasq.yml
-- components/dqlite.yml
-- components/iptables.yml
-- components/libuv.yml
-- components/lxc.yml
-- components/lxcfs.yml
-- components/squashfs-tools.yml
+  - components/dnsmasq.yml
+  - components/dqlite.yml
+  - components/iptables.yml
+  - components/libuv.yml
+  - components/lxc.yml
+  - components/lxcfs.yml
+  - components/squashfs-tools.yml
 build-time:
-- components/go.yml
-- components/libseccomp.yml
-- components/systemd.yml
-- components/tcl.yml
+  - components/go.yml
+  - components/libseccomp.yml
+  - components/systemd.yml
+  - components/tcl.yml
 sources:
-- https://linuxcontainers.org/downloads/lxd/lxd-%{version}.tar.gz
+  - https://linuxcontainers.org/downloads/lxd/lxd-%{version}.tar.gz
 pre-script: |
   mkdir bin
   echo "verifing modules"
@@ -29,6 +29,7 @@ script: |-
     install -v -p -D -m 0755 bin/${tool} %{install-root}/usr/bin/${tool}
   done
 
-  install -v -D -m 0644 /files/lxd/lxd.{service,socket} -t %{install-root}/usr/lib/systemd/system/
+  #install -v -D -m 0644 /files/lxd/lxd.{service,socket} -t %{install-root}/usr/lib/systemd/system/
   install -v -d -m 0700 %{install-root}/var/log/lxd
 
+# TODO: fix service file

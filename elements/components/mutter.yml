@@ -1,8 +1,7 @@
 id: mutter
-version: "40.3"
-about: |
-  The window manager for GNOME
-release: 0
+version: 44.4
+about: The window manager for GNOME
+
 depends:
   - components/gnome-settings-daemon.yml
   - components/graphene.yml
@@ -19,7 +18,4 @@ depends:
 build-time:
   - components/gobject-introspection.yml
 sources:
-  - https://download.gnome.org/sources/mutter/40/mutter-%{version}.tar.xz
-pre-script: |
-  patch data/org.gnome.mutter.gschema.xml.in < /files/center-window.patch
-configure: --buildtype=release
+  - https://download.gnome.org/sources/mutter/%{version:1}/mutter-%{version}.tar.xz

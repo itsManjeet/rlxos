@@ -1,14 +1,14 @@
 id: nodejs
-version: 14.17.3
+version: 20.5.1
 about: A JavaScript runtime built on Chrome's V8 JavaScript engine.
-release: 0
-depends:
-- components/which.yml
-- components/icu.yml
-sources:
-- https://nodejs.org/dist/v14.17.3/node-v14.17.3.tar.xz
-script: |
-  ./configure --prefix=/usr --shared-openssl --shared-zlib --with-intl=system-icu
-  make
-  make install DESTDIR=%{install-root}
 
+configure: >-
+  --shared-openssl
+  --shared-zlib
+  --with-intl=system-icu
+
+depends:
+  - components/which.yml
+  - components/icu.yml
+sources:
+  - https://nodejs.org/dist/v%{version}/node-v%{version}.tar.xz

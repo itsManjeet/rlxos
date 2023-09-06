@@ -1,23 +1,32 @@
 id: colord
-version: 1.4.5
-about: A system service that makes it easy to manage, install, and generate color
+version: 1.4.6
+about:
+  A system service that makes it easy to manage, install, and generate color
   profiles
-release: 0
-depends:
-- components/dbus.yml
-- components/glib.yml
-- components/lcms.yml
-- components/polkit.yml
-- components/sqlite.yml
-- components/libgudev.yml
-- components/libgusb.yml
-- components/systemd.yml
-build-time:
-- components/gobject-introspection.yml
-- components/vala.yml
-sources:
-- https://www.freedesktop.org/software/colord/releases/colord-1.4.5.tar.xz
-configure: --buildtype=release -D daemon_user=colord -D vapi=true -D systemd=true
-  -D libcolordcompact=true -D argullcms_sensor=false -D bash_completion=false -D docs=false
+
+configure: >
+  --buildtype=release
+  -D daemon_user=colord
+  -D vapi=true
+  -D systemd=true
+  -D libcolordcompact=true
+  -D argullcms_sensor=false
+  -D bash_completion=false
+  -D docs=false
   -D man=false
 
+depends:
+  - components/dbus.yml
+  - components/glib.yml
+  - components/lcms.yml
+  - components/polkit.yml
+  - components/sqlite.yml
+  - components/libgudev.yml
+  - components/libgusb.yml
+  - components/systemd.yml
+build-time:
+  - components/gobject-introspection.yml
+  - components/vala.yml
+sources:
+  - https://www.freedesktop.org/software/colord/releases/colord-%{version}.tar.xz
+# TODO: enable bash_completion, docs and manuals

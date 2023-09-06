@@ -6,5 +6,5 @@ sources:
 
 depends:
   - components/glibc.yml
-pre-script: |
+pre-script: |-
   sed -i "s#) ytasm.*#)#" Makefile.in

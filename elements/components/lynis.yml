@@ -1,13 +1,13 @@
 id: lynis
-version: 3.0.8
+version: 3.0.9
 about: Security and system auditing tool to harden Unix/Linux systems
-release: 0
+
 depends:
-- components/gawk.yml
-- components/bash.yml
-- components/iptables.yml
+  - components/gawk.yml
+  - components/bash.yml
+  - components/iptables.yml
 sources:
-- https://downloads.cisofy.com/lynis/lynis-%{version}.tar.gz
+  - https://downloads.cisofy.com/lynis/lynis-%{version}.tar.gz
 pre-script: |-
   sed -e 's|/path/to/lynis|/usr/bin/lynis|g' -i extras/systemd/lynis.service
 
@@ -28,4 +28,3 @@ pre-script: |-
   # systemd
   install -Dm 644 extras/systemd/{lynis.service,lynis.timer} \
     -t "%{install-root}/usr/lib/systemd/system"
-

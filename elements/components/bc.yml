@@ -13,4 +13,3 @@ build-time:
 
 sources:
   - https://ftp.gnu.org/gnu/bc/bc-%{version}.tar.gz
-

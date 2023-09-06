@@ -1,7 +1,7 @@
 id: libndp
-version: "1.8"
+version: 1.8
 about: Library provides a wrapper for IPv6 Neighbor Discovery Protocol
-release: 0
+depends:
+  - components/glibc.yml
 sources:
-- http://libndp.org/files/libndp-1.8.tar.gz
-
+  - http://libndp.org/files/libndp-%{version}.tar.gz

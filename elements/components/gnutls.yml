@@ -1,15 +1,18 @@
 id: gnutls
-version: 3.7.2
-about: Libraries and userspace tools which provide a secure layer over a reliable
+version: 3.8.1
+about:
+  Libraries and userspace tools which provide a secure layer over a reliable
   transport layer
-release: 0
-depends:
-- components/nettle.yml
-- components/libunistring.yml
-- components/libtasn1.yml
-- components/p11-kit.yml
-sources:
-- https://www.gnupg.org/ftp/gcrypt/gnutls/v3.7/gnutls-3.7.2.tar.xz
-configure: |
-  --disable-guile --disable-rpath --with-default-trust-store-pkcs11="pkcs11:"
 
+configure: >-
+  --disable-guile
+  --disable-rpath
+  --with-default-trust-store-pkcs11="pkcs11:"
+
+depends:
+  - components/nettle.yml
+  - components/libunistring.yml
+  - components/libtasn1.yml
+  - components/p11-kit.yml
+sources:
+  - https://www.gnupg.org/ftp/gcrypt/gnutls/v%{version:1}/gnutls-%{version}.tar.xz

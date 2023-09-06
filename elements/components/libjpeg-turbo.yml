@@ -8,8 +8,8 @@ about: |
 sources:
   - https://downloads.sourceforge.net/libjpeg-turbo/libjpeg-turbo-%{version}.tar.gz
 build-time:
-    - components/cmake.yml
-    - components/yasm.yml
+  - components/cmake.yml
+  - components/yasm.yml
 configure: >
   -DENABLE_STATIC=FLASE
   -DCMAKE_INSTALL_DEFAULT_LIBDIR=lib

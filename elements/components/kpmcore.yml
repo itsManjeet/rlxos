@@ -1,15 +1,16 @@
 id: kpmcore
-version: 22.08.1
+version: 23.08.0
 about: Library for managing partitions
-release: 0
-depends:
-- components/kcoreaddons.yml
-- components/ki18n.yml
-- components/kwidgetsaddons.yml
-- components/polkit-qt.yml
-build-time:
-- components/extra-cmake-modules.yml
-sources:
-- https://download.kde.org/stable/release-service/%{version}/src/%{id}-%{version}.tar.xz
-configure: -DBUILD_TESTING=OFF
 
+configure: >-
+  -DBUILD_TESTING=OFF
+
+depends:
+  - components/kcoreaddons.yml
+  - components/ki18n.yml
+  - components/kwidgetsaddons.yml
+  - components/polkit-qt.yml
+build-time:
+  - components/extra-cmake-modules.yml
+sources:
+  - https://download.kde.org/stable/release-service/%{version}/src/%{id}-%{version}.tar.xz

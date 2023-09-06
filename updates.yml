@@ -16,3 +16,12 @@ alias:
   firmware:         linux-firmware
   rustc:            rust
   py-six:           python-six
+  py-cairo:         pycairo
+  py-chardet:       chardet
+  py-cython:        cython
+  py-dbus:          dbus-python
+  py-dbusmock:      python-dbusmock
+  py-gobject:       pygobject
+  py-idna:          python-idna
+  py-jinja2:        python-jinja
+  py-distutils-extra:      python-distutils-extra

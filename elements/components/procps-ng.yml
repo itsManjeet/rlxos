@@ -1,5 +1,5 @@
 id: procps-ng
-version: 4.0.3
+version: 4.0.4
 about: Programs for monitoring processes
 sources:
   - https://sourceforge.net/projects/procps-ng/files/Production/procps-ng-%{version}.tar.xz

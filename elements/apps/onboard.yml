@@ -1,0 +1,20 @@
+id: onboard
+version: 1.4.1
+about: On-screen keyboard useful on tablet PCs or for mobility impaired users
+
+depends:
+  - components/gtk.yml
+  - components/hunspell.yml
+  - components/iso-codes.yml
+  - components/libcanberra.yml
+  - components/x11/libxkbfile.yml
+  - components/py/py-cairo.yml
+  - components/py/py-dbus.yml
+  - components/py/py-gobject.yml
+  - components/systemd.yml
+  - components/dconf.yml
+build-time:
+  - components/py/py-distutils-extra.yml
+  - components/intltool.yml
+sources:
+  - https://launchpad.net/onboard/%{version:1}/%{version}/+download/onboard-%{version}.tar.gz

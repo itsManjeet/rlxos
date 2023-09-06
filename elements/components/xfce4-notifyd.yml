@@ -1,16 +1,15 @@
 id: xfce4-notifyd
-version: 0.6.2
+version: 0.8.2
 about: Notification daemon for Xfce
-release: 0
-depends:
-- components/hicolor-icon-theme.yml
-- components/libnotify.yml
-- components/libxfce4ui.yml
-- components/vte.yml
-build-time:
-- components/intltool.yml
-- components/python.yml
-- components/xfce4-panel.yml
-sources:
-- https://archive.xfce.org/src/apps/xfce4-notifyd/0.6/xfce4-notifyd-%{version}.tar.bz2
 
+depends:
+  - components/hicolor-icon-theme.yml
+  - components/libnotify.yml
+  - components/libxfce4ui.yml
+  - components/vte.yml
+build-time:
+  - components/intltool.yml
+  - components/python.yml
+  - components/xfce4-panel.yml
+sources:
+  - https://archive.xfce.org/src/apps/xfce4-notifyd/%{version:1}/xfce4-notifyd-%{version}.tar.bz2

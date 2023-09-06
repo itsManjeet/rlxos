@@ -3,11 +3,11 @@ version: 515.65.01
 about: NVIDIA drivers utilities
 release: 0
 depends:
-- components/egl-wayland.yml
-- components/libglvnd.yml
-- components/xorg-server.yml
+  - components/egl-wayland.yml
+  - components/libglvnd.yml
+  - components/xorg-server.yml
 sources:
-- https://us.download.nvidia.com/XFree86/Linux-x86_64/%{version}/NVIDIA-Linux-x86_64-%{version}.run
+  - https://us.download.nvidia.com/XFree86/Linux-x86_64/%{version}/NVIDIA-Linux-x86_64-%{version}.run
 script: |-
   sh NVIDIA-Linux-x86_64-%{version}.run --extract-only
   cd NVIDIA-Linux-x86_64-%{version}
@@ -173,3 +173,5 @@ script: |-
   echo "blacklist nouveau" | install -Dm644 /dev/stdin "%{install-root}/usr/lib/modprobe.d/%{id}.conf"
   echo "nvidia-uvm" | install -Dm644 /dev/stdin "%{install-root}/usr/lib/modules-load.d/%{id}.conf"
 
+# TODO: check update url
+# TODO: merge into nvidia layer

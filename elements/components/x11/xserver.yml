@@ -8,7 +8,7 @@ depends:
   - components/dbus.yml
   - components/libdrm.yml
   - components/libepoxy.yml
-  - components/libpciaccess.yml
+  - components/x11/libpciaccess.yml
   - components/x11/libxfont2.yml
   - components/x11/libxshmfence.yml
   - components/x11/font-util.yml

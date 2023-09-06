@@ -1,11 +1,10 @@
 id: py-idna
-version: "3.3"
+version: 3.4
 about: Internationalized Domain Names in Applications (IDNA)
-release: 0
-depends:
-- components/python.yml
-build-time:
-- components/py/py-setuptools.yml
-sources:
-- https://pypi.io/packages/source/i/idna/idna-%{version}.tar.gz
 
+depends:
+  - components/python.yml
+build-time:
+  - components/py/py-setuptools.yml
+sources:
+  - https://pypi.io/packages/source/i/idna/idna-%{version}.tar.gz

@@ -1,15 +1,17 @@
 id: breeze-gtk
-version: 5.24.5
+version: 5.27.7.1
 about: Plasma breeze-gtk
-release: 0
-depends:
-- components/breeze.yml
-build-time:
-- components/extra-cmake-modules.yml
-- components/py/py-cairo.yml
-- components/sassc.yml
-sources:
-- https://download.kde.org/stable/plasma/%{version}/%{id}-%{version}.tar.xz
-configure: |
-  -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF -Wno-dev
 
+configure: >
+  -DCMAKE_BUILD_TYPE=Release
+  -DBUILD_TESTING=OFF
+  -Wno-dev
+
+depends:
+  - components/breeze.yml
+build-time:
+  - components/extra-cmake-modules.yml
+  - components/py/py-cairo.yml
+  - components/sassc.yml
+sources:
+  - https://download.kde.org/stable/plasma/%{version}/%{id}-%{version}.tar.xz

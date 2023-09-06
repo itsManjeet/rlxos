@@ -1,9 +1,8 @@
 id: libsodium
 version: 1.0.18
 about: P(ortable|ackageable) NaCI-based crypto library
-release: 0
-depends:
-- components/glibc.yml
-sources:
-- https://download.libsodium.org/libsodium/releases/libsodium-%{version}.tar.gz
 
+depends:
+  - components/glibc.yml
+sources:
+  - https://download.libsodium.org/libsodium/releases/libsodium-%{version}.tar.gz

@@ -1,5 +1,5 @@
 id: openssl
-version: 3.1.1
+version: 3.1.2
 about: Package contains management tools and libraries relating to cryptography
 
 script: |
@@ -14,12 +14,9 @@ script: |
 
   make DESTDIR=%{install-root} MANDIR=%{datadir}/man MANSUFFIX=ssl install_sw install_ssldirs install_man_docs
 
-
-
 depends:
   - components/glibc.yml
   - components/perl.yml
- 
 
 sources:
   - https://www.openssl.org/source/openssl-%{version}.tar.gz

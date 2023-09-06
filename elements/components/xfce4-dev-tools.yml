@@ -1,7 +1,6 @@
 id: xfce4-dev-tools
-version: 4.16.0
+version: 4.19.0
 about: Xfce developer tools
-release: 0
-sources:
-- https://archive.xfce.org/src/xfce/xfce4-dev-tools/4.16/xfce4-dev-tools-%{version}.tar.bz2
 
+sources:
+  - https://archive.xfce.org/src/xfce/xfce4-dev-tools/%{version:1}/xfce4-dev-tools-%{version}.tar.bz2

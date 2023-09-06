@@ -1,14 +1,20 @@
 id: bluez
-version: "5.6"
+version: 5.69
 about: Bluetooth protocol stack
-release: 0
-depends:
-- components/dbus.yml
-- components/glib.yml
-- components/libical.yml
-sources:
-- https://www.kernel.org/pub/linux/bluetooth/bluez-5.60.tar.xz
-post-script: ln -svf ../lib/bluetooth/bluetoothd %{install-root}/usr/bin/
-configure: |
-  --sysconfdir=/etc --disable-manpages --enable-library
 
+configure: >
+  --sysconfdir=%{sysconfdir}
+  --disable-manpages
+  --enable-library
+
+post-script: ln -svf ../lib/bluetooth/bluetoothd %{install-root}/usr/bin/
+
+depends:
+  - components/dbus.yml
+  - components/glib.yml
+  - components/libical.yml
+sources:
+  - https://www.kernel.org/pub/linux/bluetooth/bluez-%{version}.tar.xz
+
+
+# TODO: enable manpages

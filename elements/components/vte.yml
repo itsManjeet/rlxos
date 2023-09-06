@@ -1,16 +1,15 @@
 id: vte
-version: 0.64.2
+version: 0.72.2
 about: A termcap file implementation for terminal emulators
-release: 0
-depends:
-- components/gtk.yml
-- components/libxml2.yml
-- components/pcre2.yml
-- components/icu.yml
-- components/gnutls.yml
-- components/gobject-introspection.yml
-- components/vala.yml
-- components/fribidi.yml
-sources:
-- https://gitlab.gnome.org/GNOME/vte/-/archive/0.64.2/vte-0.64.2.tar.gz
 
+depends:
+  - components/gtk.yml
+  - components/libxml2.yml
+  - components/pcre2.yml
+  - components/icu.yml
+  - components/gnutls.yml
+  - components/gobject-introspection.yml
+  - components/vala.yml
+  - components/fribidi.yml
+sources:
+  - https://gitlab.gnome.org/GNOME/vte/-/archive/%{version}/vte-%{version}.tar.gz

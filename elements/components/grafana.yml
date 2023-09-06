@@ -1,20 +1,20 @@
 id: grafana
-version: 9.0.5
+version: 10.1.1
 about: Gorgeous metric viz, dashboards & editors for Graphite, InfluxDB & OpenTSDB
-release: 0
+
 depends:
-- components/fontconfig.yml
-- components/freetype.yml
-- components/glibc.yml
-- components/gsfonts.yml
+  - components/fontconfig.yml
+  - components/freetype.yml
+  - components/glibc.yml
+  - components/gsfonts.yml
 build-time:
-- components/go.yml
-- components/nodejs.yml
-- components/python.yml
-- components/yarn.yml
+  - components/go.yml
+  - components/nodejs.yml
+  - components/python.yml
+  - components/yarn.yml
 sources:
-- https://github.com/grafana/grafana/archive/v%{version}/%{id}-%{version}.tar.gz
-- https://dl.grafana.com/oss/release/grafana-%{version}.linux-amd64.tar.gz
+  - https://github.com/grafana/grafana/archive/v%{version}/%{id}-%{version}.tar.gz
+  - https://dl.grafana.com/oss/release/grafana-%{version}.linux-amd64.tar.gz
 script: |-
   export CGO_CFLAGS="${CFLAGS:-''}"
   export CGO_CXXFLAGS="${CXXFLAGS:-''}"
@@ -42,4 +42,3 @@ script: |-
   cp -r conf public %{install-root}%{datadir}/%{id}/
 
   install -v -D -m 0644 /files/%{id}.service -t %{install-root}/usr/lib/systemd/system/
-

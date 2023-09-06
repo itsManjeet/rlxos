@@ -1,7 +1,7 @@
 id: sdl2
-version: 2.0.14
+version: 2.28.3
 about: Simple DirectMedia Layer Version 2
-release: 0
+
 depends:
   - components/x11/libx11.yml
   - components/x11/libxcursor.yml
@@ -10,4 +10,4 @@ depends:
   - components/alsa-lib.yml
   - components/pulseaudio.yml
 sources:
-  - https://www.libsdl.org/release/SDL2-2.0.14.tar.gz
+  - https://www.libsdl.org/release/SDL2-%{version}.tar.gz

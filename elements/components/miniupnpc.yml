@@ -1,16 +1,7 @@
 id: miniupnpc
-version: 2.2.3
+version: 2.2.5
 about: Small UPnP client library/tool to access Internet Gateway Devices
-release: 0
-depends:
-- components/glibc.yml
-build-time:
-- components/lsb-release.yml
-- components/python.yml
-- components/py/py-setuptools.yml
-sources:
-- https://miniupnp.tuxfamily.org/files/%{id}-%{version}.tar.gz
-- https://github.com/miniupnp/miniupnp/commit/ed1dc4bb.patch
+
 pre-script: |
   patch -p2 -i ../ed1dc4bb.patch
 script: |-
@@ -22,3 +13,12 @@ script: |-
   install -v -D -m 0644 man3/miniupnpc.3 -t %{install-root}%{datadir}/man/man3
   install -v -D -m 0644 LICENSE -t %{install-root}%{datadir}/doc/%{id}/
 
+depends:
+  - components/glibc.yml
+build-time:
+  - components/lsb-release.yml
+  - components/python.yml
+  - components/py/py-setuptools.yml
+sources:
+  - https://miniupnp.tuxfamily.org/files/%{id}-%{version}.tar.gz
+  - https://github.com/miniupnp/miniupnp/commit/ed1dc4bb.patch

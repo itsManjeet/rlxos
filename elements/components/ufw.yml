@@ -1,13 +1,8 @@
 id: ufw
-version: 0.36.1
+version: 0.36.2
 about: Uncomplicated and easy to use CLI tool for managing a netfilter firewall
-release: 0
-depends:
-- components/iptables.yml
-- components/python.yml
-sources:
-- https://launchpad.net/ufw/0.36/%{version}/+download/ufw-%{version}.tar.gz
-pre-script: |
+
+pre-script: |-
   # FS#28769 - move from /lib to /usr/lib
   sed -i -e 's|/lib|/usr/lib|' \
          -e 's|sbin|bin|g' setup.py
@@ -15,7 +10,12 @@ pre-script: |
   # FS#35458, FS#54110 - correct iptables location
   sed -i -e 's|sbin|bin|g' setup.py
   sed -i -e 's|sbin|bin|g' src/util.py
-post-script: |
-  mkdir -p usr/lib/systemd/system/
+
+post-script: |-
   chmod 644 %{install-root}%{sysconfdir}/ufw/*.rules
 
+depends:
+  - components/iptables.yml
+  - components/python.yml
+sources:
+  - https://launchpad.net/ufw/%{version:1}/%{version}/+download/ufw-%{version}.tar.gz

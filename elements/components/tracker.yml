@@ -1,17 +1,21 @@
 id: tracker
-version: 3.1.2
+version: 3.5.3
 about: The file indexing and search provider used in the GNOME desktop environment
-release: 0
-depends:
-- components/json-glib.yml
-- components/libseccomp.yml
-- components/libsoup.yml
-- components/icu.yml
-- components/sqlite.yml
-build-time:
-- components/vala.yml
-- components/gobject-introspection.yml
-sources:
-- https://download.gnome.org/sources/tracker/3.1/tracker-3.1.2.tar.xz
-configure: --buildtype=release -D docs=false -D man=false
 
+configure: >-
+  --buildtype=release
+  -D docs=false
+  -D man=false
+
+depends:
+  - components/json-glib.yml
+  - components/libseccomp.yml
+  - components/libsoup.yml
+  - components/icu.yml
+  - components/sqlite.yml
+build-time:
+  - components/vala.yml
+  - components/gobject-introspection.yml
+sources:
+  - https://download.gnome.org/sources/tracker/%{version:1}/tracker-%{version}.tar.xz
+# TODO: enable documentation

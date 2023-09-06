@@ -1,11 +1,11 @@
 id: hwdata
-version: 0.372
+version: 0.373
 about: hardware identification databases
 depends:
   - components/glibc.yml
 sources:
   - https://github.com/vcrhonek/hwdata/archive/refs/tags/v%{version}.tar.gz
 
-script: |
+script: |-
   ./configure --prefix=%{prefix} --disable-blacklist
   make DESTDIR=%{install-root} install

@@ -1,18 +1,18 @@
 id: kapidox
-version: 5.94.0
+version: 5.109.0
 about: KF5 kapidox
-release: 0
-depends:
-- components/qt.yml
-- components/py/py-jinja2.yml
-build-time:
-- components/py/py-pip.yml
-- components/extra-cmake-modules.yml
-sources:
-- https://download.kde.org/stable/frameworks/5.94/%{id}-%{version}.tar.xz
+
 script: |-
   pip install build installer wheel
 
   python -m build --wheel --no-isolation
   python -m installer --destdir=%{install-root} dist/*.whl
 
+depends:
+  - components/qt.yml
+  - components/py/py-jinja2.yml
+build-time:
+  - components/py/py-pip.yml
+  - components/extra-cmake-modules.yml
+sources:
+  - https://download.kde.org/stable/frameworks/%{version:1}/%{id}-%{version}.tar.xz

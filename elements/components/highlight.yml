@@ -1,15 +1,15 @@
 id: highlight
-version: "4.1"
+version: 4.8
 about: An utility that converts source code to formatted text with syntax highlighting
-release: 0
-depends:
-- components/lua.yml
-build-time:
-- components/boost.yml
-sources:
-- http://www.andre-simon.de/zip/highlight-4.1.tar.bz2
+
 script: |
   sed -i "/GZIP/s/^/#/" makefile
   make
   make doc_dir=%{datadir}/doc/highlight install DESTDIR=%{install-root}
 
+depends:
+  - components/lua.yml
+build-time:
+  - components/boost.yml
+sources:
+  - http://www.andre-simon.de/zip/highlight-%{version}.tar.bz2

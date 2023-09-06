@@ -113,6 +113,14 @@ build-tools:
   - id: cargo
     target-files:
       - Cargo.toml
-    
+
     script: |
       cargo build --release
+
+  - id: perl
+    target-files:
+      - Makefile.PL
+    script: |
+      perl Makefile.PL %{configure}
+      make %{compile}
+      make install DESTDIR=%{install-root} %{install}

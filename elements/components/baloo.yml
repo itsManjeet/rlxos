@@ -3,14 +3,15 @@ version: 5.94.0
 about: KF5 baloo
 release: 0
 depends:
-- components/kfilemetadata.yml
-- components/kidletime.yml
-- components/kio.yml
-- components/lmdb.yml
+  - components/kfilemetadata.yml
+  - components/kidletime.yml
+  - components/kio.yml
+  - components/lmdb.yml
 build-time:
-- components/extra-cmake-modules.yml
+  - components/extra-cmake-modules.yml
 sources:
-- https://download.kde.org/stable/frameworks/5.94/%{id}-%{version}.tar.xz
+  - https://download.kde.org/stable/frameworks/%{version:1}/%{id}-%{version}.tar.xz
 configure: |
   -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF -Wno-dev
 
+# TODO: check and update

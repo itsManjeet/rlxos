@@ -6,7 +6,7 @@ sources:
 
 depends:
   - components/diffutils.yml
-  
+
 script: |
   make -C lib PREFIX=%{prefix}
   make -C programs PREFIX=%{prefix} lz4 lz4c

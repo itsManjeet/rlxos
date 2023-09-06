@@ -1,18 +1,13 @@
 id: xz
-version: 5.4.3
+version: 5.4.4
 about: Compressing and Decompressing files
+
+configure: >-
+  --disable-rpath
+  --enable-werror
 
 sources:
   - https://tukaani.org/xz/xz-%{version}.tar.xz
 
 depends:
   - components/glibc.yml
-
-script: |
-  ./configure --prefix=%{prefix} \
-    --disable-rpath \
-    --enable-werror
-  
-  make ${MAKEFLAGS}
-
-  make install DESTDIR=%{install-root}

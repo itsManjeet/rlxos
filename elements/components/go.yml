@@ -1,18 +1,31 @@
 id: go
-version: 1.17.5
-about: |
-  The Go Programming Language
-release: 0
-sources:
-- https://golang.org/dl/go%{version}.src.tar.gz
-- https://golang.org/dl/go%{version}.linux-amd64.tar.gz
-script: "export GOROOT_BOOTSTRAP=${pkgupd_srcdir}/go%{version}\nGOROOT_FINAL=/usr/lib/go\nGOCACHE=${pkgupd_srcdir}/go-build\nrm
-  -r go\ninstall -d go%{version}\ntar -xaf ${PKGUPD_SRCDIR}/go%{version}.linux-amd64.tar.gz
-  \\\n  -C go%{version} --strip-components 1\n\ntar -xaf ${PKGUPD_SRCDIR}/go%{version}.src.tar.gz\n\ncd
-  go/src\nbash make.bash\n      \ninstall -d %{install-root}/usr/lib\ncp -r ${pkgupd_srcdir}/go
-  %{install-root}/usr/lib/\n\ninstall -d %{install-root}/usr/bin/\nln -s /usr/lib/go/bin/go
-  %{install-root}/usr/bin/\nln -s /usr/lib/go/bin/gofmt %{install-root}/usr/bin/\n\nfind
-  %{install-root} \\( -name \"*.a\" -o -name \"*.go\" \\) -exec chmod 644 '{}' \\;\nfind
-  %{install-root} \\( -name \"README*\" -o -name \"AUTHORS\" -o -name \"TODO\" \\)
-  -delete\nrm %{install-root}/usr/lib/go/src/*.bat   \n"
+version: 1.21.0
+about: The Go Programming Language
 
+sources:
+  - https://golang.org/dl/go%{version}.src.tar.gz
+  - https://golang.org/dl/go%{version}.linux-amd64.tar.gz
+
+script: |
+  export GOROOT_BOOTSTRAP=%{build-root}/go%{version}
+  GOROOT_FINAL=%{libdir}/go
+  GOCACHE=%{build-root}/go-build
+  rm -r go
+  install -d go%{version}
+
+  tar -xaf ${PKGUPD_SRCDIR}/go%{version}.linux-amd64.tar.gz -C go%{version} --strip-components 1
+  tar -xaf ${PKGUPD_SRCDIR}/go%{version}.src.tar.gz
+
+  cd go/src
+  bash make.bash
+   
+  install -d %{install-root}%{libdir}
+  cp -r %{build-root}/go %{install-root}%{libdir}/
+
+  install -d %{install-root}/usr/bin/
+  ln -s %{libdir}/go/bin/go %{install-root}/usr/bin/
+  ln -s %{libdir}/go/bin/gofmt %{install-root}/usr/bin/
+
+  find %{install-root} \( -name \"*.a\" -o -name \"*.go\" \) -exec chmod 644 '{}' \;
+  find %{install-root} \( -name \"README*\" -o -name \"AUTHORS\" -o -name \"TODO\" \) -delete
+  rm %{install-root}%{libdir}/go/src/*.bat

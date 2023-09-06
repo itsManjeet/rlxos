@@ -1,11 +1,11 @@
 id: os-prober
-version: "1.79"
+version: 1.81
 about: utility to detect installed OSes
-release: 0
+
 depends:
-- components/bash.yml
+  - components/bash.yml
 sources:
-- http://http.debian.net/debian/pool/main/o/os-prober/os-prober_1.79.tar.xz
+  - http://http.debian.net/debian/pool/main/o/os-prober/os-prober_%{version}.tar.xz
 script: |-
   sed -i -e "s:/lib/ld\*\.so\*:/lib*/ld*.so*:g" os-probes/mounted/common/90linux-distro
   rm -f Makefile
@@ -24,4 +24,3 @@ script: |-
 
   install -Dm 755 os-probes/mounted/powerpc/20macosx "%{install-root}"/usr/lib/os-probes/mounted/20macosx
   install -dm 755 "%{install-root}"/var/lib/os-prober
-

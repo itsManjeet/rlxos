@@ -3,6 +3,10 @@ version: 1.8.9
 about: |
   Linux kernel packet control tool (using legacy interface)
 
+configure: >
+  --disable-nftables
+  --enable-libipq
+
 kernel:
   - CONFIG_NET
   - CONFIG_NETFILTER
@@ -19,7 +23,3 @@ depends:
 
 sources:
   - http://www.netfilter.org/projects/iptables/files/iptables-%{version}.tar.xz
-
-configure: >
-  --disable-nftables
-  --enable-libipq

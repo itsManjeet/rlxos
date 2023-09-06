@@ -1,14 +1,14 @@
 id: v4l-utils
-version: 1.20.0
+version: 1.24.1
 about: A series of utilities for media devices
-release: 0
-depends:
-- components/alsa-lib.yml
-- components/glu.yml
-- components/libjpeg-turbo.yml
-build-time:
-- components/llvm.yml
-sources:
-- https://www.linuxtv.org/downloads/v4l-utils/v4l-utils-1.20.0.tar.bz2
-install: -j1
 
+depends:
+  - components/alsa-lib.yml
+  - components/glu.yml
+  - components/libjpeg-turbo.yml
+build-time:
+  - components/llvm.yml
+sources:
+  - https://www.linuxtv.org/downloads/v4l-utils/v4l-utils-%{version}.tar.bz2
+
+install: -j1

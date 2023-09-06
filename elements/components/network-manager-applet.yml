@@ -1,17 +1,22 @@
 id: network-manager-applet
-version: 1.22.0
-about: NetworkManager Applet provides a tool and a panel applet used to configure
+version: 1.32.0
+about:
+  NetworkManager Applet provides a tool and a panel applet used to configure
   wired and wireless network connections through GUI
-release: 0
-depends:
-- components/gtk.yml
-- components/libnma.yml
-- components/libnotify.yml
-- components/libsecret.yml
-build-time:
-- components/gobject-introspection.yml
-sources:
-- https://download.gnome.org/sources/network-manager-applet/1.22/network-manager-applet-1.22.0.tar.xz
-configure: |
-  --buildtype=release -D appindicator=no -Dselinux=false -Dteam=false -Dwwan=false
 
+configure: >-
+  --buildtype=release
+  -D appindicator=no
+  -D selinux=false
+  -D team=false
+  -D wwan=false
+
+depends:
+  - components/gtk.yml
+  - components/libnma.yml
+  - components/libnotify.yml
+  - components/libsecret.yml
+build-time:
+  - components/gobject-introspection.yml
+sources:
+  - https://download.gnome.org/sources/network-manager-applet/%{version:1}/network-manager-applet-%{version}.tar.xz

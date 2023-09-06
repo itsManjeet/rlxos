@@ -1,12 +1,13 @@
 id: l-smash
 version: 2.14.5
 about: MP4 muxer and other tools
-release: 0
-depends:
-- components/glibc.yml
-sources:
-- https://github.com/l-smash/l-smash/archive/v2.14.5.tar.gz
-configure: |
-  --prefix=/usr --enable-shared --disable-static
-install: DESTDIR=%{install-root}
 
+configure: >-
+  --prefix=%{prefix}
+  --enable-shared
+  --disable-static
+
+depends:
+  - components/glibc.yml
+sources:
+  - l-smash-%{version}.tar.gz::https://github.com/l-smash/l-smash/archive/v%{version}.tar.gz

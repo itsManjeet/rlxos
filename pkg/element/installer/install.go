@@ -4,23 +4,30 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"os/exec"
 	"path"
 	"rlxos/pkg/element"
+	"rlxos/pkg/osinfo"
 	"rlxos/pkg/utils"
 	"strings"
 )
 
 func (i *Installer) Install(c ...string) error {
-	metadataJson := path.Join(i.componentsCachePath, "metadata.json")
-	metadata := []element.Metadata{}
-	data, err := os.ReadFile(metadataJson)
+	o, err := osinfo.Open(path.Join("/", "etc", "os-release"))
 	if err != nil {
-		return fmt.Errorf("failed to read metadata %s, %v", metadataJson, err)
+		return err
 	}
-	if err := json.Unmarshal(data, &metadata); err != nil {
-		return fmt.Errorf("failed to read metadata %s, %v", metadataJson, err)
+	resp, err := http.Get(i.ServerUrl + "/" + o["VERSION"])
+	if err != nil {
+		return fmt.Errorf("failed to get meta info %v", err)
+	}
+	defer resp.Body.Close()
+
+	metadata := []element.Metadata{}
+	if err := json.NewDecoder(resp.Body).Decode(&metadata); err != nil {
+		return fmt.Errorf("invalid format of meta info %v", err)
 	}
 
 	componentInfo := []element.Metadata{}

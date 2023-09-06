@@ -1,14 +1,14 @@
 id: yajl
 version: 2.1.0
 about: yet another json library
-release: 0
-depends:
-- components/glibc.yml
-build-time:
-- components/cmake.yml
-sources:
-- yajl-%{version}.tar.gz::https://github.com/lloyd/yajl/archive/refs/tags/%{version}.tar.gz
-post-script: install -vDm 644 COPYING -t "$pkgupd_pkgdir%{datadir}/doc/%{id}"
-configure: |
-  -DCMAKE_BUILD_TYPE='None' -Wno-dev
 
+depends:
+  - components/glibc.yml
+build-time:
+  - components/cmake.yml
+sources:
+  - yajl-%{version}.tar.gz::https://github.com/lloyd/yajl/archive/refs/tags/%{version}.tar.gz
+
+configure: >-
+  -DCMAKE_BUILD_TYPE='None'
+  -Wno-dev

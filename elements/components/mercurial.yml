@@ -1,11 +1,12 @@
 id: mercurial
-version: "6.0"
+version: 6.5.1
 about: A scalable distributed SCM tools
-release: 0
+
 build-time:
-- components/py/py-pip.yml
+  - components/py/py-pip.yml
 sources:
-- https://www.mercurial-scm.org/release/mercurial-%{version}.tar.gz
+  - https://www.mercurial-scm.org/release/mercurial-%{version}.tar.gz
+
 script: |-
   make
   make -C contrib/chg
@@ -27,4 +28,3 @@ script: |-
     [web]
     cacerts = %{sysconfdir}/ssl/certs/ca-certificates.crt
     EOF
-

@@ -1,0 +1,8 @@
+id: adwaita-icon-theme
+version: 44.0
+about: Adwaita Icon Theme package contains an icon theme for Gtk+ 3 applications
+
+depends:
+  - components/hicolor-icon-theme.yml
+sources:
+  - https://download.gnome.org/sources/adwaita-icon-theme/%{version:1}/adwaita-icon-theme-%{version}.tar.xz

@@ -1,16 +1,23 @@
 id: libblockdev
-version: "2.25"
+version: 3.0.3
 about: A C library supporting GObject Introspection for manipulation of block devices
-release: 0
-depends:
-- components/gobject-introspection.yml
-- components/libbytesize.yml
-- components/libyaml.yml
-- components/parted.yml
-- components/volume_key.yml
-sources:
-- https://github.com/storaged-project/libblockdev/releases/download/2.25-1/libblockdev-2.25.tar.gz
-pre-script: |
-  sed "s/g_memdup/&2/" -i src/lib/plugin_apis/vdo.{c,api} src/plugins/vdo.c
-configure: --with-python3 --without-gtk-doc --without-nvdimm --without-dm
 
+pre-script: |-
+  sed "s/g_memdup/&2/" -i src/lib/plugin_apis/vdo.{c,api} src/plugins/vdo.c
+
+configure: >-
+  --with-python3
+  --without-nvdimm
+  --without-dm
+
+depends:
+  - components/gobject-introspection.yml
+  - components/libbytesize.yml
+  - components/libyaml.yml
+  - components/parted.yml
+  - components/volume_key.yml
+
+build-time:
+  - components/gtk-doc.yml
+sources:
+  - https://github.com/storaged-project/libblockdev/releases/download/%{version}/libblockdev-%{version}.tar.gz

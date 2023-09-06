@@ -1,24 +1,22 @@
 id: htop
-version: 3.2.0
+version: 3.2.2
 about: Interactive process viewer
-release: 0
-build-time:
-- components/libcap.yml
-- components/libnl.yml
-- components/ncurses.yml
-- components/lm-sensors.yml
-- components/appimagetool.yml
-sources:
-- https://github.com/htop-dev/htop/releases/download/%{version}/htop-%{version}.tar.xz
-pre-script: |
+
+pre-script: |-
   autoreconf -fi
-post-script: |-
-  cp /files/AppRun %{install-root}/
-  chmod +x %{install-root}/AppRun
 
-  cp %{install-root}%{datadir}/applications/%{id}.desktop %{install-root}/
-  sed -i 's#TryExec=.*##' %{install-root}/%{id}.desktop
-  cp /files/%{id}.svg %{install-root}/%{id}.png
-configure: |
-  --enable-cgroup --enable-delayacct --enable-openvz --enable-unicode --enable-vserver
+configure: >-
+  --enable-cgroup
+  --enable-delayacct
+  --enable-openvz
+  --enable-unicode
+  --enable-vserver
 
+build-time:
+  - components/libcap.yml
+  - components/libnl.yml
+  - components/ncurses.yml
+  - components/lm-sensors.yml
+  - components/appimagetool.yml
+sources:
+  - https://github.com/htop-dev/htop/releases/download/%{version}/htop-%{version}.tar.xz

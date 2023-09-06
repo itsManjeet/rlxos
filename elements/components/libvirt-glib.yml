@@ -1,16 +1,17 @@
 id: libvirt-glib
 version: 4.0.0
 about: GLib bindings for libvirt
-release: 0
-depends:
-- components/libvirt.yml
-build-time:
-- components/gobject-introspection.yml
-- components/intltool.yml
-- components/meson.yml
-- components/vala.yml
-- components/python.yml
-sources:
-- https://libvirt.org/sources/glib/%{id}-%{version}.tar.xz
-configure: --buildtype=plain
 
+configure: >-
+  --buildtype=plain
+
+depends:
+  - components/libvirt.yml
+build-time:
+  - components/gobject-introspection.yml
+  - components/intltool.yml
+  - components/meson.yml
+  - components/vala.yml
+  - components/python.yml
+sources:
+  - https://libvirt.org/sources/glib/%{id}-%{version}.tar.xz

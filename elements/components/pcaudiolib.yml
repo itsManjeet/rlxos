@@ -1,12 +1,9 @@
 id: pcaudiolib
-version: "1.2"
+version: 1.2
 about: Portable C audio library
-release: 0
-depends:
-- components/alsa-lib.yml
-- components/pulseaudio.yml
-sources:
-- https://github.com/espeak-ng/pcaudiolib/archive/%{version}/pcaudiolib-%{version}.tar.gz
-script: "./autogen.sh\n./configure --prefix=/usr\n\nmake \n\nmake DESTDIR=%{install-root}
-  install"
 
+depends:
+  - components/alsa-lib.yml
+  - components/pulseaudio.yml
+sources:
+  - https://github.com/espeak-ng/pcaudiolib/archive/%{version}/pcaudiolib-%{version}.tar.gz

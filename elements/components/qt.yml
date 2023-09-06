@@ -1,44 +1,59 @@
 id: qt
 version: 5.15.5
-about: |
-  Cross-platform application framework
-release: 0
-depends:
-- components/dbus.yml
-- components/openssl.yml
-- components/gdk-pixbuf.yml
-- components/libepoxy.yml
-- components/libmng.yml
-- components/x11/libxkbcommon.yml
-- components/harfbuzz.yml
-- components/x11/xcb-util-wm.yml
-- components/x11/xcb-util-image.yml
-- components/x11/xcb-util-keysyms.yml
-- components/x11/xcb-util-renderutil.yml
-- components/desktop-file-utils.yml
-- components/x11/libxcb.yml
-- components/sqlite.yml
-- components/fontconfig.yml
-- components/which.yml
-- components/nss.yml
-- components/libwebp.yml
-- components/python.yml
-- components/alsa-lib.yml
-- components/pulseaudio.yml
-- components/ffmpeg.yml
-- components/wayland.yml
-- components/icu.yml
-sources:
-- https://download.qt.io/archive/qt/5.15/%{version}/single/qt-everywhere-opensource-src-%{version}.tar.xz
-script: |-
-  patch -Np1 -i /files/qt-everywhere-opensource-src-%{version}-kf5-1.patch
+about: Cross-platform application framework
 
-  ./configure -prefix /usr \
-    -archdatadir /usr/lib/qt5 \
-    -bindir /usr/bin \
-    -plugindir /usr/lib/qt5/plugins \
-    -importdir /usr/lib/qt5/imports \
-    -headerdir /usr/include/qt5 \
+depends:
+  - components/dbus.yml
+  - components/openssl.yml
+  - components/gdk-pixbuf.yml
+  - components/libepoxy.yml
+  - components/libmng.yml
+  - components/x11/libxkbcommon.yml
+  - components/harfbuzz.yml
+  - components/x11/xcb-util-wm.yml
+  - components/x11/xcb-util-image.yml
+  - components/x11/xcb-util-keysyms.yml
+  - components/x11/xcb-util-renderutil.yml
+  - components/desktop-file-utils.yml
+  - components/x11/libxcb.yml
+  - components/sqlite.yml
+  - components/fontconfig.yml
+  - components/which.yml
+  - components/nss.yml
+  - components/libwebp.yml
+  - components/python.yml
+  - components/alsa-lib.yml
+  - components/pulseaudio.yml
+  - components/ffmpeg.yml
+  - components/wayland.yml
+  - components/icu.yml
+  - components/nodejs.yml
+  - components/nss.yml
+  - components/pciutils.yml
+  - components/alsa-lib.yml
+  - components/pulseaudio.yml
+  - components/ffmpeg.yml
+  - components/icu.yml
+  - components/libwebp.yml
+  - components/libxslt.yml
+  - components/opus.yml
+  - components/libevent.yml
+  - components/krb5.yml
+  - components/pipewire.yml
+  - components/poppler.yml
+build-time:
+  - components/gperf.yml
+sources:
+  - https://download.qt.io/archive/qt/%{version:1}/%{version}/single/qt-everywhere-opensource-src-%{version}.tar.xz
+script: |-
+  # patch -Np1 -i /files/qt-everywhere-opensource-src-%{version}-kf5-1.patch
+
+  ./configure -prefix %{prefix} \
+    -archdatadir %{libdir}/qt5 \
+    -bindir %{bindir} \
+    -plugindir %{libdir}/qt5/plugins \
+    -importdir %{libdir}/qt5/imports \
+    -headerdir %{prefix}/include/qt5 \
     -datadir %{datadir}/qt5 \
     -docdir %{datadir}/doc/qt5 \
     -translationdir %{datadir}/qt5/translations \
@@ -52,8 +67,7 @@ script: |-
     -nomake examples \
     -no-rpath \
     -syslog \
-    -journald \
-    -skip qtwebengine
+    -journald
 
   make
 
@@ -74,5 +88,8 @@ script: |-
   install -v -Dm644 qttools/src/qdbus/qdbusviewer/images/qdbusviewer-128.png \
               %{install-root}%{datadir}/pixmaps/qdbusviewer-qt5.png
 
-  install -v -D /files/*.desktop -t %{install-root}%{datadir}/applications/
+  # install -v -D /files/*.desktop -t %{install-root}%{datadir}/applications/
 
+# TODO: fix patch
+# TODO: fix configuration files
+# TODO: check dependencies

@@ -1,16 +1,18 @@
 id: qca
-version: 2.3.4
+version: 2.3.7
 about: A straightforward and cross-platform crypto API, using Qt datatypes and conventions
-release: 0
-depends:
-- components/qt.yml
-build-time:
-- components/cmake.yml
-- components/which.yml
-- components/make-ca.yml
-sources:
-- https://download.kde.org/stable/qca/%{version}/qca-%{version}.tar.xz
-pre-script: |
-  sed -i 's@cert.pem@certs/ca-bundle.crt@' CMakeLists.txt
-configure: -DCMAKE_BUILD_TYPE=Release -DQCA_MAN_INSTALL_DIR:PATH=%{datadir}/man
 
+pre-script: |-
+  sed -i 's@cert.pem@certs/ca-bundle.crt@' CMakeLists.txt
+configure: >-
+  -DCMAKE_BUILD_TYPE=Release
+  -DQCA_MAN_INSTALL_DIR:PATH=%{datadir}/man
+
+depends:
+  - components/qt.yml
+build-time:
+  - components/cmake.yml
+  - components/which.yml
+  - components/make-ca.yml
+sources:
+  - https://download.kde.org/stable/qca/%{version}/qca-%{version}.tar.xz

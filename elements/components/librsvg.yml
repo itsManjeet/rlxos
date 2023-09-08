@@ -7,12 +7,10 @@ sources:
 build-time:
   - components/gobject-introspection.yml
   - components/rustc.yml
-  - components/vala.yml
 depends:
   - components/cairo.yml
   - components/pango.yml
   - components/gdk-pixbuf.yml
 
 configure: >
-  --enable-vala 
   --disable-static

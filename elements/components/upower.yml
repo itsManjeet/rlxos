@@ -2,10 +2,6 @@ id: upower
 version: 1.90.2
 about: Package provides an interface to enumerating power devices, listening to device events and querying history and statistics
 
-configure: >-
-  --enable-deprecated
-  --disable-static
-
 depends:
   - components/libgudev.yml
   - components/libusb.yml

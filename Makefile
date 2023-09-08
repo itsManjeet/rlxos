@@ -7,26 +7,11 @@ SERVER			?= "http://storage.rlxos.dev"
 
 GOLANG			?= go
 
-GOENV			?= GOARCH=amd64 GOAMD64=v1
-
-GOFLAGS			?=
-LDFLAGS			?=
-
-
 TARGET_TRIPLE	:= $(ARCH)-elf
-LDFLAGS 		:= $(LDFLAGS) -nostdlib -n -v -static -m elf_$(ARCH) -T kernel/link.ld
-GOFLAGS 		:= $(GOFLAGS) -trimpath -gcflags=rlxos/kernel=-std -ldflags="-linkmode external -extld $(TARGET_TRIPLE)-ld -extldflags '$(LDFLAGS)'"
-STRIPFLAGS 		:= -s -K mmio -K fb -K bootboot -K environment -K initstack
 
-TOOLCHAIN_PATH	?= $(HOME)/toolchain/$(TARGET_TRIPLE)
 BUILDDIR		?= $(shell pwd)/build
-KERNEL_IMAGE	?= $(BUILDDIR)/kernel.$(TARGET_TRIPLE)
-ISODIR			?= $(BUILDDIR)/ISO
-ISOFILE			?= $(BUILDDIR)/rlxos-$(ARCH).iso
 
 CACHE_PATH		?= $(BUILDDIR)/cache
-
-MKBOOTIMG		?= $(shell pwd)/scripts/mkbootimg
 
 REPO_BUILDER	?= $(BUILDDIR)/builder
 CREATE_PATCH	?= $(BUILDDIR)/create-patch
@@ -64,7 +49,7 @@ $(ISOFILE): $(ISODIR)/boot/sys/core $(ISODIR)/bootboot.json $(ISODIR)/boot/sys/c
 
 clean:
 	rm -f $(KERNEL_IMAGE) $(KERNEL_IMAGE).txt $(ISOFILE)
-	rm -rf $(ISODIR) vendor $(BUILDDIR)
+	rm -rf $(ISODIR) vendor
 	rm -f version.yml server.yml $(REPO_BUILDER)
 
 # TODO: remove only rlxos running containers
@@ -100,6 +85,7 @@ list-files: $(REPO_BUILDER)
 check: $(REPO_BUILDER)
 	@if [ -z $(ELEMENT) ] ;then echo "ERROR: no element specified"; exit 1; fi
 	@if [ ! -f elements/$(ELEMENT) ] ; then echo "ERROR: no element exists elements/$(ELEMENT)"; exit 1; fi
+	echo "CACHE PATH: $(CACHE_PATH)"
 	$(REPO_BUILDER) status -cache-path $(CACHE_PATH) $(ELEMENT)
 
 component: $(REPO_BUILDER)
@@ -117,6 +103,9 @@ filepath: $(REPO_BUILDER)
 	@if [ ! -f elements/$(ELEMENT) ] ; then echo "ERROR: no element exists elements/$(ELEMENT)"; exit 1; fi
 	$(REPO_BUILDER) file -cache-path $(CACHE_PATH) $(ELEMENT)
 
+TODO:
+	@grep -R "# TODO:" elements/ | sed 's/# TODO://g' > $@
+	@cat $@
 
 create-patch: $(REPO_BUILDER) $(CREATE_PATCH)
 	@if [ -z $(SOURCE) ] ; then echo "ERROR: SOURCE commit not specified"; exit 1; fi
@@ -184,4 +173,4 @@ world: $(REPO_BUILDER)
 check-updates: $(REPO_BUILDER)
 	$(REPO_BUILDER) check-updates
 
-.PHONY: all clean update-vendor component
+.PHONY: all clean update-vendor component TODO

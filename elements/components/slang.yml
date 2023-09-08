@@ -4,6 +4,10 @@ about:
   An interpreted language that may be embedded into an application to make the
   application extensible
 
+variables:
+  run-autogen: false
+  seperate-build-dir: false
+
 depends:
   - components/glibc.yml
 

@@ -6,6 +6,7 @@ variables:
   include-root: /sysroot
   root-password: rlxos
   cmdline: live root=LABEL=RLXOS console=tty0 console=ttyS0
+  force-rebuild: true
 
 build-time:
   - components/core.yml

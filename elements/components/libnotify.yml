@@ -4,6 +4,8 @@ about: Library is used to send desktop notifications to a notification daemon
 
 configure: >-
   --buildtype=release
+  -D man=false
+  -D gtk_doc=false
 
 depends:
   - components/gtk.yml

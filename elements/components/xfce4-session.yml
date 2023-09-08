@@ -13,6 +13,7 @@ depends:
   - components/polkit-gnome.yml
   - components/xfdesktop.yml
   - components/x11/xinit.yml
+  - components/x11/iceauth.yml
 sources:
   - https://archive.xfce.org/src/xfce/xfce4-session/%{version:1}/xfce4-session-%{version}.tar.bz2
 # TODO: fix update url

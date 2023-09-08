@@ -4,6 +4,7 @@ about: Package is a toolkit for image loading and pixel buffer manipulation
 
 configure: >
   --buildtype=release
+  -D man=false
 
 sources:
   - https://download.gnome.org/sources/gdk-pixbuf/%{version:1}/gdk-pixbuf-%{version}.tar.xz

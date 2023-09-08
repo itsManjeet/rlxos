@@ -2,12 +2,17 @@ id: libxslt
 version: 1.1.38
 about: Libraries used for extending libxml2 libraries to support XSLT files.
 sources:
-  - http://xmlsoft.org/sources/libxslt-%{version}.tar.gz
+  - https://gitlab.gnome.org/GNOME/libxslt/-/archive/v%{version}/libxslt-v%{version}.tar.gz
 
-depends:
-  - components/libxml2.yml
-  - components/libgcrypt.yml
+build-type: autotools
+
+environ:
+  - NOCONFIGURE=1
 
 configure: >-
   --disable-static
   --without-python
+
+depends:
+  - components/libxml2.yml
+  - components/libgcrypt.yml

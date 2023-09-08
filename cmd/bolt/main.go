@@ -8,6 +8,7 @@ import (
 	"rlxos/pkg/bolt"
 	"rlxos/pkg/bolt/logic"
 	"rlxos/pkg/bolt/logic/bestmatch"
+	"rlxos/pkg/bolt/logic/calculator"
 	"rlxos/pkg/bolt/storage/memory"
 	"strings"
 )
@@ -15,6 +16,7 @@ import (
 func main() {
 	bot := bolt.Bolt{
 		Logics: []logic.Logic{
+			&calculator.Logic{},
 			&bestmatch.Logic{},
 		},
 		Storage: &memory.Storage{},

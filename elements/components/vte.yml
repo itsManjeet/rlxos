@@ -2,6 +2,9 @@ id: vte
 version: 0.72.2
 about: A termcap file implementation for terminal emulators
 
+pre-script: |-
+  mkdir -p /usr/local/include
+
 depends:
   - components/gtk.yml
   - components/libxml2.yml

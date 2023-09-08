@@ -2,14 +2,12 @@ id: pulseaudio
 version: 16.1
 about: A sound system for POSIX OSes
 
-pre-script: |-
-  sed "/doxygen/d" -i meson.build
-
 configure: >-
   --buildtype=release
   -D database=gdbm
-  -D bluez5=true
+  -D bluez5=enabled
   -D tests=false
+  -D doxygen=false
 
 post-script: |-
   rm -fv %{install-root}%{sysconfdir}/dbus-1/system.d/pulseaudio-system.conf
@@ -21,6 +19,8 @@ depends:
   - components/glib.yml
   - components/libcap.yml
   - components/x11/libxtst.yml
+  - components/x11/libice.yml
+  - components/x11/libsm.yml
   - components/perl/perl-xml-parser.yml
   - components/sbc.yml
   - components/bluez.yml

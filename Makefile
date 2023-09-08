@@ -29,24 +29,6 @@ export PATH := $(PATH):$(TOOLCHAIN_PATH)/bin
 
 all: $(REPO_BUILDER)
 
-$(KERNEL_IMAGE):
-	CGO_ENABLED=0 GOOS=linux $(GOENV) go build $(GOFLAGS) -o $@ rlxos/kernel
-	x86_64-elf-strip $(STRIPFLAGS) $@
-	x86_64-elf-readelf -hls $@ > $@.txt
-	$(MKBOOTIMG) check $@
-
-$(ISODIR)/boot/sys/config: kernel/bootboot/bootboot.cfg 
-	install -vDm0644 $< $@
-
-$(ISODIR)/bootboot.json: kernel/bootboot/bootboot.json
-	install -vDm0644 $< $@
-
-$(ISODIR)/boot/sys/core: $(KERNEL_IMAGE)
-	install -vDm0755 $< $@
-
-$(ISOFILE): $(ISODIR)/boot/sys/core $(ISODIR)/bootboot.json $(ISODIR)/boot/sys/config
-	cd $(ISODIR) && $(MKBOOTIMG) bootboot.json $@
-
 clean:
 	rm -f $(KERNEL_IMAGE) $(KERNEL_IMAGE).txt $(ISOFILE)
 	rm -rf $(ISODIR) vendor

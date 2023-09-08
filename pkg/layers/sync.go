@@ -3,6 +3,7 @@ package layers
 import (
 	"io/ioutil"
 	"log"
+	"os"
 	"path"
 )
 
@@ -16,11 +17,16 @@ func (m *Manager) Sync() {
 		}
 
 		for _, l := range dir {
+			isDisabled := false
+			if _, err := os.Stat(path.Join(i, l.Name(), "disabled")); err == nil {
+				isDisabled = true
+			}
 			if l.IsDir() {
 				m.Layers = append(m.Layers, Layer{
-					Id:     l.Name(),
-					Path:   path.Join(i, l.Name()),
-					Active: false,
+					Id:       l.Name(),
+					Path:     path.Join(i, l.Name()),
+					Active:   false,
+					Disabled: isDisabled,
 				})
 			}
 		}

@@ -4,5 +4,6 @@ type Layer struct {
 	Id   string
 	Path string
 
-	Active bool
+	Active   bool
+	Disabled bool
 }

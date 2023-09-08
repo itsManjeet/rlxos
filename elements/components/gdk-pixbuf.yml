@@ -6,6 +6,9 @@ configure: >
   --buildtype=release
   -D man=false
 
+integration: |-
+  gdk-pixbuf-query-loaders --update-cache
+
 sources:
   - https://download.gnome.org/sources/gdk-pixbuf/%{version:1}/gdk-pixbuf-%{version}.tar.xz
 

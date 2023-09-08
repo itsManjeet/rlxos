@@ -1,6 +1,13 @@
-id: libXcomposite
-version: "7"
-about: xorg library libXcomposite
-release: 0
+id: libxcomposite
+version: 0.4.6
+about: X11 composite extension library
+
+depends:
+  - components/x11/libxfixes.yml
+
+build-time:
+  - components/x11/util-macros.yml
+  - components/x11/xorgproto.yml
+
 sources:
-  - https://www.x.org/pub/individual/lib/libXcomposite-0.4.5.tar.bz2
+  - https://www.x.org/pub/individual/lib/libXcomposite-%{version}.tar.xz

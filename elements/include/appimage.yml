@@ -1,0 +1,50 @@
+variables:
+  skip-libraries: ""
+  include-files: ""
+  icon-filepath: "/files/AppImage.svg"
+  desktop-filepath: ""
+  apprun-filepath: "/lib/appimagekit/AppRun"
+  apprun: ""
+  desktopfile: ""
+
+post-script: |
+  if [[ -n "%{include-files}" ]] ; then
+    for i in %{include-files} ; do
+      cp -v $i %{install-root}/$i
+    done
+  fi
+
+  find %{install-root}/ -type f -executable | xargs objdump -p | grep NEEDED | awk '{print $2}' >> required-libraries
+
+  if [[ -n "%{skip-libraries}" ]] ; then
+    skipped=""
+    for i in %{skip-libraries} ; do
+      skipped="$skipped -e $i"
+    done
+    FILTER="grep -v $skipped"
+  else
+    FILTER="cat"
+  fi
+
+  mkdir -p %{install-root}/%{libdir}
+  for i in $(cat required-libraries | sort | uniq | ${FILTER}) ; do
+    if [[ -e %{libdir}/$i ]] ; then
+      cp %{libdir}/$i %{install-root}/%{libdir}
+    elif [[ -e %{install-root}/%{libdir}/$i ]] ; then
+      continue
+    else
+      echo "MISSING REQUIRED LIBRARY $i"
+    fi
+  done
+  [[ -n "%{icon-filepath}"    ]] && cp %{icon-filepath} %{install-root}/
+  [[ -n "%{desktop-filepath}" ]] && cp %{desktop-filepath} %{install-root}/
+  [[ -n "%{apprun-filepath}"  ]] && cp %{apprun-filepath} %{install-root}/AppRun
+  
+  [[ -n "%{apprun}"           ]] && echo "%{apprun}"      > %{install-root}/AppRun
+  [[ -n "%{desktopfile}"      ]] && echo "%{desktopfile}" > %{install-root}/%{id}.desktop
+
+  chmod +x %{install-root}/AppRun
+
+  mv %{install-root} AppDir
+  mkdir -p %{install-root}
+  appimagetool AppDir %{install-root}/%{id}-%{version}.app

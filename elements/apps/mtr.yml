@@ -1,23 +1,30 @@
+merge: [elements/include/appimage.yml]
 id: mtr
-version: "0.95"
+version: 0.95
 about: Combines the functionality of traceroute and ping into one tool
-release: 0
+
+variables:
+  desktopfile: |-
+    [Desktop Entry]
+    Type=Application
+    Name=MTR
+    Comment=Combines the functionality of traceroute and ping into one tool
+    Exec=mtr
+    Icon=AppImage
+    StartupNotify=true
+    Terminal=true
+    Categories=System;
+    
 build-time:
-- components/ncurses.yml
-- components/gtk.yml
-- components/libcap.yml
-- components/gdk-pixbuf.yml
-- components/appimagetool.yml
+  - components/ncurses.yml
+  - components/gtk.yml
+  - components/libcap.yml
+  - components/gdk-pixbuf.yml
+  - components/appimagetool.yml
 sources:
-- https://github.com/traviscross/mtr/archive/v%{version}/%{id}-%{version}.tar.gz
+  - https://github.com/traviscross/mtr/archive/v%{version}/%{id}-%{version}.tar.gz
 pre-script: |
   echo %{version} > .tarball-version
   autoreconf -fiv
-post-script: |
-  mkdir -p %{install-root}/usr/lib/
-  install -v -D -m 0644 /files/mtr.svg %{install-root}/%{id}.png
-  install -v -D -m 0755 /files/AppRun %{install-root}/AppRun
-  install -v -D -m 0644 /files/%{id}.desktop %{install-root}/%{id}.desktop
-configure: |
+configure: >-
   --with-gtk
-

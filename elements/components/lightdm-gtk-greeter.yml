@@ -2,6 +2,10 @@ id: lightdm-gtk-greeter
 version: 2.0.8
 about: Lightdm Gtk Greeter
 
+variables:
+  run-autogen: false
+  seperate-build-dir: false
+
 depends:
   - components/lightdm.yml
   - components/gtk.yml

@@ -2,6 +2,8 @@ id: xfce4-notifyd
 version: 0.8.2
 about: Notification daemon for Xfce
 
+variables:
+  run-autogen: false
 depends:
   - components/hicolor-icon-theme.yml
   - components/libnotify.yml

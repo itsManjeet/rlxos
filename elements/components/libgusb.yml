@@ -8,6 +8,7 @@ configure: >-
 
 depends:
   - components/libusb.yml
+  - components/json-glib.yml
 build-time:
   - components/vala.yml
   - components/py/py-setuptools.yml

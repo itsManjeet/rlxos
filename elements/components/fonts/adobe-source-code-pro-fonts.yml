@@ -5,5 +5,4 @@ about: Monospaced font family for user interface and coding environment
 sources:
   - https://github.com/adobe-fonts/source-code-pro/archive/refs/tags/2.042R-u/1.062R-i/1.026R-vf.tar.gz
 script: |-
-  install -D -t %{install-root}%{datadir}/fonts/source-code-pro-fonts -m644
-  OTF/*.otf VAR/*.otf
+  install -D -t %{install-root}%{datadir}/fonts/source-code-pro-fonts -m644 OTF/*.otf

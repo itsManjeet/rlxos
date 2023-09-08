@@ -2,6 +2,10 @@ id: lightdm
 version: 1.32.0
 about: A lightweight display manager based upon GTK
 
+variables:
+  run-autogen: false
+  seperate-build-dir: false
+
 depends:
   - components/libgcrypt.yml
   - components/itstool.yml
@@ -18,12 +22,80 @@ post-script: |-
   install -v -D -m 755 tests/src/lightdm-session -t %{install-root}/usr/bin/
   sed -i "1 s/sh/bash --login/" %{install-root}/usr/bin/lightdm-session
   rm -rf %{install-root}%{sysconfdir}/init
-  install -v -d -m 755 -o 65 -g 65 %{install-root}/var/lib/lightdm
-  install -v -d -m 755 -o 65 -g 65 %{install-root}/var/lib/lightdm-data
-  install -v -d -m 755 -o 65 -g 65 %{install-root}/var/cache/lightdm
-  install -v -d -m 755 -o 65 -g 65 %{install-root}/var/log/lightdm
 
-  # install -v -D -m 644 /files/lightdm/lightdm.service -t %{install-root}/usr/lib/systemd/system
+  install -vDm 0644 /dev/stdin %{install-root}%{libdir}/sysusers.d/lightdm << "EOF"
+  u lightdm - "Light Display Manager" %{localstatedir}/lib/lightdm
+  EOF
+
+  install -vDm 0644 /dev/stdin %{install-root}%{libdir}/tmpfiles.d/lightdm << "EOF"
+  d /run/lightdm 0711 lightdm lightdm -
+  d /var/cache/lightdm 0711 root lightdm -
+  d /var/lib/lightdm 1770 lightdm lightdm -
+  d /var/lib/lightdm-data 1770 lightdm lightdm -
+  d /var/log/lightdm 0711 root lightdm -
+  EOF
+
+  install -vDm 0644 /dev/stdin %{install-root}%{libdir}/systemd/system/lightdm.service << "EOF"
+  [Unit]
+  Description=Light Display Manager
+  Documentation=man:lightdm(1)
+  Conflicts=getty@tty1.service
+  After=getty@tty1.service systemd-user-sessions.service plymouth-quit.service acpid.service
+
+  [Service]
+  ExecStart=%{bindir}/lightdm
+  Restart=always
+  IgnoreSIGPIPE=no
+  BusName=org.freedesktop.DisplayManager
+
+  [Install]
+  Alias=display-manager.service
+  EOF
+
+  install -vDm 750 -g 102 /dev/stdin %{install-root}%{datadir}/polkit-1/rules.d/lightdm.rules << "EOF"
+  polkit.addRule(function(action, subject) {
+      if (subject.user == "lightdm") {
+          polkit.log("action=" + action);
+          polkit.log("subject=" + subject);
+          if (action.id.indexOf("org.freedesktop.login1.") == 0) {
+              return polkit.Result.YES;
+          }
+          if (action.id.indexOf("org.freedesktop.consolekit.system.") == 0) {
+              return polkit.Result.YES;
+          }
+          if (action.id.indexOf("org.freedesktop.upower.") == 0) {
+              return polkit.Result.YES;
+          }
+      }
+  });
+  EOF
+
+  install -vDm 0644 /dev/stdin %{install-root}%{sysconfdir}/pam.d/lightdm << "EOF"
+  #%PAM-1.0
+  auth        include     system-login
+  -auth       optional    pam_gnome_keyring.so
+  account     include     system-login
+  password    include     system-login
+  session     include     system-login
+  -session    optional    pam_gnome_keyring.so auto_start
+  EOF
+
+  install -vDm 0644 /dev/stdin %{install-root}%{sysconfdir}/pam.d/lightdm-autologin << "EOF"
+  #%PAM-1.0
+  auth        required    pam_env.so
+  auth        required    pam_faillock.so preauth
+  auth        required    pam_shells.so
+  auth        required    pam_nologin.so
+  auth        [success=1 default=ignore]  pam_succeed_if.so user ingroup autologin
+  auth        required    pam_unix.so
+  auth        required    pam_permit.so
+  -auth       optional    pam_gnome_keyring.so
+  account     include     system-local-login
+  password    include     system-local-login
+  session     include     system-local-login
+  -session    optional    pam_gnome_keyring.so auto_start
+  EOF
+
 configure: >-
   --libexecdir=%{libdir}/lightdm
   --disable-static
@@ -31,5 +103,3 @@ configure: >-
   --with-greeter-user=lightdm
   --with-greeter-session=lightdm-gtk-greeter
 
-# TODO: fix service file
-# TODO: fix user creation

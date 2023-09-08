@@ -1,11 +1,9 @@
 id: xf86-video-fbdev
 version: 0.5.0
 about: X.org framebuffer video driver
-release: 0
 depends:
-- components/glibc.yml
+  - components/glibc.yml
 build-time:
-- components/xorg-server.yml
+  - components/x11/xserver.yml
 sources:
-- https://www.x.org/pub/individual/driver/xf86-video-fbdev-0.5.0.tar.bz2
-
+  - https://www.x.org/pub/individual/driver/xf86-video-fbdev-%{version}.tar.bz2

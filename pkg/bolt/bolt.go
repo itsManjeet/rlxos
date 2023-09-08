@@ -16,7 +16,9 @@ type Bolt struct {
 }
 
 func (b *Bolt) Init() error {
+	curdir, _ := os.Getwd()
 	datafiles := []string{
+		path.Join(curdir, "responses.txt"),
 		path.Join(os.Getenv("HOME"), ".config", "bolt", "responses"),
 		path.Join("/", "var", "lib", "bolt", "responses"),
 		path.Join("/", "usr", "share", "bolt", "responses"),

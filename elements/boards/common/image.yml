@@ -4,6 +4,7 @@ no-strip: true
 variables:
   include-root: "/sysroot"
   salt: 5ceca5e1f86ae62403b27e66c5160717f1bb88405a1d1d0853241c27f3764843
+  force-rebuild: true
 
 script: |
   mkdir -p %{install-root}
@@ -90,6 +91,12 @@ include:
   # Desktop Environment
   - components/xfce4.yml
 
+  # X11
+  - components/x11/xserver.yml
+  - components/x11/xinit.yml
+  - components/x11/xf86-input-libinput.yml
+  - components/x11/xf86-video-fbdev.yml
+
   # Display Manager
   - components/lightdm.yml
   - components/lightdm-gtk-greeter.yml
@@ -104,6 +111,7 @@ include:
   - components/fonts/noto-emoji.yml
   - components/fonts/noto-cjk.yml
   - components/fonts/opensans.yml
+  - components/fonts/dejavu-fonts.yml
 
   # Apps
   - components/alacritty.yml

@@ -2,6 +2,10 @@ id: polkit-gnome
 version: 0.105
 about: An Authentication Agent for Polkit that integrates well with the GNOME Desktop environment
 
+variables:
+  run-autogen: false
+  seperate-build-dir: false
+
 pre-script: |-
   patch -Np1 -i ../polkit-gnome-%{version}-consolidated_fixes-1.patch
 post-script: |-

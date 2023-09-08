@@ -2,6 +2,7 @@ id: flac
 version: 1.4.3
 about: An audio CODEC similar to MP3, but lossless
 
+build-type: autotools
 configure: >-
   --disable-thorough-tests
 
@@ -10,4 +11,4 @@ depends:
 
 sources:
   - https://downloads.xiph.org/releases/flac/flac-%{version}.tar.xz
-  - https://www.linuxfromscratch.org/patches/blfs/svn/flac-%{version}-security_fixes-1.patch
+

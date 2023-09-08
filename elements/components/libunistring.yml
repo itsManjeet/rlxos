@@ -8,3 +8,4 @@ depends:
 
 variables:
   seperate-build-dir: false
+  run-autogen: false

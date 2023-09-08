@@ -6,4 +6,6 @@ build-time:
   - components/unzip.yml
 sources:
   - inconsolata-%{version}.zip::https://github.com/googlefonts/Inconsolata/releases/download/v%{version}/fonts_ttf.zip
-script: "install -d %{install-root}%{datadir}/fonts/%{id}\ncp fonts/ttf/*.ttf %{install-root}%{datadir}/fonts/%{id}/\n "
+script: |-
+  install -d %{install-root}%{datadir}/fonts/%{id}
+  cp ttf/*.ttf %{install-root}%{datadir}/fonts/%{id}/

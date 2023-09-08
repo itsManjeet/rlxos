@@ -4,6 +4,11 @@ about:
   Netscape Portable Runtime (NSPR) provides a platform-neutral API for system
   level and libc like functions
 
+build-dir: nspr-%{version}/nspr
+pre-script: |-
+  sed -ri "/^RELEASE/s/^/#/" pr/src/misc/Makefile.in
+  sed -i "s#\$(LIBRARY) ##"   config/rules.mk
+
 configure: >-
   --with-mozilla
   --with-pthreads
@@ -11,5 +16,3 @@ configure: >-
 
 sources:
   - https://archive.mozilla.org/pub/nspr/releases/v%{version}/src/nspr-%{version}.tar.gz
-pre-script: |-
-  sed -ri \"/^RELEASE/s/^/#/\" pr/src/misc/Makefile.in\nsed -i \"s#\\$(LIBRARY) ##\"   config/rules.mk

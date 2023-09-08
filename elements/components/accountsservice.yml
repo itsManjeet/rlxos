@@ -1,10 +1,9 @@
 id: accountsservice
-version: 13.13.9
+version: 23.13.9
 about: D-Bus interface for user account query and manipulation
 
 configure: >
   -D admin_group=adm
-  -D systemd=true
 
 depends:
   - components/glib.yml
@@ -16,5 +15,6 @@ build-time:
   - components/xmlto.yml
   - components/meson.yml
   - components/gobject-introspection.yml
+  - components/vala.yml
 sources:
   - https://www.freedesktop.org/software/accountsservice/accountsservice-%{version}.tar.xz

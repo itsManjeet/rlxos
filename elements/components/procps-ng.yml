@@ -2,10 +2,13 @@ id: procps-ng
 version: 4.0.4
 about: Programs for monitoring processes
 sources:
-  - https://sourceforge.net/projects/procps-ng/files/Production/procps-ng-%{version}.tar.xz
+  - https://gitlab.com/procps-ng/procps/-/archive/v%{version}/procps-v%{version}.tar.gz
+
+build-type: autotools
+
 variables:
   seperate-build-dir: false
-  run-autogen: false
+
 depends:
   - components/glibc.yml
   - components/ncurses.yml

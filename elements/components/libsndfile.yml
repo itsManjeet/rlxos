@@ -4,10 +4,15 @@ about:
   A library of C routines for reading and writing files containing sampled audio
   data
 
+build-type: autotools
+
+configure: >-
+  --disable-static
+
 depends:
   - components/flac.yml
   - components/opus.yml
   - components/libvorbis.yml
   - components/alsa-lib.yml
 sources:
-  - https://github.com/libsndfile/libsndfile/releases/download/%{version}/libsndfile-%{version}.tar.bz2
+  - https://github.com/libsndfile/libsndfile/releases/download/%{version}/libsndfile-%{version}.tar.xz

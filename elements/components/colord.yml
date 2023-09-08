@@ -9,8 +9,8 @@ configure: >
   -D daemon_user=colord
   -D vapi=true
   -D systemd=true
-  -D libcolordcompact=true
-  -D argullcms_sensor=false
+  -D libcolordcompat=true
+  -D argyllcms_sensor=false
   -D bash_completion=false
   -D docs=false
   -D man=false

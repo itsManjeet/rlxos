@@ -1,6 +1,13 @@
 id: iceauth
-version: "7"
-about: xorg apps iceauth
-release: 0
+version: 1.0.9
+about: ICE authority file utility
+
+depends:
+  - components/x11/libice.yml
+
+build-time:
+  - components/x11/util-macros.yml
+  - components/x11/xorgproto.yml
+
 sources:
-  - https://www.x.org/pub/individual/app/iceauth-1.0.8.tar.bz2
+  - https://www.x.org/pub/individual/app/iceauth-%{version}.tar.xz

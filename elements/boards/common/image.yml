@@ -113,5 +113,11 @@ include:
   - components/fonts/opensans.yml
   - components/fonts/dejavu-fonts.yml
 
+  # Themes and Icons
+  - components/themes/adwaita-icon-theme.yml
+  - components/themes/fluent-gtk-theme.yml
+  - components/themes/fluent-icon-theme.yml
+  - components/themes/fluent-wallpaper.yml
+
   # Apps
   - components/alacritty.yml

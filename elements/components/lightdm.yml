@@ -23,11 +23,11 @@ post-script: |-
   sed -i "1 s/sh/bash --login/" %{install-root}/usr/bin/lightdm-session
   rm -rf %{install-root}%{sysconfdir}/init
 
-  install -vDm 0644 /dev/stdin %{install-root}%{libdir}/sysusers.d/lightdm << "EOF"
+  install -vDm 0644 /dev/stdin %{install-root}%{libdir}/sysusers.d/lightdm.conf << "EOF"
   u lightdm - "Light Display Manager" %{localstatedir}/lib/lightdm
   EOF
 
-  install -vDm 0644 /dev/stdin %{install-root}%{libdir}/tmpfiles.d/lightdm << "EOF"
+  install -vDm 0644 /dev/stdin %{install-root}%{libdir}/tmpfiles.d/lightdm.conf << "EOF"
   d /run/lightdm 0711 lightdm lightdm -
   d /var/cache/lightdm 0711 root lightdm -
   d /var/lib/lightdm 1770 lightdm lightdm -
@@ -68,32 +68,6 @@ post-script: |-
           }
       }
   });
-  EOF
-
-  install -vDm 0644 /dev/stdin %{install-root}%{sysconfdir}/pam.d/lightdm << "EOF"
-  #%PAM-1.0
-  auth        include     system-login
-  -auth       optional    pam_gnome_keyring.so
-  account     include     system-login
-  password    include     system-login
-  session     include     system-login
-  -session    optional    pam_gnome_keyring.so auto_start
-  EOF
-
-  install -vDm 0644 /dev/stdin %{install-root}%{sysconfdir}/pam.d/lightdm-autologin << "EOF"
-  #%PAM-1.0
-  auth        required    pam_env.so
-  auth        required    pam_faillock.so preauth
-  auth        required    pam_shells.so
-  auth        required    pam_nologin.so
-  auth        [success=1 default=ignore]  pam_succeed_if.so user ingroup autologin
-  auth        required    pam_unix.so
-  auth        required    pam_permit.so
-  -auth       optional    pam_gnome_keyring.so
-  account     include     system-local-login
-  password    include     system-local-login
-  session     include     system-local-login
-  -session    optional    pam_gnome_keyring.so auto_start
   EOF
 
 configure: >-

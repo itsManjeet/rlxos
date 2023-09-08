@@ -9,6 +9,9 @@ build-time:
 depends:
   - components/expat.yml
   - components/systemd.yml
+  - components/x11/libx11.yml
+  - components/x11/libice.yml
+  - components/x11/libsm.yml
 
 build-type: autotools
 
@@ -23,8 +26,8 @@ configure: >-
   --with-system-pid-file=/run/dbus/pid 
   --with-system-socket=/run/dbus/system_bus_socket
   --libexecdir=/usr/lib/dbus-1.0 
-  --localstatedir=/var 
-  --without-x runstatedir=/run
+  --localstatedir=/var
+  runstatedir=/run
 
 post-script: |
   chown -v root:messagebus %{install-root}/%{libdir}/dbus-1.0/dbus-daemon-launch-helper

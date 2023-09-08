@@ -1,8 +1,7 @@
 id: thunar
-version: 4.16.10
+version: 4.18.7
 about: Xfce file manager
-release: 0
-depends:
+build-time:
   - components/exo.yml
   - components/hicolor-icon-theme.yml
   - components/libgudev.yml
@@ -11,5 +10,9 @@ depends:
   - components/pcre.yml
   - components/libexif.yml
   - components/tumbler.yml
+  - components/appimagetool.yml
+
 sources:
-  - https://archive.xfce.org/src/xfce/thunar/4.16/thunar-4.16.10.tar.bz2
+  - https://archive.xfce.org/src/xfce/thunar/%{version:1}/thunar-%{version}.tar.bz2
+
+merge: [elements/include/appimage.yml]

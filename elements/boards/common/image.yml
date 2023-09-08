@@ -47,6 +47,11 @@ script: |
   C /etc/X11
   C /etc/xdg
   C /etc/swupd.yml
+  C /etc/fonts
+  C /etc/skel
+  C /etc/sudoers
+  C /etc/sudoers.d
+  C /etc/sudoers.dist
   EOF
 
   mksquashfs %{include-root}/usr %{install-root}/usr_%{version}.squashfs
@@ -90,6 +95,9 @@ include:
 
   # Desktop Environment
   - components/xfce4.yml
+
+  # AppImage
+  - components/fuse2.yml
 
   # X11
   - components/x11/xserver.yml

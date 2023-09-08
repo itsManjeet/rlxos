@@ -7,7 +7,6 @@ depends:
   - components/librsvg.yml
 build-time:
   - components/sassc.yml
-  - components/gnome-shell.yml
 sources:
   - fluent-gtk-theme-%{version}.tar.gz::https://github.com/vinceliuice/Fluent-gtk-theme/archive/refs/tags/%{version}.tar.gz
 script: |

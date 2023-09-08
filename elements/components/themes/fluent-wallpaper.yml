@@ -1,7 +1,7 @@
 id: fluent-wallpaper
 version: "2021-08-08"
 about: Fluent wallpapers collection
-release: 0
+
 sources:
 - fluent-wallpaper-2021-08-08.tar.gz::https://github.com/vinceliuice/Fluent-gtk-theme/archive/refs/heads/Wallpaper.tar.gz
 script: |-

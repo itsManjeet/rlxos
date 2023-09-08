@@ -10,6 +10,8 @@ import (
 )
 
 func (m *Manager) Refresh() error {
+	m.Sync()
+
 	if len(m.Layers) == 0 {
 		log.Println("no layer found, skipping")
 		return nil

@@ -25,8 +25,8 @@ jobs:
       - name: Setup Environment
         run: |
           TAG_NAME=${GITHUB_REF#refs/*/}
-          VERSION=${TAG_NAME%.*}
-          CODENAME=${TAG_NAME#${VERSION}.}
+          VERSION=${TAG_NAME%-*}
+          CODENAME=${TAG_NAME#${VERSION}-}
 
           echo "TAG_NAME=${TAG_NAME}" >> $GITHUB_ENV
 
@@ -54,7 +54,3 @@ jobs:
           for element in installer updates ; do
             make checkout ELEMENT=boards/${{matrix.board}}/${element}.yml
           done
-
-      - name: Create World
-        run: |
-          make world

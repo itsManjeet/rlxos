@@ -95,6 +95,7 @@ include:
 
   # Desktop Environment
   - components/awesome.yml
+  - components/picom.yml
 
   # AppImage
   - components/fuse2.yml

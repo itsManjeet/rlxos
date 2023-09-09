@@ -4,6 +4,8 @@ about:
   A reference implementation of the Theora video compression format being developed
   by the Xiph.Org Foundation
 
+variables:
+  run-autogen: false
 depends:
   - components/libogg.yml
   - components/libvorbis.yml

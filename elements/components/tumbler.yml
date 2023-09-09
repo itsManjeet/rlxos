@@ -14,4 +14,8 @@ depends:
   - components/libjpeg-turbo.yml
   - components/libgsf.yml
   - components/libpng.yml
+  - components/libxfce4util.yml
   - components/poppler.yml
+
+build-time:
+  - components/intltool.yml

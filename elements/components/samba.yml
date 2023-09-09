@@ -54,8 +54,8 @@ depends:
   - components/libtasn1.yml
   - components/libxslt.yml
   - components/pam.yml
-  - components/perl-parse-yapp.yml
-  - components/perl-json.yml
+  - components/perl/perl-parse-yapp.yml
+  - components/perl/perl-json.yml
   - components/cups.yml
   - components/libldap.yml
 build-time:

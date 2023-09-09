@@ -224,10 +224,21 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 	}
 
 	if len(e.Include) > 0 {
-		includeList, err := b.List(element.DependencyRunTime, e.Include...)
+		var dependencyType element.DependencyType = element.DependencyRunTime
+		if val, ok := e.Variables["include-depends"]; ok {
+			switch val {
+			case "true", "yes":
+				dependencyType = element.DependencyRunTime
+			case "false", "no":
+				dependencyType = element.DependencyNone
+			}
+		}
+
+		includeList, err := b.List(dependencyType, e.Include...)
 		if err != nil {
 			return err
 		}
+
 		if len(includeList) > 0 {
 			includeRootDir, ok := e.Variables["include-root"]
 			if !ok {

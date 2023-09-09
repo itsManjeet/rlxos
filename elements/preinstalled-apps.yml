@@ -1,0 +1,28 @@
+merge: [version.yml]
+no-strip: true
+
+variables:
+  include-root: "/sysroot/"
+  include-depends: false
+  force-rebuild: true
+
+script: |
+  mkdir -p %{install-root}/apps/share/applications
+  mkdir -p %{install-root}/apps/share/icons/
+
+  for app in %{include-root}/*.app ; do
+    echo "Installing Application $(basename ${app})"
+
+    chmod +x ${app}
+    # ${app} --appimage-extract *.desktop
+    # mv squashfs-root/*.desktop %{install-root}/apps/share/applications/
+
+    # ${app} --appimage-extract *.svg
+    # mv squashfs-root/*.svg %{install-root}/apps/share/icons/
+
+    # %{app} --appimage-extract *usr/share/dbus-1/services/*.service
+    # ls squashfs-root/usr/share/dbus-1/services/*.service | wc
+
+
+    mv ${app} %{install-root}/apps/
+  done

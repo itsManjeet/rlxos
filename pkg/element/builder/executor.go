@@ -59,6 +59,7 @@ func CreateContainer(image string, environ []string, mounts map[string]string) (
 
 	// TODO: Remove this temporary fix
 	exec.Command(backend, "exec", "-i", c.name, "mkdir", "-p", "/tmp").CombinedOutput()
+	exec.Command(backend, "exec", "-i", c.name, "mkdir", "-p", "/usr/local/include").CombinedOutput()
 
 	return c, nil
 }

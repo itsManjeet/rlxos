@@ -8,12 +8,42 @@ build-time:
   - components/squashfs-tools.yml
 
 pre-script: |
-  mkdir -p %{install-root}/%{sysconfdir}/systemd/system/getty@tty1.service.d/
-  cat >%{install-root}/%{sysconfdir}/systemd/system/getty@tty1.service.d/autologin.conf << EOF
-  [Service]
-  ExecStart=
-  ExecStart=-/usr/bin/agetty --autologin root --noclear %I $TERM
+  # Create Live User
+  install -vDm 0644 /dev/stdin %{install-root}/lib/sysusers.d/live-user << "EOF"
+  u live-user - "Live User" /home/live-user /usr/bin/bash
+  m live-user wheel
+  m live-user adm
   EOF
+
+  # Authenticate to run sudo commands without password
+  install -vDm 0644 /dev/stdin %{install-root}/share/factory/etc/sudoers.d/live-user << "EOF"
+  live-user ALL=(ALL) NOPASSWD: ALL
+  EOF
+
+  # AutoLogin to Live User
+  install -vDm 0644 /dev/stdin %{install-root}/share/factory/etc/lightdm/lightdm.conf.d/12-autologin.conf << "EOF"
+  [SeatDefaults]
+  autologin-user=live-user
+  EOF
+
+  # Create Installation Guide
+  install -vDm 0644 /dev/stdin %{install-root}/share/factory/etc/skel/README << "EOF"
+  RLXOS GNU/Linux %{version} %{codename}
+
+  Notes
+  - Root password: 'root'
+  - Live User Password: Need to set
+  - Live User Have access to sudo commands without password
+
+  Installation
+  - %{bindir}/installer is a CLI tool to help installation of rlxos.
+  - You need a blank ext4 partition of size atleast 4 GiB
+  - You might also need a EFI parition for UEFI boot support (LABEL=EFI)
+  - Execute below command with your path to partition (not DISK).
+  - $ %{bindir}/installer install /dev/sd?
+  - reboot once installation done
+  EOF
+
 
   cp -rap %{install-root}/%{prefix}/* %{install-root}/
   rm -rf %{install-root}/%{prefix}

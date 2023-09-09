@@ -9,7 +9,6 @@ depends:
   - components/gtk.yml
 build-time:
   - components/vala.yml
-  - components/glade.yml
   - components/gobject-introspection.yml
   - components/meson.yml
 sources:

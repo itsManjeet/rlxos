@@ -94,7 +94,7 @@ include:
   - components/bolt.yml
 
   # Desktop Environment
-  - components/xfce4.yml
+  - components/awesome.yml
 
   # AppImage
   - components/fuse2.yml
@@ -108,6 +108,9 @@ include:
   # Display Manager
   - components/lightdm.yml
   - components/lightdm-gtk-greeter.yml
+
+  # Components
+  - components/gvfs.yml
 
   # Fonts
   - components/fonts/cantarell.yml
@@ -128,4 +131,4 @@ include:
   - components/themes/fluent-wallpaper.yml
 
   # Apps
-  - components/alacritty.yml
+  - preinstalled-apps.yml

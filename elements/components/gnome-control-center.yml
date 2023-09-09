@@ -21,7 +21,6 @@ depends:
   - components/shared-mime-info.yml
   - components/krb5.yml
   - components/udisks.yml
-  - components/cheese.yml
   - components/cups.yml
   - components/samba.yml
   - components/gnome-bluetooth.yml

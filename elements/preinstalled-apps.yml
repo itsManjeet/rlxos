@@ -1,3 +1,7 @@
+include:
+  - apps/thunar.yml
+  - apps/xfce4-terminal.yml
+
 merge: [version.yml]
 no-strip: true
 

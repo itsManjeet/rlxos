@@ -1,3 +1,6 @@
+id: preinstalled-apps
+version: 0.0.1
+about: rlxos preinstalled apps collection
 include:
   - apps/thunar.yml
   - apps/xfce4-terminal.yml

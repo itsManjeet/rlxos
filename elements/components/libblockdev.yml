@@ -2,9 +2,6 @@ id: libblockdev
 version: 3.0.3
 about: A C library supporting GObject Introspection for manipulation of block devices
 
-pre-script: |-
-  sed "s/g_memdup/&2/" -i src/lib/plugin_apis/vdo.{c,api} src/plugins/vdo.c
-
 configure: >-
   --with-python3
   --without-nvdimm
@@ -16,8 +13,13 @@ depends:
   - components/libyaml.yml
   - components/parted.yml
   - components/volume_key.yml
+  - components/cryptsetup.yml
+  - components/keyutils.yml
+  - components/e2fsprogs.yml
+  - components/libnvme.yml
 
 build-time:
   - components/gtk-doc.yml
 sources:
-  - https://github.com/storaged-project/libblockdev/releases/download/%{version}/libblockdev-%{version}.tar.gz
+  - https://github.com/storaged-project/libblockdev/releases/download/%{version}-1/libblockdev-%{version}.tar.gz
+# TODO: enable nvme support

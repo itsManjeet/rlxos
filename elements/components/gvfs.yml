@@ -18,6 +18,7 @@ depends:
   - components/udisks.yml
   - components/fuse.yml
   - components/libmtp.yml
+  - components/libsoup3.yml
   - components/openssh.yml
 sources:
   - https://download.gnome.org/sources/gvfs/%{version:1}/gvfs-%{version}.tar.xz

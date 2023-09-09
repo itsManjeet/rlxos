@@ -13,4 +13,4 @@ depends:
   - components/glibc.yml
 
 sources:
-  - https://github.com/libfuse/libfuse/releases/download/fuse-%{version}/fuse-%{version}.tar.xz
+  - https://github.com/libfuse/libfuse/releases/download/fuse-%{version}/fuse-%{version}.tar.gz

@@ -1,0 +1,18 @@
+merge: [version.yml]
+variables:
+  force-rebuild: true
+  include-depends: false
+  compatibality: must
+  include-root: /sysroot
+
+script: |-
+  mkdir -p %{include-root}/%{datadir}/factory/
+  [[ -d %{include-root}/%{sysconfdir} ]] && mv %{include-root}/%{sysconfdir} %{include-root}/%{datadir}/factory
+  mv %{include-root}/%{prefix} %{install-root}
+  
+  install -vDm 0644 /dev/stdin %{install-root}/share/layers/%{id}.json << "EOF"
+  {
+    "version": "%{version}",
+    "compatibality": "%{compatibality}"
+  }
+  EOF

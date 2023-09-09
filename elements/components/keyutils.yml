@@ -1,5 +1,5 @@
 id: keyutils
-version: 1.6.3
+version: 1.6.1
 about: Linux key management utilities
 
 pre-script: |-
@@ -11,4 +11,4 @@ script: |-
 depends:
   - components/glibc.yml
 sources:
-  - http://rlxos.cloudtb.online/sources/keyutils-%{version}.tar.gz
+  - https://people.redhat.com/~dhowells/keyutils/keyutils-%{version}.tar.bz2

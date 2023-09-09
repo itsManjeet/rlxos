@@ -166,10 +166,14 @@ const (
 	DependencyBuildTime DependencyType = iota
 	DependencyRunTime
 	DependencyAll
+	DependencyNone
 )
 
 func (e *Element) AllDepends(dep DependencyType) []string {
 	depends := []string{}
+	if dep == DependencyNone {
+		return depends
+	}
 	if e.Depends != nil {
 		depends = append(depends, e.Depends...)
 	}

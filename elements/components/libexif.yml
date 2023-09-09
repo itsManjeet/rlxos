@@ -6,4 +6,4 @@ depends:
   - components/glibc.yml
 
 sources:
-  - https://github.com/libexif/libexif/releases/download/v%{version}/libexif-%{version}.tar.xz
+  - https://github.com/libexif/libexif/releases/download/v%{version}/libexif-%{version}.tar.bz2

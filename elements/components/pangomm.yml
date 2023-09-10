@@ -1,5 +1,5 @@
 id: pangomm
-version: 2.50.1
+version: 2.46.3
 about: A C++ interface to Pango
 
 variables:

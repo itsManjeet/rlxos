@@ -1,5 +1,5 @@
 id: cairomm
-version: 1.16.2
+version: 1.14.0
 about: A C++ interface to Cairo
 
 variables:

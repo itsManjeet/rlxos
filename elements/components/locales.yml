@@ -15,4 +15,4 @@ script: |
   
   localedef --prefix=%{install-root} --no-archive -i en_IN -f UTF-8 en_IN.UTF-8
   mkdir -p %{install-root}/%{sysconfdir}
-  echo "LANG=en_IN.UTF-8" > %{install-root}/%{sysconfdir}/locale.conf
+  echo "LANG=en_IN.utf-8" > %{install-root}/%{sysconfdir}/locale.conf

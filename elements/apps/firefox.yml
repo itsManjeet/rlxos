@@ -1,21 +1,27 @@
 id: firefox
-version: 105.0.2
-about: Mozilla Firefox or simply Firefox is a free and open-source web browser developed
+version: 117.0
+about:
+  Mozilla Firefox or simply Firefox is a free and open-source web browser developed
   by the Mozilla Foundation and its subsidiary, the Mozilla Corporation. Firefox uses
   the Gecko rendering engine to display web pages, which implements current and anticipated
   web standards.
-release: 0
-build-time:
-- components/appimagetool.yml
-sources:
-- http://ftp.mozilla.org/pub/firefox/releases/%{version}/linux-x86_64/en-US/firefox-%{version}.tar.bz2
+
+variables:
+  prepare-appimage: |-
+    install -vDm 0644 -t %{install-root} /files/firefox/firefox.desktop
+
+build-dir: .
 script: |-
   mv firefox %{install-root}
-  install -v -D -m 0755 /files/AppRun -t %{install-root}/
-  cp /files/%{id}.desktop %{install-root}/
-  cp /files/%{id}.svg %{install-root}/%{id}.png
+  mkdir -p %{install-root}/%{bindir}
+  ln -srv %{install-root}/firefox %{install-root}/%{bindir}/
+  cp %{install-root}/browser/chrome/icons/default/default64.png %{install-root}/firefox.png
 
-  mkdir distribution
-  cp /files/policy.json distribution/
-  cp /files/distribution.ini distribution/
+build-time:
+  - components/dbus-glib.yml
+  - components/appimagetool.yml
 
+sources:
+  - http://ftp.mozilla.org/pub/firefox/releases/%{version}/linux-x86_64/en-US/firefox-%{version}.tar.bz2
+
+merge: [elements/include/appimage.yml]

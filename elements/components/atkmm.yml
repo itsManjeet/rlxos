@@ -1,5 +1,5 @@
 id: atkmm
-version: 2.36.2
+version: 2.28.3
 about: C++ interface for the ATK accessibility toolkit library
 
 variables:
@@ -10,4 +10,3 @@ depends:
   - components/glibmm.yml
 sources:
   - https://download.gnome.org/sources/atkmm/%{version:1}/atkmm-%{version}.tar.xz
-

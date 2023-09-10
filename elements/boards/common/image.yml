@@ -52,6 +52,8 @@ script: |
   C /etc/sudoers
   C /etc/sudoers.d
   C /etc/sudoers.dist
+  C /etc/lightdm
+  C /etc/pulseaudio
   EOF
 
   mksquashfs %{include-root}/usr %{install-root}/usr_%{version}.squashfs
@@ -111,6 +113,7 @@ include:
 
   # Components
   - components/gvfs.yml
+  - components/xdg-user-dirs-gtk.yml
 
   # Fonts
   - components/fonts/cantarell.yml

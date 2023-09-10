@@ -13,6 +13,6 @@ script: |
   grep -v -e "C.UTF-8" %{datadir}/i18n/SUPPORTED | xargs -n 2 bash -c ' echo "Generating ${0}"; \
     localedef --prefix=%{install-root} --no-archive -i ${0%%.*} -f ${1} ${0}'
   
-  localdef --prefix=%{install-root} --no-archive -i en_IN -f UTF-8 en_IN.UTF-8
+  localedef --prefix=%{install-root} --no-archive -i en_IN -f UTF-8 en_IN.UTF-8
   mkdir -p %{install-root}/%{sysconfdir}
   echo "LANG=en_IN.UTF-8" > %{install-root}/%{sysconfdir}/locale.conf

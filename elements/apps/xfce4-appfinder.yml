@@ -1,13 +1,23 @@
 id: xfce4-appfinder
-version: 4.16.1
+version: 4.18.1
 about: xfce application finder and launcher tool
-depends:
-  - components/garcon.yml
+
+variables:
+  prepare-appimage: |
+    cp %{install-root}/%{datadir}/applications/xfce4-appfinder.desktop %{install-root}/
+    cp %{install-root}/%{datadir}/icons/hicolor/scalable/apps/org.xfce.appfinder.svg %{install-root}/
+
+  skip-libraries: >
+    libc.so*
+
 build-time:
+  - components/garcon.yml
+  - components/libxfce4ui.yml
+  - components/libxfce4util.yml
   - components/intltool.yml
+  - components/appimagetool.yml
+
 sources:
-  - https://archive.xfce.org/src/xfce/xfce4-appfinder/4.16/xfce4-appfinder-%{version}.tar.bz2
-pre-script: |-
-  for i in /files/*.patch ; do
-    patch -Np1 -i ${i}
-  done
+  - https://archive.xfce.org/src/xfce/xfce4-appfinder/%{version:1}/xfce4-appfinder-%{version}.tar.bz2
+
+merge: [elements/include/appimage.yml]

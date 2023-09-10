@@ -4,6 +4,9 @@ about: rlxos preinstalled apps collection
 include:
   - apps/thunar.yml
   - apps/xfce4-terminal.yml
+  - apps/xfce4-taskmanager.yml
+  - apps/xfce4-appfinder.yml
+  - apps/firefox.yml
 
 merge: [version.yml]
 no-strip: true

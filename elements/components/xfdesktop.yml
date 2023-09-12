@@ -6,6 +6,7 @@ depends:
   - components/exo.yml
   - components/libwnck.yml
   - components/libnotify.yml
+  - components/thunar.yml
   - components/startup-notification.yml
 sources:
   - https://archive.xfce.org/src/xfce/xfdesktop/%{version:1}/xfdesktop-%{version}.tar.bz2

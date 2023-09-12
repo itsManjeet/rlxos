@@ -8,4 +8,4 @@ depends:
 build-time:
   - components/ki18n.yml
   - components/extra-cmake-modules.yml
-  - components/perl-uri.yml
+  - components/perl/perl-uri.yml

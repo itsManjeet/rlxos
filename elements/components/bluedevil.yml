@@ -1,17 +1,11 @@
 id: bluedevil
-version: 5.27.7.1
 about: Plasma bluedevil
-
-configure: >
-  -DCMAKE_BUILD_TYPE=Release
-  -DBUILD_TESTING=OFF
-  -Wno-dev
 
 depends:
   - components/bluez-qt.yml
   - components/kdeclarative.yml
+  - components/kcmutils.yml
 build-time:
   - components/extra-cmake-modules.yml
   - components/plasma-framework.yml
-sources:
-  - https://download.kde.org/stable/plasma/%{version}/%{id}-%{version}.tar.xz
+merge: [elements/include/plasma.yml]

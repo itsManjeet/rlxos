@@ -2,6 +2,7 @@ id: exiv2
 version: 0.28.0
 about: Library and a command line utility for managing image and video metadata
 
+build-type: cmake
 configure: >-
   -DCMAKE_BUILD_TYPE=Release
   -DEXIV2_ENABLE_VIDEO=yes
@@ -11,6 +12,7 @@ configure: >-
 
 depends:
   - components/glibc.yml
+  - components/brotli.yml
 
 build-time:
   - components/cmake.yml

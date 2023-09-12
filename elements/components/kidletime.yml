@@ -4,5 +4,6 @@ about: KF5 kidletime
 
 depends:
   - components/qt.yml
+  - components/kwayland.yml
 build-time:
   - components/extra-cmake-modules.yml

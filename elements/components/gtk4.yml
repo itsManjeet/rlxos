@@ -4,10 +4,9 @@ about: Libraries used for creating graphical user interfaces for applications
 
 configure: >-
   --buildtype=release
-  -D broadway_backend=true
-  -D sysprof=enabled
+  -D broadway-backend=true
   -D colord=enabled
-  -D sassc=enabled
+  -D demos=false
 
 depends:
   - components/fribidi.yml
@@ -22,7 +21,6 @@ depends:
   - components/gst-plugins-bad.yml
   - components/librsvg.yml
   - components/colord.yml
-  - components/sysprof.yml
 build-time:
   - components/gobject-introspection.yml
   - components/git.yml

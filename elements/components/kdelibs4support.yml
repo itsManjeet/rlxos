@@ -12,4 +12,4 @@ build-time:
   - components/extra-cmake-modules.yml
   - components/kdoctools.yml
   - components/networkmanager.yml
-  - components/perl-uri.yml
+  - components/perl/perl-uri.yml

@@ -5,6 +5,8 @@ about: Generic purpose lossless compression algorithm
 pre-script: |
   python setup.py build
 
+build-type: cmake
+
 configure: >
   -DCMAKE_BUILD_TYPE=Release
   -DBUILD_SHARED_LIBS=True

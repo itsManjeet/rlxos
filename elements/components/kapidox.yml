@@ -1,7 +1,7 @@
 id: kapidox
-version: 5.109.0
 about: KF5 kapidox
 
+merge: [elements/include/kf5.yml]
 script: |-
   pip install build installer wheel
 
@@ -14,5 +14,3 @@ depends:
 build-time:
   - components/py/py-pip.yml
   - components/extra-cmake-modules.yml
-sources:
-  - https://download.kde.org/stable/frameworks/%{version:1}/%{id}-%{version}.tar.xz

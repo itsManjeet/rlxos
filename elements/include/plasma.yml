@@ -1,4 +1,4 @@
-version: 5.27.7.1
+version: 5.27.7
 
 configure: >-
   -DCMAKE_BUILD_TYPE=Release

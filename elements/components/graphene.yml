@@ -7,6 +7,6 @@ depends:
 build-time:
   - components/gobject-introspection.yml
 sources:
-  - https://github.com/ebassi/graphene/releases/download/%{version}/graphene-%{version}.tar.xz
+  - graphene-%{version}.tar.gz::https://github.com/ebassi/graphene/archive/refs/tags/%{version}.tar.gz
 configure: >-
   --buildtype=release

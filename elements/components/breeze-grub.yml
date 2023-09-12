@@ -1,13 +1,6 @@
 id: breeze-grub
-version: 5.27.7.1
 about: Plasma breeze-grub
-
-configure: >
-  -DCMAKE_BUILD_TYPE=Release
-  -DBUILD_TESTING=OFF
-  -Wno-dev
 
 depends:
   - components/grub.yml
-sources:
-  - https://download.kde.org/stable/plasma/%{version}/%{id}-%{version}.tar.xz
+merge: [elements/include/plasma.yml]

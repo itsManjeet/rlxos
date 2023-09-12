@@ -13,6 +13,7 @@ configure: >-
 depends:
   - components/glibc.yml
   - components/brotli.yml
+  - components/inih.yml
 
 build-time:
   - components/cmake.yml

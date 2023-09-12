@@ -2,14 +2,7 @@ id: thunar
 version: 4.18.7
 about: Xfce file manager
 
-variables:
-  prepare-appimage: |
-    cp %{install-root}/%{datadir}/applications/thunar.desktop %{install-root}/
-    cp %{install-root}/%{datadir}/icons/hicolor/scalable/apps/org.xfce.thunar.svg %{install-root}/
-
-  skip-libraries: >
-    libc.so*
-build-time:
+depends:
   - components/exo.yml
   - components/hicolor-icon-theme.yml
   - components/libgudev.yml
@@ -18,9 +11,7 @@ build-time:
   - components/pcre.yml
   - components/libexif.yml
   - components/tumbler.yml
-  - components/appimagetool.yml
+
 
 sources:
   - https://archive.xfce.org/src/xfce/thunar/%{version:1}/thunar-%{version}.tar.bz2
-
-merge: [elements/include/appimage.yml]

@@ -96,7 +96,9 @@ include:
   - components/bolt.yml
 
   # Desktop Environment
-  - components/plasma.yml
+  - components/awesome.yml
+  - components/lightdm.yml
+  - components/lightdm-gtk-greeter.yml
 
   # AppImage
   - components/fuse2.yml
@@ -121,9 +123,7 @@ include:
 
   # Themes and Icons
   - components/themes/adwaita-icon-theme.yml
-  - components/themes/fluent-gtk-theme.yml
-  - components/themes/fluent-icon-theme.yml
-  - components/themes/fluent-wallpaper.yml
+  - components/themes/grey-bird-gtk-theme.yml
 
   # Apps
   - preinstalled-apps.yml

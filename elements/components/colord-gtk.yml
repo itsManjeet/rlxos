@@ -13,6 +13,7 @@ depends:
   - components/colord.yml
   - components/gtk.yml
   - components/gtk2.yml
+  - components/gtk4.yml
 build-time:
   - components/gobject-introspection.yml
   - components/vala.yml

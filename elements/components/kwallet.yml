@@ -8,6 +8,7 @@ depends:
   - components/knotifications.yml
   - components/kservice.yml
   - components/libgcrypt.yml
+  - components/qca.yml
 build-time:
   - components/extra-cmake-modules.yml
   - components/kdoctools.yml

@@ -96,7 +96,7 @@ include:
   - components/bolt.yml
 
   # Desktop Environment
-  - components/xfce4.yml
+  - components/plasma.yml
 
   # AppImage
   - components/fuse2.yml
@@ -106,10 +106,6 @@ include:
   - components/x11/xinit.yml
   - components/x11/xf86-input-libinput.yml
   - components/x11/xf86-video-fbdev.yml
-
-  # Display Manager
-  - components/lightdm.yml
-  - components/lightdm-gtk-greeter.yml
 
   # Components
   - components/gvfs.yml

@@ -2,9 +2,6 @@ id: fdk-aac
 version: 2.0.2
 about: Package provides the Fraunhofer FDK AAC library
 
-configure: >-
-  --disable-static
-
 depends:
   - components/glibc.yml
 sources:

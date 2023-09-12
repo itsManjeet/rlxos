@@ -6,10 +6,10 @@ depends:
   - components/breeze.yml
   - components/kcmutils.yml
   - components/kscreenlocker.yml
-  - components/kwayland-server.yml
   - components/lcms.yml
   - components/plasma-framework.yml
   - components/x11/xcb-util-cursor.yml
+  - components/x11/libxcvt.yml
   - components/libinput.yml
   - components/pipewire.yml
 build-time:

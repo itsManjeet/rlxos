@@ -2,10 +2,13 @@ id: l-smash
 version: 2.14.5
 about: MP4 muxer and other tools
 
-configure: >-
-  --prefix=%{prefix}
-  --enable-shared
-  --disable-static
+script: |-
+  ./configure --prefix=%{prefix}  \
+    --enable-shared \
+    --disable-static
+
+  make ${MAKEFLAGS}
+  make install DESTDIR=%{install-root}
 
 depends:
   - components/glibc.yml

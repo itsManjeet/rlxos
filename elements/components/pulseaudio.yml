@@ -6,6 +6,7 @@ configure: >-
   --buildtype=release
   -D database=gdbm
   -D bluez5=enabled
+  -D udevrulesdir=%{libdir}/udev/rules.d
   -D tests=false
   -D doxygen=false
 

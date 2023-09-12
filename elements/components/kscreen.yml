@@ -1,11 +1,5 @@
 id: kscreen
-version: 5.27.7.1
 about: Plasma kscreen
-
-configure: >-
-  -DCMAKE_BUILD_TYPE=Release
-  -DBUILD_TESTING=OFF
-  -Wno-dev
 
 depends:
   - components/libkscreen.yml
@@ -13,5 +7,5 @@ depends:
 build-time:
   - components/extra-cmake-modules.yml
   - components/kcmutils.yml
-sources:
-  - https://download.kde.org/stable/plasma/%{version}/%{id}-%{version}.tar.xz
+
+merge: [elements/include/plasma.yml]

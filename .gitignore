@@ -27,3 +27,7 @@
 /_work
 /bolt
 /responses.txt
+
+# Added by cargo
+
+/target

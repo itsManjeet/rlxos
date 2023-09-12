@@ -3,7 +3,9 @@ merge: [elements/include/plasma.yml]
 about: Plasma libkscreen
 
 depends:
+  - components/kconfig.yml
   - components/kwayland.yml
+  - components/layer-shell-qt.yml
   - components/qt.yml
 build-time:
   - components/extra-cmake-modules.yml

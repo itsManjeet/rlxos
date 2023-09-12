@@ -1102,6 +1102,8 @@ script: |
 
   # Compressed firmware
   enable FW_LOADER_COMPRESS
+  enable FW_LOADER_COMPRESS_XZ
+  enable FW_LOADER_COMPRESS_ZSTD
 
   # IIO
   module IIO

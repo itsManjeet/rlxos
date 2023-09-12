@@ -6,7 +6,6 @@ about:
   to the state-machine style of OpenGL
 
 configure: >
-  --enable-gles1
   --enable-gles2
   --enable-kms-egl-platform
   --enable-wayland-egl-platform
@@ -23,6 +22,7 @@ depends:
   - components/gst-plugins-base.yml
   - components/sdl.yml
   - components/sdl2.yml
+  - components/x11/libxcomposite.yml
 build-time:
   - components/gobject-introspection.yml
 sources:

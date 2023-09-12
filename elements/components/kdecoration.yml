@@ -1,16 +1,10 @@
 id: kdecoration
-version: 5.27.7.1
 about: Plasma kdecoration
-
-configure: >-
-  -DCMAKE_BUILD_TYPE=Release
-  -DBUILD_TESTING=OFF
-  -Wno-dev
 
 depends:
   - components/kcoreaddons.yml
   - components/ki18n.yml
 build-time:
   - components/extra-cmake-modules.yml
-sources:
-  - https://download.kde.org/stable/plasma/%{version}/%{id}-%{version}.tar.xz
+
+merge: [elements/include/plasma.yml]

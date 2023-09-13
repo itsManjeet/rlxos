@@ -44,9 +44,10 @@ script: |
   cat >%{include-root}/%{libdir}/tmpfiles.d/extra-etc.conf << EOF
   C /etc/protocols
   C /etc/services
+  C /etc/nscd.conf
+  C /etc/swupd.yml
   C /etc/X11
   C /etc/xdg
-  C /etc/swupd.yml
   C /etc/fonts
   C /etc/skel
   C /etc/sudoers
@@ -54,6 +55,7 @@ script: |
   C /etc/sudoers.dist
   C /etc/lightdm
   C /etc/pulseaudio
+  C /etc/sshd
   EOF
 
   mksquashfs %{include-root}/usr %{install-root}/usr_%{version}.squashfs
@@ -96,7 +98,7 @@ include:
   - components/bolt.yml
 
   # Desktop Environment
-  - components/awesome.yml
+  - components/interface.yml
   - components/lightdm.yml
   - components/lightdm-gtk-greeter.yml
 

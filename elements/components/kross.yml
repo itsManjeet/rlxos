@@ -7,3 +7,6 @@ depends:
 build-time:
   - components/extra-cmake-modules.yml
   - components/kdoctools.yml
+
+sources:
+  - https://download.kde.org/stable/frameworks/%{version:1}/portingAids/%{id}-%{version}.tar.xz

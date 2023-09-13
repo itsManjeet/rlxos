@@ -3,15 +3,38 @@ version: 0.0.1
 about: rlxos preinstalled apps collection
 include:
   - apps/firefox.yml
+  - apps/alacritty.yml
 
 merge: [version.yml]
 no-strip: true
 
 variables:
   include-root: "/sysroot/"
+  apps-dir: "apps"
   include-depends: false
   force-rebuild: true
 
 script: |
-  mkdir -p %{install-root}/%{datadir}/preinstalled-apps/
-  mv /sysroot/* %{install-root}/%{datadir}/preinstalled-apps/
+  mkdir -p %{install-root}/%{datadir}/factory/%{apps-dir}/share/{applications,icons}
+  mv /sysroot/* %{install-root}/%{datadir}/factory/%{apps-dir}
+
+  for appImage in %{install-root}/%{datadir}/factory/%{apps-dir}/*.app ; do
+    chmod +x $appImage
+    $appImage --appimage-extract
+    sed -i 's#Exec=[^ ]*#Exec=/%{apps-dir}/$(basename $appImage)#g' squashfs-root/*.desktop
+    iconfile=$(grep "Icon=" squashfs-root/*.desktop | cut -d '=' -f2)
+
+    for ext in png jpg svg ; do
+      echo "checking squashfs-root/${iconfile}.$ext"
+      if [[ -e squashfs-root/${iconfile}.$ext ]] ; then
+        cp squashfs-root/${iconfile}.$ext %{install-root}/%{datadir}/factory/%{apps-dir}/share/icons/
+      fi
+    done
+    
+    mv squashfs-root/*.desktop %{install-root}/%{datadir}/factory/%{apps-dir}/share/applications/
+    rm -rf squashfs-root
+  done
+
+  cat >%{include-root}/%{libdir}/tmpfiles.d/preinstalled-apps.conf << EOF
+  C /apps
+  EOF

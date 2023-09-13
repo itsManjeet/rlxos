@@ -156,6 +156,7 @@ func (e *Element) resolveVariable(v string) string {
 			v = strings.ReplaceAll(v, "%{version:2}", strings.Join(versionInfo[:len(versionInfo)-2], "."))
 		}
 		v = strings.ReplaceAll(v, "%{version:_}", strings.ReplaceAll(version, ".", "_"))
+		v = strings.ReplaceAll(v, "%{version:-}", strings.ReplaceAll(version, ".", "-"))
 	}
 	return v
 }

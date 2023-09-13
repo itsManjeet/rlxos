@@ -3,7 +3,8 @@ version: 0.2.5
 about: A C library for parsing and emitting YAML (YAML Ain't Markup Language) code
 
 pre-script: |-
-  ./bootstrap
+  autoreconf -fvi
+build-type: autotools
 
 depends:
   - components/glibc.yml

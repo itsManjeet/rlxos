@@ -85,6 +85,9 @@ filepath: $(REPO_BUILDER)
 	@if [ ! -f elements/$(ELEMENT) ] ; then echo "ERROR: no element exists elements/$(ELEMENT)"; exit 1; fi
 	$(REPO_BUILDER) file -cache-path $(CACHE_PATH) $(ELEMENT)
 
+market-data: $(REPO_BUILDER)
+	$(REPO_BUILDER) create-market-data -cache-path $(CACHE_PATH) $(CACHE_PATH)/market
+
 TODO:
 	@grep -R "# TODO:" elements/ | sed 's/# TODO://g' > $@
 	@cat $@

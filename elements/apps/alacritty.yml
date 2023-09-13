@@ -3,7 +3,7 @@ version: 0.12.2
 about: A cross-platform, GPU-accelerated terminal emulator
 merge: [elements/include/appimage.yml]
 
-variales:
+variables:
   prepare-appimage: |-
     desktop-file-install -m 644 --dir %{install-root}/ extra/linux/Alacritty.desktop
     install -vDm 0644 extra/logo/alacritty-simple.svg %{install-root}/Alacritty.svg

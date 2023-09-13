@@ -2,8 +2,9 @@ id: appstream
 version: 0.16.3
 about: Provides a standard for creating app stores across distributions
 
+build-dir: AppStream-%{version}
 configure: >
-  -Dqt=false
+  -Dqt=true
   -Dvapi=true
   -Dcompose=true
 
@@ -14,6 +15,7 @@ depends:
   - components/libyaml.yml
   - components/libxmlb.yml
   - components/lmdb.yml
+  - components/qt.yml
 build-time:
   - components/gobject-introspection.yml
   - components/gperf.yml

@@ -26,6 +26,8 @@ depends:
   - components/phonon.yml
   - components/kuserfeedback.yml
   - components/networkmanager-qt.yml
+  - components/kpipewire.yml
+  - components/libkexiv2.yml
 build-time:
   - components/extra-cmake-modules.yml
   - components/kdoctools.yml

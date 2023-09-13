@@ -1,0 +1,12 @@
+id: interface
+version: 0.0.1
+about: rlxos Desktop Environment
+
+depends:
+  - components/awesome.yml
+  - components/picom.yml
+
+script: |-
+  mkdir -p %{install-root}/%{sysconfdir}/xdg/awesome/
+  cp /files/interface/* %{install-root}/%{sysconfdir}/xdg/awesome/
+  chown root:root %{install-root}/%{sysconfdir}/xdg/awesome/ -Rv

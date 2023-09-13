@@ -1,14 +1,8 @@
 id: py-pip
-version: 21.2.4
+version: 23.2.1
 about: PyPA recommended tool for installing python packages
-release: 0
 depends:
-- components/python.yml
-- components/py/py-setuptools.yml
+  - components/python.yml
+  - components/py/py-setuptools.yml
 sources:
-- pip-21.2.4.tar.gz::https://github.com/pypa/pip/archive/21.2.4.tar.gz
-script: |-
-  py setup.py build
-  py setup.py install --prefix=/usr --root=%{install-root} --optimize=1
-  find %{install-root}/usr/lib/python3.9/site-packages -type f -exec chmod o-w '{}' \+
-
+  - pip-%{version}.tar.gz::https://github.com/pypa/pip/archive/%{version}.tar.gz

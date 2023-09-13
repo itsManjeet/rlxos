@@ -5,7 +5,7 @@ about: String processing language for creating stemming algorithms
 sources:
   - snowball-%{version}.tar.gz::https://github.com/snowballstem/snowball/archive/refs/tags/v%{version}.tar.gz
 script: |
-  # patch -Np1 -i /files/dynamiclib.diff
+  patch -Np1 -i /patches/snowball/dynamiclib.diff
   make
 
   install -Dt %{install-root}/usr/bin/ snowball stemwords

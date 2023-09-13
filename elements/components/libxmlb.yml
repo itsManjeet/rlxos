@@ -4,7 +4,7 @@ about: Library to help create and query binary XML blobs
 
 depends:
   - components/glib.yml
-  - components/libstemmer.yml
+  - components/snowball.yml
   - components/xz.yml
 build-time:
   - components/gtk-doc.yml

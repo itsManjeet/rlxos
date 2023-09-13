@@ -357,6 +357,90 @@ func main() {
 
 				return nil
 			})).
+		Sub(app.New("create-market-data").
+			About("create App Market Database").
+			Handler(func(c *app.Command, s []string, i interface{}) error {
+				if len(s) == 0 {
+					return fmt.Errorf("no output path specified")
+				}
+
+				outputPath := s[0]
+				iconsPath := path.Join(outputPath, "icons")
+				appsPath := path.Join(outputPath, "apps")
+				jsonPath := path.Join(outputPath, "metadata.json")
+
+				for _, dir := range []string{iconsPath, appsPath} {
+					os.MkdirAll(dir, 0755)
+				}
+
+				metadata := []AppImageMetadata{}
+
+				bldr := i.(*builder.Builder)
+				for elid, el := range bldr.Pool() {
+					if !strings.HasPrefix(elid, "apps/") {
+						continue
+					}
+					color.Process("Adding %s", elid)
+					cachefile, _ := bldr.CacheFile(el)
+					if _, err := os.Stat(cachefile); os.IsNotExist(err) {
+						color.Error("%s not yet cached %s", elid, cachefile)
+						continue
+					}
+
+					if data, err := exec.Command("tar", "-xf", cachefile, "-C", appsPath).CombinedOutput(); err != nil {
+						color.Error("failed to extract %s: %s, %v", elid, string(data), err)
+						continue
+					}
+
+					appfile := path.Join(appsPath, fmt.Sprintf("%s-%s.app", el.Id, el.Version))
+					if err := os.Chmod(appfile, 0755); err != nil {
+						color.Error("failed to chmod %s, %v", appfile, err)
+						continue
+					}
+
+					if data, err := exec.Command(appfile, "--appimage-extract", `*.DirIcon`).CombinedOutput(); err != nil {
+						color.Error("missing icon file %s: %s, %v", elid, string(data), err)
+						continue
+					}
+
+					iconfile, err := os.Readlink(path.Join("squashfs-root", ".DirIcon"))
+					if err != nil {
+						color.Error("failed to read .DirIcon link %s: %v", elid, err)
+						continue
+					}
+
+					if data, err := exec.Command(appfile, "--appimage-extract", iconfile).CombinedOutput(); err != nil {
+						color.Error("missing icon file %s: %s, %v", elid, string(data), err)
+						continue
+					}
+
+					if data, err := exec.Command("mv", path.Join("squashfs-root", iconfile), path.Join(iconsPath, iconfile)).CombinedOutput(); err != nil {
+						color.Error("failed to copy icon file %s: %s, %v", elid, string(data), err)
+						continue
+					}
+
+					os.RemoveAll("squashfs-root")
+
+					metadata = append(metadata, AppImageMetadata{
+						Id:      el.Id,
+						Version: el.Version,
+						About:   el.About,
+						Icon:    path.Base(iconfile),
+						Cache:   path.Base(cachefile),
+					})
+				}
+
+				data, err := json.Marshal(metadata)
+				if err != nil {
+					return fmt.Errorf("invalid json format %v, %v", metadata, err)
+				}
+
+				if err := os.WriteFile(jsonPath, data, 0644); err != nil {
+					return fmt.Errorf("failed to write json data %v", err)
+				}
+
+				return nil
+			})).
 		Sub(app.New("status").
 			About("List status of caches").
 			Handler(func(c *app.Command, s []string, i interface{}) error {
@@ -415,4 +499,12 @@ func checkArgs(args []string, count int) error {
 		return fmt.Errorf("expecting %d but got %d arguments", count, len(args))
 	}
 	return nil
+}
+
+type AppImageMetadata struct {
+	Id      string `json:"id"`
+	Version string `json:"version"`
+	About   string `json:"about"`
+	Icon    string `json:"icon"`
+	Cache   string `json:"cache"`
 }

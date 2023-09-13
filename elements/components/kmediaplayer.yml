@@ -6,3 +6,6 @@ depends:
   - components/kparts.yml
 build-time:
   - components/extra-cmake-modules.yml
+
+sources:
+  - https://download.kde.org/stable/frameworks/%{version:1}/portingAids/%{id}-%{version}.tar.xz

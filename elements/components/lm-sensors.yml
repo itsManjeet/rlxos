@@ -21,6 +21,6 @@ script: |-
   #install -v -D -m 0644 /files/healthd.conf %{install-root}%{sysconfdir}/healthd.conf
   #install -v -D -m 0644 /files/sensord.conf %{install-root}%{sysconfdir}/conf.d/sensord
   #install -v -D -m 0644 /files/healthd.service %{install-root}/usr/lib/systemd/system/healthd.service
-  install -v -D -m 0644 prog/init/*.service %{install-root}/usr/lib/systemd/system/
+  install -v -D -m 0644 prog/init/*.service -t %{install-root}/usr/lib/systemd/system/
 
 # TODO: fix configuration

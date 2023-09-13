@@ -2,6 +2,9 @@ id: libqalculate
 version: 4.8.0
 about: Multi purpose desktop calculator
 
+environ:
+  - NOCONFIGURE=1
+
 depends:
   - components/curl.yml
   - components/libxml2.yml

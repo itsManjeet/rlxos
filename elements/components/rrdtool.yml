@@ -6,6 +6,7 @@ configure: >-
   --disable-rpath
   --enable-python
   --disable-libwrap
+  --disable-docs
 
 depends:
   - components/libxml2.yml

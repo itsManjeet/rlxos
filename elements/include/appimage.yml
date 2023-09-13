@@ -1,6 +1,6 @@
 no-strip: true
 post-script: |
-  install -vm0755 %{libdir}/appimagekit/AppRun %{install-root}/AppRun
+  install -vDm0755 %{libdir}/appimagekit/AppRun -t %{install-root}
   %{prepare-appimage}
 
   find %{install-root}/ -type f -executable | xargs objdump -p | grep NEEDED | awk '{print $2}' >> required-libraries

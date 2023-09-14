@@ -11,18 +11,6 @@ configure: >
   -D wayland_backend=true
   -D x11_backend=true
 
-post-script: |-
-  install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/gtk-3.0/settings.ini << "EOF"
-  [Settings]
-  gtk-icon-theme-name = Fluent
-  gtk-theme-name = Fluent-light
-  gtk-font-name = Cantarell 11
-  EOF
-
-  install -vDm 0644 /dev/stdin %{install-root}/%{libdir}/tmpfiles.d/gtk3.conf << "EOF"
-  C /etc/gtk-3.0
-  EOF
-
 integration: |-
   gtk-query-immodules-3.0 --update-cache
 

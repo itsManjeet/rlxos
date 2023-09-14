@@ -1,15 +1,15 @@
 id: qogir-icon-theme
-version: "2021-10-14"
+version: 2023-06-05
 about: A colorful design icon theme for linux desktops
-release: 0
+
 depends:
-- components/gtk.yml
-- components/hicolor-icon-theme.yml
+  - components/hicolor-icon-theme.yml
+build-time:
+  - components/gtk.yml
 sources:
-- qogir-icon-theme-2021-10-14.tar.gz::https://github.com/vinceliuice/Qogir-icon-theme/archive/refs/tags/2021-10-14.tar.gz
+  - qogir-icon-theme-%{version}.tar.gz::https://github.com/vinceliuice/Qogir-icon-theme/archive/refs/tags/%{version}.tar.gz
 script: |
   install -d %{install-root}%{datadir}/icons
 
   sed -i "s|THEME_VARIANTS=('' '-ubuntu' '-manjaro')|THEME_VARIANTS=('')|" install.sh
   ./install.sh -d %{install-root}%{datadir}/icons
-

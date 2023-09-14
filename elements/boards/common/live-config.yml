@@ -11,7 +11,7 @@ build-time:
 
 pre-script: |
   # Create Live User
-  install -vDm 0644 /dev/stdin %{install-root}/lib/sysusers.d/live-user << "EOF"
+  install -vDm 0644 /dev/stdin %{install-root}/lib/sysusers.d/live-user.conf << "EOF"
   u live-user - "Live User" /home/live-user /usr/bin/bash
   m live-user wheel
   m live-user adm

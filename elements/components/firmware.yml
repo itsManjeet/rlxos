@@ -1,7 +1,15 @@
 id: firmware
 version: 20230804
 about: Firmware files for Linux
+
+environ:
+  - ZSTD_CLEVEL=19
+
+script: |-
+  make DESTDIR=%{install-root}/%{prefix} FIRMWARE=%{libdir}/firmware install-zst
+
+build-time:
+  - components/zstd.yml
+
 sources:
   - https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-%{version}.tar.gz
-script: |
-  make DESTDIR=%{install-root}/%{prefix} FIRMWARE=%{libdir}/firmware install

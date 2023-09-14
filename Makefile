@@ -32,7 +32,7 @@ all: $(REPO_BUILDER)
 clean:
 	rm -f $(KERNEL_IMAGE) $(KERNEL_IMAGE).txt $(ISOFILE)
 	rm -rf $(ISODIR) vendor
-	rm -f version.yml server.yml $(REPO_BUILDER)
+	rm -f $(REPO_BUILDER)
 
 # TODO: remove only rlxos running containers
 	docker rm -f $(shell docker ps -aq) 2>/dev/null || true
@@ -86,7 +86,7 @@ filepath: $(REPO_BUILDER)
 	$(REPO_BUILDER) file -cache-path $(CACHE_PATH) $(ELEMENT)
 
 market-data: $(REPO_BUILDER)
-	$(REPO_BUILDER) create-market-data -cache-path $(CACHE_PATH) $(CACHE_PATH)/market
+	$(REPO_BUILDER) create-market-data -cache-path $(CACHE_PATH) $(CACHE_PATH)
 
 TODO:
 	@grep -R "# TODO:" elements/ | sed 's/# TODO://g' > $@

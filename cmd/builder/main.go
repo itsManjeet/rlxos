@@ -246,44 +246,6 @@ func main() {
 
 				return nil
 			})).
-		Sub(app.New("metadata").
-			About("Generate metdata for cache").
-			Handler(func(c *app.Command, s []string, i interface{}) error {
-				metadatafile := "metadata.json"
-				if len(s) >= 1 {
-					metadatafile = s[0]
-				}
-				builder, err := getBuilder()
-				if err != nil {
-					fmt.Printf(`{"STATUS": false, "ERROR": "%s"}`, err.Error())
-					return err
-				}
-				allElements := []string{}
-				for el := range builder.Pool() {
-					allElements = append(allElements, el)
-				}
-				pairs, err := builder.List(element.DependencyRunTime, allElements...)
-				if err != nil {
-					return err
-				}
-				metadata := []element.Metadata{}
-				for _, p := range pairs {
-					cachefile, _ := builder.CacheFile(p.Value)
-					metadata = append(metadata, element.Metadata{
-						Id:      p.Path,
-						Version: p.Value.Version,
-						About:   p.Value.About,
-						Depends: p.Value.Depends,
-						Cache:   path.Base(cachefile),
-					})
-				}
-				data, err := json.Marshal(metadata)
-				if err != nil {
-					return err
-				}
-
-				return os.WriteFile(metadatafile, data, 0644)
-			})).
 		Sub(app.New("report").
 			About("Report status").
 			Handler(func(c *app.Command, s []string, i interface{}) error {
@@ -373,60 +335,66 @@ func main() {
 					os.MkdirAll(dir, 0755)
 				}
 
-				metadata := []AppImageMetadata{}
+				metadata := []element.Metadata{}
 
 				bldr := i.(*builder.Builder)
 				for elid, el := range bldr.Pool() {
-					if !strings.HasPrefix(elid, "apps/") {
-						continue
-					}
 					color.Process("Adding %s", elid)
 					cachefile, _ := bldr.CacheFile(el)
 					if _, err := os.Stat(cachefile); os.IsNotExist(err) {
 						color.Error("%s not yet cached %s", elid, cachefile)
 						continue
 					}
+					iconfile := "component.png"
+					elementType := element.ElementTypeComponent
+					if strings.HasPrefix(elid, "apps/") {
+						elementType = element.ElementTypeApp
+						if data, err := exec.Command("tar", "-xf", cachefile, "-C", appsPath).CombinedOutput(); err != nil {
+							color.Error("failed to extract %s: %s, %v", elid, string(data), err)
+							continue
+						}
 
-					if data, err := exec.Command("tar", "-xf", cachefile, "-C", appsPath).CombinedOutput(); err != nil {
-						color.Error("failed to extract %s: %s, %v", elid, string(data), err)
-						continue
+						appfile := path.Join(appsPath, fmt.Sprintf("%s-%s.app", el.Id, el.Version))
+						if err := os.Chmod(appfile, 0755); err != nil {
+							color.Error("failed to chmod %s, %v", appfile, err)
+							continue
+						}
+
+						if data, err := exec.Command(appfile, "--appimage-extract", `*.DirIcon`).CombinedOutput(); err != nil {
+							color.Error("missing icon file %s: %s, %v", elid, string(data), err)
+							continue
+						}
+
+						var err error
+						iconfile, err = os.Readlink(path.Join("squashfs-root", ".DirIcon"))
+						if err != nil {
+							color.Error("failed to read .DirIcon link %s: %v", elid, err)
+							continue
+						}
+
+						if data, err := exec.Command(appfile, "--appimage-extract", iconfile).CombinedOutput(); err != nil {
+							color.Error("missing icon file %s: %s, %v", elid, string(data), err)
+							continue
+						}
+
+						if data, err := exec.Command("mv", path.Join("squashfs-root", iconfile), path.Join(iconsPath, iconfile)).CombinedOutput(); err != nil {
+							color.Error("failed to copy icon file %s: %s, %v", elid, string(data), err)
+							continue
+						}
+
+						os.RemoveAll("squashfs-root")
+					} else if strings.HasPrefix(elid, "layers/") {
+						iconfile = "layer.png"
+						elementType = element.ElementTypeLayer
 					}
 
-					appfile := path.Join(appsPath, fmt.Sprintf("%s-%s.app", el.Id, el.Version))
-					if err := os.Chmod(appfile, 0755); err != nil {
-						color.Error("failed to chmod %s, %v", appfile, err)
-						continue
-					}
-
-					if data, err := exec.Command(appfile, "--appimage-extract", `*.DirIcon`).CombinedOutput(); err != nil {
-						color.Error("missing icon file %s: %s, %v", elid, string(data), err)
-						continue
-					}
-
-					iconfile, err := os.Readlink(path.Join("squashfs-root", ".DirIcon"))
-					if err != nil {
-						color.Error("failed to read .DirIcon link %s: %v", elid, err)
-						continue
-					}
-
-					if data, err := exec.Command(appfile, "--appimage-extract", iconfile).CombinedOutput(); err != nil {
-						color.Error("missing icon file %s: %s, %v", elid, string(data), err)
-						continue
-					}
-
-					if data, err := exec.Command("mv", path.Join("squashfs-root", iconfile), path.Join(iconsPath, iconfile)).CombinedOutput(); err != nil {
-						color.Error("failed to copy icon file %s: %s, %v", elid, string(data), err)
-						continue
-					}
-
-					os.RemoveAll("squashfs-root")
-
-					metadata = append(metadata, AppImageMetadata{
+					metadata = append(metadata, element.Metadata{
 						Id:      el.Id,
 						Version: el.Version,
 						About:   el.About,
 						Icon:    path.Base(iconfile),
 						Cache:   path.Base(cachefile),
+						Type:    elementType,
 					})
 				}
 
@@ -439,6 +407,7 @@ func main() {
 					return fmt.Errorf("failed to write json data %v", err)
 				}
 
+				color.Process("FINISHED")
 				return nil
 			})).
 		Sub(app.New("status").
@@ -499,12 +468,4 @@ func checkArgs(args []string, count int) error {
 		return fmt.Errorf("expecting %d but got %d arguments", count, len(args))
 	}
 	return nil
-}
-
-type AppImageMetadata struct {
-	Id      string `json:"id"`
-	Version string `json:"version"`
-	About   string `json:"about"`
-	Icon    string `json:"icon"`
-	Cache   string `json:"cache"`
 }

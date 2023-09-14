@@ -16,8 +16,7 @@ jobs:
           - x86_64
     env:
       CACHE_PATH: ${{ secrets.CACHE_PATH }}
-      RELEASE_PATH: ${{ secrets.CACHE_PATH }}/daily
-      SERVER: ${{ secrets.SERVER }}/daily
+      SERVER: ${{ secrets.SERVER }}
     steps:
       - uses: actions/checkout@v1
 
@@ -51,6 +50,5 @@ jobs:
 
       - name: Checkout Release
         run: |
-          for element in installer updates ; do
-            make checkout ELEMENT=boards/${{matrix.board}}/${element}.yml
-          done
+          make checkout ELEMENT=boards/${{matrix.board}}/installer.yml RELEASE_PATH=${CACHE_PATH}/releases/
+          make checkout ELEMENT=boards/${{matrix.board}}/updates.yml   RELEASE_PATH=${RELEASE_PATH}/updates/

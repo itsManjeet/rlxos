@@ -12,9 +12,11 @@ import (
 	"rlxos/pkg/osinfo"
 	"rlxos/pkg/utils"
 	"strings"
+
+	"gopkg.in/yaml.v2"
 )
 
-func (i *Installer) Install(c ...string) error {
+func (i *Installer) Install(layerid string) error {
 	o, err := osinfo.Open(path.Join("/", "etc", "os-release"))
 	if err != nil {
 		return err
@@ -30,43 +32,45 @@ func (i *Installer) Install(c ...string) error {
 		return fmt.Errorf("invalid format of meta info %v", err)
 	}
 
-	componentInfo := []element.Metadata{}
-	for _, elementId := range c {
-		found := false
-		for _, elementInfo := range metadata {
-			if elementInfo.Id == elementId || elementInfo.Id == elementId+".yml" {
-				componentInfo = append(componentInfo, elementInfo)
-				found = true
+	var requiredElement *element.Metadata
+	for _, elementInfo := range metadata {
+		if elementInfo.Type == element.ElementTypeLayer {
+			if layerid == elementInfo.Id {
+				requiredElement = &elementInfo
 				break
 			}
 		}
-		if !found {
-			return fmt.Errorf("missing component with id %s", elementId)
-		}
 	}
 
-	for _, elementInfo := range componentInfo {
-		log.Printf("Dowloading %s [%s]\n", elementInfo.Id, elementInfo.Cache)
-		cachefile := path.Join(i.componentsCachePath, elementInfo.Cache)
-		if err := utils.DownloadFile(cachefile, i.ServerUrl+"/cache/"+cachefile); err != nil {
-			return fmt.Errorf("failed to download %s, %v", cachefile, err)
-		}
-		log.Printf("Installing %s\n", elementInfo.Id)
-		data, err := exec.Command("tar", "-xvaf", cachefile, "-C", i.LayerPath).CombinedOutput()
-		if err != nil {
-			return fmt.Errorf("failed to extract %s, %s %v", elementInfo.Id, string(data), err)
-		}
+	if requiredElement == nil {
+		return fmt.Errorf("no layer found with id %s", layerid)
+	}
 
-		elementId := strings.ReplaceAll(elementInfo.Id, "/", "_")
+	log.Printf("Dowloading %s [%s]\n", requiredElement.Id, requiredElement.Cache)
+	cachefile := path.Join(i.componentsCachePath, requiredElement.Cache)
+	if err := utils.DownloadFile(cachefile, i.ServerUrl+"/cache/"+cachefile); err != nil {
+		return fmt.Errorf("failed to download %s, %v", cachefile, err)
+	}
+	log.Printf("Installing %s\n", requiredElement.Id)
+	data, err := exec.Command("tar", "-xvaf", cachefile, "-C", i.LayerPath).CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("failed to extract %s, %s %v", requiredElement.Id, string(data), err)
+	}
 
-		log.Printf("Registering component information %s\n", elementInfo.Id)
-		if err := os.WriteFile(path.Join(i.componentsDataPath, elementId+".files"), data, 0644); err != nil {
-			return fmt.Errorf("failed to write installed files info %v", err)
-		}
+	elementId := strings.ReplaceAll(requiredElement.Id, "/", "_")
 
-		if err := os.WriteFile(path.Join(i.componentsDataPath, elementId+".ref"), []byte(elementInfo.Cache), 0644); err != nil {
-			return fmt.Errorf("failed to write installed files info %v", err)
-		}
+	log.Printf("Registering component information %s\n", requiredElement.Id)
+	if err := os.WriteFile(path.Join(i.componentsDataPath, elementId+".files"), data, 0644); err != nil {
+		return fmt.Errorf("failed to write installed files info %v", err)
+	}
+
+	elementData, err := yaml.Marshal(*requiredElement)
+	if err != nil {
+		return fmt.Errorf("failed to serialize element data, %v", err)
+	}
+
+	if err := os.WriteFile(path.Join(i.componentsDataPath, elementId+".info"), elementData, 0644); err != nil {
+		return fmt.Errorf("failed to write installed files info %v", err)
 	}
 
 	return nil

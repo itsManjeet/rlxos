@@ -1,0 +1,24 @@
+id: xfce4-taskmanager
+version: 1.5.5
+about: Easy to use task manager
+
+variables:
+  prepare-appimage: |-
+    cp %{install-root}/%{datadir}/applications/xfce4-taskmanager.desktop %{install-root}/
+    cp %{install-root}/%{datadir}/icons/hicolor/scalable/apps/org.xfce.taskmanager.svg %{install-root}/
+
+  skip-libraries: >
+    libc.so*
+
+build-time:
+  - components/intltool.yml
+  - components/libwnck.yml
+  - components/libxfce4util.yml
+  - components/libxfce4ui.yml
+  - components/x11/libxmu.yml
+  - components/appimagetool.yml
+
+sources:
+  - https://archive.xfce.org/src/apps/xfce4-taskmanager/%{version:1}/xfce4-taskmanager-%{version}.tar.bz2
+
+merge: [elements/include/appimage.yml]

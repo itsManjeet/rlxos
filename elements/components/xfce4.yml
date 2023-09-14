@@ -15,10 +15,6 @@ depends:
   - components/xfce4-docklike-plugin.yml
   - components/xfce4-pulseaudio-plugin.yml
   - components/xfce4-notifyd.yml
-  - components/thunar.yml
-  - components/xfce4-terminal.yml
-  - components/xfce4-appfinder.yml
-  - components/xfce4-taskmanager.yml
 
 script: |-
   mkdir -p %{install-root}/%{prefix}

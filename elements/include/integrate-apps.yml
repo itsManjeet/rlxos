@@ -13,6 +13,8 @@ script: |
   for appImage in %{install-root}/%{datadir}/factory/%{apps-dir}/*.app ; do
     chmod +x $appImage
     $appImage --appimage-extract
+    bin=$(grep "Exec=[^ ]*" | sed 's#Exec=##g')
+    ln -sv $(basename $appImage) %{install-root}/%{datadir}/factory/%{apps-dir}/${bin}
     sed -i 's#Exec=[^ ]*#Exec=/%{apps-dir}/$(basename $appImage)#g' squashfs-root/*.desktop
     iconfile=$(grep "Icon=" squashfs-root/*.desktop | cut -d '=' -f2)
 
@@ -27,6 +29,15 @@ script: |
     rm -rf squashfs-root
   done
 
-  install -vDm0644 /dev/stdin %{install-root}/%{libdir}/tmpfiles.d/preinstalled-apps.conf << "EOF"
-  C /apps
+  install -vDm0644 /dev/stdin %{install-root}/%{libdir}/systemd/system/install-apps.conf << "EOF"
+  [Unit]
+  Description=Install Builtin Apps
+  ConditionPathNotExists=/apps
+
+  [Service]
+  Type=oneshot
+  ExecStart=%{bindir}/cp -rap %{datadir}/factory/apps /apps
+
+  [Install]
+  WantedBy=multi-user.target
   EOF

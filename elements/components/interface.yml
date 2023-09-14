@@ -8,5 +8,5 @@ depends:
 
 script: |-
   mkdir -p %{install-root}/%{sysconfdir}/xdg/awesome/
-  cp /files/interface/* %{install-root}/%{sysconfdir}/xdg/awesome/
+  cp -r /files/interface/* %{install-root}/%{sysconfdir}/xdg/awesome/
   chown root:root %{install-root}/%{sysconfdir}/xdg/awesome/ -Rv

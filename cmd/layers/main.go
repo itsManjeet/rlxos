@@ -85,7 +85,11 @@ func main() {
 					return fmt.Errorf("no layer name provided")
 				}
 				manager := i.(*layers.Manager)
-				return manager.Create(s[0], s[1:])
+				layerid := ""
+				if len(s) == 2 {
+					layerid = s[1]
+				}
+				return manager.Create(s[0], layerid)
 			})).
 		Sub(app.New("remove").
 			About("Remove Layer").

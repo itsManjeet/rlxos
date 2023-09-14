@@ -99,7 +99,7 @@ include:
   - components/bolt.yml
 
   # Desktop Environment
-  - components/xfce4.yml
+  - components/interface.yml
   - components/lightdm.yml
   - components/lightdm-gtk-greeter.yml
 

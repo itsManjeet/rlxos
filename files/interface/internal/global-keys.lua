@@ -86,14 +86,14 @@ local globalkeys = gears.table.join(
         { description = "restore minimized", group = "client" }),
 
     -- Prompt
-    awful.key({ RC.config.ModKey }, "r", function() awful.screen.focused().mypromptbox:run() end,
+    awful.key({ RC.config.ModKey }, "r", function() awful.screen.focused().prompt:run() end,
         { description = "run prompt", group = "launcher" }),
 
     awful.key({ RC.config.ModKey }, "x",
         function()
             awful.prompt.run {
                 prompt       = "Run Lua code: ",
-                textbox      = awful.screen.focused().mypromptbox.widget,
+                textbox      = awful.screen.focused().prompt.widget,
                 exe_callback = awful.util.eval,
                 history_path = awful.util.get_cache_dir() .. "/history_eval"
             }

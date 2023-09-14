@@ -1,12 +1,11 @@
 id: qogir-gtk-theme
-version: "2021-11-17"
+version: 2023-05-24
 about: A flat design theme for GTK
-release: 0
+
 build-time:
-- components/sassc.yml
+  - components/sassc.yml
 sources:
-- qogir-gtk-theme-2021-11-17.tar.gz::https://github.com/vinceliuice/Qogir-theme/archive/refs/tags/2021-11-17.tar.gz
+  - qogir-gtk-theme-%{version}.tar.gz::https://github.com/vinceliuice/Qogir-theme/archive/refs/tags/%{version}.tar.gz
 script: |
   install -d -m 0755 %{install-root}%{datadir}/themes
   ./install.sh -g -d %{install-root}%{datadir}/themes --tweaks image square
-

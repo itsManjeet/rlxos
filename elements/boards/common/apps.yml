@@ -1,0 +1,6 @@
+id: builtin-apps
+merge: [version.yml, elements/include/integrate-apps.yml]
+
+include:
+  - apps/firefox.yml
+  - apps/alacritty.yml

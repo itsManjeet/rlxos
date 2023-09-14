@@ -1,11 +1,3 @@
-id: preinstalled-apps
-version: 0.0.1
-about: rlxos preinstalled apps collection
-include:
-  - apps/firefox.yml
-  - apps/alacritty.yml
-
-merge: [version.yml]
 no-strip: true
 
 variables:

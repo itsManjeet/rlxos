@@ -56,6 +56,7 @@ script: |
   C /etc/lightdm
   C /etc/pulseaudio
   C /etc/sshd
+  C /etc/security
   EOF
 
   mksquashfs %{include-root}/usr %{install-root}/usr_%{version}.squashfs
@@ -98,7 +99,7 @@ include:
   - components/bolt.yml
 
   # Desktop Environment
-  - components/interface.yml
+  - components/xfce4.yml
   - components/lightdm.yml
   - components/lightdm-gtk-greeter.yml
 
@@ -125,7 +126,8 @@ include:
 
   # Themes and Icons
   - components/themes/adwaita-icon-theme.yml
-  - components/themes/grey-bird-gtk-theme.yml
+  - components/themes/qogir-gtk-theme.yml
+  - components/themes/qogir-icon-theme.yml
 
   # Apps
-  - preinstalled-apps.yml
+  - boards/common/apps.yml

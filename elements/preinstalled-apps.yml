@@ -35,6 +35,6 @@ script: |
     rm -rf squashfs-root
   done
 
-  cat >%{include-root}/%{libdir}/tmpfiles.d/preinstalled-apps.conf << EOF
+  install -vDm0644 /dev/stdin %{include-root}/%{libdir}/tmpfiles.d/preinstalled-apps.conf << "EOF"
   C /apps
   EOF

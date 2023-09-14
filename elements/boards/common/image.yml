@@ -53,9 +53,7 @@ script: |
   C /etc/sudoers
   C /etc/sudoers.d
   C /etc/sudoers.dist
-  C /etc/lightdm
   C /etc/pulseaudio
-  C /etc/ssh
   C /etc/security
   EOF
 

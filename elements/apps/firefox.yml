@@ -19,6 +19,7 @@ script: |-
 
 build-time:
   - components/dbus-glib.yml
+  - components/alsa-lib.yml
   - components/appimagetool.yml
 
 sources:

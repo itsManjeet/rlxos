@@ -53,3 +53,6 @@ jobs:
         run: |
           make checkout ELEMENT=boards/${{matrix.board}}/installer.yml RELEASE_PATH=${CACHE_PATH}/releases/
           make checkout ELEMENT=boards/${{matrix.board}}/updates.yml   RELEASE_PATH=${UPDATE_DIR}
+      
+      - name: Update Metadata
+        run: make market-data

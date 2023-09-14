@@ -1,11 +1,10 @@
 id: abrowser
-version: "104.0"
+version: 104.0
 about: Abrowser, safe and easy web browser from Mozilla
-release: 0
 build-time:
-- components/appimagetool.yml
+  - components/appimagetool.yml
 sources:
-- https://archive.trisquel.info/trisquel/pool/main/f/firefox/abrowser_%{version}+build2-0ubuntu0.22.04.1~mt1+11.0trisquel92_amd64.deb
+  - https://archive.trisquel.info/trisquel/pool/main/f/firefox/abrowser_%{version}+build2-0ubuntu0.22.04.1~mt1+11.0trisquel92_amd64.deb
 script: |
   bsdtar -xf abrowser_%{version}+build2-0ubuntu0.22.04.1~mt1+11.0trisquel92_amd64.deb
   tar -xaf data.tar.*
@@ -14,4 +13,3 @@ script: |
   install -v -D -m 0755 /files/AppRun -t %{install-root}/
   cp /files/%{id}.desktop %{install-root}/
   cp /files/%{id}.png %{install-root}/%{id}.png
-

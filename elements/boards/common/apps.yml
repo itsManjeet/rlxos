@@ -3,4 +3,6 @@ merge: [version.yml, elements/include/integrate-apps.yml]
 
 include:
   - apps/firefox.yml
+  - apps/thunar.yml
+  - apps/mousepad.yml
   - apps/alacritty.yml

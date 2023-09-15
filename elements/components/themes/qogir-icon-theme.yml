@@ -1,7 +1,7 @@
 id: qogir-icon-theme
 version: 2023-06-05
 about: A colorful design icon theme for linux desktops
-
+merge: [elements/include/update-icon-cache.yml]
 depends:
   - components/hicolor-icon-theme.yml
 build-time:
@@ -11,5 +11,4 @@ sources:
 script: |
   install -d %{install-root}%{datadir}/icons
 
-  sed -i "s|THEME_VARIANTS=('' '-ubuntu' '-manjaro')|THEME_VARIANTS=('')|" install.sh
-  ./install.sh -d %{install-root}%{datadir}/icons
+  ./install.sh -t default -d %{install-root}%{datadir}/icons

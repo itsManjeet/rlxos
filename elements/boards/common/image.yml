@@ -18,6 +18,16 @@ script: |
   fi
   EOT
 
+  install -vDm 0644 /dev/stdin %{include-root}/%{sysconfdir}/lightdm/lightdm-gtk-greeter.conf << "EOF"
+  [greeter]
+  background=%{datadir}/backgrounds/default.jpeg
+  theme-name=Qogir-Light
+  icon-theme-name=Qogir
+  font-name=Cantarell 11
+  panel-position=bottom
+  indicators=~host;~spacer;~session;~a11y;~language;~clock;~power;
+  EOF
+
   [[ -d %{include-root}/%{datadir}/factory/etc ]] && rm -rf %{include-root}/%{datadir}/factory/etc
   mkdir -p %{include-root}/%{datadir}/factory
   mv -T %{include-root}/etc %{include-root}/%{datadir}/factory/etc
@@ -111,6 +121,8 @@ include:
   - components/x11/xf86-video-intel.yml
   - components/x11/xf86-video-vesa.yml
   - components/x11/xf86-video-fbdev.yml
+  - components/x11/xrdb.yml
+  - components/x11/iceauth.yml
 
   # Components
   - components/gvfs.yml

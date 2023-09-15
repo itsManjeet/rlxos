@@ -12,3 +12,4 @@ script: |
 
   install -d %{install-root}/%{sysconfdir}/ssl/certs
   ln -s /etc/ssl/cert.pem %{install-root}/%{sysconfdir}/ssl/certs/ca-certificates.crt
+  ln -s /etc/ssl/cert.pem %{install-root}/%{sysconfdir}/ssl/ca-bundle.crt

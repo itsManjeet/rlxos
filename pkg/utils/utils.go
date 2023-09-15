@@ -4,18 +4,7 @@ import (
 	"io"
 	"log"
 	"os"
-	"os/exec"
 )
-
-func DownloadFile(filepath string, url string) error {
-	cmd := exec.Command("wget", "-nc", "-c", "-O", filepath, url)
-	if len(os.Getenv("GITHUB_ACTIONS")) == 0 {
-		cmd.Stdout = os.Stdout
-	}
-	cmd.Stdin = os.Stdin
-	cmd.Stderr = os.Stderr
-	return cmd.Run()
-}
 
 func CopyFile(src, dest string) error {
 	buf := make([]byte, 1024)

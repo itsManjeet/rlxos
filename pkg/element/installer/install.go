@@ -48,7 +48,7 @@ func (i *Installer) Install(layerid string) error {
 
 	log.Printf("Dowloading %s [%s]\n", requiredElement.Id, requiredElement.Cache)
 	cachefile := path.Join(i.componentsCachePath, requiredElement.Cache)
-	if err := utils.DownloadFile(cachefile, i.ServerUrl+"/cache/"+cachefile); err != nil {
+	if err := utils.DownloadFile(cachefile, i.ServerUrl+"/cache/"+requiredElement.Cache); err != nil {
 		return fmt.Errorf("failed to download %s, %v", cachefile, err)
 	}
 	log.Printf("Installing %s\n", requiredElement.Id)

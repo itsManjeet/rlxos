@@ -13,3 +13,7 @@ script: |
   install -d %{install-root}/%{sysconfdir}/ssl/certs
   ln -s /etc/ssl/cert.pem %{install-root}/%{sysconfdir}/ssl/certs/ca-certificates.crt
   ln -s /etc/ssl/cert.pem %{install-root}/%{sysconfdir}/ssl/ca-bundle.crt
+
+  install -vD -m 644 /dev/stdin %{install-root}/%{libdir}/tmpfiles.d/ca-certificates.conf << "EOF"
+  C %{sysconfdir}/ssl
+  EOF

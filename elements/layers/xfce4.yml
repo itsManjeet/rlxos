@@ -1,8 +1,14 @@
 id: xfce4
 version: 4.18
 about: Xfce4 Desktop Environemnt
+merge: [elements/include/layer.yml]
 
-depends:
+include:
+  - components/libxfce4ui.yml
+  - components/libxfce4util.yml
+  - components/exo.yml
+  - components/garcon.yml
+  - components/tumbler.yml
   - components/xfce4-panel.yml
   - components/xfce4-power-manager.yml
   - components/xfce4-settings.yml
@@ -15,6 +21,3 @@ depends:
   - components/xfce4-docklike-plugin.yml
   - components/xfce4-pulseaudio-plugin.yml
   - components/xfce4-notifyd.yml
-
-script: |-
-  mkdir -p %{install-root}/%{prefix}

@@ -7,8 +7,8 @@ import (
 	"path"
 )
 
-func (m *Manager) Sync() {
-	m.Layers = []Layer{}
+func (m *Manager) LoadLayers() ([]Layer, error) {
+	layers := []Layer{}
 	for _, i := range m.SearchPath {
 		dir, err := ioutil.ReadDir(path.Join(m.RootDir, i))
 		if err != nil {
@@ -22,7 +22,7 @@ func (m *Manager) Sync() {
 				isDisabled = true
 			}
 			if l.IsDir() {
-				m.Layers = append(m.Layers, Layer{
+				layers = append(layers, Layer{
 					Id:       l.Name(),
 					Path:     path.Join(i, l.Name()),
 					Active:   false,
@@ -31,4 +31,5 @@ func (m *Manager) Sync() {
 			}
 		}
 	}
+	return layers, nil
 }

@@ -22,9 +22,7 @@ func main() {
 				RootDir:    ROOT_DIR,
 				SearchPath: SEARCH_PATH,
 				ServerUrl:  SERVER_URL,
-				Layers:     []layers.Layer{},
 			}
-			m.Sync()
 			return m, nil
 		}).
 		Flag(flag.New("search-path").
@@ -76,7 +74,13 @@ func main() {
 			About("Refresh the layers").
 			Handler(func(c *app.Command, args []string, b interface{}) error {
 				m := b.(*layers.Manager)
-				return m.Refresh()
+				return m.Refresh(false)
+			})).
+		Sub(app.New("deactivate").
+			About("Deactivate all the layers").
+			Handler(func(c *app.Command, args []string, b interface{}) error {
+				m := b.(*layers.Manager)
+				return m.Refresh(true)
 			})).
 		Sub(app.New("create").
 			About("Create New Layer").

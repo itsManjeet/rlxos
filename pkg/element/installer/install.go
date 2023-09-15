@@ -1,41 +1,27 @@
 package installer
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
-	"net/http"
 	"os"
 	"os/exec"
 	"path"
 	"rlxos/pkg/element"
-	"rlxos/pkg/osinfo"
 	"rlxos/pkg/utils"
 	"strings"
 
 	"gopkg.in/yaml.v2"
 )
 
-func (i *Installer) Install(layerid string) error {
-	o, err := osinfo.Open(path.Join("/", "etc", "os-release"))
+func (i *Installer) Install(componentId string) error {
+	metadata, err := i.getMetadata()
 	if err != nil {
-		return err
+		return nil
 	}
-	resp, err := http.Get(i.ServerUrl + "/" + o["VERSION"])
-	if err != nil {
-		return fmt.Errorf("failed to get meta info %v", err)
-	}
-	defer resp.Body.Close()
-
-	metadata := []element.Metadata{}
-	if err := json.NewDecoder(resp.Body).Decode(&metadata); err != nil {
-		return fmt.Errorf("invalid format of meta info %v", err)
-	}
-
 	var requiredElement *element.Metadata
 	for _, elementInfo := range metadata {
-		if elementInfo.Type == element.ElementTypeLayer {
-			if layerid == elementInfo.Id {
+		if elementInfo.Type == element.ElementTypeLayer || elementInfo.Type == element.ElementTypeComponent {
+			if componentId == elementInfo.Id {
 				requiredElement = &elementInfo
 				break
 			}
@@ -43,7 +29,7 @@ func (i *Installer) Install(layerid string) error {
 	}
 
 	if requiredElement == nil {
-		return fmt.Errorf("no layer found with id %s", layerid)
+		return fmt.Errorf("no layer found with id %s", componentId)
 	}
 
 	log.Printf("Dowloading %s [%s]\n", requiredElement.Id, requiredElement.Cache)

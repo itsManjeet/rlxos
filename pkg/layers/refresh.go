@@ -2,63 +2,32 @@ package layers
 
 import (
 	"fmt"
-	"log"
-	"os"
 	"path"
-	"strings"
-	"syscall"
+	"rlxos/pkg/osinfo"
 )
 
-func (m *Manager) Refresh() error {
-	m.Sync()
-
-	if len(m.Layers) == 0 {
-		log.Println("no layer found, skipping")
-		return nil
+func (m *Manager) Refresh(deactivate bool) error {
+	layers, err := m.LoadLayers()
+	if err == nil {
+		return err
 	}
 
-	var flag uintptr = 0
-	isMounted, err := checkIsMounted()
+	if deactivate {
+		layers = []Layer{}
+	}
+
+	mounts, err := osinfo.GetMounts(path.Join(m.RootDir, "proc", "mounts"))
 	if err != nil {
-		return err
-	}
-	if isMounted {
-		flag = syscall.MS_REMOUNT
+		return fmt.Errorf("failed to read mount information %v", err)
 	}
 
-	lower := ""
-	withReadWrite := ""
-	for _, l := range m.Layers {
-		if strings.HasPrefix(l.Id, ".") || strings.HasPrefix(path.Base(l.Path), ".") {
-			continue
+	isAlreadyMounted := false
+	for _, mountInfo := range mounts {
+		if mountInfo.Target == "/usr" && mountInfo.Source == "overlay" {
+			isAlreadyMounted = true
+			break
 		}
-
-		if l.Id == "rw" || path.Base(l.Path) == "rw" {
-			withReadWrite = path.Join(m.RootDir, l.Path)
-			continue
-		}
-
-		if l.Id == "work" || path.Base(l.Path) == "work" {
-			continue
-		}
-
-		log.Printf("enabling layer %s\n", l.Id)
-		lower += path.Join(m.RootDir, l.Path) + ":"
 	}
-	lower += m.RootDir + "/usr"
-	options := "lowerdir=" + lower
-	if len(withReadWrite) != 0 {
-		workdir := path.Join(path.Dir(withReadWrite), "work")
-		if err := os.MkdirAll(workdir, 0755); err != nil {
-			log.Printf("failed to create workdir %s, %v", workdir, err)
-		}
-		options = fmt.Sprintf("%s,upperdir=%s,workdir=%s", options, withReadWrite, workdir)
-	} else {
-		flag |= syscall.MS_RDONLY
-	}
-	log.Println("OPTIONS", options)
-	if err := syscall.Mount("overlay", m.RootDir+"/usr", "overlay", flag, options); err != nil {
-		return err
-	}
-	return nil
+
+	return m.Mount(path.Join(m.RootDir, "usr"), layers, isAlreadyMounted)
 }

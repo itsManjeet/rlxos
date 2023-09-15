@@ -11,5 +11,5 @@ func (m *Manager) Remove(id string) error {
 	if err := os.RemoveAll(layerPath); err != nil {
 		return fmt.Errorf("failed to remove layer at %s, %v", layerPath, err)
 	}
-	return m.Refresh()
+	return m.Refresh(false)
 }

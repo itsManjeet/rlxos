@@ -19,7 +19,7 @@ func (m *Manager) Create(id string, layerid string) error {
 			ServerUrl: m.ServerUrl,
 		}
 
-		if err := inst.Init(); err != nil {
+		if err := inst.Init(layerid); err != nil {
 			return fmt.Errorf("failed to initialize installer %v", err)
 		}
 
@@ -27,5 +27,5 @@ func (m *Manager) Create(id string, layerid string) error {
 			return fmt.Errorf("installation failed %v", err)
 		}
 	}
-	return m.Refresh()
+	return m.Refresh(false)
 }

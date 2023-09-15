@@ -97,7 +97,7 @@ func (b *Builder) Build(id string) error {
 		forceNeedRebuild = val
 	}
 
-	if _, err := os.Stat(cachefile); err == nil && forceNeedRebuild == "false" {
+	if _, err := os.Stat(cachefile); err == nil && forceNeedRebuild == "false" && len(os.Getenv("REBUILD_PACKAGE")) == 0 {
 		log.Printf("Element '%s' already cached '%s'\n", id, cachefile)
 		return nil
 	}

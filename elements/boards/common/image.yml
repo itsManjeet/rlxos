@@ -124,6 +124,10 @@ include:
   - components/fonts/noto-cjk.yml
   - components/fonts/dejavu-fonts.yml
 
+  # Libraries
+  - components/libgtop.yml
+  - components/libwnck.yml
+
   # Themes and Icons
   - components/themes/adwaita-icon-theme.yml
   - components/themes/qogir-gtk-theme.yml

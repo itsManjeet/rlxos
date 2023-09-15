@@ -129,6 +129,8 @@ include:
   - components/libwnck.yml
   - components/libnotify.yml
   - components/librsvg.yml
+  - components/pulseaudio.yml
+  - components/upower.yml
 
   # Themes and Icons
   - components/themes/adwaita-icon-theme.yml

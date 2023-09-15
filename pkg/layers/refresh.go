@@ -2,13 +2,14 @@ package layers
 
 import (
 	"fmt"
+	"log"
 	"path"
 	"rlxos/pkg/osinfo"
 )
 
 func (m *Manager) Refresh(deactivate bool) error {
 	layers, err := m.LoadLayers()
-	if err == nil {
+	if err != nil {
 		return err
 	}
 
@@ -28,6 +29,8 @@ func (m *Manager) Refresh(deactivate bool) error {
 			break
 		}
 	}
+
+	log.Printf("found %d layers\n", len(layers))
 
 	return m.Mount(path.Join(m.RootDir, "usr"), layers, isAlreadyMounted)
 }

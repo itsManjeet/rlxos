@@ -127,6 +127,7 @@ include:
   # Libraries
   - components/libgtop.yml
   - components/libwnck.yml
+  - components/libnotify.yml
 
   # Themes and Icons
   - components/themes/adwaita-icon-theme.yml

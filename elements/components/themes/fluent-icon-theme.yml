@@ -1,22 +1,15 @@
 id: fluent-icon-theme
 version: "2022-02-04"
 about: A Fluent design icon theme
-release: 0
-depends:
-- components/librsvg.yml
-build-time:
-- components/gtk.yml
-sources:
-- fluent-icon-theme-%{version}.tar.gz::https://github.com/vinceliuice/Fluent-icon-theme/archive/refs/tags/%{version}.tar.gz
-script: |-
-  # cp /files/logo/logo.svg src/16/places/start-here.svg
-  # cp /files/logo/logo_alt.svg src/symbolic/status/start-here-symbolic.svg
-  # cp /files/logo/logo_alt.svg src/22/panel/start-here-symbolic.svg
-  # cp /files/logo/logo.svg src/22/places/start-here.svg
-  # cp /files/logo/logo_alt.svg src/24/panel/start-here-symbolic.svg
-  # cp /files/logo/logo.svg src/24/places/start-here.svg
-  # cp /files/logo/logo_alt.svg src/symbolic/actions/view-app-grid-symbolic.svg
+merge: [elements/include/update-icon-cache.yml]
 
+script: |-
   install -d %{install-root}%{datadir}/icons
   ./install.sh -a -d %{install-root}%{datadir}/icons/
 
+depends:
+  - components/librsvg.yml
+build-time:
+  - components/gtk.yml
+sources:
+  - fluent-icon-theme-%{version}.tar.gz::https://github.com/vinceliuice/Fluent-icon-theme/archive/refs/tags/%{version}.tar.gz

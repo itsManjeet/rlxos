@@ -84,12 +84,8 @@ func (s *Swupd) Update(updateInfo *config.UpdateInfo) error {
 	newPath := path.Join(systemPath, fmt.Sprint(updateInfo.Version))
 
 	log.Println("Syning image")
-	if err := utils.DownloadFile(newPath+".tmp", updateInfo.Url); err != nil {
+	if err := utils.DownloadFile(newPath, updateInfo.Url); err != nil {
 		return fmt.Errorf("failed to sync image file %v", err)
-	}
-
-	if err := os.Rename(newPath+".tmp", newPath); err != nil {
-		return fmt.Errorf("failed to install new image file")
 	}
 
 	return nil

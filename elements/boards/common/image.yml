@@ -107,7 +107,7 @@ include:
   - components/bolt.yml
 
   # Desktop Environment
-  - components/interface.yml
+  - components/xfce4.yml
   - components/lightdm.yml
   - components/lightdm-gtk-greeter.yml
 

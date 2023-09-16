@@ -25,6 +25,10 @@ variables:
     exec "${EXEC}" "$@"
     EOF
 
+    echo "desktopfile: %{id}.desktop" >> %{install-root}/info
+    echo "icon: firefox.png" >> %{install-root}/info
+    echo "bin: %{id}" >> %{install-root}/info
+
 build-dir: .
 script: |-
   mv firefox %{install-root}

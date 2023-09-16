@@ -15,7 +15,7 @@ script: |
     $appImage --appimage-extract
     bin=$(grep "^Exec=[^ ]*" squashfs-root/*.desktop | sed 's#Exec=##g' | head -n1 | awk '{print $1}')
     ln -sv $(basename $appImage) %{install-root}/%{datadir}/factory/%{apps-dir}/${bin}
-    sed -i 's#Exec=[^ ]*#Exec=/%{apps-dir}/$(basename $appImage)#g' squashfs-root/*.desktop
+    sed -i "s#Exec=[^ ]*#Exec=/%{apps-dir}/$(basename $appImage)#g" squashfs-root/*.desktop
     iconfile=$(grep "Icon=" squashfs-root/*.desktop | cut -d '=' -f2)
 
     for ext in png jpg svg ; do
@@ -36,7 +36,7 @@ script: |
 
   [Service]
   Type=oneshot
-  ExecStart=%{bindir}/cp -rap %{datadir}/factory/apps /apps
+  ExecStart=%{bindir}/cp -rap %{datadir}/factory/apps /
 
   [Install]
   WantedBy=multi-user.target

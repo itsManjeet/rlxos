@@ -7,6 +7,10 @@ variables:
     cp %{install-root}/%{datadir}/applications/xfce4-appfinder.desktop %{install-root}/
     cp %{install-root}/%{datadir}/icons/hicolor/scalable/apps/org.xfce.appfinder.svg %{install-root}/
 
+    echo "desktopfile: %{id}.desktop" >> %{install-root}/info
+    echo "icon: org.xfce.appfinder.svg" >> %{install-root}/info
+    echo "bin: %{id}" >> %{install-root}/info
+
   skip-libraries: >
     libc.so*
 

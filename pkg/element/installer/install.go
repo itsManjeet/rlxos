@@ -2,10 +2,13 @@ package installer
 
 import (
 	"fmt"
+	"io/fs"
 	"log"
 	"os"
 	"os/exec"
 	"path"
+	"path/filepath"
+	"rlxos/pkg/color"
 	"rlxos/pkg/element"
 	"rlxos/pkg/utils"
 	"strings"
@@ -44,6 +47,27 @@ func (i *Installer) Install(componentId string) error {
 	}
 
 	elementId := strings.ReplaceAll(requiredElement.Id, "/", "_")
+
+	factoryConfig := path.Join(i.LayerPath, "share", "factory", "etc")
+	if _, err := os.Stat(factoryConfig); err == nil {
+		filepath.Walk(factoryConfig, func(p string, info fs.FileInfo, err error) error {
+			if err != nil {
+				return err
+			}
+			if info.IsDir() {
+				return nil
+			}
+
+			configPath := strings.TrimPrefix(p, factoryConfig)
+			if _, err := os.Stat(path.Join(i.RootPath, "etc", configPath)); os.IsNotExist(err) {
+				if err := utils.CopyFile(p, path.Join(i.RootPath, "etc", configPath)); err != nil {
+					color.Error("failed to install configuration %s\n", p)
+				}
+			}
+			return nil
+		})
+
+	}
 
 	log.Printf("Registering component information %s\n", requiredElement.Id)
 	if err := os.WriteFile(path.Join(i.componentsDataPath, elementId+".files"), data, 0644); err != nil {

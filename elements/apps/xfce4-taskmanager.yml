@@ -7,6 +7,9 @@ variables:
     cp %{install-root}/%{datadir}/applications/xfce4-taskmanager.desktop %{install-root}/
     cp %{install-root}/%{datadir}/icons/hicolor/scalable/apps/org.xfce.taskmanager.svg %{install-root}/
 
+    echo "desktopfile: %{id}.desktop" >> %{install-root}/info
+    echo "icon: org.xfce.taskmanager.svg" >> %{install-root}/info
+    echo "bin: %{id}" >> %{install-root}/info
   skip-libraries: >
     libc.so*
 

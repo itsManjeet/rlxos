@@ -7,6 +7,10 @@ variables:
     cp %{install-root}/%{datadir}/applications/thunar.desktop %{install-root}/
     cp %{install-root}/%{datadir}/icons/hicolor/scalable/apps/org.xfce.thunar.svg %{install-root}/
 
+    echo "desktopfile: %{id}.desktop" >> %{install-root}/info
+    echo "icon: org.xfce.thunar.svg" >> %{install-root}/info
+    echo "bin: %{id};Thunar" >> %{install-root}/info
+
   skip-libraries: >
     libc.so*
 

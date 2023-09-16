@@ -1,7 +1,15 @@
 no-strip: true
 post-script: |
+  cat > %{install-root}/info << "EOF"
+  id: %{id}
+  version: %{version}
+  about: %{about}
+  EOF
+
   install -vDm0755 %{libdir}/appimagekit/AppRun -t %{install-root}
   %{prepare-appimage}
+
+  
 
   find %{install-root}/ -type f -executable | xargs objdump -p | grep NEEDED | awk '{print $2}' >> required-libraries
 

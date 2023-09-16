@@ -8,6 +8,10 @@ variables:
     desktop-file-install -m 644 --dir %{install-root}/ extra/linux/Alacritty.desktop
     install -vDm 0644 extra/logo/alacritty-simple.svg %{install-root}/Alacritty.svg
     install -vDm 0755 -t %{install-root}/%{bindir} target/release/alacritty
+
+    echo "desktopfile: Alacritty.desktop" >> %{install-root}/info
+    echo "icon: Alacritty.svg" >> %{install-root}/info
+    echo "bin: %{id}" >> %{install-root}/info
 sources:
   - alacritty-%{version}.tar.gz::https://github.com/alacritty/alacritty/archive/refs/tags/v%{version}.tar.gz
 

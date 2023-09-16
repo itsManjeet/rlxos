@@ -445,7 +445,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 	done`
 	if e.BuildType == "system" {
 		color.Process("Compressing image %s from %s", path.Base(cachefile), pkgdir)
-		if err := container.Run(logWriter, []string{"mksquashfs", path.Join("/", "pkg", path.Base(pkgdir)), path.Join("/", "cache", path.Base(cachefile)), "-comp", "zstd", "-Xcompression-level", "19", "-noappend"}, path.Join("/pkg"), environ); err != nil {
+		if err := container.Run(logWriter, []string{"mksquashfs", path.Join("/", "pkg", path.Base(pkgdir)), path.Join("/", "cache", path.Base(cachefile)), "-comp", "zstd", "-Xcompression-level", "12", "-noappend"}, path.Join("/pkg"), environ); err != nil {
 			container.RescueShell()
 			return err
 		}

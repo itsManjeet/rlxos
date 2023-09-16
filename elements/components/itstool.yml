@@ -7,6 +7,11 @@ about:
 environ:
   - PYTHON=/usr/bin/python3
 
+build-type: autotools
+
+configure: >-
+  --prefix=/usr
+
 sources:
   - http://files.itstool.org/itstool/itstool-%{version}.tar.bz2
 

@@ -12,11 +12,12 @@ depends:
   - components/gsettings-desktop-schemas.yml
   - components/gtk.yml
   - components/iso-codes.yml
-  - components/itstool.yml
   - components/libseccomp.yml
   - components/libxml2.yml
   - components/x11/xkeyboard-config.yml
   - components/bubblewrap.yml
   - components/gobject-introspection.yml
+build-time:
+  - components/itstool.yml
 sources:
   - https://download.gnome.org/sources/gnome-desktop/%{version:1}/gnome-desktop-%{version}.tar.xz

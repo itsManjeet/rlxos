@@ -67,7 +67,7 @@ script: |
   C /etc/security
   EOF
 
-  mksquashfs %{include-root}/usr %{install-root}/usr_%{version}.squashfs
+  mksquashfs %{include-root}/usr %{install-root}/usr_%{version}.squashfs -comp zstd -Xcompression-level 12 -noappend
 
   veritysetup format --salt="%{salt}" "%{install-root}/usr_%{version}.squashfs" "%{install-root}/usr_%{version}.verity" | sed '/^Root hash:[[:space:]]*/{;s///;q;};d' >"%{install-root}/usr-root-hash.txt"
 

@@ -7,25 +7,35 @@ variables:
   force-rebuild: true
 
 script: |
-  mkdir -p %{install-root}/%{datadir}/factory/%{apps-dir}/share/{applications,icons}
+  mkdir -p %{install-root}/%{datadir}/factory/%{apps-dir}/share/{applications,icons/hicolor/scalable/apps/}
+  mkdir -p %{install-root}/%{datadir}/factory/%{apps-dir}/bin/
   mv /sysroot/* %{install-root}/%{datadir}/factory/%{apps-dir}
 
   for appImage in %{install-root}/%{datadir}/factory/%{apps-dir}/*.app ; do
     chmod +x $appImage
-    $appImage --appimage-extract
-    bin=$(grep "^Exec=[^ ]*" squashfs-root/*.desktop | sed 's#Exec=##g' | head -n1 | awk '{print $1}')
-    ln -sv $(basename $appImage) %{install-root}/%{datadir}/factory/%{apps-dir}/${bin}
-    sed -i "s#Exec=[^ ]*#Exec=/%{apps-dir}/$(basename $appImage)#g" squashfs-root/*.desktop
-    iconfile=$(grep "Icon=" squashfs-root/*.desktop | cut -d '=' -f2)
-
-    for ext in png jpg svg ; do
-      echo "checking squashfs-root/${iconfile}.$ext"
-      if [[ -e squashfs-root/${iconfile}.$ext ]] ; then
-        cp squashfs-root/${iconfile}.$ext %{install-root}/%{datadir}/factory/%{apps-dir}/share/icons/
-      fi
-    done
+    $appImage --appimage-extract info
     
-    mv squashfs-root/*.desktop %{install-root}/%{datadir}/factory/%{apps-dir}/share/applications/
+    getvalue() {
+      val="$(cat squashfs-root/info | grep "$1:" | cut -d ':' -f2-)"
+      echo ${val}
+    }
+
+    # Create Binary Links
+    for b in $(getvalue bin); do
+      ln -sv ../$(basename $appImage) %{install-root}/%{datadir}/factory/%{apps-dir}/bin/$b
+    done
+
+    # Install desktop file
+    desktopfile=$(getvalue desktopfile)
+    $appImage --appimage-extract $desktopfile
+    sed -i "s#Exec=[^ ]*#Exec=/%{apps-dir}/$(basename $appImage)#g" squashfs-root/"${desktopfile}"
+    cp squashfs-root/$desktopfile %{install-root}/%{datadir}/factory/%{apps-dir}/share/applications/
+
+    # Install icon file
+    icon=$(getvalue icon)
+    $appImage --appimage-extract $icon
+    cp squashfs-root/$icon %{install-root}/%{datadir}/factory/%{apps-dir}/share/icons/hicolor/scalable/apps/
+
     rm -rf squashfs-root
   done
 

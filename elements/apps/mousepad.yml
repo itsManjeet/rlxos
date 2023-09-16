@@ -9,6 +9,10 @@ variables:
     cp %{install-root}/%{datadir}/applications/org.xfce.mousepad.desktop %{install-root}/
     cp %{install-root}/%{datadir}/icons/hicolor/scalable/apps/org.xfce.mousepad.svg %{install-root}/
 
+    echo "desktopfile: org.xfce.mousepad.desktop" >> %{install-root}/info
+    echo "icon: org.xfce.mousepad.svg" >> %{install-root}/info
+    echo "bin: %{id}" >> %{install-root}/info
+
   skip-libraries: >
     libc.so*
 

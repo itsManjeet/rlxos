@@ -42,6 +42,9 @@ jobs:
 
       - name: Cleanup build cache
         run: make clean
+
+      - name: Make Pre Installed Apps
+        run: make component ELEMENT=boards/common/apps.yml
       
       - name: Make Board Image
         run: |

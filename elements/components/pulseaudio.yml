@@ -13,6 +13,10 @@ configure: >-
 post-script: |-
   rm -fv %{install-root}%{sysconfdir}/dbus-1/system.d/pulseaudio-system.conf
 
+  install -vDm0655 /dev/stdin %{install-root}%{libdir}/tmpfiles.d/%{id}.conf << "EOF"
+  C /etc/pulse
+  EOF
+
 depends:
   - components/libsndfile.yml
   - components/alsa-lib.yml

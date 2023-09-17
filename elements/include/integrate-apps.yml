@@ -21,7 +21,7 @@ script: |
     }
 
     # Create Binary Links
-    for b in $(getvalue bin); do
+    for b in $(getvalue bin | tr ';' ' '); do
       ln -sv ../$(basename $appImage) %{install-root}/%{datadir}/factory/%{apps-dir}/bin/$b
     done
 

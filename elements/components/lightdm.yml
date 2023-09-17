@@ -28,7 +28,7 @@ post-script: |-
   EOF
 
   install -vDm 0644 /dev/stdin %{install-root}%{libdir}/tmpfiles.d/lightdm.conf << "EOF"
-  C /etc/lightdm
+  C /etc/lightdm/lightdm.conf
   d /run/lightdm 0711 lightdm lightdm -
   d /var/cache/lightdm 0711 root lightdm -
   d /var/lib/lightdm 1770 lightdm lightdm -

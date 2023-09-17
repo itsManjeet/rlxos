@@ -12,7 +12,15 @@ append_path() {
 }
 
 append_path '/usr/bin'
+append_path '/apps/bin'
 export PATH
+
+export XDG_DATA_DIRS="/apps/share:/usr/share"
+
+[ -e /etc/locale.conf ] && . /etc/locale.conf
+LANG=${LANG:-'en_IN.utf-8'}
+
+export LANG
 
 if test -d /etc/profile.d; then
     for profile in /etc/profile.d/*.sh; do

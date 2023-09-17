@@ -9,15 +9,10 @@ configure: >-
 post-script: |-
   install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/xdg/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml << "EOF"
   <?xml version="1.0" encoding="UTF-8"?>
-  <!--
-    Default values for the X settings registry as described in
-    http://www.freedesktop.org/wiki/Specifications/XSettingsRegistry
-  -->
-
   <channel name="xsettings" version="1.0">
     <property name="Net" type="empty">
-      <property name="ThemeName" type="Qogir-Light"/>
-      <property name="IconThemeName" type="Qogir"/>
+      <property name="ThemeName" type="string" value="Qogir-Light"/>
+      <property name="IconThemeName" type="string" value="Qogir"/>
       <property name="DoubleClickTime" type="int" value="400"/>
       <property name="DoubleClickDistance" type="int" value="5"/>
       <property name="DndDragThreshold" type="int" value="8"/>
@@ -44,9 +39,6 @@ post-script: |-
       <property name="KeyThemeName" type="string" value=""/>
       <property name="ToolbarStyle" type="string" value="icons"/>
       <property name="ToolbarIconSize" type="int" value="3"/>
-      <!-- <property name="IMPreeditStyle" type="string" value=""/> -->
-      <!-- <property name="IMStatusStyle" type="string" value=""/> -->
-      <!-- <property name="IMModule" type="string" value=""/> -->
       <property name="MenuImages" type="bool" value="true"/>
       <property name="ButtonImages" type="bool" value="true"/>
       <property name="MenuBarAccel" type="string" value="F10"/>

@@ -6,9 +6,13 @@ build-type: go-pkg
 variables:
   go-pkg: cmd/swupd
 
-post-script: |
+post-script: |-
   mkdir -p %{install-root}/%{sysconfdir}
   cat > %{install-root}/%{sysconfdir}/swupd.yml << EOF
   server: %{server}
   channel: %{channel}
+  EOF
+
+  install -vDm0655 /dev/stdin %{install-root}%{libdir}/tmpfiles.d/%{id}.conf << "EOF"
+  C /etc/swupd.yml
   EOF

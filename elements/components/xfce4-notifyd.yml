@@ -4,6 +4,21 @@ about: Notification daemon for Xfce
 
 variables:
   run-autogen: false
+
+post-script: |-
+
+  install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-notifyd.xml << "EOF"
+  <?xml version="1.0" encoding="UTF-8"?>
+
+  <channel name="xfce4-notifyd" version="1.0">
+    <property name="log-max-size-enabled" type="bool" value="true"/>
+    <property name="notify-location" type="uint" value="3"/>
+    <property name="log-level" type="uint" value="0" />
+    <property name="log-level-apps" type="uint" value="0" />
+    <property name="do-slideout" type="bool" value="true" />
+    <property name="notification-log" type="bool" value="true" />
+  </channel>
+  EOF
 depends:
   - components/hicolor-icon-theme.yml
   - components/libnotify.yml

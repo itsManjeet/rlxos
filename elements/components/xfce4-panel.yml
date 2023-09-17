@@ -7,7 +7,7 @@ variables:
   seperate-build-dir: false
 
 post-script: |-
-  install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/xdg/xfce4/panel/default.xml < "EOF"
+  install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/xdg/xfce4/panel/default.xml << "EOF"
   <?xml version="1.0" encoding="UTF-8"?>
   <channel name="xfce4-panel" version="1.0">
     <property name="configver" type="int" value="2"/>
@@ -85,7 +85,7 @@ post-script: |-
   </channel>
   EOF
 
-  install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/xdg/xfce4/panel/docklike-4.rc < "EOF"
+  install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/xdg/xfce4/panel/docklike-4.rc << "EOF"
   [user]
   pinned=/apps/share/applications/xfce4-appfinder.desktop;/apps/share/applications/xfce4-terminal.desktop;/apps/share/applications/thunar.desktop;/apps/share/applications/firefox.desktop;
   EOF

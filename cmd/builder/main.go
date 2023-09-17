@@ -345,7 +345,7 @@ func main() {
 						color.Error("%s not yet cached %s", elid, cachefile)
 						continue
 					}
-					iconfile := "component.png"
+					iconfile := "package.svg"
 					elementType := element.ElementTypeComponent
 					if strings.HasPrefix(elid, "apps/") {
 						elementType = element.ElementTypeApp
@@ -384,7 +384,6 @@ func main() {
 
 						os.RemoveAll("squashfs-root")
 					} else if strings.HasPrefix(elid, "layers/") {
-						iconfile = "layer.png"
 						elementType = element.ElementTypeLayer
 					}
 

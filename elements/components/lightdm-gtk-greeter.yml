@@ -6,6 +6,22 @@ variables:
   run-autogen: false
   seperate-build-dir: false
 
+post-script: |-
+  install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/lightdm/lightdm-gtk-greeter.conf << "EOF"
+  [greeter]
+  background=%{datadir}/backgrounds/default.jpeg
+  theme-name=Qogir-Light
+  icon-theme-name=Qogir
+  font-name=Cantarell 11
+  panel-position=bottom
+  indicators=~host;~spacer;~session;~a11y;~language;~clock;~power;
+  EOF
+
+  install -vDm0655 /dev/stdin %{install-root}%{libdir}/tmpfiles.d/%{id}.conf << "EOF"
+  C /etc/lightdm/lightdm-gtk-greeter.conf
+  EOF
+
+
 depends:
   - components/lightdm.yml
   - components/gtk.yml

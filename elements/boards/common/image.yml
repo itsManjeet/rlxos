@@ -18,16 +18,6 @@ script: |
   fi
   EOT
 
-  install -vDm 0644 /dev/stdin %{include-root}/%{sysconfdir}/lightdm/lightdm-gtk-greeter.conf << "EOF"
-  [greeter]
-  background=%{datadir}/backgrounds/default.jpeg
-  theme-name=Qogir-Light
-  icon-theme-name=Qogir
-  font-name=Cantarell 11
-  panel-position=bottom
-  indicators=~host;~spacer;~session;~a11y;~language;~clock;~power;
-  EOF
-
   [[ -d %{include-root}/%{datadir}/factory/etc ]] && rm -rf %{include-root}/%{datadir}/factory/etc
   mkdir -p %{include-root}/%{datadir}/factory
   mv -T %{include-root}/etc %{include-root}/%{datadir}/factory/etc
@@ -49,22 +39,6 @@ script: |
   cat <<EOF >"%{include-root}/%{libdir}/systemd/system/ldconfig.service.d/after-tmpfiles.conf"
   [Unit]
   After=systemd-tmpfiles-setup.service
-  EOF
-
-  cat >%{include-root}/%{libdir}/tmpfiles.d/extra-etc.conf << EOF
-  C /etc/protocols
-  C /etc/services
-  C /etc/nscd.conf
-  C /etc/swupd.yml
-  C /etc/X11
-  C /etc/xdg
-  C /etc/fonts
-  C /etc/skel
-  C /etc/sudoers
-  C /etc/sudoers.d
-  C /etc/sudoers.dist
-  C /etc/pulseaudio
-  C /etc/security
   EOF
 
   mksquashfs %{include-root}/usr %{install-root}/usr_%{version}.squashfs -comp zstd -Xcompression-level 12 -noappend

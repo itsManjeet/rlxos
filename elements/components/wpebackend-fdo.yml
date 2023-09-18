@@ -6,8 +6,12 @@ configure: >-
   --buildtype=release
 
 depends:
+  - components/glib.yml
   - components/libepoxy.yml
   - components/libwpe.yml
   - components/wayland.yml
+build-time:
+  - components/wayland-protocols.yml
+  
 sources:
   - https://wpewebkit.org/releases/wpebackend-fdo-%{version}.tar.xz

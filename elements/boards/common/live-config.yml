@@ -3,6 +3,7 @@ build-type: system
 
 variables:
   force-rebuild: true
+  liveuser: "liveuser"
 include:
   - components/installer.yml
 
@@ -11,21 +12,25 @@ build-time:
 
 pre-script: |
   # Create Live User
-  install -vDm 0644 /dev/stdin %{install-root}/lib/sysusers.d/live-user.conf << "EOF"
-  u live-user - "Live User" /home/live-user /usr/bin/bash
-  m live-user wheel
-  m live-user adm
+  install -vDm 0644 /dev/stdin %{install-root}/lib/sysusers.d/%{liveuser}.conf << "EOF"
+  u %{liveuser} - "Live User" /home/%{liveuser} /usr/bin/bash
+  m %{liveuser} wheel
+  m %{liveuser} adm
+  EOF
+
+  install -vDm 0644 /dev/stdin %{install-root}/lib/tmpfiles.d/tmpfiles.conf << "EOF"
+  d /home/%{liveuser} 755 %{liveuser} %{liveuser}
   EOF
 
   # Authenticate to run sudo commands without password
-  install -vDm 0644 /dev/stdin %{install-root}/share/factory/etc/sudoers.d/live-user << "EOF"
-  live-user ALL=(ALL) NOPASSWD: ALL
+  install -vDm 0644 /dev/stdin %{install-root}/share/factory/etc/sudoers.d/%{liveuser} << "EOF"
+  %{liveuser} ALL=(ALL) NOPASSWD: ALL
   EOF
 
   # AutoLogin to Live User
   install -vDm 0644 /dev/stdin %{install-root}/share/factory/etc/lightdm/lightdm.conf.d/12-autologin.conf << "EOF"
   [SeatDefaults]
-  autologin-user=live-user
+  autologin-user=%{liveuser}
   EOF
 
   # Create Installation Guide

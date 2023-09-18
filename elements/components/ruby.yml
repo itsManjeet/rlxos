@@ -5,11 +5,17 @@ about: Ruby development environment
 configure: >-
   --enable-shared
   --docdir=%{datadir}/doc/ruby
-  
+
 install: DESTDIR=%{install-root}
 
 depends:
-- components/glibc.yml
+  - components/glibc.yml
+  - components/gdbm.yml
+  - components/gmp.yml
+  - components/libffi.yml
+  - components/libyaml.yml
+  - components/openssl.yml
+  - components/zlib.yml
 
 sources:
   - https://cache.ruby-lang.org/pub/ruby/%{version:1}/ruby-%{version}.tar.xz

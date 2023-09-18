@@ -7,5 +7,7 @@ configure: >-
 
 depends:
   - components/glib.yml
+build-time:
+  - components/groff.yml
 sources:
   - https://github.com/AbiWord/enchant/releases/download/v%{version}/enchant-%{version}.tar.gz

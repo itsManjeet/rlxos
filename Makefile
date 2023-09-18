@@ -56,8 +56,11 @@ $(REPO_BUILDER): update-vendor version.yml server.yml
 $(CREATE_PATCH):
 	$(GOLANG) build -o $@ rlxos/cmd/create-patch
 
-report: $(REPO_BUILDER) 
+report: $(REPO_BUILDER)
 	$(REPO_BUILDER) report -cache-path $(CACHE_PATH)
+
+clean-garbage: $(REPO_BUILDER)
+	$(REPO_BUILDER) report -cache-path $(CACHE_PATH) -clean-garbage
 
 list-files: $(REPO_BUILDER)
 	@if [ -z $(ELEMENT) ] ;then echo "ERROR: no element specified"; exit 1; fi

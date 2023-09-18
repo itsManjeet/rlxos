@@ -32,7 +32,7 @@ LIVE_CONFIG='live-config.img'
 SYSTEM=
 
 
-dbg() { [ -n "$DEBUG"] && echo "DEBUG: $@"; }
+dbg() { [ -n "$DEBUG" ] && echo "DEBUG: $@"; }
 rescue() { echo "RESCUE: $@"; sh; }
 
 dbg "Mounting Pseudo Filesystems..."

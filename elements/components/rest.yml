@@ -2,8 +2,12 @@ id: rest
 version: 0.9.1
 about: A library that was designed to make it easier to access web services
 
+configure: >-
+  -D gtk_doc=false
+
 depends:
   - components/libsoup3.yml
+  - components/gtksourceview5.yml
   - components/libadwaita.yml
 build-time:
   - components/gobject-introspection.yml

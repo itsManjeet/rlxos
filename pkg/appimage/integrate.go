@@ -20,8 +20,11 @@ func (a *AppImage) Integrate(rootdir string) error {
 		}
 	}
 
-	targetfile := path.Join(bindir, appImageFile)
+	targetfile := path.Join(rootdir, appImageFile)
 	if err := utils.CopyFile(a.filepath, targetfile); err != nil {
+		return err
+	}
+	if err := os.Chmod(targetfile, 0755); err != nil {
 		return err
 	}
 
@@ -44,14 +47,14 @@ func (a *AppImage) Integrate(rootdir string) error {
 
 		rgx := regexp.MustCompile(`Exec=[^ ]*`)
 
-		if err := os.WriteFile(path.Join(desktopdir, desktopfile), []byte(rgx.ReplaceAllString(string(data), "Exec="+path.Join(bindir, appImageFile))), 0644); err != nil {
+		if err := os.WriteFile(path.Join(desktopdir, desktopfile), []byte(rgx.ReplaceAllString(string(data), "Exec="+targetfile)), 0644); err != nil {
 			return err
 		}
 	}
 
 	if binaries, ok := a.config["bin"]; ok {
 		for _, bin := range strings.Split(binaries, ";") {
-			if err := os.Symlink(appImageFile, path.Join(bindir, bin)); err != nil {
+			if err := os.Symlink("../"+appImageFile, path.Join(bindir, bin)); err != nil {
 				os.Remove(targetfile)
 				return err
 			}

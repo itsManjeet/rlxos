@@ -1,0 +1,16 @@
+id: libadwaita
+version: 1.3.5
+about: Building blocks for modern adaptive GNOME applications
+
+depends:
+  - components/gtk4.yml
+
+build-time:
+  - components/gobject-introspection.yml
+  - components/meson.yml
+  - components/vala.yml
+  - components/sassc.yml
+  - components/gtk-doc.yml
+
+sources:
+  - https://gitlab.gnome.org/GNOME/libadwaita/-/archive/%{version}/libadwaita-%{version}.tar.gz

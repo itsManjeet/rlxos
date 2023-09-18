@@ -7,6 +7,7 @@ configure: >-
   -D broadway-backend=true
   -D colord=enabled
   -D demos=false
+  -D introspection=enabled
 
 depends:
   - components/fribidi.yml

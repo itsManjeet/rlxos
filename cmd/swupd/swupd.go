@@ -50,6 +50,11 @@ func main() {
 				fmt.Printf("New Updates available %d!\n%s\n", updateInfo.Version, updateInfo.Changelog)
 				return nil
 			})).
+		Sub(app.New("fetch").
+			About("Fetch remote configuration").
+			Handler(func(c *app.Command, s []string, i interface{}) error {
+				return nil
+			})).
 		Sub(app.New("update").
 			About("Perform software update(s)").
 			Handler(func(c *app.Command, s []string, i interface{}) error {

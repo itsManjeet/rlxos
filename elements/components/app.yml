@@ -1,5 +1,5 @@
 id: app
-version: 0.0.7
+version: 0.0.8
 about: AppImage Manager
 
 build-type: go-pkg

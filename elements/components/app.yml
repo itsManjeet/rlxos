@@ -1,0 +1,7 @@
+id: app
+version: 0.0.7
+about: AppImage Manager
+
+build-type: go-pkg
+variables:
+  go-pkg: cmd/app

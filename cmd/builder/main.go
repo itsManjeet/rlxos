@@ -298,17 +298,21 @@ func main() {
 					return fmt.Errorf("failed to read dir %s, %v", bldr.CachePath(), err)
 				}
 
+				cached := 0
+
 				for _, cf := range cachedir {
 					if isGarbage(cf.Name()) {
 						garbageElements = append(garbageElements, cf.Name())
 					}
 					if stat, err := os.Stat(path.Join(bldr.CachePath(), cf.Name())); err == nil {
+						cached++
 						totalSize += stat.Size()
 					}
 				}
 
 				fmt.Printf("\n----------------------------------------\n")
 				fmt.Printf("  %sTOTAL ELEMENTS%s   :  %s%d%s\n", color.Bold, color.Reset, color.Green, totalElements, color.Reset)
+				fmt.Printf("  %sCACHED ELEMENTS%s  :  %s%d%s\n", color.Bold, color.Reset, color.Green, cached, color.Reset)
 				fmt.Printf("  %sMII ELEMENTS%s     :  %s%d%s\n", color.Bold, color.Reset, color.Green, mmiElements, color.Reset)
 				fmt.Printf("  %sMII PERCENTGE%s    :  %s%.2f%%%s\n", color.Bold, color.Reset, color.Green, (float64(mmiElements)/float64(totalElements))*100, color.Reset)
 				fmt.Printf("  %sCACHED SIZE%s      :  %s%.2f GiB%s\n", color.Bold, color.Reset, color.Green, (float64(cachedSize) / (1024 * 1024 * 1024)), color.Reset)
@@ -316,6 +320,13 @@ func main() {
 				fmt.Printf("  %sGARBAGE SIZE%s     :  %s%.2f GiB%s\n", color.Bold, color.Reset, color.Green, ((float64(totalSize) - float64(cachedSize)) / (1024 * 1024 * 1024)), color.Reset)
 				fmt.Printf("  %sGARBAGE COUNT%s    :  %s%d%s\n", color.Bold, color.Reset, color.Green, len(garbageElements), color.Reset)
 				fmt.Printf("----------------------------------------\n")
+
+				if cleanGarbage {
+					for _, g := range garbageElements {
+						color.Process("cleaning %s", g)
+						os.Remove(path.Join(bldr.CachePath(), g))
+					}
+				}
 
 				return nil
 			})).

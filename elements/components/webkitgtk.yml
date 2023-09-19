@@ -1,5 +1,5 @@
 id: webkitgtk
-version: 2.41.91
+version: 2.41.92
 about: A port of the portable web rendering engine WebKit
 
 configure: >-
@@ -12,7 +12,9 @@ configure: >-
   -DENABLE_MINIBROWSER=ON
   -DUSE_WOFF2=OFF
   -DUSE_WPE_RENDERER=ON
+  -DUSE_JPEGXL=OFF
   -DENABLE_BUBBLEWRAP_SANDBOX=OFF
+  -DENABLE_DOCUMENTATION=OFF
   -Wno-dev
 
 depends:
@@ -32,12 +34,20 @@ depends:
   - components/sqlite.yml
   - components/libgcrypt.yml
   - components/libnotify.yml
-  - components/enchant.yml
-  - components/gperf.yml
   - components/wpebackend-fdo.yml
+  - components/bubblewrap.yml
+  - components/geoclue.yml
+  - components/x11/libxt.yml
+  - components/x11/libx11.yml
 build-time:
+  - components/gobject-introspection.yml
+  - components/libavif.yml
+  - components/gtk-doc.yml
+  - components/unidef.yml
   - components/cmake.yml
   - components/which.yml
   - components/ruby.yml
+  - components/enchant.yml
+  - components/gperf.yml
 sources:
   - https://webkitgtk.org/releases/webkitgtk-%{version}.tar.xz

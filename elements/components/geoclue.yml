@@ -11,7 +11,7 @@ configure: >-
 
 depends:
   - components/json-glib.yml
-  - components/libsoup.yml
+  - components/libsoup3.yml
   - components/libnotify.yml
 build-time:
   - components/vala.yml

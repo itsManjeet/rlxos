@@ -5,3 +5,9 @@ about: AppImage Manager
 build-type: go-pkg
 variables:
   go-pkg: cmd/app
+
+post-script: |-
+  install -vDm 0755 /dev/stdin %{install-roo}/%{sysconfdir}/profile.d/%{id}.sh << "EOF"
+  export PATH=${PATH}:/apps/bin
+  export XDG_DATA_DIRS=${XDG_DATA_DIRS}:/apps/share
+  EOF

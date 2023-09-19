@@ -1,5 +1,5 @@
 id: filesystem
-version: 0.0.2
+version: 0.0.3
 about: rlxos filesystem
 no-strip: true
 
@@ -17,14 +17,14 @@ script: |
 
   for f in fstab group host.conf hosts issue nsswitch.conf \
            passwd securetty shells profile inputrc ; do
-    install -m644 %{build-root}/$f %{install-root}/%{sysconfdir}
-    install -m644 %{build-root}/$f %{install-root}/%{datadir}/factory/%{sysconfdir}
+    install -m644 /files/filesystem/$f %{install-root}/%{sysconfdir}
+    install -m644 /files/filesystem/$f %{install-root}/%{datadir}/factory/%{sysconfdir}
   done
 
   ln -s ../proc/self/mounts %{install-root}%{sysconfdir}/mtab
   for f in gshadow shadow; do
-    install -m600 %{build-root}/$f %{install-root}/%{sysconfdir}
-    install -m600 %{build-root}/$f %{install-root}/%{datadir}/factory/%{sysconfdir}
+    install -m600 /files/filesystem/$f %{install-root}/%{sysconfdir}
+    install -m600 /files/filesystem/$f %{install-root}/%{datadir}/factory/%{sysconfdir}
   done
   for d in cache local opt log/old lib/misc empty; do
     install -d -m755 %{install-root}/%{localstatedir}/$d
@@ -52,29 +52,10 @@ script: |
   ln -s usr/bin %{install-root}/sbin
   ln -s bin %{install-root}/usr/sbin
 
-  install -D -m644 %{build-root}/sysusers %{install-root}/%{libdir}/sysusers.d/rlxos.conf
-  install -D -m644 %{build-root}/tmpfiles %{install-root}/%{libdir}/tmpfiles.d/rlxos.conf
-  install -D -m755 %{build-root}/env-generator %{install-root}/%{libdir}/systemd/system-environment-generators/10-rlxos
+  install -D -m644 /files/filesystem/sysusers %{install-root}/%{libdir}/sysusers.d/rlxos.conf
+  install -D -m644 /files/filesystem/tmpfiles %{install-root}/%{libdir}/tmpfiles.d/rlxos.conf
+  install -D -m755 /files/filesystem/env-generator %{install-root}/%{libdir}/systemd/system-environment-generators/10-rlxos
 
 
 depends:
   - components/iana-etc.yml
-
-sources:
-  - files/filesystem/fstab
-  - files/filesystem/group 
-  - files/filesystem/inputrc
-  - files/filesystem/issue
-  - files/filesystem/shadow
-  - files/filesystem/gshadow
-  - files/filesystem/nsswitch.conf
-  - files/filesystem/passwd
-  - files/filesystem/profile
-  - files/filesystem/shells
-  - files/filesystem/resolv.conf
-  - files/filesystem/host.conf
-  - files/filesystem/hosts
-  - files/filesystem/securetty
-  - files/filesystem/sysusers
-  - files/filesystem/tmpfiles
-  - files/filesystem/env-generator

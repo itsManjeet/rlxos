@@ -28,4 +28,5 @@ script: |-
   C %{sysconfdir}/xdg/autostart/xscreensaver.desktop
   C %{sysconfdir}/xdg/autostart/xfsettingsd.desktop
   C %{sysconfdir}/xdg/menus/xfce-settings-manager.menu
+  C %{sysconfdir}/xdg/menus/xfce-applications.menu
   EOF

@@ -524,7 +524,9 @@ script: |
   enable DRM_VIRTIO_GPU
   module DRM_VMWGFX
   module DRM_HYPERV
+  module DRM_BOCHS
   module DRM_VBOXVIDEO
+  module DRM_SIMPLEDRM
   # FUSE
   module FUSE_FS
   module CUSE

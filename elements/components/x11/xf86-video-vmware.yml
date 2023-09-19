@@ -1,7 +1,10 @@
-id: xorg-drivers-vmware
-version: "7"
-about: xorg fonts xorg-drivers-vmware
-release: 0
-sources:
-- https://www.x.org/pub/individual/driver/xf86-video-vmware-13.3.0.tar.bz2
+id: xf86-video-vmware
+version: 13.4.0
+about: X.Org Video Driver for VMware SVGA virtual video cards
 
+depends:
+  - components/glibc.yml
+build-time:
+  - components/x11/xserver.yml
+sources:
+  - https://www.x.org/pub/individual/driver/%{id}-%{version}.tar.xz

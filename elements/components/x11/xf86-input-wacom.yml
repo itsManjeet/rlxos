@@ -1,0 +1,10 @@
+id: xf86-input-wacom
+version: 1.2.0
+about: X.Org X11 driver for wacom tablet
+
+depends:
+  - components/glibc.yml
+build-time:
+  - components/x11/xserver.yml
+sources:
+  - https://github.com/linuxwacom/xf86-input-wacom/releases/download/xf86-input-wacom-%{version}/xf86-input-wacom-%{version}.tar.bz2

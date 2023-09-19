@@ -1,6 +1,9 @@
 id: xf86-video-qxl
-version: 0.1.5
+version: 0.1.6
 about: Xorg X11 qxl video driver
+
+variables:
+  run-autogen: false
 
 pre-script: |
   autoreconf -fi

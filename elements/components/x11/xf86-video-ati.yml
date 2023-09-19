@@ -10,5 +10,5 @@ depends:
 build-time:
   - components/x11/xserver.yml
 sources:
-  - https://www.x.org/pub/individual/driver/%{id}-%{version}.tar.xz
+  - https://www.x.org/pub/individual/driver/%{id}-%{version}.tar.bz2
   - patches/xorg/xf86-video-ati-%{version}-upstream_fixes-1.patch

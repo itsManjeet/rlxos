@@ -72,12 +72,8 @@ func main() {
 				if err := checkArgs(s, 1); err != nil {
 					return err
 				}
-				b, err := getBuilder()
-				if err != nil {
-					return err
-				}
-
-				return b.Build(s[0])
+				bldr := i.(*builder.Builder)
+				return bldr.Build(s[0])
 			})).
 		Sub(app.New("file").
 			About("Get path of build cache").
@@ -85,16 +81,12 @@ func main() {
 				if err := checkArgs(s, 1); err != nil {
 					return err
 				}
-				b, err := getBuilder()
-				if err != nil {
-					return err
-				}
-
-				el, ok := b.Get(s[0])
+				bldr := i.(*builder.Builder)
+				el, ok := bldr.Get(s[0])
 				if !ok {
 					return fmt.Errorf("missing element %s", s[0])
 				}
-				cachefile, err := b.CacheFile(el)
+				cachefile, err := bldr.CacheFile(el)
 				if err != nil {
 					return err
 				}
@@ -108,16 +100,13 @@ func main() {
 				if err := checkArgs(s, 1); err != nil {
 					return err
 				}
-				b, err := getBuilder()
-				if err != nil {
-					return err
-				}
+				bldr := i.(*builder.Builder)
 
-				el, ok := b.Get(s[0])
+				el, ok := bldr.Get(s[0])
 				if !ok {
 					return fmt.Errorf("missing element %s", s[0])
 				}
-				cachefile, err := b.CacheFile(el)
+				cachefile, err := bldr.CacheFile(el)
 				if err != nil {
 					return err
 				}
@@ -136,12 +125,9 @@ func main() {
 				if err := checkArgs(s, 1); err != nil {
 					return err
 				}
-				b, err := getBuilder()
-				if err != nil {
-					return err
-				}
+				bldr := i.(*builder.Builder)
 
-				el, ok := b.Get(s[0])
+				el, ok := bldr.Get(s[0])
 				if !ok {
 					return fmt.Errorf("missing element %s", s[0])
 				}
@@ -156,16 +142,13 @@ func main() {
 				if err := checkArgs(s, 2); err != nil {
 					return err
 				}
-				b, err := getBuilder()
-				if err != nil {
-					return err
-				}
+				bldr := i.(*builder.Builder)
 
-				el, ok := b.Get(s[0])
+				el, ok := bldr.Get(s[0])
 				if !ok {
 					return fmt.Errorf("missing element %s", s[0])
 				}
-				cachefile, err := b.CacheFile(el)
+				cachefile, err := bldr.CacheFile(el)
 				if err != nil {
 					return err
 				}
@@ -185,16 +168,6 @@ func main() {
 
 				fmt.Println(cachefile, "checkout at", checkout_path)
 
-				return nil
-			})).
-		Sub(app.New("dump").
-			About("Dump build cache state").
-			Handler(func(c *app.Command, s []string, i interface{}) error {
-				_, err := getBuilder()
-				if err != nil {
-					fmt.Printf(`{"STATUS": false, "ERROR": "%s"}`, err.Error())
-					return err
-				}
 				return nil
 			})).
 		Sub(app.New("check-update").
@@ -330,17 +303,19 @@ func main() {
 
 				return nil
 			})).
-		Sub(app.New("create-market-data").
-			About("create App Market Database").
+		Sub(app.New("dump-metadata").
+			About("Dump metadata Database").
 			Handler(func(c *app.Command, s []string, i interface{}) error {
 				if len(s) == 0 {
 					return fmt.Errorf("no output path specified")
 				}
 
+				bldr := i.(*builder.Builder)
+
 				outputPath := s[0]
 				iconsPath := path.Join(outputPath, "icons")
 				appsPath := path.Join(outputPath, "apps")
-				jsonPath := path.Join(outputPath, "metadata.json")
+				jsonPath := path.Join(outputPath, bldr.Variables["codename"])
 
 				for _, dir := range []string{iconsPath, appsPath} {
 					os.MkdirAll(dir, 0755)
@@ -348,7 +323,6 @@ func main() {
 
 				metadata := []element.Metadata{}
 
-				bldr := i.(*builder.Builder)
 				for elid, el := range bldr.Pool() {
 					color.Process("Adding %s", elid)
 					cachefile, _ := bldr.CacheFile(el)
@@ -399,7 +373,7 @@ func main() {
 					}
 
 					metadata = append(metadata, element.Metadata{
-						Id:      el.Id,
+						Id:      elid,
 						Version: el.Version,
 						About:   el.About,
 						Icon:    path.Base(iconfile),
@@ -426,12 +400,9 @@ func main() {
 				if err := checkArgs(s, 1); err != nil {
 					return err
 				}
-				b, err := getBuilder()
-				if err != nil {
-					return err
-				}
+				bldr := i.(*builder.Builder)
 
-				e, ok := b.Get(s[0])
+				e, ok := bldr.Get(s[0])
 				if !ok {
 					return fmt.Errorf("missing %s", s[0])
 				}
@@ -442,7 +413,7 @@ func main() {
 				}
 				tolist = append(tolist, s[0])
 
-				pairs, err := b.List(element.DependencyAll, tolist...)
+				pairs, err := bldr.List(element.DependencyAll, tolist...)
 				if err != nil {
 					return err
 				}
@@ -464,13 +435,6 @@ func main() {
 		color.Error("%v", err)
 		os.Exit(1)
 	}
-}
-
-func getBuilder() (*builder.Builder, error) {
-	if len(cachePath) == 0 {
-		cachePath = path.Join(projectPath, "build")
-	}
-	return builder.New(projectPath, cachePath)
 }
 
 func checkArgs(args []string, count int) error {

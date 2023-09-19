@@ -4,6 +4,9 @@ about: X.Org X11 driver for wacom tablet
 
 depends:
   - components/glibc.yml
+  - components/x11/libxi.yml
+  - components/x11/libxinerama.yml
+  - components/x11/libxrandr.yml
 build-time:
   - components/x11/xserver.yml
 sources:

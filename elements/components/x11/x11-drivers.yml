@@ -11,3 +11,8 @@ depends:
   - components/x11/xf86-video-nouveau.yml
   - components/x11/xf86-video-qxl.yml
   - components/x11/xf86-video-vmware.yml
+
+script: |-
+  install -vDm 0644 /dev/stdin %{install-root}/%{libdir}/tmpfiles.d/x11.conf << "EOF"
+  C /etc/X11
+  EOF

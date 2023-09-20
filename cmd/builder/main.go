@@ -315,7 +315,7 @@ func main() {
 				outputPath := s[0]
 				iconsPath := path.Join(outputPath, "icons")
 				appsPath := path.Join(outputPath, "apps")
-				jsonPath := path.Join(outputPath, bldr.Variables["codename"])
+				jsonPath := path.Join(outputPath, "metadata.json")
 
 				for _, dir := range []string{iconsPath, appsPath} {
 					os.MkdirAll(dir, 0755)

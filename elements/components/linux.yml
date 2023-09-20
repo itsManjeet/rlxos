@@ -1,10 +1,9 @@
 id: linux
-version: 6.3.8
-release: 1
+version: 6.5.3
 about: |
   Linux kernel, modules and headers
 sources:
-  - https://www.kernel.org/pub/linux/kernel/v6.x/linux-%{version}.tar.xz
+  - https://www.kernel.org/pub/linux/kernel/v%{version:2}.x/linux-%{version}.tar.xz
 
 environ:
   - ARCH=%{arch}
@@ -515,10 +514,11 @@ script: |
   enable DRM_RADEON_USERPTR
   enable DRM_AMDGPU_USERPTR
   enable DRM_AMD_ACP
-  module SND_SOC
-  module SND_SOC_AMD_ACP
   module DRM_I915
   module DRM_GMA500
+  module SND_SOC
+  module SND_SOC_AMD_ACP
+  
 
   # DRM for virtual machines
   enable DRM_VIRTIO_GPU
@@ -526,6 +526,7 @@ script: |
   module DRM_HYPERV
   module DRM_BOCHS
   module DRM_VBOXVIDEO
+  module DRM_VGEM
   module DRM_SIMPLEDRM
   # FUSE
   module FUSE_FS
@@ -1106,6 +1107,9 @@ script: |
   enable FW_LOADER_COMPRESS
   enable FW_LOADER_COMPRESS_XZ
   enable FW_LOADER_COMPRESS_ZSTD
+
+  # VGA/VBE/EFI FB as generic system framebuffer
+  enable SYSFB_SIMPLEFB
 
   # IIO
   module IIO

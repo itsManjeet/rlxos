@@ -89,7 +89,7 @@ filepath: $(REPO_BUILDER)
 	$(REPO_BUILDER) file -cache-path $(CACHE_PATH) $(ELEMENT)
 
 dump-metadata: $(REPO_BUILDER)
-	$(REPO_BUILDER) dump-metadata -cache-path $(CACHE_PATH) $(CACHE_PATH)
+	$(REPO_BUILDER) dump-metadata -cache-path $(CACHE_PATH) $(CACHE_PATH)/$(CODENAME)
 
 TODO:
 	@grep -R "# TODO:" elements/ | sed 's/# TODO://g' > $@

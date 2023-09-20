@@ -527,6 +527,7 @@ script: |
   module DRM_BOCHS
   module DRM_VBOXVIDEO
   module DRM_VGEM
+  module DRM_QXL
   module DRM_SIMPLEDRM
   # FUSE
   module FUSE_FS

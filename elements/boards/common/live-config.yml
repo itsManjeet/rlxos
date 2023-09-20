@@ -21,7 +21,7 @@ pre-script: |
 
   [Service]
   Type=simple
-  ExecStart=/usr/bin/useradd -g users -G wheel,sudo -m %{liveuser}
+  ExecStart=/usr/bin/useradd -g users -G wheel,adm -m %{liveuser}
 
   [Install]
   WantedBy=default.target

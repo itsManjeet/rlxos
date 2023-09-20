@@ -12,14 +12,22 @@ build-time:
 
 pre-script: |
   # Create Live User
-  install -vDm 0644 /dev/stdin %{install-root}/lib/sysusers.d/%{liveuser}.conf << "EOF"
-  u %{liveuser} - "Live User" /home/%{liveuser} /usr/bin/bash
-  m %{liveuser} wheel
-  m %{liveuser} adm
+  install -vDm 0644 /dev/stdin %{install-root}/%{libdir}/systemd/system/live-user.service << "EOF"
+  [Unit]
+  Description=Create Live User
+  Before=graphical.target
+  After=systemd-tmpfiles-setup.service
+  
+
+  [Service]
+  Type=simple
+  ExecStart=/usr/bin/useradd -g users -G wheel,sudo -m %{liveuser}
+
+  [Install]
+  WantedBy=default.target
   EOF
 
-  install -vDm 0644 /dev/stdin %{install-root}/lib/tmpfiles.d/tmpfiles.conf << "EOF"
-  d /home/%{liveuser} 755 %{liveuser} %{liveuser}
+  install -vDm 0644 /dev/stdin %{install-root}/lib/tmpfiles.d/%{liveuser}.conf << "EOF"
   C %{sysconfdir}/lightdm/lightdm.conf.d/12-autologin.conf
   C %{sysconfdir}/sudoers.d/%{liveuser}
   EOF

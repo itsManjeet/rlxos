@@ -93,12 +93,10 @@ func (c *Command) handleFlag(args []string) (int, error) {
 	return 0, fmt.Errorf("invalid flag %s", args[0])
 }
 
-func (c *Command) Run(args []string) error {
-	c.selfPath = args[0]
-	args = args[1:]
-
+func (c *Command) GetCommand(self string, args []string) (*Command, []string, interface{}, error) {
+	c.selfPath = self
 	if len(args) == 0 && c.handler == nil {
-		return c.Help()
+		return nil, nil, nil, nil
 	}
 
 	var requiredArgs []string
@@ -110,7 +108,7 @@ func (c *Command) Run(args []string) error {
 		if arg[0] == '-' {
 			count, err := c.handleFlag(args[i:])
 			if err != nil {
-				return err
+				return nil, nil, nil, err
 			}
 			i = i + count
 			continue
@@ -135,8 +133,24 @@ func (c *Command) Run(args []string) error {
 		var err error
 		result, err = c.initMethod()
 		if err != nil {
-			return err
+			return nil, nil, nil, err
 		}
 	}
-	return cmd.handler(cmd, requiredArgs, result)
+	return cmd, requiredArgs, result, nil
+}
+
+func (c *Command) Handle(args []string, iface interface{}) error {
+	return c.handler(c, args, iface)
+}
+
+func (c *Command) Run(args []string) error {
+	cmd, args, result, err := c.GetCommand(args[0], args[1:])
+	if err != nil {
+		return err
+	}
+
+	if cmd == nil {
+		return c.Help()
+	}
+	return cmd.Handle(args, result)
 }

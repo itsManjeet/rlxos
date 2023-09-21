@@ -8,7 +8,6 @@ import (
 	"os/exec"
 	"path"
 	"rlxos/pkg/app"
-	"rlxos/pkg/app/flag"
 	"rlxos/pkg/color"
 	"rlxos/pkg/element"
 	"rlxos/pkg/element/builder"
@@ -17,46 +16,10 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-var (
-	projectPath string
-	cachePath   string
-)
-
-var (
-	cleanGarbage bool = false
-)
-
-func main() {
-	projectPath, _ = os.Getwd()
-	if err := app.New("builder").
+func builderCommand() *app.Command {
+	return app.New("builder").
 		About("rlxos os build repository").
 		Usage("<TASK> <FLAGS?> <ARGS...>").
-		Flag(flag.New("path").
-			Count(1).
-			About("Specify project path").
-			Handler(func(s []string) error {
-				projectPath = s[0]
-				return nil
-			})).
-		Flag(flag.New("cache-path").
-			Count(1).
-			About("Specify cache path").
-			Handler(func(s []string) error {
-				cachePath = s[0]
-				return nil
-			})).
-		Flag(flag.New("no-color").
-			About("No color on output").
-			Handler(func(s []string) error {
-				color.NoColor = true
-				return nil
-			})).
-		Flag(flag.New("clean-garbage").
-			About("Clean Garbage elements").
-			Handler(func(s []string) error {
-				cleanGarbage = true
-				return nil
-			})).
 		Init(func() (interface{}, error) {
 			if len(cachePath) == 0 {
 				cachePath = path.Join(projectPath, "build")
@@ -64,7 +27,14 @@ func main() {
 			return builder.New(projectPath, cachePath)
 		}).
 		Handler(func(c *app.Command, args []string, i interface{}) error {
-			return c.Help()
+			cmd, args, iface, err := c.GetCommand("builder", args)
+			if err != nil {
+				return err
+			}
+			if cmd == nil || cmd == c {
+				return c.Help()
+			}
+			return cmd.Handle(args, iface)
 		}).
 		Sub(app.New("build").
 			About("build element").
@@ -430,16 +400,6 @@ func main() {
 				}
 
 				return nil
-			})).
-		Run(os.Args); err != nil {
-		color.Error("%v", err)
-		os.Exit(1)
-	}
-}
+			}))
 
-func checkArgs(args []string, count int) error {
-	if len(args) != count {
-		return fmt.Errorf("expecting %d but got %d arguments", count, len(args))
-	}
-	return nil
 }

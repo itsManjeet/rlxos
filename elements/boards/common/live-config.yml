@@ -42,6 +42,7 @@ pre-script: |
   [SeatDefaults]
   autologin-user=%{liveuser}
   autologin-user-timeout=0
+  autologin-session=xfce
   EOF
 
   # Create Installation Guide

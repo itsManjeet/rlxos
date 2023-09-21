@@ -18,6 +18,16 @@ script: |
   fi
   EOT
 
+  install -vDm0644 /dev/stdin %{include-root}/%{sysconfdir}/environment << "EOF"
+  export GTK_CSD=1
+  export GDK_PIXBUF_MODULEDIR=%{localstatedir}/cache/gdk-pixbuf/
+  EOF
+
+  install -vDm0644 /dev/stdin %{include-root}/%{libdir}/tmpfiles.d/extra-etc.conf << "EOF"
+  C /etc/environment
+  EOF
+
+
   [[ -d %{include-root}/%{datadir}/factory/etc ]] && rm -rf %{include-root}/%{datadir}/factory/etc
   mkdir -p %{include-root}/%{datadir}/factory
   mv -T %{include-root}/etc %{include-root}/%{datadir}/factory/etc

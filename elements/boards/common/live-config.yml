@@ -41,6 +41,7 @@ pre-script: |
   install -vDm 0644 /dev/stdin %{install-root}/share/factory/etc/lightdm/lightdm.conf.d/12-autologin.conf << "EOF"
   [SeatDefaults]
   autologin-user=%{liveuser}
+  autologin-user-timeout=0
   EOF
 
   # Create Installation Guide

@@ -3,10 +3,12 @@ package sysroot
 import (
 	"fmt"
 	"io/ioutil"
+	"os"
 	"path"
 	"rlxos/pkg/osinfo"
 	"sort"
 	"strconv"
+	"strings"
 )
 
 type Sysroot struct {
@@ -51,7 +53,22 @@ func Init(configfile string) (*Sysroot, error) {
 
 	for _, mount := range mountInfo {
 		if mount.Target == "/usr" && mount.Type == "squashfs" {
-			imageVersion, err := strconv.Atoi(path.Base(mount.Source))
+			var imageVersionString string
+			switch {
+			case strings.HasPrefix(mount.Source, "/dev/loop"):
+				loopid := path.Base(mount.Source)
+				loopBackingFile := path.Join("/sys/class/block/", loopid, "/loop/backing_file")
+				data, err := os.ReadFile(loopBackingFile)
+				if err != nil {
+					return nil, fmt.Errorf("mount device is loop %s, and failed to read loop device backing_file %s, %v", mount.Source, loopBackingFile, err)
+				}
+				imageVersionString = path.Base(strings.Trim(string(data), " \n"))
+			case strings.HasPrefix(mount.Source, "LABEL=RLXOS_"):
+				imageVersionString = strings.TrimPrefix(mount.Source, "LABEL=RLXOS_")
+			case strings.HasPrefix(mount.Source, "/rlxos/system/"):
+				imageVersionString = path.Base(mount.Source)
+			}
+			imageVersion, err := strconv.Atoi(imageVersionString)
 			if err != nil {
 				return nil, fmt.Errorf("failed to read system image version, must be integer but %s, %v", path.Base(mount.Source), err)
 			}

@@ -1,6 +1,5 @@
 id: grub
 version: 2.06
-release: 4
 about: GRand Unified Bootloader
 
 environ:
@@ -24,7 +23,7 @@ configure: >
 
 pre-script: |
   patch -Np1 -i %{build-root}/grub-2.06-upstream_fixes-1.patch
-  patch util/grub-mkconfig.in < %{build-root}/0001-RLXOS-CONFIG-PATCH-TO-SUPPORT-OVERLAY-FS.patch
+  patch util/grub.d/10_linux.in < %{build-root}/0001-RLXOS-SYSTEM-IMAGE-SEARCH-SUPPORT.patch
   install -v -D -m 0644 %{build-root}/grub.default %{install-root}/etc/default/grub
   install -v -D -m 0755 %{build-root}/update-grub.sh %{install-root}/usr/bin/update-grub
   install -v -D  %{build-root}/unicode.pf2 %{install-root}/usr/share/grub/unicode.pf2
@@ -47,8 +46,8 @@ build-time:
 
 sources:
   - http://ftp.gnu.org/gnu/grub/grub-%{version}.tar.xz
-  - files/core/grub/update-grub.sh
-  - files/core/grub/unicode.pf2
-  - files/core/grub/grub.default
-  - files/core/grub/0001-RLXOS-CONFIG-PATCH-TO-SUPPORT-OVERLAY-FS.patch
+  - files/grub/update-grub.sh
+  - files/grub/unicode.pf2
+  - files/grub/grub.default
   - patches/core/grub/grub-2.06-upstream_fixes-1.patch
+  - patches/grub/0001-RLXOS-SYSTEM-IMAGE-SEARCH-SUPPORT.patch

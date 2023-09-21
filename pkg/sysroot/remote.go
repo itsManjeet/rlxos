@@ -1,25 +1,31 @@
-package swupd
+package sysroot
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"path"
 	"rlxos/pkg/updates/config"
 	"rlxos/pkg/utils"
 	"sort"
-	"strconv"
 )
 
-const (
-	ROLLING_RELEASE = 999
-)
+func (s *Sysroot) request(url string, target interface{}) error {
+	resp, err := http.Get(url)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	return json.NewDecoder(resp.Body).Decode(target)
+}
 
 type UpdatesResponse struct {
 	Updates []config.UpdateInfo `json:"updates"`
 }
 
-func (s *Swupd) listUpdates() ([]config.UpdateInfo, error) {
+func (s *Sysroot) listUpdates() ([]config.UpdateInfo, error) {
 	r := UpdatesResponse{}
 	url := fmt.Sprintf("%s/%s", s.config.Server, s.config.Channel)
 	log.Println("url", url)
@@ -35,40 +41,23 @@ func (s *Swupd) listUpdates() ([]config.UpdateInfo, error) {
 	return r.Updates, nil
 }
 
-func (s *Swupd) Check() (*config.UpdateInfo, error) {
+func (s *Sysroot) Check() (*config.UpdateInfo, error) {
 	list, err := s.listUpdates()
 	if err != nil {
 		return nil, err
-	}
-	curver_str, ok := s.OsInfo["IMAGE_VERSION"]
-	if !ok {
-		return nil, fmt.Errorf("missing required key 'IMAGE_VERSION' in os-release")
-	}
-
-	curver, err := strconv.Atoi(curver_str)
-	if err != nil {
-		return nil, err
-	}
-
-	if list[0].Version == curver && curver != ROLLING_RELEASE {
-		return nil, nil
 	}
 
 	return &list[0], nil
 }
 
-func (s *Swupd) Update(updateInfo *config.UpdateInfo) error {
-	curver_str, ok := s.OsInfo["IMAGE_VERSION"]
-	if !ok {
-		return fmt.Errorf("missing required key 'IMAGE_VERSION' in os-release")
-	}
-
-	curver, err := strconv.Atoi(curver_str)
-	if err != nil {
-		return err
-	}
-	if curver == updateInfo.Version && curver != ROLLING_RELEASE {
-		return fmt.Errorf("internal error, already update date system")
+func (s *Sysroot) Update(updateInfo *config.UpdateInfo) error {
+	if s.Images[0] == updateInfo.Version {
+		if s.Images[0] != s.InUse {
+			log.Println("latest system image is already avaiable on system")
+			return nil
+		}
+		log.Println("system is already upto date")
+		return nil
 	}
 
 	updatefile := path.Base(updateInfo.Url)

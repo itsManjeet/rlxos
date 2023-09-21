@@ -1032,7 +1032,7 @@ script: |
   module VHOST_VSOCK
 
   # Useful filesystems
-  for fs in XFS BTRFS EXFAT VFAT F2FS ISO9660 UDF NTFS3; do
+  for fs in XFS BTRFS EXFAT VFAT F2FS ISO9660 UDF NTFS3 HFS; do
     module "${fs}_FS"
   done
   for fs in BTRFS F2FS; do
@@ -1040,6 +1040,7 @@ script: |
   done
   enable "XFS_POSIX_ACL"
   enable FS_ENCRYPTION
+  enable MAC_PARTITION
 
   # Needed for FAT filesystems
   enable NLS_CODEPAGE_437

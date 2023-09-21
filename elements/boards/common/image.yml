@@ -10,6 +10,7 @@ script: |
   mkdir -p %{install-root}
 
   chroot %{include-root} /bin/bash << "EOT"
+  export GDK_PIXBUF_MODULEDIR=%{localstatedir}/cache/gdk-pixbuf/
   if [ -d %{localstatedir}/lib/integrations ] ; then
     for i in %{localstatedir}/lib/integrations/* ; do
       echo "=> integrating $(basename $i)"

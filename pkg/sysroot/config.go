@@ -1,4 +1,4 @@
-package swupd
+package sysroot
 
 import (
 	"os"

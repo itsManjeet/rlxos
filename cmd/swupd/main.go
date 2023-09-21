@@ -15,6 +15,7 @@ var (
 
 var (
 	cleanGarbage bool = false
+	CONFIG_FILE  string
 )
 
 func main() {
@@ -39,6 +40,13 @@ func main() {
 				cachePath = s[0]
 				return nil
 			})).
+		Flag(flag.New("config").
+			Count(1).
+			About("Specify config file").
+			Handler(func(s []string) error {
+				CONFIG_FILE = s[0]
+				return nil
+			})).
 		Flag(flag.New("no-color").
 			About("No color on output").
 			Handler(func(s []string) error {
@@ -51,7 +59,9 @@ func main() {
 				cleanGarbage = true
 				return nil
 			})).
-		Sub(builderCommand()).Run(os.Args); err != nil {
+		Sub(builderCommand()).
+		Sub(sysRootCommand()).
+		Run(os.Args); err != nil {
 		color.Error("%v", err)
 		os.Exit(1)
 	}

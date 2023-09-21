@@ -397,7 +397,17 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 
 			script = t.Script
 		}
-		if err := container.Run(logWriter, []string{"sh", "-ec", resolveVariables(script, variables)}, containerWordDir, environ); err != nil {
+		scriptCode := resolveVariables(script, variables)
+		args := []string{"sh", "-ec", scriptCode}
+		if len(scriptCode) > 500 {
+			scriptCodePath := path.Join(srcdir, "_swupd_script_code")
+			if err := ioutil.WriteFile(scriptCodePath, []byte(scriptCode), 0755); err != nil {
+				return fmt.Errorf("script code is too large and failed to write script code %s %v", scriptCodePath, err)
+			}
+			args = []string{"sh", "-e", "/src/_swupd_script_code"}
+		}
+
+		if err := container.Run(logWriter, args, containerWordDir, environ); err != nil {
 			dumpLogs()
 			container.RescueShell()
 			return err

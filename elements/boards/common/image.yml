@@ -10,7 +10,6 @@ script: |
   mkdir -p %{install-root}
 
   chroot %{include-root} /bin/bash << "EOT"
-  export GDK_PIXBUF_MODULEDIR=%{localstatedir}/cache/gdk-pixbuf/
   if [ -d %{localstatedir}/lib/integrations ] ; then
     for i in %{localstatedir}/lib/integrations/* ; do
       echo "=> integrating $(basename $i)"
@@ -21,7 +20,6 @@ script: |
 
   install -vDm0644 /dev/stdin %{include-root}/%{sysconfdir}/environment << "EOF"
   export GTK_CSD=1
-  export GDK_PIXBUF_MODULEDIR=%{localstatedir}/cache/gdk-pixbuf/
   EOF
 
   install -vDm0644 /dev/stdin %{include-root}/%{libdir}/tmpfiles.d/extra-etc.conf << "EOF"

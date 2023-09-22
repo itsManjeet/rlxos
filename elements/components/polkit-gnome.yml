@@ -23,6 +23,10 @@ post-script: |-
   AutostartCondition=GNOME3 unless-session gnome
   EOF
 
+  install -vDm0655 /dev/stdin %{install-root}%{libdir}/tmpfiles.d/%{id}.conf << "EOF"
+  C %{sysconfdir}/xdg/autostart/polkit-gnome-authentication-agent-1.desktop
+  EOF
+
 depends:
   - components/accountsservice.yml
   - components/gtk.yml

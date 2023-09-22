@@ -9,7 +9,7 @@ import (
 )
 
 func layersCommand() *app.Command {
-	searchDir := []string{path.Join("var", "lib", "layers")}
+	searchDir := []string{path.Join("sysroot", "layers")}
 	rootDir := "/"
 	serverUrl := "http://storage.rlxos.dev/"
 

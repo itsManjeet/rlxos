@@ -24,10 +24,7 @@ jobs:
 
       - name: Setup Environment
         run: |
-          TAG_NAME=${GITHUB_REF#refs/*/}
-          VERSION="$(echo ${TAG_NAME}"
-          echo "TAG_NAME=${TAG_NAME}" >> $GITHUB_ENV
-
+          VERSION=${GITHUB_REF#refs/*/}
           if [[ "${GITHUB_REF}" =~ "refs/heads/" ]] ; then
             CODENAME="rolling"
           else

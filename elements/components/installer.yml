@@ -1,8 +1,0 @@
-id: installer
-version: 2307
-release: 3
-about: Software Installer
-
-build-type: go-pkg
-variables:
-  go-pkg: cmd/installer

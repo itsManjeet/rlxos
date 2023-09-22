@@ -45,7 +45,7 @@ func (a *AppImage) Integrate(rootdir string) error {
 			return err
 		}
 
-		desktopfileData := patchDesktopFile(string(data), "Exec=[^ ]*", "Exec="+targetfile)
+		desktopfileData := patchDesktopFile(string(data), "Exec=[^ \n]*", "Exec="+targetfile)
 
 		if err := os.WriteFile(path.Join(desktopdir, desktopfile), []byte(desktopfileData), 0644); err != nil {
 			return err

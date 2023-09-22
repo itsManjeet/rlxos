@@ -8,7 +8,7 @@ pre-script: |-
 post-script: |-
   install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml << "EOF"
   <?xml version="1.0" encoding="UTF-8"?>
-  <channel name="xfce4-settings" version="1.0">
+  <channel name="xfce4-desktop" version="1.0">
     <property name="destop-icons" type="empty">
       <property name="icon-size" type="uint" value="64"/>
       <property name="gravity" type="int" value="1"/>

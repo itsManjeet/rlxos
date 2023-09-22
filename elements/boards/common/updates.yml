@@ -12,8 +12,7 @@ sources:
   - files/changelog
 
 script: |
-  mkdir -p %{install-root} && cd %{install-root}
+  mkdir -p %{install-root}/%{version} && cd %{install-root}/%{version}
 
-  mv %{include-root}/%{version}/sysroot.img %{version}.img
-  cp %{build-root}/changelog %{version}.txt
-  EOF
+  mv %{include-root}/%{version}/sysroot.img sysroot.img
+  cp %{build-root}/changelog changelog

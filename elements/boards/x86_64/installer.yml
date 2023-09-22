@@ -1,4 +1,4 @@
-id: boards-x86_64
+id: x86_64-installer
 about: x86_64 Board Installer
 merge: [elements/boards/common/installer.yml]
 

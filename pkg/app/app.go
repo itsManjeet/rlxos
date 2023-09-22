@@ -101,8 +101,8 @@ func (c *Command) GetCommand(self string, args []string) (*Command, []string, in
 
 	var requiredArgs []string
 
-	var cmd *Command = c
-	var foundTask bool = false
+	var cmd = c
+	var foundTask = false
 	for i := 0; i < len(args); i++ {
 		arg := args[i]
 		if arg[0] == '-' {
@@ -132,6 +132,13 @@ func (c *Command) GetCommand(self string, args []string) (*Command, []string, in
 	if cmd.initMethod != nil {
 		var err error
 		result, err = cmd.initMethod()
+		if err != nil {
+			return nil, nil, nil, err
+		}
+	}
+	if result == nil && c.initMethod != nil {
+		var err error
+		result, err = c.initMethod()
 		if err != nil {
 			return nil, nil, nil, err
 		}

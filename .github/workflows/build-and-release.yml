@@ -2,9 +2,9 @@ name: Build and Release
 on:
   push:
     tags:
-      - '*'
+      - '[0-9]+'
     branches:
-      - 'rolling'
+      - '[0-9]+'
 jobs:
   generate-image:
     name: Generate Image
@@ -25,15 +25,15 @@ jobs:
       - name: Setup Environment
         run: |
           TAG_NAME=${GITHUB_REF#refs/*/}
-          VERSION="$(echo ${TAG_NAME} | cut -d '-' -f1)"
-          CODENAME="$(echo ${TAG_NAME} | cut -d '-' -f2-)"
-
+          VERSION="$(echo ${TAG_NAME}"
           echo "TAG_NAME=${TAG_NAME}" >> $GITHUB_ENV
 
-          [[ "${TAG_NAME}" -eq "rolling" ]] && {
-            VERSION=999
+          if [[ "${GITHUB_REF}" =~ "refs/heads/" ]] ; then
             CODENAME="rolling"
-          }
+          else
+            CODENAME="stable"
+          fi
+
           echo "ARCH=${{matrix.board}}" >> $GITHUB_ENV
           echo "VERSION=${VERSION}"   >> $GITHUB_ENV
           echo "CODENAME=${CODENAME}" >> $GITHUB_ENV
@@ -55,7 +55,7 @@ jobs:
       - name: Checkout Release
         run: |
           make checkout ELEMENT=boards/${{matrix.board}}/installer.yml RELEASE_PATH=${CACHE_PATH}/releases/
-          make checkout ELEMENT=boards/${{matrix.board}}/updates.yml   RELEASE_PATH=${UPDATE_DIR}
+          make checkout ELEMENT=boards/${{matrix.board}}/updates.yml   RELEASE_PATH=${UPDATE_DIR}/
       
       - name: Update Metadata
         run: make dump-metadata

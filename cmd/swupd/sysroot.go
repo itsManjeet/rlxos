@@ -65,6 +65,7 @@ func sysRootCommand() *app.Command {
 
 				if updateInfo.Version == s.Images[0] {
 					log.Println("SYSTEM IS ALREADY UPTO DATE", updateInfo.Version)
+					return nil
 				}
 
 				log.Printf("Applying system updates %d -> %d\n", s.Images[0], updateInfo.Version)

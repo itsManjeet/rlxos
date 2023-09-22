@@ -22,8 +22,7 @@ build-time:
 script: |
   mkdir -p ISO/boot/grub
 
-  cp -r /sysroot/usr*.squashfs ISO/
-  cp -r /sysroot/usr*.verity ISO/
+  cp -r /sysroot/sysroot.img ISO/
   mv /sysroot/%{id}-live-config ISO/live-config.img
 
   kerver=$(ls /lib/modules | head -n1)

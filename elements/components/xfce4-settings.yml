@@ -7,6 +7,9 @@ configure: >-
   --enable-pluggable-dialogs
 
 post-script: |-
+  install -vDm0655 /dev/stdin %{install-root}%{libdir}/tmpfiles.d/%{id}.conf << "EOF"
+  C %{sysconfdir}/xdg/autostart/xsettingsd.desktop
+  EOF
   install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/xdg/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml << "EOF"
   <?xml version="1.0" encoding="UTF-8"?>
   <channel name="xsettings" version="1.0">

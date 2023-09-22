@@ -122,11 +122,11 @@ func (c *Cloner) Clone(partition, imagePath string) error {
 	}
 
 	if c.IsEfi {
-		if data, err := exec.Command("grub-install", "--recheck", "--root-directory="+tmpdir, "--boot-directory="+path.Join(tmpdir, "sysroot", "boot"), partitionDisk).CombinedOutput(); err != nil {
+		if data, err := exec.Command("grub-install", "--recheck", "--bootloader-id="+c.PrettyName, "--target=x86_64-efi", "--efi-directory="+path.Join(tmpdir, "sysroot", "efi"), "--root-directory="+tmpdir, "--boot-directory="+path.Join(tmpdir, "sysroot", "boot")).CombinedOutput(); err != nil {
 			return fmt.Errorf("failed to install bootloader %s, %v", string(data), err)
 		}
 	} else {
-		if data, err := exec.Command("grub-install", "--recheck", "--bootloader-id="+c.PrettyName, "--target=x86_64-efi", "--efi-directory="+path.Join(tmpdir, "sysroot", "efi"), "--root-directory="+tmpdir, "--boot-directory="+path.Join(tmpdir, "sysroot", "boot")).CombinedOutput(); err != nil {
+		if data, err := exec.Command("grub-install", "--recheck", "--root-directory="+tmpdir, "--boot-directory="+path.Join(tmpdir, "sysroot", "boot"), partitionDisk).CombinedOutput(); err != nil {
 			return fmt.Errorf("failed to install bootloader %s, %v", string(data), err)
 		}
 	}

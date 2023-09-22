@@ -75,7 +75,6 @@ include:
 
   # rlxos
   - components/swupd.yml
-  - components/layers.yml
   - components/bolt.yml
 
   # Desktop Environment

@@ -4,8 +4,6 @@ build-type: system
 variables:
   force-rebuild: true
   liveuser: "liveuser"
-include:
-  - components/installer.yml
 
 build-time:
   - components/squashfs-tools.yml
@@ -46,7 +44,7 @@ pre-script: |
   EOF
 
   # Create Installation Guide
-  install -vDm 0644 /dev/stdin %{install-root}/share/factory/etc/skel/README << "EOF"
+  install -vDm 0644 /dev/stdin %{install-root}/share/factory/etc/skel/Desktop/README << "EOF"
   RLXOS GNU/Linux %{version} %{codename}
 
   Notes
@@ -55,14 +53,10 @@ pre-script: |
   - Live User Have access to sudo commands without password
 
   Installation
-  - %{bindir}/installer is a CLI tool to help installation of rlxos.
+  - %{bindir}/swupd clone is a CLI tool to help installation of rlxos.
   - You need a blank ext4 partition of size atleast 4 GiB
   - You might also need a EFI parition for UEFI boot support (LABEL=EFI)
   - Execute below command with your path to partition (not DISK).
-  - $ %{bindir}/installer install /dev/sd?
+  - $ %{bindir}/clone /run/iso/sysroot.img install /dev/sd?
   - reboot once installation done
   EOF
-
-
-  cp -rap %{install-root}/%{prefix}/* %{install-root}/
-  rm -rf %{install-root}/%{prefix}

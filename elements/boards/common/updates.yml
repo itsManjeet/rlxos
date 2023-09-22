@@ -8,29 +8,12 @@ variables:
   include-root: /sysroot
   force-rebuild: true
 
-depends:
-  - components/zsync.yml
-
 sources:
   - files/changelog
 
 script: |
   mkdir -p %{install-root} && cd %{install-root}
-  image_path=/sysroot/$(readlink /sysroot/usr.squashfs)
-  verity_path=/sysroot/$(readlink /sysroot/usr.verity)
 
-  mv ${image_path} rlxos-%{id}-%{version}.img
-  sha256sum rlxos-%{id}-%{version}.img > rlxos-%{id}-%{version}.img.sha256sum
-  zsyncmake -u %{server}/rlxos-%{id}-%{version}.img rlxos-%{id}-%{version}.img
-  changelog="$(cat %{build-root}/changelog | tr '\n' '%')"
-  cat >%{codename}<<EOF
-  {
-    "updates": [
-      {
-        "url": "%{server}/rlxos-%{id}-%{version}.img",
-        "changelog": "${changelog}",
-        "version": %{version}
-      }
-    ]
-  }
+  mv %{include-root}/%{version}/sysroot.img %{version}.img
+  cp %{build-root}/changelog %{version}.txt
   EOF

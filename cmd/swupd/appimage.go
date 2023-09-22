@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"path"
 	"rlxos/pkg/app"
@@ -11,29 +10,34 @@ import (
 	"rlxos/pkg/color"
 )
 
-var (
-	ROOT_PATH string
-)
-
-func main() {
-	ROOT_PATH = path.Join(os.Getenv("HOME"), ".local")
-
-	if err := app.New("app").
+func appimageCommand() *app.Command {
+	APPIMAGE_ROOT_PATH := path.Join(os.Getenv("HOME"), ".local")
+	return app.New("app").
 		About("AppImage manager").
 		Usage("<TASK> <ARGS...> <FLAGS>").
 		Flag(flag.New("root").
 			About("Set root filesystem for Appimage integration").
 			Handler(func(s []string) error {
-				ROOT_PATH = "/"
+				APPIMAGE_ROOT_PATH = "/"
 				return nil
 			})).
 		Flag(flag.New("install-path").
 			About("Set custom instalation path for Appimage integration").
 			Count(1).
 			Handler(func(s []string) error {
-				ROOT_PATH = s[0]
+				APPIMAGE_ROOT_PATH = s[0]
 				return nil
 			})).
+		Handler(func(c *app.Command, args []string, i interface{}) error {
+			cmd, args, iface, err := c.GetCommand("app", args)
+			if err != nil {
+				return err
+			}
+			if cmd == nil || cmd == c {
+				return c.Help()
+			}
+			return cmd.Handle(args, iface)
+		}).
 		Sub(app.New("integrate").
 			About("Integrate AppImage into system").
 			Handler(func(c *app.Command, s []string, i interface{}) error {
@@ -48,15 +52,10 @@ func main() {
 					}
 
 					color.Process("Integrating %s", file)
-					if err := appImage.Integrate(ROOT_PATH); err != nil {
+					if err := appImage.Integrate(APPIMAGE_ROOT_PATH); err != nil {
 						return fmt.Errorf("failed to integrate %s, %v", file, err)
 					}
 				}
 				return nil
-			})).
-		Run(os.Args); err != nil {
-
-		log.Println(err)
-		os.Exit(1)
-	}
+			}))
 }

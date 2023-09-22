@@ -45,9 +45,9 @@ func (a *AppImage) Integrate(rootdir string) error {
 			return err
 		}
 
-		rgx := regexp.MustCompile(`Exec=[^ ]*`)
+		desktopfileData := patchDesktopFile(string(data), "Exec=[^ ]*", "Exec="+targetfile)
 
-		if err := os.WriteFile(path.Join(desktopdir, desktopfile), []byte(rgx.ReplaceAllString(string(data), "Exec="+targetfile)), 0644); err != nil {
+		if err := os.WriteFile(path.Join(desktopdir, desktopfile), []byte(desktopfileData), 0644); err != nil {
 			return err
 		}
 	}
@@ -62,4 +62,9 @@ func (a *AppImage) Integrate(rootdir string) error {
 	}
 
 	return nil
+}
+
+func patchDesktopFile(filedata, pattern, value string) string {
+	rgx := regexp.MustCompile(pattern)
+	return rgx.ReplaceAllString(filedata, value)
 }

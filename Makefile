@@ -53,39 +53,39 @@ $(SWUPD): update-vendor version.yml server.yml
 	$(GOLANG) build -o $@ rlxos/cmd/swupd
 
 report: $(SWUPD)
-	$(SWUPD) builder report -cache-path $(CACHE_PATH)
+	$(SWUPD) buildroot report -cache-path $(CACHE_PATH)
 
 clean-garbage: $(SWUPD)
-	$(SWUPD) builder report -cache-path $(CACHE_PATH) -clean-garbage
+	$(SWUPD) buildroot report -cache-path $(CACHE_PATH) -clean-garbage
 
 list-files: $(SWUPD)
 	@if [ -z $(ELEMENT) ] ;then echo "ERROR: no element specified"; exit 1; fi
 	@if [ ! -f elements/$(ELEMENT) ] ; then echo "ERROR: no element exists elements/$(ELEMENT)"; exit 1; fi
-	$(SWUPD) builder list-files -cache-path $(CACHE_PATH) $(ELEMENT)
+	$(SWUPD) buildroot list-files -cache-path $(CACHE_PATH) $(ELEMENT)
 
 check: $(SWUPD)
 	@if [ -z $(ELEMENT) ] ;then echo "ERROR: no element specified"; exit 1; fi
 	@if [ ! -f elements/$(ELEMENT) ] ; then echo "ERROR: no element exists elements/$(ELEMENT)"; exit 1; fi
 	echo "CACHE PATH: $(CACHE_PATH)"
-	$(SWUPD) builder status -cache-path $(CACHE_PATH) $(ELEMENT)
+	$(SWUPD) buildroot status -cache-path $(CACHE_PATH) $(ELEMENT)
 
 component: $(SWUPD)
 	@if [ -z $(ELEMENT) ] ;then echo "ERROR: no element specified"; exit 1; fi
 	@if [ ! -f elements/$(ELEMENT) ] ; then echo "ERROR: no element exists elements/$(ELEMENT)"; exit 1; fi
-	$(SWUPD) builder build -cache-path $(CACHE_PATH) $(ELEMENT)
+	$(SWUPD) buildroot build -cache-path $(CACHE_PATH) $(ELEMENT)
 
 checkout: $(SWUPD)
 	@if [ -z $(ELEMENT) ] ;then echo "ERROR: no element specified"; exit 1; fi
 	@if [ ! -f elements/$(ELEMENT) ] ; then echo "ERROR: no element exists elements/$(ELEMENT)"; exit 1; fi
-	$(SWUPD) builder checkout -cache-path $(CACHE_PATH) $(ELEMENT) $(RELEASE_PATH)
+	$(SWUPD) buildroot checkout -cache-path $(CACHE_PATH) $(ELEMENT) $(RELEASE_PATH)
 
 filepath: $(SWUPD)
 	@if [ -z $(ELEMENT) ] ;then echo "ERROR: no element specified"; exit 1; fi
 	@if [ ! -f elements/$(ELEMENT) ] ; then echo "ERROR: no element exists elements/$(ELEMENT)"; exit 1; fi
-	$(SWUPD) builder file -cache-path $(CACHE_PATH) $(ELEMENT)
+	$(SWUPD) buildroot file -cache-path $(CACHE_PATH) $(ELEMENT)
 
 dump-metadata: $(SWUPD)
-	$(SWUPD) builder dump-metadata -cache-path $(CACHE_PATH) $(CACHE_PATH)/$(CODENAME)
+	$(SWUPD) buildroot dump-metadata -cache-path $(CACHE_PATH) $(CACHE_PATH)/$(CODENAME)
 
 TODO:
 	@grep -R "# TODO:" elements/ | sed 's/# TODO://g' > $@
@@ -126,7 +126,7 @@ create-patch: $(SWUPD) $(CREATE_PATCH)
 	squashfuse $(BUILDDIR)/_work/source/$(SOURCE_IMAGE_SQUASH_PATH) $(BUILDDIR)/source
 	squashfuse $(BUILDDIR)/_work/source/$(TARGET_IMAGE_SQUASH_PATH) $(BUILDDIR)/target
 
-	$(SWUPD) builder create-patch $(BUILDDIR)/source $(BUILDDIR)/target
+	$(SWUPD) buildroot create-patch $(BUILDDIR)/source $(BUILDDIR)/target
 
 	rm -rf $(BUILDDIR)/_work
 	umount $(BUILDDIR)/source $(BUILDDIR)/target || true
@@ -138,7 +138,7 @@ endef
 world: $(SWUPD)
 	for element in $(ALL_ELEMENTS) ; do 										\
 		echo "BUILDING $$element";												\
-		if $(SWUPD) builder build -cache-path $(CACHE_PATH) $$element ; then 	\
+		if $(SWUPD) buildroot build -cache-path $(CACHE_PATH) $$element ; then 	\
 			echo "PASSED $$element" >> passed;									\
 		else																	\
 			echo "FAILED $$element" >> failed;									\
@@ -155,6 +155,6 @@ world: $(SWUPD)
 	@echo "TOTAL PASSED $(shell wc -l passed)"
 
 check-updates: $(SWUPD)
-	$(SWUPD) builder check-updates
+	$(SWUPD) buildroot check-updates
 
 .PHONY: all clean update-vendor component TODO

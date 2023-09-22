@@ -111,7 +111,7 @@ if [[ -n "${LIVE}" ]] ; then
     dbg "Mounting ISO image"
     mount -o ro "${ROOT}" "${ISO_DIR}" || rescue "failed to mount ${ROOT} ${ISO_DIR}"
 
-    SYSTEM=${ISO_DIR}/$(readlink ${ISO_DIR}/usr.squashfs)
+    SYSTEM=${ISO_DIR}/sysroot.img
 
     dbg "Mounting System Image"
     mount ${SYSTEM} ${LIVE_DIR}/ro-usr || rescue "failed to system image ${SYSTEM} ${LIVE_DIR}/ro-usr"

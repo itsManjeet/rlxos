@@ -27,6 +27,7 @@ func main() {
 		Sub(appimageCommand()).
 		Sub(osinfoCommand()).
 		Sub(layersCommand()).
+		Sub(cloneCommand()).
 		Run(os.Args); err != nil {
 		color.Error("%v", err)
 		os.Exit(1)

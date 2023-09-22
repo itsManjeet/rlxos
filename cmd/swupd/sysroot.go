@@ -21,10 +21,10 @@ func sysRootCommand() *app.Command {
 			return cmd.Handle(args, iface)
 		}).
 		Init(func() (interface{}, error) {
-			if CONFIG_FILE == "" {
-				CONFIG_FILE = "/etc/swupd.yml"
+			if configfile == "" {
+				configfile = "/etc/swupd.yml"
 			}
-			s, err := sysroot.Init(CONFIG_FILE)
+			s, err := sysroot.Init(configfile)
 			if err != nil {
 				return nil, err
 			}

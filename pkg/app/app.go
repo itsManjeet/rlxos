@@ -106,7 +106,7 @@ func (c *Command) GetCommand(self string, args []string) (*Command, []string, in
 	for i := 0; i < len(args); i++ {
 		arg := args[i]
 		if arg[0] == '-' {
-			count, err := c.handleFlag(args[i:])
+			count, err := cmd.handleFlag(args[i:])
 			if err != nil {
 				return nil, nil, nil, err
 			}

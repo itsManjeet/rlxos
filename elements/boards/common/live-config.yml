@@ -10,7 +10,7 @@ build-time:
 
 pre-script: |
   # Create Live User
-  install -vDm 0644 /dev/stdin %{install-root}/%{libdir}/systemd/system/live-user.service << "EOF"
+  install -vDm 0644 /dev/stdin %{install-root}/lib/systemd/system/live-user.service << "EOF"
   [Unit]
   Description=Create Live User
   Before=graphical.target

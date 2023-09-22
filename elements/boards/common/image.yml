@@ -77,7 +77,6 @@ include:
   - components/swupd.yml
   - components/layers.yml
   - components/bolt.yml
-  - components/app.yml
 
   # Desktop Environment
   - components/xfce4.yml

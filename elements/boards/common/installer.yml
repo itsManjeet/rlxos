@@ -22,8 +22,8 @@ build-time:
 script: |
   mkdir -p ISO/boot/grub
 
-  cp -r /sysroot/sysroot.img ISO/
-  mv /sysroot/%{id}-live-config ISO/live-config.img
+  cp -r /sysroot/%{version}/sysroot.img ISO/
+  mv /sysroot/*-live-config ISO/live-config.img
 
   kerver=$(ls /lib/modules | head -n1)
   cp /lib/modules/${kerver}/bzImage ISO/boot/vmlinuz-${kerver}
@@ -42,6 +42,6 @@ script: |
   mkinitramfs -u -k=${kerver} --no-plymouth -o=$(pwd)/ISO/boot/initramfs-${kerver}.img
 
   mkdir -p %{install-root}/
-  grub-mkrescue -volid %{installer-volume-id} -o %{install-root}/rlxos-%{id}-installer.iso ISO/
+  grub-mkrescue -volid %{installer-volume-id} -o %{install-root}/rlxos-%{version}-%{id}.iso ISO/
   cd %{install-root}
-  sha256sum rlxos-%{id}-installer.iso >rlxos-%{id}-installer.iso.sha265sum
+  sha256sum rlxos-%{version}-%{id}.iso >rlxos-%{version}-%{id}.iso.sha265sum

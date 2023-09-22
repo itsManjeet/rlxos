@@ -1,4 +1,4 @@
-id: boards-x86_64
+id: x86_64-updates
 about: x86_64 Board Updates
 merge: [elements/boards/common/updates.yml]
 

@@ -49,8 +49,9 @@ script: |
   [Unit]
   After=systemd-tmpfiles-setup.service
   EOF
-
-  mksquashfs %{include-root}/usr %{install-root}/sysroot.img -comp zstd -Xcompression-level 12 -noappend
+  
+  mkdir -p %{install-root}/%{version}
+  mksquashfs %{include-root}/usr %{install-root}/%{version}/sysroot.img -comp zstd -Xcompression-level 12 -noappend
 build-time:
   - components/cryptsetup.yml
   - components/squashfs-tools.yml

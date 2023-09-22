@@ -6,12 +6,14 @@ import (
 	"rlxos/pkg/app"
 	"rlxos/pkg/app/flag"
 	"rlxos/pkg/cloner"
+	"strconv"
 )
 
 func cloneCommand() *app.Command {
 	parititonType := "ext4"
 	bootloader := cloner.BOOTLOADER_GRUB
 	isEfi := false
+	imageVersion := 0
 	if _, err := os.Stat("/sys/firmware/efi"); err == nil {
 		isEfi = true
 	}
@@ -21,6 +23,7 @@ func cloneCommand() *app.Command {
 		Init(func() (interface{}, error) {
 			cloner := &cloner.Cloner{
 				PartitionType: parititonType,
+				ImageVersion:  imageVersion,
 				Bootloader:    bootloader,
 				IsEfi:         isEfi,
 				EfiPartition:  efiPartition,
@@ -35,6 +38,13 @@ func cloneCommand() *app.Command {
 			Handler(func(s []string) error {
 				parititonType = s[0]
 				return nil
+			})).
+		Flag(flag.New("version").
+			About("Specify Image version").
+			Count(1).
+			Handler(func(s []string) (err error) {
+				imageVersion, err = strconv.Atoi(s[0])
+				return
 			})).
 		Flag(flag.New("bootloader").
 			About("Specify Bootloader (default: grub) [grub,none]").

@@ -52,7 +52,10 @@ jobs:
       - name: Checkout Release
         run: |
           make checkout ELEMENT=boards/${{matrix.board}}/installer.yml RELEASE_PATH=${CACHE_PATH}/releases/
-          make checkout ELEMENT=boards/${{matrix.board}}/updates.yml   RELEASE_PATH=${UPDATE_DIR}/
+          make checkout ELEMENT=boards/${{matrix.board}}/updates.yml   RELEASE_PATH=${UPDATE_DIR}/${ARCH}/
+          
+          cd ${UPDATE_DIR}/${ARCH}/
+          sha256sum *.img > SHA256SUMS
       
       - name: Update Metadata
         run: make dump-metadata

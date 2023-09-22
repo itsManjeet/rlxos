@@ -129,9 +129,9 @@ func (c *Command) GetCommand(self string, args []string) (*Command, []string, in
 		requiredArgs = append(requiredArgs, arg)
 	}
 	var result interface{}
-	if c.initMethod != nil {
+	if cmd.initMethod != nil {
 		var err error
-		result, err = c.initMethod()
+		result, err = cmd.initMethod()
 		if err != nil {
 			return nil, nil, nil, err
 		}

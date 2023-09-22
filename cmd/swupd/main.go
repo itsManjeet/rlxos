@@ -25,6 +25,8 @@ func main() {
 		Sub(buildrootCommand()).
 		Sub(sysRootCommand()).
 		Sub(appimageCommand()).
+		Sub(osinfoCommand()).
+		Sub(layersCommand()).
 		Run(os.Args); err != nil {
 		color.Error("%v", err)
 		os.Exit(1)

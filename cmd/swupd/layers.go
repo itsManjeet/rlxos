@@ -2,26 +2,25 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"path"
 	"rlxos/pkg/app"
 	"rlxos/pkg/app/flag"
 	"rlxos/pkg/layers"
 )
 
-func main() {
-	SEARCH_PATH := []string{path.Join("var", "lib", "layers")}
-	ROOT_DIR := "/"
-	SERVER_URL := "http://storage.rlxos.dev/"
+func layersCommand() *app.Command {
+	searchDir := []string{path.Join("var", "lib", "layers")}
+	rootDir := "/"
+	serverUrl := "http://storage.rlxos.dev/"
 
-	if err := app.New("layers").
+	return app.New("layers").
 		About("Add and/or remove package layers over rootfilesystem").
 		Usage("<TASK> <FLAGS?> <ARGS...>").
 		Init(func() (interface{}, error) {
 			m := &layers.Manager{
-				RootDir:    ROOT_DIR,
-				SearchPath: SEARCH_PATH,
-				ServerUrl:  SERVER_URL,
+				RootDir:    rootDir,
+				SearchPath: searchDir,
+				ServerUrl:  serverUrl,
 			}
 			return m, nil
 		}).
@@ -29,25 +28,32 @@ func main() {
 			Count(1).
 			About("Append layers search path").
 			Handler(func(s []string) error {
-				SEARCH_PATH = append(SEARCH_PATH, s[0])
+				searchDir = append(searchDir, s[0])
 				return nil
 			})).
 		Flag(flag.New("root").
 			Count(1).
 			About("set root directory").
 			Handler(func(s []string) error {
-				ROOT_DIR = s[0]
+				rootDir = s[0]
 				return nil
 			})).
 		Flag(flag.New("server").
 			Count(1).
 			About("set server url").
 			Handler(func(s []string) error {
-				SERVER_URL = s[0]
+				serverUrl = s[0]
 				return nil
 			})).
-		Handler(func(c *app.Command, s []string, b interface{}) error {
-			return c.Help()
+		Handler(func(c *app.Command, args []string, i interface{}) error {
+			cmd, args, iface, err := c.GetCommand("layers", args)
+			if err != nil {
+				return err
+			}
+			if cmd == nil || cmd == c {
+				return c.Help()
+			}
+			return cmd.Handle(args, iface)
 		}).
 		Sub(app.New("list").
 			About("List All available layers").
@@ -82,8 +88,8 @@ func main() {
 				m := b.(*layers.Manager)
 				return m.Refresh(true)
 			})).
-		Sub(app.New("create").
-			About("Create New Layer").
+		Sub(app.New("add").
+			About("Add New Layer").
 			Handler(func(c *app.Command, s []string, i interface{}) error {
 				if len(s) < 1 {
 					return fmt.Errorf("no layer name provided")
@@ -93,7 +99,7 @@ func main() {
 				if len(s) == 2 {
 					layerid = s[1]
 				}
-				return manager.Create(s[0], layerid)
+				return manager.Add(s[0], layerid)
 			})).
 		Sub(app.New("remove").
 			About("Remove Layer").
@@ -103,10 +109,5 @@ func main() {
 				}
 				manager := i.(*layers.Manager)
 				return manager.Remove(s[0])
-			})).
-		Run(os.Args); err != nil {
-
-		fmt.Printf("ERROR: %v\n", err)
-		os.Exit(1)
-	}
+			}))
 }

@@ -14,6 +14,7 @@ post-script: |-
   rm -fv %{install-root}%{sysconfdir}/dbus-1/system.d/pulseaudio-system.conf
 
   install -vDm0655 /dev/stdin %{install-root}%{libdir}/tmpfiles.d/%{id}.conf << "EOF"
+  C %{sysconfdir}/xdg/autostart/pulseaudio.desktop
   C /etc/pulse
   EOF
 

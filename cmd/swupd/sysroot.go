@@ -36,18 +36,19 @@ func sysRootCommand() *app.Command {
 				s := i.(*sysroot.Sysroot)
 
 				fmt.Printf("ACTIVE      : %d\n", s.InUse)
-				fmt.Printf("AVAILABLE   :\n")
-				for _, i := range s.Images {
-					fmt.Printf(" - %d\n", i)
-				}
+				fmt.Printf("AVAILABLE   : %v\n", s.Images)
 
-				updateInfo, err := s.Check()
+				remoteImages, err := s.ListRemoteReleases()
 				if err != nil {
 					log.Printf("failed to get remote version %v\n", err)
 				}
-				fmt.Printf("REMOTE      : %d\n", updateInfo.Version)
-				if updateInfo.Version != s.Images[0] {
-					fmt.Printf("UPDATED AVAILABLE %d\n%s\n", updateInfo.Version, updateInfo.Changelog)
+				fmt.Printf("REMOTE      : %v\n", remoteImages)
+				if s.HasUpdates(remoteImages) {
+					changelog, err := s.GetChangelog(remoteImages[0])
+					if err != nil {
+						return err
+					}
+					fmt.Printf("UPDATED AVAILABLE %d\n%s\n", remoteImages[0], changelog)
 				} else {
 					fmt.Println("SYSTEM IS UPTO DATE")
 				}
@@ -58,21 +59,20 @@ func sysRootCommand() *app.Command {
 			About("Download and apply system updates").
 			Handler(func(c *app.Command, args []string, i interface{}) error {
 				s := i.(*sysroot.Sysroot)
-				updateInfo, err := s.Check()
+				remoteImages, err := s.ListRemoteReleases()
 				if err != nil {
 					log.Printf("failed to get remote version %v\n", err)
 				}
-
-				if updateInfo.Version == s.Images[0] {
-					log.Println("SYSTEM IS ALREADY UPTO DATE", updateInfo.Version)
-					return nil
+				if s.HasUpdates(remoteImages) {
+					changelog, err := s.GetChangelog(remoteImages[0])
+					if err != nil {
+						return err
+					}
+					fmt.Printf("UPDATED AVAILABLE %d\n%s\n", remoteImages[0], changelog)
+					return s.Update()
+				} else {
+					fmt.Println("SYSTEM IS UPTO DATE")
 				}
-
-				log.Printf("Applying system updates %d -> %d\n", s.Images[0], updateInfo.Version)
-				if err := s.Update(updateInfo); err != nil {
-					return err
-				}
-
 				return nil
 			}))
 }

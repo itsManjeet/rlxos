@@ -11,6 +11,10 @@ import (
 	"strings"
 )
 
+const (
+	SYSTEM_IMAGES_PATH = "/sysroot/images"
+)
+
 type Sysroot struct {
 	InUse  int
 	Images []int
@@ -27,7 +31,7 @@ func Init(configfile string) (*Sysroot, error) {
 		return nil, fmt.Errorf("failed to read configuration file %s, %v", configfile, err)
 	}
 
-	images, err := ioutil.ReadDir("/rlxos/system/")
+	images, err := ioutil.ReadDir(SYSTEM_IMAGES_PATH)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read system images path, %v", err)
 	}
@@ -43,7 +47,7 @@ func Init(configfile string) (*Sysroot, error) {
 	}
 
 	sort.Slice(sysroot.Images, func(a, b int) bool {
-		return sysroot.Images[a] < sysroot.Images[b]
+		return sysroot.Images[a] > sysroot.Images[b]
 	})
 
 	mountInfo, err := osinfo.GetMounts()
@@ -65,7 +69,7 @@ func Init(configfile string) (*Sysroot, error) {
 				imageVersionString = path.Base(strings.Trim(string(data), " \n"))
 			case strings.HasPrefix(mount.Source, "LABEL=RLXOS_"):
 				imageVersionString = strings.TrimPrefix(mount.Source, "LABEL=RLXOS_")
-			case strings.HasPrefix(mount.Source, "/rlxos/system/"):
+			case strings.HasPrefix(mount.Source, SYSTEM_IMAGES_PATH):
 				imageVersionString = path.Base(mount.Source)
 			}
 			imageVersion, err := strconv.Atoi(imageVersionString)

@@ -48,6 +48,10 @@ func DownloadFile(filepath string, url string) error {
 	}
 	defer resp.Body.Close()
 
+	if resp.StatusCode != 200 {
+		return fmt.Errorf(resp.Status)
+	}
+
 	counter := &WriteCounter{
 		Size: uint64(resp.ContentLength),
 	}

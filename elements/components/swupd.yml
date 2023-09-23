@@ -1,10 +1,11 @@
 id: swupd
-version: 0.1.2
+version: 0.1.4
 about: software update manager
 merge: [server.yml]
 build-type: go-pkg
 variables:
   go-pkg: cmd/swupd
+  force-rebuild: true
 
 post-script: |-
   mkdir -p %{install-root}/%{sysconfdir}

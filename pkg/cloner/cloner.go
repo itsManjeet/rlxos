@@ -29,6 +29,7 @@ type Cloner struct {
 	IsEfi         bool
 	EfiPartition  string
 	PrettyName    string
+	BootDisk      string
 }
 
 func (c *Cloner) DiskofParition(partition string) (string, error) {
@@ -37,7 +38,7 @@ func (c *Cloner) DiskofParition(partition string) (string, error) {
 		return "", fmt.Errorf("failed to readlink partition block %s, %v", path.Base(partition), err)
 	}
 
-	return path.Base(path.Dir(blockClass)), nil
+	return path.Join("/dev", path.Base(path.Dir(blockClass))), nil
 }
 
 func (c *Cloner) Clone(partition, imagePath string) error {
@@ -116,9 +117,11 @@ func (c *Cloner) Clone(partition, imagePath string) error {
 	}
 	defer syscall.Unmount(c.EfiPartition, syscall.MNT_FORCE)
 
-	partitionDisk, err := c.DiskofParition(partition)
-	if err != nil {
-		return err
+	if c.BootDisk == "" {
+		c.BootDisk, err = c.DiskofParition(partition)
+		if err != nil {
+			return err
+		}
 	}
 
 	if c.IsEfi {
@@ -126,7 +129,7 @@ func (c *Cloner) Clone(partition, imagePath string) error {
 			return fmt.Errorf("failed to install bootloader %s, %v", string(data), err)
 		}
 	} else {
-		if data, err := exec.Command("grub-install", "--recheck", "--root-directory="+tmpdir, "--boot-directory="+path.Join(tmpdir, "sysroot", "boot"), partitionDisk).CombinedOutput(); err != nil {
+		if data, err := exec.Command("grub-install", "--recheck", "--root-directory="+tmpdir, "--boot-directory="+path.Join(tmpdir, "sysroot", "boot"), c.BootDisk).CombinedOutput(); err != nil {
 			return fmt.Errorf("failed to install bootloader %s, %v", string(data), err)
 		}
 	}
@@ -168,8 +171,8 @@ set default="%s"
 
 menuentry "%s" {
 	insmod all_video
-	linux /boot/vmlinuz-%s rw rd.image=%d root=%s
-	initrd /boot/initramfs-%s.img
+	linux /sysroot/boot/vmlinuz-%s rw rd.image=%d root=%s
+	initrd /sysroot/boot/initramfs-%s.img
 }
 
 	`, c.PrettyName, c.PrettyName, kernelVersion, c.ImageVersion, grubRootPath, kernelVersion)), 0644); err != nil {

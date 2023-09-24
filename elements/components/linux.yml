@@ -31,7 +31,7 @@ script: |
   }
   module() {
     echo "${1}" >>expected-configs
-    has "${1}" || scripts/config --keep-case -m "${1}"
+    scripts/config --keep-case -m "${1}"
   }
   enable() {
     echo "${1}" >>expected-configs

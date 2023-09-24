@@ -69,6 +69,13 @@ check: $(SWUPD)
 	echo "CACHE PATH: $(CACHE_PATH)"
 	$(SWUPD) buildroot status -cache-path $(CACHE_PATH) $(ELEMENT)
 
+test:
+	@if [ -z $(IMAGE) ] ;then echo "ERROR: no image specified"; exit 1; fi
+	@if [ ! -f $(IMAGE) ] ; then echo "ERROR: no image exists $(IMAGE)"; exit 1; fi
+	qemu-system-$(ARCH) -cdrom $(IMAGE) \
+		-m 2G -smp 2 \
+		-nographic
+
 component: $(SWUPD)
 	@if [ -z $(ELEMENT) ] ;then echo "ERROR: no element specified"; exit 1; fi
 	@if [ ! -f elements/$(ELEMENT) ] ; then echo "ERROR: no element exists elements/$(ELEMENT)"; exit 1; fi

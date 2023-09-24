@@ -2017,6 +2017,7 @@ script: |-
   enable FW_LOADER_USER_HELPER
   enable FW_LOADER_COMPRESS
   enable FW_LOADER_COMPRESS_XZ
+  enable FW_LOADER_COMPRESS_ZSTD
   enable FW_CACHE
   # end of Firmware loader
 

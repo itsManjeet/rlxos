@@ -61,7 +61,6 @@ include:
   # Core
   - components/core.yml
   - components/release-info.yml
-  - components/linux.yml
   - components/firmware.yml
   - components/tzdata.yml
   - components/grub.yml

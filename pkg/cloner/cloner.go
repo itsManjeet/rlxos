@@ -95,12 +95,16 @@ func (c *Cloner) Clone(partition, imagePath string) error {
 	}
 
 	log.Println("Installing kernel image")
-	if err := utils.CopyFile(path.Join("/", "lib", "modules", kernelVersion, "bzImage"), path.Join(tmpdir, "sysroot", "boot", "vmlinuz-"+kernelVersion)); err != nil {
+	kernelPath := path.Join(tmpdir, "sysroot", "boot", "modules", kernelVersion)
+	if err := os.MkdirAll(kernelPath, 0755); err != nil {
+		return fmt.Errorf("faild to create kernel path %s", kernelPath)
+	}
+	if err := exec.Command("cp", "-rv", path.Join("/", "run", "iso", "boot", "modules", kernelVersion), path.Dir(kernelPath)); err != nil {
 		return fmt.Errorf("failed to install kernel image %v", err)
 	}
 
 	log.Println("Generating initramfs")
-	if data, err := exec.Command("mkinitramfs", "-o="+path.Join(tmpdir, "sysroot", "boot", "initramfs-"+kernelVersion+".img"), "--no-plymouth").CombinedOutput(); err != nil {
+	if data, err := exec.Command("mkinitramfs", "-o="+path.Join(kernelPath, "initramfs.img"), "--no-plymouth").CombinedOutput(); err != nil {
 		return fmt.Errorf("failed to generate initramfs %s, %v", string(data), err)
 	}
 
@@ -167,8 +171,8 @@ set default="%s"
 
 menuentry "%s" {
 	insmod all_video
-	linux /sysroot/boot/vmlinuz-%s rw rd.image=%d root=%s
-	initrd /sysroot/boot/initramfs-%s.img
+	linux /sysroot/boot/modules/%s/bzImage rw rd.image=%d root=%s
+	initrd /sysroot/boot/modules/%s/initramfs.img
 }
 
 	`, c.PrettyName, c.PrettyName, kernelVersion, c.ImageVersion, grubRootPath, kernelVersion)), 0644); err != nil {

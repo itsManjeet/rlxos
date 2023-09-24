@@ -1,5 +1,5 @@
 id: swupd
-version: 0.1.5
+version: 0.1.6
 about: software update manager
 merge: [server.yml]
 build-type: go-pkg

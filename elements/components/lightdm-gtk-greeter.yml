@@ -10,9 +10,9 @@ post-script: |-
   install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/lightdm/lightdm-gtk-greeter.conf << "EOF"
   [greeter]
   background=%{datadir}/backgrounds/default.jpeg
-  theme-name=Qogir-Light
-  icon-theme-name=Qogir
-  font-name=Cantarell 11
+  theme-name=Fluent-Light
+  icon-theme-name=Fluent
+  font-name=Noto Sans 11
   panel-position=bottom
   indicators=~host;~spacer;~session;~a11y;~language;~clock;~power;
   EOF

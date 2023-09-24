@@ -60,6 +60,7 @@ script: |
 
   cp %{datadir}/grub/unicode.pf2 ISO/boot/grub/fonts/
   echo "set prefix=/boot/grub" > ISO/boot/grub-early.cfg
+  cp -a %{libdir}/grub/x86_64-efi/*.{mod,lst} ISO/boot/grub/x86_64-efi
 
   grub-mkimage -c ISO/boot/grub-early.cfg -o ISO/efi/boot/bootx64.efi -Ox86_64-efi -p "" iso9660 normal search search_fs_file
   dd if=/dev/zero of=ISO/boot/efiboot.img count=4096

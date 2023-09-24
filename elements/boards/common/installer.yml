@@ -11,7 +11,7 @@ variables:
 build-time:
   - components/core.yml
   - components/e2fsprogs.yml
-  - components/linux.yml
+  - kernel/linux.yml
   - components/mkinitramfs.yml
   - components/mtools.yml
   - components/grub.yml
@@ -31,8 +31,8 @@ script: |
   install -vDm0644 /dev/stdin ISO/isolinux/isolinux.cfg << EOF
   DEFAULT RLXOS GNU/Linux
   LABEL RLXOS GNU/Linux
-    KERNEL /boot/vmlinuz-${kerver}
-    APPEND initrd=/boot/initramfs-${kerver}.img %{cmdline}
+    KERNEL /boot/modules/%{kerver}/bzImage
+    APPEND initrd=/boot/modules/%{kerver}/initramfs.img %{cmdline}
   EOF
 
   install -vDm0644 /dev/stdin ISO/boot/grub/grub.cfg << EOF
@@ -52,8 +52,8 @@ script: |
   fi
 
   menuentry "RLXOS GNU/Linux" {
-    linux /boot/vmlinuz-${kerver} %{cmdline}
-    initrd /boot/initramfs-${kerver}.img
+    linux /boot/modules/%{kerver}/bzImage %{cmdline}
+    initrd /boot/modules/%{kerver}/initramfs.img
   }
 
   EOF
@@ -75,10 +75,10 @@ script: |
   cp -r /sysroot/%{version}/sysroot.img ISO/
   mv /sysroot/*-live-config ISO/live-config.img
 
-  
-  cp /lib/modules/${kerver}/bzImage ISO/boot/vmlinuz-${kerver}
-  
-  mkinitramfs -u -k=${kerver} --no-plymouth -o=$(pwd)/ISO/boot/initramfs-${kerver}.img
+  depmod -a ${kerver}
+  cp /boot/modules/ ISO/boot/ -rap
+
+  mkinitramfs -u -k=${kerver} --no-plymouth -o=$(pwd)/ISO/boot/modules/%{kerver}/initramfs.img
 
   mkdir -p %{install-root}/
   xorriso -as mkisofs \

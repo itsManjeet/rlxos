@@ -22,7 +22,7 @@ build-time:
 
 script: |
   mkdir -p ISO/{boot/grub/{fonts,x86_64-efi},efi/boot,isolinux}
-  kerver=$(ls /lib/modules | head -n1)
+  kerver=$(ls /boot/modules | head -n1)
 
   for file in chain.c32 isolinux.bin ldlinux.c32 libutil.c32 reboot.c32 vesamenu.c32 libcom32.c32 poweroff.c32 ; do
     cp %{datadir}/syslinux/$file ISO/isolinux/
@@ -31,12 +31,12 @@ script: |
   install -vDm0644 /dev/stdin ISO/isolinux/isolinux.cfg << EOF
   DEFAULT RLXOS GNU/Linux
   LABEL RLXOS GNU/Linux
-    KERNEL /boot/modules/%{kerver}/bzImage
-    APPEND initrd=/boot/modules/%{kerver}/initramfs.img %{cmdline}
+    KERNEL /boot/modules/${kerver}/bzImage
+    APPEND initrd=/boot/modules/${kerver}/initramfs.img %{cmdline}
   EOF
 
   install -vDm0644 /dev/stdin ISO/boot/grub/grub.cfg << EOF
-  set defaul="RLXOS GNU/Linux"
+  set default="RLXOS GNU/Linux"
   set timeout=10
 
   insmod all_video
@@ -52,8 +52,8 @@ script: |
   fi
 
   menuentry "RLXOS GNU/Linux" {
-    linux /boot/modules/%{kerver}/bzImage %{cmdline}
-    initrd /boot/modules/%{kerver}/initramfs.img
+    linux /boot/modules/${kerver}/bzImage %{cmdline}
+    initrd /boot/modules/${kerver}/initramfs.img
   }
 
   EOF
@@ -78,7 +78,7 @@ script: |
   depmod -a ${kerver}
   cp /boot/modules/ ISO/boot/ -rap
 
-  mkinitramfs -u -k=${kerver} --no-plymouth -o=$(pwd)/ISO/boot/modules/%{kerver}/initramfs.img
+  mkinitramfs -u -k=${kerver} --no-plymouth -o=$(pwd)/ISO/boot/modules/${kerver}/initramfs.img
 
   mkdir -p %{install-root}/
   xorriso -as mkisofs \

@@ -68,7 +68,7 @@ depends:
   - components/libinput.yml
   - components/upower.yml
   - components/themes/adwaita-icon-theme.yml
-  - components/themes/fluent-icon-theme.yml
+  - components/themes/fluent-gtk-theme.yml
   - components/themes/fluent-icon-theme.yml
   - components/themes/fluent-wallpaper.yml
   - components/fonts/adobe-source-code-pro-fonts.yml

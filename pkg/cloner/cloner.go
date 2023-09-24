@@ -47,7 +47,7 @@ func (c *Cloner) Clone(partition, imagePath string) error {
 	if err != nil {
 		return fmt.Errorf("failed to create temporary dir %v", err)
 	}
-	defer os.RemoveAll(tmpdir)
+	defer os.Remove(tmpdir)
 
 	log.Printf("Mounting %s [%s] %s\n", partition, tmpdir, c.PartitionType)
 	if err := syscall.Mount(partition, tmpdir, c.PartitionType, 0, ""); err != nil {
@@ -85,55 +85,6 @@ func (c *Cloner) Clone(partition, imagePath string) error {
 		return nil
 	}
 
-	log.Println("Installing bootloader")
-	if err := os.MkdirAll(path.Join(tmpdir, "sysroot", "boot", "grub"), 0755); err != nil {
-		return fmt.Errorf("failed to create boot directories, %v", err)
-	}
-
-	if c.IsEfi {
-		log.Println("Setting up EFI partition")
-
-		if c.EfiPartition == "" {
-			output, err := exec.Command("sh", "-c", "lsblk -no path,parttypename | grep 'EFI System Partition'").CombinedOutput()
-			if err != nil {
-				return fmt.Errorf("failed to detect EFI partition %s, %v", string(output), err)
-			}
-
-			c.EfiPartition = strings.Trim(string(output), " \n")
-		}
-		efiPath := path.Join(tmpdir, "sysroot", "efi")
-		if err := os.MkdirAll(efiPath, 0755); err != nil {
-			return fmt.Errorf("failed to create EFI directory %s, %v", efiPath, err)
-		}
-
-		EFI_PART_TYPE := "fat32"
-		if len(os.Getenv("EFI_PART_TYPE")) != 0 {
-			EFI_PART_TYPE = os.Getenv("EFI_PART_TYPE")
-		}
-
-		if err := syscall.Mount(c.EfiPartition, efiPath, EFI_PART_TYPE, 0, ""); err != nil {
-			return fmt.Errorf("failed to mount EFI Partition")
-		}
-	}
-	defer syscall.Unmount(c.EfiPartition, syscall.MNT_FORCE)
-
-	if c.BootDisk == "" {
-		c.BootDisk, err = c.DiskofParition(partition)
-		if err != nil {
-			return err
-		}
-	}
-
-	if c.IsEfi {
-		if data, err := exec.Command("grub-install", "--recheck", "--bootloader-id="+c.PrettyName, "--target=x86_64-efi", "--efi-directory="+path.Join(tmpdir, "sysroot", "efi"), "--root-directory="+tmpdir, "--boot-directory="+path.Join(tmpdir, "sysroot", "boot")).CombinedOutput(); err != nil {
-			return fmt.Errorf("failed to install bootloader %s, %v", string(data), err)
-		}
-	} else {
-		if data, err := exec.Command("grub-install", "--recheck", "--root-directory="+tmpdir, "--boot-directory="+path.Join(tmpdir, "sysroot", "boot"), c.BootDisk).CombinedOutput(); err != nil {
-			return fmt.Errorf("failed to install bootloader %s, %v", string(data), err)
-		}
-	}
-
 	var kernelVersion string
 	{
 		output, err := exec.Command("uname", "-r").CombinedOutput()
@@ -151,6 +102,51 @@ func (c *Cloner) Clone(partition, imagePath string) error {
 	log.Println("Generating initramfs")
 	if data, err := exec.Command("mkinitramfs", "-o="+path.Join(tmpdir, "sysroot", "boot", "initramfs-"+kernelVersion+".img"), "--no-plymouth").CombinedOutput(); err != nil {
 		return fmt.Errorf("failed to generate initramfs %s, %v", string(data), err)
+	}
+
+	log.Println("Installing bootloader")
+	if err := os.MkdirAll(path.Join(tmpdir, "sysroot", "boot", "grub"), 0755); err != nil {
+		return fmt.Errorf("failed to create boot directories, %v", err)
+	}
+
+	// TODO: better way to detech UEFI partition
+	if c.IsEfi {
+		log.Println("Setting up EFI partition")
+		if c.EfiPartition == "" {
+			output, err := exec.Command("sh", "-c", "lsblk -no path,label,parttypename | grep 'EFI' | awk '{print $1}'").CombinedOutput()
+			if err != nil {
+				return fmt.Errorf("failed to detect EFI partition %s, %v", string(output), err)
+			}
+
+			c.EfiPartition = strings.Trim(string(output), " \n")
+		}
+		efiPath := path.Join(tmpdir, "sysroot", "efi")
+		if err := os.MkdirAll(efiPath, 0755); err != nil {
+			return fmt.Errorf("failed to create EFI directory %s, %v", efiPath, err)
+		}
+
+		EFI_PART_TYPE := "vfat"
+		if len(os.Getenv("EFI_PART_TYPE")) != 0 {
+			EFI_PART_TYPE = os.Getenv("EFI_PART_TYPE")
+		}
+
+		if err := syscall.Mount(c.EfiPartition, efiPath, EFI_PART_TYPE, 0, ""); err != nil {
+			return fmt.Errorf("failed to mount EFI Partition")
+		}
+		defer syscall.Unmount(c.EfiPartition, syscall.MNT_FORCE)
+		if data, err := exec.Command("grub-install", "--recheck", "--bootloader-id="+c.PrettyName, "--target=x86_64-efi", "--efi-directory="+path.Join(tmpdir, "sysroot", "efi"), "--root-directory="+tmpdir, "--boot-directory="+path.Join(tmpdir, "sysroot", "boot")).CombinedOutput(); err != nil {
+			return fmt.Errorf("failed to install bootloader %s, %v", string(data), err)
+		}
+	} else {
+		if c.BootDisk == "" {
+			c.BootDisk, err = c.DiskofParition(partition)
+			if err != nil {
+				return err
+			}
+		}
+		if data, err := exec.Command("grub-install", "--recheck", "--root-directory="+tmpdir, "--boot-directory="+path.Join(tmpdir, "sysroot", "boot"), c.BootDisk).CombinedOutput(); err != nil {
+			return fmt.Errorf("failed to install bootloader %s, %v", string(data), err)
+		}
 	}
 
 	log.Println("Getting UUID for", partition)

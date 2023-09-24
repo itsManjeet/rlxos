@@ -5,7 +5,7 @@ variables:
   installer-volume-id: RLXOS
   include-root: /sysroot
   root-password: rlxos
-  cmdline: live root=LABEL=RLXOS console=tty0 console=ttyS0
+  cmdline: live root=LABEL=RLXOS
   force-rebuild: true
 
 build-time:
@@ -53,7 +53,7 @@ script: |
 
   menuentry "RLXOS GNU/Linux" {
     linux /boot/vmlinuz-${kerver} %{cmdline}
-    initrd /boot/initramfs-${kerver}
+    initrd /boot/initramfs-${kerver}.img
   }
 
   EOF

@@ -14,8 +14,8 @@ post-script: |-
   <?xml version="1.0" encoding="UTF-8"?>
   <channel name="xsettings" version="1.0">
     <property name="Net" type="empty">
-      <property name="ThemeName" type="string" value="Qogir-Light"/>
-      <property name="IconThemeName" type="string" value="Qogir"/>
+      <property name="ThemeName" type="string" value="Fluent-Light"/>
+      <property name="IconThemeName" type="string" value="Fluent"/>
       <property name="DoubleClickTime" type="int" value="400"/>
       <property name="DoubleClickDistance" type="int" value="5"/>
       <property name="DndDragThreshold" type="int" value="8"/>
@@ -36,7 +36,7 @@ post-script: |-
     <property name="Gtk" type="empty">
       <property name="CanChangeAccels" type="bool" value="false"/>
       <property name="ColorPalette" type="string" value="black:white:gray50:red:purple:blue:light blue:green:yellow:orange:lavender:brown:goldenrod4:dodger blue:pink:light green:gray10:gray30:gray75:gray90"/>
-      <property name="FontName" type="string" value="Cantarell 11"/>
+      <property name="FontName" type="string" value="Noto Sans 11"/>
       <property name="MonospaceFontName" type="string" value="Source Code Pro 11"/>
       <property name="IconSizes" type="string" value=""/>
       <property name="KeyThemeName" type="string" value=""/>
@@ -45,7 +45,7 @@ post-script: |-
       <property name="MenuImages" type="bool" value="true"/>
       <property name="ButtonImages" type="bool" value="true"/>
       <property name="MenuBarAccel" type="string" value="F10"/>
-      <property name="CursorThemeName" type="string" value="Qogir-dark"/>
+      <property name="CursorThemeName" type="string" value="Adwaita"/>
       <property name="CursorThemeSize" type="int" value="0"/>
       <property name="DecorationLayout" type="string" value="menu:minimize,maximize,close"/>
       <property name="DialogsUseHeader" type="bool" value="false"/>
@@ -68,8 +68,9 @@ depends:
   - components/libinput.yml
   - components/upower.yml
   - components/themes/adwaita-icon-theme.yml
-  - components/themes/qogir-gtk-theme.yml
-  - components/themes/qogir-icon-theme.yml
+  - components/themes/fluent-icon-theme.yml
+  - components/themes/fluent-icon-theme.yml
+  - components/themes/fluent-wallpaper.yml
   - components/fonts/adobe-source-code-pro-fonts.yml
   - components/fonts/cantarell.yml
 build-time:

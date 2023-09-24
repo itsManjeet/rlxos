@@ -18,9 +18,6 @@ post-script: |-
     </property>
   </channel>
   EOF
-
-  install -vDm 0644 /files/background.jpeg %{install-root}/%{datadir}/backgrounds/default.jpeg
-
 depends:
   - components/exo.yml
   - components/libwnck.yml

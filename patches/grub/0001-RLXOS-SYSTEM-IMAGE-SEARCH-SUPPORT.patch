@@ -5,7 +5,7 @@
      xi?86 | xx86_64)
  	list=
 -	for i in /boot/vmlinuz-* /vmlinuz-* /boot/kernel-* ; do
-+	for i in /boot/vmlinuz-* /vmlinuz-* /boot/kernel-* /boot/vmlinuz ; do
++	for i in /boot/vmlinuz-* /vmlinuz-* /boot/kernel-* /boot/vmlinuz /sysroot/boot/modules/*/bzImage ; do
  	    if grub_file_is_not_garbage "$i" ; then list="$list $i" ; fi
  	done ;;
      *) 
@@ -30,7 +30,7 @@
  	   "initramfs-genkernel-${GENKERNEL_ARCH}-${version}" \
 -	   "initramfs-genkernel-${GENKERNEL_ARCH}-${alt_version}"; do
 +	   "initramfs-genkernel-${GENKERNEL_ARCH}-${alt_version}" \
-+     "initrd"; do
++     "initramfs.img"; do
      if test -e "${dirname}/${i}" ; then
        initrd_real="${i}"
        break

@@ -97,7 +97,6 @@ include:
   - components/xdg-user-dirs-gtk.yml
 
   # Fonts
-  - components/fonts/cantarell.yml
   - components/fonts/adobe-source-code-pro-fonts.yml
   - components/fonts/noto.yml
   - components/fonts/noto-emoji.yml
@@ -111,11 +110,6 @@ include:
   - components/librsvg.yml
   - components/pulseaudio.yml
   - components/upower.yml
-
-  # Themes and Icons
-  - components/themes/adwaita-icon-theme.yml
-  - components/themes/qogir-gtk-theme.yml
-  - components/themes/qogir-icon-theme.yml
 
   # Apps
   - boards/common/apps.yml

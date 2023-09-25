@@ -10,7 +10,7 @@ post-script: |-
   install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/lightdm/lightdm-gtk-greeter.conf << "EOF"
   [greeter]
   background=%{datadir}/backgrounds/default.jpeg
-  theme-name=Fluent-Light
+  theme-name=Fluent-round-Light
   icon-theme-name=Fluent
   font-name=Noto Sans 11
   panel-position=bottom

@@ -95,13 +95,15 @@ func (c *Cloner) Clone(partition, imagePath string) error {
 	}
 
 	log.Println("Installing kernel image")
-	kernelPath := path.Join(tmpdir, "sysroot", "boot", "modules", kernelVersion)
+	kernelPath := path.Join(tmpdir, "sysroot", "boot", "modules")
 	if err := os.MkdirAll(kernelPath, 0755); err != nil {
 		return fmt.Errorf("faild to create kernel path %s", kernelPath)
 	}
-	if err := exec.Command("cp", "-rv", path.Join("/", "run", "iso", "boot", "modules", kernelVersion), path.Dir(kernelPath)); err != nil {
-		return fmt.Errorf("failed to install kernel image %v", err)
+	if output, err := exec.Command("cp", "-rv", path.Join("/", "run", "iso", "boot", "modules", kernelVersion), kernelPath).CombinedOutput(); err != nil {
+		return fmt.Errorf("failed to install kernel image %s %v", string(output), err)
 	}
+
+	kernelPath = path.Join(kernelPath, kernelVersion)
 
 	log.Println("Generating initramfs")
 	if data, err := exec.Command("mkinitramfs", "-o="+path.Join(kernelPath, "initramfs.img"), "--no-plymouth").CombinedOutput(); err != nil {

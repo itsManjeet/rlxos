@@ -122,7 +122,8 @@ if [[ -n "${LIVE}" ]] ; then
     dbg "Setting up overlay configuration"
     mount -t overlay overlay -o lowerdir=${LIVE_DIR}/ro:${LIVE_DIR}/ro-usr,upperdir=${LIVE_DIR}/rw,workdir=${LIVE_DIR}/work ${SYSROOT} || rescue "failed to setup overlay configuration lowerdir=${LIVE_DIR}/ro:${LIVE_DIR}/ro-usr,upperdir=${LIVE_DIR}/rw,workdir=${LIVE_DIR}/work ${SYSROOT}"
 
-    (cd ${SYSROOT}; ln -sv . usr)
+    (cd ${SYSROOT}; ln -s . usr)
+    (cd ${SYSROOT}; ln -s /run/iso/boot boot)
 
 else
     dbg "Mounting Root filesystem ${ROOT} ${SYSROOT}"

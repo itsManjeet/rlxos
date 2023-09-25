@@ -78,9 +78,7 @@ include:
   - components/bolt.yml
 
   # Desktop Environment
-  - components/xfce4.yml
-  - components/lightdm.yml
-  - components/lightdm-gtk-greeter.yml
+  - components/gnome.yml
 
   # AppImage
   - components/fuse2.yml

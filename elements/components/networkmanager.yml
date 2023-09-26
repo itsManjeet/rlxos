@@ -60,5 +60,8 @@ depends:
   - components/systemd.yml
   - components/upower.yml
   - components/wpa_supplicant.yml
+
+build-time:
+  - components/vala.yml
 sources:
   - https://download.gnome.org/sources/NetworkManager/%{version:1}/NetworkManager-%{version}.tar.xz

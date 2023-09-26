@@ -7,6 +7,7 @@ build-type: meson
 configure: >
   -D examples=false
   -D gtk_doc=true
+  -D os_type=lfs
   -D man=true
   -D session_tracking=libsystemd-login
   -D tests=false

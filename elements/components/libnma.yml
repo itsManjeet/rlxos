@@ -5,6 +5,7 @@ about: An implementation of the NetworkManager GUI functions
 depends:
   - components/gcr.yml
   - components/gtk.yml
+  - components/gtk4.yml
   - components/iso-codes.yml
   - components/networkmanager.yml
 build-time:
@@ -15,4 +16,5 @@ sources:
 
 configure: >-
   -D mobile_broadband_provider_info=false
+  -D libnma_gtk4=true
   --buildtype=release

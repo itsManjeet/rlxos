@@ -51,7 +51,7 @@ script: |
   EOF
   
   mkdir -p %{install-root}/%{version}
-  mksquashfs %{include-root}/usr %{install-root}/%{version}/sysroot.img -comp zstd -Xcompression-level 12 -noappend
+  mksquashfs %{include-root}/usr %{install-root}/%{version}/sysroot.img -noappend
 build-time:
   - components/cryptsetup.yml
   - components/squashfs-tools.yml

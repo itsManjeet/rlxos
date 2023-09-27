@@ -4,17 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"path"
 	"rlxos/pkg/element"
-	"rlxos/pkg/osinfo"
 )
 
 func (i *Installer) getMetadata() ([]element.Metadata, error) {
-	o, err := osinfo.Open(path.Join("/", "etc", "os-release"))
-	if err != nil {
-		return nil, err
-	}
-	resp, err := http.Get(i.ServerUrl + "/" + o["VERSION"])
+	resp, err := http.Get(i.ServerUrl + "/" + "metadata.json")
 	if err != nil {
 		return nil, fmt.Errorf("failed to get meta info %v", err)
 	}

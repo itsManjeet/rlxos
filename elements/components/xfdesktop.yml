@@ -6,6 +6,7 @@ pre-script: |-
   sed -i 's#/backgrounds/xfce/xfce-shapes.svg#/backgrounds/default.jpeg#g' common/xfdesktop-common.h
 
 post-script: |-
+  install -vm 0644 /files/background.jpeg %{install-root}%{datadir}/backgrounds/default.jpeg
   install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml << "EOF"
   <?xml version="1.0" encoding="UTF-8"?>
   <channel name="xfce4-desktop" version="1.0">

@@ -19,7 +19,7 @@ import (
 func (i *Installer) Install(componentId string) error {
 	metadata, err := i.getMetadata()
 	if err != nil {
-		return nil
+		return err
 	}
 	var requiredElement *element.Metadata
 	for _, elementInfo := range metadata {

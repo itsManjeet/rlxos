@@ -7,15 +7,15 @@ configure: >-
   --enable-pluggable-dialogs
 
 post-script: |-
-  install -vDm0655 /dev/stdin %{install-root}%{libdir}/tmpfiles.d/%{id}.conf << "EOF"
+  install -vDm0644 /dev/stdin %{install-root}%{libdir}/tmpfiles.d/%{id}.conf << "EOF"
   C %{sysconfdir}/xdg/autostart/xsettingsd.desktop
   EOF
   install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/xdg/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml << "EOF"
   <?xml version="1.0" encoding="UTF-8"?>
   <channel name="xsettings" version="1.0">
     <property name="Net" type="empty">
-      <property name="ThemeName" type="string" value="Fluent-round-Light"/>
-      <property name="IconThemeName" type="string" value="Fluent"/>
+      <property name="ThemeName" type="string" value="Qogir-Light"/>
+      <property name="IconThemeName" type="string" value="Qogir"/>
       <property name="DoubleClickTime" type="int" value="400"/>
       <property name="DoubleClickDistance" type="int" value="5"/>
       <property name="DndDragThreshold" type="int" value="8"/>
@@ -68,11 +68,12 @@ depends:
   - components/libinput.yml
   - components/upower.yml
   - components/themes/adwaita-icon-theme.yml
-  - components/themes/fluent-gtk-theme.yml
-  - components/themes/fluent-icon-theme.yml
-  - components/themes/fluent-wallpaper.yml
+  - components/themes/qogir-gtk-theme.yml
+  - components/themes/qogir-icon-theme.yml
   - components/fonts/adobe-source-code-pro-fonts.yml
-  - components/fonts/cantarell.yml
+  - components/fonts/noto.yml
+  - components/fonts/noto-cjk.yml
+  - components/fonts/noto-emoji.yml
 build-time:
   - components/intltool.yml
   - components/x11/xf86-input-libinput.yml

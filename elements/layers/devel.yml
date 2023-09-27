@@ -1,8 +1,0 @@
-id: devel
-about: RLXOS Development Libraries and Tools
-merge: [elements/include/layer.yml]
-
-include:
-  - components/gcc.yml
-  - components/binutils.yml
-  - components/kernel-headers.yml

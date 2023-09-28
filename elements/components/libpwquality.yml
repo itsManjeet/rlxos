@@ -4,6 +4,10 @@ about:
   Package provides common functions for password quality checking and also scoring
   them based on their apparent randomness
 
+variables:
+  run-autogen: false
+  seperate-build-dir: false
+
 configure: >-
   --disable-static
   --with-securedir=%{libdir}/security

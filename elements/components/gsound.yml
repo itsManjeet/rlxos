@@ -2,6 +2,9 @@ id: gsound
 version: 1.0.3
 about: A  small library for playing system sounds
 
+depends:
+  - components/libcanberra.yml
+
 build-time:
   - components/gobject-introspection.yml
   - components/vala.yml

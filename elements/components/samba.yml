@@ -9,7 +9,7 @@ script: |-
   PYTHON=$PWD/pyenv/bin/python3 \
   CPPFLAGS="-I/%{libdir}/tirpc" \
   LDFLAGS="-ltirpc"         \
-  ./configure --prefix=%{prefix} \
+  ./configure --enable-fhs --prefix=%{prefix} \
       --sysconfdir=%{sysconfdir} \
       --sbindir=%{bindir} \
       --libdir=/%{libdir} \   
@@ -20,7 +20,6 @@ script: |-
       --with-sockets-dir=/run/samba \
       --with-piddir=/run \
       --with-pammodulesdir=/%{libdir}/security \
-      --enable-fhs \
       --without-ad-dc \
       --enable-selftest
   make

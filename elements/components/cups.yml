@@ -1,15 +1,28 @@
 id: cups
-version: 2.4.6
+version: 2.4.7
 about: |
   Common Unix Printing System (CUPS) is a print spooler and associated utilities
 
-configure: --with-system-groups=lpadmin
+variables:
+  seperate-build-dir: false
+  run-autogen: false
+
+configure: >-
+  --with-system-groups=lpadmin
+  --with-rundir=/run/cups
 
 post-script: |
   mkdir -p %{install-root}%{sysconfdir}/cups/
   echo "ServerName /run/cups/cups.sock" > %{install-root}%{sysconfdir}/cups/client.conf
-  install -v -Dm 644 /dev/stdin %{install-root}%{sysconfdir}/pam.d << "EOF"
+  install -v -Dm 644 /dev/stdin %{install-root}%{sysconfdir}/pam.d/%{id} << "EOF"
+  auth    include system-auth
+  account include system-account
+  session include system-session
+  EOF
 
+  install -v -Dm 644 /dev/stdin %{install-root}%{libdir}/sysusers.d/%{id}.conf << "EOF"
+  g lpadmin 19
+  u lp 9 "Print Service User" %{localstatedir}/spool/cups
   EOF
 
 depends:

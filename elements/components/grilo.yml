@@ -8,7 +8,7 @@ depends:
   - components/glib.yml
   - components/libxml2.yml
   - components/gtk.yml
-  - components/libsoup.yml
+  - components/libsoup3.yml
   - components/totem-pl-parser.yml
 build-time:
   - components/gobject-introspection.yml

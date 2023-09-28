@@ -4,13 +4,10 @@ about:
   A library that provides an API shared by several applications on the GNOME
   Desktop
 
-configure: >-
-  --buildtype=release
-  -D gnome_distributor="rlxos"
-
 depends:
   - components/gsettings-desktop-schemas.yml
   - components/gtk.yml
+  - components/gtk4.yml
   - components/iso-codes.yml
   - components/libseccomp.yml
   - components/libxml2.yml

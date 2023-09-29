@@ -320,7 +320,7 @@ func buildrootCommand() *app.Command {
 				outputPath := s[0]
 				iconsPath := path.Join(outputPath, "icons")
 				appsPath := path.Join(outputPath, "apps")
-				jsonPath := path.Join(outputPath, "metadata.json")
+				jsonPath := path.Join(outputPath, "origin")
 
 				for _, dir := range []string{iconsPath, appsPath} {
 					os.MkdirAll(dir, 0755)
@@ -378,7 +378,7 @@ func buildrootCommand() *app.Command {
 					}
 
 					metadata = append(metadata, element.Metadata{
-						Id:      elid,
+						Id:      strings.TrimSuffix(elid, ".yml"),
 						Version: el.Version,
 						About:   el.About,
 						Icon:    path.Base(iconfile),

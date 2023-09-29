@@ -59,4 +59,4 @@ jobs:
           sha256sum */*/sysroot.img > SHA256SUMS
       
       - name: Update Metadata
-        run: make dump-metadata
+        run: make metadata

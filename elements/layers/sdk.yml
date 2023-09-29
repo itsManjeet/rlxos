@@ -14,3 +14,4 @@ include:
   - components/meson.yml
   - components/ninja.yml
   - components/cmake.yml
+  - components/libyaml-cpp.yml

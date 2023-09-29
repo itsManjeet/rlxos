@@ -2,33 +2,21 @@ id: samba
 version: 4.19.0
 about: Package provides file and print services to SMB/CIFS clients and Windows networking to Linux clients
 
-script: |-
-  python3 -m venv pyenv
-  ./pyenv/bin/pip3 install cryptography pyasn1 iso8601
+variables:
+  run-autogen: false
+  seperate-build-dir: false
 
-  PYTHON=$PWD/pyenv/bin/python3 \
-  CPPFLAGS="-I/%{libdir}/tirpc" \
-  LDFLAGS="-ltirpc"         \
-  ./configure --enable-fhs --prefix=%{prefix} \
-      --sysconfdir=%{sysconfdir} \
-      --sbindir=%{bindir} \
-      --libdir=/%{libdir} \   
-      --libexecdir=/%{libdir}/samba \
-      --localstatedir=/var \
-      --with-configdir=%{sysconfdir}/samba \
-      --with-lockdir=/var/cache/samba \
-      --with-sockets-dir=/run/samba \
-      --with-piddir=/run \
-      --with-pammodulesdir=/%{libdir}/security \
-      --without-ad-dc \
-      --enable-selftest
-  make
+configure: >-
+  --enable-fhs
+  --with-configdir=%{sysconfdir}/%{id}
+  --with-lockdir=%{localstatedir}/cache/%{id}
+  --with-sockets-dir=/run/%{id}
+  --with-piddir=/run
+  --with-pammodulesdir=%{libdir}/security
+  --without-ad-dc
+  --without-ads
 
-  sed '1s@^.*$@#!%{bindir}/python3@' \
-    -i ./bin/default/source4/scripting/bin/samba-gpupdate.inst
-
-  make DESTDIR=%{install-root} install
-
+post-script: |-
   install -v -m644 examples/smb.conf.default %{install-root}%{sysconfdir}/samba
   sed -e "s;log file =.*;log file = /var/log/samba/%m.log;" \
       -e "s;path = %{prefix}/spool/samba;path = /var/spool/samba;" \
@@ -55,6 +43,7 @@ depends:
   - components/pam.yml
   - components/perl/perl-parse-yapp.yml
   - components/perl/perl-json.yml
+  - components/py/py-markdown.yml
   - components/cups.yml
   - components/libldap.yml
 build-time:

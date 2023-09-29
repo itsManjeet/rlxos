@@ -91,7 +91,7 @@ filepath: $(SWUPD)
 	@if [ ! -f elements/$(ELEMENT) ] ; then echo "ERROR: no element exists elements/$(ELEMENT)"; exit 1; fi
 	$(SWUPD) buildroot file -cache-path $(CACHE_PATH) $(ELEMENT)
 
-dump-metadata: $(SWUPD)
+metadata: $(SWUPD)
 	$(SWUPD) buildroot dump-metadata -cache-path $(CACHE_PATH) $(CACHE_PATH)/$(CODENAME)
 
 TODO:

@@ -2,12 +2,18 @@ id: gnome-bluetooth
 version: 42.6
 about: Tools for managing and manipulating Bluetooth devices using the GNOME Desktop
 
+configure: >-
+  --buildtype=release
+
 depends:
-  - components/gtk.yml
+  - components/gtk4.yml
   - components/libcanberra.yml
   - components/libnotify.yml
   - components/bluez.yml
   - components/systemd.yml
+  - components/gsound.yml
+  - components/libyaml.yml
+  - components/upower.yml
 build-time:
   - components/gobject-introspection.yml
   - components/itstool.yml

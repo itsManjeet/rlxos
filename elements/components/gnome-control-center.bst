@@ -2,14 +2,15 @@ kind: meson
 
 sources:
 - kind: tar
-  url: gnome_downloads:gnome-control-center/44/gnome-control-center-44.2.tar.xz
-  ref: 0623d7d21cfe970d2ef34420623545a5945b9892e641f9a011cecec21afda10c
+  url: gnome_downloads:gnome-control-center/45/gnome-control-center-45.0.tar.xz
+  ref: 83df6a90f98914f2c19a872ce06562acef40927637f679c383099265ccfa42cf
 build-depends:
 - components/gtk-doc.bst
+- components/setxkbmap.bst
+- components/xvfb.bst
 - freedesktop-sdk.bst:public-stacks/buildsystem-meson.bst
 
 runtime-depends:
-- components/libgnomekbd.bst
 - components/power-profiles-daemon.bst
 
 depends:
@@ -32,6 +33,7 @@ depends:
 - components/gnome-color-manager.bst
 - components/gnome-desktop.bst
 - components/gnome-settings-daemon.bst
+- components/tecla.bst
 - components/adwaita-icon-theme.bst
 - components/gdk-pixbuf.bst
 - components/glib.bst

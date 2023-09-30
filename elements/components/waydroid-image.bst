@@ -1,7 +1,6 @@
 kind: import
 
 config:
-  sources: /
   target: "%{datadir}/waydroid-extra/images"
 
 sources:

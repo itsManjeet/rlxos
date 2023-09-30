@@ -13,12 +13,12 @@ build-depends:
 - freedesktop-sdk.bst:public-stacks/buildsystem-meson.bst
 
 depends:
-- components/appstream.bst
 - components/accountsservice.bst
-- components/flatpak.bst
 - components/glib.bst
 - components/gtk.bst
 - components/libadwaita.bst
+- freedesktop-sdk.bst:components/appstream.bst
+- freedesktop-sdk.bst:components/flatpak.bst
 - freedesktop-sdk.bst:components/polkit.bst
 - freedesktop-sdk.bst:bootstrap-import.bst
 

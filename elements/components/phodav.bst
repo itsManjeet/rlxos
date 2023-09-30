@@ -8,9 +8,9 @@ build-depends:
 - freedesktop-sdk.bst:components/perl-xml-parser.bst
 - freedesktop-sdk.bst:public-stacks/buildsystem-meson.bst
 depends:
-- components/avahi-gobject.bst
 - components/glib.bst
 - components/libsoup.bst
+- freedesktop-sdk.bst:components/avahi-gobject.bst
 - freedesktop-sdk.bst:components/libgudev.bst
 - freedesktop-sdk.bst:components/systemd.bst
 - freedesktop-sdk.bst:bootstrap-import.bst

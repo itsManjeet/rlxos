@@ -10,7 +10,7 @@ depends:
 - freedesktop-sdk.bst:components/os-release.bst
 - freedesktop-sdk.bst:components/shadow.bst
 - freedesktop-sdk.bst:components/tzdata.bst
+- freedesktop-sdk.bst:components/ostree.bst
 - freedesktop-sdk.bst:components/pkg-config.bst
 - components/firmware.bst
-- components/libostree.bst
 - components/plymouth.bst

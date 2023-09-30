@@ -17,21 +17,8 @@ variables:
       efi-arch: ia32
 
 config:
-  layout:
-  - element: ''
-    destination: '/tmp'
-  - element: ''
-    destination: '/var/tmp'
-  - element: ''
-    destination: '/boot'
-  - element: boards/amd64-efi/initramfs/deps.bst
-    destination: '/'
-  - element: boards/amd64-efi/initramfs/initial-scripts.bst
-    destination: '/'
-  - element: vm/prepare-image.bst
-    destination: '/'
-
   commands:
+  - mkdir -p /tmp /var/tmp /boot
   - |
     prepare-image.sh \
        --seed "%{uuidnamespace}" \
@@ -43,7 +30,7 @@ config:
     dracut -v --no-machineid \
            --kernel-image /boot/vmlinuz \
            --kver "$(ls -1 /usr/lib/modules | head -n1)" \
-           --kernel-cmdline 'rw quiet splash root=live:LABEL=%{installer-volume-id} console=tty0' \
+           --kernel-cmdline 'rw quiet splash root=live:LABEL=%{installer-volume-id} console=tty0 rd.live.overlay.overlayfs=1' \
            --add dmsquash-live \
            --add plymouth \
            --install grep \
@@ -55,7 +42,7 @@ config:
 
 
   - dbus-uuidgen >/etc/machine-id
-  - SYSTEMD_RELAX_ESP_CHECKS=1 bootctl --path='/boot' --no-variables install
+  - SYSTEMD_ESP_CHECKS=1 bootctl --no-variables install
   - rm /etc/machine-id
 
   - |

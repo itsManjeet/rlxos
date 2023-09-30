@@ -2,8 +2,8 @@ kind: meson
 
 sources:
 - kind: tar
-  url: gnome_downloads:vte/0.72/vte-0.72.1.tar.xz
-  ref: 0554f9f88d56ce2d78398fcc7f69bc00e53bbbc5f694e0ae1dcaf5286f89d7e4
+  url: gnome_downloads:vte/0.74/vte-0.74.0.tar.xz
+  ref: 9ae08f777952ba793221152d360550451580f42d3b570e3341ebb6841984c76b
 build-depends:
 - components/gi-docgen.bst
 - components/gobject-introspection.bst
@@ -11,7 +11,6 @@ build-depends:
 - freedesktop-sdk.bst:public-stacks/buildsystem-meson.bst
 
 depends:
-- components/boost.bst
 - components/glib.bst
 - components/gtk+-3.bst
 - components/gtk.bst

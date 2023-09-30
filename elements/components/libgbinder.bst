@@ -17,4 +17,4 @@ sources:
 - kind: git_tag
   url: github:mer-hybris/libgbinder.git
   track: master
-  ref: 1.1.34-0-g62b9b30865b65886a5808ab8087194fcca163c90
+  ref: 1.1.34-2-g509faccba07696b39c89557a1bed548f25712802

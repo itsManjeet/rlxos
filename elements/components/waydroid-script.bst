@@ -27,4 +27,4 @@ sources:
 - kind: git_tag
   url: github:casualsnek/waydroid_script.git
   track: main
-  ref: 59547e774335c12f08d20b65490bb1be840d7f87
+  ref: acbb764ac56f113add58598ecbe22801f8250d8b

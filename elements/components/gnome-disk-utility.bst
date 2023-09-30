@@ -2,10 +2,9 @@ kind: meson
 
 sources:
 - kind: tar
-  url: gnome_downloads:gnome-disk-utility/44/gnome-disk-utility-44.0.tar.xz
-  ref: 02031097896cdb37d8717a5823f93e3723d4dfce7fdc4002c9dfcb16b7e7a3ef
+  url: gnome_downloads:gnome-disk-utility/45/gnome-disk-utility-45.0.tar.xz
+  ref: 3d8625faa99047bc4aefd29921ad728ab4d700cff86e0f2ec67e8dba877d0dd3
 build-depends:
-- components/appstream-glib.bst
 - freedesktop-sdk.bst:components/desktop-file-utils.bst
 - freedesktop-sdk.bst:components/docbook-xsl.bst
 - freedesktop-sdk.bst:components/libxslt.bst

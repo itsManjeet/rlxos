@@ -18,4 +18,4 @@ sources:
 - kind: git_tag
   url: github:sailfishos/libglibutil.git
   track: master
-  ref: 1.0.70-0-g7331cb046fd21bbdfc38de6317332b57071bbe43
+  ref: 1.0.74-0-g3235a2e20e4d03455593d374e7b54b03b25d4e42

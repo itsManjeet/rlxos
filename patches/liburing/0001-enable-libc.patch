@@ -1,0 +1,22 @@
+diff --git a/configure b/configure
+index 28f3eb0..9f7cff4 100755
+--- a/configure
++++ b/configure
+@@ -413,9 +413,15 @@ int main(void){
+ #endif
+ }
+ EOF
+-if compile_prog "" "" "nolibc support"; then
+-  liburing_nolibc="yes"
+-fi
++# Temporarily disable nolibc because false positives exist and compilation may
++# fail later. The issue is that compile_prog does not use the CFLAGS modified
++# for nolibc, so it cannot detect when nolibc won't work (e.g. due to the gcc
++# stack protector requiring __stack_chk_fail_local from libc on i686).
++#
++# if compile_prog "" "" "nolibc support"; then
++#   liburing_nolibc="yes"
++# fi
++liburing_nolibc="no"
+ print_config "nolibc support" "$liburing_nolibc";
+ #############################################################################

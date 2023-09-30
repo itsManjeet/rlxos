@@ -1,24 +1,23 @@
 kind: meson
 
-sources:
-- kind: tar
-  url: gnome_downloads:mutter/44/mutter-44.1.tar.xz
-  ref: 973aeafab42f06f934a0994fc84878958cdb4d2766a4c867a5ccdc547dd57056
+variables:
+  meson-local: >-
+    -Dxwayland_initfd=enabled
+    -Dprofiler=true
+
 build-depends:
-# Need the whole thing over just the capture for the dbus interface.
-# /usr/share/dbus-1/interfaces/org.gnome.Sysprof3.Profiler.xml
+- components/xvfb.bst
 - components/sysprof-app.bst
 - components/gtk-doc.bst
 - freedesktop-sdk.bst:components/xorg-lib-xcvt.bst
 - freedesktop-sdk.bst:public-stacks/buildsystem-meson.bst
 
 runtime-depends:
-  # xwayland crashes when gnome-control-center not present
 - components/gnome-control-center.bst
 
 depends:
+- components/libei.bst
 - components/startup-notification.bst
-- components/libinput.bst
 - components/upower.bst
 - components/gnome-desktop.bst
 - components/gnome-settings-daemon.bst
@@ -27,10 +26,9 @@ depends:
 - components/gobject-introspection.bst
 - components/graphene.bst
 - components/gsettings-desktop-schemas.bst
-- components/gtk+-3.bst
+- components/gtk.bst
 - components/json-glib.bst
 - components/pango.bst
-- components/pipewire.bst
 - freedesktop-sdk.bst:components/dummy-gbm.bst
 - freedesktop-sdk.bst:components/libgudev.bst
 - freedesktop-sdk.bst:components/wayland.bst
@@ -38,11 +36,12 @@ depends:
 - freedesktop-sdk.bst:components/xorg-lib-sm.bst
 - freedesktop-sdk.bst:components/xorg-lib-xcursor.bst
 - freedesktop-sdk.bst:components/xorg-lib-xtst.bst
+- freedesktop-sdk.bst:components/libinput.bst
+- freedesktop-sdk.bst:components/pipewire.bst
 - freedesktop-sdk.bst:components/xwayland.bst
 - freedesktop-sdk.bst:bootstrap-import.bst
 
-variables:
-  meson-local: >-
-    -Dxwayland_initfd=enabled
-    -Dprofiler=true
-    -Dtests=false
+sources:
+- kind: tar
+  url: gnome_downloads:mutter/45/mutter-45.0.tar.xz
+  ref: 8fbc963019eda9ba52fca2f6c4c477efbc6e36eb4fa93f23174f02ff6b907715

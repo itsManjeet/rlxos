@@ -9,10 +9,10 @@ build-depends:
 - freedesktop-sdk.bst:public-stacks/buildsystem-autotools.bst
 depends:
 - components/glib.bst
-- components/gst-plugins-base.bst
 - components/pango.bst
 - freedesktop-sdk.bst:components/gstreamer.bst
 - freedesktop-sdk.bst:components/wayland.bst
+- freedesktop-sdk.bst:components/gstreamer-plugins-base.bst
 - freedesktop-sdk.bst:components/xorg-lib-x11.bst
 - freedesktop-sdk.bst:components/xorg-lib-xcomposite.bst
 - freedesktop-sdk.bst:components/xorg-lib-xdamage.bst

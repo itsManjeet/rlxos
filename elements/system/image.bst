@@ -1,11 +1,13 @@
 kind: script
 
 build-depends:
-- components/libostree.bst
 - components/qemu.bst
-- system/repo.bst
+- filename: system/repo.bst
+  config:
+    location: "/source-repo"
 - freedesktop-sdk.bst:integration/mtab.bst
 - freedesktop-sdk.bst:components/genimage.bst
+- freedesktop-sdk.bst:components/ostree.bst
 - freedesktop-sdk.bst:snap-images/squashfs-tools.bst
 
 variables:
@@ -19,22 +21,6 @@ environment-nocache:
 - XZFLAGS
 
 config:
-  layout:
-  - element: ''
-    destination: '/sysroot'
-  - element: system/repo.bst
-    destination: '/source-repo'
-  - element: components/libostree.bst
-    destination: '/'
-  - element: components/qemu.bst
-    destination: '/'
-  - element: integration/mtab.bst
-    destination: '/'
-  - element: components/genimage.bst
-    destination: '/'
-  - element: snap-images/squashfs-tools.bst
-    destination: '/'
-
   commands:
   - mkdir -p "${OSTREE_REPO}"
   - ostree init --repo="${OSTREE_REPO}" --mode=bare

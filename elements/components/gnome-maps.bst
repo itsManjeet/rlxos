@@ -14,10 +14,10 @@ depends:
 - components/libshumate.bst
 - components/libgweather.bst
 - components/librest.bst
-- components/geoclue.bst
 - components/gjs.bst
 - components/glib.bst
 - components/gobject-introspection.bst
 - components/gtk.bst
 - components/libadwaita.bst
+- freedesktop-sdk.bst:components/geoclue.bst
 - freedesktop-sdk.bst:bootstrap-import.bst

@@ -6,7 +6,6 @@ build-depends:
 - freedesktop-sdk.bst:components/go-md2man.bst
 - freedesktop-sdk.bst:components/git-minimal.bst
 - freedesktop-sdk.bst:components/python3.bst
-- freedesktop-sdk.bst:components/standard-streams.bst
 
 depends:
 - freedesktop-sdk.bst:components/libseccomp.bst
@@ -42,4 +41,4 @@ sources:
 
   exclude:
   - "*rc*"
-  ref: v2.1.0-9842-gc99d42b8e4efcfea3140268f06c10f0710e8fc05
+  ref: v2.1.0-11173-gcc8c28eb7c0c336931b9bf5879ff454818519c94

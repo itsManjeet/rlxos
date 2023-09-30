@@ -6,6 +6,8 @@ elements:
         --disable-Werror
         --host=%{triplet}
         --build=%{triplet}
+      remove-libtool-modules: true
+      remove-libtool-libraries: true
 
   cmake:
     variables:

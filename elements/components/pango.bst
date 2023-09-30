@@ -1,8 +1,8 @@
 kind: meson
 sources:
 - kind: tar
-  url: gnome_downloads:pango/1.50/pango-1.50.14.tar.xz
-  ref: 1d67f205bfc318c27a29cfdfb6828568df566795df0cb51d2189cde7f2d581e8
+  url: gnome_downloads:pango/1.51/pango-1.51.0.tar.xz
+  ref: 74efc109ae6f903bbe6af77eaa2ac6094b8ee245a2e23f132a7a8f0862d1a9f5
 build-depends:
 - components/gobject-introspection.bst
 - components/gi-docgen.bst

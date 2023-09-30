@@ -1,8 +1,8 @@
 kind: meson
 sources:
 - kind: tar
-  url: gnome_downloads:gobject-introspection/1.76/gobject-introspection-1.76.1.tar.xz
-  ref: 196178bf64345501dcdc4d8469b36aa6fe80489354efe71cb7cb8ab82a3738bf
+  url: gnome_downloads:gobject-introspection/1.78/gobject-introspection-1.78.1.tar.xz
+  ref: bd7babd99af7258e76819e45ba4a6bc399608fe762d83fde3cac033c50841bb4
 build-depends:
 - components/gtk-doc.bst
 - freedesktop-sdk.bst:components/bison.bst

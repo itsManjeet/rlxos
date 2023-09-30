@@ -1,8 +1,8 @@
 kind: meson
 sources:
 - kind: tar
-  url: gnome_downloads:tracker-miners/3.5/tracker-miners-3.5.2.tar.xz
-  ref: 40fb91facbd9468e26ebecc711d83631cd8ae9391c615d68dbb03cbcab1b6c69
+  url: gnome_downloads:tracker-miners/3.6/tracker-miners-3.6.0.tar.xz
+  ref: c2ed9f6b0410195863b84c7b5467c5bc1255e96d658741192b5e92568a3bebd0
 build-depends:
 - freedesktop-sdk.bst:components/asciidoc.bst
 - freedesktop-sdk.bst:components/docbook-xsl.bst
@@ -12,6 +12,7 @@ build-depends:
 depends:
 - components/networkmanager.bst
 - components/dconf.bst
+- components/exempi.bst
 - components/gexiv2.bst
 - components/libcue.bst
 - components/libgsf.bst
@@ -21,10 +22,10 @@ depends:
 - components/upower.bst
 - components/gdk-pixbuf.bst
 - components/glib.bst
-- components/gst-plugins-base.bst
 - components/libsecret.bst
 - components/tracker.bst
 - freedesktop-sdk.bst:components/gstreamer.bst
+- freedesktop-sdk.bst:components/gstreamer-plugins-base.bst
 - freedesktop-sdk.bst:components/libexif.bst
 - freedesktop-sdk.bst:components/libflac.bst
 - freedesktop-sdk.bst:components/libseccomp.bst
@@ -33,8 +34,5 @@ depends:
 - freedesktop-sdk.bst:bootstrap-import.bst
 variables:
   meson-local: >-
-    -Dxmp=disabled
     -Diptc=disabled
     -Dminer_rss=false
-    -Dtiff=disabled
-    -Dgif=disabled

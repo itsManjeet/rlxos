@@ -17,7 +17,7 @@ sources:
   url: https://github.com/probonopd/go-appimage.git
   track: master
 
-  ref: continuous-0-g785b52511085b37e09e967c0bc2ebd7f9401e6b9
+  ref: continuous-1-g7b6466951abafe936802168bcdea100cd232fd8b
 - kind: go-vendor
   ref: 0e8a2b335ce1c8ff0b505e8f036042aa5d2e04e3891b33f034facc9f26ac6669
 - kind: local

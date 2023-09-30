@@ -2,8 +2,8 @@ kind: meson
 
 sources:
 - kind: tar
-  url: gnome_downloads:gtksourceview/5.8/gtksourceview-5.8.0.tar.xz
-  ref: 110dd4c20def21886fbf777298fe0ef8cc2ad6023b8f36c7424411a414818933
+  url: gnome_downloads:gtksourceview/5.10/gtksourceview-5.10.0.tar.xz
+  ref: b38a3010c34f59e13b05175e9d20ca02a3110443fec2b1e5747413801bc9c23f
 build-depends:
 - components/gi-docgen.bst
 - components/gobject-introspection.bst

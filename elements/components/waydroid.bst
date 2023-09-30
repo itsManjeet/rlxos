@@ -19,4 +19,4 @@ sources:
 - kind: git_tag
   url: github:waydroid/waydroid.git
   track: main
-  ref: 1.4.1-0-g7ce2e28e8ea76c1e79b273d122921c1f394e842f
+  ref: 1.4.1-17-gb67b208d89b654880cca5be9f2e6803db12d2774

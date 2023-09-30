@@ -2,9 +2,9 @@ kind: autotools
 
 sources:
 - kind: tar
-  url: https://download.qemu.org/qemu-7.2.2.tar.xz
+  url: https://download.qemu.org/qemu-8.1.0.tar.xz
 
-  ref: a28f5ea12dc22ab290c451172d036c09ce9a5ff7f747528802f876be51516e90
+  ref: 710c101198e334d4762eef65f649bc43fa8a5dd75303554b8acfec3eb25f0e55
 build-depends:
 - components/spice-protocol.bst
 - freedesktop-sdk.bst:components/perl.bst
@@ -19,6 +19,7 @@ depends:
 - freedesktop-sdk.bst:components/glib.bst
 - freedesktop-sdk.bst:components/libcap.bst
 - freedesktop-sdk.bst:components/dummy-gbm.bst
+- freedesktop-sdk.bst:components/libslirp.bst
 - freedesktop-sdk.bst:components/pixman.bst
 - freedesktop-sdk.bst:components/python3.bst
 - freedesktop-sdk.bst:components/sdl2.bst
@@ -51,6 +52,7 @@ variables:
     --enable-sdl
     --enable-sdl-image
     --enable-virglrenderer
+    --enable-slirp
 
   # --exec-prefix --disable-static are not accepted
   conf-args: >-

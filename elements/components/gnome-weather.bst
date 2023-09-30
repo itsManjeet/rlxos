@@ -1,19 +1,20 @@
 kind: meson
 sources:
 - kind: tar
-  url: gnome_downloads:gnome-weather/44/gnome-weather-44.0.tar.xz
-  ref: 6b0d38ac785041699df628926e35db7b5ffa086ee0d6934c222a19c6b9923baf
+  url: gnome_downloads:gnome-weather/45/gnome-weather-45.0.tar.xz
+  ref: 30c0029702883dc8d8160e6de1d6116877cd6c25bc950d4e4902a6ab467b2fa4
 build-depends:
 - components/gobject-introspection.bst
+- freedesktop-sdk.bst:components/desktop-file-utils.bst
 - freedesktop-sdk.bst:public-stacks/buildsystem-meson.bst
 depends:
 - components/libgweather.bst
 - components/gnome-desktop.bst
 - components/adwaita-icon-theme.bst
 - components/gdk-pixbuf.bst
-- components/geoclue.bst
 - components/gjs.bst
 - components/glib.bst
 - components/gtk.bst
 - components/libadwaita.bst
 - freedesktop-sdk.bst:bootstrap-import.bst
+- freedesktop-sdk.bst:components/geoclue.bst

@@ -1,8 +1,8 @@
 kind: meson
 sources:
 - kind: tar
-  url: gnome_downloads:gcab/1.5/gcab-1.5.tar.xz
-  ref: 46bf7442491faa4148242b9ec2a0786a5f6e9effb1b0566e5290e8cc86f00f0c
+  url: gnome_downloads:gcab/1.6/gcab-1.6.tar.xz
+  ref: 2f0c9615577c4126909e251f9de0626c3ee7a152376c15b5544df10fc87e560b
 - kind: patch
   path: patches/gcab/ad0baea50359c1978a9224ee60bf98d97bfb991f.patch
 build-depends:

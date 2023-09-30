@@ -1,15 +1,10 @@
 kind: meson
 
 sources:
-- kind: git_tag
-  url: gnome:gnome-shell
-  track: 44.3
-  submodules:
-    subprojects/gvc:
-      checkout: true
-      url: gnome:libgnome-volume-control.git
-      
-  ref: 44.3-0-g60ec50efa693735cb959a3378516a82d2e9df009
+- kind: tar
+  url: gnome_downloads:gnome-shell/45/gnome-shell-45.0.tar.xz
+  ref: 3cabe40bdd4e379c7082b39ffa45b8bef5c9cf86408fb0d836e1571c443217cd
+
 - kind: patch
   path: patches/gnome-shell/0001-rlxos-specific-modifications.patch
 
@@ -22,9 +17,9 @@ build-depends:
 - freedesktop-sdk.bst:public-stacks/buildsystem-meson.bst
 
 runtime-depends:
-- components/libgnomekbd.bst
 - components/libgweather.bst
-- components/geoclue.bst
+- components/tecla.bst
+- freedesktop-sdk.bst:components/geoclue.bst
 
 depends:
 - components/networkmanager.bst
@@ -44,14 +39,13 @@ depends:
 - components/gjs.bst
 - components/glib.bst
 - components/gobject-introspection.bst
-- components/gst-plugins-base.bst
 - components/gtk.bst
 - components/libsoup.bst
 - freedesktop-sdk.bst:components/gstreamer.bst
+- freedesktop-sdk.bst:components/gstreamer-plugins-base.bst
 - freedesktop-sdk.bst:bootstrap-import.bst
 
 variables:
   meson-local: >-
     -Dextensions_app=false
     -Dextensions-tool:bash_completion=disabled
-    -Dtests=false

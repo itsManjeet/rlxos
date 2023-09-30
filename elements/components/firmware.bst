@@ -14,6 +14,6 @@ sources:
 - kind: git_tag
   url: kernel:linux/kernel/git/firmware/linux-firmware.git
   track: main
-  ref: 20230515-50-gfc90c59beebd551dde5fe5eb3e76d36651ba08fb
+  ref: 20230919-9-g8b855f3797e6b1d207b7a2b8dae0e9913f907e5b
 - kind: patch
   path: patches/firmware/compress.patch

@@ -12,8 +12,10 @@ runtime-depends:
 - components/adwaita-icon-theme.bst
 
 depends:
+- components/libpanel.bst
 - components/gtk.bst
 - components/libadwaita.bst
+- components/libdex.bst
 - components/json-glib.bst
 - freedesktop-sdk.bst:components/libunwind.bst
 - freedesktop-sdk.bst:components/polkit.bst
@@ -21,21 +23,19 @@ depends:
 
 variables:
   meson-local: >-
-    -Dagent=true
+    -Dgtk=true
+    -Dsysprofd=bundled
+    -Dlibsysprof=true
+    -Dtools=true
+    -Dtests=true
+    -Dexamples=false
 
 public:
   bst:
-    # This might overlap with sysprof-minimal as due to some pkgcofnig/meson
-    # quirkyness sysprof-capture ends up in Requires.private and now
-    # is a runtime dependency of glib so other modules can find the .pc file
-    # even though its a statically build dependency
-    # see: sdk/glib.bst
     overlap-whitelist:
-    - '%{includedir}/sysprof-4/*.h'
-    - '%{libdir}/libsysprof-capture-4.a'
+    - '%{includedir}/sysprof-6/*.h'
+    - '%{libdir}/libsysprof-capture-6.a'
     - '%{libdir}/pkgconfig/sysprof-capture-4.pc'
     split-rules:
       sysprof-agent:
       - '%{bindir}/sysprof-agent'
-      - '%{libdir}/libsysprof-memory-4.so'
-      - '%{libdir}/libsysprof-speedtrack-4.so'

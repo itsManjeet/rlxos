@@ -2,14 +2,15 @@ kind: meson
 
 sources:
 - kind: tar
-  url: gnome_downloads:gtk/4.10/gtk-4.10.3.tar.xz
-  ref: 4545441ad79e377eb6e0a705026dc7a46886e46a1b034db40912909da801cea9
+  url: gnome_downloads:gtk/4.12/gtk-4.12.1.tar.xz
+  ref: b8b61d6cf94fac64bf3a0bfc7af137c9dd2f8360033fdeb0cfe9612b77a99a72
 build-depends:
 - components/gi-docgen.bst
 - components/sassc.bst
 - components/gobject-introspection.bst
 - components/pygobject.bst
 - components/sysprof-minimal.bst
+- freedesktop-sdk.bst:components/shaderc.bst
 - freedesktop-sdk.bst:components/vulkan-headers.bst
 - freedesktop-sdk.bst:public-stacks/buildsystem-meson.bst
 
@@ -18,11 +19,11 @@ depends:
 - components/gdk-pixbuf.bst
 - components/glib.bst
 - components/graphene.bst
-- components/gst-plugins-bad.bst
-- components/gst-plugins-base.bst
 - components/pango.bst
 - freedesktop-sdk.bst:components/cups.bst
 - freedesktop-sdk.bst:components/gstreamer.bst
+- freedesktop-sdk.bst:components/gstreamer-plugins-bad.bst
+- freedesktop-sdk.bst:components/gstreamer-plugins-base.bst
 - freedesktop-sdk.bst:components/hicolor-icon-theme.bst
 - freedesktop-sdk.bst:components/libepoxy.bst
 - freedesktop-sdk.bst:components/libxkbcommon.bst

@@ -11,8 +11,8 @@ depends:
 - components/clutter.bst
 - components/cogl.bst
 - components/gdk-pixbuf.bst
-- components/gst-plugins-base.bst
 - freedesktop-sdk.bst:components/gstreamer.bst
+- freedesktop-sdk.bst:components/gstreamer-plugins-base.bst
 - freedesktop-sdk.bst:bootstrap-import.bst
 public:
   bst:

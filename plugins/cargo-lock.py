@@ -4,32 +4,30 @@ ship one. If a project does not have a Cargo.lock file,
 stage this source before staging the `cargo` source.
 """
 
-# We store the entirety of Cargo.lock in the ref, simply because
-# running `cargo update` does not always result in the same Cargo.lock
-# file. We don't want a fetch to effectively re-track the package
-
 import os
-from buildstream import Source, SourceError, Consistency
-from buildstream import utils
+from buildstream import Source, SourceError, utils
 import base64
 
 class GenCargoLockSource(Source):
-    BST_REQUIRED_VERSION_MAJOR = 1
-    BST_REQUIRED_VERSION_MINOR = 3
+    BST_MIN_VERSION = "2.0"
     BST_REQUIRES_PREVIOUS_SOURCES_TRACK = True
 
     def configure(self, node):
-        self.ref = self.node_get_member(node, str, "ref", None)
-        self.node_validate(node, Source.COMMON_CONFIG_KEYS + ['ref'])
+        node.validate_keys(Source.COMMON_CONFIG_KEYS + ["ref"])
+        self.ref = node.get_str("ref", None)
 
     def preflight(self):
-        self.host_cargo = utils.get_host_tool("cargo")
+        # We would normally call utils.get_host_tool here, but this would introduce
+        # a dependency on cargo on the host, even though we don't really need it for
+        # anything other than tracking. So, we actually only look for the host cargo
+        # in the track method
+        self.host_cargo = None
 
     def get_unique_key(self):
         return self.ref
 
     def load_ref(self, node):
-        self.ref = self.node_get_member(node, str, "ref", None)
+        self.ref = node.get_str("ref", None)
 
     def get_ref(self):
         return self.ref
@@ -37,16 +35,15 @@ class GenCargoLockSource(Source):
     def set_ref(self, ref, node):
         node['ref'] = self.ref = ref
 
-    def get_consistency(self):
-        if self.ref is None:
-            return Consistency.INCONSISTENT
-        return Consistency.CACHED
-
     def track(self, previous_sources_dir):
+        if self.host_cargo is None:
+            self.host_cargo = utils.get_host_tool("cargo")
+    
         # Generate a new Cargo.lock
         with self.timed_activity("Generating Cargo.lock"):
-            command = [self.host_cargo, "update"]
-            self.call(command, cwd=previous_sources_dir, fail="Error calling `cargo update`")
+            command = [self.host_cargo, "generate-lockfile"]
+            env = { "CARGO_HOME": self.get_mirror_directory(), **os.environ }
+            self.call(command, cwd=previous_sources_dir, env=env, fail="Failed to generate lockfile")
 
         # Encode Cargo.lock into base64
         output = os.path.join(previous_sources_dir, "Cargo.lock")
@@ -57,7 +54,10 @@ class GenCargoLockSource(Source):
         except:
             raise SourceError("Failed to encode Cargo.lock into base64")
 
-        # Store it in the ref
+        # We store the entirety of Cargo.lock in the ref, simply because
+        # running `cargo generate-lockfile` does not always result in the
+        # same Cargo.lock file. We don't want a fetch to effectively re-track
+        # the package
         return new_ref
 
     def fetch(self):
@@ -74,6 +74,9 @@ class GenCargoLockSource(Source):
                 f.write(cargo_lock)
         except:
             raise SourceError("Failed to stage Cargo.lock")
+
+    def is_cached(self):
+        return True
 
 # Entry point
 def setup():

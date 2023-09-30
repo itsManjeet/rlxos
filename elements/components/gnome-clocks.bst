@@ -2,8 +2,8 @@ kind: meson
 
 sources:
 - kind: tar
-  url: gnome_downloads:gnome-clocks/44/gnome-clocks-44.0.tar.xz
-  ref: 17d7a97365cb8f1a023a1d78f7501f3353217fa7577d73afe7d0ca1e3b4f3838
+  url: gnome_downloads:gnome-clocks/45/gnome-clocks-45.0.tar.xz
+  ref: fc8eb4fd9530f1e641dc00ee2086ee7d354a7a00b0a0d1722e305d5c9aab91b5
 build-depends:
 - components/vala.bst
 - freedesktop-sdk.bst:components/itstool.bst
@@ -16,7 +16,7 @@ depends:
 - components/libgweather.bst
 - components/gnome-desktop.bst
 - components/adwaita-icon-theme.bst
-- components/geoclue.bst
 - components/gtk.bst
 - components/libadwaita.bst
 - freedesktop-sdk.bst:bootstrap-import.bst
+- freedesktop-sdk.bst:components/geoclue.bst

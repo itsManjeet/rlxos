@@ -9,7 +9,5 @@ build-depends:
 - freedesktop-sdk.bst:public-stacks/buildsystem-meson.bst
 
 sources:
-- kind: git_tag
-  url: gnome:jsonrpc-glib.git
-  track: main
-  ref: 3.44.0-1-g67d6b14d621b19f30d697c2e883db59aeb064f3e
+- kind: tar
+  url: gnome_downloads:jsonrpc-glib/3.44/jsonrpc-glib-3.44.0.tar.xz

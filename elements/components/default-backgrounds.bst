@@ -5,5 +5,4 @@ sources:
   path: files/backgrounds
 
 config:
-  sources: /
   target: /usr/share/backgrounds/

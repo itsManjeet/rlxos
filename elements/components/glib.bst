@@ -2,15 +2,12 @@ kind: meson
 
 sources:
 - kind: tar
-  url: gnome_downloads:glib/2.76/glib-2.76.3.tar.xz
-  ref: c0be444e403d7c3184d1f394f89f0b644710b5e9331b54fa4e8b5037813ad32a
+  url: gnome_downloads:glib/2.78/glib-2.78.0.tar.xz
+  ref: 44eaab8b720877ce303c5540b657b126f12dc94972d9880b52959f43fb537b30
 
 build-depends:
 - components/gtk-doc.bst
 - freedesktop-sdk.bst:public-stacks/buildsystem-meson.bst
-
-runtime-depends:
-- freedesktop-sdk.bst:components/glib.bst
 
 depends:
 - components/sysprof-minimal.bst
@@ -44,8 +41,7 @@ public:
           fi
         done
       done
-    # remove this once freedesktop-sdk updates to 2.66
-    - rm -f /usr/include/glib-2.0/glib/gurifuncs.h
+
     overlap-whitelist:
     - '**'
     split-rules:

@@ -8,4 +8,5 @@ sources:
 build-depends:
 - freedesktop-sdk.bst:public-stacks/buildsystem-cmake.bst
 depends:
+- freedesktop-sdk.bst:components/expat.bst
 - freedesktop-sdk.bst:bootstrap-import.bst

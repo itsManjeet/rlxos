@@ -2,13 +2,9 @@ kind: manual
 
 sources:
 - kind: tar
-  url: https://ftp.mozilla.org/pub/firefox/releases/102.1.0esr/source/firefox-102.1.0esr.source.tar.xz
-  base-dir: 'firefox-102.1.0'
-  ref: 637b6e727d1b815bbc6eb39aeb04c6e144056eeb3c628b298cb16deb3b579460
-- kind: patch
-  path: patches/mozjs/0001-Bug-1776254-Install-ProfilingCategoryList.h.patch
-- kind: patch
-  path: patches/mozjs/0002-Bug-1780857-Change-if-to-ifdef-for-DEBUG.patch
+  url: https://ftp.mozilla.org/pub/firefox/releases/115.0.3esr/source/firefox-115.0.3esr.source.tar.xz
+  base-dir: 'firefox-115.0.3'
+  ref: 0bcc571c44f94ac6b8c26e896fd771eb7bd41b2a8ec35598bced0102c1b855fa
 
 build-depends:
 - freedesktop-sdk.bst:components/pkg-config.bst
@@ -36,7 +32,6 @@ environment-nocache:
 - MAXJOBS
 
 config:
-  create-dev-shm: true
   configure-commands:
   - |
     cat >mozconfig <<EOF
@@ -46,6 +41,7 @@ config:
     ac_add_options --target="%{triplet}"
     ac_add_options --enable-application=js
     ac_add_options --enable-release
+    ac_add_options --enable-debug-symbols
     ac_add_options --with-intl-api
     ac_add_options --with-system-nspr
     ac_add_options --with-system-zlib

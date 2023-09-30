@@ -8,6 +8,7 @@ build-depends:
 - components/gobject-introspection.bst
 - components/gi-docgen.bst
 - components/vala.bst
+- freedesktop-sdk.bst:components/python3-setuptools.bst
 - freedesktop-sdk.bst:public-stacks/buildsystem-meson.bst
 
 depends:

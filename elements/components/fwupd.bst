@@ -19,13 +19,12 @@ build-depends:
 
 depends:
 - components/libjcat.bst
-- components/xmlb.bst
-- components/protobuf-c.bst
 - components/gcab.bst
 - components/glib.bst
 - components/pango.bst
 - components/pygobject.bst
 - freedesktop-sdk.bst:components/bluez-libs.bst
+- freedesktop-sdk.bst:components/libxmlb.bst
 - freedesktop-sdk.bst:components/cairo.bst
 - freedesktop-sdk.bst:components/curl.bst
 - freedesktop-sdk.bst:components/efivar.bst
@@ -61,6 +60,7 @@ variables:
     -Dplugin_dell=%{plugin_dell}
     -Dplugin_msr=%{plugin_msr}
     -Dplugin_flashrom=disabled
+    -Dplugin_logitech_bulkcontroller=disabled
     -Dplugin_uefi_capsule=%{plugin_uefi_capsule}
     -Defi_binary=%{efi_binary}
     -Dplugin_modem_manager=disabled

@@ -5,7 +5,7 @@ sources:
   url: github:ohmyzsh/ohmyzsh.git
   track: master
 
-  ref: 46c70406dd0b26bbd61210873ad6c86d9e8ee5da
+  ref: 27402e2603b9354f419af3695bad8ff17ed33bac
 - kind: local
   path: files/zsh/
 

@@ -1,0 +1,27 @@
+From 7826774972fa6992011cd656ca6fe6bd04ded608 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Daniel=20Novomesk=C3=BD?=
+ <52529860+novomesk@users.noreply.github.com>
+Date: Thu, 22 Jun 2023 08:32:14 +0200
+Subject: [PATCH 2/2] Do not require skcms when plugins are enabled (#2592)
+
+gdk-pixbuf loader now uses lcms2.
+---
+ third_party/CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/third_party/CMakeLists.txt b/third_party/CMakeLists.txt
+index 8ee98640..40e54f3a 100644
+--- a/third_party/CMakeLists.txt
++++ b/third_party/CMakeLists.txt
+@@ -100,7 +100,7 @@ else()
+ endif()
+ 
+ # *cms
+-if (JPEGXL_ENABLE_SKCMS OR JPEGXL_ENABLE_PLUGINS)
++if (JPEGXL_ENABLE_SKCMS)
+   if( NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/skcms/skcms.h" )
+     message(FATAL_ERROR "Please run ${PROJECT_SOURCE_DIR}/deps.sh to fetch the "
+             "build dependencies.")
+-- 
+2.41.0
+

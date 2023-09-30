@@ -1,13 +1,9 @@
 kind: meson
 
 sources:
-- kind: git_tag
-  url: gnome:libadwaita
-  track: 1.3.3
-
-  ref: 1.3.3-0-gf665152a70d5f2c61c0f5a0a947cb38524e64cfe
-- kind: patch
-  path: patches/libadwaita/0001-do-not-override-system-theme.patch
+- kind: tar
+  url: gnome_downloads:libadwaita/1.4/libadwaita-1.4.0.tar.xz
+  ref: e51a098a54d43568218fc48fcf52e80e36f469b3ce912d8ce9c308a37e9f47c2
 
 build-depends:
 - components/gi-docgen.bst
@@ -19,6 +15,7 @@ build-depends:
 
 depends:
 - components/gtk.bst
+- freedesktop-sdk.bst:components/appstream.bst
 - freedesktop-sdk.bst:bootstrap-import.bst
 
 variables:

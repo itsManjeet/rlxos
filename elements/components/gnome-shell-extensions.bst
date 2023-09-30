@@ -1,8 +1,8 @@
 kind: meson
 sources:
 - kind: tar
-  url: gnome_downloads:gnome-shell-extensions/44/gnome-shell-extensions-44.0.tar.xz
-  ref: 8c345e72f31a1e37f55063e0b15997301b01194ed698772fd87aeb50cbb101ab
+  url: gnome_downloads:gnome-shell-extensions/45/gnome-shell-extensions-45.0.tar.xz
+  ref: 239bf89ff52794f8d5e86acd85fbfe5c24be8ce167c57690db2efd587c339fd6
 
 - kind: local
   path: files/gnome-shell-extensions/

@@ -2,8 +2,8 @@ kind: meson
 
 sources:
 - kind: tar
-  url: gnome_downloads:gnome-boxes/44/gnome-boxes-44.2.tar.xz
-  ref: 9dd389c149d0c0fa57456ec363d51a88255f945558fb9df42894ce78ef85df89
+  url: gnome_downloads:gnome-boxes/45/gnome-boxes-45.0.tar.xz
+  ref: cc63080eefa147a8472ab1a5ff087b97a27ab723a4ee005ed41e8c9dd7798e41
 build-depends:
 - components/vala.bst
 - freedesktop-sdk.bst:components/desktop-file-utils.bst
@@ -18,7 +18,6 @@ depends:
 - components/adwaita-icon-theme.bst
 - components/glib.bst
 - components/gtk+-3.bst
-- components/gtksourceview-4.bst
 - components/json-glib.bst
 - components/libhandy.bst
 - components/webkit2gtk-4.1.bst

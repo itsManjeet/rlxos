@@ -2,13 +2,14 @@ kind: autotools
 
 sources:
 - kind: tar
-  url: github_files:ibus/ibus/releases/download/1.5.25/ibus-1.5.25.tar.gz
+  url: github_files:ibus/ibus/releases/download/1.5.28/ibus-1.5.28.tar.gz
 
-  ref: dea4f663c485267cc3313e40a0bc89b977c397e19644f8ab41df0e6eaec34330
+  ref: 6c9ff3a7576c3d61264f386030f47ee467eb7298c8104367002986e008765667
 build-depends:
 - components/vala.bst
 - components/gobject-introspection.bst
 - freedesktop-sdk.bst:components/iso-codes.bst
+- freedesktop-sdk.bst:components/systemd.bst
 - freedesktop-sdk.bst:public-stacks/buildsystem-autotools.bst
 
 depends:
@@ -42,6 +43,7 @@ variables:
     --enable-introspection
     --enable-vala
     --enable-gtk4
+    --enable-systemd
 
 public:
   bst:

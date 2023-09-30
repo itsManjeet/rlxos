@@ -2,8 +2,8 @@ kind: meson
 
 sources:
 - kind: tar
-  url: gnome_downloads:gnome-connections/44/gnome-connections-44.1.tar.xz
-  ref: 136a2d924b077d5cc4100c845826d471444230a16c8dac2732113680171a626b
+  url: gnome_downloads:gnome-connections/45/gnome-connections-45.0.tar.xz
+  ref: b9fab525b90a3e27d113c16fb868c2b9c47bf8149310d14db862ea1912c06fb8
 build-depends:
 - components/gobject-introspection.bst
 - components/vala.bst
@@ -18,4 +18,5 @@ depends:
 - components/gtk+-3.bst
 - components/libhandy.bst
 - components/libsecret.bst
+- freedesktop-sdk.bst:components/fuse3.bst
 - freedesktop-sdk.bst:bootstrap-import.bst

@@ -17,5 +17,5 @@ depends:
 - components/glib.bst
 - components/fwupd.bst
 - components/libadwaita.bst
-- components/xmlb.bst
+- freedesktop-sdk.bst:components/libxmlb.bst
 - freedesktop-sdk.bst:components/systemd.bst

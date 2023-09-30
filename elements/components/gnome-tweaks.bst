@@ -5,7 +5,7 @@ sources:
   url: gnome:gnome-tweaks.git
   track: master
 
-  ref: 42.beta-74-g8ef4ef3c9f9dff77928906b722269c5c05ee11f4
+  ref: 45.0-8-g4ef70e6bd9103ecc7d97889c6685bf44bf99ef80
 - kind: patch
   path: patches/gnome-tweaks/0001-rlxos-support-libadwaita-theme-switcher.patch
 build-depends:

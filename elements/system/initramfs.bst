@@ -9,21 +9,8 @@ variables:
   uuidnamespace: aea54278-2587-4075-ae67-8688ace4ce3d
 
 config:
-  layout:
-  - element: ''
-    destination: '/tmp'
-  - element: ''
-    destination: '/efi'
-  - element: ''
-    destination: '/var/tmp'
-  - element: system/initramfs/deps.bst
-    destination: '/'
-  - element: system/initramfs/initial-scripts.bst
-    destination: '/'
-  - element: vm/prepare-image.bst
-    destination: '/'
-
   commands:
+  - mkdir -p /tmp /efi /var/tmp
   - |
     prepare-image.sh \
        --seed "%{uuidnamespace}" \
@@ -51,7 +38,7 @@ config:
     cp /boot/vmlinuz "%{install-root}/usr/lib/modules/${version}/vmlinuz"
 
   - dbus-uuidgen >/etc/machine-id
-  - SYSTEMD_RELAX_ESP_CHECKS=1 bootctl --path='/efi' --no-variables install
+  - SYSTEMD_ESP_PATH=/efi bootctl --no-variables install
   - rm /etc/machine-id
 
   - |

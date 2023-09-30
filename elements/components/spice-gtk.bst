@@ -17,13 +17,13 @@ depends:
 - components/spice-protocol.bst
 - components/usbredir.bst
 - components/glib.bst
-- components/gst-plugins-base.bst
 - components/gtk+-3.bst
 - components/json-glib.bst
 - components/libsoup.bst
 - components/vala.bst
 - freedesktop-sdk.bst:components/cyrus-sasl.bst
 - freedesktop-sdk.bst:components/gstreamer.bst
+- freedesktop-sdk.bst:components/gstreamer-plugins-base.bst
 - freedesktop-sdk.bst:components/libcap-ng.bst
 - freedesktop-sdk.bst:components/libdrm.bst
 - freedesktop-sdk.bst:components/polkit.bst

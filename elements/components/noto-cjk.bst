@@ -5,7 +5,7 @@ sources:
   url: github:googlefonts/noto-cjk
   track: main
 
-  ref: Sans2.004-18-g1c7ca85cb5195a3332e18c2b5cfe196ffb084e72
+  ref: Serif2.002-1-g727f898acdf7b100d308af8edf63c3953b626a1b
 
 - kind: local
   path: files/font-conf/noto-cjk.conf

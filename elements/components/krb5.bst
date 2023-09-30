@@ -2,9 +2,9 @@ kind: autotools
 
 sources:
 - kind: tar
-  url: kerberos:dist/krb5/1.20/krb5-1.20.1.tar.gz
+  url: kerberos:dist/krb5/1.21/krb5-1.21.2.tar.gz
 
-  ref: 704aed49b19eb5a7178b34b2873620ec299db08752d6a8574f95d41879ab8851
+  ref: 9560941a9d843c0243a71b17a7ac6fe31c7cebb5bce3983db79e52ae7e850491
 build-depends:
 - freedesktop-sdk.bst:components/bison.bst
 - freedesktop-sdk.bst:components/perl.bst
@@ -46,5 +46,4 @@ public:
         - '%{libdir}/libkrb5support.so'
         - '%{libdir}/libverto.so'
   cpe:
-    product: kerberos
-    version: 5-1.19
+    product: kerberos_5

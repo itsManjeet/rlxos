@@ -12,4 +12,4 @@ sources:
 - kind: git_tag
   url: github:jquast/wcwidth
   track: master
-  ref: 0.2.6-0-gf0232e5adfbcd7473021a5672c61ed79fee667f0
+  ref: 0.2.8-0-g2c9ab7c9d6905c0d4364071011a3168a3cbcadf2

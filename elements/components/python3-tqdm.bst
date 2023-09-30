@@ -9,4 +9,4 @@ sources:
 - kind: git_tag
   url: github:tqdm/tqdm.git
   track: master
-  ref: v4.65.0-0-g0bb91857eca0d4aea08f66cf1c8949abe0cd6b7a
+  ref: v4.66.1-0-g4c956c20b83be4312460fc0c4812eeb3fef5e7df

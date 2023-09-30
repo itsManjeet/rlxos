@@ -4,7 +4,6 @@ sources:
   url: gnome_downloads:gnome-color-manager/3.36/gnome-color-manager-3.36.0.tar.xz
   ref: 9ddb9e6b6472e119801381f90905332ec1d4258981721bba831ca246ceb3ad3b
 build-depends:
-- components/appstream-glib.bst
 - freedesktop-sdk.bst:components/itstool.bst
 - freedesktop-sdk.bst:public-stacks/buildsystem-meson.bst
 depends:

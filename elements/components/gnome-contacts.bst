@@ -2,8 +2,8 @@ kind: meson
 
 sources:
 - kind: tar
-  url: gnome_downloads:gnome-contacts/44/gnome-contacts-44.0.tar.xz
-  ref: 7dd1163bc1f06af6382dae4015c43443ee2c12928128fc99fd449292d0de7bed
+  url: gnome_downloads:gnome-contacts/45/gnome-contacts-45.beta.tar.xz
+  ref: d1b60f77778d1579ee1ee4835fe15a4d8243f5123d856ea10eb00d77029b2e39
 build-depends:
 - components/vala.bst
 - freedesktop-sdk.bst:components/desktop-file-utils.bst
@@ -14,8 +14,6 @@ depends:
 - components/folks.bst
 - components/gnome-online-accounts.bst
 - components/libportal.bst
-- components/cheese.bst
-- components/libqrencode.bst
 - components/gnome-desktop.bst
 - components/adwaita-icon-theme.bst
 - components/glib.bst
@@ -23,4 +21,5 @@ depends:
 - components/libadwaita.bst
 - components/libgee.bst
 - freedesktop-sdk.bst:components/gstreamer.bst
+- freedesktop-sdk.bst:components/libqrencode.bst
 - freedesktop-sdk.bst:bootstrap-import.bst

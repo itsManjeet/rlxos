@@ -2,38 +2,29 @@ kind: script
 
 build-depends:
 - boards/amd64-efi/build-deps.bst
-- system/image.bst
-- boards/amd64-efi/filesystem.bst
+- filename: system/image.bst
+  config:
+    location: "/rlxos/images"
+- filename: boards/amd64-efi/filesystem.bst
+  config:
+    location: "/sysroot"
 - boards/amd64-efi/initial-scripts.bst
-- boards/amd64-efi/initramfs.bst
+- filename: boards/amd64-efi/initramfs.bst
+  config:
+    location: "/sysroot/efi"
 
 variables:
   install-root: /build/install-root
   uuidnamespace: aea54278-2587-4075-ae67-8688ace4ce3d
 
 config:
-  layout:
-  - element: ''
-    destination: /tmp
-  - element: ''
-    destination: /build
-  - element: boards/amd64-efi/build-deps.bst
-    destination: /
-  - element: boards/amd64-efi/filesystem.bst
-    destination: /sysroot
-  - element: boards/amd64-efi/initramfs.bst
-    destination: /sysroot/efi
-  - element: boards/amd64-efi/initial-scripts.bst
-    destination: /
-  - element: system/image.bst
-    destination: /rlxos/images/
-
   commands:
   - mkdir -p /build/images
   - mkdir -p /build/install-root
   - mkdir -p /build/stage-1
   - mkdir -p /build/stage-2
   - mkdir -p /build/sysroot-stage-2
+  - mkdir -p /tmp
 
   - |
     prepare-image.sh \

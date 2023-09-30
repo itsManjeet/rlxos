@@ -8,12 +8,10 @@ build-depends:
 
 config:
   install-commands:
-  - make DESTDIR="%{install-root}" FIRMWAREDIR="%{indep-libdir}/firmware" installcompress
+  - make DESTDIR="%{install-root}" FIRMWAREDIR="%{indep-libdir}/firmware" install-xz
 
 sources:
 - kind: git_tag
   url: kernel:linux/kernel/git/firmware/linux-firmware.git
   track: main
   ref: 20230919-9-g8b855f3797e6b1d207b7a2b8dae0e9913f907e5b
-- kind: patch
-  path: patches/firmware/compress.patch

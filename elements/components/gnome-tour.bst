@@ -337,8 +337,8 @@ sources:
   - name: winnow
     version: 0.5.15
     sha: 7c2e3184b9c4e92ad5167ca73039d0c42476302ab603e2fec4487511f38ccefc
-- kind: patch
-  path: patches/gnome-tour/0001-rlxos-specified-patches.patch
+# - kind: patch
+#   path: patches/gnome-tour/0001-rlxos-specified-patches.patch
 build-depends:
 - freedesktop-sdk.bst:components/desktop-file-utils.bst
 - freedesktop-sdk.bst:components/rust.bst

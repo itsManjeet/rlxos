@@ -5,7 +5,7 @@ about: VLC media player is a free and open-source, portable, cross-platform medi
   is available for desktop operating systems and mobile platforms, such as Android,
   iOS and iPadOS.
 release: 0
-build-time:
+build-depends:
 - components/appimagetool.yml
 sources:
 - https://github.com/cmatomic/VLCplayer-AppImage/releases/download/%{version}/VLC_media_player-%{version}-x86_64.AppImage

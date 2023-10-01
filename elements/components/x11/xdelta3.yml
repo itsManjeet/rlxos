@@ -4,7 +4,7 @@ about: diff utility for binary files
 release: 0
 depends:
 - components/ncompress.yml
-build-time:
+build-depends:
 - components/python.yml
 sources:
 - xdelta-%{version}.tar.gz::https://github.com/jmacd/xdelta/archive/refs/tags/v%{version}.tar.gz

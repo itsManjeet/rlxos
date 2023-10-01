@@ -6,5 +6,5 @@ depends:
   - components/networkmanager.yml
   - components/plasma-workspace.yml
   - components/qca.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml

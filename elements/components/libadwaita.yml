@@ -5,7 +5,7 @@ about: Building blocks for modern adaptive GNOME applications
 depends:
   - components/gtk4.yml
 
-build-time:
+build-depends:
   - components/gobject-introspection.yml
   - components/meson.yml
   - components/vala.yml

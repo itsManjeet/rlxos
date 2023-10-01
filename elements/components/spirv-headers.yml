@@ -5,6 +5,6 @@ about: SPIR-V Headers
 sources:
   - https://github.com/KhronosGroup/SPIRV-Headers/archive/refs/tags/sdk-%{version}/spirv-headers-%{version}.tar.gz
 
-build-time:
+build-depends:
   - components/glibc.yml
   - components/cmake.yml

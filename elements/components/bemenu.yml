@@ -2,7 +2,7 @@ id: bemenu
 version: 0.6.10
 about: Dynamic menu library and client program inspired by dmenu
 release: 0
-build-time:
+build-depends:
   - components/x11/libxinerama.yml
   - components/x11/libxkbcommon.yml
   - components/ncurses.yml

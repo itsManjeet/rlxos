@@ -11,7 +11,7 @@ depends:
   - components/evolution-data-server.yml
   - components/libgee.yml
   - components/libxml2.yml
-build-time:
+build-depends:
   - components/gtk-doc.yml
   - components/vala.yml
   - components/meson.yml

@@ -28,7 +28,7 @@ depends:
   - components/libnotify.yml
   - components/libxfce4ui.yml
   - components/vte.yml
-build-time:
+build-depends:
   - components/intltool.yml
   - components/python.yml
   - components/xfce4-panel.yml

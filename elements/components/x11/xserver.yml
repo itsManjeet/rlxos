@@ -34,7 +34,7 @@ depends:
   - components/x11/xcb-util-wm.yml
   - components/x11/xtrans.yml
 
-build-time:
+build-depends:
   - components/x11/util-macros.yml
   - components/x11/xorgproto.yml
 

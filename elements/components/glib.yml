@@ -10,7 +10,7 @@ depends:
   - components/libxslt.yml
   - components/pcre2.yml
 
-build-time:
+build-depends:
   - components/meson.yml
   - components/gettext.yml
 

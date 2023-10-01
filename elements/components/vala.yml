@@ -8,7 +8,7 @@ about:
 depends:
   - components/glib.yml
 
-build-time:
+build-depends:
   - components/graphviz.yml
 sources:
   - https://download.gnome.org/sources/vala/%{version:1}/vala-%{version}.tar.xz

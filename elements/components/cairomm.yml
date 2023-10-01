@@ -12,7 +12,7 @@ configure: >
 depends:
   - components/cairo.yml
   - components/libsigc++.yml
-build-time:
+build-depends:
   - components/boost.yml
 sources:
   - https://www.cairographics.org/releases/cairomm-%{version}.tar.xz

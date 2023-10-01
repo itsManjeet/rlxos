@@ -9,7 +9,7 @@ post-script: |-
 depends:
   - components/eglexternalplatform.yml
   - components/wayland.yml
-build-time:
+build-depends:
   - components/libglvnd.yml
   - components/wayland-protocols.yml
 sources:

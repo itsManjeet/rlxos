@@ -2,5 +2,5 @@ id: gcc-stage1
 merge:
   - elements/include/gcc.yml
 
-build-time:
+build-depends:
   - components/bootstrap/binutils-stage1.yml

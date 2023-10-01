@@ -12,7 +12,7 @@ script: |-
   make ${MAKEFLAGS}
   make install DESTDIR=%{install-root}
 
-build-time:
+build-depends:
   - components/yasm.yml
   - components/which.yml
 sources:

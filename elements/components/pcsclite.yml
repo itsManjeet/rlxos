@@ -16,7 +16,7 @@ post-script: |-
 depends:
   - components/systemd.yml
   - components/python.yml
-build-time:
+build-depends:
   - components/pkg-config.yml
 sources:
   - https://pcsclite.apdu.fr/files/pcsc-lite-%{version}.tar.bz2

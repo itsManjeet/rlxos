@@ -7,6 +7,6 @@ sources:
 depends:
   - components/glibc.yml
 
-build-time:
+build-depends:
   - components/libpng.yml
   - components/meson.yml

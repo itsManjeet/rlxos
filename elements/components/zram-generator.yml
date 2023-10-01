@@ -4,7 +4,7 @@ about: System unit generator for zram devices
 
 depends:
   - components/systemd.yml
-build-time:
+build-depends:
   - components/rustc.yml
 sources:
   - zram-generator-%{version}.tar.gz::https://github.com/systemd/zram-generator/archive/refs/tags/v%{version}.tar.gz

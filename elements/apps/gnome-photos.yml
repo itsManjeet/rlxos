@@ -25,7 +25,7 @@ depends:
 - components/libraw.yml
 - components/librsvg.yml
 - components/tracker-miner.yml
-build-time:
+build-depends:
 - components/gobject-introspection.yml
 - components/meson.yml
 - components/docbook-xsl.yml

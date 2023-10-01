@@ -17,7 +17,7 @@ depends:
   - components/zlib.yml
   - components/libidn2.yml
 
-build-time:
+build-depends:
   - components/gobject-introspection.yml
   - components/vala.yml
   - components/gtk-doc.yml

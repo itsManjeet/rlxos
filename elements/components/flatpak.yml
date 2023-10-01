@@ -31,7 +31,7 @@ depends:
   - components/xdg-dbus-proxy.yml
   - components/xdg-desktop-portal.yml
   - components/libseccomp.yml
-build-time:
+build-depends:
   - components/gtk-doc.yml
 sources:
   - https://github.com/flatpak/flatpak/releases/download/%{version}/flatpak-%{version}.tar.xz

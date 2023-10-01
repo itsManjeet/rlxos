@@ -8,7 +8,7 @@ install: prefix=%{prefix}
 depends:
   - components/glibc.yml
   - components/oniguruma.yml
-build-time:
+build-depends:
   - components/autoconf.yml
   - components/automake.yml
   - components/bison.yml

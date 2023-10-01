@@ -12,7 +12,7 @@ depends:
   - components/gvfs.yml
   - components/iso-codes.yml
   - components/py/py-gobject.yml
-build-time:
+build-depends:
   - components/vala.yml
   - components/git.yml
 sources:

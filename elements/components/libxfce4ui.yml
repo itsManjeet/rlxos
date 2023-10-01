@@ -117,7 +117,7 @@ depends:
   - components/libgtop.yml
   - components/libgudev.yml
   - components/startup-notification.yml
-build-time:
+build-depends:
   - components/gobject-introspection.yml
   - components/vala.yml
 

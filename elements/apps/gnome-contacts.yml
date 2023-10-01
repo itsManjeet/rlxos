@@ -2,7 +2,7 @@ id: gnome-contacts
 version: "40.0"
 about: Contact manager for GNOME
 release: 0
-build-time:
+build-depends:
 - components/evolution-data-server.yml
 - components/folks.yml
 - components/gnome-online-accounts.yml

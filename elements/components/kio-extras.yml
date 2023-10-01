@@ -15,7 +15,7 @@ depends:
   - components/libtirpc.yml
   - components/samba.yml
   - components/taglib.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
 sources:
   - https://download.kde.org/stable/release-service/%{version}/src/kio-extras-%{version}.tar.xz

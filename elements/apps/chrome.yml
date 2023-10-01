@@ -2,7 +2,7 @@ id: chrome
 version: 102.0.5005.115
 about: The popular and trusted web browser by Google (Stable Channel)
 release: 0
-build-time:
+build-depends:
 - components/appimagetool.yml
 sources:
 - https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_%{version}-1_amd64.deb

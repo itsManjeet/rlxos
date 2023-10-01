@@ -2,7 +2,7 @@ id: konsole
 version: 22.08.1
 about: KF5 based terminal emulator
 release: 0
-build-time:
+build-depends:
 - components/knewstuff.yml
 - components/knotifyconfig.yml
 - components/kparts.yml

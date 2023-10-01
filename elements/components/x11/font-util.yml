@@ -2,7 +2,7 @@ id: font-util
 version: 1.4.0
 about: X.org font utilities
 
-build-time:
+build-depends:
   - components/x11/util-macros.yml
 sources:
   - https://www.x.org/pub/individual/font/font-util-%{version}.tar.xz

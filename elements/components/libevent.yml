@@ -9,7 +9,7 @@ configure: >-
 depends:
   - components/openssl.yml
   - components/python.yml
-build-time:
+build-depends:
   - components/cmake.yml
 sources:
   - https://github.com/libevent/libevent/releases/download/release-%{version}-stable/libevent-%{version}-stable.tar.gz

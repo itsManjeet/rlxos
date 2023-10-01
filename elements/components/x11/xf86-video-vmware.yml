@@ -4,7 +4,7 @@ about: X.Org Video Driver for VMware SVGA virtual video cards
 
 depends:
   - components/glibc.yml
-build-time:
+build-depends:
   - components/x11/xserver.yml
 sources:
   - https://www.x.org/pub/individual/driver/%{id}-%{version}.tar.xz

@@ -11,7 +11,7 @@ depends:
   - components/x11/libx11.yml
   - components/x11/xauth.yml
 
-buildtime:
+build-depends:
   - components/x11/util-macros.yml
 
 configure: >

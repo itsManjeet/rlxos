@@ -10,7 +10,7 @@ script: |-
 
 depends:
   - components/talloc.yml
-build-time:
+build-depends:
   - components/libxslt.yml
 sources:
   - proot-v%{version}.tar.gz::https://github.com/cedric-vincent/proot/archive/v%{version}.tar.gz

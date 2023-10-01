@@ -10,5 +10,5 @@ depends:
   - components/libxfce4ui.yml
   - components/startup-notification.yml
   - components/x11/libxinerama.yml
-build-time:
+build-depends:
   - components/intltool.yml

@@ -2,7 +2,7 @@ id: locales
 version: 2307
 about: Locale cache
 
-build-time:
+build-depends:
   - components/glibc.yml
   - components/bash.yml
   - components/gzip.yml

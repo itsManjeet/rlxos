@@ -17,5 +17,5 @@ depends:
   - components/libxfce4util.yml
   - components/poppler.yml
 
-build-time:
+build-depends:
   - components/intltool.yml

@@ -44,7 +44,7 @@ depends:
   - components/dosfstools.yml
   - components/grub-i386.yml
 
-build-time:
+build-depends:
   - components/python.yml
   - components/flex.yml
   - components/m4.yml

@@ -5,7 +5,7 @@ depends:
   - components/kconfig.yml
   - components/kcoreaddons.yml
   - components/kwindowsystem.yml
-build-time:
+build-depends:
   - components/boost.yml
   - components/extra-cmake-modules.yml
 

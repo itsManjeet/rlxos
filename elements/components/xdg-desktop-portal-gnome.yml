@@ -6,7 +6,7 @@ depends:
   - components/gnome-keyring.yml
   - components/gtk4.yml
   - components/xdg-desktop-portal-gtk.yml
-build-time:
+build-depends:
   - components/meson.yml
   - components/xdg-desktop-portal.yml
 sources:

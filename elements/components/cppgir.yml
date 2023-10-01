@@ -6,7 +6,7 @@ variables:
 depends:
   - components/fmt.yml
   - components/libboost.yml
-build-time:
+build-depends:
   - components/boost.yml
 sources:
   - https://gitlab.com/mnauw/cppgir/-/archive/%{commit}/cppgir-%{commit}.tar.gz

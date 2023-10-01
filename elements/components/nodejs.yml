@@ -17,7 +17,7 @@ depends:
   - components/icu.yml
   - components/libuv.yml
   - components/nghttp2.yml
-build-time:
+build-depends:
   - components/which.yml
 sources:
   - https://nodejs.org/dist/v%{version}/node-v%{version}.tar.xz

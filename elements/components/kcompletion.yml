@@ -5,5 +5,5 @@ depends:
   - components/qt.yml
   - components/kconfig.yml
   - components/kwidgetsaddons.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml

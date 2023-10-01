@@ -11,6 +11,6 @@ script: |-
 depends:
   - components/qt.yml
   - components/py/py-jinja2.yml
-build-time:
+build-depends:
   - components/py/py-pip.yml
   - components/extra-cmake-modules.yml

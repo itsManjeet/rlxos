@@ -47,7 +47,7 @@ depends:
   - components/libvdpau.yml
   - components/pulseaudio.yml
   - components/sdl2.yml
-build-time:
+build-depends:
   - components/yasm.yml
 sources:
   - https://ffmpeg.org/releases/ffmpeg-%{version}.tar.xz

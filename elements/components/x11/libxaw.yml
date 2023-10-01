@@ -10,5 +10,5 @@ variables:
 depends:
   - components/x11/libxmu.yml
   - components/x11/libxpm.yml
-build-time:
+build-depends:
   - components/x11/util-macros.yml

@@ -14,7 +14,7 @@ variables:
   skip-libraries: >
     libc.so*
 
-build-time:
+build-depends:
   - components/exo.yml
   - components/hicolor-icon-theme.yml
   - components/libgudev.yml

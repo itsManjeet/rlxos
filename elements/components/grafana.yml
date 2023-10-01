@@ -7,7 +7,7 @@ depends:
   - components/freetype.yml
   - components/glibc.yml
   - components/gsfonts.yml
-build-time:
+build-depends:
   - components/go.yml
   - components/nodejs.yml
   - components/python.yml

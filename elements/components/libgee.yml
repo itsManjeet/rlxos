@@ -6,7 +6,7 @@ about:
 
 depends:
   - components/glib.yml
-build-time:
+build-depends:
   - components/gobject-introspection.yml
   - components/vala.yml
 sources:

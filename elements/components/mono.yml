@@ -7,7 +7,7 @@ depends:
   - components/libgdiplus.yml
   - components/python.yml
   - components/zlib.yml
-build-time:
+build-depends:
   - components/cmake.yml
 
 sources:

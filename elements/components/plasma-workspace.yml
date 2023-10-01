@@ -28,7 +28,7 @@ depends:
   - components/networkmanager-qt.yml
   - components/kpipewire.yml
   - components/libkexiv2.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
   - components/kdoctools.yml
   - components/kinit.yml

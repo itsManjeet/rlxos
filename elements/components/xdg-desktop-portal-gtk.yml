@@ -2,7 +2,7 @@ id: xdg-desktop-portal-gtk
 version: 1.14.1
 about: A backend implementation of xdg-desktop-portal using GTK
 
-build-time:
+build-depends:
   - components/python.yml
   - components/xdg-desktop-portal.yml
 sources:

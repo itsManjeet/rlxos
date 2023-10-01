@@ -4,5 +4,5 @@ about: Plasma plasma-firewall
 
 depends:
   - components/systemsettings.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml

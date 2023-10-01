@@ -3,7 +3,7 @@ about: KF5 kcmutils
 
 depends:
   - components/kdeclarative.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
 
 merge: [elements/include/kf5.yml]

@@ -17,7 +17,7 @@ depends:
   - components/gnome-keyring.yml
   - components/libldap.yml
   - components/avahi.yml
-build-time:
+build-depends:
   - components/vala.yml
 sources:
   - https://download.gnome.org/sources/seahorse/40/seahorse-%{version}.tar.xz

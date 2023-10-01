@@ -21,7 +21,7 @@ script: |
 depends:
   - components/icu.yml
 
-build-time:
+build-depends:
   - components/autoconf-2.13.yml
   - components/rustc.yml
   - components/which.yml

@@ -5,7 +5,7 @@ about: A GObject to sqlite object mapper
 depends:
   - components/glib.yml
   - components/sqlite.yml
-build-time:
+build-depends:
   - components/gdk-pixbuf.yml
   - components/gobject-introspection.yml
   - components/py/py-gobject.yml

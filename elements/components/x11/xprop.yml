@@ -5,7 +5,7 @@ about: Property displayer for X
 depends:
   - components/x11/libx11.yml
 
-build-time:
+build-depends:
   - components/x11/util-macros.yml
 
 sources:

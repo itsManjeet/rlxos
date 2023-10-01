@@ -5,7 +5,7 @@ about: Dia is a GTK+ based diagram creation program for GNU/Linux, MacOS X, Unix
   objects to help draw entity relationship diagrams, UML diagrams, flowcharts, network
   diagrams, and many other diagrams
 release: 0
-build-time:
+build-depends:
 - components/gtk2.yml
 - components/libxslt.yml
 - components/docbook-xsl.yml

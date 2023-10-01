@@ -24,7 +24,7 @@ depends:
   - components/python.yml
   - components/rsync.yml
   - components/wget.yml
-build-time:
+build-depends:
   - components/lua.yml
   - components/py/py-setuptools.yml
 sources:

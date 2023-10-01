@@ -5,7 +5,7 @@ about: X11 composite extension library
 depends:
   - components/x11/libxfixes.yml
 
-build-time:
+build-depends:
   - components/x11/util-macros.yml
   - components/x11/xorgproto.yml
 

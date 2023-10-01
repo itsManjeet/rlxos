@@ -17,6 +17,6 @@ depends:
   - components/iptables.yml
   - components/libelf.yml
   - components/libcap.yml
-build-time:
+build-depends:
   - components/flex.yml
   - components/bison.yml

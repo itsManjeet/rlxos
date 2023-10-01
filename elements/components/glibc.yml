@@ -5,6 +5,6 @@ merge:
 depends:
   - components/filesystem.yml
 
-build-time:
+build-depends:
   - components/bootstrap.yml
   - components/kernel-headers.yml

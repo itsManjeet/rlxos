@@ -7,7 +7,7 @@ depends:
   - components/systemd.yml
   - components/gobject-introspection.yml
 
-build-time:
+build-depends:
   - components/meson.yml
 
 sources:

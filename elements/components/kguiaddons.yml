@@ -4,6 +4,6 @@ about: KF5 kguiaddons
 
 depends:
   - components/qt.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
   - components/plasma-wayland-protocols.yml

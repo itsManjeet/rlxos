@@ -42,7 +42,7 @@ depends:
   - components/gdbm.yml
   - components/libcap.yml
   - components/pcre.yml
-build-time:
+build-depends:
   - components/yodl.yml
 sources:
   - https://www.zsh.org/pub/zsh-%{version}.tar.xz

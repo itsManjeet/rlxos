@@ -6,7 +6,7 @@ sources:
   - https://www.freedesktop.org/software/libevdev/libevdev-%{version}.tar.xz
 depends:
   - components/glibc.yml
-build-time:
+build-depends:
   - components/check.yml
 kernel:
   - CONFIG_INPUT

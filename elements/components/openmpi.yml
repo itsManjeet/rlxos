@@ -22,7 +22,7 @@ depends:
   - components/zlib.yml
   - components/openssh.yml
   - components/perl.yml
-build-time:
+build-depends:
   - components/inetutils.yml
 sources:
   - https://www.open-mpi.org/software/ompi/v%{version:1}/downloads/openmpi-%{version}.tar.bz2

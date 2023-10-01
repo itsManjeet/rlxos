@@ -4,7 +4,7 @@ about: Open-source formatting library for C++
 
 depends:
   - components/libgcc.yml
-build-time:
+build-depends:
   - components/cmake.yml
   - components/ninja.yml
   - components/nodejs.yml

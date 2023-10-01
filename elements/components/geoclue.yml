@@ -13,7 +13,7 @@ depends:
   - components/json-glib.yml
   - components/libsoup3.yml
   - components/libnotify.yml
-build-time:
+build-depends:
   - components/vala.yml
   - components/gtk-doc.yml
 

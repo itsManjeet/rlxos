@@ -12,7 +12,7 @@ depends:
   - components/phodav.yml
   - components/polkit.yml
   - components/usbredir.yml
-build-time:
+build-depends:
   - components/gobject-introspection.yml
   - components/meson.yml
   - components/spice-protocol.yml

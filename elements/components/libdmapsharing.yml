@@ -15,7 +15,7 @@ depends:
   - components/gdk-pixbuf.yml
   - components/gst-plugins-base.yml
   - components/libsoup.yml
-build-time:
+build-depends:
   - components/gobject-introspection.yml
   - components/gtk-doc.yml
 sources:

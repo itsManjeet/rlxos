@@ -34,5 +34,5 @@ script: |
 depends:
   - components/libgcc.yml
 
-build-time:
+build-depends:
   - components/llvm.yml

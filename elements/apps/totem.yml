@@ -20,7 +20,7 @@ depends:
 - components/gst-libav.yml
 - components/py/py-dbus.yml
 - components/libpeas.yml
-build-time:
+build-depends:
 - components/appstream-glib.yml
 - components/docbook-xsl.yml
 - components/gobject-introspection.yml

@@ -46,7 +46,7 @@ depends:
   - components/lvm2.yml
   - components/btrfs-progs.yml
   - components/cgroupfs-mount.yml
-build-time:
+build-depends:
   - components/go.yml
 sources:
   - https://github.com/moby/moby/archive/v%{version}/moby-%{version}.tar.gz

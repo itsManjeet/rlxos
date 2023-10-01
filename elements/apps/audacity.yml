@@ -2,7 +2,7 @@ id: audacity
 version: 3.3.3
 about: video editor tool
 release: 0
-build-time:
+build-depends:
   - components/appimagetool.yml
   - components/pkgupd-port.yml
   - components/rsync.yml

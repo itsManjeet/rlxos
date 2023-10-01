@@ -7,6 +7,6 @@ depends:
   - components/kidletime.yml
   - components/kwayland.yml
   - components/kwindowsystem.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
   - components/wayland-protocols.yml

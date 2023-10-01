@@ -7,7 +7,7 @@ depends:
   - components/libcanberra.yml
   - components/libsigc++.yml
   - components/pulseaudio.yml
-build-time:
+build-depends:
   - components/intltool.yml
 sources:
   - https://freedesktop.org/software/pulseaudio/pavucontrol/pavucontrol-%{version}.tar.xz

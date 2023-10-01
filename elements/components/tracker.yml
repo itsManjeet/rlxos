@@ -13,7 +13,7 @@ depends:
   - components/libsoup.yml
   - components/icu.yml
   - components/sqlite.yml
-build-time:
+build-depends:
   - components/vala.yml
   - components/gobject-introspection.yml
 sources:

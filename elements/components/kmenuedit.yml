@@ -10,7 +10,7 @@ configure: >-
 depends:
   - components/hicolor-icon-theme.yml
   - components/kio.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
   - components/kdoctools.yml
 sources:

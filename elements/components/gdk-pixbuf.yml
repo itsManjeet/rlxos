@@ -13,7 +13,7 @@ integration: |-
 sources:
   - https://download.gnome.org/sources/gdk-pixbuf/%{version:1}/gdk-pixbuf-%{version}.tar.xz
 
-build-time:
+build-depends:
   - components/gobject-introspection.yml
   - components/gtk-doc.yml
 

@@ -59,7 +59,7 @@ depends:
   - components/cryptsetup.yml
   - components/gnu-efi.yml
 
-build-time:
+build-depends:
   - components/gcc.yml
   - components/meson.yml
   - components/expat.yml

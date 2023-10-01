@@ -7,6 +7,6 @@ depends:
   - components/kwayland.yml
   - components/plasma-framework.yml
   - components/cups.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
   - components/plasma-wayland-protocols.yml

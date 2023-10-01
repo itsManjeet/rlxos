@@ -5,7 +5,7 @@ depends:
   - components/bluez-qt.yml
   - components/kdeclarative.yml
   - components/kcmutils.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
   - components/plasma-framework.yml
 merge: [elements/include/plasma.yml]

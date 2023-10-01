@@ -6,7 +6,7 @@ depends:
   - components/x11/libx11.yml
   - components/x11/libxcursor.yml
   - components/x11/libxmu.yml
-build-time:
+build-depends:
   - components/x11/xbitmaps.yml
   - components/x11/util-macros.yml
 

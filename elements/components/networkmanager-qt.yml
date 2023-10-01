@@ -5,5 +5,5 @@ about: KF5 networkmanager-qt
 depends:
   - components/qt.yml
   - components/networkmanager.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml

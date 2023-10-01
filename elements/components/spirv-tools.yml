@@ -15,7 +15,7 @@ depends:
   - components/glibc.yml
   - components/gcc.yml
 
-build-time:
+build-depends:
   - components/cmake.yml
   - components/ninja.yml
   - components/python.yml

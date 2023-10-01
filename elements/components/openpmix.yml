@@ -9,7 +9,7 @@ depends:
   - components/jansson.yml
   - components/libevent.yml
   - components/zlib.yml
-build-time:
+build-depends:
   - components/perl.yml
   - components/python.yml
 sources:

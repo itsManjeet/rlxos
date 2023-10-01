@@ -5,5 +5,5 @@ about: KF5 ktexteditor
 depends:
   - components/kparts.yml
   - components/syntax-highlighting.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml

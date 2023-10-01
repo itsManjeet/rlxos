@@ -14,7 +14,7 @@ depends:
   - components/iso-codes.yml
   - components/gtk2.yml
   - components/libnotify.yml
-build-time:
+build-depends:
   - components/vala.yml
   - components/gobject-introspection.yml
 sources:

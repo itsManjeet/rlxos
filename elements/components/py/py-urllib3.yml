@@ -2,7 +2,7 @@ id: py-urllib3
 version: 1.26.9
 about: HTTP library with thread-safe connection pooling and file post support
 release: 0
-build-time:
+build-depends:
 - components/py/py-setuptools.yml
 - components/py/py-socks.yml
 sources:

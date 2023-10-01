@@ -9,5 +9,5 @@ depends:
   - components/libcanberra.yml
   - components/libdbusmenu-qt.yml
   - components/x11/libxtst.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml

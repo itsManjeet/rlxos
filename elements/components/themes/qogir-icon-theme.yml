@@ -4,7 +4,7 @@ about: A colorful design icon theme for linux desktops
 merge: [elements/include/update-icon-cache.yml]
 depends:
   - components/hicolor-icon-theme.yml
-build-time:
+build-depends:
   - components/gtk.yml
 sources:
   - qogir-icon-theme-%{version}.tar.gz::https://github.com/vinceliuice/Qogir-icon-theme/archive/refs/tags/%{version}.tar.gz

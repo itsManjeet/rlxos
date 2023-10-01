@@ -2,7 +2,7 @@ id: gnome-clocks
 version: "40.0"
 about: Clocks from gnome
 release: 0
-build-time:
+build-depends:
 - components/geoclue.yml
 - components/geocode-glib.yml
 - components/gnome-desktop.yml

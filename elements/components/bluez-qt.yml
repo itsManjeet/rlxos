@@ -10,7 +10,7 @@ configure: >
 depends:
   - components/qt.yml
   - components/bluez.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
 
 sources:

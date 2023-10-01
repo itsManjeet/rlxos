@@ -12,7 +12,7 @@ depends:
   - components/gtk.yml
   - components/json-glib.yml
   - components/gcr.yml
-build-time:
+build-depends:
   - components/vala.yml
   - components/gtk-doc.yml
   - components/gobject-introspection.yml

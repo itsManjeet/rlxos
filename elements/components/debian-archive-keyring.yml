@@ -4,7 +4,7 @@ about: GnuPG archive keys of the debian archive
 release: 0
 depends:
   - components/gnupg.yml
-build-time:
+build-depends:
   - components/jetring.yml
 sources:
   - https://mirrors.kernel.org/debian/pool/main/d/debian-archive-keyring/debian-archive-keyring_%{version}.tar.xz

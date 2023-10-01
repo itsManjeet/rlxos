@@ -9,7 +9,7 @@ script: |
 
 depends:
   - components/lua.yml
-build-time:
+build-depends:
   - components/boost.yml
 sources:
   - http://www.andre-simon.de/zip/highlight-%{version}.tar.bz2

@@ -4,7 +4,7 @@ about: yet another json library
 
 depends:
   - components/glibc.yml
-build-time:
+build-depends:
   - components/cmake.yml
 sources:
   - yajl-%{version}.tar.gz::https://github.com/lloyd/yajl/archive/refs/tags/%{version}.tar.gz

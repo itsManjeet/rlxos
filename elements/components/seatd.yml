@@ -7,7 +7,7 @@ sources:
 depends:
   - components/systemd.yml
 
-build-time:
+build-depends:
   - components/meson.yml
 
 configure: >-

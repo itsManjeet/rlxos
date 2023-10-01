@@ -7,7 +7,7 @@ depends:
   - components/fribidi.yml
   - components/fontconfig.yml
   - components/harfbuzz.yml
-build-time:
+build-depends:
   - components/nasm.yml
 sources:
   - https://github.com/libass/libass/releases/download/%{version}/libass-%{version}.tar.xz

@@ -14,5 +14,5 @@ depends:
   - components/kservice.yml
   - components/kdeclarative.yml
   - components/kinfocenter.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml

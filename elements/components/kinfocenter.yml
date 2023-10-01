@@ -11,7 +11,7 @@ depends:
   - components/glu.yml
   - components/mesa.yml
   - components/desktop-file-utils.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
   - components/kdoctools.yml
   - components/plasma-framework.yml

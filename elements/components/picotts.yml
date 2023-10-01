@@ -4,7 +4,7 @@ about: Text to speech voice sinthesizer from SVox, included in Android AOSP
 depends:
   - components/glibc.yml
   - components/popt.yml
-build-time:
+build-depends:
   - components/binutils.yml
   - components/gcc.yml
 sources:

@@ -4,7 +4,7 @@ about: Exports a gssapi interface which calls other random gssapi libraries
 
 depends:
   - components/glibc.yml
-build-time:
+build-depends:
   - components/autoconf.yml
   - components/pkg-config.yml
 sources:

@@ -14,7 +14,7 @@ depends:
   - components/gsound.yml
   - components/libyaml.yml
   - components/upower.yml
-build-time:
+build-depends:
   - components/gobject-introspection.yml
   - components/itstool.yml
 sources:

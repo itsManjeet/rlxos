@@ -27,7 +27,7 @@ depends:
   - components/x11/libxinerama.yml
   - components/x11/libxrandr.yml
   - components/systemd.yml
-build-time:
+build-depends:
   - components/spice-protocol.yml
 sources:
   - https://www.spice-space.org/download/releases/%{id}-%{version}.tar.bz2

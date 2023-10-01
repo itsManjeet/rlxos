@@ -1,0 +1,10 @@
+script: |-
+  %{initial-commands}
+  ostree init --repo %{build-root}/barerepo
+  ostree commit --repo %{build-root}/barerepo --consume %{source-repo} --branch %{arch}/%{codename} --timestamp 2011-11-11 11:11:11+00:00
+
+  ostree init --repo %{install-root} --mode archive
+  ostree pull-local --repo %{install-root} %{build-root}/barerepo
+
+build-depends:
+  - components/ostree.yml

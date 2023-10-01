@@ -5,6 +5,10 @@ about: An event driven initramfs infrastructure
 sources:
   - dracut-%{version}.tar.gz::https://github.com/dracutdevs/dracut/archive/refs/tags/%{version}.tar.gz
 
+variables:
+  seperate-build-dir: false
+  run-autogen: false
+
 depends:
   - components/bash.yml
   - components/coreutils.yml
@@ -21,12 +25,3 @@ depends:
   - components/util-linux.yml
   - components/xz.yml
 
-script: |
-  ./configure --prefix=/usr \
-    --sysconfdir=/etc \
-    --libexecdir=/usr/lib \
-    --sbindir=/usr/bin --systemdsystemunitdir=%{libdir}/systemd/system \
-    --disable-documentation
-
-  make ${MAKEFLAGS}
-  make install DESTDIR=%{install-root}

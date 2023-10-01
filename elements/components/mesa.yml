@@ -15,7 +15,7 @@ depends:
   - components/x11/libxshmfence.yml
   - components/x11/libxxf86vm.yml
   - components/x11/libpciaccess.yml
-build-time:
+build-depends:
   - components/wayland-protocols.yml
   - components/py/py-mako.yml
   - components/cmake.yml

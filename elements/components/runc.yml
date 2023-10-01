@@ -17,7 +17,7 @@ script: |-
 
 depends:
   - components/libseccomp.yml
-build-time:
+build-depends:
   - components/go.yml
   - components/git.yml
 sources:

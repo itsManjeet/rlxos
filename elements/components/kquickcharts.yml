@@ -4,5 +4,5 @@ about: KF5 kquickcharts
 
 depends:
   - components/qt.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml

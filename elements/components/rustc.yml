@@ -14,7 +14,7 @@ depends:
   - components/llvm.yml
   - components/libssh.yml
 
-build-time:
+build-depends:
   - components/cmake.yml
   - components/gdb.yml
   - components/ninja.yml

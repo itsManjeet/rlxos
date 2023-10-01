@@ -4,5 +4,5 @@ about: KF5 kimageformats
 depends:
   - components/qt.yml
   - components/karchive.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml

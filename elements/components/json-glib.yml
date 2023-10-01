@@ -6,7 +6,7 @@ about:
 
 depends:
   - components/glib.yml
-build-time:
+build-depends:
   - components/gobject-introspection.yml
 sources:
   - https://download.gnome.org/sources/json-glib/%{version:1}/json-glib-%{version}.tar.xz

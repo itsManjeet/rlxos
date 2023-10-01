@@ -5,7 +5,7 @@ about: X11 Xinerama extension library
 depends:
   - components/x11/libxext.yml
 
-build-time:
+build-depends:
   - components/x11/util-macros.yml
   - components/x11/xorgproto.yml
 

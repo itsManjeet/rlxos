@@ -15,7 +15,7 @@ depends:
   - components/nautilus.yml
   - components/libhandy.yml
   - components/libsecret.yml
-build-time:
+build-depends:
   - components/meson.yml
   - components/gtk-doc.yml
 sources:

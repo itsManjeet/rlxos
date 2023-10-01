@@ -7,6 +7,6 @@ depends:
   - components/kio.yml
   - components/kpackage.yml
   - components/syndication.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
   - components/kirigami2.yml

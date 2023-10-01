@@ -4,7 +4,7 @@ about: A thin layer of types for graphics libraries
 
 depends:
   - components/glib.yml
-build-time:
+build-depends:
   - components/gobject-introspection.yml
 sources:
   - graphene-%{version}.tar.gz::https://github.com/ebassi/graphene/archive/refs/tags/%{version}.tar.gz

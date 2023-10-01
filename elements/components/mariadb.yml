@@ -44,7 +44,7 @@ depends:
   - components/pam.yml
   - components/krb5.yml
   - components/pcre2.yml
-build-time:
+build-depends:
   - components/cmake.yml
   - components/boost.yml
 sources:

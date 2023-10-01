@@ -2,7 +2,7 @@ id: spotify
 version: 1.1.84.716.gc5f8b819
 about: A proprietary music streaming service
 release: 0
-build-time:
+build-depends:
 - components/curl.yml
 - components/appimagetool.yml
 sources:

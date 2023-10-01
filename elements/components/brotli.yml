@@ -16,7 +16,7 @@ post-script: python setup.py install --skip-build -O1 --root=%{install-root}
 depends:
   - components/libgcc.yml
   - components/glibc.yml
-build-time:
+build-depends:
   - components/cmake.yml
   - components/gcc.yml
   - components/py/py-setuptools.yml

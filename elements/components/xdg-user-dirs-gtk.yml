@@ -5,7 +5,7 @@ about: Create user dirs and asks to relocalize them
 depends:
   - components/gtk.yml
   - components/xdg-user-dirs.yml
-build-time:
+build-depends:
   - components/intltool.yml
 sources:
   - https://download.gnome.org/sources/xdg-user-dirs-gtk/%{version}/xdg-user-dirs-gtk-%{version}.tar.xz

@@ -22,7 +22,7 @@ depends:
   - components/openssl.yml
   - components/gettext.yml
 
-build-time:
+build-depends:
   - components/automake.yml
 
 sources:

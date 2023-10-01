@@ -7,7 +7,7 @@ depends:
   - components/libarchive.yml
   - components/libsoup.yml
   - components/libxslt.yml
-build-time:
+build-depends:
   - components/meson.yml
 sources:
   - https://releases.pagure.org/libosinfo/osinfo-db-tools-%{version}.tar.xz

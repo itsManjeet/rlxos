@@ -37,7 +37,7 @@ depends:
   - components/icu.yml
   - components/pcre2.yml
   - components/libldap.yml
-build-time:
+build-depends:
   - components/openldap.yml
 sources:
   - https://ghostarchive.org/postfix/postfix-release/official/postfix-%{version}.tar.gz

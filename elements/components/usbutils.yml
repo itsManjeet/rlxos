@@ -10,7 +10,7 @@ depends:
   - components/systemd.yml
   - components/coreutils.yml
   - components/python.yml
-build-time:
+build-depends:
   - components/libusb.yml
 sources:
   - https://www.kernel.org/pub/linux/utils/usb/usbutils/usbutils-%{version}.tar.xz

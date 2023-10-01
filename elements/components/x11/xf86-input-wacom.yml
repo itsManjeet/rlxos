@@ -7,7 +7,7 @@ depends:
   - components/x11/libxi.yml
   - components/x11/libxinerama.yml
   - components/x11/libxrandr.yml
-build-time:
+build-depends:
   - components/x11/xserver.yml
 sources:
   - https://github.com/linuxwacom/xf86-input-wacom/releases/download/xf86-input-wacom-%{version}/xf86-input-wacom-%{version}.tar.bz2

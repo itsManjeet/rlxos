@@ -5,5 +5,5 @@ sources:
   - https://s3.amazonaws.com/json-c_releases/releases/json-c-%{version}.tar.gz
 depends:
   - components/glibc.yml
-build-time:
+build-depends:
   - components/cmake.yml

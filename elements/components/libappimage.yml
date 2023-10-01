@@ -17,7 +17,7 @@ depends:
   - components/fuse2.yml
   - components/desktop-file-utils.yml
   - components/gdk-pixbuf.yml
-build-time:
+build-depends:
   - components/automake.yml
   - components/cmake.yml
   - components/libtool.yml

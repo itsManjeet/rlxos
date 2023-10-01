@@ -5,7 +5,7 @@ about: <h3>**Unofficial release**</h3><br>Discord is a VoIP, instant messaging a
   text messaging, media and files in private chats or as part of communities called
   "servers"
 release: 0
-build-time:
+build-depends:
 - components/appimagetool.yml
 sources:
 - https://dl.discordapp.net/apps/linux/%{version}/discord-%{version}.tar.gz

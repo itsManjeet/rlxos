@@ -10,7 +10,7 @@ configure: >-
 
 depends:
   - components/qt.yml
-build-time:
+build-depends:
   - components/cmake.yml
   - components/which.yml
   - components/make-ca.yml

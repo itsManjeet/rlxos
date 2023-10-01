@@ -2,7 +2,7 @@ id: openoffice
 version: 4.1.12
 about: A free and open productivity suite
 release: 0
-build-time:
+build-depends:
 - components/appimagetool.yml
 sources:
 - https://downloads.apache.org/openoffice/%{version}/binaries/en-US/Apache_OpenOffice_%{version}_Linux_x86-64_install-rpm_en-US.tar.gz

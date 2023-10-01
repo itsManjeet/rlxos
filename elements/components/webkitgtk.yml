@@ -39,7 +39,7 @@ depends:
   - components/geoclue.yml
   - components/x11/libxt.yml
   - components/x11/libx11.yml
-build-time:
+build-depends:
   - components/gobject-introspection.yml
   - components/libavif.yml
   - components/gtk-doc.yml

@@ -7,7 +7,7 @@ configure: >-
 
 depends:
   - components/libgcc.yml
-build-time:
+build-depends:
   - components/cmake.yml
 sources:
   - https://github.com/zeux/pugixml/releases/download/v%{version}/pugixml-%{version}.tar.gz

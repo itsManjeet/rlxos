@@ -27,7 +27,7 @@ depends:
   - components/e2fsprogs.yml
   - components/lockdev.yml
   - components/pam.yml
-build-time:
+build-depends:
   - components/boost.yml
   - components/cppunit.yml
 sources:

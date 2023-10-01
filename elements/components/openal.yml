@@ -8,7 +8,7 @@ configure: >-
 depends:
   - components/libgcc.yml
   - components/qt.yml
-build-time:
+build-depends:
   - components/alsa-lib.yml
   - components/cmake.yml
   - components/ffmpeg.yml

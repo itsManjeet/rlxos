@@ -31,7 +31,7 @@ depends:
   - components/libldap.yml
   - components/enchant.yml
   - components/krb5.yml
-build-time:
+build-depends:
   - components/vala.yml
   - components/gtk-doc.yml
   - components/openldap.yml

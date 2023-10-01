@@ -27,7 +27,7 @@ depends:
 - components/x11/xinit.yml
 - components/twm.yml
 - components/x11/xterm.yml
-build-time:
+build-depends:
 - components/pkg-config.yml
 - components/llvm.yml
 script: |

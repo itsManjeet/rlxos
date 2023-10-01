@@ -8,7 +8,7 @@ depends:
   - components/gtk4.yml
   - components/iso-codes.yml
   - components/networkmanager.yml
-build-time:
+build-depends:
   - components/vala.yml
   - components/gtk-doc.yml
 sources:

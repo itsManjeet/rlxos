@@ -8,7 +8,7 @@ depends:
   - components/pavucontrol.yml
   - components/pulseaudio.yml
   - components/xfce4-panel.yml
-build-time:
+build-depends:
   - components/intltool.yml
   - components/cmake.yml
 sources:

@@ -4,7 +4,7 @@ about:
   Package contains an assortment of non-scalable icons of different sizes and
   themes
 
-build-time:
+build-depends:
   - components/gtk.yml
   - components/hicolor-icon-theme.yml
   - components/icon-naming-utils.yml

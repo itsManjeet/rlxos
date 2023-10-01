@@ -10,5 +10,5 @@ depends:
   - components/zlib.yml
   - components/zstd.yml
 
-build-time:
+build-depends:
   - components/cmake.yml

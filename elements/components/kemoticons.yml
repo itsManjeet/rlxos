@@ -4,5 +4,5 @@ about: KF5 kemoticons
 depends:
   - components/karchive.yml
   - components/kservice.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml

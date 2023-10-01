@@ -7,7 +7,7 @@ depends:
   - components/gtk.yml
   - components/itstool.yml
   - components/libhandy.yml
-build-time:
+build-depends:
   - components/vala.yml
 sources:
   - https://download.gnome.org/sources/baobab/%{version:1}/baobab-%{version}.tar.xz

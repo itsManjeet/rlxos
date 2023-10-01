@@ -8,7 +8,7 @@ depends:
   - components/systemd.yml
   - components/polkit.yml
   - components/py/py-gobject.yml
-build-time:
+build-depends:
   - components/meson.yml
 sources:
   - https://gitlab.freedesktop.org/hadess/iio-sensor-proxy/-/archive/%{version}/%{id}-%{version}.tar.gz

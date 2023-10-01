@@ -13,7 +13,7 @@ depends:
   - components/krb5.yml
   - components/libcap-ng.yml
   - components/libldap.yml
-build-time:
+build-depends:
   - components/openldap.yml
   - components/kernel-headers.yml
   - components/python.yml

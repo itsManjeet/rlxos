@@ -7,7 +7,7 @@ release: 0
 depends:
   - components/libboost.yml
   - components/openssl.yml
-build-time:
+build-depends:
   - components/boost.yml
   - components/cmake.yml
   - components/ninja.yml

@@ -8,6 +8,6 @@ sources:
 depends:
   - components/glibc.yml
 
-build-time:
+build-depends:
   - components/python.yml
   - components/gperf.yml

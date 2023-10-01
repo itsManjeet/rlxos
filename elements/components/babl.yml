@@ -5,7 +5,7 @@ release: 0
 depends:
   - components/glibc.yml
   - components/lcms.yml
-build-time:
+build-depends:
   - components/gobject-introspection.yml
   - components/meson.yml
   - components/vala.yml

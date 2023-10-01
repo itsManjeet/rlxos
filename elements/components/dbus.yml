@@ -4,7 +4,7 @@ about: A message bus system, a simple way for applications to talk to one anothe
 sources:
   - https://dbus.freedesktop.org/releases/dbus/dbus-%{version}.tar.xz
 
-build-time:
+build-depends:
   - components/python.yml
 depends:
   - components/expat.yml

@@ -10,7 +10,7 @@ depends:
   - components/libjpeg-turbo.yml
   - components/libpng.yml
   - components/openssl.yml
-build-time:
+build-depends:
   - components/cmake.yml
   - components/sdl2.yml
 sources:

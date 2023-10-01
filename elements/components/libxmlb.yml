@@ -6,7 +6,7 @@ depends:
   - components/glib.yml
   - components/snowball.yml
   - components/xz.yml
-build-time:
+build-depends:
   - components/gtk-doc.yml
   - components/gobject-introspection.yml
   - components/meson.yml

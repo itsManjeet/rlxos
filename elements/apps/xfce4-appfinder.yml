@@ -14,7 +14,7 @@ variables:
   skip-libraries: >
     libc.so*
 
-build-time:
+build-depends:
   - components/garcon.yml
   - components/libxfce4ui.yml
   - components/libxfce4util.yml

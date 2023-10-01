@@ -9,6 +9,6 @@ depends:
   - components/freetype.yml
   - components/x11/libfontenc.yml
 
-build-time:
+build-depends:
   - components/x11/util-macros.yml
   - components/x11/xorgproto.yml

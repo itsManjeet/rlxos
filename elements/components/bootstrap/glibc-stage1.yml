@@ -1,5 +1,5 @@
 id: glibc-stage1
 merge:
   - elements/include/glibc.yml
-build-time:
+build-depends:
   - components/kernel-headers.yml

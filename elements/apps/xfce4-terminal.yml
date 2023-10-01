@@ -14,7 +14,7 @@ variables:
   skip-libraries: >
     libc.so*
   
-build-time:
+build-depends:
   - components/intltool.yml
   - components/hicolor-icon-theme.yml
   - components/libxfce4ui.yml

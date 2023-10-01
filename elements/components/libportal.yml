@@ -5,7 +5,7 @@ about: A library that contains GIO-style async APIs for most Flatpak portals
 depends:
   - components/glib.yml
 
-build-time:
+build-depends:
   - components/gtk-doc.yml
 
 sources:

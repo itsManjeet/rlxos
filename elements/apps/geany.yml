@@ -2,7 +2,7 @@ id: geany
 version: "1.38"
 about: A fast and lightweight IDE
 release: 0
-build-time:
+build-depends:
 - components/intltool.yml
 - components/gtk.yml
 - components/vte.yml

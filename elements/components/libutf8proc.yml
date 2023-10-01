@@ -10,7 +10,7 @@ configure: >-
   -DBUILD_SHARED_LIBS=ON
   -G Ninja
 
-build-time:
+build-depends:
   - components/cmake.yml
   - components/git.yml
   - components/ninja.yml

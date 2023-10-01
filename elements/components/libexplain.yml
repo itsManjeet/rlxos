@@ -8,7 +8,7 @@ script: |-
   make
   make install DESTDIR=%{install-root}
 
-build-time:
+build-depends:
   - components/bison.yml
   - components/gcc.yml
   - components/groff.yml

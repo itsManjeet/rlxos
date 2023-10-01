@@ -8,7 +8,7 @@ pre-script: |-
 depends:
   - components/glibc.yml
 
-build-time:
+build-depends:
   - components/gawk.yml
   - components/bison.yml
   - components/flex.yml

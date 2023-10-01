@@ -7,7 +7,7 @@ configure: >-
 
 depends:
   - components/libvirt.yml
-build-time:
+build-depends:
   - components/gobject-introspection.yml
   - components/intltool.yml
   - components/meson.yml

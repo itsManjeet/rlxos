@@ -5,7 +5,7 @@ about: Python bindings for DBUS
 depends:
   - components/dbus.yml
   - components/glib.yml
-build-time:
+build-depends:
   - components/autoconf-archive.yml
   - components/python.yml
 sources:

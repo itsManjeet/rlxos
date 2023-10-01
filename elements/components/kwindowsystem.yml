@@ -5,5 +5,5 @@ about: Access to windowing system
 depends:
   - components/qt.yml
   - components/kwayland.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml

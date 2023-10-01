@@ -10,7 +10,7 @@ configure: >-
 depends:
   - components/ffmpeg.yml
   - components/gst-plugins-base.yml
-build-time:
+build-depends:
   - components/yasm.yml
 sources:
   - https://gstreamer.freedesktop.org/src/gst-libav/gst-libav-%{version}.tar.xz

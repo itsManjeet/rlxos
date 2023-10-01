@@ -4,7 +4,7 @@ about: Support library for xfce
 
 depends:
   - components/libxfce4ui.yml
-build-time:
+build-depends:
   - components/intltool.yml
 sources:
   - https://archive.xfce.org/src/xfce/exo/%{version:1}/exo-%{version}.tar.bz2

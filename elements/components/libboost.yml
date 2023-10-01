@@ -5,7 +5,7 @@ about: |
 
 depends:
   - components/which.yml
-build-time:
+build-depends:
   - components/boost.yml
 
 script: |

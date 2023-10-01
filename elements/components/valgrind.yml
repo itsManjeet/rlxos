@@ -12,7 +12,7 @@ post-script: |-
 
 depends:
   - components/glibc.yml
-build-time:
+build-depends:
   - components/docbook-xml.yml
   - components/docbook-xsl.yml
   - components/gdb.yml

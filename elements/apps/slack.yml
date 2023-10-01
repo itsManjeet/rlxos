@@ -5,7 +5,7 @@ about: Slack is a proprietary business communication platform developed by Ameri
   IRC-style features, including persistent chat rooms organized by topic, private
   groups, and direct messaging
 release: 0
-build-time:
+build-depends:
 - components/appimagetool.yml
 sources:
 - https://downloads.slack-edge.com/releases/linux/%{version}/prod/x64/slack-%{version}-0.1.fc21.x86_64.rpm

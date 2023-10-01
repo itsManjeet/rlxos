@@ -19,7 +19,7 @@ depends:
   - components/libgcc.yml
   - components/glibc.yml
   - components/openmpi.yml
-build-time:
+build-depends:
   - components/cmake.yml
 sources:
   - http://www.fftw.org/%{id}-%{version}.tar.gz

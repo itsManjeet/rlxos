@@ -9,7 +9,7 @@ script: |-
 
 depends:
   - components/adwaita-icon-theme.yml
-build-time:
+build-depends:
   - components/gtk.yml
   - components/optipng.yml
 sources:

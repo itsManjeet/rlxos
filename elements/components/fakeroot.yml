@@ -7,7 +7,7 @@ depends:
   - components/glibc.yml
   - components/sed.yml
   - components/util-linux.yml
-build-time:
+build-depends:
   - components/po4a.yml
   - components/systemd.yml
 sources:

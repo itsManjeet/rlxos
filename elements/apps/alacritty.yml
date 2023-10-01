@@ -18,7 +18,7 @@ sources:
 pre-script: |-
   mkdir -p %{install-root}
 
-build-time:
+build-depends:
   - components/desktop-file-utils.yml
   - components/x11/libxcb.yml
   - components/rustc.yml

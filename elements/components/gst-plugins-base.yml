@@ -21,7 +21,7 @@ depends:
   - components/libvorbis.yml
   - components/mesa.yml
   - components/wayland.yml
-build-time:
+build-depends:
   - components/gobject-introspection.yml
 sources:
   - https://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-%{version}.tar.xz

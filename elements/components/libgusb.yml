@@ -9,7 +9,7 @@ configure: >-
 depends:
   - components/libusb.yml
   - components/json-glib.yml
-build-time:
+build-depends:
   - components/vala.yml
   - components/py/py-setuptools.yml
 sources:

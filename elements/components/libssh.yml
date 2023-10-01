@@ -4,7 +4,7 @@ about: Library for accessing ssh client services through C libraries
 depends:
   - components/openssl.yml
   - components/zlib.yml
-build-time:
+build-depends:
   - components/cmake.yml
   - components/openssh.yml
   - components/python.yml

@@ -10,7 +10,7 @@ depends:
   - components/lxc.yml
   - components/lxcfs.yml
   - components/squashfs-tools.yml
-build-time:
+build-depends:
   - components/go.yml
   - components/libseccomp.yml
   - components/systemd.yml

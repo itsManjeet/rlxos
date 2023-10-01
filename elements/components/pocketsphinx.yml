@@ -10,7 +10,7 @@ post-script: |-
 depends:
   - components/gst-plugins-base.yml
   - components/sphinxbase.yml
-build-time:
+build-depends:
   - components/python.yml
   - components/swig.yml
 sources:

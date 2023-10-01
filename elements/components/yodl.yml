@@ -4,7 +4,7 @@ about: Implements a predocument language and tools to process it
 
 depends:
   - components/bash.yml
-build-time:
+build-depends:
   - components/icmake.yml
 sources:
   - https://gitlab.com/fbb-git/yodl/-/archive/%{version}/yodl-%{version}.tar.gz

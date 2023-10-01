@@ -15,7 +15,7 @@ depends:
   - components/json-glib.yml
   - components/libgee.yml
   - components/p7zip.yml
-build-time:
+build-depends:
   - components/vala.yml
 sources:
   - conky-manager-%{version}.tar.gz::https://github.com/teejee2008/conky-manager/archive/refs/tags/v%{version}.tar.gz

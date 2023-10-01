@@ -2,7 +2,7 @@ id: gnome-music
 version: 40.1.1
 about: Music player and management application
 release: 0
-build-time:
+build-depends:
 - components/grilo.yml
 - components/grilo-plugins.yml
 - components/gst-plugins-base.yml

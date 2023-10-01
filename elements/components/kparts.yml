@@ -4,5 +4,5 @@ about: KF5 kparts
 
 depends:
   - components/kio.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml

@@ -15,7 +15,7 @@ script: |-
   #sed "s/@VERSION@/%{version}/" /files/glmConfig.cmake.in > %{install-root}/usr/lib/cmake/glm/glmConfig.cmake
   #install -Dm644 /files/glmTargets.cmake %{install-root}/usr/lib/cmake/glm/glmTargets.cmake"
 
-build-time:
+build-depends:
   - components/unzip.yml
 sources:
   - https://github.com/g-truc/glm/releases/download/%{version}/glm-%{version}.zip

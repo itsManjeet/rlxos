@@ -5,5 +5,5 @@ about: Plasma plasma-vault
 depends:
   - components/networkmanager-qt.yml
   - components/plasma-workspace.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml

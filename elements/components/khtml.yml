@@ -6,7 +6,7 @@ depends:
   - components/kjs.yml
   - components/kparts.yml
   - components/phonon.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
   - components/gperf.yml
 

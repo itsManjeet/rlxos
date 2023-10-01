@@ -15,7 +15,7 @@ depends:
   - components/x11/libxext.yml
   - components/x11/libxrender.yml
   - components/pulseaudio.yml
-build-time:
+build-depends:
   - components/mesa.yml
 sources:
   - https://www.libsdl.org/release/SDL-%{version}.tar.gz

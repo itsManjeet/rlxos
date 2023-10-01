@@ -15,7 +15,7 @@ depends:
   - components/pixman.yml
   - components/wayland.yml
 
-build-time:
+build-depends:
   - components/llvm.yml
   - components/meson.yml
   - components/wayland-protocols.yml

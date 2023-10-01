@@ -10,7 +10,7 @@ configure: >-
 depends:
   - components/gtk.yml
   - components/gobject-introspection.yml
-build-time:
+build-depends:
   - components/gtk-doc.yml
   - components/intltool.yml
 sources:

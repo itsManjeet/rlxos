@@ -9,7 +9,7 @@ configure: >-
 depends:
   - components/pam.yml
   - components/python.yml
-build-time:
+build-depends:
   - components/cmake.yml
 sources:
   - https://www.samba.org/ftp/cwrap/pam_wrapper-%{version}.tar.gz

@@ -9,7 +9,7 @@ depends:
   - components/libuv.yml
   - components/raft.yml
   - components/sqlite.yml
-build-time:
+build-depends:
   - components/readline.yml
   - components/tcl.yml
   - components/zlib.yml

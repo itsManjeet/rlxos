@@ -10,7 +10,7 @@ post-script: |-
 
 depends:
   - components/zlib.yml
-build-time:
+build-depends:
   - components/cmake.yml
 sources:
   - libsquash-%{version}.tar.gz::https://github.com/pmq20/libsquash/archive/refs/tags/v%{version}.tar.gz

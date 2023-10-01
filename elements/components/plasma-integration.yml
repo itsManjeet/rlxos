@@ -8,6 +8,6 @@ depends:
   - components/x11/libxcursor.yml
   - components/fonts/noto.yml
   - components/perl.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
   - components/breeze.yml

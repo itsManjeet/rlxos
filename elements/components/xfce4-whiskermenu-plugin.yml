@@ -16,7 +16,7 @@ depends:
   - components/libxfce4ui.yml
   - components/xfce4-panel.yml
   - components/accountsservice.yml
-build-time:
+build-depends:
   - components/intltool.yml
   - components/cmake.yml
 

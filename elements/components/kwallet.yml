@@ -9,7 +9,7 @@ depends:
   - components/kservice.yml
   - components/libgcrypt.yml
   - components/qca.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
   - components/kdoctools.yml
   - components/boost.yml

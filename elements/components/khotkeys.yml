@@ -10,7 +10,7 @@ configure: >-
 depends:
   - components/kdelibs4support.yml
   - components/plasma-workspace.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
   - components/kdesignerplugin.yml
   - components/kdoctools.yml

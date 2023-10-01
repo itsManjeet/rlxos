@@ -7,7 +7,7 @@ about: |
 
 sources:
   - https://downloads.sourceforge.net/libjpeg-turbo/libjpeg-turbo-%{version}.tar.gz
-build-time:
+build-depends:
   - components/cmake.yml
   - components/yasm.yml
 configure: >

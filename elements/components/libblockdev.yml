@@ -18,7 +18,7 @@ depends:
   - components/e2fsprogs.yml
   - components/libnvme.yml
 
-build-time:
+build-depends:
   - components/gtk-doc.yml
 sources:
   - https://github.com/storaged-project/libblockdev/releases/download/%{version}-1/libblockdev-%{version}.tar.gz

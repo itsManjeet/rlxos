@@ -2,7 +2,7 @@ id: qtcreator
 version: 7.0.2
 about: A cross-platform Qt IDE
 release: 0
-build-time:
+build-depends:
 - components/llvm.yml
 - components/cmake.yml
 - components/qt.yml

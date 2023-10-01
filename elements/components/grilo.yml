@@ -10,7 +10,7 @@ depends:
   - components/gtk.yml
   - components/libsoup3.yml
   - components/totem-pl-parser.yml
-build-time:
+build-depends:
   - components/gobject-introspection.yml
   - components/vala.yml
   - components/gtk-doc.yml

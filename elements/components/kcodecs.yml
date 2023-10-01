@@ -2,7 +2,7 @@ id: kcodecs
 
 depends:
   - components/qt.yml
-build-time:
+build-depends:
   - components/gperf.yml
   - components/extra-cmake-modules.yml
 merge: [elements/include/kf5.yml]

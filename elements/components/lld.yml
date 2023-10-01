@@ -14,7 +14,7 @@ configure: >-
 
 depends:
   - components/libllvm.yml
-build-time:
+build-depends:
   - components/cmake.yml
   - components/llvm.yml
   - components/ninja.yml

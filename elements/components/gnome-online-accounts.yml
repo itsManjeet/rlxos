@@ -8,7 +8,7 @@ depends:
   - components/rest.yml
   - components/webkitgtk.yml
   - components/krb5.yml
-build-time:
+build-depends:
   - components/vala.yml
   - components/gobject-introspection.yml
 sources:

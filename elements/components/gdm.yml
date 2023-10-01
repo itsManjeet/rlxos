@@ -25,7 +25,7 @@ depends:
   - components/systemd.yml
   - components/dconf.yml
 
-build-time:
+build-depends:
   - components/itstool.yml
 sources:
   - https://download.gnome.org/sources/gdm/%{version:1}/gdm-%{version}.tar.xz

@@ -7,7 +7,7 @@ depends:
   - components/x11/xorg.yml
   - components/systemd.yml
   - components/pugixml.yml
-build-time:
+build-depends:
   - components/cmake.yml
 sources:
   - toughegg-%{version}.tar.gz::https://github.com/JoseExposito/touchegg/archive/refs/tags/%{version}.tar.gz

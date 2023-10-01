@@ -108,7 +108,11 @@ func (c *Command) GetCommand(self string, args []string) (*Command, []string, in
 		if arg[0] == '-' {
 			count, err := cmd.handleFlag(args[i:])
 			if err != nil {
-				return nil, nil, nil, err
+				count, err = c.handleFlag(args[i:])
+				if err != nil {
+					return nil, nil, nil, err
+				}
+
 			}
 			i = i + count
 			continue

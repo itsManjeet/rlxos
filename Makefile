@@ -50,7 +50,7 @@ update-vendor:
 	$(GOLANG) mod tidy && $(GOLANG) mod vendor
 
 $(BUILDER): update-vendor version.yml server.yml
-	$(GOLANG) build -o $@ rlxos/cmd/swupd
+	$(GOLANG) build -o $@ rlxos/cmd/builder
 
 report: $(BUILDER)
 	$(BUILDER) report -cache-path $(CACHE_PATH)

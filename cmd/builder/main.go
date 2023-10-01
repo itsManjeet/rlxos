@@ -61,14 +61,7 @@ func main() {
 				return nil
 			})).
 		Handler(func(c *app.Command, args []string, i interface{}) error {
-			cmd, args, iface, err := c.GetCommand("builder", args)
-			if err != nil {
-				return err
-			}
-			if cmd == nil || cmd == c {
-				return c.Help()
-			}
-			return cmd.Handle(args, iface)
+			return c.Help()
 		}).
 		Sub(app.New("build").
 			About("build element").

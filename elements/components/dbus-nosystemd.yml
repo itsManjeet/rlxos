@@ -1,4 +1,4 @@
-id: dbus
+id: dbus-nosystemd
 version: 1.14.8
 about: A message bus system, a simple way for applications to talk to one another
 sources:

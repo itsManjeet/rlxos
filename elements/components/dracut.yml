@@ -9,6 +9,10 @@ variables:
   seperate-build-dir: false
   run-autogen: false
 
+configure: >-
+  --disable-documentation
+  --systemdsystemunitdir=%{libdir}/systemd/system
+
 depends:
   - components/bash.yml
   - components/coreutils.yml

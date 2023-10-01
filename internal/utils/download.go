@@ -4,9 +4,11 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"net"
 	"net/http"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/dustin/go-humanize"
 )
@@ -37,14 +39,32 @@ func DownloadFile(filepath string, url string) error {
 		return err
 	}
 
+	transport := &http.Transport{
+		Dial: (&net.Dialer{
+			Timeout:   60 * time.Second,
+			KeepAlive: 30 * time.Second,
+		}).Dial,
+		TLSHandshakeTimeout: 60 * time.Second,
+	}
+
 	client := http.Client{
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
 			log.Println("Redirected to:", req.URL)
+			for k := range req.Header {
+				delete(req.Header, k)
+			}
 			return nil
 		},
+		Transport: transport,
 	}
 
-	resp, err := client.Get(url)
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		out.Close()
+		return err
+	}
+
+	resp, err := client.Do(req)
 	if err != nil {
 		out.Close()
 		return err

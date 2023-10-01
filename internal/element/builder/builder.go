@@ -208,7 +208,10 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 	if err != nil {
 		return fmt.Errorf("failed to create container %v", err)
 	}
-	defer container.Delete()
+	defer func() {
+		container.Run(logWriter, []string{"rm", "-rf", "/src", "/pkg"}, "/", []string{})
+		container.Delete()
+	}()
 
 	list, err := b.List(element.DependencyAll, id)
 	if err != nil {

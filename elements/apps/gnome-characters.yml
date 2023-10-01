@@ -3,7 +3,7 @@ version: "40.0"
 about: |
   A character map application
 release: 0
-build-time:
+build-depends:
 - components/gjs.yml
 - components/gnome-desktop.yml
 - components/gtk.yml

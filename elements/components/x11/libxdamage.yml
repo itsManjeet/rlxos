@@ -7,5 +7,5 @@ sources:
 depends:
   - components/x11/libxfixes.yml
 
-build-time:
+build-depends:
   - components/x11/xorgproto.yml

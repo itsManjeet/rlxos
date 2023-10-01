@@ -16,7 +16,7 @@ script: |
   cp -v zone.tab zone1970.tab iso3166.tab $ZONEINFO
   zic -d $ZONEINFO -p America/New_York
 
-build-time:
+build-depends:
   - components/glibc.yml
 
 sources:

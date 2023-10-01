@@ -6,7 +6,7 @@ depends:
   - components/dbus.yml
   - components/polkit.yml
   - components/systemd.yml
-build-time:
+build-depends:
   - components/meson.yml
   - components/vim.yml
 sources:

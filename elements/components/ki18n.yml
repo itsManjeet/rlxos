@@ -5,5 +5,5 @@ about: KF5 ki18n
 depends:
   - components/qt.yml
   - components/iso-codes.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml

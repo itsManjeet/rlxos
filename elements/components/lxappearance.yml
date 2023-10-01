@@ -4,7 +4,7 @@ about: Feature-rich GTK+ theme switcher of the LXDE desktop
 
 depends:
   - components/gtk.yml
-build-time:
+build-depends:
   - components/dbus-glib.yml
   - components/intltool.yml
 sources:

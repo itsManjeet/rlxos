@@ -5,5 +5,5 @@ about: KF5 sonnet
 depends:
   - components/qt.yml
   - components/aspell.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml

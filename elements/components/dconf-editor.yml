@@ -5,7 +5,7 @@ about: A low-level configuration system editor
 depends:
   - components/gtk.yml
   - components/dconf.yml
-build-time:
+build-depends:
   - components/vala.yml
 sources:
   - https://download.gnome.org/sources/dconf-editor/%{version:1}/dconf-editor-%{version}.tar.xz

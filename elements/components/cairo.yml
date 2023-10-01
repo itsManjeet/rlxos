@@ -16,7 +16,7 @@ depends:
   - components/lzo.yml
   - components/zlib.yml
 
-build-time:
+build-depends:
   - components/meson.yml
 configure: >-
   -D spectre=disabled

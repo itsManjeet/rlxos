@@ -6,7 +6,7 @@ depends:
   - components/libevdev.yml
   - components/mtdev.yml
   - components/glibc.yml
-build-time:
+build-depends:
   - components/x11/xserver.yml
 
 sources:

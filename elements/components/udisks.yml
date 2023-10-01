@@ -12,7 +12,7 @@ depends:
   - components/libgudev.yml
   - components/libxslt.yml
   - components/polkit.yml
-build-time:
+build-depends:
   - components/gobject-introspection.yml
 sources:
   - https://github.com/storaged-project/udisks/releases/download/udisks-%{version}/udisks-%{version}.tar.bz2

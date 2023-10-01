@@ -5,7 +5,7 @@ about: KF5 kdewebkit
 depends:
   - components/kparts.yml
   - components/qt5-webengine.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
 
 sources:

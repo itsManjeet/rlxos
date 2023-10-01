@@ -6,5 +6,5 @@ depends:
   - components/kfilemetadata.yml
   - components/plasma-workspace.yml
   - components/purpose.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml

@@ -11,7 +11,7 @@ depends:
   - components/nss.yml
   - components/libboost.yml
   - components/openjpeg.yml
-build-time:
+build-depends:
   - components/boost.yml
 sources:
   - https://poppler.freedesktop.org/poppler-%{version}.tar.xz

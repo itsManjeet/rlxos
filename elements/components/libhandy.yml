@@ -7,7 +7,7 @@ configure: >-
 
 depends:
   - components/gtk.yml
-build-time:
+build-depends:
   - components/vala.yml
   - components/gobject-introspection.yml
   - components/meson.yml

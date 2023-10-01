@@ -5,7 +5,7 @@ depends:
   - components/qt.yml
   - components/docbook-xsl.yml
   - components/karchive.yml
-build-time:
+build-depends:
   - components/ki18n.yml
   - components/extra-cmake-modules.yml
   - components/perl/perl-uri.yml

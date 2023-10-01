@@ -10,7 +10,7 @@ depends:
   - components/glib.yml
   - components/libxml2.yml
   - components/libxslt.yml
-build-time:
+build-depends:
   - components/vala.yml
 sources:
   - https://download.gnome.org/sources/dconf/%{version:1}/dconf-%{version}.tar.xz

@@ -22,7 +22,7 @@ depends:
   - components/x11/libsm.yml
   - components/x11/libxxf86vm.yml
   - components/webkitgtk.yml
-build-time:
+build-depends:
   - components/glu.yml
 sources:
   - https://github.com/wxWidgets/wxWidgets/releases/download/v%{version}/wxWidgets-%{version}.tar.bz2

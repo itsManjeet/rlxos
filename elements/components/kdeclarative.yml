@@ -6,5 +6,5 @@ depends:
   - components/kio.yml
   - components/kpackage.yml
   - components/libepoxy.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml

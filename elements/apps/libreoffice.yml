@@ -5,7 +5,7 @@ about:
   project of The Document Foundation. It was forked in 2010 from OpenOffice.org, an
   open-sourced version of the earlier StarOffice
 release: 0
-build-time:
+build-depends:
   - components/appimagetool.yml
 sources:
   - https://libreoffice.soluzioniopen.com/stable/full/LibreOffice-fresh.full-x86_64.AppImage

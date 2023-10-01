@@ -10,7 +10,7 @@ depends:
   - components/perl.yml
   - components/kcmutils.yml
   - components/kscreen.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
   - components/kdoctools.yml
   - components/x11/libxcursor.yml

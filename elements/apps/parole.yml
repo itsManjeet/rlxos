@@ -2,7 +2,7 @@ id: parole
 version: 4.16.0
 about: Modern media player based on GStreamer framework
 release: 0
-build-time:
+build-depends:
 - components/intltool.yml
 - components/python.yml
 - components/dbus-glib.yml

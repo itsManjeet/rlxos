@@ -9,6 +9,6 @@ depends:
   - components/x11/libxext.yml
   - components/x11/libxrender.yml
 
-build-time:
+build-depends:
   - components/x11/util-macros.yml
   - components/x11/xorgproto.yml

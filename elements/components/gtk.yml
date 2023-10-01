@@ -17,7 +17,7 @@ integration: |-
 sources:
   - https://download.gnome.org/sources/gtk+/%{version:1}/gtk+-%{version}.tar.xz
 
-build-time:
+build-depends:
   - components/gtk-doc.yml
 
 depends:

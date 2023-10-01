@@ -6,7 +6,7 @@ depends:
   - components/gtk.yml
   - components/gnome-desktop.yml
   - components/libhandy.yml
-build-time:
+build-depends:
   - components/meson.yml
   - components/git.yml
 sources:

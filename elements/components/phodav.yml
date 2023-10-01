@@ -13,7 +13,7 @@ depends:
   - components/avahi.yml
   - components/libsoup.yml
   - components/systemd.yml
-build-time:
+build-depends:
   - components/gtk-doc.yml
   - components/meson.yml
   - components/xmlto.yml

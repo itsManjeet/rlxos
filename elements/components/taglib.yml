@@ -6,7 +6,7 @@ configure: >-
   -DBUILD_SHARED_LIBS=ON
   -DCMAKE_BUILD_TYPE=Release
 
-build-time:
+build-depends:
   - components/cmake.yml
 sources:
   - https://taglib.github.io/releases/taglib-%{version}.tar.gz

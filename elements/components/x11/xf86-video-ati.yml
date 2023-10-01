@@ -7,7 +7,7 @@ pre-script: |-
 
 depends:
   - components/glibc.yml
-build-time:
+build-depends:
   - components/x11/xserver.yml
 sources:
   - https://www.x.org/pub/individual/driver/%{id}-%{version}.tar.bz2

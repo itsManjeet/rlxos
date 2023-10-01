@@ -10,6 +10,6 @@ depends:
   - components/kitemmodels.yml
   - components/knewstuff.yml
   - components/purpose.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
   - components/plasma-framework.yml

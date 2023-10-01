@@ -12,7 +12,7 @@ depends:
   - components/x11/libxdmcp.yml
   - components/x11/xcb-proto.yml
 
-build-time:
+build-depends:
   - components/libxslt.yml
   - components/python.yml
   - components/pkg-config.yml

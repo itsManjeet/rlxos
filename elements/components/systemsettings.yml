@@ -4,6 +4,6 @@ about: Plasma systemsettings
 
 depends:
   - components/plasma-workspace.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
   - components/kdoctools.yml

@@ -16,7 +16,7 @@ depends:
   - components/spice.yml
   - components/systemd.yml
   - components/x11/libxfont2.yml
-build-time:
+build-depends:
   - components/x11/xserver.yml
   - components/x11/xorgproto.yml
   - components/x11/util-macros.yml

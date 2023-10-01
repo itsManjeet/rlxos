@@ -5,5 +5,5 @@ about: KF5 kunitconversion
 depends:
   - components/qt.yml
   - components/ki18n.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml

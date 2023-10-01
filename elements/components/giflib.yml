@@ -6,7 +6,7 @@ about:
 sources:
   - giflib-%{version}.tar.gz::https://github.com/nesbox/giflib/archive/refs/tags/%{version}.tar.gz
 
-build-time:
+build-depends:
   - components/xmlto.yml
 script: |
   make

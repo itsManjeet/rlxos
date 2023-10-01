@@ -9,7 +9,7 @@ script: |-
 
 depends:
   - components/librsvg.yml
-build-time:
+build-depends:
   - components/gtk.yml
 sources:
   - fluent-icon-theme-%{version}.tar.gz::https://github.com/vinceliuice/Fluent-icon-theme/archive/refs/tags/%{version}.tar.gz

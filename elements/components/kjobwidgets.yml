@@ -5,5 +5,5 @@ about: KF5 kjobwidgets
 depends:
   - components/kcoreaddons.yml
   - components/kwidgetsaddons.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml

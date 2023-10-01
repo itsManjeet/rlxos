@@ -7,7 +7,7 @@ configure: >-
   -Wno-dev
 depends:
   - components/glibc.yml
-build-time:
+build-depends:
   - components/alsa-lib.yml
   - components/cmake.yml
   - components/libsndfile.yml

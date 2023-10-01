@@ -15,7 +15,7 @@ depends:
   - components/glibc.yml
   - components/libxslt.yml
 
-build-time:
+build-depends:
   - components/docbook-xsl.yml
 
 sources:

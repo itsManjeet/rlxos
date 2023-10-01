@@ -1,7 +1,7 @@
 id: abrowser
 version: 104.0
 about: Abrowser, safe and easy web browser from Mozilla
-build-time:
+build-depends:
   - components/appimagetool.yml
 sources:
   - https://archive.trisquel.info/trisquel/pool/main/f/firefox/abrowser_%{version}+build2-0ubuntu0.22.04.1~mt1+11.0trisquel92_amd64.deb

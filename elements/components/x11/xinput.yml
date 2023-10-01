@@ -8,7 +8,7 @@ depends:
   - components/x11/libxinerama.yml
   - components/x11/xrandr.yml
 
-build-time:
+build-depends:
   - components/x11/libxfixes.yml
   - components/x11/util-macros.yml
   - components/x11/xorgproto.yml

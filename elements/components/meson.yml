@@ -4,7 +4,7 @@ about: Open source build system meant to be both extremely fast and as user frie
 
 depends:
   - components/ninja.yml
-build-time:
+build-depends:
   - components/py/py-setuptools.yml
 
 sources:

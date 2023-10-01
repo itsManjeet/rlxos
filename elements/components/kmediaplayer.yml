@@ -4,7 +4,7 @@ about: KF5 kmediaplayer
 
 depends:
   - components/kparts.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
 
 sources:

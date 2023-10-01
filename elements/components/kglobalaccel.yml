@@ -6,5 +6,5 @@ depends:
   - components/kconfig.yml
   - components/kcrash.yml
   - components/kdbusaddons.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml

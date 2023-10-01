@@ -74,5 +74,5 @@ depends:
   - components/libmpfr.yml
   - components/libgmp.yml
 
-build-time:
+build-depends:
   - components/gcc.yml

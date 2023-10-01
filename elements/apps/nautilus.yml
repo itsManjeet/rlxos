@@ -2,7 +2,7 @@ id: nautilus
 version: "40.2"
 about: Package contains the GNOME file manager
 release: 0
-build-time:
+build-depends:
 - components/bubblewrap.yml
 - components/gexiv2.yml
 - components/gnome-autoar.yml

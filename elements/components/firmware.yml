@@ -8,7 +8,7 @@ environ:
 script: |-
   make DESTDIR=%{install-root}/%{prefix} FIRMWARE=%{libdir}/firmware install-zst
 
-build-time:
+build-depends:
   - components/zstd.yml
 
 sources:

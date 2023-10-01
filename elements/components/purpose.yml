@@ -8,6 +8,6 @@ depends:
   - components/kio.yml
   - components/ki18n.yml
   - components/knotifications.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
   - components/intltool.yml

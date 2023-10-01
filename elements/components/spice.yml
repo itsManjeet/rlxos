@@ -15,7 +15,7 @@ depends:
   - components/lz4.yml
   - components/opus.yml
   - components/pixman.yml
-build-time:
+build-depends:
   - components/libcacard.yml
   - components/py/py-six.yml
   - components/py/py-parsing.yml

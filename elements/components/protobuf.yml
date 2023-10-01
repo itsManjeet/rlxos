@@ -9,7 +9,7 @@ depends:
   - components/libgcc.yml
   - components/glibc.yml
   - components/zlib.yml
-build-time:
+build-depends:
   - components/py/py-setuptools.yml
   - components/unzip.yml
 sources:

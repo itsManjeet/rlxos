@@ -9,6 +9,6 @@ depends:
   - components/glibc.yml
   - components/zlib.yml
 
-build-time:
+build-depends:
   - components/meson.yml
   - components/x11/util-macros.yml

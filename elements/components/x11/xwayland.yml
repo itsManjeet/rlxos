@@ -16,7 +16,7 @@ depends:
   - components/libtirpc.yml
   - components/mesa.yml
 
-build-time:
+build-depends:
   - components/wayland-protocols.yml
 
 sources:

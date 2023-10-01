@@ -30,7 +30,7 @@ depends:
   - components/x11/libxkbcommon.yml
   - components/pango.yml
   - components/pcre.yml
-build-time:
+build-depends:
   - components/meson.yml
   - components/ninja.yml
   - components/setconf.yml

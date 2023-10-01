@@ -2,7 +2,7 @@ id: exempi
 version: 2.6.4
 about: An implementation of XMP (Adobe's Extensible Metadata Platform)
 
-build-time:
+build-depends:
   - components/boost.yml
 
 sources:

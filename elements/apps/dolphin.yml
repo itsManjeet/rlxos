@@ -2,7 +2,7 @@ id: dolphin
 version: 23.08.0
 about: KDE file manager
 
-build-time:
+build-depends:
   - components/baloo-widgets.yml
   - components/kactivities.yml
   - components/kcmutils.yml

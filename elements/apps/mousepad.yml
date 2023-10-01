@@ -16,7 +16,7 @@ variables:
   skip-libraries: >
     libc.so*
 
-build-time:
+build-depends:
   - components/desktop-file-utils.yml
   - components/gtksourceview4.yml
   - components/hicolor-icon-theme.yml

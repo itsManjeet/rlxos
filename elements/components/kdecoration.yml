@@ -4,7 +4,7 @@ about: Plasma kdecoration
 depends:
   - components/kcoreaddons.yml
   - components/ki18n.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
 
 merge: [elements/include/plasma.yml]

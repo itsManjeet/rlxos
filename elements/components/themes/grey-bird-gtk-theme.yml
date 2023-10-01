@@ -6,7 +6,7 @@ no-strip: true
 pre-script: |-
   gdk-pixbuf-query-loaders --update-cache
 
-build-time:
+build-depends:
   - components/librsvg.yml
   - components/meson.yml
   - components/sassc.yml

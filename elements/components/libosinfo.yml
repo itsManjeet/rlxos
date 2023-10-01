@@ -14,7 +14,7 @@ depends:
   - components/libsoup.yml
   - components/libxslt.yml
   - components/osinfo-db.yml
-build-time:
+build-depends:
   - components/gobject-introspection.yml
   - components/gtk-doc.yml
   - components/meson.yml

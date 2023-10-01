@@ -10,7 +10,7 @@ depends:
   - components/seatd.yml
   - components/x11/libxkbcommon.yml
   - components/hwdata.yml
-build-time:
+build-depends:
   - components/wayland-protocols.yml
   - components/meson.yml
 

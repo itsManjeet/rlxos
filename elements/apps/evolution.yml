@@ -31,7 +31,7 @@ depends:
   - components/clutter-gtk.yml
   - components/geoclue.yml
   - components/geocode-glib.yml
-build-time:
+build-depends:
   - components/cmake.yml
   - components/openldap.yml
 sources:

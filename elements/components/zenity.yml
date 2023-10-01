@@ -8,7 +8,7 @@ depends:
   - components/libxslt.yml
   - components/webkitgtk.yml
   - components/enchant.yml
-build-time:
+build-depends:
   - components/itstool.yml
 sources:
   - https://download.gnome.org/sources/zenity/%{version:1}/zenity-%{version}.tar.xz

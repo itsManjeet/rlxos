@@ -14,7 +14,7 @@ depends:
   - components/glib.yml
   - components/icu.yml
   - components/libxml2.yml
-build-time:
+build-depends:
   - components/cmake.yml
   - components/gtk-doc.yml
   - components/vala.yml

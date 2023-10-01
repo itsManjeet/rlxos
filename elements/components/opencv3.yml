@@ -28,7 +28,7 @@ depends:
   - components/libwebp.yml
   - components/xine-lib.yml
   - components/v4l-utils.yml
-build-time:
+build-depends:
   - components/cmake.yml
   - components/unzip.yml
 sources:

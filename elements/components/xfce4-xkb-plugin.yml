@@ -7,7 +7,7 @@ depends:
   - components/libwnck.yml
   - components/x11/libxklavier.yml
   - components/xfce4-panel.yml
-build-time:
+build-depends:
   - components/intltool.yml
   - components/cmake.yml
 sources:

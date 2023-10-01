@@ -7,7 +7,7 @@ configure: >-
 
 depends:
   - components/zlib.yml
-build-time:
+build-depends:
   - components/cmake.yml
 sources:
   - https://icculus.org/physfs/downloads/%{id}-%{version}.tar.bz2

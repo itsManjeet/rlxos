@@ -3,5 +3,5 @@ merge: [elements/include/kf5.yml]
 about: KF5 kdnssd
 depends:
   - components/qt.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml

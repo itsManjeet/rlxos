@@ -4,5 +4,5 @@ about: KF5 oxygen-icons5
 
 depends:
   - components/qt.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml

@@ -6,7 +6,7 @@ about:
 
 depends:
   - components/libgcc.yml
-build-time:
+build-depends:
   - components/gcc.yml
   - components/perl.yml
 sources:

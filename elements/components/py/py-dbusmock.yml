@@ -5,7 +5,7 @@ about: Mock D-Bus objects for tests
 depends:
   - components/py/py-dbus.yml
   - components/py/py-gobject.yml
-build-time:
+build-depends:
   - components/py/py-setuptools.yml
 sources:
   - https://github.com/martinpitt/python-dbusmock/releases/download/%{version}/python-dbusmock-%{version}.tar.gz

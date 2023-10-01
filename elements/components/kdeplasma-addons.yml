@@ -12,7 +12,7 @@ depends:
   - components/plasma-workspace.yml
   - components/purpose.yml
   - components/qt.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
 sources:
   - https://download.kde.org/stable/plasma/%{version}/%{id}-%{version}.tar.xz

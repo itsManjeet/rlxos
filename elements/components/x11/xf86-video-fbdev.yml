@@ -3,7 +3,7 @@ version: 0.5.0
 about: X.org framebuffer video driver
 depends:
   - components/glibc.yml
-build-time:
+build-depends:
   - components/x11/xserver.yml
 sources:
   - https://www.x.org/pub/individual/driver/xf86-video-fbdev-%{version}.tar.bz2

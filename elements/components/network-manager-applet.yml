@@ -21,7 +21,7 @@ depends:
   - components/libnma.yml
   - components/libnotify.yml
   - components/libsecret.yml
-build-time:
+build-depends:
   - components/gobject-introspection.yml
 sources:
   - https://download.gnome.org/sources/network-manager-applet/%{version:1}/network-manager-applet-%{version}.tar.xz

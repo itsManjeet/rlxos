@@ -9,7 +9,7 @@ depends:
   - components/fuse.yml
   - components/libnih.yml
   - components/lxc.yml
-build-time:
+build-depends:
   - components/meson.yml
   - components/py/py-jinja2.yml
 sources:

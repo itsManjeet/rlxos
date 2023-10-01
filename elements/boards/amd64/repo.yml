@@ -1,0 +1,87 @@
+id: amd64-image
+about: amd64 Board Image
+merge: [version.yml, elements/include/ostree.yml]
+no-strip: true
+
+variables:
+  source-repo: "/sysroot"
+  include-root: "/sysroot"
+  salt: 5ceca5e1f86ae62403b27e66c5160717f1bb88405a1d1d0853241c27f3764843
+  force-rebuild: true
+  initial-commands: |-
+    mkdir -p %{install-root}
+
+    chroot %{include-root} /bin/bash << "EOT"
+    if [ -d %{localstatedir}/lib/integrations ] ; then
+      for i in %{localstatedir}/lib/integrations/* ; do
+        echo "=> integrating $(basename $i)"
+        sh -e $i
+      done
+    fi
+
+    version="$(ls -1 /lib/modules | head -n1)"
+    dracut -v --fstab \
+      --no-machineid \
+      --kver ${version} \
+      --add ostree \
+      --add plymouth \
+      --install 'fsck.ext4' \
+      %{libdir}/modules/${version}/initramfs
+    EOT
+
+
+build-depends:
+  - components/cryptsetup.yml
+  - components/squashfs-tools.yml
+  - components/systemd.yml
+
+include:
+  # Core
+  - components/core.yml
+  - components/release-info.yml
+  - components/firmware.yml
+  - components/tzdata.yml
+  - components/grub.yml
+  - components/dracut.yml
+
+  # Utilities
+  - components/e2fsprogs.yml
+  - components/vim.yml
+  - components/squashfs-tools.yml
+  - components/wget.yml
+  - components/sudo.yml
+  - components/ostree.yml
+
+  # Desktop Environment
+  - components/xfce4.yml
+  - components/lightdm-gtk-greeter.yml
+
+  # AppImage
+  - components/fuse2.yml
+
+  # X11
+  - components/x11/xserver.yml
+  - components/x11/xinit.yml
+  - components/x11/xf86-input-libinput.yml
+  - components/x11/xrdb.yml
+  - components/x11/iceauth.yml
+
+  # Components
+  - components/gvfs.yml
+  - components/xdg-user-dirs-gtk.yml
+
+  # Fonts
+  - components/fonts/adobe-source-code-pro-fonts.yml
+  - components/fonts/noto.yml
+  - components/fonts/noto-emoji.yml
+  - components/fonts/noto-cjk.yml
+  - components/fonts/dejavu-fonts.yml
+
+  # Libraries
+  - components/libgtop.yml
+  - components/libwnck.yml
+  - components/libnotify.yml
+  - components/librsvg.yml
+  - components/pulseaudio.yml
+  - components/upower.yml
+

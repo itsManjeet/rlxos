@@ -6,7 +6,7 @@ variables:
   include-depends: false
   force-rebuild: true
 
-build-time:
+build-depends:
   - components/swupd.yml
 
 script: |

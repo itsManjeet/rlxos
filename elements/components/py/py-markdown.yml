@@ -7,5 +7,5 @@ sources:
 
 depends:
   - components/python.yml
-build-time:
+build-depends:
   - components/py/py-setuptools.yml

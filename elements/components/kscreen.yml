@@ -4,7 +4,7 @@ about: Plasma kscreen
 depends:
   - components/libkscreen.yml
   - components/plasma-framework.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
   - components/kcmutils.yml
 

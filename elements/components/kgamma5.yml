@@ -11,7 +11,7 @@ depends:
   - components/qt.yml
   - components/kconfig.yml
   - components/kconfigwidgets.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
   - components/kdoctools.yml
   - components/ki18n.yml

@@ -8,7 +8,7 @@ depends:
 - components/libxfce4ui.yml
 - components/tumbler.yml
 - components/xfconf.yml
-build-time:
+build-depends:
 - components/intltool.yml
 sources:
 - https://archive.xfce.org/src/apps/ristretto/0.11/ristretto-0.11.0.tar.bz2

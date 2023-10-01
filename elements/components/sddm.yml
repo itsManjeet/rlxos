@@ -29,7 +29,7 @@ depends:
   - components/fonts/ttf-noto.yml
   - components/x11/xserver.yml
   - components/x11/xauth.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
 sources:
   - sddm-%{version}.tar.gz::https://github.com/%{id}/%{id}/archive/v%{version}.tar.gz

@@ -23,7 +23,7 @@ depends:
   - components/libsoup.yml
   - components/xz.yml
   - components/zlib.yml
-build-time:
+build-depends:
   - components/gtk-doc.yml
 sources:
   - https://github.com/ostreedev/ostree/releases/download/v%{version}/libostree-%{version}.tar.xz

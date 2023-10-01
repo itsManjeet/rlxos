@@ -13,7 +13,7 @@ depends:
   - components/gtk.yml
   - components/libxml2.yml
   - components/py/py-gobject.yml
-build-time:
+build-depends:
   - components/vala.yml
   - components/gobject-introspection.yml
   - components/py/py-jinja2.yml

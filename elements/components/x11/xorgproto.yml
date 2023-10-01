@@ -4,7 +4,7 @@ about: combined X.Org X11 Protocol headers
 sources:
   - https://xorg.freedesktop.org/archive/individual/proto/xorgproto-%{version}.tar.xz
 
-build-time:
+build-depends:
   - components/python.yml
   - components/meson.yml
   - components/x11/util-macros.yml

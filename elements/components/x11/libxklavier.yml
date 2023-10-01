@@ -10,7 +10,7 @@ depends:
   - components/iso-codes.yml
   - components/libxml2.yml
   - components/x11/xkeyboard-config.yml
-build-time:
+build-depends:
   - components/gobject-introspection.yml
   - components/vala.yml
   - components/intltool.yml

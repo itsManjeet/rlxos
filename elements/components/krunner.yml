@@ -5,6 +5,6 @@ about: KF5 krunner
 depends:
   - components/plasma-framework.yml
   - components/threadweaver.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
   - components/kdoctools.yml

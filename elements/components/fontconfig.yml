@@ -14,5 +14,5 @@ sources:
 depends:
   - components/freetype.yml
 
-build-time:
+build-depends:
   - components/gperf.yml

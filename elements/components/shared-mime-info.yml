@@ -6,7 +6,7 @@ depends:
   - components/glib.yml
   - components/libxml2.yml
 
-build-time:
+build-depends:
   - components/itstool.yml
   - components/xmlto.yml
 

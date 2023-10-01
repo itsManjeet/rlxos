@@ -11,7 +11,7 @@ configure: >-
 
 depends:
   - components/libjpeg-turbo.yml
-build-time:
+build-depends:
   - components/cmake.yml
 sources:
   - https://github.com/jasper-software/jasper/archive/version-%{version}/jasper-%{version}.tar.gz

@@ -7,7 +7,7 @@ depends:
   - components/clutter-gtk.yml
   - components/libsoup.yml
   - components/sqlite.yml
-build-time:
+build-depends:
   - components/gobject-introspection.yml
   - components/gtk-doc.yml
   - components/meson.yml

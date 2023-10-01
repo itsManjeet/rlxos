@@ -61,7 +61,7 @@ depends:
   - components/gettext.yml
   - components/lvm2.yml
   - components/qemu.yml
-build-time:
+build-depends:
   - components/iproute2.yml
   - components/libxslt.yml
   - components/meson.yml

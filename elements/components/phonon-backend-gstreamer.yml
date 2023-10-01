@@ -12,7 +12,7 @@ depends:
   - components/gst-plugins-base.yml
   - components/gst-plugins-good.yml
   - components/gst-plugins-bad.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
 sources:
   - https://download.kde.org/stable/phonon/phonon-backend-gstreamer/%{version}/phonon-backend-gstreamer-%{version}.tar.xz

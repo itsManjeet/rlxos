@@ -9,7 +9,7 @@ depends:
   - components/brotli.yml
   - components/protobuf.yml
   - components/pcre2.yml
-build-time:
+build-depends:
   - components/cmake.yml
   - components/git.yml
   - components/go.yml

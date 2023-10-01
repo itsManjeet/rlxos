@@ -2,7 +2,7 @@ id: tcc
 version: 0.9.27
 about: Tiny C Compiler
 
-build-time:
+build-depends:
   - components/glibc.yml
 sources:
   - https://download.savannah.nongnu.org/releases/tinycc/tcc-%{version}.tar.bz2

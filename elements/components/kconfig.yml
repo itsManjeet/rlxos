@@ -3,5 +3,5 @@ about: KF5 kconfig
 merge: [elements/include/kf5.yml]
 depends:
   - components/qt.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml

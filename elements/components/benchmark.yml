@@ -8,7 +8,7 @@ configure: >
 
 depends:
   - components/libgcc.yml
-build-time:
+build-depends:
   - components/cmake.yml
 sources:
   - https://github.com/google/benchmark/archive/v%{version}/benchmark-%{version}.tar.gz

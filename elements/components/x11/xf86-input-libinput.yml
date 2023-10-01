@@ -6,7 +6,7 @@ depends:
   - components/glibc.yml
   - components/libinput.yml
 
-build-time:
+build-depends:
   - components/x11/libx11.yml
   - components/x11/libxi.yml
   - components/x11/xserver.yml

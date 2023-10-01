@@ -9,7 +9,7 @@ depends:
 - components/libgee.yml
 - components/libhandy.yml
 - components/libsoup.yml
-build-time:
+build-depends:
 - components/vala.yml
 sources:
 - https://download.gnome.org/sources/gnome-calculator/40/gnome-calculator-40.1.tar.xz

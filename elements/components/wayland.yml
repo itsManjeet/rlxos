@@ -8,7 +8,7 @@ depends:
   - components/glibc.yml
   - components/libffi.yml
 
-build-time:
+build-depends:
   - components/meson.yml
 
 sources:

@@ -2,5 +2,5 @@ id: glibc-stage2
 merge:
   - elements/include/glibc.yml
 
-build-time:
+build-depends:
   - components/bootstrap/gcc-stage1.yml

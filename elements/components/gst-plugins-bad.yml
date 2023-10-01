@@ -27,7 +27,7 @@ depends:
   - components/x11/libxcb.yml
   - components/libsndfile.yml
   - components/taglib.yml
-build-time:
+build-depends:
   - components/nasm.yml
 sources:
   - https://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-%{version}.tar.xz

@@ -4,7 +4,7 @@ about: KF5 kwayland
 
 depends:
   - components/qt.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
   - components/plasma-wayland-protocols.yml
   - components/wayland-protocols.yml

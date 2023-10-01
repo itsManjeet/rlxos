@@ -74,7 +74,7 @@ depends:
   - components/fonts/noto.yml
   - components/fonts/noto-cjk.yml
   - components/fonts/noto-emoji.yml
-build-time:
+build-depends:
   - components/intltool.yml
   - components/x11/xf86-input-libinput.yml
 sources:

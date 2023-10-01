@@ -2,7 +2,7 @@ id: onlyoffice
 version: 7.1.0
 about: An office suite that combines text, spreadsheet and presentation editors
 release: 0
-build-time:
+build-depends:
 - components/appimagetool.yml
 sources:
 - onlyoffice-desktopeditors-%{version}.deb::https://github.com/ONLYOFFICE/DesktopEditors/releases/download/v%{version}/onlyoffice-desktopeditors_amd64.deb

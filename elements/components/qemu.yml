@@ -33,7 +33,7 @@ depends:
   - components/libusb.yml
   - components/usbredir.yml
   - components/libcacard.yml
-build-time:
+build-depends:
   - components/pkg-config.yml
   - components/spice-protocol.yml
 sources:

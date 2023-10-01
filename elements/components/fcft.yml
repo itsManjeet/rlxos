@@ -9,6 +9,6 @@ depends:
   - components/fontconfig.yml
   - components/harfbuzz.yml
   - components/pixman.yml
-build-time:
+build-depends:
   - components/tllist.yml
   - components/meson.yml

@@ -5,7 +5,7 @@ about: A templating library for GLib
 depends:
   - components/glib.yml
   - components/gobject-introspection.yml
-build-time:
+build-depends:
   - components/gtk-doc.yml
   - components/meson.yml
   - components/vala.yml

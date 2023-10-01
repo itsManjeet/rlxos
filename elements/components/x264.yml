@@ -5,7 +5,7 @@ about: Package provides a library for encoding video streams into the H.264/MPEG
 configure: >-
   --enable-shared
 
-build-time:
+build-depends:
   - components/nasm.yml
   - components/l-smash.yml
 sources:

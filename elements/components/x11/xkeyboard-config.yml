@@ -7,7 +7,7 @@ sources:
 depends:
   - components/x11/xkbcomp.yml
 
-build-time:
+build-depends:
   - components/libxslt.yml
   - components/meson.yml
   - components/python.yml

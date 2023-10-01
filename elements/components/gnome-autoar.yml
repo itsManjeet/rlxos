@@ -12,7 +12,7 @@ configure: >-
 depends:
   - components/libarchive.yml
   - components/gtk.yml
-build-time:
+build-depends:
   - components/vala.yml
 sources:
   - https://download.gnome.org/sources/gnome-autoar/%{version:1}/gnome-autoar-%{version}.tar.xz

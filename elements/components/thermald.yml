@@ -11,7 +11,7 @@ depends:
   - components/libevdev.yml
   - components/upower.yml
   - components/autoconf-archive.yml
-build-time:
+build-depends:
   - components/gtk-doc.yml
 sources:
   - https://github.com/intel/thermal_daemon/archive/v%{version}/thermald-%{version}.tar.gz

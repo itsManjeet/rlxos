@@ -8,6 +8,6 @@ depends:
   - components/x11/libxres.yml
   - components/libnl.yml
   - components/lm-sensors.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
   - components/kdoctools.yml

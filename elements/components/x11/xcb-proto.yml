@@ -7,7 +7,7 @@ pre-script: rm autogen.sh
 sources:
   - https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-%{version}.tar.xz
 
-build-time:
+build-depends:
   - components/glibc.yml
   - components/libxml2.yml
   - components/python.yml

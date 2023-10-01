@@ -6,6 +6,6 @@ depends:
   - components/knewstuff.yml
   - components/kdeclarative.yml
   - components/kcmutils.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
   - components/kdoctools.yml

@@ -7,6 +7,6 @@ depends:
   - components/networkmanager.yml
   - components/plasma-workspace.yml
   - components/kinfocenter.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
   - components/kdoctools.yml

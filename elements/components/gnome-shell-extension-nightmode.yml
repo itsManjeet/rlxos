@@ -4,7 +4,7 @@ about: Support for night mode and theme switching
 release: 0
 depends:
 - components/glib.yml
-build-time:
+build-depends:
 - components/unzip.yml
 sources:
 - nightmode-%{version}::https://extensions.gnome.org/extension-data/nightthemeswitcherromainvigier.fr.v%{version}.shell-extension.zip

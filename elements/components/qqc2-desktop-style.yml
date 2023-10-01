@@ -6,5 +6,5 @@ depends:
   - components/kiconthemes.yml
   - components/kirigami2.yml
   - components/sonnet.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml

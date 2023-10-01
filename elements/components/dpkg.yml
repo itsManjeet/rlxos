@@ -20,7 +20,7 @@ depends:
   - components/perl.yml
   - components/xz.yml
   - components/zlib.yml
-build-time:
+build-depends:
   - components/perl-io-string.yml
   - components/perl-timedate.yml
 sources:

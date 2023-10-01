@@ -9,7 +9,7 @@ depends:
   - components/libepoxy.yml
   - components/pipewire.yml
 
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
   - components/kwayland.yml
   - components/plasma-wayland-protocols.yml

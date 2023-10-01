@@ -39,7 +39,7 @@ depends:
   - components/libusb.yml
   - components/wayland.yml
   - components/pcsclite.yml
-build-time:
+build-depends:
   - components/docbook-xsl.yml
   - components/cmake.yml
   - components/krb5.yml

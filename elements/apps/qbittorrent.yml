@@ -2,7 +2,7 @@ id: qbittorrent
 version: 4.4.2
 about: An advanced BitTorrent client programmed in C++, based on Qt toolkit and libtorrent-rasterbar
 release: 0
-build-time:
+build-depends:
 - components/hicolor-icon-theme.yml
 - components/qt.yml
 - components/python.yml

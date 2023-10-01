@@ -10,7 +10,7 @@ configure: >-
 depends:
   - components/glibc.yml
   - components/x11/libxcrypt.yml
-build-time:
+build-depends:
   - components/python.yml
   - components/docbook-xsl.yml
 sources:

@@ -16,6 +16,6 @@ depends:
   - components/x11/xcb-util-image.yml
   - components/x11/xcb-util-renderutil.yml
 
-build-time:
+build-depends:
   - components/uthash.yml
   - components/meson.yml

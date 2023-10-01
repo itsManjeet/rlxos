@@ -15,7 +15,7 @@ depends:
   - components/lcms.yml
   - components/libjpeg-turbo.yml
   - components/libpng.yml
-build-time:
+build-depends:
   - components/openjdk-bin.yml
 sources:
   - https://github.com/openjdk/jdk18u/archive/jdk-%{version}-ga.tar.gz

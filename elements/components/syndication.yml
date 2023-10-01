@@ -4,5 +4,5 @@ about: KF5 syndication
 
 depends:
   - components/kcodecs.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml

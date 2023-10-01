@@ -96,7 +96,7 @@ depends:
   - components/garcon.yml
   - components/libwnck.yml
   - components/intltool.yml
-build-time:
+build-depends:
   - components/vala.yml
 sources:
   - https://archive.xfce.org/src/xfce/xfce4-panel/%{version:1}/xfce4-panel-%{version}.tar.bz2

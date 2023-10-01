@@ -38,7 +38,7 @@ depends:
   - components/libisoburn.yml
   - components/dosfstools.yml
 
-build-time:
+build-depends:
   - components/python.yml
   - components/flex.yml
   - components/m4.yml

@@ -2,7 +2,7 @@ id: scrcpy
 version: "1.23"
 about: Display and control your android device
 release: 0
-build-time:
+build-depends:
 - components/ffmpeg.yml
 - components/sdl2.yml
 - components/libusb.yml

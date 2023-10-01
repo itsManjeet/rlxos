@@ -12,7 +12,7 @@ depends:
   - components/pcre.yml
   - components/x11/libxklavier.yml
   - components/accountsservice.yml
-build-time:
+build-depends:
   - components/itstool.yml
   - components/py/py-distutils-extra.yml
 sources:

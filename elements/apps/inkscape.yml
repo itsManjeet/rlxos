@@ -5,7 +5,7 @@ about:
   images, primarily in Scalable Vector Graphics format. Other formats can be imported
   and exported. Inkscape can render primitive vector shapes and text
 release: 0
-build-time:
+build-depends:
   - components/appimagetool.yml
   - components/pkgupd-port.yml
   - components/rsync.yml

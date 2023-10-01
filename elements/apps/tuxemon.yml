@@ -2,7 +2,7 @@ id: tuxemon
 version: 0.4.33
 about: Opensource monster-fighting RPG
 release: 0
-build-time:
+build-depends:
   - components/py/py-pip.yml
   - components/appimagetool.yml
 sources:

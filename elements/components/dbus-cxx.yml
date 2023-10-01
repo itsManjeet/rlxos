@@ -10,7 +10,7 @@ depends:
   - components/glibmm.yml
   - components/libsigc++.yml
   - components/popt.yml
-build-time:
+build-depends:
   - components/cmake.yml
   - components/make.yml
 sources:

@@ -3,7 +3,7 @@ version: 3.40.0
 about: |
   An archive manager for GNOME with support for tar, bzip2, gzip, zip, jar, compress, lzop, zstd, and many other archive formats
 release: 0
-build-time:
+build-depends:
 - components/gtk.yml
 - components/itstool.yml
 - components/cpio.yml

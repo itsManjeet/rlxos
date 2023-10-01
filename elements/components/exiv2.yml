@@ -15,7 +15,7 @@ depends:
   - components/brotli.yml
   - components/inih.yml
 
-build-time:
+build-depends:
   - components/cmake.yml
 sources:
   - https://github.com/Exiv2/exiv2/archive/v%{version}/exiv2-%{version}.tar.gz

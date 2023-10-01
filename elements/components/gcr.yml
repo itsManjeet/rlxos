@@ -15,7 +15,7 @@ depends:
   - components/gnupg.yml
   - components/gtk.yml
   - components/libxslt.yml
-build-time:
+build-depends:
   - components/gobject-introspection.yml
   - components/vala.yml
   - components/gtk-doc.yml

@@ -7,7 +7,7 @@ release: 0
 depends:
   - components/glibc.yml
   - components/python.yml
-build-time:
+build-depends:
   - components/automake.yml
   - components/make.yml
   - components/gcc.yml

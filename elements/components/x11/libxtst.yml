@@ -7,7 +7,7 @@ depends:
   - components/x11/libxfixes.yml
   - components/x11/libxi.yml
 
-build-time:
+build-depends:
   - components/x11/util-macros.yml
   - components/x11/xorgproto.yml
 

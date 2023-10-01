@@ -46,7 +46,7 @@ depends:
   - components/py/py-markdown.yml
   - components/cups.yml
   - components/libldap.yml
-build-time:
+build-depends:
   - components/py/py-pip.yml
   - components/openldap.yml
 sources:

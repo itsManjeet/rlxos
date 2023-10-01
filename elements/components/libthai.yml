@@ -4,7 +4,7 @@ about: Thai language support routines
 
 depends:
   - components/libdatrie.yml
-build-time:
+build-depends:
   - components/pkg-config.yml
 sources:
   - https://linux.thai.net/pub/thailinux/software/libthai/libthai-%{version}.tar.xz

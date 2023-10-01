@@ -22,7 +22,7 @@ depends:
   - components/gst-plugins-bad.yml
   - components/librsvg.yml
   - components/colord.yml
-build-time:
+build-depends:
   - components/gobject-introspection.yml
   - components/git.yml
 sources:

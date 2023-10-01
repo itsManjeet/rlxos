@@ -23,7 +23,7 @@ depends:
   - components/libsamplerate.yml
   - components/systemd.yml
   - components/opus.yml
-build-time:
+build-depends:
   - components/waf.yml
 sources:
   - jack-%{version}.tar.gz::https://github.com/jackaudio/jack2/archive/refs/tags/v%{version}.tar.gz

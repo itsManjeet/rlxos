@@ -2,7 +2,7 @@ id: spice-protocol
 version: 0.14.4
 about: Headers for SPICE protocol
 
-build-time:
+build-depends:
   - components/meson.yml
 sources:
   - https://gitlab.freedesktop.org/spice/spice-protocol/-/archive/v%{version}/spice-protocol-v%{version}.tar.gz

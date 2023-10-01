@@ -17,7 +17,7 @@ depends:
   - components/lua.yml
   - components/tracker.yml
   - components/tracker-miners.yml
-build-time:
+build-depends:
   - components/gperf.yml
   - components/meson.yml
   - components/itstool.yml

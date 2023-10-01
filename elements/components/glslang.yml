@@ -11,7 +11,7 @@ sources:
 depends:
   - components/glibc.yml
 
-build-time:
+build-depends:
   - components/ninja.yml
   - components/cmake.yml
   - components/spirv-headers.yml

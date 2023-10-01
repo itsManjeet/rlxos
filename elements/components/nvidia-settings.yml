@@ -8,7 +8,7 @@ depends:
   - components/libvdpau.yml
   - components/x11/libxv.yml
   - components/nvidia-utils.yml
-build-time:
+build-depends:
   - components/gtk2.yml
   - components/inetutils.yml
   - components/jansson.yml

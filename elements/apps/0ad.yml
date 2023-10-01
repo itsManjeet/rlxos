@@ -23,7 +23,7 @@ depends:
   - components/sdl2.yml
   - components/wxgtk.yml
   - components/zlib.yml
-build-time:
+build-depends:
   - components/boost.yml
   - components/cmake.yml
   - components/mesa.yml

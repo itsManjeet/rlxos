@@ -3,7 +3,7 @@ version: 5.1.1
 about: Krita is a professional FREE and open source painting program. It is made by
   artists that want to see affordable art tools for everyone
 release: 0
-build-time:
+build-depends:
 - components/appimagetool.yml
 sources:
 - https://download.kde.org/stable/krita/%{version}/krita-%{version}-x86_64.appimage

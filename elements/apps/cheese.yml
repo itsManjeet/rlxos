@@ -15,7 +15,7 @@ depends:
   - components/libcanberra.yml
   - components/libgudev.yml
   - components/gnome-video-effects.yml
-build-time:
+build-depends:
   - components/gtk-doc.yml
   - components/gobject-introspection.yml
   - components/vala.yml

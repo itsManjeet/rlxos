@@ -7,5 +7,5 @@ depends:
   - components/ki18n.yml
   - components/kitemviews.yml
   - components/kwidgetsaddons.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml

@@ -4,7 +4,7 @@ about: Blender is the free and open source 3D creation suite. It supports the en
   of the 3D pipeline—modeling, rigging, animation, simulation, rendering, compositing
   and motion tracking, and video editing
 release: 0
-build-time:
+build-depends:
 - components/appimagetool.yml
 sources:
 - https://ftp.nluug.nl/pub/graphics/blender/release/Blender3.3/blender-%{version}-linux-x64.tar.xz

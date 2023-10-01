@@ -13,7 +13,7 @@ script: |-
   ./gimp-%{version}.AppImage --appimage-extract
   mv squashfs-root %{install-root}
 
-build-time:
+build-depends:
   - components/appimagetool.yml
 
 sources:

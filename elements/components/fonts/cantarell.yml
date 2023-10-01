@@ -2,7 +2,7 @@ id: cantarell
 version: 0.303.1
 about: Humanist sans serif font
 
-build-time:
+build-depends:
   - components/meson.yml
 
 sources:

@@ -7,7 +7,7 @@ build-dir: x265-%{version}/source
 configure: >-
   -DGIT_ARCHETYPE=1
 
-build-time:
+build-depends:
   - components/nasm.yml
   - components/cmake.yml
 

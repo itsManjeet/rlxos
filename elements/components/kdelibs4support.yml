@@ -8,7 +8,7 @@ depends:
   - components/kunitconversion.yml
   - components/kdesignerplugin.yml
   - components/perl.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
   - components/kdoctools.yml
   - components/networkmanager.yml

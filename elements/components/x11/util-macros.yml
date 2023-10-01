@@ -4,5 +4,5 @@ about: X.Org Autotools macros
 sources:
   - https://www.x.org/pub/individual/util/util-macros-%{version}.tar.xz
 
-build-time:
+build-depends:
   - components/glibc.yml

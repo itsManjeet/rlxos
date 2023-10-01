@@ -8,7 +8,7 @@ depends:
   - components/kguiaddons.yml
   - components/ki18n.yml
   - components/kwidgetsaddons.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
   - components/perl.yml
   - components/kdoctools.yml

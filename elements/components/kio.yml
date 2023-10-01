@@ -10,6 +10,6 @@ depends:
   - components/kwallet.yml
   - components/libxslt.yml
   - components/solid.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
   - components/kdoctools.yml

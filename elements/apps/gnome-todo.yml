@@ -10,7 +10,7 @@ depends:
 - components/libportal.yml
 - components/python.yml
 - components/gnome-online-accounts.yml
-build-time:
+build-depends:
 - components/gobject-introspection.yml
 - components/meson.yml
 sources:

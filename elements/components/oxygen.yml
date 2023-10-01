@@ -7,6 +7,6 @@ depends:
   - components/hicolor-icon-theme.yml
   - components/kdecoration.yml
   - components/kcmutils.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
   - components/kdoctools.yml

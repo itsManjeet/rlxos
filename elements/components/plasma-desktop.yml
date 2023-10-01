@@ -13,7 +13,7 @@ depends:
   - components/kscreen.yml
   - components/plasma-nm.yml
   - components/powerdevil.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
   - components/intltool.yml
   - components/kdesignerplugin.yml

@@ -4,7 +4,8 @@ on:
     tags:
       - '[0-9]+'
     branches:
-      - '[0-9]+'
+      - '*'
+
 jobs:
   generate-image:
     name: Generate Image
@@ -13,7 +14,7 @@ jobs:
     strategy:
       matrix:
         board:
-          - x86_64
+          - amd64
     env:
       CACHE_PATH: ${{ secrets.CACHE_PATH }}
       UPDATE_DIR: ${{ secrets.UPDATE_DIR }}
@@ -26,7 +27,8 @@ jobs:
         run: |
           VERSION=${GITHUB_REF#refs/*/}
           if [[ "${GITHUB_REF}" =~ "refs/heads/" ]] ; then
-            CODENAME="rolling"
+            CODENAME="experimental"
+            VERSION="0.9.0"
           else
             CODENAME="stable"
           fi
@@ -40,23 +42,14 @@ jobs:
       - name: Cleanup build cache
         run: make clean
 
-      - name: Make Pre Installed Apps
-        run: make component ELEMENT=boards/common/apps.yml
-      
-      - name: Make Board Image
+      - name: Make Repository Cache
         run: |
-          for element in image live-config installer updates ; do
-            make component ELEMENT=boards/${{matrix.board}}/${element}.yml
-          done
+          make component ELEMENT=boards/${{matrix.board}}/repo.yml
 
-      - name: Checkout Release
+      - name: Make System Image
         run: |
-          mkdir -p ${UPDATE_DIR}/${CODENAME}
-          make checkout ELEMENT=boards/${{matrix.board}}/installer.yml RELEASE_PATH=${CACHE_PATH}/releases/
-          make checkout ELEMENT=boards/${{matrix.board}}/updates.yml   RELEASE_PATH=${UPDATE_DIR}/${CODENAME}/${ARCH}/
-          
-          cd ${UPDATE_DIR}/${CODENAME}
-          sha256sum */*/sysroot.img > SHA256SUMS
+          make component ELEMENT=boards/${{matrix.board}}/image.yml
+
       
       - name: Update Metadata
         run: make metadata

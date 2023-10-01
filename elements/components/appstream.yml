@@ -16,7 +16,7 @@ depends:
   - components/libxmlb.yml
   - components/lmdb.yml
   - components/qt.yml
-build-time:
+build-depends:
   - components/gobject-introspection.yml
   - components/gperf.yml
   - components/gtk-doc.yml

@@ -4,5 +4,5 @@ about: Plasma kwallet-pam
 
 depends:
   - components/kwallet.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml

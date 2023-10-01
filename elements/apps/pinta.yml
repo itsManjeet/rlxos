@@ -3,7 +3,7 @@ version: 2.0.1
 about: Drawing/editing program modeled after Paint.NET. It's goal is to provide a
   simplified alternative to GIMP for casual users
 release: 0
-build-time:
+build-depends:
 - components/dotnet.yml
 - components/dotnet-runtime.yml
 - components/gtk.yml

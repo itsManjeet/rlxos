@@ -14,7 +14,7 @@ depends:
   - components/py/py-gobject.yml
   - components/ufw.yml
   - components/webkitgtk.yml
-build-time:
+build-depends:
   - components/intltool.yml
   - components/py/py-distutils-extra.yml
 sources:

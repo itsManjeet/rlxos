@@ -9,7 +9,7 @@ depends:
   - components/libwacom.yml
   - components/libgudev.yml
 
-build-time:
+build-depends:
   - components/meson.yml
   - components/wayland-protocols.yml
 

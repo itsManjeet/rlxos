@@ -15,7 +15,7 @@ depends:
 - components/x11/libxkbcommon.yml
 - components/pipewire.yml
 - components/systemd.yml
-build-time:
+build-depends:
 - components/meson.yml
 sources:
 - https://download.gnome.org/sources/gnome-remote-desktop/40/gnome-remote-desktop-%{version}.tar.xz

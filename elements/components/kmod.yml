@@ -3,8 +3,6 @@ version: 30
 release: 2
 about: Libraries and utilities for loading kernel modules
 
-pre-script: |-
-  patch -Np1 -i /patches/kmod/0001-updated-default-modules-path-to-boot-modules.patch
 
 configure: >-
   --with-xz 
@@ -27,6 +25,6 @@ depends:
   - components/zlib.yml
   - components/zstd.yml
 
-build-time:
+build-depends:
   - components/pkg-config.yml
   - components/patch.yml

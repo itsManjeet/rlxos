@@ -1,7 +1,7 @@
 ARCH			?= x86_64
 
-VERSION			?= 999
-CODENAME		?= rolling
+VERSION			?= 0.9.0
+CODENAME		?= experimental
 CHANGELOG		?= "NO CHANGELOG"
 SERVER			?= "http://storage.rlxos.dev"
 
@@ -13,7 +13,7 @@ BUILDDIR		?= $(shell pwd)/build
 
 CACHE_PATH		?= $(BUILDDIR)/cache
 
-SWUPD			?= $(BUILDDIR)/swupd
+BUILDER			?= $(BUILDDIR)/builder
 RELEASE_PATH	?= $(BUILDDIR)/release
 
 CURCOMMIT		:= $(shell git rev-parse HEAD)
@@ -26,12 +26,12 @@ ALL_ELEMENTS	:= $(ALL_ELEMENTS:elements/%=%)
 
 export PATH := $(PATH):$(TOOLCHAIN_PATH)/bin
 
-all: $(SWUPD)
+all: $(BUILDER)
 
 clean:
 	rm -f $(KERNEL_IMAGE) $(KERNEL_IMAGE).txt $(ISOFILE)
 	rm -rf $(ISODIR) vendor
-	rm -f $(SWUPD)
+	rm -f $(BUILDER)
 
 # TODO: remove only rlxos running containers
 	docker rm -f $(shell docker ps -aq) 2>/dev/null || true
@@ -49,25 +49,25 @@ server.yml:
 update-vendor:
 	$(GOLANG) mod tidy && $(GOLANG) mod vendor
 
-$(SWUPD): update-vendor version.yml server.yml
+$(BUILDER): update-vendor version.yml server.yml
 	$(GOLANG) build -o $@ rlxos/cmd/swupd
 
-report: $(SWUPD)
-	$(SWUPD) buildroot report -cache-path $(CACHE_PATH)
+report: $(BUILDER)
+	$(BUILDER) report -cache-path $(CACHE_PATH)
 
-clean-garbage: $(SWUPD)
-	$(SWUPD) buildroot report -cache-path $(CACHE_PATH) -clean-garbage
+clean-garbage: $(BUILDER)
+	$(BUILDER) report -cache-path $(CACHE_PATH) -clean-garbage
 
-list-files: $(SWUPD)
+list-files: $(BUILDER)
 	@if [ -z $(ELEMENT) ] ;then echo "ERROR: no element specified"; exit 1; fi
 	@if [ ! -f elements/$(ELEMENT) ] ; then echo "ERROR: no element exists elements/$(ELEMENT)"; exit 1; fi
-	$(SWUPD) buildroot list-files -cache-path $(CACHE_PATH) $(ELEMENT)
+	$(BUILDER) list-files -cache-path $(CACHE_PATH) $(ELEMENT)
 
-check: $(SWUPD)
+check: $(BUILDER)
 	@if [ -z $(ELEMENT) ] ;then echo "ERROR: no element specified"; exit 1; fi
 	@if [ ! -f elements/$(ELEMENT) ] ; then echo "ERROR: no element exists elements/$(ELEMENT)"; exit 1; fi
 	echo "CACHE PATH: $(CACHE_PATH)"
-	$(SWUPD) buildroot status -cache-path $(CACHE_PATH) $(ELEMENT)
+	$(BUILDER) status -cache-path $(CACHE_PATH) $(ELEMENT)
 
 test:
 	@if [ -z $(IMAGE) ] ;then echo "ERROR: no image specified"; exit 1; fi
@@ -76,39 +76,39 @@ test:
 		-m 2G -smp 2 \
 		-nographic
 
-component: $(SWUPD)
+component: $(BUILDER)
 	@if [ -z $(ELEMENT) ] ;then echo "ERROR: no element specified"; exit 1; fi
 	@if [ ! -f elements/$(ELEMENT) ] ; then echo "ERROR: no element exists elements/$(ELEMENT)"; exit 1; fi
-	$(SWUPD) buildroot build -cache-path $(CACHE_PATH) $(ELEMENT)
+	$(BUILDER) build -cache-path $(CACHE_PATH) $(ELEMENT)
 
-checkout: $(SWUPD)
+checkout: $(BUILDER)
 	@if [ -z $(ELEMENT) ] ;then echo "ERROR: no element specified"; exit 1; fi
 	@if [ ! -f elements/$(ELEMENT) ] ; then echo "ERROR: no element exists elements/$(ELEMENT)"; exit 1; fi
-	$(SWUPD) buildroot checkout -cache-path $(CACHE_PATH) $(ELEMENT) $(RELEASE_PATH)
+	$(BUILDER) checkout -cache-path $(CACHE_PATH) $(ELEMENT) $(RELEASE_PATH)
 
-filepath: $(SWUPD)
+filepath: $(BUILDER)
 	@if [ -z $(ELEMENT) ] ;then echo "ERROR: no element specified"; exit 1; fi
 	@if [ ! -f elements/$(ELEMENT) ] ; then echo "ERROR: no element exists elements/$(ELEMENT)"; exit 1; fi
-	$(SWUPD) buildroot file -cache-path $(CACHE_PATH) $(ELEMENT)
+	$(BUILDER) file -cache-path $(CACHE_PATH) $(ELEMENT)
 
-metadata: $(SWUPD)
-	$(SWUPD) buildroot dump-metadata -cache-path $(CACHE_PATH) $(CACHE_PATH)/$(CODENAME)
+metadata: $(BUILDER)
+	$(BUILDER) dump-metadata -cache-path $(CACHE_PATH) $(CACHE_PATH)/$(CODENAME)
 
 TODO:
 	@grep -R "# TODO:" elements/ | sed 's/# TODO://g' > $@
 	@cat $@
 
-create-patch: $(SWUPD) $(CREATE_PATCH)
+create-patch: $(BUILDER) $(CREATE_PATCH)
 	@if [ -z $(SOURCE) ] ; then echo "ERROR: SOURCE commit not specified"; exit 1; fi
 	@if [ -z $(TARGET) ] ; then echo "ERROR: TARGET commit not specified"; exit 1; fi
 	
 	@if [ $(CONTAIN_CHANGES) ] ; then git stash; fi
 	
 	@git checkout $(SOURCE)
-	$(eval SOURCE_IMAGE_PATH := $(shell $(SWUPD) file -cache-path $(CACHE_PATH) boards/$(ARCH)/image.yml | tail -n1))
+	$(eval SOURCE_IMAGE_PATH := $(shell $(BUILDER) file -cache-path $(CACHE_PATH) boards/$(ARCH)/image.yml | tail -n1))
 
 	@git checkout $(TARGET)
-	$(eval TARGET_IMAGE_PATH := $(shell $(SWUPD) file -cache-path $(CACHE_PATH) boards/$(ARCH)/image.yml | tail -n1))
+	$(eval TARGET_IMAGE_PATH := $(shell $(BUILDER) file -cache-path $(CACHE_PATH) boards/$(ARCH)/image.yml | tail -n1))
 
 	@git checkout $(CURCOMMIT)
 	@if [ $(CONTAIN_CHANGES) ] ; then git stash pop; fi
@@ -133,7 +133,7 @@ create-patch: $(SWUPD) $(CREATE_PATCH)
 	squashfuse $(BUILDDIR)/_work/source/$(SOURCE_IMAGE_SQUASH_PATH) $(BUILDDIR)/source
 	squashfuse $(BUILDDIR)/_work/source/$(TARGET_IMAGE_SQUASH_PATH) $(BUILDDIR)/target
 
-	$(SWUPD) buildroot create-patch $(BUILDDIR)/source $(BUILDDIR)/target
+	$(BUILDER) create-patch $(BUILDDIR)/source $(BUILDDIR)/target
 
 	rm -rf $(BUILDDIR)/_work
 	umount $(BUILDDIR)/source $(BUILDDIR)/target || true
@@ -142,10 +142,10 @@ define BUILD_ELEMENT
 
 endef
 
-world: $(SWUPD)
+world: $(BUILDER)
 	for element in $(ALL_ELEMENTS) ; do 										\
 		echo "BUILDING $$element";												\
-		if $(SWUPD) buildroot build -cache-path $(CACHE_PATH) $$element ; then 	\
+		if $(BUILDER) build -cache-path $(CACHE_PATH) $$element ; then 	\
 			echo "PASSED $$element" >> passed;									\
 		else																	\
 			echo "FAILED $$element" >> failed;									\
@@ -161,7 +161,7 @@ world: $(SWUPD)
 	@echo "TOTAL FAILED $(shell wc -l failed)"
 	@echo "TOTAL PASSED $(shell wc -l passed)"
 
-check-updates: $(SWUPD)
-	$(SWUPD) buildroot check-updates
+check-updates: $(BUILDER)
+	$(BUILDER) check-updates
 
 .PHONY: all clean update-vendor component TODO

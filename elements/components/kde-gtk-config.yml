@@ -13,7 +13,7 @@ depends:
   - components/kdecoration.yml
   - components/gtk.yml
   - components/gsettings-desktop-schemas.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
   - components/sassc.yml
 sources:

@@ -11,7 +11,7 @@ script: |
   install -Dm0755 busybox %{install-root}/%{bindir}/busybox
   install -Dm0644 docs/busybox.1 %{install-root}/%{datadir}/man/man1/busybox.1
 
-build-time:
+build-depends:
   - components/bootstrap.yml
   - components/ncurses.yml
 

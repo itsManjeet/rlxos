@@ -8,5 +8,5 @@ sources:
 depends:
   - components/x11/libxkbfile.yml
 
-build-time:
+build-depends:
   - components/x11/util-macros.yml

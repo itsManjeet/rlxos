@@ -4,7 +4,7 @@ about: Provides an API to the Linux IEEE1394 (FireWire) driver
 
 depends:
   - components/glibc.yml
-build-time:
+build-depends:
   - components/pkg-config.yml
 sources:
   - https://www.kernel.org/pub/linux/libs/ieee1394/libraw1394-%{version}.tar.xz

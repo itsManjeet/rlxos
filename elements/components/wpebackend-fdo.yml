@@ -10,7 +10,7 @@ depends:
   - components/libepoxy.yml
   - components/libwpe.yml
   - components/wayland.yml
-build-time:
+build-depends:
   - components/wayland-protocols.yml
   
 sources:

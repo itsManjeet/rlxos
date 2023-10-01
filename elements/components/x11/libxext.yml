@@ -4,7 +4,7 @@ about: X11 miscellaneous extensions library
 depends:
   - components/x11/libx11.yml
 
-build-time:
+build-depends:
   - components/x11/util-macros.yml
   - components/x11/xorgproto.yml
 

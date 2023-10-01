@@ -13,7 +13,7 @@ depends:
   - components/dbus-glib.yml
   - components/python.yml
   - components/py/py-gobject.yml
-build-time:
+build-depends:
   - components/intltool.yml
 sources:
   - https://archive.xfce.org/src/apps/xfce4-screensaver/%{version:1}/xfce4-screensaver-%{version}.tar.bz2

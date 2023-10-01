@@ -4,7 +4,7 @@ about: Brave is a free and open-source web browser developed by Brave Software, 
   based on the Chromium web browser. Brave is a privacy-focused browser, which automatically
   blocks online advertisements and website trackers in its default settings
 release: 0
-build-time:
+build-depends:
 - components/appimagetool.yml
 sources:
 - brave-%{version}::https://github.com/brave/brave-browser/releases/download/v%{version}/brave-browser-nightly-%{version}-linux-amd64.zip

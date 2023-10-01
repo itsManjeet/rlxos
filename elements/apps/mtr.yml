@@ -15,7 +15,7 @@ variables:
     Terminal=true
     Categories=System;
     
-build-time:
+build-depends:
   - components/ncurses.yml
   - components/gtk.yml
   - components/libcap.yml

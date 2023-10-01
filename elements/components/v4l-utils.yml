@@ -6,7 +6,7 @@ depends:
   - components/alsa-lib.yml
   - components/glu.yml
   - components/libjpeg-turbo.yml
-build-time:
+build-depends:
   - components/llvm.yml
 sources:
   - https://www.linuxtv.org/downloads/v4l-utils/v4l-utils-%{version}.tar.bz2

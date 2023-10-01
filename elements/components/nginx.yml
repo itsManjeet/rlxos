@@ -84,7 +84,7 @@ depends:
   - components/openssl.yml
   - components/pcre2.yml
   - components/zlib.yml
-build-time:
+build-depends:
   - components/mercurial.yml
 sources:
   - https://nginx.org/download/nginx-%{version}.tar.gz

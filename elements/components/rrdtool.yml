@@ -12,7 +12,7 @@ depends:
   - components/libxml2.yml
   - components/pango.yml
   - components/systemd.yml
-build-time:
+build-depends:
   - components/py/py-setuptools.yml
 sources:
   - https://github.com/oetiker/rrdtool-1.x/releases/download/v%{version}/rrdtool-%{version}.tar.gz

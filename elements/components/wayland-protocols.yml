@@ -2,7 +2,7 @@ id: wayland-protocols
 version: 1.32
 about: Project to define a protocol for a compositor to talk to its clients as well as a library implementation of the protocol
 
-build-time:
+build-depends:
   - components/meson.yml
   - components/wayland.yml
 

@@ -4,7 +4,7 @@ about: API to PolicyKit in the Qt environment
 depends:
   - components/polkit.yml
   - components/qt.yml
-build-time:
+build-depends:
   - components/cmake.yml
 sources:
   - https://download.kde.org/stable/polkit-qt-1/polkit-qt-1-%{version}.tar.xz

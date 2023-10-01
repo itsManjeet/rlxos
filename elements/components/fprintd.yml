@@ -10,7 +10,7 @@ depends:
   - components/polkit.yml
   - components/systemd.yml
 
-build-time:
+build-depends:
   - components/gtk-doc.yml
   - components/meson.yml
   - components/py/py-cairo.yml

@@ -13,5 +13,5 @@ depends:
   - components/pango.yml
   - components/glib.yml
 
-build-time:
+build-depends:
   - components/wayland-protocols.yml

@@ -16,7 +16,7 @@ depends:
   - components/berkeley-db.yml
   - components/gnutls.yml
   - components/debian-archive-keyring.yml
-build-time:
+build-depends:
   - components/cmake.yml
   - components/docbook-xsl.yml
   - components/dpkg.yml

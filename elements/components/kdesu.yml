@@ -5,5 +5,5 @@ about: KF5 kdesu
 depends:
   - components/kconfig.yml
   - components/kpty.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml

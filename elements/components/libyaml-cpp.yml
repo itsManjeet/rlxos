@@ -11,7 +11,7 @@ configure: >-
 
 depends:
   - components/glibc.yml
-build-time:
+build-depends:
   - components/cmake.yml
   - components/gcc.yml
 sources:

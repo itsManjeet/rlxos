@@ -20,7 +20,7 @@ include:
   - components/texinfo.yml
   - components/cmake.yml
 
-build-time:
+build-depends:
   - components/squashfs-tools.yml
 
 variables:

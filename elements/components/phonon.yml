@@ -5,7 +5,7 @@ about: The multimedia API for KDE
 depends:
   - components/glib.yml
   - components/qt.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
 sources:
   - https://download.kde.org/stable/phonon/%{version}/phonon-%{version}.tar.xz

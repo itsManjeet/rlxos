@@ -28,7 +28,7 @@ depends:
   - components/lua.yml
   - components/ncurses.yml
   - components/desktop-file-utils.yml
-build-time:
+build-depends:
   - components/cmake.yml
   - components/git.yml
 sources:

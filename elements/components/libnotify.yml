@@ -9,7 +9,7 @@ configure: >-
 
 depends:
   - components/gtk.yml
-build-time:
+build-depends:
   - components/gobject-introspection.yml
   - components/gtk-doc.yml
 

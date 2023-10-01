@@ -2,7 +2,7 @@ id: weechat
 version: "3.5"
 about: Fast, light and extensible IRC client (curses UI)
 release: 0
-build-time:
+build-depends:
 - components/curl.yml
 - components/gnutls.yml
 - components/libgcrypt.yml

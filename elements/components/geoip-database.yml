@@ -10,7 +10,7 @@ script: |-
     install -m 644 -t %{install-root}%{datadir}/GeoIP Geo${i}.dat
   done
 
-build-time:
+build-depends:
   - components/util-linux.yml
 sources:
   - GeoIP-%{version}.dat.cc::https://sources.archlinux.org/other/packages/geoip-database/%{version}/GeoIP.dat.gz

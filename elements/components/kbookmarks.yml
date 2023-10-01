@@ -3,6 +3,6 @@ about: KF5 kbookmarks
 
 depends:
   - components/kxmlgui.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
 merge: [elements/include/kf5.yml]

@@ -12,7 +12,7 @@ depends:
   - components/libgcc.yml
   - components/glibc.yml
   - components/ffmpeg.yml
-build-time:
+build-depends:
   - components/cmake.yml
 sources:
   - https://github.com/acoustid/chromaprint/archive/v%{version}/chromaprint-%{version}.tar.gz

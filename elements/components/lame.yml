@@ -10,7 +10,7 @@ configure: >-
 depends:
   - components/glibc.yml
 
-build-time:
+build-depends:
   - components/nasm.yml
 sources:
   - https://downloads.sourceforge.net/lame/lame-%{version}.tar.gz

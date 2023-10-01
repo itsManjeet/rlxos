@@ -14,7 +14,7 @@ depends:
   - components/sqlite.yml
   - components/sysprof.yml
   - components/nghttp2.yml
-build-time:
+build-depends:
   - components/gobject-introspection.yml
   - components/vala.yml
 sources:

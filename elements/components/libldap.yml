@@ -4,7 +4,7 @@ version: 2.6.1
 depends:
   - components/cyrus-sasl.yml
 
-build-time:
+build-depends:
   - components/openldap.yml
 
 script: |

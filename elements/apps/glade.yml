@@ -7,7 +7,7 @@ depends:
   - components/libxml2.yml
   - components/gjs.yml
   - components/libglade.yml
-build-time:
+build-depends:
   - components/docbook-xsl.yml
   - components/gobject-introspection.yml
   - components/itstool.yml

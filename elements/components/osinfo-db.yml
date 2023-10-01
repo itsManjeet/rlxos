@@ -4,7 +4,7 @@ about:
   Osinfo database of information about operating systems for virtualization provisioning
   tools
 
-build-time:
+build-depends:
   - components/osinfo-db-tools.yml
 sources:
   - osinfo-db::https://releases.pagure.org/libosinfo/osinfo-db-%{version}.tar.xz

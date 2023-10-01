@@ -18,7 +18,7 @@ depends:
   - components/libssh.yml
   - components/openssl.yml
   - components/pcre.yml
-build-time:
+build-depends:
   - components/cmake.yml
   - components/python.yml
 sources:

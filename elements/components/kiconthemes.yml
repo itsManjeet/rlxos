@@ -6,5 +6,5 @@ depends:
   - components/karchive.yml
   - components/kconfigwidgets.yml
   - components/kitemviews.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml

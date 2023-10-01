@@ -11,7 +11,7 @@ depends:
   - components/libgepub.yml
   - components/tracker-miners.yml
   - components/webkitgtk.yml
-build-time:
+build-depends:
   - components/gobject-introspection.yml
   - components/meson.yml
   - components/git.yml

@@ -41,6 +41,6 @@ depends:
   - components/readline.yml
   - components/pam.yml
   - components/shadow.yml
-build-time:
+build-depends:
   - components/meson.yml
   - components/gcc.yml

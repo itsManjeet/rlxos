@@ -11,7 +11,7 @@ configure: >-
 depends:
   - components/geoip-database.yml
   - components/zlib.yml
-build-time:
+build-depends:
   - components/autoconf.yml
   - components/libtool.yml
 sources:

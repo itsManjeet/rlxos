@@ -12,7 +12,7 @@ configure: >-
   --enable-unicode
   --enable-vserver
 
-build-time:
+build-depends:
   - components/libcap.yml
   - components/libnl.yml
   - components/ncurses.yml

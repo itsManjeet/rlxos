@@ -13,7 +13,7 @@ depends:
   - components/file.yml
   - components/which.yml
   - components/bash.yml
-build-time:
+build-depends:
   - components/xmlto.yml
   - components/lynx.yml
 sources:

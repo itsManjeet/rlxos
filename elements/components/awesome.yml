@@ -35,7 +35,7 @@ depends:
   - components/x11/xf86-video-fbdev.yml
   - components/x11/xf86-input-libinput.yml
 
-build-time:
+build-depends:
   - components/cmake.yml
   - components/docbook-xsl.yml
   - components/imagemagick.yml

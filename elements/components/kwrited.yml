@@ -6,6 +6,6 @@ depends:
   - components/kdbusaddons.yml
   - components/knotifications.yml
   - components/kpty.yml
-build-time:
+build-depends:
   - components/extra-cmake-modules.yml
   - components/kdoctools.yml

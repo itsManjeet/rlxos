@@ -402,7 +402,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 		}
 		scriptCode := resolveVariables(script, variables)
 		args := []string{"sh", "-ec", scriptCode}
-		if len(scriptCode) > 500 {
+		if len(scriptCode) > 10000 {
 			scriptCodePath := path.Join(srcdir, "_swupd_script_code")
 			if err := ioutil.WriteFile(scriptCodePath, []byte(scriptCode), 0755); err != nil {
 				return fmt.Errorf("script code is too large and failed to write script code %s %v", scriptCodePath, err)

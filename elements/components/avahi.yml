@@ -2,7 +2,10 @@ id: avahi
 version: 0.8
 about: A system which facilitates service discovery on a local network
 
-configure: >
+environ:
+  - NOCONFIGURE=1
+
+configure: >-
   with_dbus_sys=%{datadir}/dbus-1/system.d
   --enable-compat-libdns_sd
   --with-distro=none
@@ -22,7 +25,7 @@ configure: >
   --disable-mono
   --disable-mono-doc
 
-post-script: |
+post-script: |-
   ln -s avahi-compat-libdns_sd/dns_sd.h "$pkgupd_pkgdir/%{prefix}/include/dns_sd.h"
 
 depends:

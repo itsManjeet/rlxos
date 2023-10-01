@@ -19,7 +19,10 @@ type WriteCounter struct {
 func (wc *WriteCounter) Write(p []byte) (int, error) {
 	n := len(p)
 	wc.Total += uint64(n)
-	wc.PrintProgress()
+	if os.Getenv("NO_PRINT_PROGRESS") == "" {
+		wc.PrintProgress()
+	}
+
 	return n, nil
 }
 

@@ -19,6 +19,7 @@ jobs:
       CACHE_PATH: ${{ secrets.CACHE_PATH }}
       UPDATE_DIR: ${{ secrets.UPDATE_DIR }}
       SERVER: ${{ secrets.UPDATE_URL }}
+      NO_PRINT_PROGRESS: 1
     steps:
       - uses: actions/checkout@v1
 

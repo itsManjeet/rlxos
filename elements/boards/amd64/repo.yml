@@ -1,5 +1,5 @@
-id: amd64-image
-about: amd64 Board Image
+id: amd64-repo
+about: amd64 Image repository
 merge: [version.yml, elements/include/ostree.yml]
 no-strip: true
 
@@ -20,11 +20,10 @@ variables:
     fi
 
     version="$(ls -1 /lib/modules | head -n1)"
-    dracut -v --fstab \
+    dracut -v \
       --no-machineid \
       --kver ${version} \
       --add ostree \
-      --add plymouth \
       --install 'fsck.ext4' \
       %{libdir}/modules/${version}/initramfs
     EOT
@@ -35,6 +34,7 @@ build-depends:
   - components/squashfs-tools.yml
   - components/systemd.yml
   - components/ostree.yml
+  - components/libnvme.yml
 
   - kernel/linux.yml
   
@@ -89,4 +89,4 @@ include:
   - components/librsvg.yml
   - components/pulseaudio.yml
   - components/upower.yml
-
+  - components/libnvme.yml

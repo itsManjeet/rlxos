@@ -8550,7 +8550,7 @@ integration: |
     depmod -b %{prefix} -a $version;
   done
 
-build-time:
+build-depends:
   - components/coreutils.yml
   - components/kmod.yml
   - components/bc.yml

@@ -6,5 +6,3 @@ script: |-
   ostree init --repo %{install-root} --mode archive
   ostree pull-local --repo %{install-root} %{build-root}/barerepo
 
-build-depends:
-  - components/ostree.yml

@@ -10,10 +10,7 @@ environ:
   - KBUILD_BUILD_TIMESTAMP=Fri Nov 12 12:00:00 UTC 2011
   - KBUILD_BUILD_USER=rlxos
 
-variables:
-  kernel-install-dir: /kernel-install-dir/
-
-script: |-
+script: |
   has() {
     state="$(scripts/config --keep-case -s "${1}")"
     case "${state}" in
@@ -49,7 +46,6 @@ script: |-
 
 
   make defconfig
-
   #
   # General setup
   #
@@ -2017,7 +2013,6 @@ script: |-
   enable FW_LOADER_USER_HELPER
   enable FW_LOADER_COMPRESS
   enable FW_LOADER_COMPRESS_XZ
-  enable FW_LOADER_COMPRESS_ZSTD
   enable FW_CACHE
   # end of Firmware loader
 
@@ -8512,15 +8507,13 @@ script: |-
 
   make ${MAKEFLAGS}
   
-  make -j1 INSTALL_MOD_PATH='%{kernel-install-dir}/%{prefix}' DEPMOD=/bin/true modules_install
+  make -j1 INSTALL_MOD_PATH='%{install-root}/%{prefix}' modules_install
   release=$(make -s kernelrelease)
   image_name=$(make -s image_name)
 
   install -Dm644 -t %{install-root}/%{libdir}/modules/${release} ${image_name}
   install -Dm644 -t %{install-root}/%{libdir}/modules/${release} System.map
   install -Dm644 .config %{install-root}/%{libdir}/modules/${release}/config
-
-  install -Dm644 -t %{install-root}/boot/vmlinuz-${release} %{install-root}/%{libdir}/modules/${release}/${image_name}
 
   find %{install-root}/%{libdir}/modules/$release -type f -name '*.ko' | xargs -P 4 -n 2 -r xz;
   targetdir=%{install-root}/%{prefix}/src/linux-$release
@@ -8557,7 +8550,7 @@ integration: |
     depmod -b %{prefix} -a $version;
   done
 
-build-depends:
+build-time:
   - components/coreutils.yml
   - components/kmod.yml
   - components/bc.yml

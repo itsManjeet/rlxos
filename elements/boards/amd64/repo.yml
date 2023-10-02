@@ -34,6 +34,10 @@ build-depends:
   - components/cryptsetup.yml
   - components/squashfs-tools.yml
   - components/systemd.yml
+  - components/ostree.yml
+
+  - kernel/linux.yml
+  
 
 include:
   # Core
@@ -43,6 +47,7 @@ include:
   - components/tzdata.yml
   - components/grub.yml
   - components/dracut.yml
+  - kernel/linux.yml
 
   # Utilities
   - components/e2fsprogs.yml

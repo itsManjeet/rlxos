@@ -209,7 +209,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 		return fmt.Errorf("failed to create container %v", err)
 	}
 	defer func() {
-		container.Run(logWriter, []string{"rm", "-rf", "/src", "/pkg"}, "/", []string{})
+		container.Run(logWriter, []string{"sh", "-c", "rm -rf /src/* /pkg/*"}, "/", []string{})
 		container.Delete()
 	}()
 

@@ -1,0 +1,37 @@
+script: |-
+  chroot %{sysroot} /bin/bash << "EOT"
+  if [ -d %{localstatedir}/lib/integrations ] ; then
+    for i in %{localstatedir}/lib/integrations/* ; do
+      echo "=> integrating $(basename $i)"
+      sh -e $i
+    done
+  fi
+
+  %{initial-commands}
+
+
+  [[ -d %{sysroot}/%{datadir}/factory/etc ]] && rm -rf %{sysroot}/%{datadir}/factory/etc
+  mkdir -p %{sysroot}/%{datadir}/factory
+  mv -T %{sysroot}/etc %{sysroot}/%{datadir}/factory/etc
+
+  cp %{sysroot}/%{datadir}/factory/etc/os-release %{sysroot}/%{libdir}/
+  echo "IMAGE_VERSION=%{version}" >> %{sysroot}/%{libdir}/os-release
+
+  mkdir -p "%{sysroot}/%{libdir}/systemd/system/systemd-firstboot.service.d/"
+  cat <<EOF >"%{sysroot}/%{libdir}/systemd/system/systemd-firstboot.service.d/no-prompt.conf"
+  [Service]
+  ExecStart=
+  ExecStart=/usr/bin/systemd-firstboot --root-password=root
+  StandardOutput=journal
+  StandardInput=null
+  StandardError=journal
+  EOF
+
+  mkdir -p "%{sysroot}/%{libdir}/systemd/system/ldconfig.service.d/"
+  cat <<EOF >"%{sysroot}/%{libdir}/systemd/system/ldconfig.service.d/after-tmpfiles.conf"
+  [Unit]
+  After=systemd-tmpfiles-setup.service
+  EOF
+  
+  mkdir -p %{install-root}/%{version}
+  mksquashfs %{sysroot}/usr %{install-root}/%{version}/sysroot.img -noappend

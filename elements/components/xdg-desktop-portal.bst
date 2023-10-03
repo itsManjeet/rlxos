@@ -18,8 +18,6 @@ depends:
 - freedesktop-sdk.bst:components/docbook-xsl.bst
 - freedesktop-sdk.bst:components/flatpak.bst
 - freedesktop-sdk.bst:components/fontconfig.bst
-- freedesktop-sdk.bst:components/xdg-desktop-portal-manifest.bst
-- freedesktop-sdk.bst:components/xdg-portal-interfaces.bst
 - freedesktop-sdk.bst:components/fuse3.bst
 - freedesktop-sdk.bst:components/geoclue.bst
 - freedesktop-sdk.bst:components/pipewire.bst

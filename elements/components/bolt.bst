@@ -18,9 +18,6 @@ build-depends:
 
 depends:
 - freedesktop-sdk.bst:bootstrap-import.bst
-- components/vosk-api.bst
-- components/pipewire.bst
-- components/espeak-ng.bst
 - freedesktop-sdk.bst:components/curl.bst
 
 config:

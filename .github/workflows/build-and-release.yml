@@ -43,13 +43,13 @@ jobs:
       - name: Cleanup build cache
         run: make clean
 
-      - name: Make Repository Cache
-        run: |
-          make component ELEMENT=boards/${{matrix.board}}/repo.yml
-
       - name: Make System Image
         run: |
           make component ELEMENT=boards/${{matrix.board}}/image.yml
+
+      - name: Make Installer ISO
+        run: |
+          make component ELEMENT=boards/${{matrix.board}}/installer.yml
 
       
       - name: Update Metadata

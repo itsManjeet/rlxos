@@ -3,6 +3,9 @@ merge: [version.yml, elements/include/iso.yml]
 about: System Image [AMD64]
 no-strip: true
 
+include:
+  - boards/amd64/image.yml
+
 variables:
   installer-volume-id: RLXOS
   include-root: /sysroot
@@ -61,16 +64,3 @@ variables:
     - $ %{bindir}/clone /run/iso/sysroot.img install /dev/sd?
     - reboot once installation done
     EOF
-
-build-depends:
-  - components/core.yml
-  - components/e2fsprogs.yml
-  - components/mkinitramfs.yml
-  - components/mtools.yml
-  - components/grub.yml
-  - components/systemd.yml
-  - components/cryptsetup.yml
-  - components/squashfs-tools.yml
-  - components/syslinux.yml
-
-  - kernel/linux.yml

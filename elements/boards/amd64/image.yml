@@ -72,3 +72,6 @@ include:
   - components/pulseaudio.yml
   - components/upower.yml
   - components/libnvme.yml
+
+  # Apps
+  - boards/amd64/apps.yml

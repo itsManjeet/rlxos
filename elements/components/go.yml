@@ -1,20 +1,24 @@
 id: go
-version: 1.21.0
+version: 1.21.1
 about: The Go Programming Language
 
 sources:
   - https://golang.org/dl/go%{version}.src.tar.gz
   - https://golang.org/dl/go%{version}.linux-amd64.tar.gz
 
-script: |
+variables:
+  no-extract: true
+
+no-strip: true
+
+script: |-
   export GOROOT_BOOTSTRAP=%{build-root}/go%{version}
   GOROOT_FINAL=%{libdir}/go
   GOCACHE=%{build-root}/go-build
-  rm -r go
   install -d go%{version}
 
-  tar -xaf ${PKGUPD_SRCDIR}/go%{version}.linux-amd64.tar.gz -C go%{version} --strip-components 1
-  tar -xaf ${PKGUPD_SRCDIR}/go%{version}.src.tar.gz
+  tar -xaf %{build-root}/go%{version}.linux-amd64.tar.gz -C go%{version} --strip-components 1
+  tar -xaf %{build-root}/go%{version}.src.tar.gz
 
   cd go/src
   bash make.bash

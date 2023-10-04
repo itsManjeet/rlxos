@@ -2,6 +2,10 @@ variables:
   liveconfig-path: /liveconfig
 
 script: |-
+  echo "generating live configuration"
+  %{liveconfig}
+
+
   mkdir -p ISO/{boot/grub/{fonts,x86_64-efi},efi/boot,isolinux}
   kerver=$(ls /boot/modules | head -n1)
 
@@ -78,3 +82,16 @@ script: |-
 
   cd %{install-root}
   sha256sum rlxos-%{version}-%{id}.iso >rlxos-%{version}-%{id}.iso.sha265sum
+
+build-depends:
+  - components/core.yml
+  - components/e2fsprogs.yml
+  - components/mkinitramfs.yml
+  - components/mtools.yml
+  - components/grub.yml
+  - components/systemd.yml
+  - components/cryptsetup.yml
+  - components/squashfs-tools.yml
+  - components/syslinux.yml
+
+  - kernel/linux.yml

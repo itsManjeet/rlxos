@@ -298,7 +298,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 
 		var bin string
 		var args []string
-		if isArchive(filepath) {
+		if isArchive(filepath) && e.Variables["no-extract"] != "true" {
 			bin = "bsdtar"
 			args = []string{
 				"-xf", filepath, "-C", srcdir,
@@ -476,7 +476,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 
 		color.Process("Compressing package %s from %s", path.Base(cachefile), pkgdir)
 		if err := container.Run(logWriter, []string{"tar", "-I", "zstd", "-caf", path.Join("/", "cache", path.Base(cachefile)), "-C", path.Join("/", "pkg", path.Base(pkgdir)), "."}, path.Join("/pkg"), []string{
-			"ZSTD_CLEVEL=19",
+			"ZSTD_CLEVEL=12",
 			"ZSTD_NBTHREADS=4",
 		}); err != nil {
 			container.RescueShell()

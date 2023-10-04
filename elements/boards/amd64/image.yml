@@ -43,6 +43,9 @@ include:
   - components/xfce4.yml
   - components/lightdm-gtk-greeter.yml
 
+  # Useful python modules
+  - components/py/py-pip.yml
+
   # AppImage
   - components/fuse2.yml
 

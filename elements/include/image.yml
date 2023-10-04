@@ -6,6 +6,7 @@ script: |-
       sh -e $i
     done
   fi
+  EOT
 
   %{initial-commands}
 

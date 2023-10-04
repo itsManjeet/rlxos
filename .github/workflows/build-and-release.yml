@@ -59,4 +59,4 @@ jobs:
 
       
       - name: Update Metadata
-        run: make metadata RELEASE_PATH=${CACHE_PATH}/releases/${CODENAME}/${VERSION}/
+        run: make metadata RELEASE_PATH=${CACHE_PATH}/releases/${CODENAME}

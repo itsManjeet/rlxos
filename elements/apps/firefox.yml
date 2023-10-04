@@ -36,6 +36,16 @@ script: |-
   ln -srv %{install-root}/firefox %{install-root}/%{bindir}/
   cp %{install-root}/browser/chrome/icons/default/default64.png %{install-root}/firefox.png
 
+  rm -rf %{install-root}/browser/features
+
+  install -vDm644 /dev/stdin %{install-root}/distribution/policies.json << "EOF"
+  {
+    "policies": {
+          "DisableAppUpdate": true
+          }
+  }
+  EOF
+
 build-depends:
   - components/dbus-glib.yml
   - components/alsa-lib.yml

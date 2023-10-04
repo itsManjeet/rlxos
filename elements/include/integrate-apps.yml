@@ -7,11 +7,11 @@ variables:
   force-rebuild: true
 
 build-depends:
-  - components/swupd.yml
+  - components/appimage.yml
 
 script: |
   for appImage in /sysroot/*.app ; do
-    swupd app integrate $appImage -install-path /apps/
+    appimage $appImage
   done
   mkdir -p %{install-root}%{datadir}/factory/
   mv /apps %{install-root}%{datadir}/factory/

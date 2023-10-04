@@ -2,9 +2,9 @@ name: Build and Release
 on:
   push:
     tags:
-      - '[0-9]+'
+      - '[0-9]+.[0-9]+.[0-9]+'
     branches:
-      - '*'
+      - '[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
   generate-image:
@@ -29,7 +29,6 @@ jobs:
           VERSION=${GITHUB_REF#refs/*/}
           if [[ "${GITHUB_REF}" =~ "refs/heads/" ]] ; then
             CODENAME="experimental"
-            VERSION="0.9.0"
           else
             CODENAME="stable"
           fi
@@ -50,6 +49,10 @@ jobs:
       - name: Make Installer ISO
         run: |
           make component ELEMENT=boards/${{matrix.board}}/installer.yml
+
+      - name: Release System Image
+        run: |
+          make checkout ELEMENT=boards/${{matrix.board}}/image.yml
 
       
       - name: Update Metadata

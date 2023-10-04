@@ -1,0 +1,18 @@
+id: appimage
+version: 0.0.1
+about: AppImage Integration tool
+
+script: |-
+  export PATH=%{libdir}/go/bin/:$PATH
+  export GO111MODULE=on
+
+  mkdir -p %{install-root}/%{bindir}
+  go mod tidy
+  go build -o %{install-root}/%{bindir}/appimage github.com/itsmanjeet/app/cmd/appimage
+
+sources:
+  - app-%{version}.tar.gz::https://github.com/itsManjeet/app/archive/refs/heads/main.tar.gz
+
+build-depends:
+  - components/go.yml
+  - components/git.yml

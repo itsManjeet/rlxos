@@ -12,6 +12,7 @@ variables:
   root-password: rlxos
   cmdline: live root=LABEL=RLXOS
   force-rebuild: true
+  liveuser: liveuser
   liveconfig: |-
     # Create Live User
     install -vDm 0644 /dev/stdin %{liveconfig-path}/lib/systemd/system/live-user.service << "EOF"

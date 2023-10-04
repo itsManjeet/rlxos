@@ -75,3 +75,6 @@ include:
 
   # Apps
   - boards/amd64/apps.yml
+
+  # Installer and First Setup Tool
+  - components/os-installer.yml

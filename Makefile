@@ -76,7 +76,7 @@ test:
 		-m 2G -smp 2 \
 		-nographic
 
-component: $(BUILDER)
+cache: $(BUILDER)
 	@if [ -z $(ELEMENT) ] ;then echo "ERROR: no element specified"; exit 1; fi
 	@if [ ! -f elements/$(ELEMENT) ] ; then echo "ERROR: no element exists elements/$(ELEMENT)"; exit 1; fi
 	$(BUILDER) build -cache-path $(CACHE_PATH) $(ELEMENT)

@@ -56,7 +56,7 @@ jobs:
 
       - name: Release Installer ISO
         run: |
-          make checkout ELEMENT=boards/${{matrix.board}}/installer.yml RELEASE_PATH=${RELEASE_DIR}/releases/${CODENAME}
+          make checkout ELEMENT=boards/${{matrix.board}}/installer.yml RELEASE_PATH=${CACHE_PATH}/releases/${CODENAME}
 
       
       - name: Update Metadata

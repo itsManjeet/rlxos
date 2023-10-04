@@ -17,7 +17,6 @@ jobs:
           - amd64
     env:
       CACHE_PATH: ${{ secrets.CACHE_PATH }}
-      UPDATE_DIR: ${{ secrets.UPDATE_DIR }}
       SERVER: ${{ secrets.UPDATE_URL }}
       NO_PRINT_PROGRESS: 1
     steps:
@@ -52,12 +51,12 @@ jobs:
 
       - name: Release System Image
         run: |
-          make checkout ELEMENT=boards/${{matrix.board}}/image.yml RELEASE_PATH=${UPDATE_DIR}/${CODENAME}
+          make checkout ELEMENT=boards/${{matrix.board}}/image.yml RELEASE_PATH=${CACHE_PATH}/releases/${CODENAME}
 
       - name: Release Installer ISO
         run: |
-          make checkout ELEMENT=boards/${{matrix.board}}/installer.yml RELEASE_PATH=${CACHE_PATH}/releases/${CODENAME}
+          make checkout ELEMENT=boards/${{matrix.board}}/installer.yml RELEASE_PATH=${CACHE_PATH}/releases/${CODENAME}/${VERSION}
 
       
       - name: Update Metadata
-        run: make metadata
+        run: make metadata RELEASE_PATH=${CACHE_PATH}/releases/${CODENAME}/${VERSION}/

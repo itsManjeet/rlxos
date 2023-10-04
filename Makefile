@@ -92,7 +92,7 @@ filepath: $(BUILDER)
 	$(BUILDER) file -cache-path $(CACHE_PATH) $(ELEMENT)
 
 metadata: $(BUILDER)
-	$(BUILDER) dump-metadata -cache-path $(CACHE_PATH) $(CACHE_PATH)/$(CODENAME)
+	$(BUILDER) dump-metadata -cache-path $(CACHE_PATH) $(RELEASE_PATH)/$(CODENAME)/$(VERSION)
 
 TODO:
 	@grep -R "# TODO:" elements/ | sed 's/# TODO://g' > $@

@@ -1,5 +1,5 @@
 id: py-cython
-version: 3.0.2
+version: 0.29.36
 about: C Extension for python
 
 depends:
@@ -7,4 +7,4 @@ depends:
 build-depends:
   - components/py/py-setuptools.yml
 sources:
-  - https://github.com/cython/cython/archive/%{version}/cython-%{version}.tar.gz
+  - https://github.com/cython/cython/releases/download/%{version}/Cython-%{version}.tar.gz

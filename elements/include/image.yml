@@ -36,3 +36,9 @@ script: |-
   
   mkdir -p %{install-root}/%{version}
   mksquashfs %{sysroot}/usr %{install-root}/%{version}/sysroot.img -noappend
+
+build-depends:
+  - components/cryptsetup.yml
+  - components/squashfs-tools.yml
+  - components/systemd.yml
+  - components/libnvme.yml

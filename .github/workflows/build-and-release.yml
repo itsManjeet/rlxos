@@ -15,6 +15,9 @@ jobs:
       matrix:
         board:
           - amd64
+        variant:
+          - lite
+          - desktop
     env:
       CACHE_PATH: ${{ secrets.CACHE_PATH }}
       SERVER: ${{ secrets.UPDATE_URL }}
@@ -43,19 +46,19 @@ jobs:
 
       - name: Make System Image
         run: |
-          make cache ELEMENT=boards/${{matrix.board}}/image.yml
+          make cache ELEMENT=boards/${{matrix.board}}-${{matrix.variant}}/image.yml
 
       - name: Make Installer ISO
         run: |
-          make cache ELEMENT=boards/${{matrix.board}}/installer.yml
+          make cache ELEMENT=boards/${{matrix.board}}-${{matrix.variant}}/installer.yml
 
       - name: Release System Image
         run: |
-          make checkout ELEMENT=boards/${{matrix.board}}/image.yml RELEASE_PATH=${CACHE_PATH}/releases/${CODENAME}
+          make checkout ELEMENT=boards/${{matrix.board}}-${{matrix.variant}}/image.yml RELEASE_PATH=${CACHE_PATH}/releases/${{matrix.board}}/${{matrix.variant}}/${CODENAME}
 
       - name: Release Installer ISO
         run: |
-          make checkout ELEMENT=boards/${{matrix.board}}/installer.yml RELEASE_PATH=${CACHE_PATH}/releases/${CODENAME}/${VERSION}
+          make checkout ELEMENT=boards/${{matrix.board}}-${{matrix.variant}}/installer.yml RELEASE_PATH=${CACHE_PATH}/releases/${{matrix.board}}/${{matrix.variant}}/${CODENAME}/${VERSION}
 
       
       - name: Update Metadata

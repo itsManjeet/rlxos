@@ -129,9 +129,16 @@ else
     dbg "Mounting Root filesystem ${ROOT} ${SYSROOT}"
     mount -o rw ${ROOT} ${SYSROOT} || rescue "failed to mount ${ROOT} ${SYSROOT}"
 
+    if [[ -z ${SYSTEM} ]] ; then
+        SYSTEM="LABEL=$(lsblk -no path,label | grep "rlxos_image_" | sort -r | head -n1 | awk '{print $1}')"
+    fi
+    
+
     [[ ! -d ${SYSROOT}/usr ]] && mkdir -p ${SYSROOT}/usr
 
-    [[ ! -e ${SYSTEM} ]] && SYSTEM=${SYSROOT}/sysroot/images/${SYSTEM}
+    [[ ! -e ${SYSROOT}/sysroot/images/${SYSTEM} ]] SYSTEM=$(findfs $SYSTEM)
+    [[ -z ${SYSTEM}     ]] && rescue "No system image found"
+    [[ ! -e ${SYSTEM}   ]] && SYSTEM=${SYSROOT}/sysroot/images/${SYSTEM}
 
     dbg "Mounting System Image ${SYSTEM}"
     mount -o ro ${SYSTEM} ${SYSROOT}/usr || rescue "failed to mount ${SYSTEM} on ${SYSROOT}/usr"

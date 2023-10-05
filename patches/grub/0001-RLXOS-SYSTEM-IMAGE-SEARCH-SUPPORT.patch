@@ -14,7 +14,7 @@
  
  is_top_level=true
 +saved_list="${list}"
-+for rlxos_sys_image in $(ls /sysroot/images | sort -r) ; do
++for rlxos_sys_image in $(ls /sysroot/images | sort -r) $(lsblk -no label | grep "rlxos_image_" | sort -r | sed 's#^#LABEL=#g') ; do
 +    gettext_printf "System Image: %s\n" "${rlxos_sys_image}" >&2
 +    list="${saved_list}"
  while [ "x$list" != "x" ] ; do

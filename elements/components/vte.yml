@@ -5,8 +5,13 @@ about: A termcap file implementation for terminal emulators
 pre-script: |-
   mkdir -p /usr/local/include
 
+configure: >-
+  -Dgtk3=true
+  -Dgtk4=true
+
 depends:
   - components/gtk.yml
+  - components/gtk4.yml
   - components/libxml2.yml
   - components/pcre2.yml
   - components/icu.yml

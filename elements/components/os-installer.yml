@@ -5,6 +5,17 @@ about: OS installer
 pre-script: |-
   rmdir subprojects/blueprint-compiler
 
+post-script: |-
+  install -Dm0644 -t "%{install-root}%{sysconfdir}/os-installer/" /files/%{id}/config.yaml
+
+  for script in configure install prepare ; do
+    install -Dm0644 -t "%{install-root}%{sysconfdir}/os-installer/scripts/" /files/%{id}/${script}.sh
+  done
+
+  install -vDm0644 /dev/stdin %{install-root}/%{libdir}/tmpfiles.d/%{id}.conf << "EOF"
+  C %{sysconfdir}/%{id}
+  EOF
+
 depends:
   - components/gnome-desktop.yml
   - components/vte.yml

@@ -1,0 +1,15 @@
+id: amd64-desktop-installer
+merge: [version.yml, elements/include/iso.yml]
+about: System [DESKTOP] Image [AMD64]
+no-strip: true
+
+include:
+  - boards/amd64-desktop/image.yml
+
+variables:
+  installer-volume-id: RLXOS
+  include-root: /sysroot
+  root-password: rlxos
+  cmdline: live root=LABEL=RLXOS
+  force-rebuild: true
+  liveconfig: ""

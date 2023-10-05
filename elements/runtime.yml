@@ -1,0 +1,41 @@
+id: runtime
+merge: [version.yml]
+about: rlxos runtime
+
+depends:
+  # Core
+  - components/core.yml
+  - components/release-info.yml
+  - components/firmware.yml
+  - components/tzdata.yml
+  - components/grub.yml
+  - components/mkinitramfs.yml
+
+  # Utilities
+  - components/e2fsprogs.yml
+  - components/vim.yml
+  - components/squashfs-tools.yml
+  - components/wget.yml
+  - components/sudo.yml
+
+  # Useful python modules
+  - components/py/py-pip.yml
+
+  # AppImage
+  - components/fuse2.yml
+
+  # Components
+  - components/gvfs.yml
+  - components/xdg-user-dirs-gtk.yml
+
+  # Libraries
+  - components/libgtop.yml
+  - components/libwnck.yml
+  - components/libnotify.yml
+  - components/librsvg.yml
+  - components/pulseaudio.yml
+  - components/upower.yml
+  - components/libnvme.yml
+
+script: |-
+  mkdir -p %{install-root}%{prefix}

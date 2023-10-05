@@ -1,4 +1,4 @@
-id: amd64-apps
+id: amd64-lite-apps
 merge: [version.yml, elements/include/integrate-apps.yml]
 
 include:

@@ -28,7 +28,5 @@ build-depends:
   - components/groff.yml
 sources:
   - https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-%{version}.tgz
-pre-script: |-
-  patch -Np1 -i /patches/%{id}/openldap-2.6.6-consolidated-1.patch
 
 # TODO: fix post-script and configurations

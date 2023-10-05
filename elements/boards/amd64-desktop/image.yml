@@ -1,0 +1,29 @@
+id: amd64-desktop-image
+about: amd64 desktop Image
+merge: [version.yml, elements/include/image.yml]
+no-strip: true
+
+variables:
+  sysroot: "/sysroot"
+  include-root: "/sysroot"
+  force-rebuild: true
+  initial-commands: ""
+
+include:
+  - runtime.yml
+
+  # Desktop Environment
+  - components/gnome.yml
+
+  # X11
+  - components/x11/xserver.yml
+  - components/x11/xinit.yml
+  - components/x11/xf86-input-libinput.yml
+  - components/x11/xrdb.yml
+  - components/x11/iceauth.yml
+
+  # Apps
+  - boards/amd64-desktop/apps.yml
+
+  # Installer and First Setup Tool
+  - components/os-installer.yml

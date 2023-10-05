@@ -9,10 +9,11 @@ depends:
   - components/gnome-desktop.yml
   - components/vte.yml
   - components/libadwaita.yml
-  - components/py/py-yaml.yml
   - components/udisks.yml
+  - components/libgweather.yml
   - components/glib-networking.yml
   - components/py/py-gobject.yml
+  - components/py/py-yaml.yml
 
 sources:
   - os-installer-%{version}.tar.gz::https://github.com/itsManjeet/os-installer/archive/refs/heads/main.tar.gz

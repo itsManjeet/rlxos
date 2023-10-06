@@ -9,6 +9,7 @@ sources:
 depends:
 - components/networkmanager.bst
 - components/mogwai.bst
+- components/libsoup-2.4.bst
 - freedesktop-sdk.bst:components/avahi.bst
 - freedesktop-sdk.bst:components/flatpak.bst
 - freedesktop-sdk.bst:components/gnupg.bst

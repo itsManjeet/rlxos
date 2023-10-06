@@ -1,5 +1,13 @@
 kind: meson
 
+variables:
+  meson-local: >-
+    -Ddoc=disabled
+    -Dbash-completion=disabled
+    -Dxptv=disabled
+    -Dpython=disabled
+    -Dvalidate=disabled
+
 sources:
 - kind: tar
   url: gstreamer:src/gstreamer-editing-services/gst-editing-services-1.20.6.tar.xz

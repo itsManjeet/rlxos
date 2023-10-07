@@ -22,7 +22,7 @@ depends:
 #  - components/zram-generator.bst
   - components/firmware.bst
   - components/alsa-ucm.bst
-  - components/srclang.bst
+  # - components/srclang.bst
   - components/spice-vdagent.bst
   - components/appimaged.bst
   - components/waydroid.bst

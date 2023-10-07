@@ -2,9 +2,9 @@ kind: autotools
 
 sources:
 - kind: tar
-  url: github_files:tuxera/ntfs-3g/archive/refs/tags/2022.10.3.tar.gz
+  url: https://tuxera.com/opensource/ntfs-3g_ntfsprogs-2022.10.3.tgz
 
-  ref: 8bd7749ea9d8534c9f0664d48b576e90b96d45ec8803c9427f6ffaa2f0dde299
+  ref: f20e36ee68074b845e3629e6bced4706ad053804cbaf062fbae60738f854170c
 build-depends:
 - freedesktop-sdk.bst:public-stacks/buildsystem-autotools.bst
 
@@ -17,6 +17,9 @@ variables:
     --disable-ldconfig
 
 config:
+  configure-commands:
+    (<):
+    - sed 's|$(DESTDIR)/sbin|$(DESTDIR)/usr/bin|' -i {ntfsprogs,src}/Makefile.in
   install-commands:
     (>):
     - ln -s ntfs-3g %{install-root}%{bindir}/mount.ntfs

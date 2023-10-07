@@ -2,8 +2,8 @@ kind: autotools
 
 sources:
 - kind: tar
-  url: github_files:libpinyin/libpinyin/releases/download/2.6.1/libpinyin-2.6.1.tar.gz
-  ref: fc42c4820c0e1609788bbfaf693dcb6265a3caf2aa963b20e7a994054a528b51
+  url: github_files:libpinyin/libpinyin/releases/download/2.8.1/libpinyin-2.8.1.tar.gz
+  ref: 353154f06d71dd0737b77ddcb27cb0dcaddb00f7ccd695bc0314bb42050e9050
 - kind: tar
   url: sourceforge:libpinyin/models/model17.text.tar.gz
   base-dir: ''

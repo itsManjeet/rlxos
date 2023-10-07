@@ -1,13 +1,17 @@
 kind: ostree
 
 build-depends:
-- system/filesystem.bst
 - system/initial-scripts.bst
 - freedesktop-sdk.bst:components/ostree.bst
 - freedesktop-sdk.bst:vm/prepare-image.bst
+- filename: system/filesystem.bst
+  config:
+    sysroot: true
+
 
 variables:
   uuidnamespace: aea54278-2587-4075-ae67-8688ace4ce3d
+  sysroot: "/sysroot"
 
 config:
   ostree-branch: '%{ostree-branch}'

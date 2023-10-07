@@ -1,5 +1,10 @@
 kind: autotools
 
+config:
+  install-commands:
+    (>):
+    - rm -rf %{install-root}/%{localstatedir}/run
+
 sources:
 - kind: tar
   url: spice:releases/spice-vdagent-0.22.1.tar.bz2

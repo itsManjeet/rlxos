@@ -49,7 +49,7 @@ class OstreeElement(Element):
             for dep in self.dependencies(self.env):
                 dep.integrate(sandbox)
 
-        with self.timed_activity("Staging sysroot", silent_nested=True):
+        with self.timed_activity("Staging sysroot {}".format(','.join(self.sysroot)), silent_nested=True):
             for dep in self.sysroot:
                 self.stage_dependency_artifacts(sandbox, self.sysroot, path=self.get_variable("sysroot"))
 

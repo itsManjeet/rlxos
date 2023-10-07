@@ -42,7 +42,7 @@ jobs:
         run: ${BST} -o variant experimental build boards/${{ matrix.board }}/image.bst
         
       - name: Checkout Image
-        run: ${BST} -o variant experimental checkout boards/${{ matrix.board }}/image.bst ${{ secrets.DAILY_DIR }} -f
+        run: ${BST} -o variant experimental artifact checkout boards/${{ matrix.board }}/image.bst --directory ${{ secrets.DAILY_DIR }} --force
 
       - name: Generate Changelog
         run: echo "${{ github.event.head_commit.message }}" > commit_body
@@ -70,7 +70,7 @@ jobs:
       - name: BUILD
         run: ${BST} -o variant stable build boards/${{ matrix.board }}/image.bst
       - name: Checkout Image
-        run: ${BST} -o variant stable checkout boards/${{ matrix.board }}/image.bst $RELEASE_DIR -f
+        run: ${BST} -o variant stable artifact checkout boards/${{ matrix.board }}/image.bst --directory $RELEASE_DIR --force
       
       - name: Generate Changelog
         run: echo "${{ github.event.head_commit.message }}" > commit_body

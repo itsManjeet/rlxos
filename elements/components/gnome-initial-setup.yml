@@ -11,6 +11,7 @@ depends:
   - components/gdm.yml
   - components/gnome-online-accounts.yml
   - components/krb5.yml
+  - components/webkitgtk-6.0.yml
   - components/libpwquality.yml
 sources:
   - http://ftp.gnome.org/pub/gnome/sources/gnome-initial-setup/%{version:1}/gnome-initial-setup-%{version}.tar.xz

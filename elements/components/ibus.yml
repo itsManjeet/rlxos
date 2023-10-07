@@ -2,17 +2,23 @@ id: ibus
 version: 1.5.28
 about: A new input framework for the Linux OS
 
+variables:
+  run-autogen: false
+  seperate-build-dir: false
+
 pre-script: |
   sed -i "s@/desktop/ibus@/org/freedesktop/ibus@g" \
       data/dconf/org.freedesktop.ibus.gschema.xml
 configure: >-
+  --enable-gtk4
   --disable-unicode-dict
   --disable-emoji-dict
+  --disable-python2
 
 depends:
   - components/dconf.yml
   - components/iso-codes.yml
-  - components/gtk2.yml
+  - components/gtk4.yml
   - components/libnotify.yml
 build-depends:
   - components/vala.yml

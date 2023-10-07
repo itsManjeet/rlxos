@@ -42,7 +42,7 @@ config:
 
 
   - dbus-uuidgen >/etc/machine-id
-  - SYSTEMD_ESP_CHECKS=1 bootctl --no-variables install
+  - SYSTEMD_ESP_PATH=/boot bootctl --no-variables install
   - rm /etc/machine-id
 
   - |

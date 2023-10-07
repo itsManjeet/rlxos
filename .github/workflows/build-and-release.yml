@@ -17,6 +17,7 @@ jobs:
           - amd64
         variant:
           - lite
+          - desktop
     env:
       CACHE_PATH: ${{ secrets.CACHE_PATH }}
       SERVER: ${{ secrets.UPDATE_URL }}

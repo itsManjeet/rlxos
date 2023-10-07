@@ -8,6 +8,7 @@ configure: >-
 depends:
   - components/gtk4.yml
   - components/libcanberra.yml
+  - components/libadwaita.yml
   - components/libnotify.yml
   - components/bluez.yml
   - components/systemd.yml
@@ -17,5 +18,6 @@ depends:
 build-depends:
   - components/gobject-introspection.yml
   - components/itstool.yml
+  - components/gtk-doc.yml
 sources:
   - https://download.gnome.org/sources/gnome-bluetooth/%{version:1}/gnome-bluetooth-%{version}.tar.xz

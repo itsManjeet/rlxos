@@ -1,8 +1,10 @@
 id: modemmanager
-version: 1.20.6
-about:
-  A unified high level API for communicating with mobile broadband modems, regardless
-  of the protocol used to communicate with the actual device
+version: 1.18.12
+about: A unified high level API for communicating with mobile broadband modems, regardless of the protocol used to communicate with the actual device
+
+variables:
+  run-autogen: false
+  seperate-build-dir: false
 
 configure: >-
   --with-systemd-journal
@@ -13,5 +15,12 @@ configure: >-
 
 depends:
   - components/libgudev.yml
+  - components/polkit.yml
+
+build-depends:
+  - components/gobject-introspection.yml
+  - components/vala.yml
+  - components/gtk-doc.yml
+
 sources:
   - https://www.freedesktop.org/software/ModemManager/ModemManager-%{version}.tar.xz

@@ -20,7 +20,7 @@ depends:
 variables:
   meson-local: >-
     -Dpython3=true
-    -Dinstrospection=true
+    -Dintrospection=true
     -Dvapi=true
     -Dwidgetry=true
     -Dgtk_doc=true

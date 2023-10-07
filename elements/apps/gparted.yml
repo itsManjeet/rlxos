@@ -1,11 +1,23 @@
 id: gparted
-version: 1.3.1
-about: A Gtk 3 GUI for other command line tools that can create, reorganise or delete
-  disk partitions
-release: 0
-depends:
-- components/gtkmm.yml
-- components/parted.yml
-sources:
-- https://downloads.sourceforge.net/gparted/gparted-1.3.1.tar.gz
+version: 1.5.0
+about: A Gtk 3 GUI for other command line tools that can create, reorganise or delete disk partitions
 
+variables:
+  prepare-appimage: |-
+    mv %{install-root}/%{libdir}/gpartedbin %{install-root}/%{bindir}/gparted
+    cp %{install-root}/%{datadir}/applications/%{id}.desktop %{install-root}/
+    cp %{install-root}/%{datadir}/icons/hicolor/scalable/apps/%{id}.svg %{install-root}/
+
+    echo "desktopfile: %{id}.desktop" >> %{install-root}/info
+    echo "icon: %{id}.svg" >> %{install-root}/info
+    echo "bin: %{id}" >> %{install-root}/info
+
+build-depends:
+  - components/gtkmm.yml
+  - components/parted.yml
+  - components/appimagetool.yml
+
+sources:
+  - https://downloads.sourceforge.net/gparted/gparted-%{version}.tar.gz
+
+merge: [elements/include/appimage.yml]

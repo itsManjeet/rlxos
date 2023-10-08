@@ -1,0 +1,18 @@
+id: srclang
+version: 0.0.1
+about: An Easy to learn programming Language
+
+configure: >-
+  -DCMAKE_BUILD_TYPE=Release
+
+post-script: |-
+  install -vDm 0755 -t %{install-root}/%{bindir} %{build-dir}/%{id} 
+depends:
+  - components/glibc.yml
+  - components/readline.yml
+
+build-depends:
+  - components/gcc.yml
+
+sources:
+  - srclang-%{version}.tar.gz::https://github.com/itsManjeet/srclang/archive/refs/heads/master.tar.gz

@@ -7,6 +7,7 @@ depends:
   - components/core.yml
   - components/release-info.yml
   - components/firmware.yml
+  - components/sof-firmware.yml
   - components/tzdata.yml
   - components/grub.yml
   - components/mkinitramfs.yml
@@ -27,6 +28,7 @@ depends:
   # Components
   - components/gvfs.yml
   - components/xdg-user-dirs-gtk.yml
+  - components/srclang.yml
 
   # Libraries
   - components/libgtop.yml

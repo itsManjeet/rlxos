@@ -2,6 +2,9 @@ id: mutter
 version: 44.4
 about: The window manager for GNOME
 
+configure: >-
+  -Dtests=false
+
 depends:
   - components/gnome-settings-daemon.yml
   - components/graphene.yml
@@ -14,6 +17,7 @@ depends:
   - components/libinput.yml
   - components/wayland.yml
   - components/x11/xserver.yml
+  - components/x11/xwayland.yml
   - components/gtk.yml
 build-depends:
   - components/gobject-introspection.yml

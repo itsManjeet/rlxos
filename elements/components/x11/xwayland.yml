@@ -12,6 +12,8 @@ depends:
   - components/x11/libxcvt.yml
   - components/pixman.yml
   - components/x11/font-util.yml
+  - components/x11/libxkbfile.yml
+  - components/x11/libxfont2.yml
   - components/libepoxy.yml
   - components/libtirpc.yml
   - components/mesa.yml

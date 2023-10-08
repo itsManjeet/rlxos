@@ -16,6 +16,7 @@ depends:
   - components/networkmanager.yml
   - components/gdm.yml
   - components/dconf.yml
+  - components/gcr-4.yml
   - components/ibus.yml
   - components/gnome-autoar.yml
   - components/libnma.yml
@@ -25,3 +26,4 @@ sources:
 
 configure: >-
   --buildtype=release
+  -Dtests=false

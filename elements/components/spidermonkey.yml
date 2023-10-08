@@ -1,9 +1,12 @@
-id: mozjs
-version: 102.13.0
-about: Mozilla's JavaScript engine written in C
+id: spidermonkey
+version: 115.3.0
+about: SpiderMonkey is Mozilla's JavaScript and WebAssembly Engine, written in C++ and Rust
 
-script: |
-  ./js/src/configure.in \
+build-dir: firefox-%{version}
+
+script: |-
+  mkdir obj && cd obj
+  ../js/src/configure \
       --prefix=%{prefix} \
       --with-intl-api \
       --enable-readline \
@@ -22,9 +25,9 @@ depends:
   - components/icu.yml
 
 build-depends:
-  - components/autoconf-2.13.yml
   - components/rustc.yml
   - components/which.yml
+  - components/llvm.yml
 
 sources:
   - https://archive.mozilla.org/pub/firefox/releases/%{version}esr/source/firefox-%{version}esr.source.tar.xz

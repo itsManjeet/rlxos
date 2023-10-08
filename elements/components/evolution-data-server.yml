@@ -4,11 +4,13 @@ about: |
   A unified backend for programs that work with contacts, tasks, and calendar information
 
 configure: >-
+  -DPORT=GTK
   -DENABLE_VALA_BINDINGS=ON
   -DENABLE_INSTALLED_TESTS=ON
   -DENABLE_GOOGLE=ON
   -DWITH_OPENLDAP=ON
   -DWITH_KRB5=ON
+  -DENABLE_OAUTH2_WEBKITGTK4=OFF
   -DENABLE_INTROSPECTION=ON
   -DENABLE_GTK_DOC=OFF
   -DLIBEXEC_INSTALL_DIR=%{libdir}

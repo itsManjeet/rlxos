@@ -12,4 +12,5 @@ variables:
   root-password: rlxos
   cmdline: live root=LABEL=RLXOS
   force-rebuild: true
-  liveconfig: ""
+  liveconfig: |-
+    mkdir -p %{liveconfig-path}

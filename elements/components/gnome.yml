@@ -12,12 +12,10 @@ depends:
   - components/gnome-keyring.yml
   - components/gnome-menus.yml
   - components/gnome-power-manager.yml
-  - components/gnome-screenshot.yml
+  # - components/gnome-screenshot.yml
   - components/gnome-shell.yml
   - components/gnome-session.yml
   - components/xdg-user-dirs.yml
-  - components/fonts/noto.yml
-  - components/fonts/opensans.yml
 
 script: |-
   mkdir -p %{install-root}/usr/

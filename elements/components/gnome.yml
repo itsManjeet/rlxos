@@ -16,6 +16,11 @@ depends:
   - components/gnome-shell.yml
   - components/gnome-session.yml
   - components/xdg-user-dirs.yml
+  - components/fonts/cantarell.yml
+  - components/fonts/noto.yml
+  - components/fonts/noto-cjk.yml
+  - components/fonts/noto-emoji.yml
+  - components/fonts/adobe-source-code-pro-fonts.yml
 
 script: |-
   mkdir -p %{install-root}/usr/

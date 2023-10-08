@@ -12,6 +12,13 @@ script: |-
 
   %{initial-commands}
 
+  cat > %{sysroot}%{libdir}/tmpfiles.d/extra-etc.conf << "EOF"
+  C %{sysconfdir}/dbus-1
+  C %{sysconfdir}/nscd.conf
+  C %{syscondir}/pam.d
+  C %{sysconfdir}/gdm
+  EOF
+
 
   [[ -d %{sysroot}/%{datadir}/factory/etc ]] && rm -rf %{sysroot}/%{datadir}/factory/etc
   mkdir -p %{sysroot}/%{datadir}/factory

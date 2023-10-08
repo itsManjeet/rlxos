@@ -86,7 +86,7 @@ post-script: |-
   </channel>
   EOF
 
-  install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/xdg/xfce4/panel/docklike-4.rc << "EOF"
+  install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/skel/.config/xfce4/panel/docklike-4.rc << "EOF"
   [user]
   pinned=/apps/share/applications/xfce4-appfinder.desktop;/apps/share/applications/xfce4-terminal.desktop;/apps/share/applications/thunar.desktop;/apps/share/applications/firefox.desktop;
   EOF

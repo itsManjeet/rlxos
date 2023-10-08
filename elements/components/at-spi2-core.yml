@@ -2,12 +2,6 @@ id: at-spi2-core
 version: 2.48.4
 about: Service Provider Interface for the Assistive Technologies
 
-post-script: |-
-  install -vDm0644 /dev/stdin %{install-root}/%{libdir}/tmpfiles.d/%{id}.conf << "EOF"
-  C %{sysconfdir}/xdg/autostart/at-spi-dbus-bus.desktop
-  C %{sysconfdir}/xdg/Xwayland-session.d/00-at-spi
-  EOF
-
 depends:
   - components/dbus.yml
   - components/glib.yml

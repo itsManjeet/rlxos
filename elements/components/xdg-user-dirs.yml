@@ -5,12 +5,6 @@ about: A tool to help manage well known user directories
 environ:
   - NOCONFIGURE=1
 
-post-script: |-
-  install -vDm0644 /dev/stdin %{install-root}/%{libdir}/tmpfiles.d/%{id}.conf << "EOF"
-  C %{sysconfdir}/xdg/autostart/xdg-user-dirs.desktop
-  C %{sysconfdir}/xdg/user-dirs.defaults
-  C %{sysconfdir}/xdg/user-dirs.conf
-  EOF
 depends:
   - components/glibc.yml
   - components/libxslt.yml

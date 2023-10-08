@@ -20,9 +20,6 @@ post-script: |-
   </channel>
   EOF
 
-  install -vDm0644 /dev/stdin %{install-root}/%{libdir}/tmpfiles.d/%{id}.conf << "EOF"
-  C %{sysconfdir}/xdg/autostart/%{id}.desktop
-  EOF
 depends:
   - components/hicolor-icon-theme.yml
   - components/libnotify.yml

@@ -18,9 +18,6 @@ post-script: |-
   indicators=~host;~spacer;~session;~a11y;~language;~clock;~power;
   EOF
 
-  install -vDm0655 /dev/stdin %{install-root}%{libdir}/tmpfiles.d/%{id}.conf << "EOF"
-  C /etc/lightdm/lightdm-gtk-greeter.conf
-  EOF
 
 
 depends:

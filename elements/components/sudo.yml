@@ -28,13 +28,6 @@ post-script: |
   session   include     system-session
   EOF
 
-  install -vDm0655 /dev/stdin %{install-root}%{libdir}/tmpfiles.d/sudo.conf << "EOF"
-  C /etc/sudoers
-  C /etc/sudoers.d
-  C /etc/sudoers.dist
-  C /etc/security
-  EOF
-
 sources:
   - https://www.sudo.ws/dist/sudo-%{version}.tar.gz
 

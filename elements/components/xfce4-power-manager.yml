@@ -2,10 +2,6 @@ id: xfce4-power-manager
 version: 4.18.2
 about: Xfce4 power management tool
 
-post-script: |-
-  install -vDm0655 /dev/stdin %{install-root}%{libdir}/tmpfiles.d/%{id}.conf << "EOF"
-  C %{sysconfdir}/xdg/autostart/xfce4-power-manager.desktop
-  EOF
 depends:
   - components/libnotify.yml
   - components/upower.yml

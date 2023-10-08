@@ -2,10 +2,10 @@ id: containerd
 version: 1.5.2
 about: An open and reliable container runtime
 
-script: |
+script: |-
   export GOPATH=${pkgupd_srcdir}
   mkdir -p %{install-root}/%{prefix}
-  cp -a bin %{install-root}/%{prefix}
+  cp -a %{build-root}/bin %{install-root}/%{prefix}
 
 depends:
   - components/runc.yml

@@ -59,7 +59,8 @@ post-script: |-
       </property>
       <property name="plugin-4" type="string" value="docklike"/>
       <property name="plugin-5" type="string" value="xkb">
-        <property name="display-scale" type="uint" value="31"/>
+        <property name="display-type" type="uint" value="2"/>
+        <property name="display-name" type="uint" value="1"/>
       </property>
       <property name="plugin-6" type="string" value="notification-plugin"/>
       <property name="plugin-7" type="string" value="power-manager-plugin"/>

@@ -1,7 +1,7 @@
 id: visual-studio-code
 version: 1.68.1
-about: <h2>unofficial release</h2> visual studio code release
-release: 0
+about: |
+  <h2>unofficial release</h2> visual studio code release
 build-depends:
 - components/appimagetool.yml
 sources:

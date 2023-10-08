@@ -1,5 +1,5 @@
 id: mkinitramfs
-version: 0.1.3
+version: 0.1.4
 about: Script to build initramfs
 depends:
   - components/glibc.yml

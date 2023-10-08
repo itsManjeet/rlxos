@@ -4,9 +4,14 @@ about: A library that contains GIO-style async APIs for most Flatpak portals
 
 depends:
   - components/glib.yml
+  - components/gtk.yml
+  - components/gtk4.yml
+  - components/qt.yml
 
 build-depends:
   - components/gtk-doc.yml
+  - components/gobject-introspection.yml
+  - components/vala.yml
 
 sources:
   - https://github.com/flatpak/libportal/releases/download/%{version}/libportal-%{version}.tar.xz

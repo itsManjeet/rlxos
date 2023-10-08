@@ -7,14 +7,7 @@ variables:
   sysroot: "/sysroot"
   include-root: "/sysroot"
   force-rebuild: true
-  initial-commands: |-
-    install -vDm0644 /dev/stdin %{include-root}/%{sysconfdir}/environment << "EOF"
-    export GTK_CSD=1
-    EOF
-
-    install -vDm0644 /dev/stdin %{include-root}/%{libdir}/tmpfiles.d/extra-etc.conf << "EOF"
-    C /etc/environment
-    EOF
+  initial-commands: ""
 
 include:
   - runtime.yml

@@ -69,10 +69,10 @@ script: |-
     C /etc/modules-load.d
     C /etc/moduli
     C /etc/netconfig
+    C /etc/nscd.conf
     C /etc/openfortivpn
     C /etc/openldap
     C /etc/opensc.conf
-    C /etc/ostree
     C /etc/passwd
     C /etc/pkcs11
     C /etc/pki
@@ -114,9 +114,6 @@ script: |-
     C /etc/xdg
     C /etc/xml
     C /etc/xtables.conf
-    # FIXME: those files should be moved to /usr
-    C /etc/tmpfiles.d
-    C /etc/sysusers.d
     C! /etc/audit
     C! /etc/pam.d
     C! /etc/security

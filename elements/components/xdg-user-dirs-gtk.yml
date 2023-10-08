@@ -12,8 +12,3 @@ sources:
 
 configure: >-
   --disable-more-warnings
-
-post-script: |-
-  install -vDm0644 /dev/stdin %{install-root}/%{libdir}/tmpfiles.d/%{id}.conf << "EOF"
-  C %{sysconfdir}/xdg/autostart/user-dirs-update-gtk.desktop
-  EOF

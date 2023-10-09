@@ -21,3 +21,6 @@ depends:
   - components/xfce4-pulseaudio-plugin.yml
   - components/xfce4-notifyd.yml
   - components/network-manager-applet.yml
+
+script: |-
+  mkdir -p %{install-root}%{prefix}

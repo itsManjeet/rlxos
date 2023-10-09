@@ -8,7 +8,7 @@ script: |-
   fi
   EOT
 
-  echo -n "%{version} $(echo -n %{id} | cut -d '-' -f1)" > %{sysroot}/release
+  echo -n "%{version} $(echo -n %{id} | cut -d '-' -f1)" > %{sysroot}/%{prefix}/release
 
   %{initial-commands}
 

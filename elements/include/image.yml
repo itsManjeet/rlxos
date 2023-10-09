@@ -59,6 +59,7 @@ script: |-
     C /etc/libinput
     C /etc/libnl
     C /etc/libsmbios
+    C /etc/lightdm
     C /etc/locale.conf
     C /etc/localtime
     C /etc/login.defs
@@ -133,9 +134,7 @@ script: |-
     C! /etc/systemd/timesyncd.conf
     C! /etc/systemd/user.conf
     C! /etc/issue.net
-    EOF
-
-
+  EOF
 
   [[ -d %{sysroot}/%{datadir}/factory/etc ]] && rm -rf %{sysroot}/%{datadir}/factory/etc
   mkdir -p %{sysroot}/%{datadir}/factory

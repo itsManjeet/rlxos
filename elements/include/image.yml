@@ -8,8 +8,6 @@ script: |-
   fi
   EOT
 
-  echo -n "%{version} $(echo -n %{id} | cut -d '-' -f1)" > %{sysroot}/%{prefix}/release
-
   %{initial-commands}
 
   cat > %{sysroot}%{libdir}/tmpfiles.d/extra-etc.conf << "EOF"
@@ -142,6 +140,7 @@ script: |-
 
   cp %{sysroot}/%{datadir}/factory/etc/os-release %{sysroot}/%{libdir}/
   echo "IMAGE_VERSION=%{version}" >> %{sysroot}/%{libdir}/os-release
+  echo "VARIANT=%{variant}" >> %{sysroot}/%{libdir}/os-release
 
   mkdir -p "%{sysroot}/%{libdir}/systemd/system/systemd-firstboot.service.d/"
   cat <<EOF >"%{sysroot}/%{libdir}/systemd/system/systemd-firstboot.service.d/no-prompt.conf"

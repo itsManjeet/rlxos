@@ -15,7 +15,6 @@ include:
 
   # Desktop Environment
   - components/gnome.yml
-  - components/adwaita-icon-theme.yml
 
   # X11
   - components/x11/xserver.yml

@@ -9,10 +9,11 @@ depends:
   - components/themes/gnome-icon-theme.yml
   - components/themes/gnome-icon-theme-extras.yml
   - components/themes/gnome-icon-theme-symbolic.yml
+  - components/themes/adwaita-icon-theme.yml
   - components/gnome-keyring.yml
   - components/gnome-menus.yml
   - components/gnome-power-manager.yml
-  # - components/gnome-screenshot.yml
+  - components/gnome-screenshot.yml
   - components/gnome-shell.yml
   - components/gnome-session.yml
   - components/xdg-user-dirs.yml

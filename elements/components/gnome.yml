@@ -6,9 +6,9 @@ depends:
   - components/gnome-backgrounds.yml
   - components/gnome-control-center.yml
   # - components/gnome-initial-setup.yml
-  - components/gnome-icon-theme.yml
-  - components/gnome-icon-theme-extras.yml
-  - components/gnome-icon-theme-symbolic.yml
+  - components/themes/gnome-icon-theme.yml
+  - components/themes/gnome-icon-theme-extras.yml
+  - components/themes/gnome-icon-theme-symbolic.yml
   - components/gnome-keyring.yml
   - components/gnome-menus.yml
   - components/gnome-power-manager.yml

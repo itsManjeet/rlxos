@@ -3,9 +3,6 @@ version: 44.1
 about: A system service that is responsible for providing graphical logins and managing local and remote displays
 
 post-script: |-
-  install -v -d -o 21 -g 21 %{install-root}/var/lib/gdm
-  sed -e "/user = gdm/ s/^#*/#/" -i %{install-root}%{sysconfdir}/pam.d/gdm-launch-environment
-
   install -Dm644 /dev/stdin %{install-root}/%{libdir}/sysusers.d/gdm.conf << "EOF"
   g gdm 21 -
   u gdm 21 "Gnome Display Manager" %{localstatedir}/lib/gdm

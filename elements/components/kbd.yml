@@ -1,9 +1,9 @@
 id: kbd
-version: 2.6.2
+version: 2.6.3
 about: Key-table files, console fonts, and keyboard utilities
 
 pre-script: |-
-  patch -Np1 -i /files/kbd-2.4.0-backspace-1.patch
+  # patch -Np1 -i /files/kbd-2.4.0-backspace-1.patch
   sed -i '/RESIZECONS_PROGS=/s/yes/no/' configure
   sed -i 's/resizecons.8 //' docs/man/man8/Makefile.in
 
@@ -15,3 +15,5 @@ depends:
   - components/pam.yml
 sources:
   - https://www.kernel.org/pub/linux/utils/kbd/kbd-%{version}.tar.xz
+
+# TODO: check for patch

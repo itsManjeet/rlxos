@@ -11,6 +11,7 @@ depends:
   - components/tzdata.yml
   - components/grub.yml
   - components/mkinitramfs.yml
+  - components/kbd.yml
 
   # Utilities
   - components/e2fsprogs.yml

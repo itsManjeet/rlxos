@@ -4,7 +4,6 @@ about: Pluggable Authentication Modules library
 
 depends:
   - components/glibc.yml
-  - components/pam-config.yml
 
 sources:
   - https://github.com/linux-pam/linux-pam/releases/download/v%{version}/Linux-PAM-%{version}.tar.xz

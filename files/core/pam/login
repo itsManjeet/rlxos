@@ -1,9 +1,0 @@
-auth      optional    pam_faildelay.so  delay=3000000
-auth      requisite   pam_nologin.so
-auth      include     system-auth
-account   required    pam_access.so
-account   include     system-account
-session   required    pam_env.so
-session   required    pam_limits.so
-session   include     system-session
-password  include     system-password

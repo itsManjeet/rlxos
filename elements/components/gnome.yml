@@ -13,7 +13,6 @@ depends:
   - components/gnome-keyring.yml
   - components/gnome-menus.yml
   - components/gnome-power-manager.yml
-  - components/gnome-screenshot.yml
   - components/gnome-shell.yml
   - components/gnome-session.yml
   - components/xdg-user-dirs.yml

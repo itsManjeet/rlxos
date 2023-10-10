@@ -6,6 +6,7 @@ depends:
   - components/acl.yml
   - components/libcap.yml
   - components/pam.yml
+  - components/bash.yml
 
 sources:
   - https://github.com/shadow-maint/shadow/releases/download/%{version}/shadow-%{version}.tar.xz
@@ -29,17 +30,8 @@ configure: >
 install: exec_prefix=/usr
 
 post-script: |
-  for i in login passwd su chage ; do
-    install -v -D -m 644 /files/core/pam/$i %{install-root}/etc/pam.d/$i
-  done
   mv %{install-root}/usr/sbin/* %{install-root}/usr/bin/
   rmdir %{install-root}/usr/sbin
-
-  for extra in chfn chgpasswd chpasswd chsh groupadd groupdel \
-          groupmems groupmod newusers useradd userdel usermod ; do
-    install -v -D -m 644 /files/core/pam/chage %{install-root}/etc/pam.d/${extra}
-    sed -i "s/chage/${extra}/" %{install-root}/etc/pam.d/${extra}
-  done
 
 integration: |
   pwconv

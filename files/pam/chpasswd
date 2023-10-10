@@ -1,5 +1,7 @@
+# always allow root
 auth      sufficient  pam_rootok.so
+
+# include system auth and account settings
 auth      include     system-auth
 account   include     system-account
-session   include     system-session
-password  required    pam_permit.so
+password  include     system-password

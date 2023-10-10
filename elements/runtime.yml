@@ -6,6 +6,7 @@ depends:
   # Core
   - components/core.yml
   - components/release-info.yml
+  - components/pam-config.yml
   - components/firmware.yml
   - components/sof-firmware.yml
   - components/tzdata.yml

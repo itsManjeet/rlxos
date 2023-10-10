@@ -15,6 +15,7 @@ depends:
   - components/geocode-glib.yml
   - components/gnome-desktop.yml
   - components/lcms.yml
+  - components/ibus.yml
   - components/libcanberra.yml
   - components/libgweather.yml
   - components/libnotify.yml

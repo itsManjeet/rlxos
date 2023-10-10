@@ -167,7 +167,20 @@ check-updates: $(BUILDER)
 $(RELEASE_PATH)/rlxos-$(VERSION)-amd64-desktop-installer.iso: $(BUILDER)
 	make checkout ELEMENT=boards/amd64-desktop/installer.yml
 
-run-vnc: $(RELEASE_PATH)/rlxos-$(VERSION)-amd64-desktop-installer.iso
-	qemu-system-x86_64 -smp 2 -m 4G -vnc :0 -monitor stdio -cdrom $<
+board: $(BUILDER)
+	@if [ -z $(BOARD) ] ;then echo "ERROR: no board specified"; exit 1; fi
+	@if [ ! -f elements/boards/$(BOARD)/image.yml 		] ; then echo "ERROR: no board image exists elements/boards/$(BOARD)/image.yml"; exit 1; fi
+	@if [ ! -f elements/boards/$(BOARD)/installer.yml 	] ; then echo "ERROR: no board installer exists elements/boards/$(BOARD)/installer.yml"; exit 1; fi
+
+	$(BUILDER) build -cache-path $(CACHE_PATH) boards/$(BOARD)/image.yml
+	$(BUILDER) build -cache-path $(CACHE_PATH) boards/$(BOARD)/installer.yml
+
+run-vnc: $(BUILDER)
+	@if [ -z $(BOARD) ] ;then echo "ERROR: no board specified"; exit 1; fi
+	@if [ ! -f elements/boards/$(BOARD)/image.yml 		] ; then echo "ERROR: no board image exists elements/boards/$(BOARD)/image.yml"; exit 1; fi
+	@if [ ! -f elements/boards/$(BOARD)/installer.yml 	] ; then echo "ERROR: no board installer exists elements/boards/$(BOARD)/installer.yml"; exit 1; fi
+
+	$(BUILDER) checkout -cache-path $(CACHE_PATH) boards/$(BOARD)/installer.yml $(RELEASE_PATH)
+	qemu-system-x86_64 -smp 2 -m 4G -vnc :0 -monitor stdio -cdrom $(RELEASE_PATH)/rlxos-$(VERSION)-$(BOARD)-installer.iso
 
 .PHONY: all clean update-vendor component TODO

@@ -164,4 +164,10 @@ world: $(BUILDER)
 check-updates: $(BUILDER)
 	$(BUILDER) check-updates
 
+$(RELEASE_PATH)/rlxos-$(VERSION)-amd64-desktop-installer.iso: $(BUILDER)
+	make checkout ELEMENT=boards/amd64-desktop/installer.yml
+
+run-vnc: $(RELEASE_PATH)/rlxos-$(VERSION)-amd64-desktop-installer.iso
+	qemu-system-x86_64 -smp 2 -m 4G -vnc :0 -monitor stdio -cdrom $<
+
 .PHONY: all clean update-vendor component TODO

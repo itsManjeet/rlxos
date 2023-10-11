@@ -9,7 +9,7 @@ on:
 jobs:
   generate-image:
     name: Generate Image
-    runs-on: self-hosted
+    runs-on: rlxos-server
     timeout-minutes: 46000
     strategy:
       matrix:

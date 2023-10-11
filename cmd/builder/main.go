@@ -3,15 +3,15 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"github.com/itsmanjeet/framework/command"
+	"github.com/itsmanjeet/framework/command/flag"
+	"log"
 	"os"
 	"os/exec"
 	"path"
-	"rlxos/internal/app"
-	"rlxos/internal/app/flag"
+	"rlxos/internal/builder"
 	"rlxos/internal/color"
 	"rlxos/internal/element"
-	"rlxos/internal/element/builder"
 	"strings"
 
 	"gopkg.in/yaml.v2"
@@ -25,7 +25,7 @@ var (
 
 func main() {
 	projectPath, _ = os.Getwd()
-	if err := app.New("builder").
+	if err := command.New("builder").
 		About("rlxos os build repository").
 		Usage("<TASK> <FLAGS?> <ARGS...>").
 		Init(func() (interface{}, error) {
@@ -60,21 +60,21 @@ func main() {
 				cleanGarbage = true
 				return nil
 			})).
-		Handler(func(c *app.Command, args []string, i interface{}) error {
+		Handler(func(c *command.Command, args []string, i interface{}) error {
 			return c.Help()
 		}).
-		Sub(app.New("build").
+		Sub(command.New("build").
 			About("build element").
-			Handler(func(c *app.Command, s []string, i interface{}) error {
+			Handler(func(c *command.Command, s []string, i interface{}) error {
 				if err := checkargs(s, 1); err != nil {
 					return err
 				}
 				bldr := i.(*builder.Builder)
 				return bldr.Build(s[0])
 			})).
-		Sub(app.New("file").
+		Sub(command.New("file").
 			About("Get path of build cache").
-			Handler(func(c *app.Command, s []string, i interface{}) error {
+			Handler(func(c *command.Command, s []string, i interface{}) error {
 				if err := checkargs(s, 1); err != nil {
 					return err
 				}
@@ -91,9 +91,9 @@ func main() {
 
 				return nil
 			})).
-		Sub(app.New("list-files").
+		Sub(command.New("list-files").
 			About("List files of build cache").
-			Handler(func(c *app.Command, s []string, i interface{}) error {
+			Handler(func(c *command.Command, s []string, i interface{}) error {
 				if err := checkargs(s, 1); err != nil {
 					return err
 				}
@@ -116,9 +116,9 @@ func main() {
 
 				return nil
 			})).
-		Sub(app.New("show").
+		Sub(command.New("show").
 			About("Show build configuration for element").
-			Handler(func(c *app.Command, s []string, i interface{}) error {
+			Handler(func(c *command.Command, s []string, i interface{}) error {
 				if err := checkargs(s, 1); err != nil {
 					return err
 				}
@@ -133,9 +133,9 @@ func main() {
 
 				return nil
 			})).
-		Sub(app.New("checkout").
+		Sub(command.New("checkout").
 			About("Checkout the cache file").
-			Handler(func(c *app.Command, s []string, i interface{}) error {
+			Handler(func(c *command.Command, s []string, i interface{}) error {
 				if err := checkargs(s, 2); err != nil {
 					return err
 				}
@@ -167,9 +167,9 @@ func main() {
 
 				return nil
 			})).
-		Sub(app.New("check-update").
+		Sub(command.New("check-update").
 			About("check and apply update to element").
-			Handler(func(c *app.Command, s []string, i interface{}) error {
+			Handler(func(c *command.Command, s []string, i interface{}) error {
 				bldr := i.(*builder.Builder)
 				elements := s
 				if len(elements) == 0 {
@@ -216,9 +216,9 @@ func main() {
 
 				return nil
 			})).
-		Sub(app.New("report").
+		Sub(command.New("report").
 			About("Report status").
-			Handler(func(c *app.Command, s []string, i interface{}) error {
+			Handler(func(c *command.Command, s []string, i interface{}) error {
 				bldr := i.(*builder.Builder)
 				elements := bldr.Pool()
 				totalElements := 0
@@ -263,7 +263,7 @@ func main() {
 					return true
 				}
 
-				cachedir, err := ioutil.ReadDir(bldr.CachePath())
+				cachedir, err := os.ReadDir(bldr.CachePath())
 				if err != nil {
 					return fmt.Errorf("failed to read dir %s, %v", bldr.CachePath(), err)
 				}
@@ -285,24 +285,27 @@ func main() {
 				fmt.Printf("  %sCACHED ELEMENTS%s  :  %s%d%s\n", color.Bold, color.Reset, color.Green, cached, color.Reset)
 				fmt.Printf("  %sMII ELEMENTS%s     :  %s%d%s\n", color.Bold, color.Reset, color.Green, mmiElements, color.Reset)
 				fmt.Printf("  %sMII PERCENTGE%s    :  %s%.2f%%%s\n", color.Bold, color.Reset, color.Green, (float64(mmiElements)/float64(totalElements))*100, color.Reset)
-				fmt.Printf("  %sCACHED SIZE%s      :  %s%.2f GiB%s\n", color.Bold, color.Reset, color.Green, (float64(cachedSize) / (1024 * 1024 * 1024)), color.Reset)
-				fmt.Printf("  %sTOTAL SIZE%s       :  %s%.2f GiB%s\n", color.Bold, color.Reset, color.Green, (float64(totalSize) / (1024 * 1024 * 1024)), color.Reset)
-				fmt.Printf("  %sGARBAGE SIZE%s     :  %s%.2f GiB%s\n", color.Bold, color.Reset, color.Green, ((float64(totalSize) - float64(cachedSize)) / (1024 * 1024 * 1024)), color.Reset)
+				fmt.Printf("  %sCACHED SIZE%s      :  %s%.2f GiB%s\n", color.Bold, color.Reset, color.Green, float64(cachedSize)/(1024*1024*1024), color.Reset)
+				fmt.Printf("  %sTOTAL SIZE%s       :  %s%.2f GiB%s\n", color.Bold, color.Reset, color.Green, float64(totalSize)/(1024*1024*1024), color.Reset)
+				fmt.Printf("  %sGARBAGE SIZE%s     :  %s%.2f GiB%s\n", color.Bold, color.Reset, color.Green, (float64(totalSize)-float64(cachedSize))/(1024*1024*1024), color.Reset)
 				fmt.Printf("  %sGARBAGE COUNT%s    :  %s%d%s\n", color.Bold, color.Reset, color.Green, len(garbageElements), color.Reset)
 				fmt.Printf("----------------------------------------\n")
 
 				if cleanGarbage {
 					for _, g := range garbageElements {
 						color.Process("cleaning %s", g)
-						os.Remove(path.Join(bldr.CachePath(), g))
+						err := os.Remove(path.Join(bldr.CachePath(), g))
+						if err != nil {
+							log.Println(err)
+						}
 					}
 				}
 
 				return nil
 			})).
-		Sub(app.New("dump-metadata").
+		Sub(command.New("dump-metadata").
 			About("Dump metadata Database").
-			Handler(func(c *app.Command, s []string, i interface{}) error {
+			Handler(func(c *command.Command, s []string, i interface{}) error {
 				if len(s) == 0 {
 					return fmt.Errorf("no output path specified")
 				}
@@ -315,24 +318,27 @@ func main() {
 				jsonPath := path.Join(outputPath, "origin")
 
 				for _, dir := range []string{iconsPath, appsPath} {
-					os.MkdirAll(dir, 0755)
+					err := os.MkdirAll(dir, 0755)
+					if err != nil {
+						return err
+					}
 				}
 
-				metadata := []element.Metadata{}
+				var metadata []element.Metadata
 
-				for elid, el := range bldr.Pool() {
-					color.Process("Adding %s", elid)
+				for elementID, el := range bldr.Pool() {
+					color.Process("Adding %s", elementID)
 					cachefile, _ := bldr.CacheFile(el)
 					if _, err := os.Stat(cachefile); os.IsNotExist(err) {
-						color.Error("%s not yet cached %s", elid, cachefile)
+						color.Error("%s not yet cached %s", elementID, cachefile)
 						continue
 					}
 					iconfile := "package.svg"
 					elementType := element.ElementTypeComponent
-					if strings.HasPrefix(elid, "apps/") {
+					if strings.HasPrefix(elementID, "apps/") {
 						elementType = element.ElementTypeApp
 						if data, err := exec.Command("tar", "-xf", cachefile, "-C", appsPath).CombinedOutput(); err != nil {
-							color.Error("failed to extract %s: %s, %v", elid, string(data), err)
+							color.Error("failed to extract %s: %s, %v", elementID, string(data), err)
 							continue
 						}
 
@@ -343,34 +349,36 @@ func main() {
 						}
 
 						if data, err := exec.Command(appfile, "--appimage-extract", `*.DirIcon`).CombinedOutput(); err != nil {
-							color.Error("missing icon file %s: %s, %v", elid, string(data), err)
+							color.Error("missing icon file %s: %s, %v", elementID, string(data), err)
 							continue
 						}
 
 						var err error
 						iconfile, err = os.Readlink(path.Join("squashfs-root", ".DirIcon"))
 						if err != nil {
-							color.Error("failed to read .DirIcon link %s: %v", elid, err)
+							color.Error("failed to read .DirIcon link %s: %v", elementID, err)
 							continue
 						}
 
 						if data, err := exec.Command(appfile, "--appimage-extract", iconfile).CombinedOutput(); err != nil {
-							color.Error("missing icon file %s: %s, %v", elid, string(data), err)
+							color.Error("missing icon file %s: %s, %v", elementID, string(data), err)
 							continue
 						}
 
 						if data, err := exec.Command("mv", path.Join("squashfs-root", iconfile), path.Join(iconsPath, iconfile)).CombinedOutput(); err != nil {
-							color.Error("failed to copy icon file %s: %s, %v", elid, string(data), err)
+							color.Error("failed to copy icon file %s: %s, %v", elementID, string(data), err)
 							continue
 						}
 
-						os.RemoveAll("squashfs-root")
-					} else if strings.HasPrefix(elid, "layers/") {
+						if err := os.RemoveAll("squashfs-root"); err != nil {
+							return err
+						}
+					} else if strings.HasPrefix(elementID, "layers/") {
 						elementType = element.ElementTypeLayer
 					}
 
 					metadata = append(metadata, element.Metadata{
-						Id:      strings.TrimSuffix(elid, ".yml"),
+						Id:      strings.TrimSuffix(elementID, ".yml"),
 						Version: el.Version,
 						About:   el.About,
 						Icon:    path.Base(iconfile),
@@ -391,9 +399,9 @@ func main() {
 				color.Process("FINISHED")
 				return nil
 			})).
-		Sub(app.New("status").
+		Sub(command.New("status").
 			About("List status of caches").
-			Handler(func(c *app.Command, s []string, i interface{}) error {
+			Handler(func(c *command.Command, s []string, i interface{}) error {
 				if err := checkargs(s, 1); err != nil {
 					return err
 				}
@@ -404,7 +412,7 @@ func main() {
 					return fmt.Errorf("missing %s", s[0])
 				}
 
-				tolist := []string{}
+				var tolist []string
 				if len(e.Include) > 0 {
 					tolist = append(tolist, e.Include...)
 				}

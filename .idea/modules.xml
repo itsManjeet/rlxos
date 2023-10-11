@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/rlxos.iml" filepath="$PROJECT_DIR$/.idea/rlxos.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/source.rlxos.dev.iml" filepath="$PROJECT_DIR$/.idea/source.rlxos.dev.iml" />
     </modules>
   </component>
 </project>

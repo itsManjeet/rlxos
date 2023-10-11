@@ -2,16 +2,24 @@ id: gnome-initial-setup
 version: 44.0
 about: Simple, easy, and safe way to prepare a new system
 
-post-script: |-
-  install -v -d -m 0700 -o 68 %{install-root}/run/gnome/initial-setup
 configure: >-
   --buildtype=release
 
 depends:
-  - components/gdm.yml
+  - components/networkmanager.yml
+  - components/accountsservice.yml
+  - components/geocode-glib.yml
   - components/gnome-online-accounts.yml
-  - components/krb5.yml
+  - components/ibus.yml
+  - components/libgweather.yml
+  - components/libnma.yml
+  - components/upower.yml
+  - components/gdm.yml
+  - components/gnome-desktop.yml
+  - components/gnome-keyring.yml
+  - components/themes/adwaita-icon-theme.yml
   - components/webkitgtk-6.0.yml
+  - components/gstreamer.yml
   - components/libpwquality.yml
 sources:
   - http://ftp.gnome.org/pub/gnome/sources/gnome-initial-setup/%{version:1}/gnome-initial-setup-%{version}.tar.xz

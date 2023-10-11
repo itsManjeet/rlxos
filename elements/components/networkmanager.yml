@@ -2,10 +2,6 @@ id: networkmanager
 version: 1.44.0
 about: A set of co-operative tools that make networking simple and straightforward
 
-# post-script: |-
-#   install -v -D -m 644 /files/networkmanager/org.freedesktop.NetworkManager.rules -t \
-#     %{install-root}%{datadir}/polkit-1/rules.d/
-
 configure: >-
   -Dlibaudit=no
   -Dlibpsl=false
@@ -16,6 +12,24 @@ configure: >-
   -Dqt=false
   -Dsession_tracking=systemd
   -Dmodem_manager=false
+
+post-script: |-
+  install -vDm0644 /dev/stdin %{install-root}/%{libdir}/sysusers.d/%{id}.conf << "EOF"
+  g netdev 86
+  EOF
+  
+  install -vDm0644 /dev/stdin %{install-root}/%{datadir}/polkit-1/rules.d/org.freedesktop.NetworkManager.rules << "EOF"
+  polkit.addRule(function(action, subject) {
+      if (action.id.indexOf("org.freedesktop.NetworkManager.") == 0 && subject.isInGroup("netdev")) {
+          return polkit.Result.YES;
+      }
+  });
+  EOF
+  
+  install -vDm0644 /dev/stdin %{install-root}/%{libdir}/systemd/system-preset/NetworkManager.preset << "EOF"
+  enable NetworkManager
+  disable NetworkManager-wait-online
+  EOF
 
 kernel:
   - NET

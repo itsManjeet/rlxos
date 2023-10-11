@@ -41,8 +41,5 @@ depends:
   - components/upower.yml
   - components/libnvme.yml
 
-  # Extra
-  - components/distrobox.yml
-
 script: |-
   mkdir -p %{install-root}%{prefix}

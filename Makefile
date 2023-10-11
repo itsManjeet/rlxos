@@ -2,8 +2,6 @@ ARCH			?= x86_64
 
 VERSION			?= 0.9.0
 CODENAME		?= experimental
-CHANGELOG		?= "NO CHANGELOG"
-SERVER			?= "http://storage.rlxos.dev"
 
 GOLANG			?= go
 
@@ -41,15 +39,10 @@ version.yml:
 	@echo "variables:" >> $@
 	@echo "  codename: $(CODENAME)" >> $@
 
-server.yml:
-	@echo "variables:" > $@
-	@echo "  server: $(SERVER)" >> $@
-	@echo "  channel: $(CODENAME)" >> $@
-
 update-vendor:
 	$(GOLANG) mod tidy && $(GOLANG) mod vendor
 
-$(BUILDER): update-vendor version.yml server.yml
+$(BUILDER): update-vendor version.yml
 	$(GOLANG) build -o $@ rlxos/cmd/builder
 
 report: $(BUILDER)

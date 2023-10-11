@@ -5,7 +5,7 @@ depends:
   - components/gdm.yml
   - components/gnome-backgrounds.yml
   - components/gnome-control-center.yml
-  # - components/gnome-initial-setup.yml
+  - components/gnome-initial-setup.yml
   - components/themes/gnome-icon-theme.yml
   - components/themes/gnome-icon-theme-extras.yml
   - components/themes/gnome-icon-theme-symbolic.yml

@@ -9,6 +9,7 @@
 /.version
 /discord-bolt
 /scripts/.env
+/.idea
 /book
 **/__pkgupd_builddir__
 *.qcow2

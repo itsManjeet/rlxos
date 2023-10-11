@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"path"
 	"rlxos/internal/element"
-	"rlxos/internal/element/updater"
+	"rlxos/internal/updater"
 	"strings"
 )
 

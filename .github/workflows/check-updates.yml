@@ -7,7 +7,7 @@ on:
 jobs:
   check-updates:
     name: check-updates
-    runs-on: self-hosted
+    runs-on: rlxos-server
     timeout-minutes: 46000
 
     steps:

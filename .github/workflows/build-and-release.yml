@@ -20,7 +20,6 @@ jobs:
           - desktop
     env:
       CACHE_PATH: ${{ secrets.CACHE_PATH }}
-      SERVER: ${{ secrets.UPDATE_URL }}
       NO_PRINT_PROGRESS: 1
     steps:
       - uses: actions/checkout@v1

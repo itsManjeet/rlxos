@@ -8,7 +8,7 @@ pre-script: |
 
 configure: >
   LD=ld 
-  --enable-languages=c,c++,d,fortran,go,lto,objc,obj-c++
+  --enable-languages=c,c++,lto
   --enable-default-pie
   --enable-default-ssp
   --disable-multilib

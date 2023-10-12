@@ -6,3 +6,6 @@ sources:
 
 depends:
   - components/glibc.yml
+
+build-depends:
+  - components/libtool.yml

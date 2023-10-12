@@ -34,3 +34,6 @@ sources:
 depends:
   - components/glibc.yml
   - components/pam.yml
+
+build-depends:
+  - components/libtool.yml

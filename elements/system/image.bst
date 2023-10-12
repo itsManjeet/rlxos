@@ -36,7 +36,7 @@ config:
     ostree admin deploy --os="rlxos" \
          --sysroot="%{sysroot}" %{ostree-branch} \
          --karg="rw" --karg="quiet" --karg="splash" \
-         --karg="console=tty0"
+         --karg="console=tty0" --karg="systemd.debug-shell"
 
   - |
     ostree admin set-origin --sysroot="%{sysroot}" \

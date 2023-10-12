@@ -14,4 +14,4 @@ script: |
   sed -i 's|export PATH|export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"|' debootstrap
 
   make install DESTDIR=%{install-root}
-  install -Dm644 debootstrap.8 "$pkgupd_pkgdir"%{datadir}/man/man8/debootstrap.8
+  install -Dm644 debootstrap.8 "%{install-root}"%{datadir}/man/man8/debootstrap.8

@@ -82,10 +82,10 @@ script: |-
     -exec sed -i -e "/^QMAKE_PRL_BUILD_DIR/d" {} \;
 
   install -v -D -m 644 qttools/src/assistant/assistant/images/assistant-128.png \
-    $pkgupd_pkgdir%{datadir}/pixmaps/assistant-qt5.png
+    %{install-root}%{datadir}/pixmaps/assistant-qt5.png
 
   install -v -D -m 644 qttools/src/designer/src/designer/images/designer.png \
-    $pkgupd_pkgdir%{datadir}/pixmaps/designer-qt5.png
+    %{install-root}%{datadir}/pixmaps/designer-qt5.png
 
   install -v -Dm644 qttools/src/linguist/linguist/images/icons/linguist-128-32.png \
               %{install-root}%{datadir}/pixmaps/linguist-qt5.png

@@ -28,6 +28,6 @@ configure: >-
   --without-x runstatedir=/run
 
 post-script: |
-  mkdir -p ${pkgupd_pkgdir}/var/lib/dbus/
-  ln -sfv /etc/machine-id ${pkgupd_pkgdir}/var/lib/dbus/
-  rm -rf ${pkgupd_pkgdir}/var/run
+  mkdir -p %{install-root}/var/lib/dbus/
+  ln -sfv /etc/machine-id %{install-root}/var/lib/dbus/
+  rm -rf %{install-root}/var/run

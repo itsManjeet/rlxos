@@ -10,7 +10,7 @@ build-depends:
 sources:
 - https://github.com/JoseExposito/gnome-shell-extension-x11gestures/releases/download/%{version}/x11gestures@joseexposito.github.io.zip
 script: |-
-  bsdtar -xf ${PKGUPD_PKGDIR}/x11gestures@joseexposito.github.io.zip \
+  bsdtar -xf %{install-root}/x11gestures@joseexposito.github.io.zip \
     -C %{install-root} \
     -s ":^:usr/share/gnome-shell/extensions/x11gestures@joseexposito.github.io/:"
 

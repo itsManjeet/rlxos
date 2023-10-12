@@ -10,8 +10,8 @@ script: |
   make DESTDIR=%{install-root}   \
     SBIN=%{install-root}/%{bindir} \
     BASHDIR=%{install-root}%{datadir}/bash-completion/completions \
-    KCONF=${pkgupd_srcdir}/trash \
-    LIBDIR=${pkgupd_srcdir}/trash \
+    KCONF=%{build-root}/trash \
+    LIBDIR=%{build-root}/trash \
     install
 
 depends:

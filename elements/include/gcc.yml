@@ -17,16 +17,16 @@ configure: >
   --with-system-zlib
 
 post-script: |
-  mkdir -p ${pkgupd_pkgdir}/usr/lib/bfd-plugins/
-  ln -sv ../bin/cpp ${pkgupd_pkgdir}/usr/lib/
+  mkdir -p %{install-root}/usr/lib/bfd-plugins/
+  ln -sv ../bin/cpp %{install-root}/usr/lib/
   ln -sfv ../../lib/gcc/x86_64-pc-linux-gnu/%{version}/liblto_plugin.so \
-    ${pkgupd_pkgdir}/usr/lib/bfd-plugins/
+    %{install-root}/usr/lib/bfd-plugins/
 
-  ln -sv gcc ${pkgupd_pkgdir}/usr/bin/cc
+  ln -sv gcc %{install-root}/usr/bin/cc
 
-  if [[ -d ${pkgupd_pkgdir}/lib ]] ; then
-    cp ${pkgupd_pkgdir}/lib/* ${pkgupd_pkgdir}/usr/lib/ -a
-    rm ${pkgupd_pkgdir}/lib -r
+  if [[ -d %{install-root}/lib ]] ; then
+    cp %{install-root}/lib/* %{install-root}/usr/lib/ -a
+    rm %{install-root}/lib -r
   fi
 
 sources:

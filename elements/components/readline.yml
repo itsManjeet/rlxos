@@ -15,7 +15,7 @@ configure: >
 
 compile: SHLIB_LIBS="${SHLIB_LIBS}"
 
-install: SHLIB_LIBS="${SHLIB_LIBS}" DESTDIR=${pkgupd_pkgdir}
+install: SHLIB_LIBS="${SHLIB_LIBS}" DESTDIR=%{install-root}
 
 depends:
   - components/glibc.yml

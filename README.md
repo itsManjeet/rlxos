@@ -28,7 +28,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/itsmanjeet/rlxos">
-    <img src="files/logo/logo.png" alt="Logo" width="80" height="80">
+    <img src="files/logo.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">rlxos GNU/Linux</h3>

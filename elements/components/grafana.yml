@@ -19,8 +19,8 @@ script: |-
   export CGO_CFLAGS="${CFLAGS:-''}"
   export CGO_CXXFLAGS="${CXXFLAGS:-''}"
   export GOFLAGS="-buildmode=pie -trimpath -modcacherw"
-  mkdir -p ${pkgupd_srcdir}/gopath
-  export GOPATH=${pkgupd_srcdir}/gopath
+  mkdir -p %{build-root}/gopath
+  export GOPATH=%{build-root}/gopath
 
   cd %{id}-%{version}
   sed -ri 's,^(\s*data\s*=).*,\1 /var/lib/grafana,' conf/defaults.ini

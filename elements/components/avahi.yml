@@ -26,7 +26,7 @@ configure: >-
   --disable-mono-doc
 
 post-script: |-
-  ln -s avahi-compat-libdns_sd/dns_sd.h "$pkgupd_pkgdir/%{prefix}/include/dns_sd.h"
+  ln -s avahi-compat-libdns_sd/dns_sd.h "%{install-root}/%{prefix}/include/dns_sd.h"
 
 depends:
   - components/expat.yml

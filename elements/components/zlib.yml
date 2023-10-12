@@ -3,7 +3,7 @@ version: 1.2.13
 about: Compression and decompression routines
 
 post-script: |
-  rm -fv ${pkgupd_pkgdir}/usr/lib/libz.a
+  rm -fv %{install-root}/usr/lib/libz.a
 
 depends:
   - components/glibc.yml

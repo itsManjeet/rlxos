@@ -13,7 +13,7 @@ script: |-
 
   pip install docutils
 
-  python setup.py install --root=$pkgupd_pkgdir --optimize=1
+  python setup.py install --root=%{install-root} --optimize=1
   make DESTDIR="%{install-root}" PREFIX=/usr install
 
   make -C contrib/chg DESTDIR=%{install-root} PREFIX=/usr install

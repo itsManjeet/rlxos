@@ -16,9 +16,9 @@ script: |-
     TO_BIN='lua5.2 luac5.2' \
     TO_LIB="liblua5.2.a liblua5.2.so liblua5.2.so.5.2 liblua5.2.so.5.2.4" \
     INSTALL_DATA='cp -d' \
-    INSTALL_TOP="$pkgupd_pkgdir"/usr \
-    INSTALL_INC="$pkgupd_pkgdir"/usr/include/lua5.2 \
-    INSTALL_MAN="$pkgupd_pkgdir"%{datadir}/man/man1 \
+    INSTALL_TOP="%{install-root}"/usr \
+    INSTALL_INC="%{install-root}"/usr/include/lua5.2 \
+    INSTALL_MAN="%{install-root}"%{datadir}/man/man1 \
     install
 
   install -Dm644 /files/lua52/lua.pc %{install-root}/usr/lib/pkgconfig/lua52.pc

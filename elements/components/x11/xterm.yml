@@ -11,5 +11,5 @@ pre-script: |
   printf "\tkbs=\\177,\n" >> terminfo
 configure: |
   --with-app-defaults=%{sysconfdir}/X11/app-defaults
-install: DESTDIR=$pkgupd_pkgdir
+install: DESTDIR=%{install-root}
 

@@ -12,8 +12,8 @@ configure: >
   --with-system-zlib
 
 post-script: |
-  rm -fv ${pkgupd_pkgdir}/usr/lib/lib{bfd,ctf,ctf-nobfd,opcodes}.a
-  rm -fv ${pkgupd_pkgdir}/usr/share/man/man1/{gprofng,gp-*}.1
+  rm -fv %{install-root}/usr/lib/lib{bfd,ctf,ctf-nobfd,opcodes}.a
+  rm -fv %{install-root}/usr/share/man/man1/{gprofng,gp-*}.1
 
 sources:
   - https://ftp.gnu.org/gnu/binutils/binutils-%{version}.tar.xz

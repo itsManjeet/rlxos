@@ -22,6 +22,8 @@ depends:
 - freedesktop-sdk.bst:vm/config/journald.bst
 - freedesktop-sdk.bst:components/less.bst
 - freedesktop-sdk.bst:components/nano.bst
+- freedesktop-sdk.bst:components/locales.bst
+- freedesktop-sdk.bst:components/supported-locales.bst
 
 - components/spice-vdagent.bst
 - components/os-release.bst

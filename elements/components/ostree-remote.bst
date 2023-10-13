@@ -1,9 +1,7 @@
 kind: manual
 sources:
   - kind: local
-    path: files/ostree/ostree.conf
-  - kind: local
-    path: files/ostree/rlxos.conf.in
+    path: files/ostree/
   - kind: local
     path: files/rlxos.gpg
 

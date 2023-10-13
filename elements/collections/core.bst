@@ -10,6 +10,7 @@ depends:
   - components/android-udev-rules.bst
   - components/sudoer.bst
   - components/ostree-remote.bst
+  - components/flathub-config.bst
   - components/distrobox.bst
   - components/fprintd.bst
   - components/thermald.bst
@@ -17,7 +18,7 @@ depends:
   - components/os-release.bst
   - components/systemd-presets.bst
   - components/ntfs-3g.bst
-  # - components/zram-generator.bst
+  - components/zram-generator.bst
   - components/alsa-ucm.bst
   - freedesktop-sdk.bst:bootstrap-import.bst
   - freedesktop-sdk.bst:components/bash-config.bst

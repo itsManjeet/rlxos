@@ -1,1 +1,2 @@
-disable lxc lxc-auto
+disable lxc.service
+disable lxc-auto.service

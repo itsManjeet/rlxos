@@ -3,7 +3,6 @@ kind: stack
 depends:
 - freedesktop-sdk.bst:bootstrap-import.bst
 - freedesktop-sdk.bst:components/util-linux.bst
-- components/linux.bst
 - freedesktop-sdk.bst:components/systemd.bst
 - freedesktop-sdk.bst:components/dbus.bst
 - freedesktop-sdk.bst:components/dracut.bst
@@ -12,5 +11,6 @@ depends:
 - freedesktop-sdk.bst:components/tzdata.bst
 - freedesktop-sdk.bst:components/ostree.bst
 - freedesktop-sdk.bst:components/pkg-config.bst
+- components/linux.bst
 - components/firmware.bst
 - components/plymouth.bst

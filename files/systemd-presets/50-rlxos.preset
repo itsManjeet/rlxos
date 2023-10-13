@@ -7,3 +7,6 @@ enable accounts-daemon.service
 enable avahi-daemon.*
 enable NetworkManager.service
 disable systemd-networkd.service
+disable systemd-networkd.socket
+disable systemd-networkd-wait-online.service
+disable NetworkManager-wait-online.service

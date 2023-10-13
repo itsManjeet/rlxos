@@ -3,8 +3,7 @@ on:
   push:
     paths-ignore:
       - 'docs/**'
-      - 'elements/layers/**'
-      - .github/workflow/update-layers.yml
+      - .github/workflow/update-docs.yml
   workflow_dispatch:
 
 env:
@@ -17,7 +16,7 @@ jobs:
     timeout-minutes: 46000
     steps:
       - uses: actions/checkout@v1
-      - name: Generate System Image
+      - name: Build System Repository
         run: ${BST} -o variant experimental build system/repo.bst
 
   checkout-experimental:
@@ -26,10 +25,6 @@ jobs:
     timeout-minutes: 46000
     needs: generate-cache
     environment: EXPERIMENTAL
-    strategy:
-      matrix:
-        board:
-          - amd64-efi
 
     env:
       OSTREE_REPO: ${{ secrets.OSTREE_REPO }}
@@ -39,10 +34,10 @@ jobs:
       - uses: actions/checkout@v1
       
       - name: Build Installer ISO
-        run: ${BST} -o variant experimental build boards/${{ matrix.board }}/image.bst
+        run: ${BST} -o variant experimental build installer/image.bst
         
       - name: Checkout Image
-        run: ${BST} -o variant experimental artifact checkout boards/${{ matrix.board }}/image.bst --directory ${{ secrets.DAILY_DIR }} --force
+        run: ${BST} -o variant experimental artifact checkout installer/image.bst --directory ${{ secrets.DAILY_DIR }} --force
 
       - name: Generate Changelog
         run: echo "${{ github.event.head_commit.message }}" > commit_body
@@ -58,8 +53,9 @@ jobs:
     if: github.ref == 'refs/heads/stable'
     strategy:
       matrix:
-        board:
-          - amd64-efi
+        variant:
+          - desktop
+          - workstation
     env:
       RELEASE_DIR: ${{ secrets.RELEASE_DIR }}
       OSTREE_REPO: ${{ secrets.OSTREE_REPO }}
@@ -68,15 +64,15 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: BUILD
-        run: ${BST} -o variant stable build boards/${{ matrix.board }}/image.bst
+        run: ${BST} -o variant ${{matrix.variant}} build installer/image.bst
       - name: Checkout Image
-        run: ${BST} -o variant stable artifact checkout boards/${{ matrix.board }}/image.bst --directory $RELEASE_DIR --force
+        run: ${BST} -o variant ${{matrix.variant}} artifact checkout installer/image.bst --directory $RELEASE_DIR --force
       
       - name: Generate Changelog
         run: echo "${{ github.event.head_commit.message }}" > commit_body
       
       - name: Update ostree
-        run: VARIANT="stable" REF="system/repo.bst" make update-ostree
+        run: VARIANT="${{matrix.variant}}" REF="system/repo.bst" make update-ostree
 
       - name: Syncing Mirror
         run: rsync -avW --inplace --progress ${RELEASE_DIR} ${MIRROR_DIR}

@@ -1,15 +1,15 @@
 kind: script
 
 build-depends:
-- boards/amd64-efi/build-deps.bst
+- installer/build-deps.bst
 - filename: system/image.bst
   config:
     location: "/rlxos/images"
-- filename: boards/amd64-efi/filesystem.bst
+- filename: installer/filesystem.bst
   config:
     location: "/sysroot"
-- boards/amd64-efi/initial-scripts.bst
-- filename: boards/amd64-efi/initramfs.bst
+- installer/initial-scripts.bst
+- filename: installer/initramfs.bst
   config:
     location: "/sysroot/efi"
 

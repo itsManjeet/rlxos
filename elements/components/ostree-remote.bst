@@ -19,7 +19,6 @@ config:
   install-commands:
     - mkdir -p %{install-root}/{boot,efi,etc,mnt,run,opt,sys,tmp,dev,proc,home,root,sysroot}
     - ln -sv sysroot/ostree %{install-root}/ostree
-    - ln -sv run/media %{install-root}/media
     - install -Dm644 -t "%{install-root}/usr/lib/systemd/system" home.mount root.mount
     - mkdir -p %{install-root}/etc/ostree/remotes.d
     - m4 -DOSTREE_REMOTE_URL="%{ostree-remote-url}" %{build-root}/rlxos.conf.in > %{install-root}/etc/ostree/remotes.d/rlxos.conf

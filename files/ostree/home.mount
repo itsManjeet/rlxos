@@ -1,0 +1,14 @@
+[Unit]
+Description=Bind mount of /home
+DefaultDependencies=no
+Before=local-fs.target
+
+[Mount]
+What=/var/home
+Where=/home
+Type=none
+Options=bind
+
+[Install]
+WantedBy=local-fs.target
+

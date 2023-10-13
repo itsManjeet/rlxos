@@ -4,4 +4,4 @@ EXPIRE=
 SHELL=/bin/zsh
 SKEL=/etc/skel
 CREATE_MAIL_SPOOL=no
-HOME=/var/home
+HOME=/home

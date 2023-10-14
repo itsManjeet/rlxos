@@ -5,9 +5,6 @@ sources:
   url: gnome_downloads:gnome-shell/45/gnome-shell-45.0.tar.xz
   ref: 3cabe40bdd4e379c7082b39ffa45b8bef5c9cf86408fb0d836e1571c443217cd
 
-- kind: patch
-  path: patches/gnome-shell/0001-rlxos-specific-modifications.patch
-
 build-depends:
 - components/sassc.bst
 - freedesktop-sdk.bst:components/asciidoc.bst

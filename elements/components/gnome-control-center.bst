@@ -50,5 +50,5 @@ variables:
   meson-local: >-
     -Ddocumentation=true
     -Dmalcontent=true
-    -Ddistributor_logo=%{datadir}/icons/logo.svg
-    -Ddark_mode_distributor_logo=%{datadir}/icons/logo_alt.svg
+    -Ddistributor_logo=%{datadir}/icons/rlxos-logo.svg
+    -Ddark_mode_distributor_logo=%{datadir}/icons/rlxos-logo-alt.svg

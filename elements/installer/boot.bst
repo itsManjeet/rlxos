@@ -1,8 +1,8 @@
 kind: script
 
 build-depends:
-  - installer/initramfs/deps.bst
-  - installer/initramfs/initial-scripts.bst
+  - installer/boot/deps.bst
+  - installer/boot/initial-scripts.bst
   - freedesktop-sdk.bst:vm/prepare-image.bst
 
 variables:

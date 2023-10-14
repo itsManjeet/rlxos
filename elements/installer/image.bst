@@ -9,7 +9,7 @@ build-depends:
   config:
     location: "/sysroot"
 - installer/initial-scripts.bst
-- filename: installer/initramfs.bst
+- filename: installer/boot.bst
   config:
     location: "/sysroot/efi"
 

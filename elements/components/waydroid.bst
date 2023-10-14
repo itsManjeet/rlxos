@@ -8,7 +8,7 @@ depends:
 - freedesktop-sdk.bst:components/python3-dbus.bst
 
 runtime-depends:
-- components/waydroid-image.bst
+- components/waydroid-script.bst
 
 config:
   install-commands:

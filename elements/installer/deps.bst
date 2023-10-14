@@ -17,6 +17,8 @@ depends:
   - components/linux.bst
   - components/firmware.bst
 
+  - proprietary/nvidia-drivers/package.bst
+
   - freedesktop-sdk.bst:components/shadow.bst
   - freedesktop-sdk.bst:vm/mesa-default.bst
   - freedesktop-sdk.bst:vm/config/journald.bst

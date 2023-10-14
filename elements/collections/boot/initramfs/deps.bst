@@ -13,4 +13,5 @@ depends:
 - freedesktop-sdk.bst:components/pkg-config.bst
 - components/linux.bst
 - components/firmware.bst
+- proprietary/nvidia-drivers/package.bst
 - components/plymouth.bst

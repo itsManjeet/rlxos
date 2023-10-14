@@ -25,3 +25,4 @@ config:
     (>):
     - mv "%{install-root}/var/run" "%{install-root}/"
     - install -Dm644 plymouthd.defaults "%{install-root}%{datadir}/plymouth/plymouthd.defaults"
+    - install -Dm644 rlxos-plymouth-logo.png "%{install-root}%{datadir}/plymouth/themes/spinner/watermark.png"

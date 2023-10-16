@@ -10,7 +10,7 @@ jobs:
   generate-image:
     name: Generate Image
     runs-on: rlxos-server
-    timeout-minutes: 46000
+    timeout-minutes: 47000
     strategy:
       matrix:
         board:

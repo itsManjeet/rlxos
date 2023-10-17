@@ -5,10 +5,16 @@ about: A system which facilitates service discovery on a local network
 environ:
   - NOCONFIGURE=1
 
+build-type: autotools
+
+variables:
+  run-autogen: false
+  seperate-build-dir: false
+
 configure: >-
   with_dbus_sys=%{datadir}/dbus-1/system.d
   --enable-compat-libdns_sd
-  --with-distro=none
+  --with-distro=lfs
   --with-avahi-priv-access-group=network
   --with-autoipd-user=avahi
   --with-autoipd-group=avahi

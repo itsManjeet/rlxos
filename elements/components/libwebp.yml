@@ -9,6 +9,9 @@ depends:
   - components/libpng.yml
   - components/libtiff.yml
 
+build-depends:
+  - components/libtool.yml
+
 configure: >-
   --enable-libwebpmux
   --enable-libwebpdemux

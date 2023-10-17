@@ -5,19 +5,31 @@ about: Operating system and container binary deployment and upgrade
 environ:
   - NOCONFIGURE=1
 
-configure: >-
-  --with-builtin-grub2-mkconfig
-  --with-dracut
-  --with-mkinitcpio
-  --with-openssl
-  --enable-experimental-api
-  --disable-static
-  --enable-gtk-doc
+script: |-
+  ./configure --prefix=%{prefix} \
+    --sysconfdir=%{sysconfdir} \
+    --localstatedir=%{localstatedir} \
+    --sbindir=%{bindir} \
+    --libexecdir=%{libdir} \
+    --disable-static \
+    --enable-experimental-api \
+    --enable-gtk-doc \
+    --with-curl \
+    --with-dracut \
+    --with-ed25519-libsodium \
+    --with-grub2-mkconfig-path=/usr/bin/grub-mkconfig \
+    --with-modern-grub \
+    --with-openssl
+
+  make
+
+  make DESTDIR=%{install-root} install
 
 depends:
-  - components/fuse2.yml
+  - components/fuse.yml
   - components/glibc.yml
   - components/libarchive.yml
+  - components/libsodium.yml
   - components/avahi.yml
   - components/libgpg-error.yml
   - components/openssl.yml

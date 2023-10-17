@@ -19,6 +19,7 @@ include:
   - components/kernel-headers.yml
   - components/texinfo.yml
   - components/cmake.yml
+  - components/libtool.yml
 
 build-depends:
   - components/squashfs-tools.yml

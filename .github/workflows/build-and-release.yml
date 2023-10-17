@@ -43,6 +43,10 @@ jobs:
       - name: Cleanup build cache
         run: make clean
 
+      - name: Make System Apps
+        run: |
+          make cache ELEMENT=boards/${{matrix.board}}-${{matrix.variant}}/apps.yml
+
       - name: Make System Image
         run: |
           make cache ELEMENT=boards/${{matrix.board}}-${{matrix.variant}}/image.yml

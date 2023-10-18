@@ -7,7 +7,7 @@ import (
 	"rlxos/internal/element"
 )
 
-func (b *Builder) List(dependencyType element.DependencyType, ids ...string) ([]Pair, error) {
+func (b *Builder) Resolve(dependencyType element.DependencyType, ids ...string) ([]Pair, error) {
 
 	visited := map[string]bool{}
 	pairs := []Pair{}

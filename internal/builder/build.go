@@ -41,7 +41,7 @@ func (b *Builder) Build(id string) error {
 	}
 	tolist = append(tolist, id)
 
-	list, err := b.List(element.DependencyBuildTime, tolist...)
+	list, err := b.Resolve(element.DependencyBuildTime, tolist...)
 	if err != nil {
 		return err
 	}
@@ -143,7 +143,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 		container.Delete()
 	}()
 
-	list, err := b.List(element.DependencyAll, id)
+	list, err := b.Resolve(element.DependencyAll, id)
 	if err != nil {
 		return err
 	}
@@ -167,7 +167,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 			}
 		}
 
-		includeList, err := b.List(dependencyType, e.Include...)
+		includeList, err := b.Resolve(dependencyType, e.Include...)
 		if err != nil {
 			return err
 		}

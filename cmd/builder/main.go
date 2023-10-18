@@ -3,8 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/itsmanjeet/framework/command"
-	"github.com/itsmanjeet/framework/command/flag"
 	"log"
 	"os"
 	"os/exec"
@@ -13,6 +11,9 @@ import (
 	"rlxos/internal/color"
 	"rlxos/internal/element"
 	"strings"
+
+	"github.com/itsmanjeet/framework/command"
+	"github.com/itsmanjeet/framework/command/flag"
 
 	"gopkg.in/yaml.v2"
 )
@@ -418,7 +419,7 @@ func main() {
 				}
 				tolist = append(tolist, s[0])
 
-				pairs, err := bldr.List(element.DependencyAll, tolist...)
+				pairs, err := bldr.Resolve(element.DependencyAll, tolist...)
 				if err != nil {
 					return err
 				}

@@ -1,7 +1,6 @@
 package builder
 
 import (
-	"bufio"
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -10,6 +9,7 @@ import (
 	"os/exec"
 	"path"
 	"rlxos/internal/color"
+	"rlxos/internal/container"
 	"rlxos/internal/element"
 	"rlxos/internal/utils"
 	"strings"
@@ -78,115 +78,11 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 
 	color.Process("Setting up container for %s", id)
 
-	sourcesDir := path.Join(b.cachePath, "sources")
-	packagesDir := path.Join(b.cachePath, "cache")
-	tempdir := path.Join(b.cachePath, "temp")
-	logDir := path.Join(b.cachePath, "logs")
-	if err := os.MkdirAll(tempdir, 0755); err != nil {
-		return fmt.Errorf("failed to create %s, %v", tempdir, err)
-	}
-	workdir, err := os.MkdirTemp(tempdir, fmt.Sprintf("%s-*", e.Id))
+	cntr, err := b.Setup(SETUP_TYPE_BUILD, id, e)
 	if err != nil {
-		return fmt.Errorf("failed to create temporary dir %s", err)
+		return fmt.Errorf("failed to setup container: %v", err)
 	}
-	defer os.RemoveAll(workdir)
-	srcdir := path.Join(workdir, "src")
-	pkgdir := path.Join(workdir, "pkg", e.Id)
-	for _, dir := range []string{sourcesDir, packagesDir, srcdir, logDir} {
-		if err := os.MkdirAll(dir, 0755); err != nil {
-			return err
-		}
-	}
-
-	logfile, err := os.OpenFile(path.Join(logDir, e.Id+".log"), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
-	if err != nil {
-		return fmt.Errorf("failed to open log file %v", err)
-	}
-	defer logfile.Close()
-
-	logWriter := bufio.NewWriter(logfile)
-	defer logWriter.Flush()
-
-	dumpLogs := func() {
-		errLogFile := path.Join(logDir, e.Id+".log")
-		data, err := ioutil.ReadFile(errLogFile)
-		if err != nil {
-			fmt.Printf("failed to read log file %s, %v\n", errLogFile, err)
-			return
-		}
-		lines := strings.Split(string(data), "\n")
-		count := len(lines)
-		if count > 10 {
-			lines = lines[len(lines)-10 : len(lines)-1]
-		}
-		fmt.Println(color.Red + strings.Join(lines, "\n") + color.Reset)
-	}
-
-	environ := e.Environ
-	environ = b.setEnv(environ, "GO111MODULE=auto")
-	environ = b.setEnv(environ, "GOPATH=/go")
-	environ = b.setEnv(environ, "SOURCE_DATA_EPOCH=1697043986")
-
-	container, err := CreateContainer(b.Container, environ, map[string]string{
-		"/src":             srcdir,
-		"/pkg":             path.Dir(pkgdir),
-		"/cache":           packagesDir,
-		"/files:ro":        path.Join(b.projectPath, "files"),
-		"/patches:ro":      path.Join(b.projectPath, "patches"),
-		"/go/src/rlxos:ro": b.projectPath,
-	})
-	if err != nil {
-		return fmt.Errorf("failed to create container %v", err)
-	}
-	defer func() {
-		container.Run(logWriter, []string{"sh", "-c", "rm -rf /src/* /pkg/*"}, "/", []string{})
-		container.Delete()
-	}()
-
-	list, err := b.Resolve(element.DependencyAll, id)
-	if err != nil {
-		return err
-	}
-	if len(list) > 1 {
-		list = list[:len(list)-1]
-		for _, l := range list {
-			if err := b.integrate(l.Value, "/", container, logWriter, false); err != nil {
-				return err
-			}
-		}
-	}
-
-	if len(e.Include) > 0 {
-		var dependencyType element.DependencyType = element.DependencyRunTime
-		if val, ok := e.Variables["include-depends"]; ok {
-			switch val {
-			case "true", "yes":
-				dependencyType = element.DependencyRunTime
-			case "false", "no":
-				dependencyType = element.DependencyNone
-			}
-		}
-
-		includeList, err := b.Resolve(dependencyType, e.Include...)
-		if err != nil {
-			return err
-		}
-
-		if len(includeList) > 0 {
-			includeRootDir, ok := e.Variables["include-root"]
-			if !ok {
-				includeRootDir = path.Join("/", "pkg", e.Id)
-			}
-			container.Run(logWriter, []string{"mkdir", "-p", includeRootDir}, "/", []string{})
-			for _, l := range includeList {
-
-				if err := b.integrate(l.Value, includeRootDir, container, logWriter, true); err != nil {
-					return err
-				}
-			}
-		}
-
-	}
+	defer cntr.Delete()
 
 	color.Process("Building %s", e.Id)
 
@@ -200,8 +96,8 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 	variables["install"] = e.Install
 	variables["build-dir"] = "_rlxos_build_dir"
 
-	variables["build-root"] = "/src"
-	variables["install-root"] = "/pkg/" + e.Id
+	variables["build-root"] = cntr.ContainerPath(container.BUILD_ROOT)
+	variables["install-root"] = cntr.ContainerPath(container.INSTALL_ROOT)
 
 	builddir := e.BuildDir
 	for _, url := range e.Sources {
@@ -210,7 +106,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 			filename = url[:idx]
 			url = url[idx+2:]
 		}
-		filepath := path.Join(sourcesDir, filename)
+		filepath := path.Join(b.SourceDir(), filename)
 		if _, err := os.Stat(filepath); err != nil {
 			if isUrl(url) {
 				color.Process("Getting %s from %s\n", filename, url)
@@ -231,7 +127,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 		if isArchive(filepath) && e.Variables["no-extract"] != "true" {
 			bin = "bsdtar"
 			args = []string{
-				"-xf", filepath, "-C", srcdir,
+				"-xf", filepath, "-C", cntr.HostPath(container.BUILD_ROOT),
 			}
 			if len(builddir) == 0 {
 				builddir_, err := exec.Command("sh", "-c", "bsdtar -tf "+filepath+" | head -n1 | cut -d '/' -f1").CombinedOutput()
@@ -243,7 +139,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 
 		} else {
 			bin = "cp"
-			args = []string{filepath, srcdir}
+			args = []string{filepath, cntr.HostPath(container.BUILD_ROOT)}
 		}
 
 		if data, err := exec.Command(bin, args...).CombinedOutput(); err != nil {
@@ -252,32 +148,19 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 
 	}
 
-	absBuildPath := path.Join(srcdir, builddir)
-	containerWordDir := path.Join("/", "src", builddir)
+	containerBuildRoot := path.Join(cntr.ContainerPath(container.BUILD_ROOT), builddir)
+	hostBuildRoot := path.Join(cntr.HostPath(container.BUILD_ROOT), builddir)
 	if len(e.PreScript) != 0 {
-		if err := container.Run(logWriter, []string{"sh", "-ec", resolveVariables(e.PreScript, variables)}, containerWordDir, environ); err != nil {
-			dumpLogs()
-			container.RescueShell()
-			return err
+		if err := cntr.ExecuteAt(containerBuildRoot, "sh", "-ec", resolveVariables(e.PreScript, variables)); err != nil {
+			return cntr.ShellAt(containerBuildRoot, err)
 		}
 	}
 
 	switch e.BuildType {
-	case "import":
-		source := e.Config.Source
-		target := e.Config.Target
-		color.Process("Importing files")
-		if data, err := exec.Command("fakeroot", "rsync", "-ar", path.Join(srcdir, source)+"/", path.Join(pkgdir, target)).CombinedOutput(); err != nil {
-			return fmt.Errorf("%v, %s", string(data), err)
-		}
-
 	case "system":
 		if len(e.Script) > 0 {
-			if err := container.Run(logWriter, []string{"chroot", path.Join("/", "pkg", path.Base(pkgdir)), "/bin/bash", "-ec", resolveVariables(e.Script, variables)}, "/", environ); err != nil {
-				dumpLogs()
-				color.Error(err.Error())
-				container.RescueShell()
-				return err
+			if err := cntr.Execute("chroot", cntr.ContainerPath(container.INSTALL_ROOT), "/bin/bash", "-ec", resolveVariables(e.Script, variables)); err != nil {
+				return cntr.Shell(err)
 			}
 		}
 
@@ -299,17 +182,13 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 			}
 			if len(e.BuildType) == 0 {
 				for _, tool := range b.BuildTools {
-					if isFileExists(absBuildPath, tool.TargetFiles) {
+					if isFileExists(hostBuildRoot, tool.TargetFiles) {
 						t = &tool
 						break
 					}
 				}
 				if t == nil {
-					err := fmt.Errorf("no suitable build file found at %s", absBuildPath)
-					dumpLogs()
-					color.Error(err.Error())
-					container.RescueShell()
-					return err
+					return cntr.Shell(fmt.Errorf("no suitable build file found at %s", hostBuildRoot))
 				}
 
 			} else {
@@ -320,10 +199,7 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 					}
 				}
 				if t == nil {
-					err := fmt.Errorf("invalid buildtool %s specified", e.BuildType)
-					color.Error(err.Error())
-					container.RescueShell()
-					return err
+					return cntr.Shell(fmt.Errorf("invalid buildtool %s specified", e.BuildType))
 				}
 
 			}
@@ -333,25 +209,21 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 		scriptCode := resolveVariables(script, variables)
 		args := []string{"sh", "-ec", scriptCode}
 		if len(scriptCode) > 10000 {
-			scriptCodePath := path.Join(srcdir, "_swupd_script_code")
+			scriptCodePath := path.Join(hostBuildRoot, "_swupd_script_code")
 			if err := ioutil.WriteFile(scriptCodePath, []byte(scriptCode), 0755); err != nil {
 				return fmt.Errorf("script code is too large and failed to write script code %s %v", scriptCodePath, err)
 			}
 			args = []string{"sh", "-e", "/src/_swupd_script_code"}
 		}
 
-		if err := container.Run(logWriter, args, containerWordDir, environ); err != nil {
-			dumpLogs()
-			container.RescueShell()
-			return err
+		if err := cntr.ExecuteAt(containerBuildRoot, args...); err != nil {
+			return cntr.ShellAt(containerBuildRoot, err)
 		}
 	}
 
 	if len(e.PostScript) != 0 {
-		if err := container.Run(logWriter, []string{"sh", "-ec", resolveVariables(e.PostScript, variables)}, containerWordDir, environ); err != nil {
-			dumpLogs()
-			container.RescueShell()
-			return err
+		if err := cntr.ExecuteAt(containerBuildRoot, "sh", "-ec", resolveVariables(e.PostScript, variables)); err != nil {
+			return cntr.ShellAt(containerBuildRoot, err)
 		}
 	}
 	// Thanks to venom Linux https://github.com/venomlinux/scratchpkg/blob/master/pkgbuild#L214
@@ -387,52 +259,20 @@ func (b *Builder) buildElement(e *element.Element, id string) error {
 	  esac
 	done`
 	if e.BuildType == "system" {
-		color.Process("Compressing image %s from %s", path.Base(cachefile), pkgdir)
-		if err := container.Run(logWriter, []string{"mksquashfs", path.Join("/", "pkg", path.Base(pkgdir)), path.Join("/", "cache", path.Base(cachefile)), "-comp", "zstd", "-Xcompression-level", "12", "-noappend"}, path.Join("/pkg"), environ); err != nil {
-			container.RescueShell()
-			return err
+		color.Process("Compressing image %s from %s", path.Base(cachefile), cntr.ContainerPath(container.INSTALL_ROOT))
+		if err := cntr.Execute("mksquashfs", cntr.ContainerPath(container.INSTALL_ROOT), path.Join("/cache", path.Base(cachefile)), "-comp", "zstd", "-Xcompression-level", "12", "-noappend"); err != nil {
+			return cntr.ShellAt(containerBuildRoot, err)
 		}
 	} else {
 		if !e.NoStrip {
-			environ := []string{}
-			if len(e.SkipStrip) > 0 {
-				environ = append(environ, "nostrip="+strings.Join(e.SkipStrip, " "))
-			}
-			if err := container.Run(logWriter, []string{"sh", "-c", resolveVariables(STRIP_COMMAND, variables)}, path.Join("/pkg"), environ); err != nil {
-				container.RescueShell()
-				return err
+			if err := cntr.ScriptAt(cntr.ContainerPath(container.INSTALL_ROOT), fmt.Sprintf("nostrip='%s' %s", strings.Join(e.SkipStrip, " "), resolveVariables(STRIP_COMMAND, variables))); err != nil {
+				return cntr.Shell(err)
 			}
 		}
 
-		color.Process("Compressing package %s from %s", path.Base(cachefile), pkgdir)
-		if err := container.Run(logWriter, []string{"tar", "-I", "zstd", "-caf", path.Join("/", "cache", path.Base(cachefile)), "-C", path.Join("/", "pkg", path.Base(pkgdir)), "."}, path.Join("/pkg"), []string{
-			"ZSTD_CLEVEL=12",
-			"ZSTD_NBTHREADS=4",
-		}); err != nil {
-			container.RescueShell()
-			return err
-		}
-
-		for _, split := range e.Split {
-			splitDir := path.Join("/pkg", split.Into)
-			if err := os.MkdirAll(splitDir, 0755); err != nil {
-				return fmt.Errorf("failed to create split file dir, %s, %v", splitDir, err)
-			}
-			for _, file := range split.Files {
-				splitSourceDir := path.Join("/", "pkg", e.Id, file)
-				splitTargetDir := path.Join(splitDir, file)
-				if err := container.Run(logWriter, []string{"mkdir", "-p", path.Dir(splitTargetDir)}, "/", []string{}); err != nil {
-					return fmt.Errorf("failed to create new dir %s %v", path.Dir(splitTargetDir), err)
-				}
-
-				if err := container.Run(logWriter, []string{"mv", splitSourceDir, splitTargetDir}, "/", []string{}); err != nil {
-					return fmt.Errorf("failed to move split file %s -> %s, %v", splitSourceDir, splitTargetDir, err)
-				}
-			}
-			if err := container.Run(logWriter, []string{"tar", "-caf", path.Join("/", "cache", path.Base(cachefile)+":"+split.Into), "-C", path.Join("/", "pkg", splitDir), "."}, path.Join("/pkg"), environ); err != nil {
-				container.RescueShell()
-				return err
-			}
+		color.Process("Compressing package %s from %s", path.Base(cachefile), cntr.ContainerPath(container.INSTALL_ROOT))
+		if err := cntr.Execute("tar", "-I", "zstd", "-caf", path.Join("/cache", path.Base(cachefile)), "-C", cntr.ContainerPath(container.INSTALL_ROOT), "."); err != nil {
+			return cntr.ShellAt(containerBuildRoot, err)
 		}
 	}
 	color.Process("%s built at %s", e.Id, cachefile)

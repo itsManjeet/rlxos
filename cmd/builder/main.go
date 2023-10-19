@@ -73,6 +73,25 @@ func main() {
 				bldr := i.(*builder.Builder)
 				return bldr.Build(s[0])
 			})).
+		Sub(command.New("shell").
+			About("Create and Enter shell").
+			Handler(func(c *command.Command, s []string, i interface{}) error {
+				if err := checkargs(s, 1); err != nil {
+					return err
+				}
+				bldr := i.(*builder.Builder)
+				elementInfo, ok := bldr.Get(s[0])
+				if !ok {
+					return fmt.Errorf("missing element %s", s[0])
+				}
+				container, err := bldr.Setup(builder.SETUP_TYPE_SHELL, s[0], elementInfo)
+				if err != nil {
+					return err
+				}
+				defer container.Delete()
+
+				return container.Shell(nil)
+			})).
 		Sub(command.New("file").
 			About("Get path of build cache").
 			Handler(func(c *command.Command, s []string, i interface{}) error {

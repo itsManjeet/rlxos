@@ -20,12 +20,13 @@ func (b *Builder) Integrate(container *container.Container, e *element.Element, 
 		}
 	} else {
 
-		args := []string{"tar", "-xPhf", path.Join("/", "cache", path.Base(cachefile)), "-C", rootdir}
+		args := []string{"tar"}
 		if rootdir == "/" {
 			for _, exclude := range []string{"etc/hosts", "etc/hostname", "etc/resolve.conf", "proc", "sys", "dev", "run"} {
-				args = append(args, "--exclude='./"+exclude+"'")
+				args = append(args, "--exclude=./"+exclude)
 			}
 		}
+		args = append(args, "-xPhf", path.Join("/", "cache", path.Base(cachefile)), "-C", rootdir)
 
 		color.Process("Integrating %s, %s", e.Id, path.Base(cachefile))
 		if err := container.Execute(args...); err != nil {

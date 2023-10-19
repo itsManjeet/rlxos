@@ -19,8 +19,16 @@ func (b *Builder) Integrate(container *container.Container, e *element.Element, 
 			return container.Shell(err)
 		}
 	} else {
+
+		args := []string{"tar", "-xPhf", path.Join("/", "cache", path.Base(cachefile)), "-C", rootdir}
+		if rootdir == "/" {
+			for _, exclude := range []string{"etc/hosts", "etc/hostname", "etc/resolve.conf", "proc", "sys", "dev", "run"} {
+				args = append(args, "--exclude='./"+exclude+"'")
+			}
+		}
+
 		color.Process("Integrating %s, %s", e.Id, path.Base(cachefile))
-		if err := container.Execute("tar", "-xf", path.Join("/", "cache", path.Base(cachefile)), "-C", rootdir); err != nil {
+		if err := container.Execute(args...); err != nil {
 			return container.Shell(err)
 		}
 	}

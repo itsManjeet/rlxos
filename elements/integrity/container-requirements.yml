@@ -2,6 +2,9 @@ id: container-requirements
 version: 0.0.1
 about: Verify container fullfill the minimum requirements
 
+variables:
+  force-rebuild: true
+
 script: |
   LC_ALL=C 
   PATH=/usr/bin:/bin

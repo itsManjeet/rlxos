@@ -1,11 +1,9 @@
 package builder
 
 import (
-	"bufio"
 	"crypto/sha256"
 	"fmt"
 	"path"
-	"rlxos/internal/color"
 	"rlxos/internal/element"
 	"strings"
 )
@@ -95,46 +93,6 @@ func resolveVariables(v string, variables map[string]string) string {
 		v = strings.ReplaceAll(v, "%{"+key+"}", value)
 	}
 	return v
-}
-
-func (b *Builder) integrate(e *element.Element, rootdir string, container *Container, logWriter *bufio.Writer, noIntegrate bool) error {
-	cachefile, err := b.CacheFile(e)
-	if err != nil {
-		return err
-	}
-
-	if e.BuildType == "system" {
-		if err := container.Run(logWriter, []string{"cp", path.Join("/", "cache", path.Base(cachefile)), path.Join(rootdir, e.Id)}, "/", []string{}); err != nil {
-			container.RescueShell()
-			return err
-		}
-	} else {
-		color.Process("Integrating %s, %s", e.Id, path.Base(cachefile))
-		if err := container.Run(logWriter, []string{"tar", "-xf", path.Join("/", "cache", path.Base(cachefile)), "-C", rootdir}, "/", []string{}); err != nil {
-			container.RescueShell()
-			return err
-		}
-	}
-
-	if !noIntegrate {
-		if len(e.Integration) != 0 {
-			color.Process("Executing integration command")
-			if err := container.Run(logWriter, []string{"sh", "-ec", resolveVariables(e.Integration, e.Variables)}, "/", []string{}); err != nil {
-				container.RescueShell()
-				return err
-			}
-		}
-	} else if len(e.Integration) > 0 {
-		if err := container.Run(logWriter, []string{"mkdir", "-p", path.Join(rootdir, "var", "lib", "integrations")}, "/", []string{}); err != nil {
-			return fmt.Errorf("failed to create intergations dir %v", err)
-		}
-
-		if err := container.Run(logWriter, []string{"sh", "-ce", fmt.Sprintf("echo '%s' | tee %s", resolveVariables(e.Integration, e.Variables), path.Join(rootdir, "var", "lib", "integrations", e.Id))}, "/", []string{}); err != nil {
-			return fmt.Errorf("failed to create intergations dir %v", err)
-		}
-	}
-
-	return nil
 }
 
 func isUrl(url string) bool {

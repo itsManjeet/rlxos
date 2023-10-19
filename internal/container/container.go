@@ -2,8 +2,8 @@ package container
 
 import (
 	"fmt"
-	"io"
 	"math/rand"
+	"os"
 	"os/exec"
 	"rlxos/internal/color"
 	"time"
@@ -15,7 +15,9 @@ type Container struct {
 
 	Environ []string
 	Binds   map[string]string
-	Logger  io.Writer
+	Logfile string
+
+	HostRoot string
 
 	name string
 }
@@ -36,11 +38,10 @@ func (container *Container) New() error {
 	if container.name != "" {
 		return fmt.Errorf("container already initialized with name %s", container.name)
 	}
-
 	container.name = "rlxos-" + randStringBytes(10)
 
 	args := []string{
-		"run", "-d", "--name", container.name,
+		"run", "--privileged", "-dt", "--name", container.name,
 		"--net=host",
 		"--hostname=rlxos",
 		"--env", "HOME=/",
@@ -51,6 +52,13 @@ func (container *Container) New() error {
 
 	for _, env := range container.Environ {
 		args = append(args, "--env", env)
+	}
+
+	for _, p := range []PathId{BUILD_ROOT, INSTALL_ROOT} {
+		if err := os.MkdirAll(container.HostPath(p), 0755); err != nil {
+			return fmt.Errorf("failed to create required path %s: %v", string(p), err)
+		}
+		args = append(args, "--volume", fmt.Sprintf("%s:%s", container.HostPath(p), container.ContainerPath(p)))
 	}
 
 	for dest, source := range container.Binds {
@@ -64,5 +72,14 @@ func (container *Container) New() error {
 		return fmt.Errorf("failed to start container: %s %v", string(output), err)
 	}
 
+	return nil
+}
+
+func (cntr *Container) Delete() error {
+	cntr.Script(fmt.Sprintf("rm -rf %s/* %s/*", cntr.ContainerPath(BUILD_ROOT), cntr.ContainerPath(INSTALL_ROOT)))
+	if data, err := exec.Command(backend, "rm", "-f", cntr.name).CombinedOutput(); err != nil {
+		return fmt.Errorf("%v, %s", string(data), err)
+	}
+	os.RemoveAll(cntr.HostRoot)
 	return nil
 }

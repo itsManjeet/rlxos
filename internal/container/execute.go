@@ -4,25 +4,29 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path"
 	"rlxos/internal/color"
 )
 
-func (container *Container) execute(args ...string) error {
+func (container *Container) executeAt(dir string, args ...string) error {
+	file, err := os.OpenFile(container.Logfile, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0640)
+	if err != nil {
+		return fmt.Errorf("failed to open log file %s: %v", container.Logfile, err)
+	}
+	defer file.Close()
+	args = append([]string{"exec", "-w", dir, "-i", container.name}, args...)
 	fmt.Println(color.DarkGray, backend, args, color.Reset)
 
-	cmd := exec.Command(backend, append([]string{"exec", "-i", container.name}, args...)...)
-	cmd.Stdout = container.Logger
+	cmd := exec.Command(backend, args...)
+	cmd.Stdout = file
 	cmd.Stdin = os.Stdin
-	cmd.Stderr = container.Logger
+	cmd.Stderr = file
 
-	if err := cmd.Run(); err != nil {
-		return fmt.Errorf("command %v, failed with %v", args, err)
-	}
-	return nil
+	return cmd.Run()
 }
 
 func (container *Container) ExecuteAt(dir string, args ...string) error {
-	return container.execute(append([]string{"-w", dir}, args...)...)
+	return container.executeAt(dir, args...)
 }
 
 func (container *Container) Execute(args ...string) error {
@@ -35,4 +39,8 @@ func (container *Container) ScriptAt(dir string, code string) error {
 
 func (container *Container) Script(code string) error {
 	return container.ScriptAt("/", code)
+}
+
+func (container *Container) Mkdir(dirs ...string) error {
+	return container.Execute("mkdir", "-p", path.Join(dirs...))
 }

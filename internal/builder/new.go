@@ -70,6 +70,13 @@ func New(projectPath string, cachePath string) (*Builder, error) {
 		return nil, err
 	}
 
+	// create required dirs
+	for _, dir := range []string{b.SourceDir(), b.ArtifactDir(), b.TempDir(), b.LogDir()} {
+		if err := os.MkdirAll(dir, 0755); err != nil {
+			return nil, fmt.Errorf("failed to create %s: %v", dir, err)
+		}
+	}
+
 	return &b, nil
 }
 

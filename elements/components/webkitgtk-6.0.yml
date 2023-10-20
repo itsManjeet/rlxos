@@ -38,11 +38,11 @@ depends:
   - components/wpebackend-fdo.yml
   - components/bubblewrap.yml
   - components/geoclue.yml
+  - components/libavif.yml
   - components/x11/libxt.yml
   - components/x11/libx11.yml
 build-depends:
   - components/gobject-introspection.yml
-  - components/libavif.yml
   - components/gtk-doc.yml
   - components/unidef.yml
   - components/cmake.yml

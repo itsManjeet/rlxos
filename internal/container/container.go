@@ -72,6 +72,9 @@ func (container *Container) New() error {
 		return fmt.Errorf("failed to start container: %s %v", string(output), err)
 	}
 
+	// TODO: Temporary Fixes
+	container.Execute("mkdir", "-p", "/usr/local/include")
+
 	return nil
 }
 

@@ -2,12 +2,14 @@ id: libportal
 version: 0.6
 about: A library that contains GIO-style async APIs for most Flatpak portals
 
+configure: >-
+  -D docs=false
+
 depends:
   - components/glib.yml
   - components/gtk.yml
   - components/gtk4.yml
   - components/qt.yml
-
 build-depends:
   - components/gtk-doc.yml
   - components/gobject-introspection.yml

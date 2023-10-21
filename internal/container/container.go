@@ -48,17 +48,11 @@ func (container *Container) New() error {
 		"--env", "TERM=linux",
 		"--env", "PS1='(rlxos) \\W \\$'",
 		"--env", "PATH=/usr/bin",
+		"--env", "NOCONFIGURE=1",
 	}
 
 	for _, env := range container.Environ {
 		args = append(args, "--env", env)
-	}
-
-	for _, p := range []PathId{BUILD_ROOT, INSTALL_ROOT} {
-		if err := os.MkdirAll(container.HostPath(p), 0755); err != nil {
-			return fmt.Errorf("failed to create required path %s: %v", string(p), err)
-		}
-		args = append(args, "--volume", fmt.Sprintf("%s:%s", container.HostPath(p), container.ContainerPath(p)))
 	}
 
 	for dest, source := range container.Binds {

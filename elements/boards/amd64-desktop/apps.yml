@@ -1,6 +1,0 @@
-id: amd64-desktop-apps
-merge: [version.yml, elements/include/integrate-apps.yml]
-
-include:
-  - apps/firefox.yml
-  - apps/xfce4-terminal.yml

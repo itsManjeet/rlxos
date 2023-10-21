@@ -1,4 +1,4 @@
-package builder
+package ignite
 
 import (
 	"crypto/sha256"
@@ -31,14 +31,26 @@ type Pair struct {
 	State BuildStatus
 }
 
-type Builder struct {
-	Container   string            `yaml:"container"`
-	Variables   map[string]string `yaml:"variables"`
-	Environ     []string          `yaml:"environ"`
-	BuildTools  []BuildTool       `yaml:"build-tools"`
-	Merge       []string          `yaml:"merge"`
+type Shell struct {
+	Environ []string `yaml:"environ"`
+	Bind    []struct {
+		Source   string `yaml:"source"`
+		Target   string `yaml:"target"`
+		ReadOnly bool   `yaml:"read-only"`
+	} `yaml:"bind"`
+}
+
+type Ignite struct {
+	Container      string            `yaml:"container"`
+	ArtifactServer string            `yaml:"artifact-server"`
+	Variables      map[string]string `yaml:"variables"`
+	Environ        []string          `yaml:"environ"`
+	BuildTools     []BuildTool       `yaml:"build-tools"`
+	CachePath      string            `yaml:"cache-path"`
+	Shell          Shell             `yaml:"shell"`
+	Imports        []string          `yaml:"(@)"`
+
 	projectPath string
-	cachePath   string
 	pool        map[string]*element.Element
 }
 
@@ -48,20 +60,16 @@ type BuildTool struct {
 	Script      string   `yaml:"script"`
 }
 
-func (b *Builder) Get(id string) (*element.Element, bool) {
+func (b *Ignite) Get(id string) (*element.Element, bool) {
 	e, ok := b.pool[id]
 	return e, ok
 }
 
-func (b *Builder) CachePath() string {
-	return path.Join(b.cachePath, "cache")
-}
-
-func (b *Builder) CacheFile(e *element.Element) (string, error) {
+func (b *Ignite) CacheFile(e *element.Element) (string, error) {
 	sum := fmt.Sprint(e)
 	s := sha256.New()
 	s.Write([]byte(sum))
-	depends := e.AllDepends(element.DependencyRunTime)
+	depends := e.GetDepends(element.DependencyRunTime)
 
 	for _, dep := range depends {
 		dep_e, ok := b.Get(dep)
@@ -73,19 +81,7 @@ func (b *Builder) CacheFile(e *element.Element) (string, error) {
 
 	value := s.Sum(nil)
 
-	return path.Join(b.cachePath, "cache", fmt.Sprintf("%x", value)), nil
-}
-
-func (b *Builder) setEnv(environ []string, env string) []string {
-	envVar := strings.Split(env, "=")[0]
-	for i, e := range environ {
-		if strings.HasPrefix(e, envVar+"=") {
-			environ[i] = env
-			return environ
-		}
-	}
-	environ = append(environ, env)
-	return environ
+	return path.Join(b.ArtifactDir(), fmt.Sprintf("%x", value)), nil
 }
 
 func resolveVariables(v string, variables map[string]string) string {

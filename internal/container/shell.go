@@ -1,6 +1,7 @@
 package container
 
 import (
+	"fmt"
 	"os"
 	"os/exec"
 	"rlxos/internal/color"
@@ -16,7 +17,11 @@ func (container *Container) ShellAt(dir string, err error) error {
 	cmd.Stdin = os.Stdin
 	cmd.Stderr = os.Stderr
 
-	return cmd.Run()
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("failed to enter shell: %v", err)
+	}
+
+	return err
 
 }
 

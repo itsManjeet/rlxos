@@ -7,9 +7,9 @@ import (
 	"os"
 	"os/exec"
 	"path"
-	"rlxos/internal/builder"
 	"rlxos/internal/color"
 	"rlxos/internal/element"
+	"rlxos/internal/ignite"
 	"strings"
 
 	"github.com/itsmanjeet/framework/command"
@@ -20,33 +20,22 @@ import (
 
 var (
 	projectPath  string
-	cachePath    string
 	cleanGarbage bool = false
 )
 
 func main() {
 	projectPath, _ = os.Getwd()
-	if err := command.New("builder").
+	if err := command.New("ignite").
 		About("rlxos os build repository").
 		Usage("<TASK> <FLAGS?> <ARGS...>").
 		Init(func() (interface{}, error) {
-			if len(cachePath) == 0 {
-				cachePath = path.Join(projectPath, "build")
-			}
-			return builder.New(projectPath, cachePath)
+			return ignite.New(projectPath)
 		}).
 		Flag(flag.New("path").
 			Count(1).
 			About("Specify project path").
 			Handler(func(s []string) error {
 				projectPath = s[0]
-				return nil
-			})).
-		Flag(flag.New("cache-path").
-			Count(1).
-			About("Specify cache path").
-			Handler(func(s []string) error {
-				cachePath = s[0]
 				return nil
 			})).
 		Flag(flag.New("no-color").
@@ -70,8 +59,40 @@ func main() {
 				if err := checkargs(s, 1); err != nil {
 					return err
 				}
-				bldr := i.(*builder.Builder)
+				bldr := i.(*ignite.Ignite)
 				return bldr.Build(s[0])
+			})).
+		Sub(command.New("info").
+			About("Print builder Environment Information").
+			Handler(func(c *command.Command, s []string, i interface{}) error {
+				bldr := i.(*ignite.Ignite)
+				data, _ := yaml.Marshal(bldr)
+				fmt.Println(string(data))
+				return nil
+			})).
+		Sub(command.New("pull").
+			About("Pull artifact cache of element").
+			Handler(func(self *command.Command, args []string, iface interface{}) error {
+				if err := checkargs(args, 1); err != nil {
+					return err
+				}
+				ignt := iface.(*ignite.Ignite)
+				depends, err := ignt.Resolve(element.DependencyAll, args[0])
+				if err != nil {
+					return err
+				}
+
+				if ignt.ArtifactServer == "" {
+					return fmt.Errorf("no artifact server url specified")
+				}
+
+				for _, depend := range depends {
+					if err := ignt.Pull(depend.Value); err != nil {
+						color.Error("failed to fetch %s: %v", depend.Path, err)
+						continue
+					}
+				}
+				return nil
 			})).
 		Sub(command.New("shell").
 			About("Create and Enter shell").
@@ -79,12 +100,12 @@ func main() {
 				if err := checkargs(s, 1); err != nil {
 					return err
 				}
-				bldr := i.(*builder.Builder)
-				elementInfo, ok := bldr.Get(s[0])
+				ignt := i.(*ignite.Ignite)
+				elementInfo, ok := ignt.Get(s[0])
 				if !ok {
 					return fmt.Errorf("missing element %s", s[0])
 				}
-				container, err := bldr.Setup(builder.SETUP_TYPE_SHELL, s[0], elementInfo)
+				container, err := ignt.Setup(ignite.SETUP_TYPE_SHELL, s[0], elementInfo)
 				if err != nil {
 					return err
 				}
@@ -98,7 +119,7 @@ func main() {
 				if err := checkargs(s, 1); err != nil {
 					return err
 				}
-				bldr := i.(*builder.Builder)
+				bldr := i.(*ignite.Ignite)
 				el, ok := bldr.Get(s[0])
 				if !ok {
 					return fmt.Errorf("missing element %s", s[0])
@@ -117,7 +138,7 @@ func main() {
 				if err := checkargs(s, 1); err != nil {
 					return err
 				}
-				bldr := i.(*builder.Builder)
+				bldr := i.(*ignite.Ignite)
 
 				el, ok := bldr.Get(s[0])
 				if !ok {
@@ -142,7 +163,7 @@ func main() {
 				if err := checkargs(s, 1); err != nil {
 					return err
 				}
-				bldr := i.(*builder.Builder)
+				bldr := i.(*ignite.Ignite)
 
 				el, ok := bldr.Get(s[0])
 				if !ok {
@@ -159,7 +180,7 @@ func main() {
 				if err := checkargs(s, 2); err != nil {
 					return err
 				}
-				bldr := i.(*builder.Builder)
+				bldr := i.(*ignite.Ignite)
 
 				el, ok := bldr.Get(s[0])
 				if !ok {
@@ -190,7 +211,7 @@ func main() {
 		Sub(command.New("check-update").
 			About("check and apply update to element").
 			Handler(func(c *command.Command, s []string, i interface{}) error {
-				bldr := i.(*builder.Builder)
+				bldr := i.(*ignite.Ignite)
 				elements := s
 				if len(elements) == 0 {
 					for key := range bldr.Pool() {
@@ -239,12 +260,12 @@ func main() {
 		Sub(command.New("report").
 			About("Report status").
 			Handler(func(c *command.Command, s []string, i interface{}) error {
-				bldr := i.(*builder.Builder)
+				bldr := i.(*ignite.Ignite)
 				elements := bldr.Pool()
 				totalElements := 0
 				mmiElements := 0
-				var cachedSize int64 = 0
-				var totalSize int64 = 0
+				var cachedSize uint64 = 0
+				var totalSize uint64 = 0
 
 				cachedElements := []string{}
 				garbageElements := []string{}
@@ -253,7 +274,7 @@ func main() {
 					cachefile, _ := bldr.CacheFile(el)
 					cachedElements = append(cachedElements, path.Base(cachefile))
 					if stat, err := os.Stat(cachefile); err == nil {
-						cachedSize += stat.Size()
+						cachedSize += uint64(stat.Size())
 					}
 
 					isMII := false
@@ -283,9 +304,9 @@ func main() {
 					return true
 				}
 
-				cachedir, err := os.ReadDir(bldr.CachePath())
+				cachedir, err := os.ReadDir(bldr.ArtifactDir())
 				if err != nil {
-					return fmt.Errorf("failed to read dir %s, %v", bldr.CachePath(), err)
+					return fmt.Errorf("failed to read dir %s, %v", bldr.ArtifactDir(), err)
 				}
 
 				cached := 0
@@ -294,9 +315,9 @@ func main() {
 					if isGarbage(cf.Name()) {
 						garbageElements = append(garbageElements, cf.Name())
 					}
-					if stat, err := os.Stat(path.Join(bldr.CachePath(), cf.Name())); err == nil {
+					if stat, err := os.Stat(path.Join(bldr.ArtifactDir(), cf.Name())); err == nil {
 						cached++
-						totalSize += stat.Size()
+						totalSize += uint64(stat.Size())
 					}
 				}
 
@@ -314,7 +335,7 @@ func main() {
 				if cleanGarbage {
 					for _, g := range garbageElements {
 						color.Process("cleaning %s", g)
-						err := os.Remove(path.Join(bldr.CachePath(), g))
+						err := os.Remove(path.Join(bldr.ArtifactDir(), g))
 						if err != nil {
 							log.Println(err)
 						}
@@ -323,14 +344,14 @@ func main() {
 
 				return nil
 			})).
-		Sub(command.New("dump-metadata").
-			About("Dump metadata Database").
+		Sub(command.New("generate-market-data").
+			About("Generate Market Data").
 			Handler(func(c *command.Command, s []string, i interface{}) error {
 				if len(s) == 0 {
 					return fmt.Errorf("no output path specified")
 				}
 
-				bldr := i.(*builder.Builder)
+				bldr := i.(*ignite.Ignite)
 
 				outputPath := s[0]
 				iconsPath := path.Join(outputPath, "icons")
@@ -425,7 +446,7 @@ func main() {
 				if err := checkargs(s, 1); err != nil {
 					return err
 				}
-				bldr := i.(*builder.Builder)
+				bldr := i.(*ignite.Ignite)
 
 				e, ok := bldr.Get(s[0])
 				if !ok {
@@ -446,9 +467,9 @@ func main() {
 				for _, p := range pairs {
 					state := ""
 					switch p.State {
-					case builder.BuildStatusCached:
+					case ignite.BuildStatusCached:
 						state = color.Green + " CACHED  " + color.Reset
-					case builder.BuildStatusWaiting:
+					case ignite.BuildStatusWaiting:
 						state = color.Magenta + " WAITING " + color.Reset
 					}
 					fmt.Printf("[%s]    %s\n", state, color.Bold+p.Path+color.Reset)

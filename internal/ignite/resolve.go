@@ -1,4 +1,4 @@
-package builder
+package ignite
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 	"rlxos/internal/element"
 )
 
-func (b *Builder) Resolve(dependencyType element.DependencyType, ids ...string) ([]Pair, error) {
+func (b *Ignite) Resolve(dependencyType element.DependencyType, ids ...string) ([]Pair, error) {
 
 	visited := map[string]bool{}
 	pairs := []Pair{}
@@ -21,7 +21,7 @@ func (b *Builder) Resolve(dependencyType element.DependencyType, ids ...string) 
 			return fmt.Errorf("MISSING %s", p)
 		}
 
-		for _, dep := range e.AllDepends(dependencyType) {
+		for _, dep := range e.GetDepends(dependencyType) {
 			if visited[dep] {
 				continue
 			}
@@ -45,7 +45,7 @@ func (b *Builder) Resolve(dependencyType element.DependencyType, ids ...string) 
 			}
 			return true
 		}
-		for _, dep := range e.AllDepends(element.DependencyAll) {
+		for _, dep := range e.GetDepends(element.DependencyAll) {
 			if !isCached(dep) {
 				state = BuildStatusWaiting
 				break

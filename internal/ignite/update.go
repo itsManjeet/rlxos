@@ -1,4 +1,4 @@
-package builder
+package ignite
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func (b *Builder) Update(e *element.Element) (string, error) {
+func (b *Ignite) Update(e *element.Element) (string, error) {
 	if len(e.Sources) == 0 || !strings.HasPrefix(e.Sources[0], "http") {
 		return "", nil
 	}

@@ -1,5 +1,5 @@
-id: amd64-desktop-image
-about: amd64 desktop Image
+id: amd64-image
+about: amd64 Image
 merge: [version.yml, elements/include/image.yml]
 no-strip: true
 
@@ -24,7 +24,4 @@ include:
   - components/x11/iceauth.yml
 
   # Apps
-  - boards/amd64-desktop/apps.yml
-
-  # Installer and First Setup Tool
-  - components/os-installer.yml
+  - boards/amd64/apps.yml

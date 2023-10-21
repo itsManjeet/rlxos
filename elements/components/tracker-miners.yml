@@ -18,5 +18,6 @@ depends:
   - components/libgrss.yml
   - components/libgxps.yml
   - components/poppler.yml
+  - components/upower.yml
 sources:
   - https://download.gnome.org/sources/tracker-miners/%{version:1}/tracker-miners-%{version}.tar.xz

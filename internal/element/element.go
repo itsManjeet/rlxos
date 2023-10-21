@@ -1,11 +1,7 @@
 package element
 
 import (
-	"os"
 	"strings"
-
-	"dario.cat/mergo"
-	"gopkg.in/yaml.v2"
 )
 
 // Element holds the build configuration of rlxos package
@@ -15,7 +11,7 @@ type Element struct {
 	About   string `yaml:"about"`
 	Release int    `yaml:"release"`
 
-	Merge []string `yaml:"merge,omitempty"`
+	Imports []string `yaml:"merge,omitempty"`
 
 	Variables map[string]string `yaml:"variables,omitempty"`
 
@@ -26,7 +22,7 @@ type Element struct {
 	BuildDepends []string `yaml:"build-depends,omitempty"`
 
 	// BuildDepends dependencies are required during runtime only
-	RuntTimeDepends []string `yaml:"runtime-depends,omitempty"`
+	RunTimeDepends []string `yaml:"runtime-depends,omitempty"`
 
 	BuildDir string `yaml:"build-dir,omitempty"`
 
@@ -75,24 +71,21 @@ type ElementSplit struct {
 
 // Open open the rlxos package element file
 func Open(filepath string, environ []string, variables map[string]string) (*Element, error) {
-	data, err := os.ReadFile(filepath)
-	if err != nil {
-		return nil, err
+	elmnt := &Element{
+		Variables:      map[string]string{},
+		Imports:        []string{},
+		Depends:        []string{},
+		BuildDepends:   []string{},
+		RunTimeDepends: []string{},
+		Check:          []string{},
+		Sources:        []string{},
+		Environ:        []string{},
+		Include:        []string{},
+		SkipStrip:      []string{},
 	}
 
-	var e Element
-	if err := yaml.Unmarshal(data, &e); err != nil {
+	if err := elmnt.Import(filepath); err != nil {
 		return nil, err
-	}
-
-	for _, merge := range e.Merge {
-		mergingElement, err := Open(merge, e.Environ, e.Variables)
-		if err != nil {
-			return nil, err
-		}
-		if err := mergo.Merge(&e, mergingElement); err != nil {
-			return nil, err
-		}
 	}
 
 	updatedVariables := map[string]string{}
@@ -100,54 +93,54 @@ func Open(filepath string, environ []string, variables map[string]string) (*Elem
 		updatedVariables[key] = value
 	}
 
-	if e.Variables != nil {
-		for key, value := range e.Variables {
+	if elmnt.Variables != nil {
+		for key, value := range elmnt.Variables {
 			updatedVariables[key] = value
 		}
 	}
-	e.Variables = updatedVariables
-	e.Variables["id"] = e.Id
-	e.Variables["version"] = e.Version
-	// e.Variables["release"] = fmt.Sprint(e.Release)
+	elmnt.Variables = updatedVariables
+	elmnt.Variables["id"] = elmnt.Id
+	elmnt.Variables["version"] = elmnt.Version
+	// elmnt.Variables["release"] = fmt.Sprint(elmnt.Release)
 
 	mergedEnviron := []string{}
 	if environ != nil {
 		mergedEnviron = append(mergedEnviron, environ...)
 	}
-	if e.Environ != nil {
-		mergedEnviron = append(mergedEnviron, e.Environ...)
+	if elmnt.Environ != nil {
+		mergedEnviron = append(mergedEnviron, elmnt.Environ...)
 	}
-	e.Environ = mergedEnviron
+	elmnt.Environ = mergedEnviron
 
-	for i := range e.Sources {
-		e.Sources[i] = e.resolveVariable(e.Sources[i])
-	}
-
-	for i := range e.Environ {
-		e.Environ[i] = e.resolveVariable(e.Environ[i])
+	for i := range elmnt.Sources {
+		elmnt.Sources[i] = elmnt.resolveVariable(elmnt.Sources[i])
 	}
 
-	e.BuildDir = e.resolveVariable(e.BuildDir)
+	for i := range elmnt.Environ {
+		elmnt.Environ[i] = elmnt.resolveVariable(elmnt.Environ[i])
+	}
 
-	e.PreScript = e.resolveVariable(e.PreScript)
-	e.Script = e.resolveVariable(e.Script)
-	e.PostScript = e.resolveVariable(e.PostScript)
+	elmnt.BuildDir = elmnt.resolveVariable(elmnt.BuildDir)
 
-	e.Configure = e.resolveVariable(e.Configure)
-	e.Compile = e.resolveVariable(e.Compile)
-	e.Install = e.resolveVariable(e.Install)
+	elmnt.PreScript = elmnt.resolveVariable(elmnt.PreScript)
+	elmnt.Script = elmnt.resolveVariable(elmnt.Script)
+	elmnt.PostScript = elmnt.resolveVariable(elmnt.PostScript)
 
-	return &e, nil
+	elmnt.Configure = elmnt.resolveVariable(elmnt.Configure)
+	elmnt.Compile = elmnt.resolveVariable(elmnt.Compile)
+	elmnt.Install = elmnt.resolveVariable(elmnt.Install)
+
+	return elmnt, nil
 }
 
-func (e *Element) resolveVariable(v string) string {
-	for key, value := range e.Variables {
+func (elmnt *Element) resolveVariable(v string) string {
+	for key, value := range elmnt.Variables {
 		if len(value) != 0 {
 			v = strings.ReplaceAll(v, "%{"+key+"}", value)
 		}
 	}
 
-	if version, ok := e.Variables["version"]; ok {
+	if version, ok := elmnt.Variables["version"]; ok {
 		versionInfo := strings.Split(version, ".")
 		if len(versionInfo) > 1 {
 			v = strings.ReplaceAll(v, "%{version:1}", strings.Join(versionInfo[:len(versionInfo)-1], "."))
@@ -170,24 +163,24 @@ const (
 	DependencyNone
 )
 
-func (e *Element) AllDepends(dep DependencyType) []string {
+func (elmnt *Element) GetDepends(dep DependencyType) []string {
 	depends := []string{}
 	if dep == DependencyNone {
 		return depends
 	}
-	if e.Depends != nil {
-		depends = append(depends, e.Depends...)
+	if elmnt.Depends != nil {
+		depends = append(depends, elmnt.Depends...)
 	}
 
 	if dep == DependencyBuildTime || dep == DependencyAll {
-		if e.BuildDepends != nil {
-			depends = append(depends, e.BuildDepends...)
+		if elmnt.BuildDepends != nil {
+			depends = append(depends, elmnt.BuildDepends...)
 		}
 	}
 
 	if dep == DependencyRunTime || dep == DependencyAll {
-		if e.RuntTimeDepends != nil {
-			depends = append(depends, e.RuntTimeDepends...)
+		if elmnt.RunTimeDepends != nil {
+			depends = append(depends, elmnt.RunTimeDepends...)
 		}
 	}
 

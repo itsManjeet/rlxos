@@ -6,6 +6,11 @@ on:
     branches:
       - '[0-9]+.[0-9]+.[0-9]+'
 
+env:
+  NO_PRINT_PROGRESS: 1
+  VERSION: "${GITHUB_REF#ref/*/}"
+  INGITE: ./ignite
+
 jobs:
   generate-image:
     name: Generate Image
@@ -15,54 +20,24 @@ jobs:
       matrix:
         board:
           - amd64
-        variant:
-          - lite
-          - desktop
-    env:
-      CACHE_PATH: ${{ secrets.CACHE_PATH }}
-      NO_PRINT_PROGRESS: 1
     steps:
       - uses: actions/checkout@v1
 
-
-      - name: Setup Environment
+      - name: Compiler Ignite
         run: |
-          VERSION=${GITHUB_REF#refs/*/}
-          if [[ "${GITHUB_REF}" =~ "refs/heads/" ]] ; then
-            CODENAME="experimental"
-          else
-            CODENAME="stable"
-          fi
+          make
 
-          echo "ARCH=${{matrix.board}}" >> $GITHUB_ENV
-          echo "VERSION=${VERSION}"   >> $GITHUB_ENV
-          echo "CODENAME=${CODENAME}" >> $GITHUB_ENV
-
-          echo "NO CHANGELOG" > files/changelog
-
-      - name: Cleanup build cache
-        run: make clean
-
-      - name: Make System Apps
+      - name: Generate Element Cache
         run: |
-          make cache ELEMENT=boards/${{matrix.board}}-${{matrix.variant}}/apps.yml
+          for element in apps image installer ; do
+            ${INGITE} build boards/${{matrix.board}}/${element}.yml
+          done
 
-      - name: Make System Image
+      - name: Checkout System Image and Installer ISO
         run: |
-          make cache ELEMENT=boards/${{matrix.board}}-${{matrix.variant}}/image.yml
-
-      - name: Make Installer ISO
-        run: |
-          make cache ELEMENT=boards/${{matrix.board}}-${{matrix.variant}}/installer.yml
-
-      - name: Release System Image
-        run: |
-          make checkout ELEMENT=boards/${{matrix.board}}-${{matrix.variant}}/image.yml RELEASE_PATH=${CACHE_PATH}/releases/${{matrix.board}}/${{matrix.variant}}/${CODENAME}
-
-      - name: Release Installer ISO
-        run: |
-          make checkout ELEMENT=boards/${{matrix.board}}-${{matrix.variant}}/installer.yml RELEASE_PATH=${CACHE_PATH}/releases/${{matrix.board}}/${{matrix.variant}}/${CODENAME}/${VERSION}
-
+          ${INGITE} checkout boards/${{matrix.board}}/image.yml ${{secrets.CACHE_PATH}}/releases/${{matrix.board}}/${VERSION}/
+          ${INGITE} checkout boards/${{matrix.board}}/installer.yml ${{secrets.CACHE_PATH}}/releases/${{matrix.board}}/${VERSION}/
       
-      - name: Update Metadata
-        run: make metadata RELEASE_PATH=${CACHE_PATH}/apps/${CODENAME}
+      - name: Generate Market data
+        run: |-
+          ${INGITE} generate-market-data ${{secrets.CACHE_PATH}}/$VERSION/

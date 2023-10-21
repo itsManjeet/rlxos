@@ -1,0 +1,15 @@
+variables:
+  prefix: "/usr"
+  sysconfdir: "/etc"
+  libexecdir: "/usr/lib"
+  libdir: "/usr/lib"
+  bindir: "/usr/bin"
+  sbindir: "/usr/bin"
+  datadir: "/usr/share"
+  localstatedir: "/var"
+  triplet: "x86_64-linux-gnu"
+
+  arch: "x86_64"
+
+  run-autogen: true
+  seperate-build-dir: true

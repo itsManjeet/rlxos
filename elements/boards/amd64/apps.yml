@@ -1,0 +1,5 @@
+id: amd64-apps
+merge: [version.yml, elements/include/integrate-apps.yml]
+
+include:
+  - apps/firefox.yml

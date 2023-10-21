@@ -1,0 +1,11 @@
+shell:
+  environ:
+    - LANG='$LANG'
+    - DISPLAY='$DISPLAY'
+    - DBUS_SESSION_BUS_ADDRESS='$DBUS_SESSION_BUS_ADDRESS'
+    - XDG_RUNTIME_DIR='$XDG_RUNTIME_DIR'
+    - PULSE_SERVER='unix:${XDG_RUNTIME_DIR}/pulse/native'
+  
+  bind:
+    - source: "/tmp/.X11-unix"
+    - source: "${XDG_RUNTIME_DIR}"

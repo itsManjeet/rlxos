@@ -63,6 +63,12 @@ func (elmnt *Element) Import(filepath string) error {
 	elmnt.Compile = local.Compile + elmnt.Compile
 	elmnt.Install = local.Install + elmnt.Install
 
+	elmnt.PreScript = local.PreScript + elmnt.PreScript
+	elmnt.Script = local.Script + elmnt.Script
+	elmnt.PostScript = local.PostScript + elmnt.PostScript
+
+	elmnt.Integration = local.Integration + elmnt.Integration
+
 	for key, value := range local.Variables {
 		if _, ok := elmnt.Variables[key]; !ok {
 			elmnt.Variables[key] = value

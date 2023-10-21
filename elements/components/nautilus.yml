@@ -5,7 +5,7 @@ about: Package contains the GNOME file manager
 pre-script: |-
   sed "/docdir =/s@\$@ / 'nautilus-%{version}'@" -i meson.build
 
-configure: |
+configure: >-
   -D docs=false
   -D packagekit=false
   -D selinux=false
@@ -25,6 +25,8 @@ depends:
   - components/gst-plugins-base.yml
   - components/libexif.yml
   - components/libportal.yml
+  - components/libadwaita.yml
+  - components/libcloudproviders.yml
   - components/gd.yml
   - components/themes/adwaita-icon-theme.yml
   - components/gvfs.yml

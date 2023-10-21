@@ -27,6 +27,10 @@ jobs:
         run: |
           make
 
+      - name: Prerequisties
+        run: |
+          echo "version: ${VERSION}" > version.yml
+
       - name: Generate Element Cache
         run: |
           for element in apps image installer ; do

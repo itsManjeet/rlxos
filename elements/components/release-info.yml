@@ -6,16 +6,16 @@ script: |
   mkdir -p %{install-root}/%{sysconfdir}
 
   cat > %{install-root}/%{sysconfdir}/os-release <<EOF
-  NAME="rlxos %{codename}"
+  NAME="rlxos GNU/Linux"
   VERSION=%{version}
   ID=rlxos
   PRETTY_NAME="rlxos GNU/Linux"
-  VERSION_CODENAME="%{codename}"
+  VERSION_CODENAME="%{version}"
+  IMAGE_VERSION="%{version}"
   EOF
 
   cat > %{install-root}/%{sysconfdir}/lsb-release <<EOF
-  DISTRIB_ID="rlxos"
+  DISTRIB_ID="rlxos GNU/Linux"
   DISTRIB_RELEASE="%{version}"
-  DISTRIB_CODENAME="%{codename}"
-  DISTRIB_DESCRIPTION="rlxos %{version} %{codename}"
+  DISTRIB_DESCRIPTION="rlxos %{version}"
   EOF

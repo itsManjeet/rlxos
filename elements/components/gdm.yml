@@ -7,6 +7,8 @@ post-script: |-
   g gdm 21 -
   u gdm 21 "Gnome Display Manager" %{localstatedir}/lib/gdm
   EOF
+
+  sed -e "/user = gdm/ s/^#*/#/" -i %{install-root}/%{sysconfdir}/pam.d/gdm-launch-environment
 configure: >-
   --buildtype=release
   -D gdm-xsession=true
@@ -26,3 +28,4 @@ build-depends:
   - components/itstool.yml
 sources:
   - https://download.gnome.org/sources/gdm/%{version:1}/gdm-%{version}.tar.xz
+# TODO: We need to setup and use our PAM configuration

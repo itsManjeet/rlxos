@@ -158,8 +158,8 @@ script: |-
   After=systemd-tmpfiles-setup.service
   EOF
   
-  mkdir -p %{install-root}/%{version}
-  mksquashfs %{sysroot}/usr %{install-root}/%{version}/sysroot.img -noappend
+  mkdir -p %{install-root}
+  mksquashfs %{sysroot}/usr %{install-root}/sysroot.img -noappend
 
 build-depends:
   - components/cryptsetup.yml

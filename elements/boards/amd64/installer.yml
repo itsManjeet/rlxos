@@ -1,10 +1,10 @@
-id: amd64-desktop-installer
+id: amd64-installer
 merge: [version.yml, elements/include/iso.yml]
-about: System [DESKTOP] Image [AMD64]
+about: System Image [AMD64]
 no-strip: true
 
 include:
-  - boards/amd64-desktop/image.yml
+  - boards/amd64/image.yml
 
 variables:
   installer-volume-id: RLXOS

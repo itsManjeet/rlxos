@@ -2,6 +2,7 @@ id: gnome
 version: 44
 about: Gnome Desktop Environment
 depends:
+  # Core Gnome Components
   - components/gdm.yml
   - components/gnome-backgrounds.yml
   - components/gnome-control-center.yml
@@ -15,7 +16,12 @@ depends:
   - components/gnome-power-manager.yml
   - components/gnome-shell.yml
   - components/gnome-session.yml
-  - components/xdg-user-dirs.yml
+
+  # Gnome Apps
+  - components/gnome-terminal.yml
+  - components/nautilus.yml
+
+  # Required Fonts
   - components/fonts/cantarell.yml
   - components/fonts/noto.yml
   - components/fonts/noto-cjk.yml

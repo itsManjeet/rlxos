@@ -1,4 +1,4 @@
-package builder
+package ignite
 
 import (
 	"errors"
@@ -17,7 +17,7 @@ import (
 
 // TODO: Need heavy refactoring
 
-func (b *Builder) Build(id string) error {
+func (b *Ignite) Build(id string) error {
 	e, ok := b.Get(id)
 	if !ok {
 		return fmt.Errorf("missing %s", id)
@@ -70,7 +70,7 @@ func (b *Builder) Build(id string) error {
 	return nil
 }
 
-func (b *Builder) buildElement(e *element.Element, id string) error {
+func (b *Ignite) buildElement(e *element.Element, id string) error {
 	cachefile, err := b.CacheFile(e)
 	if err != nil {
 		return err

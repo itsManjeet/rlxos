@@ -7,8 +7,9 @@ configure: >-
 
 depends:
   - components/exiv2.yml
+  - components/py/py-gobject.yml
+
 build-depends:
   - components/vala.yml
 sources:
   - https://download.gnome.org/sources/gexiv2/%{version:1}/gexiv2-%{version}.tar.xz
-

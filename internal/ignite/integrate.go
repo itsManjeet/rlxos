@@ -1,4 +1,4 @@
-package builder
+package ignite
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	"rlxos/internal/element"
 )
 
-func (b *Builder) Integrate(container *container.Container, e *element.Element, rootdir string) error {
+func (b *Ignite) Integrate(container *container.Container, e *element.Element, rootdir string) error {
 	cachefile, err := b.CacheFile(e)
 	if err != nil {
 		return err

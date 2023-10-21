@@ -28,7 +28,7 @@ jobs:
 
       - name: Prerequisties
         run: |
-          echo "version: ${GITHUB_REF#ref/*/}" > version.yml
+          echo "version: ${GITHUB_REF#refs/*/}" > version.yml
 
       - name: Generate Element Cache
         run: |

@@ -1,4 +1,5 @@
-no-strip: true
+variables:
+  strip: false
 post-script: |
   cat > %{install-root}/info << "EOF"
   id: %{id}

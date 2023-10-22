@@ -1,8 +1,9 @@
 id: grey-bird-gtk-theme
 version: 3.23.2
 about: Desktop Suite for Xfce
-no-strip: true
 
+variables:
+  strip: false
 pre-script: |-
   gdk-pixbuf-query-loaders --update-cache
 

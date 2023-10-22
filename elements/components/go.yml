@@ -8,8 +8,7 @@ sources:
 
 variables:
   no-extract: true
-
-no-strip: true
+  strip: false
 
 script: |-
   export GOROOT_BOOTSTRAP=%{build-root}/go%{version}

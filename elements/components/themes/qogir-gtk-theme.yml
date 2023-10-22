@@ -1,7 +1,10 @@
 id: qogir-gtk-theme
 version: 2023-05-24
 about: A flat design theme for GTK
-no-strip: true
+
+variables:
+  strip: false
+
 build-depends:
   - components/sassc.yml
 sources:

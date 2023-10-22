@@ -1,10 +1,9 @@
-no-strip: true
-
 variables:
   include-root: "/sysroot/"
   apps-dir: "apps"
   include-depends: false
   force-rebuild: true
+  strip: false
 
 build-depends:
   - components/appimage.yml

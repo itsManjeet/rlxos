@@ -1,7 +1,7 @@
 id: rlxos-container-devel
 version: 2307
 about: rlxos container developers image
-no-strip: true
+
 build-type: system
 include:
   - components/core.yml
@@ -26,6 +26,7 @@ build-depends:
 
 variables:
   root-password: rlxos
+  strip: false
 
 script: |
   # executing integration scripts

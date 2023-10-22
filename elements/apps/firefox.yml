@@ -31,7 +31,7 @@ variables:
 
 build-dir: .
 script: |-
-  mv firefox %{install-root}
+  mv firefox/* %{install-root}/
   mkdir -p %{install-root}/%{bindir}
   ln -srv %{install-root}/firefox %{install-root}/%{bindir}/
   cp %{install-root}/browser/chrome/icons/default/default128.png %{install-root}/firefox.png

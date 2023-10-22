@@ -3,3 +3,8 @@ merge: [version.yml, elements/include/integrate-apps.yml]
 
 include:
   - apps/firefox.yml
+  - apps/thunar.yml
+  - apps/mousepad.yml
+  - apps/xfce4-appfinder.yml
+  - apps/xfce4-taskmanager.yml
+  - apps/xfce4-terminal.yml

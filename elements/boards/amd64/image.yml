@@ -14,7 +14,11 @@ include:
   - runtime.yml
 
   # Desktop Environment
-  - components/gnome.yml
+  - components/xfce4.yml
+
+  # Display Manager
+  - components/lightdm-gtk.greeter.yml
+  - components/lightdm.yml
 
   # X11
   - components/x11/xserver.yml

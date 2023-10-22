@@ -35,7 +35,7 @@ post-script: |
     fi
   done
 
-  mv %{install-root} AppDir
-  mkdir -p %{install-root}
+  mkdir -p AppDir/
+  mv %{install-root}/* AppDir/
 
   appimagetool ./AppDir/ %{install-root}/%{id}-%{version}.app

@@ -213,7 +213,7 @@ func (b *Ignite) buildElement(e *element.Element, id string) error {
 			if err := ioutil.WriteFile(scriptCodePath, []byte(scriptCode), 0755); err != nil {
 				return fmt.Errorf("script code is too large and failed to write script code %s %v", scriptCodePath, err)
 			}
-			args = []string{"sh", "-e", "/build-root/_swupd_script_code"}
+			args = []string{"sh", "-e", containerBuildRoot + "/_swupd_script_code"}
 		}
 
 		if err := cntr.ExecuteAt(containerBuildRoot, args...); err != nil {

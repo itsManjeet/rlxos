@@ -264,7 +264,7 @@ func (b *Ignite) buildElement(e *element.Element, id string) error {
 			return cntr.ShellAt(containerBuildRoot, err)
 		}
 	} else {
-		if !e.NoStrip {
+		if strip := e.Variables["strip"]; strip != "false" {
 			if err := cntr.ScriptAt(cntr.ContainerPath(container.INSTALL_ROOT), fmt.Sprintf("nostrip='%s' %s", strings.Join(e.SkipStrip, " "), resolveVariables(STRIP_COMMAND, variables))); err != nil {
 				return cntr.Shell(err)
 			}

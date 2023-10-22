@@ -1,4 +1,5 @@
-no-strip: true
+variables:
+  strip: false
 
 post-script: |-
   for i in %{install-root}%{datadir}/icons/* ;do

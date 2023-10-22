@@ -1,7 +1,6 @@
 id: amd64-installer
 merge: [version.yml, elements/include/iso.yml]
 about: System Image [AMD64]
-no-strip: true
 
 include:
   - boards/amd64/image.yml
@@ -11,6 +10,7 @@ variables:
   include-root: /sysroot
   root-password: rlxos
   cmdline: live root=LABEL=RLXOS
+  strip: false
   force-rebuild: true
   liveconfig: |-
     mkdir -p %{liveconfig-path}

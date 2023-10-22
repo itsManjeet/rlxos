@@ -1,12 +1,12 @@
 id: amd64-image
 about: amd64 Image
 merge: [version.yml, elements/include/image.yml]
-no-strip: true
 
 variables:
   sysroot: "/sysroot"
   include-root: "/sysroot"
   force-rebuild: true
+  strip: false
   variant: "desktop"
   initial-commands: ""
 
@@ -17,7 +17,7 @@ include:
   - components/xfce4.yml
 
   # Display Manager
-  - components/lightdm-gtk.greeter.yml
+  - components/lightdm-gtk-greeter.yml
   - components/lightdm.yml
 
   # X11

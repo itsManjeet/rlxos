@@ -32,7 +32,9 @@ jobs:
 
       - name: Generate Element Cache
         run: |
-          ${INGITE} build boards/${{matrix.board}}/image.yml
+          for element in apps liveconfig usr image ; do
+            ${INGITE} build boards/${{matrix.board}}/${element}.yml
+          done
 
       - name: Checkout System Image and Installer ISO
         run: |

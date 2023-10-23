@@ -1,0 +1,42 @@
+id: amd64-liveconfig
+version: 0.0.1
+about: Live Configuration
+
+merge: [elements/include/liveconfig.yml]
+
+variables:
+  liveconfig: "/liveconfig"
+  liveuser: "liveuser"
+
+
+script: |-
+  install -vDm 0644 /dev/stdin %{liveconfig}/%{libdir}/systemd/system/live-user.service << "EOF"
+  [Unit]
+  Description=Create Live User
+  Before=graphical.target
+  After=systemd-tmpfiles-setup.service
+
+
+  [Service]
+  Type=simple
+  ExecStart=/usr/bin/useradd -g users -G wheel,adm -m %{liveuser}
+
+  [Install]
+  WantedBy=default.target
+  EOF
+
+  install -vDm 0644 /dev/stdin %{liveconfig}/%{libdir}/tmpfiles.d/%{liveuser}.conf << "EOF"
+  C %{sysconfdir}/lightdm/lightdm.conf.d/12-autologin.conf
+  C %{sysconfdir}/sudoers.d/%{liveuser}
+  EOF
+
+  install -vDm 0644 /dev/stdin %{liveconfig}/%{datadir}/factory/etc/sudoers.d/%{liveuser} << "EOF"
+  %{liveuser} ALL=(ALL) NOPASSWD: ALL
+  EOF
+
+  install -vDm 0644 /dev/stdin %{liveconfig}/%{datadir}/factory/etc/lightdm/lightdm.conf.d/12-autologin.conf << "EOF"
+  [SeatDefaults]
+  autologin-user=%{liveuser}
+  autologin-user-timeout=0
+  autologin-session=xfce
+  EOF

@@ -1,31 +1,15 @@
 id: amd64-image
-about: amd64 Image
 merge: [version.yml, elements/include/image.yml]
-
-variables:
-  sysroot: "/sysroot"
-  include-root: "/sysroot"
-  force-rebuild: true
-  strip: false
-  variant: "desktop"
-  initial-commands: ""
+about: System Image [AMD64]
 
 include:
-  - runtime.yml
+  - boards/amd64/usr.yml
+  - boards/amd64/liveconfig.yml
 
-  # Desktop Environment
-  - components/xfce4.yml
-
-  # Display Manager
-  - components/lightdm-gtk-greeter.yml
-  - components/lightdm.yml
-
-  # X11
-  - components/x11/xserver.yml
-  - components/x11/xinit.yml
-  - components/x11/xf86-input-libinput.yml
-  - components/x11/xrdb.yml
-  - components/x11/iceauth.yml
-
-  # Apps
-  - boards/amd64/apps.yml
+variables:
+  installer-volume-id: RLXOS
+  include-root: /sysroot
+  root-password: rlxos
+  cmdline: live root=LABEL=RLXOS
+  strip: false
+  force-rebuild: true

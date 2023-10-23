@@ -169,10 +169,8 @@ func main() {
 				if !ok {
 					return fmt.Errorf("missing element %s", s[0])
 				}
-				// data, _ := yaml.Marshal(el)
-				// fmt.Println(string(data))
-
-				fmt.Print(el)
+				data, _ := yaml.Marshal(el)
+				fmt.Println(string(data))
 
 				return nil
 			})).

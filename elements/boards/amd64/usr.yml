@@ -1,0 +1,31 @@
+id: amd64-usr
+about: amd64 usr
+merge: [version.yml, elements/include/usr.yml]
+
+variables:
+  sysroot: "/sysroot"
+  include-root: "/sysroot"
+  force-rebuild: true
+  strip: false
+  variant: "desktop"
+  initial-commands: ""
+
+include:
+  - runtime.yml
+
+  # Desktop Environment
+  - components/xfce4.yml
+
+  # Display Manager
+  - components/lightdm-gtk-greeter.yml
+  - components/lightdm.yml
+
+  # X11
+  - components/x11/xserver.yml
+  - components/x11/xinit.yml
+  - components/x11/xf86-input-libinput.yml
+  - components/x11/xrdb.yml
+  - components/x11/iceauth.yml
+
+  # Apps
+  - boards/amd64/apps.yml

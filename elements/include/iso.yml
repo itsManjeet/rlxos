@@ -57,7 +57,7 @@ script: |-
   umount ISO/boot/efiboot
   rm -fr ISO/boot/efiboot
 
-  cp -r /sysroot/%{version}/sysroot.img ISO/
+  cp -r /sysroot/sysroot.img ISO/
   mksquashfs %{liveconfig-path} ISO/liveconfig.img -noappend
 
   depmod -a ${kerver}

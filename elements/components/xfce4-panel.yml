@@ -52,6 +52,7 @@ post-script: |-
         <property name="button-icon" type="string" value="start-here"/>
         <property name="launcher-show-description" type="bool" value="false"/>
         <property name="profile-shape" type="int" value="2"/>
+        <property name="menu-opacity" type="int" value="0"/>
       </property>
       <property name="plugin-2" type="string" value="pager">
         <property name="rows" type="uint" value="1"/>

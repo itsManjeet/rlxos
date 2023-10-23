@@ -11,7 +11,7 @@ post-script: |-
   [greeter]
   background=%{datadir}/backgrounds/default.jpeg
   theme-name=Orchis-Light
-  icon-theme-name=Tela
+  icon-theme-name=Tela-light
   cursor-theme-name=Adwaita
   font-name=Noto Sans 11
   panel-position=top

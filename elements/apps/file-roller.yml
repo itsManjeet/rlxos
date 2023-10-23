@@ -1,31 +1,40 @@
 id: file-roller
-version: 3.40.0
-about: |
-  An archive manager for GNOME with support for tar, bzip2, gzip, zip, jar, compress, lzop, zstd, and many other archive formats
-release: 0
+version: 43.0
+about: An archive manager for GNOME with support for tar, bzip2, gzip, zip, jar, compress, lzop, zstd, and many other archive formats
+
+configure: >-
+  --buildtype=release
+  -D packagekit=false
+
+variables:
+  application-id: org.gnome.FileRoller
+  prepare-appimage: |-
+    chmod -v 0755 %{install-root}/%{libdir}/file-roller/isoinfo.sh
+
+    glib-compile-schemas %{install-root}/%{datadir}/glib-2.0/schemas
+
+    cp %{install-root}/%{datadir}/applications/%{application-id}.desktop %{install-root}/
+    cp %{install-root}/%{datadir}/icons/hicolor/scalable/apps/%{application-id}.svg %{install-root}/
+
+    echo "desktopfile: %{application-id}.desktop" >> %{install-root}/info
+    echo "icon: %{application-id}.svg" >> %{install-root}/info
+    echo "bin: %{id}" >> %{install-root}/info
+
+  skip-libraries: >-
+    libc.so*
+
 build-depends:
-- components/gtk.yml
-- components/itstool.yml
-- components/cpio.yml
-- components/desktop-file-utils.yml
-- components/json-glib.yml
-- components/libarchive.yml
-- components/libnotify.yml
-- components/appimagetool.yml
+  - components/gtk.yml
+  - components/itstool.yml
+  - components/dconf.yml
+  - components/libportal.yml
+  - components/cpio.yml
+  - components/desktop-file-utils.yml
+  - components/json-glib.yml
+  - components/libarchive.yml
+  - components/libnotify.yml
+  - components/appimagetool.yml
+
 sources:
-- https://download.gnome.org/sources/file-roller/3.40/file-roller-%{version}.tar.xz
-post-script: |-
-  chmod -v 0755 %{install-root}/usr/lib/file-roller/isoinfo.sh
-  cp /files/file-roller.svg %{install-root}/file-roller.png
-  cp %{install-root}%{datadir}/applications/org.gnome.FileRoller.desktop %{install-root}/file-roller.desktop
-
-  sed -i 's|Icon=.*|Icon=file-roller|' %{install-root}/file-roller.desktop
-  sed -i 's|TryExec=.*||' %{install-root}/file-roller.desktop
-  glib-compile-schemas %{install-root}%{datadir}/glib-2.0/schemas/
-
-  rm %{install-root}%{datadir}/help -r
-  rm %{install-root}%{datadir}/metainfo/ -r
-
-  install -v -D -m 0755 /files/AppRun -t %{install-root}/
-configure: --buildtype=release -D packagekit=false
+  - https://download.gnome.org/sources/file-roller/%{version:1}/file-roller-%{version}.tar.xz
 

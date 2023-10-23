@@ -8,3 +8,5 @@ include:
   - apps/xfce4-appfinder.yml
   - apps/xfce4-taskmanager.yml
   - apps/xfce4-terminal.yml
+  - apps/parole.yml
+  - apps/ristretto.yml

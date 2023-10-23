@@ -1,9 +1,6 @@
-variables:
-  liveconfig-path: /liveconfig
-
 script: |-
   echo "generating live configuration"
-  %{liveconfig}
+  /liveconfig
 
 
   mkdir -p ISO/{boot/grub/{fonts,x86_64-efi},efi/boot,isolinux}

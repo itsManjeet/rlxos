@@ -3,7 +3,7 @@ version: 0.0.1
 about: OS installer
 
 pre-script: |-
-  rmdir subprojects/blueprint-compiler
+  rm -fr subprojects/blueprint-compiler
 
 post-script: |-
   install -Dm0644 -t "%{install-root}%{sysconfdir}/os-installer/" /files/%{id}/config.yaml

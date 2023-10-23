@@ -32,14 +32,12 @@ jobs:
 
       - name: Generate Element Cache
         run: |
-          for element in apps image installer ; do
-            ${INGITE} build boards/${{matrix.board}}/${element}.yml
-          done
+          ${INGITE} build boards/${{matrix.board}}/image.yml
 
       - name: Checkout System Image and Installer ISO
         run: |
           ${INGITE} checkout boards/${{matrix.board}}/image.yml ${{secrets.CACHE_PATH}}/releases/${{matrix.board}}/${VERSION}/
-          ${INGITE} checkout boards/${{matrix.board}}/installer.yml ${{secrets.CACHE_PATH}}/releases/${{matrix.board}}/${VERSION}/
+          ${INGITE} checkout boards/${{matrix.board}}/usr.yml ${{secrets.CACHE_PATH}}/releases/${{matrix.board}}/${VERSION}/
       
       - name: Generate Market data
         run: |-

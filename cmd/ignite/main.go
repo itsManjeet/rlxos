@@ -169,8 +169,10 @@ func main() {
 				if !ok {
 					return fmt.Errorf("missing element %s", s[0])
 				}
-				data, _ := yaml.Marshal(el)
-				fmt.Println(string(data))
+				// data, _ := yaml.Marshal(el)
+				// fmt.Println(string(data))
+
+				fmt.Print(el)
 
 				return nil
 			})).
@@ -189,9 +191,6 @@ func main() {
 				cachefile, err := bldr.CacheFile(el)
 				if err != nil {
 					return err
-				}
-				if _, err := os.Stat(cachefile); err != nil {
-					return fmt.Errorf("failed to stat %s, %v", cachefile, err)
 				}
 
 				checkout_path := s[1]

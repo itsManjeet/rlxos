@@ -20,7 +20,9 @@ depends:
   - components/xfce4-docklike-plugin.yml
   - components/xfce4-pulseaudio-plugin.yml
   - components/xfce4-notifyd.yml
+  - components/xfce4-screensaver.yml
   - components/network-manager-applet.yml
+  - components/xfce4-panel-profiles.yml
 
 script: |-
   mkdir -p %{install-root}%{prefix}

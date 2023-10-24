@@ -6,8 +6,12 @@ configure: >-
   --disable-static
   --disable-debug
 
+variables:
+  run-autogen: false
+
 depends:
   - components/x11/libxklavier.yml
+  - components/x11/libxscrnsaver.yml
   - components/libwnck.yml
   - components/garcon.yml
   - components/dbus-glib.yml

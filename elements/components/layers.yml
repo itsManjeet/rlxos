@@ -1,0 +1,16 @@
+id: layers
+version: 0.0.1
+about: OS Extension Layers Manager
+
+build-type: go-pkg
+
+variables:
+  go-pkg: cmd/layers
+
+post-script: |-
+  install -vDm644 /dev/stdin %{install-root}%{libdir}/tmpfiles.d/${id}.conf << "EOF"
+  d %{datadir}/lib/layers 0755 root root -
+  EOF
+
+build-depends:
+  - components/go.yml

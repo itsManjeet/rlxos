@@ -20,6 +20,7 @@ depends:
   - components/squashfs-tools.yml
   - components/wget.yml
   - components/sudo.yml
+  - components/zsync.yml
 
   # Useful python modules
   - components/py/py-pip.yml

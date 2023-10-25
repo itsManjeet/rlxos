@@ -30,9 +30,6 @@ pre-script: |-
   install -v -D -m 0755 %{build-root}/update-grub.sh %{install-root}/usr/bin/update-grub
   install -v -D  %{build-root}/unicode.pf2 %{install-root}/usr/share/grub/unicode.pf2
 
-post-script: |-
-  patch %{install-root}/%{sysconfdir}/grub.d/10_linux < /patches/grub/0002-use-swupd-for-images
-
 depends:
   - components/gettext.yml
   - components/bash.yml

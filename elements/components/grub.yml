@@ -23,8 +23,9 @@ configure: >
   CXXFLAGS="${CFLAGS}"
 
 pre-script: |
-  patch -Np1 -i /patches/%{id}/grub-2.06-upstream_fixes-1.patch
-  patch util/grub.d/10_linux.in < /patches/%{id}/0001-RLXOS-SYSTEM-IMAGE-SEARCH-SUPPORT.patch
+  patch -Np1 -i /patches/grub/grub-2.06-upstream_fixes-1.patch
+  patch util/grub.d/10_linux.in < /patches/grub/0001-RLXOS-SYSTEM-IMAGE-SEARCH-SUPPORT.patch
+  patch util/grub.d/10_linux.in < /patches/grub/0002-use-swupd-for-images
 
   install -v -D -m 0644 %{build-root}/grub.default %{install-root}/etc/default/grub
   install -v -D -m 0755 %{build-root}/update-grub.sh %{install-root}/usr/bin/update-grub

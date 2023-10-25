@@ -36,11 +36,17 @@ jobs:
             ${INGITE} build boards/${{matrix.board}}/${element}.yml
           done
 
-      - name: Checkout System Image and Installer ISO
+      - name: Checkout System Image
         run: |
-          ${INGITE} checkout boards/${{matrix.board}}/image.yml ${{secrets.CACHE_PATH}}/releases/${{matrix.board}}/${VERSION}/
-          ${INGITE} checkout boards/${{matrix.board}}/usr.yml ${{secrets.CACHE_PATH}}/releases/${{matrix.board}}/${VERSION}/
-      
+          ${INGITE} checkout boards/${{matrix.board}}/usr.yml here
+          mv here/sysroot.img ${{secrets.CACHE_PATH}}/images/${VERSION}
+          zstd -22 ${{secrets.CACHE_PATH}}/images/${VERSION}
+          (cd ${{secrets.CACHE_PATH}}/images; sha256sum *.zst) > ${{secrets.CACHE_PATH}}/images/SHA256SUMS
+
+      - name: Update Installer ISO
+        run: |
+          ${INGITE} checkout boards/${{matrix.board}}/image.yml ${{secrets.CACHE_PATH}}/releases/${{matrix.board}}
+
       - name: Generate Market data
         run: |-
           ${INGITE} generate-market-data ${{secrets.CACHE_PATH}}/$VERSION/

@@ -41,21 +41,21 @@ jobs:
       - name: Checkout System Image
         run: |
           ${INGITE} checkout boards/${{matrix.board}}/usr.yml here
-          mv here/sysroot.img ${{secrets.CACHE_PATH}}/images/${VERSION}
+          mv here/sysroot.img ${{secrets.SERVER_REPO_PATH}}/images/${VERSION}
           if [[ "refs/tags/" =~ ${GITHUB_REF} ]] ; then
-            zstd -22 ${{secrets.CACHE_PATH}}/images/${VERSION}
-            (cd ${{secrets.CACHE_PATH}}/images; find . -type f -regex '.*[0-9]+\.[0-9]+\.zst' -exec sha256sum {} \;) > ${{secrets.CACHE_PATH}}/images/SHA256SUMS
+            zstd -22 ${{secrets.SERVER_REPO_PATH}}/images/${VERSION}
+            (cd ${{secrets.SERVER_REPO_PATH}}/images; find . -type f -regex '.*[0-9]+\.[0-9]+\.zst' -exec sha256sum {} \;) > ${{secrets.SERVER_REPO_PATH}}/images/SHA256SUMS
           else
-            rm ${{secrets.CACHE_PATH}}/images/${VERSION}.gz
-            gzip -9 ${{secrets.CACHE_PATH}}/images/${VERSION}
-            (cd ${{secrets.CACHE_PATH}}/images/; zsyncmake -b 2048 -C -U ${{secrets.SERVER_URL}}/images/${VERSION}.gz ${VERSION}.gz)
+            rm ${{secrets.SERVER_REPO_PATH}}/images/${VERSION}.gz
+            gzip -9 ${{secrets.SERVER_REPO_PATH}}/images/${VERSION}
+            (cd ${{secrets.SERVER_REPO_PATH}}/images/; zsyncmake -b 2048 -C -U ${{secrets.SERVER_REPO_URL}}/images/${VERSION}.gz ${VERSION}.gz)
           fi
           
 
       - name: Update Installer ISO
         run: |
-          ${INGITE} checkout boards/${{matrix.board}}/image.yml ${{secrets.CACHE_PATH}}/releases/
+          ${INGITE} checkout boards/${{matrix.board}}/image.yml ${{secrets.SERVER_REPO_PATH}}/releases/
 
       - name: Generate Market data
         run: |-
-          ${INGITE} generate-market-data ${{secrets.CACHE_PATH}}/$VERSION/
+          ${INGITE} generate-market-data ${{secrets.SERVER_REPO_PATH}}/$VERSION/

@@ -48,7 +48,7 @@ jobs:
           else
             rm ${{secrets.CACHE_PATH}}/images/${VERSION}.gz
             gzip -9 ${{secrets.CACHE_PATH}}/images/${VERSION}
-            (cd ${{secrets.CACHE_PATH}}/images/; zsyncmake -C -U ${{secrets.SERVER_URL}}/images/${VERSION}.gz ${VERSION}.gz)
+            (cd ${{secrets.CACHE_PATH}}/images/; zsyncmake -b 2048 -C -U ${{secrets.SERVER_URL}}/images/${VERSION}.gz ${VERSION}.gz)
           fi
           
 

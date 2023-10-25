@@ -42,7 +42,7 @@ jobs:
         run: |
           ${INGITE} checkout boards/${{matrix.board}}/usr.yml here
           mv here/sysroot.img ${{secrets.CACHE_PATH}}/images/${VERSION}
-          gzip -9 ${{secrets.CACHE_PATH}}/images/${VERSION}
+          gzip -f -9 ${{secrets.CACHE_PATH}}/images/${VERSION}
           if [[ "refs/tags/" =~ ${GITHUB_REF} ]] ; then
             (cd ${{secrets.CACHE_PATH}}/images; find . -type f -regex '.*[0-9]+\.[0-9]+\.gz' -exec sha256sum {} \;) > ${{secrets.CACHE_PATH}}/images/SHA256SUMS
           else

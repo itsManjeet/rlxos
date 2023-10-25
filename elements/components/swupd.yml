@@ -1,0 +1,19 @@
+id: swupd
+version: 0.0.1
+about: Software Manager and Updater daemon
+
+post-script: |-
+  install -vDm 755 %{build-dir}/swupd -t %{install-root}%{bindir}/
+
+  install -vDm 644 /dev/stdin %{install-root}/%{libdir}/tmpfiles.d/swupd.conf << "EOF"
+  d /var/lib/swupd/extensions root root -
+  EOF
+
+depends:
+  - components/curl.yml
+
+build-depends:
+  - components/cmake.yml
+
+sources:
+  - swupd-%{version}.tar.gz::https://github.com/itsManjeet/swupd/archive/refs/heads/main.tar.gz

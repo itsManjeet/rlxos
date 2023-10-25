@@ -1,5 +1,7 @@
 dario.cat/mergo v1.0.0 h1:AGCNq9Evsj31mOgNPcLyXc+4PNABt905YmuqPYYpBWk=
 dario.cat/mergo v1.0.0/go.mod h1:uNxQE+84aUszobStD9th8a29P2fMDhsBdgRYvZOxGmk=
+github.com/distr1/distri v0.0.0-20231012061029-6f616af315aa h1:eaoXeq3j3aqZNuyNqMWm7p+vjqvhklF1WL7teEISTo8=
+github.com/distr1/distri v0.0.0-20231012061029-6f616af315aa/go.mod h1:miaz2LFpYQ4/HWiaJhhcpcUINwsoGG48Ro2hHEzDOJ8=
 github.com/dustin/go-humanize v1.0.1 h1:GzkhY7T5VNhEkwH0PVJgjz+fX1rhBrR7pRT3mDkpeCY=
 github.com/dustin/go-humanize v1.0.1/go.mod h1:Mu1zIs6XwVuF/gI1OepvI0qD18qycQx+mFykh5fBlto=
 github.com/itsmanjeet/framework v0.0.0-20231010170234-a2978b10eaf1 h1:lvkd7p4mPPXC1suOm7BaYlMl9mC25h7U6b8RDPe445g=

@@ -31,7 +31,7 @@ depends:
   - components/gvfs.yml
   - components/xdg-user-dirs-gtk.yml
   - components/srclang.yml
-  - components/layers.yml
+  - components/swupd.yml
 
   # Libraries
   - components/libgtop.yml

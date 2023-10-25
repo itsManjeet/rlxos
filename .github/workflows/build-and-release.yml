@@ -2,9 +2,9 @@ name: Build and Release
 on:
   push:
     tags:
-      - '[0-9]+.[0-9]+.[0-9]+'
+      - '[0-9]+.[0-9]+'
     branches:
-      - '[0-9]+.[0-9]+.[0-9]+'
+      - '[0-9]+.x'
 
 env:
   NO_PRINT_PROGRESS: 1
@@ -40,8 +40,13 @@ jobs:
         run: |
           ${INGITE} checkout boards/${{matrix.board}}/usr.yml here
           mv here/sysroot.img ${{secrets.CACHE_PATH}}/images/${VERSION}
-          zstd -22 ${{secrets.CACHE_PATH}}/images/${VERSION}
-          (cd ${{secrets.CACHE_PATH}}/images; sha256sum *.zst) > ${{secrets.CACHE_PATH}}/images/SHA256SUMS
+          gzip -9 ${{secrets.CACHE_PATH}}/images/${VERSION}
+          if [[ "refs/tags/" ~= ${GITHUB_REF} ]] ; then
+            (cd ${{secrets.CACHE_PATH}}/images; find . -type f -regex '.*[0-9]+\.[0-9]+\.gz' -exec sha256sum {} \;) > ${{secrets.CACHE_PATH}}/images/SHA256SUMS
+          else
+            (cd ${{secrets.CACHE_PATH}}/images/; zsyncmake -C -U ${{secrets.SERVER_URL}}/images/${VERSION}.gz ${VERSION}.gz)
+          fi
+          
 
       - name: Update Installer ISO
         run: |

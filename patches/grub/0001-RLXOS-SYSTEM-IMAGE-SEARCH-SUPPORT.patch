@@ -9,12 +9,14 @@
  	    if grub_file_is_not_garbage "$i" ; then list="$list $i" ; fi
  	done ;;
      *) 
-@@ -192,9 +192,13 @@
+@@ -192,9 +192,15 @@
  submenu_indentation=""
  
  is_top_level=true
 +saved_list="${list}"
-+for rlxos_sys_image in $(ls /sysroot/images | sort -r) $(lsblk -no label | grep "rlxos_image_" | sort -r | sed 's#^#LABEL=#g') ; do
++for rlxos_sys_image in $(swupd sysroot list-images --grub) ; do
++    rd_image=$(echo "$rlxos_sys_images" | cut -d ':' -f2)
++    rlxos_sys_image=$(echo "$rlxos_sys_images" | cut -d ':' -f1)
 +    gettext_printf "System Image: %s\n" "${rlxos_sys_image}" >&2
 +    list="${saved_list}"
  while [ "x$list" != "x" ] ; do
@@ -49,7 +51,7 @@
    fi
 +  
 +  linux_entry "${OS} ${rlxos_sys_image}" "${version}" simple \
-+  "${GRUB_CMDLINE_LINUX} ${GRUB_CMDLINE_LINUX_DEFAULT} rd.image=${rlxos_sys_image}"
++  "${GRUB_CMDLINE_LINUX} ${GRUB_CMDLINE_LINUX_DEFAULT} rd.image=${rd_image}"
  
 -  if [ "x$is_top_level" = xtrue ] && [ "x${GRUB_DISABLE_SUBMENU}" != xtrue ]; then
 -    linux_entry "${OS}" "${version}" simple \
@@ -73,12 +75,12 @@
 -  linux_entry "${OS}" "${version}" advanced \
 -              "${GRUB_CMDLINE_LINUX} ${GRUB_CMDLINE_LINUX_DEFAULT}"
 +  linux_entry "${OS} ${rlxos_sys_image}" "${version}" advanced \
-+              "${GRUB_CMDLINE_LINUX} ${GRUB_CMDLINE_LINUX_DEFAULT} rd.image=${rlxos_sys_image}"
++              "${GRUB_CMDLINE_LINUX} ${GRUB_CMDLINE_LINUX_DEFAULT} rd.image=${rd_image}"
    if [ "x${GRUB_DISABLE_RECOVERY}" != "xtrue" ]; then
 -    linux_entry "${OS}" "${version}" recovery \
 -                "single ${GRUB_CMDLINE_LINUX}"
 +    linux_entry "${OS} ${rlxos_sys_image}" "${version}" recovery \
-+                "single ${GRUB_CMDLINE_LINUX} rd.image=${rlxos_sys_image}"
++                "single ${GRUB_CMDLINE_LINUX} rd.image=${rd_image}"
    fi
 +  
 +  echo '}'

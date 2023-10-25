@@ -13,7 +13,7 @@ env:
 jobs:
   generate-image:
     name: Generate Image
-    runs-on: rlxos-server
+    runs-on: self-hosted
     timeout-minutes: 47000
     strategy:
       matrix:
@@ -54,7 +54,7 @@ jobs:
 
       - name: Update Installer ISO
         run: |
-          ${INGITE} checkout boards/${{matrix.board}}/image.yml ${{secrets.CACHE_PATH}}/releases/${{matrix.board}}
+          ${INGITE} checkout boards/${{matrix.board}}/image.yml ${{secrets.CACHE_PATH}}/releases/
 
       - name: Generate Market data
         run: |-

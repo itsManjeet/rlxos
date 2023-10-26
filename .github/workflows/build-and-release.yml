@@ -8,7 +8,7 @@ on:
 
 env:
   NO_PRINT_PROGRESS: 1
-  INGITE: ./ignite
+  INGITE: ./build/ignite
 
 jobs:
   generate-image:

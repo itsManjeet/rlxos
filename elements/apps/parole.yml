@@ -1,7 +1,7 @@
 id: parole
 version: 4.16.0
 about: Modern media player based on GStreamer framework
-
+merge: [elements/include/appimage.yml]
 variables:
   application-id: org.xfce.parole
   prepare-appimage: |-

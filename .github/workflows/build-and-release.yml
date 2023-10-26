@@ -58,4 +58,4 @@ jobs:
 
       - name: Generate Market data
         run: |-
-          ${INGITE} generate-market-data ${{secrets.SERVER_REPO_PATH}}/$VERSION/
+          ${INGITE} generate-market-data ${{secrets.SERVER_REPO_PATH}}/

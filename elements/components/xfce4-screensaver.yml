@@ -5,6 +5,7 @@ about: Xfce ScreenSaver
 configure: >-
   --disable-static
   --disable-debug
+  --with-pam-auth-type=system
 
 variables:
   run-autogen: false

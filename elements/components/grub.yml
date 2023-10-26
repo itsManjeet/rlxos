@@ -1,6 +1,6 @@
 id: grub
 version: 2.06
-release: 4
+release: 5
 about: GRand Unified Bootloader
 
 environ:
@@ -24,6 +24,7 @@ configure: >
 
 pre-script: |-
   patch -Np1 -i /patches/grub/grub-2.06-upstream_fixes-1.patch
+
   patch util/grub.d/10_linux.in < /patches/grub/0001-RLXOS-SYSTEM-IMAGE-SEARCH-SUPPORT.patch
 
   install -v -D -m 0644 %{build-root}/grub.default %{install-root}/etc/default/grub

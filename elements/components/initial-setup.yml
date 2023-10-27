@@ -13,20 +13,20 @@ post-script: |-
   done
 
   install -vDm0644 /dev/stdin %{install-root}/%{libdir}/sysusers.d/initial-setup.conf << "EOF"
-  u initial-setup - "System Initial Setup" %{localstatedir}/lib/initial-setup
+  u initial-setup 69 "System Initial Setup" %{localstatedir}/lib/initial-setup %{bindir}/bash
   m initial-setup wheel
   EOF
 
   install -vDm0644 /dev/stdin %{install-root}/%{libdir}/tmpfiles.d/initial-setup.conf << "EOF"
-  C %{sysconfdir}/%{id}
+  C %{sysconfdir}/os-innstaller
   C %{localstatedir}/lib/initial-setup
   EOF
 
-  install -vDm 0644 /dev/stdin %{liveconfig}/etc/sudoers.d/initial-setup << "EOF"
+  install -vDm 0644 /dev/stdin %{initial-setup}/etc/sudoers.d/initial-setup << "EOF"
   initial-setup ALL=(ALL) NOPASSWD: ALL
   EOF
 
-  install -vDm0644 /dev/stdin %{install-root}/%{sysconfdir}/lightdm/lightdm.d/12-initial-setup.conf << "EOF"
+  install -vDm0644 /dev/stdin %{install-root}/%{sysconfdir}/lightdm/lightdm.conf.d/12-initial-setup.conf << "EOF"
   [SeatDefaults]
   autologin-user=initial-setup
   autologin-user-timeout=0
@@ -43,6 +43,110 @@ post-script: |-
   Icon=start-here
   Categories=Utility;
   EOF
+
+  install -vDm0644 /dev/stdin %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/xfce4/panel/docklike-4.rc << "EOF"
+  [user]
+  pinned=/apps/share/applications/xfce4-terminal.desktop;/apps/share/applications/firefox.desktop;/usr/share/applications/com.github.p3732.OS-Installer.desktop;
+  EOF
+
+  install -vDm 0644 /dev/stdin %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/xfce4/xfce-perchannel-xml/xfce4-panel.xml << "EOF"
+  <?xml version="1.0" encoding="UTF-8"?>
+  <channel name="xfce4-panel" version="1.0">
+    <property name="configver" type="int" value="2"/>
+    <property name="panels" type="array">
+      <value type="int" value="1"/>
+      <property name="dark-mode" type="bool" value="false"/>
+      <property name="panel-1" type="empty">
+        <property name="position" type="string" value="p=10;x=0;y=0"/>
+        <property name="size" type="uint" value="48"/>
+        <property name="length" type="double" value="100"/>
+        <property name="position-locked" type="bool" value="true"/>
+        <property name="plugin-ids" type="array">
+          <value type="int" value="3"/>
+          <value type="int" value="4"/>
+          <value type="int" value="11"/>
+          <value type="int" value="5"/>
+          <value type="int" value="6"/>
+          <value type="int" value="10"/>
+          <value type="int" value="7"/>
+          <value type="int" value="8"/>
+          <value type="int" value="12"/>
+          <value type="int" value="9"/>
+          <value type="int" value="13"/>
+        </property>
+        <property name="icon-size" type="uint" value="16"/>
+      </property>
+    </property>
+    <property name="plugins" type="empty">
+      <property name="plugin-3" type="string" value="separator">
+        <property name="style" type="uint" value="2"/>
+      </property>
+      <property name="plugin-4" type="string" value="docklike"/>
+      <property name="plugin-5" type="string" value="xkb">
+        <property name="display-type" type="uint" value="2"/>
+        <property name="display-name" type="uint" value="1"/>
+      </property>
+      <property name="plugin-6" type="string" value="notification-plugin"/>
+      <property name="plugin-7" type="string" value="power-manager-plugin"/>
+      <property name="plugin-8" type="string" value="pulseaudio">
+        <property name="enable-keyboard-shortcuts" type="bool" value="true"/>
+      </property>
+      <property name="plugin-9" type="string" value="showdesktop"/>
+      <property name="plugin-10" type="string" value="systray">
+        <property name="icon-size" type="int" value="0"/>
+        <property name="single-row" type="bool" value="true"/>
+        <property name="square-icons" type="bool" value="true"/>
+      </property>
+      <property name="plugin-11" type="string" value="separator">
+        <property name="expand" type="bool" value="true"/>
+        <property name="style" type="uint" value="0"/>
+      </property>
+      <property name="plugin-12" type="string" value="clock">
+        <property name="digital-date-font" type="string" value="Sans 10"/>
+        <property name="digital-time-font" type="string" value="Sans 12"/>
+        <property name="digital-layout" type="uint" value="1"/>
+      </property>
+      <property name="plugin-13" type="string" value="actions">
+        <property name="items" type="array">
+          <value type="string" value="-lockscreen"/>
+          <value type="string" value="-switch-user"/>
+          <value type="string" value="-separator"/>
+          <value type="string" value="-hibernate"/>
+          <value type="string" value="-hybrid-sleep"/>
+          <value type="string" value="-separator"/>
+          <value type="string" value="-shutdown"/>
+          <value type="string" value="-restart"/>
+          <value type="string" value="-separator"/>
+          <value type="string" value="+logout"/>
+          <value type="string" value="-logout-dialog"/>
+        </property>
+        <property name="appearance" type="uint" value="0"/>
+      </property>
+    </property>
+  </channel>
+  EOF
+
+  install -vDm 0644 /dev/stdin %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/xfce4/xfce-perchannel-xml/xfce4-desktop.xml << "EOF"
+  <?xml version="1.0" encoding="UTF-8"?>
+  <channel name="xfce4-desktop" version="1.0">
+    <property name="desktop-icons" type="empty">
+      <property name="icon-size" type="empty"/>
+      <property name="gravity" type="empty"/>
+      <property name="file-icons" type="empty">
+        <property name="show-filesystem" type="empty"/>
+        <property name="show-home" type="bool" value="false"/>
+        <property name="show-trash" type="bool" value="false"/>
+        <property name="show-removable" type="bool" value="false"/>
+      </property>
+      <property name="style" type="int" value="0"/>
+    </property>
+    <property name="desktop-menu" type="empty">
+      <property name="show" type="bool" value="false"/>
+    </property>
+  </channel>
+  EOF
+
+  chown 69:69 %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup -R
 
 depends:
   - components/gnome-desktop.yml

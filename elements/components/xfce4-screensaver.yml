@@ -5,10 +5,15 @@ about: Xfce ScreenSaver
 configure: >-
   --disable-static
   --disable-debug
-  --with-pam-auth-type=system
 
 variables:
   run-autogen: false
+
+post-script: |-
+  install -vDm644 /dev/stdin %{install-root}%{sysconfdir}/pam.d/xfce4-screensaver << "EOF"
+  auth  include   system-auth
+  -auth optional  pam_gnome_keygring.so
+  EOF
 
 depends:
   - components/x11/libxklavier.yml

@@ -49,68 +49,43 @@ echo ''
 EFI_GUID='c12a7328-f81f-11d2-ba4b-00a0c93ec93b'
 [[ -d /sys/firmware/efi ]] && IS_EFI=1
 
-mkdir -p /tmp/definitions/
-
-if [[ -n "$IS_EFI" ]] ; then
-cat >/tmp/definitions/10-efi.conf << "EOF"
-[Partition]
-Type=esp
-Format=vfat
-CopyFiles=/boot
-SizeMinBytes=100M
-SizeMaxBytes=512M
-EOF
-
-fi
-
-cat >/tmp/definitions/20-usr-A.conf << "EOF"
-[Partition]
-Type=usr
-Label=rlxos_usr_0
-SizeMinBytes=4G
-SizeMaxBytes=5G
-EOF
-
-cat >/tmp/definitions/20-usr-B.conf << "EOF"
-[Partition]
-Type=usr
-Label=rlxos_usr_0
-SizeMinBytes=4G
-SizeMaxBytes=5G
-EOF
-
-cat >/tmp/definitions/30-root.conf << "EOF"
-[Partition]
-Type=root
-Label=root
-Format=ext4
-FactoryReset=yes
-GrowFileSystem=yes
-EOF
-
-
 if [ "${OSI_DEVICE_IS_PARTITION}" -ne "1" ] ; then
 
-    echo "PARTITIONING DRIVE"
-    systemd-repart --definitions=/tmp/definitions ${OSI_DEVICE_PATH} --dry-run=no || {
-        echo "PARTITIONING DRIVE FAILED"
-        exit 1
-    }
+    if [ -n $IS_EFI ] ; then
+        sudo parted --script ${OSI_DEVICE_PATH}  \
+        mklabel gpt                     \
+        mkpart primary 1MiB 500MiB      \
+        set 1 esp on                    \
+        mkpart primary 500MiB 100% || {
+            echo "Failed to partition ${OSI_DEVICE_PATH}"
+            exit 1
+        }
+        OSI_DEVICE_EFI_PARTITION=$(lsblk ${OSI_DEVICE_PATH} -no path | sed '2!d')
 
-    OSI_DEVICE_ROOT_PATH=$(lsblk ${OSI_DEVICE_PATH} -no path,label | grep 'root' | awk '{print $1}')
-    OSI_DEVICE_USR_PATH=$(lsblk ${OSI_DEVICE_PATH} -no path,label | grep 'rlxos_usr_0' | head -n1 | awk '{print $1}')
+        echo "EFI PARTITION: ${OSI_DEVICE_EFI_PARTITION}"
+        sudo mkfs.fat -n EFI -F32 ${OSI_DEVICE_EFI_PARTITION} || {
+            echo "Failed to format ${OSI_DEVICE_PATH}"
+            exit 1
+        }
 
-    echo "DEVICE ROOT PATH: ${OSI_DEVICE_ROOT_PATH}"
-    echo "DEVICE USR PATH: ${OSI_DEVICE_USR_PATH}"
-
-    if [[ -z "${OSI_DEVICE_EFI_PARTITION}" ]] && [[ -n "$IS_EFI" ]] ; then
-        echo "Detecting EFI partition"
-        OSI_DEVICE_EFI_PARTITION=$(lsblk ${OSI_DEVICE_PATH} -no parttype,path | grep -iF "${EFI_GUID}" | awk '{print $2}' | head -n1)
+        OSI_DEVICE_PATH=$(lsblk ${OSI_DEVICE_PATH} -no path | sed '3!d')
+    echo "DEVICE PATH: ${OSI_DEVICE_PATH}"
+    else
+        sudo parted --script ${OSI_DEVICE_PATH}  \
+        mklabel msdos                   \
+        mkpart primary 1MiB 100%   || {
+            echo "Failed to partition ${OSI_DEVICE_PATH}"
+            exit 1
+        }
+        OSI_DEVICE_PATH=$(lsblk ${OSI_DEVICE_PATH} -no path | sed '2!d')
+    echo "DEVICE PATH: ${OSI_DEVICE_PATH}"
     fi
 
 else
-    echo "PARITION MODE IS NOT YET SUPPORTED"
-    exit 1
+    if [ -n $IS_EFI ] || [ -z "${OSI_DEVICE_EFI_PARTITION}" ] ; then
+        echo "Detecting EFI partition"
+        OSI_DEVICE_EFI_PARTITION=$(sudo lsblk -no parttype,path | grep -iF "${EFI_GUID}" | awk '{print $2}' | head -n1)
+    fi
 fi
 
 if [[ -z "${OSI_DEVICE_EFI_PARTITION}" ]] && [[ -n "$IS_EFI" ]] ; then
@@ -127,15 +102,29 @@ if [[ -n "$IS_EFI" ]] ; then
 fi
 
 SYSROOT="/.installer-root"
+SYSIMAGE='/run/iso/sysroot.img'
 
-sudo mkdir -p ${SYSROOT}/sysroot/{boot,images} || {
+getval() {
+    unsquashfs -cat $SYSIMAGE share/factory/etc/os-release | grep "$1" | cut -d '=' -f2
+}
+
+ID=$(getval "ID")
+VERSION=$(getval "VERSION")
+KERVER=$(uname -r)
+
+if [[ -z $ID ]] || [[ -z $VERSION ]] ; then
+    echo "Invalid system image, missing required values"
+    exit 1
+fi 
+
+sudo mkdir -p ${SYSROOT}/sysroot/{boot/modules/,images} || {
     echo "failed to create required sysroot path '${SYSROOT}'"
     exit 1
 }
 
-echo "REFORMATTING ${OSI_DEVICE_PATH}"
-sudo dd if=/run/iso/sysroot.img of=${OSI_DEVICE_USR_PATH} bs=1M status=progress || {
-    echo "Failed to reformat ${OSI_DEVICE_USR_PATH}"
+echo "Installing system image $VERSION"
+sudo cp $sysimage ${SYSROOT}/sysroot/images/$VERSION || {
+    echo "failed to install '${SYSROOT}'"
     exit 1
 }
 
@@ -146,44 +135,39 @@ sudo mount ${OSI_DEVICE_ROOT_PATH} ${SYSROOT} || {
 }
 
 
-sudo mkdir -p ${SYSROOT}/boot || {
-    sudo umount ${OSI_DEVICE_PATH}
-
-    echo "Failed to create boot partition ${SYSROOT}/boot"
+suod ln -sv sysroot/boot ${SYSROOT}/boot || {
+    echo "failed to create required symlink"
     exit 1
 }
 
 if [[ -n "$IS_EFI" ]] ; then
-    sudo mount ${OSI_DEVICE_EFI_PARTITION} ${SYSROOT}/boot/ || {
+    sudo mkdir -p ${SYSROOT}/sysroot/efi
+    sudo mount ${OSI_DEVICE_EFI_PARTITION} ${SYSROOT}/sysroot/efi || {
         sudo umount ${OSI_DEVICE_PATH}
 
-        echo "Failed to mount ${OSI_DEVICE_EFI_PARTITION} ${SYSROOT}/boot"
+        echo "Failed to mount ${OSI_DEVICE_EFI_PARTITION} ${SYSROOT}/sysroot/efi"
         exit 1
     }
 fi
 
 cleanup() {
-    [[ -n "$IS_EFI" ]] && sudo umount ${SYSROOT}/boot
+    [[ -n "$IS_EFI" ]] && sudo umount ${SYSROOT}/sysroot/efi/
     sudo umount ${SYSROOT}
 }
 
 trap cleanup EXIT
 
-sudo cp -r /boot/modules ${SYSROOT}/boot/ || {
+sudo cp -r /boot/modules/$KERVER ${SYSROOT}/sysroot/boot/modules/ || {
     echo "failed to installer kernel"
     exit 1
 }
 
 ROOT_UUID=$(sudo lsblk -no uuid ${OSI_DEVICE_ROOT_PATH})
-USR_UUID=$(sudo lsblk -no uuid ${OSI_DEVICE_USR_PATH})
 
 if [[ -n "${IS_EFI}" ]] ; then
     sudo grub-install --boot-directory=${SYSROOT}/boot --efi-directory=${SYSROOT}/boot --root-directory=${SYSROOT} --target=x86_64-efi
 else
-    disk=$(readlink /sys/class/block/$(basename ${OSI_DEVICE_ROOT_PATH}))
-    disk=${disk%/*}
-    disk=/dev/${disk##*/}
-
+    disk="/dev/$(basename $(readlink /sys/class/block/$(basename ${OSI_DEVICE_ROOT_PATH})))"
     sudo grub-install --boot-directory=${SYSROOT}/boot --root-directory=${SYSROOT} --target=i386-pc ${disk}
 fi
 
@@ -196,8 +180,8 @@ set default="RLXOS Initial Setup"
 menuentry "RLXOS Initial Setup" {
     insmod all_video
 
-    linux /boot/modules/$KERVER/bzImage root=UUID=$ROOT_UUID rd.image=${OSI_DEVICE_USR_PATH}
-    initrd /boot/initramfs.img
+    linux /sysroot/boot/modules/$KERVER/bzImage root=UUID=$ROOT_UUID rd.image=/sysroot/images/$VERSION
+    initrd /sysroot/boot/modules/$KERVER/initramfs.img
 }
 
 EOF

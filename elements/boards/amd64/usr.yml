@@ -29,3 +29,6 @@ include:
 
   # Apps
   - boards/amd64/apps.yml
+
+  # Initial Setup
+  - components/initial-setup.yml

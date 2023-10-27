@@ -58,6 +58,7 @@ func (elmnt *Element) Import(filepath string) error {
 
 	elmnt.Check = append(local.Check, elmnt.Check...)
 	elmnt.Environ = append(local.Environ, elmnt.Environ...)
+	elmnt.SkipStrip = append(local.SkipStrip, elmnt.SkipStrip...)
 
 	elmnt.Configure = local.Configure + elmnt.Configure
 	elmnt.Compile = local.Compile + elmnt.Compile

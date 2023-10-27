@@ -46,7 +46,7 @@ jobs:
             zstd -22 ${{secrets.SERVER_REPO_PATH}}/images/${VERSION}
             (cd ${{secrets.SERVER_REPO_PATH}}/images; find . -type f -regex '.*[0-9]+\.[0-9]+\.zst' -exec sha256sum {} \;) > ${{secrets.SERVER_REPO_PATH}}/images/SHA256SUMS
           else
-            rm ${{secrets.SERVER_REPO_PATH}}/images/${VERSION}.gz
+            rm -f ${{secrets.SERVER_REPO_PATH}}/images/${VERSION}.gz
             gzip -9 ${{secrets.SERVER_REPO_PATH}}/images/${VERSION}
             (cd ${{secrets.SERVER_REPO_PATH}}/images/; zsyncmake -b 2048 -C -U ${{secrets.SERVER_REPO_URL}}/images/${VERSION}.gz ${VERSION}.gz)
           fi

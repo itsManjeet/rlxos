@@ -4,7 +4,6 @@ about: System Image [AMD64]
 
 include:
   - boards/amd64/usr.yml
-  - boards/amd64/liveconfig.yml
 
 variables:
   installer-volume-id: RLXOS

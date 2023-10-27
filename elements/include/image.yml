@@ -50,8 +50,11 @@ script: |-
   umount ISO/boot/efiboot
   rm -fr ISO/boot/efiboot
 
+  # TODO: remove liveconfig on initramfs
+  mkdir -p /liveconfig
+  mksquashfs /liveconfig ISO/liveconfig.img
+
   cp -r /sysroot/sysroot.img ISO/
-  cp -r /sysroot/liveconfig.img ISO/
 
   depmod -a ${kerver}
   cp /boot/modules/ ISO/boot/ -rap

@@ -1,0 +1,58 @@
+id: initial-setup
+version: 0.0.1
+about: System Initial Setup
+
+pre-script: |-
+  rm -fr subprojects/blueprint-compiler
+
+post-script: |-
+  install -Dm0644 -t "%{install-root}%{sysconfdir}/os-installer/" /files/%{id}/config.yaml
+
+  for script in configure install prepare ; do
+    install -Dm0644 -t "%{install-root}%{sysconfdir}/os-installer/scripts/" /files/%{id}/${script}.sh
+  done
+
+  install -vDm0644 /dev/stdin %{install-root}/%{libdir}/sysusers.d/initial-setup.conf << "EOF"
+  u initial-setup - "System Initial Setup" %{localstatedir}/lib/initial-setup
+  m initial-setup wheel
+  EOF
+
+  install -vDm0644 /dev/stdin %{install-root}/%{libdir}/tmpfiles.d/initial-setup.conf << "EOF"
+  C %{sysconfdir}/%{id}
+  C %{localstatedir}/lib/initial-setup
+  EOF
+
+  install -vDm 0644 /dev/stdin %{liveconfig}/etc/sudoers.d/initial-setup << "EOF"
+  initial-setup ALL=(ALL) NOPASSWD: ALL
+  EOF
+
+  install -vDm0644 /dev/stdin %{install-root}/%{sysconfdir}/lightdm/lightdm.d/12-initial-setup.conf << "EOF"
+  [SeatDefaults]
+  autologin-user=initial-setup
+  autologin-user-timeout=0
+  autologin-session=xfce
+  EOF
+
+  mkdir -p %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/autostart
+  install -vDm0644 /dev/stdin %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/autostart/initial-setup.desktop << "EOF"
+  [Desktop Entry]
+  Name=Initial Setup
+  Terminal=false
+  Exec=/bin/sudo /usr/bin/os-installer
+  Type=Application
+  Icon=start-here
+  Categories=Utility;
+  EOF
+
+depends:
+  - components/gnome-desktop.yml
+  - components/vte.yml
+  - components/libadwaita.yml
+  - components/udisks.yml
+  - components/libgweather.yml
+  - components/glib-networking.yml
+  - components/py/py-gobject.yml
+  - components/py/py-yaml.yml
+
+sources:
+  - os-installer-%{version}.tar.gz::https://github.com/itsManjeet/os-installer/archive/refs/heads/main.tar.gz

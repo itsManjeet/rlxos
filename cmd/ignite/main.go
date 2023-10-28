@@ -367,7 +367,7 @@ func main() {
 				for elementID, el := range bldr.Pool() {
 					color.Process("Adding %s", elementID)
 					cachefile, _ := bldr.CacheFile(el)
-					if _, err := os.Stat(cachefile); os.IsNotExist(err) {
+					if _, err := os.Stat(cachefile); err != nil {
 						color.Error("%s not yet cached %s", elementID, cachefile)
 						continue
 					}

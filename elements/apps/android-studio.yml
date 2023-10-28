@@ -1,17 +1,35 @@
 id: android-studio
 version: 2021.2.1.14
 about: Android IDE (stable branch)
-release: 0
+merge: [elements/include/appimage.yml]
+
+variables:
+  prepare-appimage: |
+    cp %{install-root}/bin/studio.svg %{install-root}/
+
+    echo "desktopfile: %{id}.desktop" >> %{install-root}/info
+    echo "icon: studio.svg" >> %{install-root}/info
+    echo "bin: studio.sh" >> %{install-root}/info
+
+  skip-libraries: >
+    libc.so*
+
 build-depends:
-- components/appimagetool.yml
-- components/shared-mime-info.yml
+  - components/appimagetool.yml
 sources:
-- https://dl.google.com/dl/android/studio/ide-zips/%{version}/android-studio-%{version}-linux.tar.gz
+  - https://dl.google.com/dl/android/studio/ide-zips/%{version}/android-studio-%{version}-linux.tar.gz
+
 script: |-
-  mv android-studio %{install-root} && cd %{install-root}
+  mv * %{install-root}/
 
-  cp /files/%{id}.svg %{id}.png
-  cp /files/%{id}.desktop .
-  cp /files/AppRun .
-  chmod +x AppRun
-
+  install -vDm0644 /dev/stdin %{install-root}/%{id}.desktop << EOF
+  [Desktop Entry]
+  Version=1.0
+  Type=Application
+  Terminal=false
+  Exec="/bin/studio.sh"
+  Name=Android Studio
+  Comment=Android Integrated Development Environment
+  Categories=Development;
+  Icon=studio
+  EOF

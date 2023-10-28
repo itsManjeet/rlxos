@@ -42,7 +42,6 @@ jobs:
         run: |
           ${IGNITE} checkout boards/${{matrix.board}}/usr.yml here
           mv here/sysroot.img ${{secrets.SERVER_REPO_PATH}}/images/${VERSION}
-          gzip -22 ${{secrets.SERVER_REPO_PATH}}/images/${VERSION}
           rm -f ${{secrets.SERVER_REPO_PATH}}/images/${VERSION}.gz
           gzip -9 ${{secrets.SERVER_REPO_PATH}}/images/${VERSION}
           (cd ${{secrets.SERVER_REPO_PATH}}/images/; zsyncmake -b 2048 -C -U ${{secrets.SERVER_REPO_URL}}/images/${VERSION}.gz ${VERSION}.gz)

@@ -2,14 +2,17 @@ id: initial-setup
 version: 0.0.1
 about: System Initial Setup
 
+variables:
+  commit: 244af1b759f7cd47f7e8f2177923e6e3f64510a1
+
 pre-script: |-
   rm -fr subprojects/blueprint-compiler
 
 post-script: |-
-  install -Dm0644 -t "%{install-root}%{sysconfdir}/os-installer/" /files/%{id}/config.yaml
+  install -Dm0644 -t "%{install-root}%{sysconfdir}/%{id}/" /files/%{id}/config.yaml
 
-  for script in configure install prepare ; do
-    install -Dm0644 -t "%{install-root}%{sysconfdir}/os-installer/scripts/" /files/%{id}/${script}.sh
+  for script in configure install ; do
+    install -Dm0644 -t "%{install-root}%{sysconfdir}/%{id}/scripts/" /files/%{id}/${script}.sh
   done
 
   install -vDm0644 /dev/stdin %{install-root}/%{libdir}/sysusers.d/initial-setup.conf << "EOF"
@@ -159,4 +162,4 @@ depends:
   - components/py/py-yaml.yml
 
 sources:
-  - os-installer-%{version}.tar.gz::https://github.com/itsManjeet/os-installer/archive/refs/heads/main.tar.gz
+  - initial-setup-%{commit}.tar.gz::https://github.com/itsManjeet/rlxos-initial-setup/archive/%{commit}.tar.gz

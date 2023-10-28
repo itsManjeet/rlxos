@@ -69,7 +69,7 @@ if [ "${OSI_DEVICE_IS_PARTITION}" -ne "1" ] ; then
         }
 
         OSI_DEVICE_PATH=$(lsblk ${OSI_DEVICE_PATH} -no path | sed '3!d')
-    echo "DEVICE PATH: ${OSI_DEVICE_PATH}"
+        echo "DEVICE PATH: ${OSI_DEVICE_PATH}"
     else
         sudo parted --script ${OSI_DEVICE_PATH}  \
         mklabel msdos                   \
@@ -78,7 +78,7 @@ if [ "${OSI_DEVICE_IS_PARTITION}" -ne "1" ] ; then
             exit 1
         }
         OSI_DEVICE_PATH=$(lsblk ${OSI_DEVICE_PATH} -no path | sed '2!d')
-    echo "DEVICE PATH: ${OSI_DEVICE_PATH}"
+        echo "DEVICE PATH: ${OSI_DEVICE_PATH}"
     fi
 
 else
@@ -105,7 +105,7 @@ SYSROOT="/.installer-root"
 SYSIMAGE='/run/iso/sysroot.img'
 
 getval() {
-    unsquashfs -cat $SYSIMAGE share/factory/etc/os-release | grep "$1" | cut -d '=' -f2
+    unsquashfs -cat $SYSIMAGE share/factory/etc/os-release | grep "^$1=" | cut -d '=' -f2
 }
 
 ID=$(getval "ID")
@@ -115,28 +115,35 @@ KERVER=$(uname -r)
 if [[ -z $ID ]] || [[ -z $VERSION ]] ; then
     echo "Invalid system image, missing required values"
     exit 1
-fi 
+fi
+
+sudo mkdir -p ${SYSROOT}
+
+echo "Reformating ${OSI_DEVICE_PATH}"
+sudo mkfs.ext4 -F ${OSI_DEVICE_PATH} || {
+    echo "Failed to mkfs.ext4 ${OSI_DEVICE_PATH}"
+    exit 1
+}
+
+echo "MOUNTING ${OSI_DEVICE_PATH} ${SYSROOT}"
+sudo mount ${OSI_DEVICE_PATH} ${SYSROOT} || {
+    echo "Failed to mount ${OSI_DEVICE_PATH}"
+    exit 1
+}
 
 sudo mkdir -p ${SYSROOT}/sysroot/{boot/modules/,images} || {
     echo "failed to create required sysroot path '${SYSROOT}'"
     exit 1
 }
 
-echo "Installing system image $VERSION"
-sudo cp $sysimage ${SYSROOT}/sysroot/images/$VERSION || {
-    echo "failed to install '${SYSROOT}'"
-    exit 1
-}
-
-echo "MOUNTING ${OSI_DEVICE_ROOT_PATH} ${SYSROOT}"
-sudo mount ${OSI_DEVICE_ROOT_PATH} ${SYSROOT} || {
-    echo "Failed to mount ${OSI_DEVICE_ROOT_PATH}"
-    exit 1
-}
-
-
-suod ln -sv sysroot/boot ${SYSROOT}/boot || {
+sudo ln -sv sysroot/boot ${SYSROOT}/boot || {
     echo "failed to create required symlink"
+    exit 1
+}
+
+echo "Installing system image $VERSION"
+sudo cp $SYSIMAGE ${SYSROOT}/sysroot/images/$VERSION || {
+    echo "failed to install '${SYSROOT}'"
     exit 1
 }
 
@@ -162,12 +169,12 @@ sudo cp -r /boot/modules/$KERVER ${SYSROOT}/sysroot/boot/modules/ || {
     exit 1
 }
 
-ROOT_UUID=$(sudo lsblk -no uuid ${OSI_DEVICE_ROOT_PATH})
+ROOT_UUID=$(sudo lsblk -no uuid ${OSI_DEVICE_PATH})
 
 if [[ -n "${IS_EFI}" ]] ; then
-    sudo grub-install --boot-directory=${SYSROOT}/boot --efi-directory=${SYSROOT}/boot --root-directory=${SYSROOT} --target=x86_64-efi
+    sudo grub-install --boot-directory=${SYSROOT}/sysroot/boot --efi-directory=${SYSROOT}/sysroot/efi --root-directory=${SYSROOT} --target=x86_64-efi
 else
-    disk="/dev/$(basename $(readlink /sys/class/block/$(basename ${OSI_DEVICE_ROOT_PATH})))"
+    disk="/dev/$(basename $(readlink /sys/class/block/$(basename ${OSI_DEVICE_PATH})))"
     sudo grub-install --boot-directory=${SYSROOT}/boot --root-directory=${SYSROOT} --target=i386-pc ${disk}
 fi
 

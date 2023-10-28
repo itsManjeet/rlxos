@@ -2,6 +2,10 @@ id: thermald
 version: 2.5.4
 about: Linux Thermal Daemon program
 
+build-type: autotools
+environ:
+  - NOCONFIGURE=1
+
 configure: >-
   --with-dbus-sys-dir=%{datadir}/dbus-1/system.d
 

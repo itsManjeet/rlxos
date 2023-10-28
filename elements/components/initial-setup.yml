@@ -18,11 +18,11 @@ post-script: |-
   EOF
 
   install -vDm0644 /dev/stdin %{install-root}/%{libdir}/tmpfiles.d/initial-setup.conf << "EOF"
-  C %{sysconfdir}/os-innstaller
+  C %{sysconfdir}/os-installer
   C %{localstatedir}/lib/initial-setup
   EOF
 
-  install -vDm 0644 /dev/stdin %{initial-setup}/etc/sudoers.d/initial-setup << "EOF"
+  install -vDm 0644 /dev/stdin %{install-root}/etc/sudoers.d/initial-setup << "EOF"
   initial-setup ALL=(ALL) NOPASSWD: ALL
   EOF
 
@@ -49,7 +49,7 @@ post-script: |-
   pinned=/apps/share/applications/xfce4-terminal.desktop;/apps/share/applications/firefox.desktop;/usr/share/applications/com.github.p3732.OS-Installer.desktop;
   EOF
 
-  install -vDm 0644 /dev/stdin %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/xfce4/xfce-perchannel-xml/xfce4-panel.xml << "EOF"
+  install -vDm 0644 /dev/stdin %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml << "EOF"
   <?xml version="1.0" encoding="UTF-8"?>
   <channel name="xfce4-panel" version="1.0">
     <property name="configver" type="int" value="2"/>
@@ -126,7 +126,7 @@ post-script: |-
   </channel>
   EOF
 
-  install -vDm 0644 /dev/stdin %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/xfce4/xfce-perchannel-xml/xfce4-desktop.xml << "EOF"
+  install -vDm 0644 /dev/stdin %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml << "EOF"
   <?xml version="1.0" encoding="UTF-8"?>
   <channel name="xfce4-desktop" version="1.0">
     <property name="desktop-icons" type="empty">

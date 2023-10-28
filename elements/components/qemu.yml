@@ -1,16 +1,20 @@
 id: qemu
-version: 8.1.0
+version: 8.1.2
 about: A full virtualization solution for Linux on x86 hardware containing virtualization extensions
 
 post-script: |-
-  # install -v -D -m 644 /files/65-kvm.rules -t %{install-root}/usr/lib/udev/rules.d/
+  install -v -D -m 644 /dev/stdin -t %{install-root}/%{libdir}/udev/rules.d/65-kvm.rules << "EOF"
+  KERNEL=="vhost-net", GROUP="kvm", MODE="0660", TAG+="uaccess", OPTIONS+="static_node=vhost-net"
 
-  chgrp kvm %{install-root}/usr/lib/qemu-bridge-helper
-  chmod 4750 %{install-root}/usr/lib/qemu-bridge-helper
+  EOF
+
+  chgrp kvm %{install-root}/%{libdir}/qemu-bridge-helper
+  chmod 4750 %{install-root}/%{libdir}/qemu-bridge-helper
 
 configure: >-
   --audio-drv-list=alsa
   --smbd=/usr/bin/smbd
+  --target-list=x86_64-softmmu
   --enable-modules
   --enable-sdl
   --enable-gtk

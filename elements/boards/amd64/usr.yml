@@ -39,6 +39,9 @@ include:
   # Components
   - components/gvfs.yml
   - components/xdg-user-dirs-gtk.yml
+  - components/cups.yml
+  - components/qemu.yml
+  - components/xdg-utils.yml
   - components/srclang.yml
   - components/swupd.yml
 

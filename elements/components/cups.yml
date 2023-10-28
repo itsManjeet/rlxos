@@ -11,7 +11,7 @@ configure: >-
   --with-system-groups=lpadmin
   --with-rundir=/run/cups
 
-post-script: |
+post-script: |-
   mkdir -p %{install-root}%{sysconfdir}/cups/
   echo "ServerName /run/cups/cups.sock" > %{install-root}%{sysconfdir}/cups/client.conf
   install -v -Dm 644 /dev/stdin %{install-root}%{sysconfdir}/pam.d/%{id} << "EOF"
@@ -25,6 +25,10 @@ post-script: |
   u lp 9 "Print Service User" %{localstatedir}/spool/cups
   EOF
 
+  install -v -Dm 644 /dev/stdin %{install-root}%{libdir}/systemd/system-preset/%{id}.conf << "EOF"
+  enable cups
+  EOF
+
 depends:
   - components/gnutls.yml
   - components/colord.yml
@@ -35,5 +39,3 @@ depends:
   - components/desktop-file-utils.yml
 sources:
   - https://github.com/OpenPrinting/cups/releases/download/v%{version}/cups-%{version}-source.tar.gz
-
-# TODO: fix pam configuration

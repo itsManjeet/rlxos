@@ -11,7 +11,50 @@ variables:
   initial-commands: ""
 
 include:
-  - runtime.yml
+    # Core
+  - components/core.yml
+  - components/release-info.yml
+  - components/pam-config.yml
+  - components/firmware.yml
+  - components/sof-firmware.yml
+  - components/tzdata.yml
+  - components/grub.yml
+  - components/mkinitramfs.yml
+  - components/kbd.yml
+
+  # Utilities
+  - components/e2fsprogs.yml
+  - components/vim.yml
+  - components/squashfs-tools.yml
+  - components/wget.yml
+  - components/sudo.yml
+  - components/zsync.yml
+
+  # Useful python modules
+  - components/py/py-pip.yml
+
+  # AppImage
+  - components/fuse2.yml
+
+  # Components
+  - components/gvfs.yml
+  - components/xdg-user-dirs-gtk.yml
+  - components/srclang.yml
+  - components/swupd.yml
+
+  # Libraries
+  - components/libgtop.yml
+  - components/libwnck.yml
+  - components/libnotify.yml
+  - components/librsvg.yml
+  - components/pulseaudio.yml
+  - components/upower.yml
+  - components/libnvme.yml
+  - components/gstreamer.yml
+  - components/gst-plugins-good.yml
+  - components/gst-plugins-base.yml
+  - components/gst-plugins-bad.yml
+  - components/gst-libav.yml
 
   # Desktop Environment
   - components/xfce4.yml
@@ -26,6 +69,7 @@ include:
   - components/x11/xf86-input-libinput.yml
   - components/x11/xrdb.yml
   - components/x11/iceauth.yml
+  - components/x11/xrandr.yml
 
   # Apps
   - boards/amd64/apps.yml

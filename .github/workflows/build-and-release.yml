@@ -53,7 +53,25 @@ jobs:
           ${IGNITE} checkout boards/${{matrix.board}}/image.yml ${{secrets.SERVER_REPO_PATH}}/releases/
           (cd ${{secrets.SERVER_REPO_PATH}}/releases/; zsyncmake -b 2048 -C -U ${{secrets.SERVER_REPO_URL}}/releases/rlxos-${VERSION}-${{matrix.board}}-image.iso rlxos-${VERSION}-${{matrix.board}}-image.iso)
 
-
       - name: Generate Market data
+        if: github.ref_type == 'tag'
         run: |-
           ${IGNITE} generate-market-data ${{secrets.SERVER_REPO_PATH}}/
+
+      - name: Create changelog text
+        id: changelog
+        uses: loopwerk/tag-changelog@v1
+        if: github.ref_type == 'tag'
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          exclude_types: other,doc,chore,workflow
+
+      - name: Create release
+        uses: actions/create-release@latest
+        if: github.ref_type == 'tag'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: ${{ steps.changelog.outputs.changes }}

@@ -3,7 +3,7 @@ version: 0.0.1
 about: Software Manager and Updater daemon
 
 variables:
-  commit: 03b8113fa02d12a224358c178304b7c9065be746
+  commit: a4f5bb6869614a337db05a7397c934fc3f601c76
 
 post-script: |-
   install -vDm 755 %{build-dir}/swupd -t %{install-root}%{bindir}/

@@ -57,12 +57,6 @@ jobs:
           ${IGNITE} checkout boards/${{matrix.board}}/image.yml ${{secrets.SERVER_REPO_PATH}}/releases/
           (cd ${{secrets.SERVER_REPO_PATH}}/releases/; zsyncmake -b 2048 -C -U ${{secrets.SERVER_REPO_URL}}/releases/rlxos-${VERSION}-${{matrix.board}}-image.iso rlxos-${VERSION}-${{matrix.board}}-image.iso)
 
-      # Build as many apps and layers as possible
-      - name: Build Apps and Layers
-        run: |
-          for element in elements/apps/*.yml elements/layers/*.yml ; do
-            ${IGNITE} build ${element#*/} || true
-          done
 
       - name: Generate Market data
         run: |-

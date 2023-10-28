@@ -76,3 +76,6 @@ include:
 
   # Initial Setup
   - components/initial-setup.yml
+
+  # Laptop and Touch devices
+  - components/2in1.yml

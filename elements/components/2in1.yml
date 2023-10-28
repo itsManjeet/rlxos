@@ -5,7 +5,18 @@ depends:
   - components/x11/xrandr.yml
   - components/x11/xinput.yml
   - components/iio-sensor-proxy.yml
-script: |
+
+script: |-
   mkdir -p %{install-root}/%{bindir}/
   gcc -O2 /files/2in1/2in1.c -o %{install-root}/%{bindir}/2in1
-  install -v -D -m 0644 /files/service.ini %{install-root}/%{libdir}/systemd/user/2in1.service
+
+  install -v -D -m 0644 /dev/stdin %{install-root}/%{libdir}/systemd/user/2in1.service << "EOF"
+  [Unit]
+  Description=2in1 desktop system service
+  ConditionPathExists=/sys/bus/iio/
+  [Service]
+  ExecStart=/usr/bin/2in1
+
+  [Install]
+  WantedBy=graphical.target
+  EOF

@@ -2,6 +2,8 @@ id: qemu
 version: 8.1.2
 about: A full virtualization solution for Linux on x86 hardware containing virtualization extensions
 
+build-type: autotools
+
 post-script: |-
   install -v -D -m 644 /dev/stdin -t %{install-root}/%{libdir}/udev/rules.d/65-kvm.rules << "EOF"
   KERNEL=="vhost-net", GROUP="kvm", MODE="0660", TAG+="uaccess", OPTIONS+="static_node=vhost-net"

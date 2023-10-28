@@ -8,7 +8,7 @@ on:
 
 env:
   NO_PRINT_PROGRESS: 1
-  INGITE: ./build/ignite
+  IGNITE: ./build/ignite
 
 jobs:
   generate-image:
@@ -35,12 +35,12 @@ jobs:
       - name: Generate Element Cache
         run: |
           for element in apps usr image ; do
-            ${INGITE} build boards/${{matrix.board}}/${element}.yml
+            ${IGNITE} build boards/${{matrix.board}}/${element}.yml
           done
 
       - name: Checkout System Image
         run: |
-          ${INGITE} checkout boards/${{matrix.board}}/usr.yml here
+          ${IGNITE} checkout boards/${{matrix.board}}/usr.yml here
           mv here/sysroot.img ${{secrets.SERVER_REPO_PATH}}/images/${VERSION}
           if [[ "refs/tags/" =~ ${GITHUB_REF} ]] ; then
             zstd -22 ${{secrets.SERVER_REPO_PATH}}/images/${VERSION}
@@ -54,8 +54,15 @@ jobs:
 
       - name: Update Installer ISO
         run: |
-          ${INGITE} checkout boards/${{matrix.board}}/image.yml ${{secrets.SERVER_REPO_PATH}}/releases/
+          ${IGNITE} checkout boards/${{matrix.board}}/image.yml ${{secrets.SERVER_REPO_PATH}}/releases/
+
+      # Build as many apps and layers as possible
+      - name: Build Apps and Layers
+        run: |
+          for element in elements/apps/*.yml elements/layers/*.yml ; do
+            ${IGNITE} build ${element#*/} || true
+          done
 
       - name: Generate Market data
         run: |-
-          ${INGITE} generate-market-data ${{secrets.SERVER_REPO_PATH}}/
+          ${IGNITE} generate-market-data ${{secrets.SERVER_REPO_PATH}}/

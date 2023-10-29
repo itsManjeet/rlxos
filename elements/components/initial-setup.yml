@@ -15,6 +15,7 @@ post-script: |-
   u initial-setup 69 "System Initial Setup" %{localstatedir}/lib/initial-setup %{bindir}/bash
   m initial-setup wheel
   EOF
+  
 
   install -vDm0644 /dev/stdin %{install-root}/%{libdir}/tmpfiles.d/initial-setup.conf << "EOF"
   C %{localstatedir}/lib/initial-setup

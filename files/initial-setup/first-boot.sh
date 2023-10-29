@@ -2,7 +2,7 @@
 
 # sanity check that all variables were set
 if [ -z ${ISE_USERNAME+x} ] || \
-   [ -z ${ISI_PASSWORD+x} ]
+   [ -z ${ISE_PASSWORD+x} ]
 then
     echo "Configure script called without all environment variables set!"
     exit 1

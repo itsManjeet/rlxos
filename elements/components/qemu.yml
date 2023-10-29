@@ -5,13 +5,13 @@ about: A full virtualization solution for Linux on x86 hardware containing virtu
 build-type: autotools
 
 post-script: |-
-  install -v -D -m 644 /dev/stdin -t %{install-root}/%{libdir}/udev/rules.d/65-kvm.rules << "EOF"
+  install -v -D -m 644 /dev/stdin %{install-root}/%{libdir}/udev/rules.d/65-kvm.rules << "EOF"
   KERNEL=="vhost-net", GROUP="kvm", MODE="0660", TAG+="uaccess", OPTIONS+="static_node=vhost-net"
 
   EOF
 
-  chgrp kvm %{install-root}/%{libdir}/qemu-bridge-helper
-  chmod 4750 %{install-root}/%{libdir}/qemu-bridge-helper
+  # chgrp kvm %{install-root}/%{libdir}/qemu-bridge-helper
+  chmod -v 4750 %{install-root}/%{libdir}/qemu-bridge-helper
 
 configure: >-
   --audio-drv-list=alsa
@@ -44,3 +44,5 @@ build-depends:
   - components/spice-protocol.yml
 sources:
   - https://download.qemu-project.org/qemu-%{version}.tar.xz
+
+# TODO: fix qemu-bridge-helper ownership

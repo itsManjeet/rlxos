@@ -24,9 +24,9 @@ post-script: |-
     </property>
     <property name="Xft" type="empty">
       <property name="DPI" type="int" value="105"/>
-      <property name="Antialias" type="int" value="-1"/>
+      <property name="Antialias" type="int" value="1"/>
       <property name="Hinting" type="int" value="-1"/>
-      <property name="HintStyle" type="string" value="hintnone"/>
+      <property name="HintStyle" type="string" value="hintfull"/>
       <property name="RGBA" type="string" value="none"/>
       <!-- <property name="Lcdfilter" type="string" value="none"/> -->
     </property>
@@ -50,6 +50,9 @@ post-script: |-
     </property>
     <property name="Gdk" type="empty">
       <property name="WindowScalingFactor" type="int" value="1"/>
+    </property>
+    <property name="Xfce" type="empty">
+      <property name="SyncThemes" type="bool" value="true"/>
     </property>
   </channel>
   EOF

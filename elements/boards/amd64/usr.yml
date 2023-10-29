@@ -8,7 +8,9 @@ variables:
   force-rebuild: true
   strip: false
   variant: "desktop"
-  initial-commands: ""
+  initial-commands: |-
+    # TODO: added this on components/filesystem
+    echo "%{bindir}/bash" >> %{sysroot}/%{sysconfdir}/shells
 
 include:
     # Core

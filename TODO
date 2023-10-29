@@ -1,2 +1,3 @@
 # internal/element: FIX element information hashing
 # components/filesystem: override systemd sysusers.d/basic.conf to create more precise users and groups
+# components/filesystem: added /usr/bin/bash and /bin/sh on shells

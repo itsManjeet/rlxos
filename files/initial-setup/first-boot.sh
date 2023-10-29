@@ -8,25 +8,19 @@ then
     exit 1
 fi
 
-echo 'Configuration started.'
-echo ''
-echo 'Variables set to:'
-echo 'ISE_USERNAME            ' $ISE_USERNAME
-echo ''
-
-echo ":: creating user ${ISE_USERNAME}"
-sudo useradd -G wheel ${ISE_USERNAME} -m || {
+echo ":: Creating user ${ISE_USERNAME}"
+sudo useradd -G wheel ${ISE_USERNAME} -m >/dev/null || {
     echo "failed to create user '${ISE_USERNAME}'"
     exit 1
 }
 
-echo ":: setting up password for user ${ISE_USERNAME}"
+echo ":: Setting up password for user ${ISE_USERNAME}"
 echo "${ISE_USERNAME}":"${ISE_PASSWORD}" | sudo chpasswd || {
     echo "failed to set user password"
     exit 1
 }
 
-echo ":: setting up password for user root"
+echo ":: Setting up password for user root"
 echo "root":"${ISE_PASSWORD}" | sudo chpasswd || {
     echo "failed to set superuser password"
     exit 1
@@ -35,7 +29,7 @@ echo "root":"${ISE_PASSWORD}" | sudo chpasswd || {
 sudo rm -f /etc/lightdm/lightdm.conf.d/*-initial-setup.conf
 
 if [[ ${ISE_AUTOLOGIN} == 1 ]] ; then
-echo ":: enabling autologin for ${ISE_USERNAME}"
+echo ":: Enabling autologin for ${ISE_USERNAME}"
 sudo install -vDm644 /dev/stdin /etc/lightdm/lightdm.conf.d/autologin.conf << EOF
 [SeatDefaults]
 autologin-user=${ISE_USERNAME}
@@ -52,7 +46,7 @@ fi
 #echo ":: setting up timezone: ${ISE_TIMEZONE}"
 #sudo ln -sf /usr/share/zoneinfo/${OSI_TIMEZONE} /etc/localtime
 
-echo ":: updating bootloader"
+echo ":: Updating bootloader"
 sudo update-grub
 
 exit 0

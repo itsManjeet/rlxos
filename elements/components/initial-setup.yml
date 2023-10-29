@@ -6,7 +6,7 @@ variables:
   commit: 07288d6e51fb57c5a4a2836cbe7687d825100d3b
 
 pre-script: |-
-  sed -i 's#xfce4-session-logout#xfce4-session-logout --logout#g' src/Page/Summary/Summary.cxx
+  sed -i 's#xfce4-session-logout#xfce4-session-logout --reboot#g' src/Page/Summary/Summary.cxx
 
 post-script: |-
   install -vDm 755 %{build-dir}/src/initial_setup %{install-root}%{bindir}/initial-setup

@@ -24,14 +24,6 @@ include:
   - components/mkinitramfs.yml
   - components/kbd.yml
 
-  # Utilities
-  - components/e2fsprogs.yml
-  - components/vim.yml
-  - components/squashfs-tools.yml
-  - components/wget.yml
-  - components/sudo.yml
-  - components/zsync.yml
-
   # Useful python modules
   - components/py/py-pip.yml
 
@@ -46,6 +38,13 @@ include:
   - components/xdg-utils.yml
   - components/srclang.yml
   - components/swupd.yml
+  - components/e2fsprogs.yml
+  - components/vim.yml
+  - components/squashfs-tools.yml
+  - components/wget.yml
+  - components/sudo.yml
+  - components/zsync.yml
+  - components/distrobox.yml
 
   # Libraries
   - components/libgtop.yml

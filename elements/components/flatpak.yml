@@ -2,6 +2,8 @@ id: flatpak
 version: 1.15.4
 about: Linux application sandboxing and distribution framework
 
+build-type: autotools
+
 post-script: |
   install -v -D /dev/stdin %{install-root}%{sysconfdir}/profile.d/ << EOF
   if [ -n "$XDG_DATA_HOME" ] && [ -d "$XDG_DATA_HOME/flatpak/exports/bin" ]; then
@@ -23,6 +25,7 @@ configure: >-
   --with-dbus-config-dir=%{datadir}/dbus-1/system.d
 
 depends:
+  - components/appstream.yml
   - components/appstream-glib.yml
   - components/bubblewrap.yml
   - components/dbus.yml
@@ -36,7 +39,6 @@ depends:
   - components/systemd.yml
   - components/py/py-parsing.yml
   - components/xdg-dbus-proxy.yml
-  - components/xdg-desktop-portal.yml
   - components/libseccomp.yml
 build-depends:
   - components/gtk-doc.yml

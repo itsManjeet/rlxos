@@ -44,14 +44,14 @@ jobs:
           mv here/sysroot.img ${{secrets.SERVER_REPO_PATH}}/images/${VERSION}
           rm -f ${{secrets.SERVER_REPO_PATH}}/images/${VERSION}.gz
           gzip -9 ${{secrets.SERVER_REPO_PATH}}/images/${VERSION}
-          (cd ${{secrets.SERVER_REPO_PATH}}/images/; zsyncmake -b 2048 -C -U ${{secrets.SERVER_REPO_URL}}/images/${VERSION}.gz ${VERSION}.gz)
+          (cd ${{secrets.SERVER_REPO_PATH}}/images/; zsyncmake -b 2048 -C -U ${{secrets.SERVER_REPO_URL}}/images/${VERSION} ${VERSION}.gz)
           (cd ${{secrets.SERVER_REPO_PATH}}/images; find . -type f -regex '.*[0-9]+\.[0-9]+\.gz' -exec sha256sum {} \;) > ${{secrets.SERVER_REPO_PATH}}/images/SHA256SUMS
           
 
       - name: Update Installer ISO
         run: |
           ${IGNITE} checkout boards/${{matrix.board}}/image.yml ${{secrets.SERVER_REPO_PATH}}/releases/
-          (cd ${{secrets.SERVER_REPO_PATH}}/releases/; zsyncmake -b 2048 -C -U ${{secrets.SERVER_REPO_URL}}/releases/rlxos-${VERSION}-${{matrix.board}}-image.iso rlxos-${VERSION}-${{matrix.board}}-image.iso)
+          (cd ${{secrets.SERVER_REPO_PATH}}/releases/; zsyncmake -b 2048 -C -u ${{secrets.SERVER_REPO_URL}}/releases/rlxos-${VERSION}-${{matrix.board}}-image.iso rlxos-${VERSION}-${{matrix.board}}-image.iso)
 
       - name: Generate Market data
         if: github.ref_type == 'tag'

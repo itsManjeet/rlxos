@@ -1,0 +1,49 @@
+--- glade-app.c	2023-10-29 08:24:15.032028726 +0000
++++ glade-app.c.new	2023-10-29 09:22:20.087465358 +0000
+@@ -160,25 +160,10 @@
+ static void
+ build_package_paths (void)
+ {
+-  const gchar *path;
+ 
+-  path = g_getenv (GLADE_ENV_PIXMAP_DIR);
+-  if (path)
+-    pixmaps_dir = g_strdup (path);
+-
+-#if defined (G_OS_WIN32) || defined (MAC_BUNDLE)
+-  gchar *prefix;
+-
+-# ifdef G_OS_WIN32
+-  prefix = g_win32_get_package_installation_directory_of_module (NULL);
+-
+-# else // defined (MAC_BUNDLE)
+-  prefix = quartz_application_get_resource_path ();
+-
+-# endif
+-
+-  if (!pixmaps_dir)
+-    pixmaps_dir = g_build_filename (prefix, "share", PACKAGE_NAME, "pixmaps", NULL);
++  const gchar* prefix;
++  prefix = g_getenv ("GLADE_ENV_PREFIX");
++  pixmaps_dir = g_build_filename (prefix, "share", PACKAGE_NAME, "pixmaps", NULL);
+ 
+   catalogs_dir = g_build_filename (prefix, "share", PACKAGE_NAME, "catalogs", NULL);
+   modules_dir = g_build_filename (prefix, "lib", PACKAGE_NAME, "modules", NULL);
+@@ -186,17 +171,6 @@
+   bin_dir = g_build_filename (prefix, "bin", NULL);
+   lib_dir = g_build_filename (prefix, "lib", NULL);
+ 
+-  g_free (prefix);
+-#else
+-  catalogs_dir = g_strdup (GLADE_CATALOGSDIR);
+-  modules_dir = g_strdup (GLADE_MODULESDIR);
+-
+-  if (!pixmaps_dir)
+-    pixmaps_dir = g_strdup (GLADE_PIXMAPSDIR);
+-  locale_dir = g_strdup (GLADE_LOCALEDIR);
+-  bin_dir = g_strdup (GLADE_BINDIR);
+-  lib_dir = g_strdup (GLADE_LIBDIR);
+-#endif
+ }
+ 
+ /* initialization function for libgladeui (not GladeApp) */

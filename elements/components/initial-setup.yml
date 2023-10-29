@@ -32,6 +32,16 @@ post-script: |-
   autologin-session=xfce
   EOF
 
+  install -vDm0644 /dev/stdin %{install-root}/%{datadir}/polkit-1/rules.d/10-initial-setup.rules << "EOF"
+  polkit.addRule(function(action, subject) {
+    if ((action.id == "org.gnome.gparted") &&
+          subject.local && subject.active &&
+          subject.user == "initial-setup") {
+      return polkit.Result.YES;
+    }
+  });
+  EOF
+
   mkdir -p %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/autostart
   install -vDm0644 /dev/stdin %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/autostart/initial-setup.desktop << "EOF"
   [Desktop Entry]
@@ -39,23 +49,23 @@ post-script: |-
   Terminal=false
   Exec=/usr/bin/initial-setup
   Type=Application
-  Icon=start-here
+  Icon=system-os-installer
   Categories=Utility;
   EOF
 
-  install -vDm0644 /dev/stdin %{install-root}/%{datadir}/%{id}/initial-setup.desktop << "EOF"
+  install -vDm0644 /dev/stdin %{install-root}/%{datadir}/applications/initial-setup.desktop << "EOF"
   [Desktop Entry]
   Name=Initial Setup
   Terminal=false
   Exec=/usr/bin/initial-setup
   Type=Application
-  Icon=start-here
+  Icon=system-os-installer
   Categories=Utility;
   EOF
 
   install -vDm0644 /dev/stdin %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/xfce4/panel/docklike-4.rc << "EOF"
   [user]
-  pinned=/apps/share/applications/xfce4-terminal.desktop;/apps/share/applications/firefox.desktop;/usr/share/applications/gparted.desktop;/usr/share/%{id}/initial-setup.desktop;
+  pinned=/apps/share/applications/xfce4-terminal.desktop;/apps/share/applications/firefox.desktop;/usr/share/applications/gparted.desktop;/usr/share/applications/initial-setup.desktop;
   EOF
 
   install -vDm 0644 /dev/stdin %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml << "EOF"

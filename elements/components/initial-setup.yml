@@ -3,16 +3,12 @@ version: 0.0.1
 about: System Initial Setup
 
 variables:
-  commit: 244af1b759f7cd47f7e8f2177923e6e3f64510a1
-
-pre-script: |-
-  rm -fr subprojects/blueprint-compiler
+  commit: 07288d6e51fb57c5a4a2836cbe7687d825100d3b
 
 post-script: |-
-  install -Dm0644 -t "%{install-root}%{sysconfdir}/%{id}/" /files/%{id}/config.yaml
-
-  for script in configure install ; do
-    install -Dm0644 -t "%{install-root}%{sysconfdir}/%{id}/scripts/" /files/%{id}/${script}.sh
+  install -vDm 755 %{build-dir}/src/initial_setup %{install-root}%{bindir}/initial-setup
+  for script in first-boot installer ; do
+    install -Dm0644 -t "%{install-root}%{datadir}/%{id}/" /files/%{id}/${script}.sh
   done
 
   install -vDm0644 /dev/stdin %{install-root}/%{libdir}/sysusers.d/initial-setup.conf << "EOF"
@@ -21,7 +17,6 @@ post-script: |-
   EOF
 
   install -vDm0644 /dev/stdin %{install-root}/%{libdir}/tmpfiles.d/initial-setup.conf << "EOF"
-  C %{sysconfdir}/os-installer
   C %{localstatedir}/lib/initial-setup
   EOF
 
@@ -41,7 +36,17 @@ post-script: |-
   [Desktop Entry]
   Name=Initial Setup
   Terminal=false
-  Exec=/bin/sudo /usr/bin/os-installer
+  Exec=/usr/bin/initial-setup
+  Type=Application
+  Icon=start-here
+  Categories=Utility;
+  EOF
+
+  install -vDm0644 /dev/stdin %{install-root}/%{datadir}/%{id}/initial-setup.desktop << "EOF"
+  [Desktop Entry]
+  Name=Initial Setup
+  Terminal=false
+  Exec=/usr/bin/initial-setup
   Type=Application
   Icon=start-here
   Categories=Utility;
@@ -49,7 +54,7 @@ post-script: |-
 
   install -vDm0644 /dev/stdin %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/xfce4/panel/docklike-4.rc << "EOF"
   [user]
-  pinned=/apps/share/applications/xfce4-terminal.desktop;/apps/share/applications/firefox.desktop;/usr/share/applications/com.github.p3732.OS-Installer.desktop;
+  pinned=/apps/share/applications/xfce4-terminal.desktop;/apps/share/applications/firefox.desktop/usr/share/applications/gparted.desktop;/usr/share/%{id}/initial-setup.desktop;
   EOF
 
   install -vDm 0644 /dev/stdin %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml << "EOF"
@@ -152,14 +157,9 @@ post-script: |-
   chown 69:69 %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup -R
 
 depends:
-  - components/gnome-desktop.yml
-  - components/vte.yml
-  - components/libadwaita.yml
-  - components/udisks.yml
-  - components/libgweather.yml
-  - components/glib-networking.yml
-  - components/py/py-gobject.yml
-  - components/py/py-yaml.yml
+  - components/gtkmm.yml
+  - components/glib.yml
+  - components/gparted.yml
 
 sources:
-  - initial-setup-%{commit}.tar.gz::https://github.com/itsManjeet/rlxos-initial-setup/archive/%{commit}.tar.gz
+  - initial-setup-%{commit}.tar.gz::https://github.com/itsManjeet/initial-setup/archive/%{commit}.tar.gz

@@ -2,6 +2,19 @@ id: peek
 version: 1.5.1
 about: Simple screen recoder with an easy to use interface
 
+variables:
+  prepare-appimage: |
+    glib-compile-schemas %{install-root}%{datadir}/glib-2.0/schemas
+    cp %{install-root}/%{datadir}/applications/com.uploadedlobster.peek.desktop %{install-root}/
+    cp %{install-root}/%{datadir}/icons/hicolor/scalable/apps/com.uploadedlobster.peek.svg %{install-root}/
+
+    echo "desktopfile: com.uploadedlobster.peek.desktop" >> %{install-root}/info
+    echo "icon: com.uploadedlobster.peek.svg" >> %{install-root}/info
+    echo "bin: %{id}" >> %{install-root}/info
+
+  skip-libraries: >
+    libc.so*
+
 build-depends:
   - components/ffmpeg.yml
   - components/gtk.yml
@@ -14,12 +27,6 @@ build-depends:
   - components/appimagetool.yml
 sources:
   - peek-%{version}.tar.gz::https://github.com/phw/peek/archive/refs/tags/%{version}.tar.gz
-post-script: |2-
 
-  # compile glib schemas
-  glib-compile-schemas %{install-root}%{datadir}/glib-2.0/schemas
 
-  cp /files/peek.desktop %{install-root}/
-  cp /files/peek.svg %{install-root}/%{id}.png
-  mkdir -p %{install-root}/usr/lib/
-  install -v -D -m 0755 /files/AppRun -t %{install-root}/
+merge: [elements/include/appimage.yml]

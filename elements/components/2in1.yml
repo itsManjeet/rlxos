@@ -18,5 +18,5 @@ script: |-
   ExecStart=/usr/bin/2in1
 
   [Install]
-  WantedBy=graphical.target
+  WantedBy=default.target
   EOF

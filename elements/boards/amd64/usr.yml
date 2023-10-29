@@ -10,7 +10,7 @@ variables:
   variant: "desktop"
   initial-commands: |-
     # TODO: added this on components/filesystem
-    echo "%{bindir}/bash" >> %{sysroot}/%{sysconfdir}/shells
+    echo -e "\n%{bindir}/bash" >> %{sysroot}/%{sysconfdir}/shells
 
 include:
     # Core

@@ -99,8 +99,13 @@ func Open(filepath string, environ []string, variables map[string]string) (*Elem
 		}
 	}
 	elmnt.Variables = updatedVariables
-	elmnt.Variables["id"] = elmnt.Id
-	elmnt.Variables["version"] = elmnt.Version
+	if _, ok := elmnt.Variables["id"]; !ok {
+		elmnt.Variables["id"] = elmnt.Id
+	}
+	if _, ok := elmnt.Variables["version"]; !ok {
+		elmnt.Variables["version"] = elmnt.Version
+	}
+
 	// elmnt.Variables["release"] = fmt.Sprint(elmnt.Release)
 
 	mergedEnviron := []string{}
@@ -118,6 +123,10 @@ func Open(filepath string, environ []string, variables map[string]string) (*Elem
 
 	for i := range elmnt.Environ {
 		elmnt.Environ[i] = elmnt.resolveVariable(elmnt.Environ[i])
+	}
+
+	for key, value := range elmnt.Variables {
+		elmnt.Variables[key] = elmnt.resolveVariable(value)
 	}
 
 	elmnt.BuildDir = elmnt.resolveVariable(elmnt.BuildDir)

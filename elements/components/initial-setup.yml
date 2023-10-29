@@ -8,7 +8,7 @@ variables:
 post-script: |-
   install -vDm 755 %{build-dir}/src/initial_setup %{install-root}%{bindir}/initial-setup
   for script in first-boot installer ; do
-    install -Dm0644 -t "%{install-root}%{datadir}/%{id}/" /files/%{id}/${script}.sh
+    install -Dm0644 -t "%{install-root}%{libdir}/%{id}/" /files/%{id}/${script}.sh
   done
 
   install -vDm0644 /dev/stdin %{install-root}/%{libdir}/sysusers.d/initial-setup.conf << "EOF"

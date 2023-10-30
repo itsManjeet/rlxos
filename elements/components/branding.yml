@@ -18,4 +18,4 @@ script: |-
     done
     
     mkdir -p %{install-root}%{datadir}/icons/
-    convert -background none /files/branding/rlxos-logo-simple-white.svg %{install-root}%{datadir}/icons/rlxos-plymouth-logo.png
+    convert -background none -resize 64x24 /files/branding/rlxos-logo-simple-white.svg %{install-root}%{datadir}/icons/rlxos-plymouth-logo.png

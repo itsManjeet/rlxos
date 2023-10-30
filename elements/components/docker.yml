@@ -39,7 +39,7 @@ script: |-
   install -D -m 0755 moby-%{version}/bundles/dynbinary-daemon/docker-proxy \
       %{install-root}/%{bindir}/docker-proxy
 
-  install -Dm755 %{build-root}/tini-static-amd64 "$pkgdir/usr/bin/docker-init"
+  install -Dm755 %{build-root}/tini-static-amd64 "%{install-root}/%{bindir}/docker-init"
 
 
   ln -s containerd %{install-root}/%{bindir}/docker-containerd

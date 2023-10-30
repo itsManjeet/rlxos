@@ -1,0 +1,16 @@
+id: thunar
+version: 4.18.7
+about: Xfce file manager
+
+depends:
+  - components/exo.yml
+  - components/hicolor-icon-theme.yml
+  - components/libgudev.yml
+  - components/libnotify.yml
+  - components/gvfs.yml
+  - components/pcre.yml
+  - components/libexif.yml
+  - components/tumbler.yml
+
+sources:
+  - https://archive.xfce.org/src/xfce/thunar/%{version:1}/thunar-%{version}.tar.bz2

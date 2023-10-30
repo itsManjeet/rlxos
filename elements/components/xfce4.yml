@@ -13,6 +13,8 @@ depends:
   - components/xfce4-settings.yml
   - components/xfconf.yml
   - components/xfdesktop.yml
+  - components/thunar.yml
+  - components/xfce4-terminal.yml
   - components/xfwm4.yml
   - components/xfce4-session.yml
   - components/xfce4-whiskermenu-plugin.yml

@@ -1,9 +1,9 @@
 id: initial-setup
-version: 0.0.3
+version: 0.0.4
 about: System Initial Setup
 
 variables:
-  commit: 07288d6e51fb57c5a4a2836cbe7687d825100d3b
+  commit: 8d9a5e8dfe4d9841b9369ed1a3bfb289e47dd11f
 
 pre-script: |-
   sed -i 's#xfce4-session-logout#xfce4-session-logout --logout#g' src/Page/Summary/Summary.cxx

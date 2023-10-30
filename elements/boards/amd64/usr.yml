@@ -47,6 +47,7 @@ include:
   - components/sudo.yml
   - components/zsync.yml
   - components/distrobox.yml
+  - components/flatpak.yml
 
   # Libraries
   - components/libgtop.yml

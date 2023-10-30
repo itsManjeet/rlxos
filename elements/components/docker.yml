@@ -1,7 +1,8 @@
 id: docker
 version: 24.0.6
 about: Pack, ship and run any application as a lightweight container
-
+variables:
+  tini-version: 0.19.0
 build-dir: "."
 
 script: |-
@@ -38,6 +39,8 @@ script: |-
   install -D -m 0755 moby-%{version}/bundles/dynbinary-daemon/docker-proxy \
       %{install-root}/%{bindir}/docker-proxy
 
+  install -Dm755 %{build-root}/tini-static-amd64 "$pkgdir/usr/bin/docker-init"
+
 
   ln -s containerd %{install-root}/%{bindir}/docker-containerd
   ln -s containerd-shim %{install-root}/%{bindir}/docker-containerd-shim
@@ -65,3 +68,4 @@ build-depends:
 sources:
   - https://github.com/moby/moby/archive/v%{version}/moby-%{version}.tar.gz
   - https://github.com/docker/cli/archive/v%{version}/cli-%{version}.tar.gz
+  - https://github.com/krallin/tini/releases/download/v%{tini-version}/tini-static-amd64

@@ -1,8 +1,10 @@
 #!/bin/bash
 
 # sanity check that all variables were set
-if [ -z ${ISE_USERNAME+x} ] || \
-   [ -z ${ISE_PASSWORD+x} ]
+if [ -z ${ISE_USERNAME+x}  ] || \
+   [ -z ${ISE_PASSWORD+x}  ] || \
+   [ -z ${ISE_AUTOLOGIN+x} ] || \
+   [ -z ${ISE_UPDATE_ROOT_PASSWORD+x} ]
 then
     echo "Configure script called without all environment variables set!"
     exit 1
@@ -20,15 +22,17 @@ echo "${ISE_USERNAME}":"${ISE_PASSWORD}" | sudo chpasswd || {
     exit 1
 }
 
+if [[ ${ISE_UPDATE_ROOT_PASSWORD} -eq 1 ]] ; then
 echo ":: Setting up password for user root"
 echo "root":"${ISE_PASSWORD}" | sudo chpasswd || {
     echo "failed to set superuser password"
     exit 1
 }
+fi
 
 sudo rm -f /etc/lightdm/lightdm.conf.d/*-initial-setup.conf
 
-if [[ ${ISE_AUTOLOGIN} == 1 ]] ; then
+if [[ ${ISE_AUTOLOGIN} -eq 1 ]] ; then
 echo ":: Enabling autologin for ${ISE_USERNAME}"
 sudo install -vDm644 /dev/stdin /etc/lightdm/lightdm.conf.d/autologin.conf << EOF
 [SeatDefaults]

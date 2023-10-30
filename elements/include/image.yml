@@ -59,7 +59,7 @@ script: |-
   depmod -a ${kerver}
   cp /boot/modules/ ISO/boot/ -rap
 
-  mkinitramfs -u -k=${kerver} --no-plymouth -o=$(pwd)/ISO/boot/modules/${kerver}/initramfs.img
+  mkinitramfs -u -k=${kerver} -o=$(pwd)/ISO/boot/modules/${kerver}/initramfs.img
 
   mkdir -p %{install-root}/
   xorriso -as mkisofs \
@@ -89,5 +89,6 @@ build-depends:
   - components/cryptsetup.yml
   - components/squashfs-tools.yml
   - components/syslinux.yml
+  - components/plymouth.yml
 
   - kernel/linux.yml

@@ -5,40 +5,27 @@ about: A graphical boot splash screen with KMS
 depends:
   - components/libdrm.yml
   - components/pango.yml
+  - components/gtk.yml
   - components/systemd.yml
   - components/x11/xf86-video-fbdev.yml
+build-depends:
   - components/docbook-xsl.yml
 sources:
   - https://gitlab.freedesktop.org/plymouth/plymouth/-/archive/%{version}/plymouth-%{version}.tar.gz
-script: |-
-  ./autogen.sh \
-    --prefix=/usr \
-    --exec-prefix=/usr \
-    --sysconfdir=/etc \
-    --localstatedir=/var \
-    --libdir=/usr/lib \
-    --libexecdir=/usr/lib \
-    --sbindir=/usr/bin \
-    --enable-systemd-integration \
-    --enable-drm \
-    --enable-tracing \
-    --enable-pango \
-    --enable-gtk=no \
-    --with-release-file=%{sysconfdir}/os-release \
-    --with-logo=%{datadir}/plymouth/rlxos-logo.png \
-    --with-background-color=0x000000 \
-    --with-background-start-color-stop=0x000000 \
-    --with-background-end-color-stop=0x4D4D4D \
-    --without-rhgb-compat-link \
-    --without-system-root-install \
+
+environ:
+  - NOCONFIGURE=1
+
+build-type: autotools
+
+pre-script: |-
+  sed -i 's/dracut -f/mkinitramfs/' scripts/plymouth-update-initrd
+  sed -i 's/^Theme=spinner$/Theme=bgrt/' src/plymouthd.defaults
+
+configure: >-
+    --runstatedir=/run
     --with-runtimedir=/run
+    --with-logo=%{datadir}/icons/rlxos-logo.png
 
-  make
-
-  make DESTDIR="%{install-root}" install
-
-  # cp /files/logo/logo.png %{install-root}%{datadir}/plymouth/rlxos-logo.png
-
-  # cp /files/plymouthd.conf %{install-root}%{sysconfdir}/plymouth/plymouthd.conf
-
-# TODO: fix configurations
+post-script: |-
+    install -D -m 0644 /files/logo.png %{install-root}/%{datadir}/plymouth/themes/spinner/watermark.png

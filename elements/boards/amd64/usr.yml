@@ -25,6 +25,7 @@ include:
   - components/grub.yml
   - components/mkinitramfs.yml
   - components/kbd.yml
+  - components/plymouth.yml
 
   # Useful python modules
   - components/py/py-pip.yml

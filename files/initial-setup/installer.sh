@@ -118,7 +118,7 @@ set default="RLXOS Initial Setup"
 menuentry "RLXOS Initial Setup" {
     insmod all_video
 
-    linux /sysroot/boot/modules/$KERVER/bzImage root=UUID=$ROOT_UUID rd.image=/sysroot/images/$VERSION
+    linux /sysroot/boot/modules/$KERVER/bzImage root=UUID=$ROOT_UUID rd.image=/sysroot/images/$VERSION quiet splash loglevel=3 systemd.show_status=auto udev.log_level=3
     initrd /sysroot/boot/modules/$KERVER/initramfs.img
 }
 

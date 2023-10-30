@@ -12,8 +12,6 @@ variables:
     # TODO: added this on components/filesystem
     echo -e "\n%{bindir}/bash" >> %{sysroot}/%{sysconfdir}/shells
 
-    install -D -m 0644 /files/logo.png %{sysroot}/%{datadir}/icons/rlxos-logo.png
-
 include:
     # Core
   - components/core.yml
@@ -25,6 +23,7 @@ include:
   - components/grub.yml
   - components/mkinitramfs.yml
   - components/kbd.yml
+  - components/branding.yml
   - components/plymouth.yml
 
   # Useful python modules

@@ -1,0 +1,12 @@
+id: xfce4-terminal
+version: 1.1.0
+about: A modern terminal emulator primarily for Xfce4
+
+depends:
+  - components/intltool.yml
+  - components/hicolor-icon-theme.yml
+  - components/libxfce4ui.yml
+  - components/vte.yml
+
+sources:
+  - https://archive.xfce.org/src/apps/xfce4-terminal/%{version:1}/xfce4-terminal-%{version}.tar.bz2

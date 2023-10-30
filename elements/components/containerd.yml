@@ -1,11 +1,29 @@
 id: containerd
-version: 1.5.2
+version: 1.7.8
 about: An open and reliable container runtime
 
+variables:
+  commit: 8e4b0bde866788eec76735cc77c4720144248fb7
+environ:
+  - GO111MODULE=auto
+
 script: |-
-  export GOPATH=%{build-root}
-  mkdir -p %{install-root}/%{prefix}
-  cp -a %{build-root}/bin %{install-root}/%{prefix}
+  mkdir -p src/github.com/%{id}
+
+  cd src/github.com/%{id}
+  ln -s %{build-root}/%{id}-%{version} %{id}
+  cd %{id}
+
+  make GIT_COMMIT=%{commit}
+  sed -i 's,/sbin,/usr/bin,;s,/usr/local,/usr,' containerd.service
+
+  make PREFIX=%{prefix} DESTDIR=%{install-root} install
+  install -Dm644 %{id}.service ${install-root}/%{libdir}/systemd/system/%{id}.service
+
+  install -vDm644 /dev/stdin %{install-root}/%{libdir}/systemd/system-preset/%{id}.preset << "EOF"
+  enable %{id}
+  EOF
+
 
 depends:
   - components/runc.yml
@@ -15,6 +33,4 @@ build-depends:
   - components/go.yml
   - components/git.yml
 sources:
-  - https://github.com/containerd/containerd/releases/download/v%{version}/containerd-%{version}-linux-amd64.tar.gz
-
-# TODO: build from source
+  - containerd-%{version}.tar.gz::https://github.com/containerd/containerd/archive/refs/tags/v%{version}.tar.gz

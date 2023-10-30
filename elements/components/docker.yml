@@ -49,6 +49,10 @@ script: |-
   install -D -m 0755 moby-%{version}/contrib/init/systemd/docker.{service,socket} -t %{install-root}/usr/lib/systemd/system/
   install -D -m 0644 moby-%{version}/contrib/udev/80-docker.rules %{install-root}/usr/lib/udev/rules.d/80-docker.rules
 
+  install -D -m 0644 /dev/stdin %{install-root}%{libdir}/sysusers.d/docker.conf << "EOF"
+  g docker 72
+  EOF
+
 depends:
   - components/containerd.yml
   - components/runc.yml

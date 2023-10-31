@@ -3,3 +3,8 @@ authors = ["Manjeet Singh <itsmanjeet1998@gmail.com>"]
 language = "en"
 multilingual = false
 src = "."
+
+[preprocessor.pagetoc]
+[output.html]
+additional-css = ["theme/pagetoc.css"]
+additional-js  = ["theme/pagetoc.js"]

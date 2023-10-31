@@ -48,6 +48,7 @@ include:
   - components/zsync.yml
   - components/distrobox.yml
   - components/flatpak.yml
+  - components/appimage.yml
 
   # Libraries
   - components/libgtop.yml

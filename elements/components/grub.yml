@@ -30,6 +30,7 @@ pre-script: |-
   install -v -D -m 0644 %{build-root}/grub.default %{install-root}/etc/default/grub
   install -v -D -m 0755 %{build-root}/update-grub.sh %{install-root}/usr/bin/update-grub
   install -v -D  %{build-root}/unicode.pf2 %{install-root}/usr/share/grub/unicode.pf2
+  
 
 depends:
   - components/gettext.yml

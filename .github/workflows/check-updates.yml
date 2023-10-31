@@ -7,14 +7,14 @@ on:
 jobs:
   check-updates:
     name: check-updates
-    runs-on: rlxos-server
+    runs-on: self-hosted
     timeout-minutes: 46000
 
     steps:
       - uses: actions/checkout@v1
 
-      - name: Cleanup build cache
-        run: make clean
+      - name: Compile Ignite
+        run: make
 
       - name: Check Updates
-        run: make check-updates
+        run: ./build/ignite check-update

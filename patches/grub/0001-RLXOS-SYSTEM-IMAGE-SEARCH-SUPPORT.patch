@@ -14,7 +14,7 @@
  
  is_top_level=true
 +saved_list="${list}"
-+for rlxos_sys_image in $(swupd sysroot list-images --grub) ; do
++for rlxos_sys_image in $(swupd sysroot list-images --grub | sort -r) ; do
 +    rd_image=$(echo "$rlxos_sys_image" | cut -d ':' -f2)
 +    rlxos_sys_image=$(echo "$rlxos_sys_image" | cut -d ':' -f1)
 +    gettext_printf "System Image: %s\n" "${rlxos_sys_image}" >&2

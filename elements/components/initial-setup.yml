@@ -4,6 +4,7 @@ about: System Initial Setup
 
 variables:
   commit: f7073c684bd2e863419f764e8a3de4394d42e94d
+  release: 2
 
 pre-script: |-
   sed -i 's#xfce4-session-logout#xfce4-session-logout --logout#g' src/Page/Summary/Summary.cxx

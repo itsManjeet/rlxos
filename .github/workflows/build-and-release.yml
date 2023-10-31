@@ -53,6 +53,13 @@ jobs:
           ${IGNITE} checkout boards/${{matrix.board}}/image.yml ${{secrets.SERVER_REPO_PATH}}/releases/
           (cd ${{secrets.SERVER_REPO_PATH}}/releases/; zsyncmake -b 2048 -C -u ${{secrets.SERVER_REPO_URL}}/releases/rlxos-${VERSION}-${{matrix.board}}-image.iso rlxos-${VERSION}-${{matrix.board}}-image.iso)
 
+      - name: Build All Apps
+        if: github.ref_type == 'tag'
+        run: |-
+          for app in elements/apps/*.yml ; do
+            ${IGNITE} build ${app#*/}
+          done
+
       - name: Generate Market data
         if: github.ref_type == 'tag'
         run: |-

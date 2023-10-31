@@ -3,7 +3,6 @@ on:
   push:
     paths-ignore:
       - 'docs/**'
-      - .github/workflow/update-docs.yml
   workflow_dispatch:
 
 env:
@@ -57,10 +56,9 @@ jobs:
           - desktop
           - workstation
     env:
-      RELEASE_DIR: ${{ secrets.RELEASE_DIR }}
+      RELEASE_DIR: "${{ secrets.SERVER_REPO_PATH }}/releases/stable/"
       OSTREE_REPO: ${{ secrets.OSTREE_REPO }}
       OSTREE_GPG: ${{ secrets.OSTREE_GPG }}
-      MIRROR_DIR: ${{ secrets.MIRROR }}
     steps:
       - uses: actions/checkout@v1
       - name: BUILD
@@ -73,53 +71,3 @@ jobs:
       
       - name: Update ostree
         run: VARIANT="${{matrix.variant}}" REF="system/repo.bst" make update-ostree
-
-      - name: Syncing Mirror
-        run: rsync -avW --inplace --progress ${RELEASE_DIR} ${MIRROR_DIR}
-  
-  publish:
-    name: Publish On social media
-    runs-on: self-hosted
-    needs: release
-    environment: POST
-    env:
-      COMMUNITY_TOKEN: ${{ secrets.COMMUNITY_TOKEN }}
-    steps:
-      - uses: actions/checkout@v1
-      - name: Send Telegram Notification
-        uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: |
-            ${{ github.event.commits[0].message }}
-
-            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
-
-      # - name: send Twitter Notification
-      #   uses: ethomson/send-tweet-action@v1
-      #   with:
-      #     status: |
-      #       ${{ github.event.commits[0].message }}
-
-      #       See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
-
-      #     consumer-key: ${{ secrets.TWITTER_CONSUMER_API_KEY }}
-      #     consumer-secret: ${{ secrets.TWITTER_CONSUMER_API_SECRET }}
-      #     access-token: ${{ secrets.TWITTER_ACCESS_TOKEN }}
-      #     access-token-secret: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}
-
-      # - name: Update community.rlxos.dev
-      #   run: |
-      #     curl -X POST https://community.rlxos.dev/api/discussions -H "Authorization: Token ${COMMUNITY_TOKEN}" -H "Content-Type: application/json" -d '{"data": {"attributes": {"title": "${{ github.event.commits[0].message }}", "content": "see changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}"}, "type": "disucssions"}}'
-        
-      - uses: bluwy/release-for-reddit-action@v1
-        with:
-          username: ${{ secrets.REDDIT_USERNAME }}
-          password: ${{ secrets.REDDIT_PASSWORD }}
-          app-id: ${{ secrets.REDDIT_APP_ID }}
-          app-secret: ${{ secrets.REDDIT_APP_SECRET }}
-          subreddit: rlxos_dev
-          url: https://rlxos.dev/
-          title: ${{ github.event.commits[0].message }}
-          comment: 'see changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}'

@@ -1,3 +1,0 @@
-# Summary
-
-- [Welcome](./README.md)

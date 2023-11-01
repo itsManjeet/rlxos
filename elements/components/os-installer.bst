@@ -30,3 +30,4 @@ config:
   install-commands:
   - mkdir -p %{install-root}/%{prefix}
   - cp -r bin share %{install-root}/%{prefix}/
+  - chmod 755 %{install-root}/%{bindir}/os-installer

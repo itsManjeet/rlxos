@@ -59,14 +59,20 @@ config:
       os-installer.json
 
   - |
-    install -Dm755 -t "%{install-root}%{indep-libdir}/initial-setup/" \
-      installer.sh
+    install -Dm644 -t "%{install-root}%{sysconfdir}/os-installer/" \
+      config.yaml
+    
+  - |
+    for script in configure install prepare ; do
+      install -Dm755 -t "%{install-root}%{sysconfdir}/os-installer/scripts" \
+        ${script}.sh
 
-    sed -i 's#@@VOLUME_ID@@#%{installer-volume-id}#g' \
-      "%{install-root}%{indep-libdir}/initial-setup/installer.sh"
+      sed -i 's#@@VOLUME_ID@@#%{installer-volume-id}#g' \
+        "%{install-root}%{sysconfdir}/os-installer/scripts/${script}.sh"
 
-    sed -i 's#@@OSTREE_BRANCH@@#%{ostree-branch}#g' \
-      "%{install-root}%{indep-libdir}/initial-setup/installer.sh"
+      sed -i 's#@@OSTREE_BRANCH@@#%{ostree-branch}#g' \
+        "%{install-root}%{sysconfdir}/os-installer/scripts/${script}.sh"
+    done
 
   - |
     mkdir -p %{install-root}%{sysconfdir}/sudoers.d/

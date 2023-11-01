@@ -26,6 +26,7 @@ jobs:
     environment: EXPERIMENTAL
 
     env:
+      RELEASE_DIR: "${{ secrets.SERVER_REPO_PATH }}/releases/experimental/"
       OSTREE_REPO: ${{ secrets.OSTREE_REPO }}
       OSTREE_GPG: ${{ secrets.OSTREE_GPG }}
 
@@ -36,7 +37,7 @@ jobs:
         run: ${BST} -o variant experimental build installer/image.bst
         
       - name: Checkout Image
-        run: ${BST} -o variant experimental artifact checkout installer/image.bst --directory ${{ secrets.DAILY_DIR }} --force
+        run: ${BST} -o variant experimental artifact checkout installer/image.bst --directory ${RELEASE_DIR} --force
 
       - name: Generate Changelog
         run: echo "${{ github.event.head_commit.message }}" > commit_body

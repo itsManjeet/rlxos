@@ -1,17 +1,11 @@
-kind: meson
+kind: manual
 
 sources:
 - kind: git_tag
   url: github:itsmanjeet/os-installer.git
   track: main
-  submodules:
-    subprojects/blueprint-compiler:
-      checkout: true
-      url: https://gitlab.gnome.org/jwestman/blueprint-compiler.git
 
-
-  ref: 0.2-206-g1bac620df522893cc976c903047b3e3538111288
-
+  ref: deaf530d1c1fb33e244149208336eddf422b0bc2
 depends:
 - freedesktop-sdk.bst:bootstrap-import.bst
 - freedesktop-sdk.bst:components/gnupg.bst
@@ -31,3 +25,8 @@ build-depends:
 
 runtime-depends:
 - components/gnome-session.bst
+
+config:
+  install-commands:
+  - mkdir -p %{install-root}/%{prefix}
+  - cp -r bin share %{install-root}/%{prefix}/

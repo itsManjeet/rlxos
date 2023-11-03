@@ -40,18 +40,18 @@ jobs:
 
       - name: Checkout System Image
         run: |
-          ${IGNITE} checkout boards/${{matrix.board}}/usr.yml here
-          mv here/sysroot.img ${{secrets.SERVER_REPO_PATH}}/images/${VERSION}
-          rm -f ${{secrets.SERVER_REPO_PATH}}/images/${VERSION}.gz
-          gzip -9 ${{secrets.SERVER_REPO_PATH}}/images/${VERSION}
-          (cd ${{secrets.SERVER_REPO_PATH}}/images/; zsyncmake -b 2048 -C -U ${{secrets.SERVER_REPO_URL}}/images/${VERSION} ${VERSION}.gz)
-          (cd ${{secrets.SERVER_REPO_PATH}}/images; find . -type f -regex '.*[0-9]+\.[0-9]+\.gz' -exec sha256sum {} \;) > ${{secrets.SERVER_REPO_PATH}}/images/SHA256SUMS
+          mkdir -p ${{secrets.SERVER_REPO_PATH}}/images/${VERSION%.*}.x/${VERSION}/
+          ${IGNITE} checkout boards/${{matrix.board}}/usr.yml ${{secrets.SERVER_REPO_PATH}}/images/${VERSION%.*}.x/${VERSION}/
+          rm -f ${{secrets.SERVER_REPO_PATH}}/images/${VERSION%.*}.x/${VERSION}/sysroot.img.gz
+          gzip -9 ${{secrets.SERVER_REPO_PATH}}/images/${VERSION%.*}.x/${VERSION}/sysroot.img
+          (cd ${{secrets.SERVER_REPO_PATH}}/images/${VERSION%.*}.x/${VERSION}/; zsyncmake -b 2048 -C -U ${{secrets.SERVER_REPO_URL}}/images/${VERSION%.*}.x/${VERSION}/sysroot.img sysroot.img.gz)
 
 
       - name: Update Installer ISO
         run: |
-          ${IGNITE} checkout boards/${{matrix.board}}/image.yml ${{secrets.SERVER_REPO_PATH}}/releases/
-          (cd ${{secrets.SERVER_REPO_PATH}}/releases/; zsyncmake -b 2048 -C -u ${{secrets.SERVER_REPO_URL}}/releases/rlxos-${VERSION}-${{matrix.board}}-image.iso rlxos-${VERSION}-${{matrix.board}}-image.iso)
+          mkdir -p ${{secrets.SERVER_REPO_PATH}}/releases/${VERSION%.*}.x/${VERSION}/
+          ${IGNITE} checkout boards/${{matrix.board}}/image.yml ${{secrets.SERVER_REPO_PATH}}/releases/${VERSION%.*}.x/${VERSION}/
+          (cd ${{secrets.SERVER_REPO_PATH}}/releases/${VERSION%.*}.x/${VERSION}/; zsyncmake -b 2048 -C -u ${{secrets.SERVER_REPO_URL}}/releases/${VERSION%.*}.x/${VERSION}/rlxos-${VERSION}-${{matrix.board}}-image.iso rlxos-${VERSION}-${{matrix.board}}-image.iso)
 
       - name: Build All Apps
         if: github.ref_type == 'tag'

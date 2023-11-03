@@ -353,9 +353,10 @@ func main() {
 				outputPath := s[0]
 				iconsPath := path.Join(outputPath, "icons")
 				appsPath := path.Join(outputPath, "apps")
+				layersPath := path.Join(outputPath, "layers")
 				jsonPath := path.Join(outputPath, "origin")
 
-				for _, dir := range []string{iconsPath, appsPath} {
+				for _, dir := range []string{iconsPath, appsPath, layersPath} {
 					err := os.MkdirAll(dir, 0755)
 					if err != nil {
 						return err
@@ -413,6 +414,12 @@ func main() {
 						}
 					} else if strings.HasPrefix(elementID, "layers/") {
 						elementType = element.ElementTypeLayer
+
+						if output, err := exec.Command("cp", cachefile, path.Join(layersPath, fmt.Sprintf("%s.layer", el.Id))).CombinedOutput(); err != nil {
+							color.Error("failed to copy layer '%s': %s %v", elementID, string(output), err)
+							continue
+						}
+
 					}
 
 					metadata = append(metadata, element.Metadata{

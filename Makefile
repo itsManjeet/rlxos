@@ -16,8 +16,6 @@ Expire-Date: 0
 %echo finished
 endef
 
-
-
 export OSTREE_GPG_CONFIG
 export VARIANT
 

@@ -25,23 +25,6 @@ if [[ -n "$IS_EFI" ]] ; then
 fi
 
 SYSROOT="/.installer-root"
-SYSIMAGE='/run/iso/sysroot.img'
-
-getval() {
-    unsquashfs -cat $SYSIMAGE share/factory/etc/os-release | grep "^$1=" | cut -d '=' -f2
-}
-
-ID=$(getval "ID")
-VERSION=$(getval "VERSION")
-KERVER=$(uname -r)
-
-echo ":: System Version: ${VERSION}"
-echo ":: Kernel Version: ${KERVER}"
-
-if [[ -z $ID ]] || [[ -z $VERSION ]] ; then
-    echo "Invalid system image, missing required values"
-    exit 1
-fi
 
 sudo mkdir -p ${SYSROOT}
 
@@ -58,23 +41,16 @@ sudo mount ${ISE_ROOT} ${SYSROOT} || {
 }
 
 echo ":: Creating System Hierarchy"
-sudo mkdir -p ${SYSROOT}/{boot/swupd/${VERSION},sysroot/images} || {
+sudo mkdir -p ${SYSROOT}/boot || {
+    sudo umount ${SYSROOT}
     echo "failed to create required sysroot path '${SYSROOT}'"
     exit 1
 }
 
-echo ":: Installing system image $VERSION"
-sudo cp $SYSIMAGE ${SYSROOT}/sysroot/images/$VERSION || {
-    echo "failed to install '${SYSROOT}'"
-    exit 1
-}
-
 if [[ -n "$IS_EFI" ]] ; then
-    sudo mkdir -p ${SYSROOT}/efi
-    sudo mount ${ISE_EFI} ${SYSROOT}/efi || {
+    sudo mount ${ISE_EFI} ${SYSROOT}/boot || {
         sudo umount ${ISE_ROOT}
-
-        echo "Failed to mount ${ISE_EFI} ${SYSROOT}/efi"
+        echo "Failed to mount ${ISE_EFI} ${SYSROOT}/boot"
         exit 1
     }
 fi
@@ -86,40 +62,69 @@ cleanup() {
 
 trap cleanup EXIT
 
-echo ":: Installing kernel ${KERVER}"
 
-sudo cp -r /lib/modules/$KERVER/{bzImage,initramfs} ${SYSROOT}/boot/swupd/${VERSION}/ || {
-    echo "failed to installer kernel"
+sudo mkdir -p ${SYSROOT}/ostree/repo || {
+    echo "failed to create repo dir"
     exit 1
 }
 
-echo "rd.image=/sysroot/images/$VERSION quiet splash loglevel=3 systemd.show_status=auto udev.log_level=3" >${SYSROOT}/boot/swupd/${VERSION}/config
+echo ":: Creating OStree Repository"
+sudo ostree init --repo=${SYSROOT}/ostree/repo --mode=bare || {
+    echo "failed to install '${SYSROOT}'"
+    exit 1
+}
+
+echo ":: Cloning OStree into the device (this might take a while)"
+sudo ostree --repo=${SYSROOT}/ostree/repo pull-local "/ostree/repo" @@OSTREE_BRANCH@@ || {
+    echo "failed to clone OStree repository"
+    exit 1
+}
+
+echo ":: Creating OStree filesystem"
+sudo ostree admin init-fs ${SYSROOT} || {
+    echo "failed to creating ostree filesystem"
+    exit 1
+}
+
+echo ":: Initializing OStree filesystem"
+sudo ostree admin os-init --sysroot=${SYSROOT} rlxos || {
+    echo "failed to initialize os roots"
+    exit 1
+}
 
 ROOT_UUID=$(sudo lsblk -no uuid ${ISE_ROOT})
 
+echo ":: Deploying OStree"
+sudo ostree admin deploy --os="rlxos"   \
+    --sysroot="${SYSROOT}" @@OSTREE_BRANCH@@ \
+    --karg="rw" --karg="quiet" --karg="splash" \
+    --karg="root=UUID=$ROOT_UUID" || {
+    echo "failed to deploy OStree"
+    exit 1
+}
+
+echo ":: Setting up origin"
+sudo ostree admin set-origin --sysroot="${SYSROOT}" \
+    --index=0 rlxos https://ostree.rlxos.dev/ @@OSTREE_BRANCH@@ || {
+    echo "failed to setup origin"
+    exit 1
+}
+
+sudo ostree remote delete rlxos --repo=${SYSROOT}/ostree/repo
+
+echo ":: Installing boot files"
+sudo cp -fr "${SYSROOT}"/ostree/boot.1/rlxos/*/*/boot/EFI/ "${SYSROOT}"/boot/ || {
+    echo "failed to install boot files"
+    exit 1
+}
+
 echo ":: Installing Bootloader"
 if [[ -n "${IS_EFI}" ]] ; then
-    sudo grub-install --boot-directory=${SYSROOT}/boot --efi-directory=${SYSROOT}/efi --root-directory=${SYSROOT} --target=x86_64-efi
+    sudo bootctl --esp-path=${SYSROOT}/boot --boot-path=${SYSROOT}/boot install
 else
     disk="/dev/$(basename $(readlink -f /sys/class/block/$(basename ${ISE_ROOT})/..))"
     sudo grub-install --boot-directory=${SYSROOT}/boot --root-directory=${SYSROOT} --target=i386-pc ${disk}
 fi
-
-KERVER=$(uname -r)
-
-echo ":: Configuring Bootloader"
-sudo install -vDm644 /dev/stdin ${SYSROOT}/boot/grub/grub.cfg << EOF
-set timeout=10
-set default="RLXOS Initial Setup"
-
-menuentry "RLXOS Initial Setup" {
-    insmod all_video
-
-    linux /boot/swupd/${VERSION}/bzImage root=UUID=$ROOT_UUID rd.image=/sysroot/images/$VERSION quiet splash loglevel=3 systemd.show_status=auto udev.log_level=3
-    initrd /boot/swupd/${VERSION}/initramfs.img
-}
-
-EOF
 
 # Sleep for 2 seconds
 sleep 2

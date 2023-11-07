@@ -2,11 +2,17 @@ id: srclang
 version: 0.0.1
 about: An Easy to learn programming Language
 
+variables:
+  commit: 92e6d27e9a61f19ef0b73c74493bfb628c2195ce
+
 configure: >-
   -DCMAKE_BUILD_TYPE=Release
 
 post-script: |-
-  install -vDm 0755 -t %{install-root}/%{bindir} %{build-dir}/%{id} 
+  install -vDm 0755 -t %{install-root}/%{bindir} %{build-dir}/%{id}
+  mkdir -p %{install-root}%{libdir}/srclang/
+  cp -ar modules/* %{install-root}%{libdir}/srclang/
+
 depends:
   - components/glibc.yml
   - components/readline.yml
@@ -15,4 +21,4 @@ build-depends:
   - components/gcc.yml
 
 sources:
-  - srclang-%{version}.tar.gz::https://github.com/itsManjeet/srclang/archive/refs/heads/master.tar.gz
+  - srclang-%{commit}.tar.gz::https://github.com/itsManjeet/srclang/archive/%{commit}.tar.gz

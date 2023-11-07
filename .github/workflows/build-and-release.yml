@@ -45,7 +45,7 @@ jobs:
       - name: Update OStree repository
         run: |
           echo "${{ github.event.head_commit.message }}" > commit_body
-          OSTREE_BRANCH="%{version}/${{matrix.collection}}" make update-ostree
+          OSTREE_BRANCH="%{VERSION}/${{matrix.collection}}" make update-ostree
 
       - name: Building Installer ISO
         run: |

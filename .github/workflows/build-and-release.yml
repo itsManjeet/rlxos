@@ -34,7 +34,7 @@ jobs:
           version: "${VERSION}"
           variables:
             collection: "${{matrix.collection}}"
-            ostree-branch: "%{version}/${{matrix.collection}}"
+            ostree-branch: "${VERSION}/${{matrix.collection}}"
           EOF
           echo "VERSION=${VERSION}"   >> $GITHUB_ENV
 

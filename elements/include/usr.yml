@@ -10,6 +10,8 @@ script: |-
   mkinitramfs -u -k=$(ls -1 %{libdir}/modules | head -n1)
   EOT
 
+  echo "%{cmdline}" > config
+
   %{initial-commands}
 
   cat > %{sysroot}%{libdir}/tmpfiles.d/extra-etc.conf << "EOF"

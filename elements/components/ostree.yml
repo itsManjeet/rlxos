@@ -10,11 +10,11 @@ configure: >-
     --libexecdir=%{libdir}/ostree/
     --with-openssl
     --with-modern-grub
-    --with-grub2-mkconfig-path=%{bindir}/grub-mkconfig
+    --with-builtin-grub2-mkconfig
     --enable-experimental-api
     --without-avahi
     --enable-man=yes
-    --with-dracut=yesbutnoconf
+    --with-dracut
     --with-ed25519-libsodium
     --disable-static
 

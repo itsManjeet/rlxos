@@ -3,12 +3,9 @@ merge: [version.yml, elements/include/image.yml]
 about: System Image [AMD64]
 
 include:
-  - boards/amd64/usr.yml
+  - boards/amd64/repo.yml
 
 variables:
   installer-volume-id: RLXOS
-  include-root: /sysroot
-  root-password: rlxos
-  cmdline: live root=LABEL=RLXOS console=tty0 console=ttyS0
-  strip: false
-  force-rebuild: true
+  include-root: /source-repo
+  ostree-branch: "x86_64/experimental/xfce4"

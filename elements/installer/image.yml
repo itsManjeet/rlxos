@@ -1,0 +1,10 @@
+id: installer
+merge: [version.yml, elements/include/image.yml]
+about: System Installer
+
+include:
+  - system/repo.yml
+
+variables:
+  installer-volume-id: RLXOS
+  include-root: /source-repo

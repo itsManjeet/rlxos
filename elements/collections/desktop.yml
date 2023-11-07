@@ -1,0 +1,28 @@
+id: desktop
+merge: [version.yml, elements/include/meta.yml]
+
+depends:
+- collections/core.yml
+- components/plymouth.yml
+
+# AppImage
+- components/fuse2.yml
+
+# Components
+- components/gvfs.yml
+- components/xdg-user-dirs-gtk.yml
+- components/qemu.yml
+- components/xdg-utils.yml
+- components/flatpak.yml
+- components/appimage.yml
+
+# X11
+- components/x11/xserver.yml
+- components/x11/xinit.yml
+- components/x11/xf86-input-libinput.yml
+- components/x11/xrdb.yml
+- components/x11/iceauth.yml
+- components/x11/xrandr.yml
+
+# Laptop and Touch devices
+- components/2in1.yml

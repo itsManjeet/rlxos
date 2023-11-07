@@ -139,6 +139,10 @@ func Open(filepath string, environ []string, variables map[string]string) (*Elem
 	elmnt.Compile = elmnt.resolveVariable(elmnt.Compile)
 	elmnt.Install = elmnt.resolveVariable(elmnt.Install)
 
+	if collection, ok := elmnt.Variables["include-collection"]; ok {
+		elmnt.Include = append(elmnt.Include, collection)
+	}
+
 	return elmnt, nil
 }
 

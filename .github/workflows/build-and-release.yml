@@ -1,10 +1,8 @@
 name: Build and Release
 on:
   push:
-    tags:
-      - '[0-9]+.[0-9]+'
-    branches:
-      - '[0-9]+.x'
+    paths-ignore:
+      - 'docs/**'
 
 env:
   NO_PRINT_PROGRESS: 1
@@ -17,8 +15,8 @@ jobs:
     timeout-minutes: 47000
     strategy:
       matrix:
-        board:
-          - amd64
+        collection:
+          - xfce4
     steps:
       - uses: actions/checkout@v1
 
@@ -29,56 +27,27 @@ jobs:
       - name: Prerequisties
         run: |
           VERSION=${GITHUB_REF#refs/*/}
-          echo "version: ${VERSION}" > version.yml
+          cat > version.yml << EOF
+          version: "${VERSION}"
+          variables:
+            collection: "${{matrix.collection}}"
+            ostree-branch: "%{version}/${{matrix.collection}}"
+          EOF
           echo "VERSION=${VERSION}"   >> $GITHUB_ENV
 
-      - name: Generate Element Cache
+      - name: Building System Repository
         run: |
-          for element in apps usr image ; do
-          ${IGNITE} build boards/${{matrix.board}}/${element}.yml
-          done
+          ${IGNITE} build system/repo.yml
 
-      - name: Checkout System Image
+      - name: Update OStree repository
         run: |
-          mkdir -p ${{secrets.SERVER_REPO_PATH}}/images/${VERSION%.*}.x/${VERSION}/
-          ${IGNITE} checkout boards/${{matrix.board}}/usr.yml ${{secrets.SERVER_REPO_PATH}}/images/${VERSION%.*}.x/${VERSION}/
-          rm -f ${{secrets.SERVER_REPO_PATH}}/images/${VERSION%.*}.x/${VERSION}/sysroot.img.gz
-          gzip -9 ${{secrets.SERVER_REPO_PATH}}/images/${VERSION%.*}.x/${VERSION}/sysroot.img
-          (cd ${{secrets.SERVER_REPO_PATH}}/images/${VERSION%.*}.x/${VERSION}/; zsyncmake -b 2048 -C -U ${{secrets.SERVER_REPO_URL}}/images/${VERSION%.*}.x/${VERSION}/sysroot.img sysroot.img.gz)
+          echo "${{ github.event.head_commit.message }}" > commit_body
+          OSTREE_BRANCH="%{version}/${{matrix.collection}}" make update-ostree
 
+      - name: Building Installer ISO
+        run: |
+          ${IGNITE} build installer/image.yml
 
       - name: Update Installer ISO
         run: |
-          mkdir -p ${{secrets.SERVER_REPO_PATH}}/releases/${VERSION%.*}.x/${VERSION}/
-          ${IGNITE} checkout boards/${{matrix.board}}/image.yml ${{secrets.SERVER_REPO_PATH}}/releases/${VERSION%.*}.x/${VERSION}/
-          (cd ${{secrets.SERVER_REPO_PATH}}/releases/${VERSION%.*}.x/${VERSION}/; zsyncmake -b 2048 -C -u ${{secrets.SERVER_REPO_URL}}/releases/${VERSION%.*}.x/${VERSION}/rlxos-${VERSION}-${{matrix.board}}-image.iso rlxos-${VERSION}-${{matrix.board}}-image.iso)
-
-      - name: Build All Apps
-        if: github.ref_type == 'tag'
-        run: |-
-          for app in elements/apps/*.yml ; do
-          ${IGNITE} build ${app#*/}
-          done
-
-      - name: Generate Market data
-        if: github.ref_type == 'tag'
-        run: |-
-          ${IGNITE} generate-market-data ${{secrets.SERVER_REPO_PATH}}/
-
-      - name: Create changelog text
-        id: changelog
-        uses: loopwerk/tag-changelog@v1
-        if: github.ref_type == 'tag'
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          exclude_types: other,doc,chore,workflow
-
-      - name: Create release
-        uses: actions/create-release@latest
-        if: github.ref_type == 'tag'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: ${{ steps.changelog.outputs.changes }}
+          ${IGNITE} checkout installer/image.yml ${{secrets.SERVER_REPO_PATH}}/releases/

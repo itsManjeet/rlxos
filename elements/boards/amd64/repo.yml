@@ -1,15 +1,10 @@
 id: amd64-usr
 about: amd64 usr
-merge: [version.yml, elements/include/usr.yml]
+merge: [version.yml, elements/include/ostree.yml]
 
 variables:
-  sysroot: "/sysroot"
   include-root: "/sysroot"
-  force-rebuild: true
-  strip: false
-  variant: "desktop"
-  cmdline: ""
-  initial-commands: ""
+  ostree-branch: "x86_64/experimental/xfce4"
 
 include:
     # Core
@@ -20,9 +15,10 @@ include:
   - components/sof-firmware.yml
   - components/tzdata.yml
   - components/grub.yml
-  - components/mkinitramfs.yml
+  - components/dracut.yml
   - components/kbd.yml
   - components/branding.yml
+  - components/ostree.yml
   - components/plymouth.yml
 
   - kernel/linux.yml
@@ -79,9 +75,6 @@ include:
   - components/x11/xrdb.yml
   - components/x11/iceauth.yml
   - components/x11/xrandr.yml
-
-  # Apps
-  - boards/amd64/apps.yml
 
   # Initial Setup
   - components/initial-setup.yml

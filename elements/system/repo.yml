@@ -1,0 +1,52 @@
+id: system-repo
+about: System Repository
+merge: [version.yml, elements/include/ostree.yml]
+
+
+variables:
+  include-root: "/sysroot"
+  include-collection: "collections/%{collection}.yml"
+  initial-commands: |-
+    chroot %{include-root} /bin/bash << "EOT"
+    if [ -d %{localstatedir}/lib/integrations ] ; then
+      for i in %{localstatedir}/lib/integrations/* ; do
+        echo "=> integrating $(basename $i)"
+        sh -e $i
+      done
+    fi
+    
+    mkdir -p /sysroot
+    ln -sv /sysroot/ostree /ostree
+    
+    echo "LANG=en_IN.utf-8" > /etc/locale.conf
+    ln -sfv /usr/share/zoneinfo/UTC /etc/localtime
+    
+    kerver=$(ls -1 /lib/modules | head -n1)
+    cp /lib/modules/${kerver}/bzImage /lib/modules/${kerver}/vmlinuz
+    
+    dracut -v --no-machineid \
+      --kver ${kerver} \
+      --add ostree  \
+      --add plymouth  \
+      --add dmsquash-live \
+      --install grep  \
+      --install head \
+      --install tail \
+      --install less  \
+      --install lsof  \
+      --omit lvm  \
+      --install 'fsck.ext4' \
+      %{libdir}/modules/${kerver}/initramfs
+    
+    dbus-uuidgen >/etc/machine-id
+    SYSTEMD_ESP_PATH=/boot bootctl --no-variables install
+    rm /etc/machine-id
+    
+    cat <<EOF >/boot/loader/loader.conf
+    timeout 3
+    editor yes
+    console-mode keep
+    EOF
+    
+    mv %{sysconfdir} %{prefix}/
+    EOT

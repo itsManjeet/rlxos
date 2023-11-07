@@ -3,12 +3,8 @@ version: 0.0.6
 about: System Initial Setup
 
 variables:
-  commit: f7073c684bd2e863419f764e8a3de4394d42e94d
+  commit: 762c102757ee626b9c42ff1774e3701b0bd8bac0
   release: 2
-
-pre-script: |-
-  sed -i 's#xfce4-session-logout#xfce4-session-logout --logout#g' src/Page/Summary/Summary.cxx
-  sed -i 's#"live"#"rlxos.live=1"#g' src/Application.cxx
 
 post-script: |-
   install -vDm 755 %{build-dir}/src/initial_setup %{install-root}%{bindir}/initial-setup

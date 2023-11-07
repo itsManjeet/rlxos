@@ -35,7 +35,7 @@ INIT_IN=${INIT_IN:-'/usr/share/initramfs/init.in'}
 KERNEL=${KERNEL:-$(uname -r)}
 PASSWORD='rlxos'
 unsorted=$(mktemp /tmp/unsorted.XXXXXXXXXX)
-MODULES_DIR='/boot/modules'
+MODULES_DIR='/lib/modules'
 UNIVERSAL=1
 
 export LC_ALL=C
@@ -178,7 +178,7 @@ prepare_structure() {
     ln -s usr/lib ${INITRD_DIR}/lib64
     ln -s lib ${INITRD_DIR}/usr/lib64
 
-    mkdir -p ${INITRD_DIR}/boot/modules
+    mkdir -p ${INITRD_DIR}/lib/modules
     
     #copy /dev/console /dev/
     #copy /dev/null /dev/
@@ -222,11 +222,11 @@ install_modules() {
         FTGT="${FTGT} ${MODULES_DIR}/${KERNEL}/kernel/drivers/${driver}"
     done
     
-    mkdir -p $INITRD_DIR/boot/modules/$KERNEL/
+    mkdir -p $INITRD_DIR/lib/modules/$KERNEL/
     
     copy_module() {
         local _src_path=${1}
-        local _dest_path=$(echo ${1} | sed "s|${MODULES_DIR}|/boot/modules|g")
+        local _dest_path=${1}
         copy ${_src_path} ${_dest_path}
     }
     
@@ -332,7 +332,7 @@ compress_initrd() {
     
     install_libraries
     
-    AOUT=${AOUT:-"/sysroot/boot/modules/${KERNEL}/initramfs.img"}
+    AOUT=${AOUT:-"/lib/modules/${KERNEL}/initramfs"}
     
     (
         cd "${INITRD_DIR}"

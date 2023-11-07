@@ -1,6 +1,9 @@
 script: |-
   mkdir -p ISO/{boot/grub/{fonts,x86_64-efi},efi/boot,isolinux}
-  kerver=$(ls /boot/modules | head -n1)
+
+  unsquashfs -f /sysroot/sysroot.img lib/modules/*/bzImage
+  unsquashfs -f /sysroot/sysroot.img lib/modules/*/initramfs
+  kerver=$(ls -1 squashfs-root/lib/modules/ | head -n1)
 
   for file in chain.c32 isolinux.bin ldlinux.c32 libutil.c32 reboot.c32 vesamenu.c32 libcom32.c32 poweroff.c32 ; do
     cp %{datadir}/syslinux/$file ISO/isolinux/
@@ -9,8 +12,8 @@ script: |-
   install -vDm0644 /dev/stdin ISO/isolinux/isolinux.cfg << EOF
   DEFAULT RLXOS GNU/Linux
   LABEL RLXOS GNU/Linux
-    KERNEL /boot/modules/${kerver}/bzImage
-    APPEND initrd=/boot/modules/${kerver}/initramfs.img %{cmdline}
+    KERNEL /boot/bzImage
+    APPEND initrd=/boot/initramfs %{cmdline}
   EOF
 
   install -vDm0644 /dev/stdin ISO/boot/grub/grub.cfg << EOF
@@ -30,8 +33,8 @@ script: |-
   fi
 
   menuentry "RLXOS GNU/Linux" {
-    linux /boot/modules/${kerver}/bzImage %{cmdline}
-    initrd /boot/modules/${kerver}/initramfs.img
+    linux /boot/bzImage %{cmdline}
+    initrd /boot/initramfs
   }
 
   EOF
@@ -55,11 +58,7 @@ script: |-
   mksquashfs /liveconfig ISO/liveconfig.img
 
   cp -r /sysroot/sysroot.img ISO/
-
-  depmod -a ${kerver}
-  cp /boot/modules/ ISO/boot/ -rap
-
-  mkinitramfs -u -k=${kerver} -o=$(pwd)/ISO/boot/modules/${kerver}/initramfs.img
+  cp %{build-root}/squashfs-root/lib/modules/${kerver}/{bzImage,initramfs} ISO/boot/ -rap
 
   mkdir -p %{install-root}/
   xorriso -as mkisofs \
@@ -90,5 +89,3 @@ build-depends:
   - components/squashfs-tools.yml
   - components/syslinux.yml
   - components/plymouth.yml
-
-  - kernel/linux.yml

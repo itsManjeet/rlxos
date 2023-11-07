@@ -8,9 +8,7 @@ variables:
   force-rebuild: true
   strip: false
   variant: "desktop"
-  initial-commands: |-
-    # TODO: added this on components/filesystem
-    echo -e "\n%{bindir}/bash" >> %{sysroot}/%{sysconfdir}/shells
+  initial-commands: ""
 
 include:
     # Core
@@ -25,6 +23,8 @@ include:
   - components/kbd.yml
   - components/branding.yml
   - components/plymouth.yml
+
+  - kernel/linux.yml
 
   # Useful python modules
   - components/py/py-pip.yml

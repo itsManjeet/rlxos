@@ -9,6 +9,6 @@ variables:
   installer-volume-id: RLXOS
   include-root: /sysroot
   root-password: rlxos
-  cmdline: live root=LABEL=RLXOS quiet splash loglevel=3 systemd.show_status=auto udev.log_level=3
+  cmdline: live root=LABEL=RLXOS console=tty0 console=ttyS0
   strip: false
   force-rebuild: true

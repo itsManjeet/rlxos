@@ -25,9 +25,9 @@ configure: >
   -D mode=release
   -D efi=true
   -D gnu-efi=true
-  -D nologin-path=%{bindir}/nologin
-  -D debug-shell=%{bindir}/bash
-  -D default-user-shell=%{bindir}/bash
+  -D nologin-path=/bin/nologin
+  -D debug-shell=/bin/bash
+  -D default-user-shell=/bin/bash
   -D dev-kvm-mode=0660
   -D fallback-hostname='rlxos'
   -D docdir=%{datadir}/doc/system-%{version}

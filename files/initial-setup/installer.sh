@@ -58,14 +58,8 @@ sudo mount ${ISE_ROOT} ${SYSROOT} || {
 }
 
 echo ":: Creating System Hierarchy"
-sudo mkdir -p ${SYSROOT}/sysroot/{boot/modules/,images} || {
+sudo mkdir -p ${SYSROOT}/{boot/swupd/${VERSION},sysroot/images} || {
     echo "failed to create required sysroot path '${SYSROOT}'"
-    exit 1
-}
-
-echo ":: Creating Backward Compatibality Links"
-sudo ln -sf sysroot/boot ${SYSROOT}/boot || {
-    echo "failed to create required symlink"
     exit 1
 }
 
@@ -76,33 +70,36 @@ sudo cp $SYSIMAGE ${SYSROOT}/sysroot/images/$VERSION || {
 }
 
 if [[ -n "$IS_EFI" ]] ; then
-    sudo mkdir -p ${SYSROOT}/sysroot/efi
-    sudo mount ${ISE_EFI} ${SYSROOT}/sysroot/efi || {
+    sudo mkdir -p ${SYSROOT}/efi
+    sudo mount ${ISE_EFI} ${SYSROOT}/efi || {
         sudo umount ${ISE_ROOT}
 
-        echo "Failed to mount ${ISE_EFI} ${SYSROOT}/sysroot/efi"
+        echo "Failed to mount ${ISE_EFI} ${SYSROOT}/efi"
         exit 1
     }
 fi
 
 cleanup() {
-    [[ -n "$IS_EFI" ]] && sudo umount ${SYSROOT}/sysroot/efi/
+    [[ -n "$IS_EFI" ]] && sudo umount ${SYSROOT}/efi/
     sudo umount ${SYSROOT}
 }
 
 trap cleanup EXIT
 
 echo ":: Installing kernel ${KERVER}"
-sudo cp -r /boot/modules/$KERVER ${SYSROOT}/sysroot/boot/modules/ || {
+
+sudo cp -r /lib/modules/$KERVER/{bzImage,initramfs} ${SYSROOT}/boot/swupd/${VERSION}/ || {
     echo "failed to installer kernel"
     exit 1
 }
+
+echo "rd.image=/sysroot/images/$VERSION quiet splash loglevel=3 systemd.show_status=auto udev.log_level=3" >${SYSROOT}/boot/swupd/${VERSION}/config
 
 ROOT_UUID=$(sudo lsblk -no uuid ${ISE_ROOT})
 
 echo ":: Installing Bootloader"
 if [[ -n "${IS_EFI}" ]] ; then
-    sudo grub-install --boot-directory=${SYSROOT}/sysroot/boot --efi-directory=${SYSROOT}/sysroot/efi --root-directory=${SYSROOT} --target=x86_64-efi
+    sudo grub-install --boot-directory=${SYSROOT}/boot --efi-directory=${SYSROOT}/efi --root-directory=${SYSROOT} --target=x86_64-efi
 else
     disk="/dev/$(basename $(readlink -f /sys/class/block/$(basename ${ISE_ROOT})/..))"
     sudo grub-install --boot-directory=${SYSROOT}/boot --root-directory=${SYSROOT} --target=i386-pc ${disk}
@@ -118,8 +115,8 @@ set default="RLXOS Initial Setup"
 menuentry "RLXOS Initial Setup" {
     insmod all_video
 
-    linux /sysroot/boot/modules/$KERVER/bzImage root=UUID=$ROOT_UUID rd.image=/sysroot/images/$VERSION quiet splash loglevel=3 systemd.show_status=auto udev.log_level=3
-    initrd /sysroot/boot/modules/$KERVER/initramfs.img
+    linux /boot/swupd/${VERSION}/bzImage root=UUID=$ROOT_UUID rd.image=/sysroot/images/$VERSION quiet splash loglevel=3 systemd.show_status=auto udev.log_level=3
+    initrd /boot/swupd/${VERSION}/initramfs.img
 }
 
 EOF

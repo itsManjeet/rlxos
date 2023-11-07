@@ -6,6 +6,8 @@ script: |-
       sh -e $i
     done
   fi
+
+  mkinitramfs -u -k=$(ls -1 %{libdir}/modules | head -n1)
   EOT
 
   %{initial-commands}

@@ -54,3 +54,4 @@ jobs:
       - name: Update Installer ISO
         run: |
           ${IGNITE} checkout installer/image.yml ${{secrets.SERVER_REPO_PATH}}/releases/${VERSION}/
+          (cd ${{secrets.SERVER_REPO_PATH}}/releases/${VERSION}/; zsyncmake -b 2048 -C -u ${{secrets.SERVER_REPO_URL}}/releases/${VERSION}/rlxos-${VERSION}-${{matrix.collection}}.iso rlxos-${VERSION}-${{matrix.collection}}.iso)

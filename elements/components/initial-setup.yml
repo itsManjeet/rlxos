@@ -8,6 +8,7 @@ variables:
 
 pre-script: |-
   sed -i 's#xfce4-session-logout#xfce4-session-logout --logout#g' src/Page/Summary/Summary.cxx
+  sed -i 's#"live"#"rlxos.live=1"#g' src/Application.cxx
 
 post-script: |-
   install -vDm 755 %{build-dir}/src/initial_setup %{install-root}%{bindir}/initial-setup

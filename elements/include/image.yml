@@ -18,10 +18,11 @@ script: |-
   ostree admin deploy \
     --sysroot=/sysroot \
     --os=rlxos  \
+    --karg=quiet  \
+    --karg=splash \
+    --karg=rlxos.live=1 \
     --karg=root=live:LABEL=%{installer-volume-id} \
     --karg=rd.live.overlay.overlayfs=1 \
-    --karg=console=tty0 \
-    --karg=console=ttyS0 \
     %{ostree-branch}
 
   mkdir -p /sysroot/proc

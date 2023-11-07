@@ -13,6 +13,9 @@ jobs:
     name: Generate Image
     runs-on: self-hosted
     timeout-minutes: 47000
+    env:
+      OSTREE_REPO: ${{ secrets.OSTREE_REPO }}
+      OSTREE_GPG: ${{ secrets.OSTREE_GPG }}
     strategy:
       matrix:
         collection:
@@ -50,4 +53,4 @@ jobs:
 
       - name: Update Installer ISO
         run: |
-          ${IGNITE} checkout installer/image.yml ${{secrets.SERVER_REPO_PATH}}/releases/
+          ${IGNITE} checkout installer/image.yml ${{secrets.SERVER_REPO_PATH}}/releases/${VERSION}/

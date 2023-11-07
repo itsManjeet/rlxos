@@ -16,7 +16,7 @@ post-script: |-
   done
 
   install -vDm0644 /dev/stdin %{install-root}/%{libdir}/sysusers.d/initial-setup.conf << "EOF"
-  u initial-setup 69 "System Initial Setup" %{localstatedir}/lib/initial-setup %{bindir}/bash
+  u initial-setup 69 "System Initial Setup" %{localstatedir}/lib/initial-setup /bin/bash
   m initial-setup wheel
   EOF
   

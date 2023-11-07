@@ -21,6 +21,8 @@ variables:
     echo "LANG=en_IN.utf-8" > /etc/locale.conf
     ln -sfv /usr/share/zoneinfo/UTC /etc/localtime
     
+    chpasswd root:root
+
     kerver=$(ls -1 /lib/modules | head -n1)
     cp /lib/modules/${kerver}/bzImage /lib/modules/${kerver}/vmlinuz
     

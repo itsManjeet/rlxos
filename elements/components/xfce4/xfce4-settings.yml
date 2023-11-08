@@ -58,9 +58,9 @@ post-script: |-
   EOF
 
 depends:
-  - components/exo.yml
-  - components/garcon.yml
-  - components/xfconf.yml
+  - components/xfce4/exo.yml
+  - components/xfce4/garcon.yml
+  - components/xfce4/xfconf.yml
   - components/libcanberra.yml
   - components/libnotify.yml
   - components/x11/libxklavier.yml

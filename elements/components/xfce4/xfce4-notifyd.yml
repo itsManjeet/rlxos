@@ -23,11 +23,11 @@ post-script: |-
 depends:
   - components/hicolor-icon-theme.yml
   - components/libnotify.yml
-  - components/libxfce4ui.yml
+  - components/xfce4/libxfce4ui.yml
   - components/vte.yml
 build-depends:
   - components/intltool.yml
   - components/python.yml
-  - components/xfce4-panel.yml
+  - components/xfce4/xfce4-panel.yml
 sources:
   - https://archive.xfce.org/src/apps/xfce4-notifyd/%{version:1}/xfce4-notifyd-%{version}.tar.bz2

@@ -3,11 +3,11 @@ version: 0.4.1
 about: A Modern, docklike, minimaslist taskbar for XFCE
 depends:
   - components/cairo.yml
-  - components/exo.yml
+  - components/xfce4/exo.yml
   - components/glib.yml
   - components/gtk.yml
   - components/libwnck.yml
-  - components/xfce4-panel.yml
+  - components/xfce4/xfce4-panel.yml
 build-depends:
   - components/intltool.yml
   - components/cmake.yml

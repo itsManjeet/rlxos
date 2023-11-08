@@ -23,7 +23,7 @@ post-script: |-
 
 depends:
   - components/libwnck.yml
-  - components/libxfce4ui.yml
+  - components/xfce4/libxfce4ui.yml
   - components/startup-notification.yml
   - components/x11/libxinerama.yml
 build-depends:

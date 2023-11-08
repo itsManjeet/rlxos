@@ -6,7 +6,7 @@ depends:
   - components/librsvg.yml
   - components/libwnck.yml
   - components/x11/libxklavier.yml
-  - components/xfce4-panel.yml
+  - components/xfce4/xfce4-panel.yml
 build-depends:
   - components/intltool.yml
   - components/cmake.yml

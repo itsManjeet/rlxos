@@ -19,7 +19,7 @@ depends:
   - components/x11/libxklavier.yml
   - components/x11/libxscrnsaver.yml
   - components/libwnck.yml
-  - components/garcon.yml
+  - components/xfce4/garcon.yml
   - components/dbus-glib.yml
   - components/python.yml
   - components/py/py-gobject.yml

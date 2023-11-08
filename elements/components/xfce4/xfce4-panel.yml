@@ -97,8 +97,8 @@ post-script: |-
 
 depends:
   - components/cairo.yml
-  - components/exo.yml
-  - components/garcon.yml
+  - components/xfce4/exo.yml
+  - components/xfce4/garcon.yml
   - components/libwnck.yml
   - components/intltool.yml
 build-depends:

@@ -5,7 +5,7 @@ about: Xfce4 power management tool
 depends:
   - components/libnotify.yml
   - components/upower.yml
-  - components/xfce4-panel.yml
+  - components/xfce4/xfce4-panel.yml
   - components/networkmanager.yml
   - components/polkit.yml
 

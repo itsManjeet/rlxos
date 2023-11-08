@@ -4,6 +4,8 @@ about: A library that was designed to make it easier to access web services
 
 configure: >-
   -D gtk_doc=false
+  -D examples=false
+  -D tests=false
 
 depends:
   - components/libsoup3.yml

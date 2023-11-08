@@ -21,7 +21,7 @@ post-script: |-
   </channel>
   EOF
 depends:
-  - components/exo.yml
+  - components/xfce4/exo.yml
   - components/libwnck.yml
   - components/libnotify.yml
   - components/startup-notification.yml

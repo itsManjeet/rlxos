@@ -16,7 +16,7 @@ depends:
   - components/gnome-session.yml
 
   # Gnome Apps
-  - components/gnome-terminal.yml
+  # - components/gnome-terminal.yml
   - components/nautilus.yml
 
   # Required Fonts and themes

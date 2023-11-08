@@ -28,7 +28,7 @@ script: |-
   mkdir -p /sysroot/proc
   install -D -m 644 %{libdir}/systemd/boot/efi/systemd-bootx64.efi /sysroot/boot/EFI/BOOT/BOOTX64.EFI
 
-  cp -ar /sysroot/boot /sysroot/efi
+  cp -ar /sysroot/boot/* /sysroot/efi/
 
   cat >%{build-root}/stage-1/genimage.cfg << EOF
   image efi.img {
@@ -82,7 +82,6 @@ script: |-
   sha256sum rlxos-%{version}-%{collection}.iso >rlxos-%{version}-%{collection}.iso.sha265sum
 
 build-depends:
-  - components/core.yml
   - components/e2fsprogs.yml
   - components/dracut.yml
   - components/ostree.yml

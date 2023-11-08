@@ -28,7 +28,7 @@ script: |-
   mkdir -p /sysroot/proc
   install -D -m 644 %{libdir}/systemd/boot/efi/systemd-bootx64.efi /sysroot/boot/EFI/BOOT/BOOTX64.EFI
 
-  cp -ar /sysroot/boot/* /sysroot/efi/
+  cp -ar /sysroot/boot /sysroot/efi
 
   cat >%{build-root}/stage-1/genimage.cfg << EOF
   image efi.img {

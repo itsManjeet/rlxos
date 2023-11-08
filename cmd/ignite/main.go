@@ -44,12 +44,6 @@ func main() {
 				color.NoColor = true
 				return nil
 			})).
-		Flag(flag.New("clean-garbage").
-			About("Clean Garbage elements").
-			Handler(func(s []string) error {
-				cleanGarbage = true
-				return nil
-			})).
 		Handler(func(c *command.Command, args []string, i interface{}) error {
 			return c.Help()
 		}).
@@ -256,6 +250,12 @@ func main() {
 			})).
 		Sub(command.New("report").
 			About("Report status").
+			Flag(flag.New("clean-garbage").
+				About("Clean Garbage elements").
+				Handler(func(s []string) error {
+					cleanGarbage = true
+					return nil
+				})).
 			Handler(func(c *command.Command, s []string, i interface{}) error {
 				bldr := i.(*ignite.Ignite)
 				elements := bldr.Pool()

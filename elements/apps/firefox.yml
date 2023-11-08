@@ -11,7 +11,7 @@ script: |-
   mkdir -p %{install-root}/%{libdir}
   mkdir -p %{install-root}/%{bindir}
 
-  mv firefox/* %{install-root}/%{libdir}/
+  mv firefox %{install-root}/%{libdir}/
   install -D -m 0755 /dev/stdin %{install-root}/%{bindir}/firefox << EOF
   #!/bin/sh
   exec %{libdir}/firefox/firefox --class "Firefox" --name "Firefox" "$@"

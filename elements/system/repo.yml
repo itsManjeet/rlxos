@@ -2,7 +2,6 @@ id: system-repo
 about: System Repository
 merge: [version.yml, elements/include/ostree.yml]
 
-
 variables:
   include-root: "/sysroot"
   include-collection: "collections/%{collection}.yml"

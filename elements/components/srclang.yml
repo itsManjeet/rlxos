@@ -19,6 +19,7 @@ depends:
 
 build-depends:
   - components/gcc.yml
+  - components/git.yml
 
 sources:
   - srclang-%{commit}.tar.gz::https://github.com/itsManjeet/srclang/archive/%{commit}.tar.gz

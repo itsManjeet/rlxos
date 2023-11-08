@@ -14,3 +14,6 @@ depends:
 build-depends:
   - components/intltool.yml
   - components/python.yml
+
+sources:
+  - https://archive.xfce.org/src/apps/parole/4.16/parole-%{version}.tar.bz2

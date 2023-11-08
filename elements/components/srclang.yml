@@ -9,7 +9,7 @@ configure: >-
   -DCMAKE_BUILD_TYPE=Release
 
 post-script: |-
-  install -vDm 0755 -t %{install-root}/%{bindir} %{build-dir}/%{id}
+  install -vDm 0755 -t %{install-root}/%{bindir} %{build-dir}/src/%{id}
   mkdir -p %{install-root}%{libdir}/srclang/
   cp -ar modules/* %{install-root}%{libdir}/srclang/
 

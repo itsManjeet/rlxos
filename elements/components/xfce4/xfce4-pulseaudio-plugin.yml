@@ -7,7 +7,7 @@ depends:
   - components/libnotify.yml
   - components/pavucontrol.yml
   - components/pulseaudio.yml
-  - components/xfce4-panel.yml
+  - components/xfce4/xfce4-panel.yml
 build-depends:
   - components/intltool.yml
   - components/cmake.yml

@@ -10,6 +10,6 @@ script: |-
 depends:
   - components/py/py-gobject.yml
   - components/py/py-psutil.yml
-  - components/xfce4-panel.yml
+  - components/xfce4/xfce4-panel.yml
 sources:
   - https://github.com/xfce-mirror/xfce4-panel-profiles/archive/refs/tags/xfce4-panel-profiles-%{version}.tar.gz

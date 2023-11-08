@@ -3,7 +3,7 @@ version: 4.18.1
 about: Xfce configuration storage system
 
 depends:
-  - components/libxfce4util.yml
+  - components/xfce4/libxfce4util.yml
 build-depends:
   - components/vala.yml
 sources:

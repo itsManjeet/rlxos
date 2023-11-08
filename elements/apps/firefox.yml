@@ -6,52 +6,31 @@ about:
   the Gecko rendering engine to display web pages, which implements current and anticipated
   web standards.
 
-variables:
-  prepare-appimage: |-
-    install -vDm 0644 -t %{install-root} /files/firefox/firefox.desktop
-
-    install -vDm 0755 /dev/stdin %{install-root}/AppRun << "EOF"
-    #!/bin/sh
-    SELF=$(readlink -f "$0")
-    HERE=${SELF%/*}
-    export PATH="${HERE}/usr/bin/:${HERE}/usr/sbin/:${HERE}/usr/games/:${HERE}/bin/:${HERE}/sbin/${PATH:+:$PATH}"
-    export LD_LIBRARY_PATH="${HERE}/usr/lib/:${HERE}/usr/lib/i386-linux-gnu/:${HERE}/usr/lib/x86_64-linux-gnu/:${HERE}/usr/lib32/:${HERE}/usr/lib64/:${HERE}/lib/:${HERE}/lib/i386-linux-gnu/:${HERE}/lib/x86_64-linux-gnu/:${HERE}/lib32/:${HERE}/lib64/${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
-    export PYTHONPATH="${HERE}/usr/share/pyshared/${PYTHONPATH:+:$PYTHONPATH}"
-    export XDG_DATA_DIRS="${HERE}/usr/share/${XDG_DATA_DIRS:+:$XDG_DATA_DIRS}"
-    export GSETTINGS_SCHEMA_DIR="${HERE}/usr/share/glib-2.0/schemas/${GSETTINGS_SCHEMA_DIR:+:$GSETTINGS_SCHEMA_DIR}"
-    export SNAP_NAME="firefox"
-    export MOZ_LEGACY_PROFILES=1
-    EXEC=$(grep -e '^Exec=.*' "${HERE}"/*.desktop | head -n 1 | cut -d "=" -f 2 | cut -d " " -f 1)
-    exec "${EXEC}" "$@"
-    EOF
-
-    echo "desktopfile: %{id}.desktop" >> %{install-root}/info
-    echo "icon: firefox.png" >> %{install-root}/info
-    echo "bin: %{id}" >> %{install-root}/info
-
 build-dir: .
 script: |-
-  mv firefox/* %{install-root}/
+  mkdir -p %{install-root}/%{libdir}
   mkdir -p %{install-root}/%{bindir}
-  ln -srv %{install-root}/firefox %{install-root}/%{bindir}/
-  cp %{install-root}/browser/chrome/icons/default/default128.png %{install-root}/firefox.png
 
-  rm -rf %{install-root}/browser/features
+  mv firefox/* %{install-root}/%{libdir}/
+  install -D -m 0755 /dev/stdin %{install-root}/%{bindir}/firefox << EOF
+  #!/bin/sh
+  exec %{libdir}/firefox/firefox --class "Firefox" --name "Firefox" "$@"
+  EOF
 
-  install -vDm644 /dev/stdin %{install-root}/distribution/policies.json << "EOF"
+  install -D -m 0644 -t %{install-root}/%{datadir}/applications/ /files/firefox/firefox.desktop
+
+  rm -rf %{install-root}/%{libdir}/firefox/browser/features
+  install -vDm644 /dev/stdin %{install-root}/%{libdir}/firefox/distribution/policies.json << "EOF"
   {
     "policies": {
           "DisableAppUpdate": true
-          }
+      }
   }
   EOF
 
 build-depends:
   - components/dbus-glib.yml
   - components/alsa-lib.yml
-  - components/appimagetool.yml
 
 sources:
   - http://ftp.mozilla.org/pub/firefox/releases/%{version}/linux-x86_64/en-US/firefox-%{version}.tar.bz2
-
-merge: [elements/include/appimage.yml]

@@ -7,11 +7,11 @@ configure: >-
 
 depends:
   - components/libwnck.yml
-  - components/libxfce4ui.yml
+  - components/xfce4/libxfce4ui.yml
   - components/desktop-file-utils.yml
   - components/shared-mime-info.yml
   - components/polkit-gnome.yml
-  - components/xfdesktop.yml
+  - components/xfce4/xfdesktop.yml
   - components/x11/xinit.yml
   - components/x11/iceauth.yml
 sources:

@@ -9,12 +9,12 @@ configure: >-
   -DENABLE_GTK_LAYER_SHELL=OFF
 
 depends:
-  - components/garcon.yml
+  - components/xfce4/garcon.yml
   - components/gtk.yml
   - components/atk.yml
-  - components/libxfce4util.yml
-  - components/libxfce4ui.yml
-  - components/xfce4-panel.yml
+  - components/xfce4/libxfce4util.yml
+  - components/xfce4/libxfce4ui.yml
+  - components/xfce4/xfce4-panel.yml
   - components/accountsservice.yml
 build-depends:
   - components/intltool.yml

@@ -5,7 +5,7 @@ about: A modern terminal emulator primarily for Xfce4
 depends:
   - components/intltool.yml
   - components/hicolor-icon-theme.yml
-  - components/libxfce4ui.yml
+  - components/xfce4/libxfce4ui.yml
   - components/vte.yml
 
 sources:

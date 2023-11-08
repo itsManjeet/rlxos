@@ -3,28 +3,41 @@ merge: [version.yml, elements/include/meta.yml]
 
 depends:
   - collections/desktop.yml
-  - components/libxfce4ui.yml
-  - components/libxfce4util.yml
-  - components/exo.yml
-  - components/garcon.yml
-  - components/tumbler.yml
-  - components/xfce4-panel.yml
-  - components/xfce4-power-manager.yml
-  - components/xfce4-settings.yml
-  - components/xfconf.yml
-  - components/xfdesktop.yml
-  - components/thunar.yml
-  - components/xfce4-terminal.yml
-  - components/xfwm4.yml
-  - components/xfce4-session.yml
-  - components/xfce4-whiskermenu-plugin.yml
-  - components/xfce4-xkb-plugin.yml
-  - components/xfce4-docklike-plugin.yml
-  - components/xfce4-pulseaudio-plugin.yml
-  - components/xfce4-notifyd.yml
-  - components/xfce4-screensaver.yml
+
+  - components/xfce4/libxfce4ui.yml
+  - components/xfce4/libxfce4util.yml
+  - components/xfce4/exo.yml
+  - components/xfce4/garcon.yml
+  - components/xfce4/tumbler.yml
+  - components/xfce4/xfce4-panel.yml
+  - components/xfce4/xfce4-power-manager.yml
+  - components/xfce4/xfce4-settings.yml
+  - components/xfce4/xfconf.yml
+  - components/xfce4/xfdesktop.yml
+  - components/xfce4/xfwm4.yml
+  - components/xfce4/xfce4-session.yml
+  - components/xfce4/xfce4-whiskermenu-plugin.yml
+  - components/xfce4/xfce4-xkb-plugin.yml
+  - components/xfce4/xfce4-docklike-plugin.yml
+  - components/xfce4/xfce4-pulseaudio-plugin.yml
+  - components/xfce4/xfce4-notifyd.yml
+  - components/xfce4/xfce4-screensaver.yml
+  - components/xfce4/xfce4-panel-profiles.yml
+
+  - components/xfce4/xfce4-appfinder.yml
+  - components/xfce4/thunar.yml
+  - components/xfce4/xfce4-terminal.yml
+  - components/xfce4/mousepad.yml
+  - components/xfce4/parole.yml
+  - components/xfce4/ristretto.yml
+  - components/xfce4/xfce4-screenshooter.yml
+  - components/xfce4/xfce4-taskmanager.yml
+
   - components/network-manager-applet.yml
-  - components/xfce4-panel-profiles.yml
+
+  - apps/firefox.yml
+
   - components/lightdm-gtk-greeter.yml
   - components/lightdm.yml
+
   - components/initial-setup.yml

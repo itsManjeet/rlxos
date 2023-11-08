@@ -3,7 +3,7 @@ version: 4.18.0
 about: Support library for xfce
 
 depends:
-  - components/libxfce4ui.yml
+  - components/xfce4/libxfce4ui.yml
 build-depends:
   - components/intltool.yml
 sources:

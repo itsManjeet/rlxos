@@ -113,7 +113,7 @@ post-script: |-
 
 depends:
   - components/gtk.yml
-  - components/xfconf.yml
+  - components/xfce4/xfconf.yml
   - components/libgtop.yml
   - components/libgudev.yml
   - components/startup-notification.yml

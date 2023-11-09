@@ -7,7 +7,7 @@ about:
 configure: >-
   --disable-guile
   --disable-rpath
-  --with-default-trust-store-pkcs11="pkcs11:"
+  --with-default-trust-store-file=/etc/ssl/certs/ca-certificates.crt
 
 depends:
   - components/nettle.yml

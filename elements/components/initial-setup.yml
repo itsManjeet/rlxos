@@ -1,5 +1,5 @@
 id: initial-setup
-version: 0.0.6
+merge: [version.yml]
 about: System Initial Setup
 
 variables:
@@ -10,6 +10,7 @@ post-script: |-
   install -vDm 755 %{build-dir}/src/initial_setup %{install-root}%{bindir}/initial-setup
   for script in first-boot installer ; do
     install -Dm0755 -t "%{install-root}%{libdir}/%{id}/" /files/%{id}/${script}.sh
+    sed -i s'#@@OSTREE_BRANCH@@#%{ostree-branch}#g' %{install-root}%{libdir}/%{id}/${script}.sh
   done
 
   install -vDm0644 /dev/stdin %{install-root}/%{libdir}/sysusers.d/initial-setup.conf << "EOF"

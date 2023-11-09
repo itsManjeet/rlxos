@@ -20,7 +20,7 @@ script: |-
     --os=rlxos  \
     --karg=quiet  \
     --karg=splash \
-    --karg=rlxos.live=1 \
+    --karg=rd.live=1 \
     --karg=root=live:LABEL=%{installer-volume-id} \
     --karg=rd.live.overlay.overlayfs=1 \
     %{ostree-branch}

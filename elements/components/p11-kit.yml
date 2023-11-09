@@ -4,22 +4,12 @@ about: |
   Provides a way to load and enumerate PKCS #11 (a Cryptographic Token Interface Standard) modules
 
 post-script: |-
-  ln -sfv %{libdir}/p11-kit/trust-extract-compact %{install-root}/usr/bin/update-ca-certificates
   ln -sfv ./pkcs11/p11-kit-trust.so %{install-root}%{libdir}/libnssckbi.so
 
+build-type: autotools
+
 configure: >-
-  -D trust_paths=%{sysconfdir}/pki/anchors
-  --buildtype=release
-
-pre-script: |-
-  sed "20,$ d" -i trust/trust-extract-compat &&
-  cat >> trust/trust-extract-compat << "EOF"
-  # Copy existing anchor modifications to %{sysconfdir}/ssl/local
-  %{libdir}/make-ca/copy-trust-modifications
-
-  # Generate a new trust store
-  /usr/bin/make-ca -f -g
-  EOF
+  --with-trust-paths=%{sysconfdir}/pki/anchors
 
 depends:
   - components/libtasn1.yml

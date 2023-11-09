@@ -10,5 +10,5 @@ depends:
   - components/ca-certificates.yml
 configure: >-
   --enable-threaded-resolver
-  --with-ca-bundle=/etc/ssl/cert.pem
+  --with-ca-bundle=/etc/ssl/certs/ca-certificates.crt
   --with-openssl

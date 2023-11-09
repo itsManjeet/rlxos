@@ -50,7 +50,4 @@ fi
 #echo ":: setting up timezone: ${ISE_TIMEZONE}"
 #sudo ln -sf /usr/share/zoneinfo/${OSI_TIMEZONE} /etc/localtime
 
-echo ":: Updating bootloader"
-sudo update-grub
-
 exit 0

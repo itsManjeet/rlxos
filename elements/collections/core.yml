@@ -57,5 +57,7 @@ depends:
   - components/gst-libav.yml
   - components/e2fsprogs.yml
   - components/swupd.yml
-  - kernel/linux.yml
   - components/py/py-pip.yml
+
+  - kernel/linux.yml
+  - system/ostree-config.yml

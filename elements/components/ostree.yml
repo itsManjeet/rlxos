@@ -6,6 +6,9 @@ variables:
   run-autogen: false
   seperate-build-dir: false
 
+pre-script: |-
+  patch -Np1 -i /patches/ostree/no-boot-symlink.patch
+
 configure: >-
     --libexecdir=%{libdir}/ostree/
     --with-openssl

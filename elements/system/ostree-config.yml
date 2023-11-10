@@ -33,6 +33,10 @@ script: |-
   Type=none
   Options=bind
 
+  [Install]
+  WantedBy=local-fs.target
+  EOF
+
   install -D -m 0644 /dev/stdin %{install-root}/%{libdir}/systemd/system/boot.mount << "EOF"
   [Unit]
   Description=Mount ESP on /boot

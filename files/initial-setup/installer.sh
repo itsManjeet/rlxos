@@ -120,7 +120,8 @@ sudo cp -fr "${SYSROOT}"/ostree/boot.1/rlxos/*/*/boot/EFI/ "${SYSROOT}"/boot/ ||
 
 echo ":: Installing Bootloader"
 if [[ -n "${IS_EFI}" ]] ; then
-    sudo bootctl --esp-path=${SYSROOT}/boot --boot-path=${SYSROOT}/boot install
+    # TODO: Fix bootctl install
+    sudo bootctl --esp-path=${SYSROOT}/boot install --graceful
 else
     disk="/dev/$(basename $(readlink -f /sys/class/block/$(basename ${ISE_ROOT})/..))"
     sudo grub-install --boot-directory=${SYSROOT}/boot --root-directory=${SYSROOT} --target=i386-pc ${disk}

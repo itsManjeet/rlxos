@@ -1,0 +1,6 @@
+id: xfce4-workstation
+merge: [version.yml, elements/include/meta.yml]
+
+depends:
+  - collections/xfce4.yml
+  - collections/devel.yml

@@ -1,4 +1,4 @@
-id: xfce4
+id: xfce4-desktop
 merge: [version.yml, elements/include/meta.yml]
 
 depends:

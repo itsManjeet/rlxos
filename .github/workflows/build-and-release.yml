@@ -42,6 +42,7 @@ jobs:
     runs-on: self-hosted
     timeout-minutes: 47000
     environment: RELEASE
+    needs: generate-cache
     env:
       OSTREE_REPO: ${{ secrets.OSTREE_REPO }}
       OSTREE_GPG: ${{ secrets.OSTREE_GPG }}
@@ -75,6 +76,7 @@ jobs:
     runs-on: self-hosted
     timeout-minutes: 47000
     environment: RELEASE
+    needs: update-repository
     strategy:
       matrix:
         collection:

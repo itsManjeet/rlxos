@@ -9,10 +9,39 @@ env:
   IGNITE: ./build/ignite
 
 jobs:
-  generate-image:
-    name: Generate Image
+  generate-cache:
+    name: Generate cache
     runs-on: self-hosted
     timeout-minutes: 47000
+    strategy:
+      matrix:
+        collection:
+          - xfce4
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Configure
+        run: |
+          make
+
+          VERSION=${GITHUB_REF#refs/*/}
+          cat > version.yml << EOF
+          version: "${VERSION}"
+          variables:
+            collection: "${{matrix.collection}}"
+            ostree-branch: "${VERSION}/${{matrix.collection}}"
+          EOF
+          echo "VERSION=${VERSION}"   >> $GITHUB_ENV
+
+      - name: Generate Cache
+        run: ${IGNITE} build system/repo.yml
+
+
+  update-repository:
+    name: Update Repository
+    runs-on: self-hosted
+    timeout-minutes: 47000
+    environment: RELEASE
     env:
       OSTREE_REPO: ${{ secrets.OSTREE_REPO }}
       OSTREE_GPG: ${{ secrets.OSTREE_GPG }}
@@ -23,12 +52,10 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - name: Compiler Ignite
+      - name: Configure
         run: |
           make
 
-      - name: Prerequisties
-        run: |
           VERSION=${GITHUB_REF#refs/*/}
           cat > version.yml << EOF
           version: "${VERSION}"
@@ -38,15 +65,35 @@ jobs:
           EOF
           echo "VERSION=${VERSION}"   >> $GITHUB_ENV
 
-      - name: Building System Repository
-        run: |
-          ${IGNITE} build system/repo.yml
-
       - name: Update OStree repository
         run: |
           echo "${{ github.event.head_commit.message }}" > commit_body
           OSTREE_BRANCH="${VERSION}/${{matrix.collection}}" make update-ostree
 
+  update-installer-image:
+    name: Update Installer Image
+    runs-on: self-hosted
+    timeout-minutes: 47000
+    environment: RELEASE
+    strategy:
+      matrix:
+        collection:
+          - xfce4
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Configure
+        run: |
+          make
+
+          VERSION=${GITHUB_REF#refs/*/}
+          cat > version.yml << EOF
+          version: "${VERSION}"
+          variables:
+            collection: "${{matrix.collection}}"
+            ostree-branch: "${VERSION}/${{matrix.collection}}"
+          EOF
+          echo "VERSION=${VERSION}"   >> $GITHUB_ENV
       - name: Building Installer ISO
         run: |
           ${IGNITE} build installer/image.yml

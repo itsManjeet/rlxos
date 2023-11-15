@@ -1,0 +1,6 @@
+id: gnome-workstation
+merge: [version.yml, elements/include/meta.yml]
+
+depends:
+  - collections/gnome/desktop.yml
+  - collections/devel.yml

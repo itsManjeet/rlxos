@@ -3,6 +3,7 @@ package pkgupd
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"os"
 
 	"rlxos/internal/hierarchy"
@@ -20,6 +21,7 @@ func (p *Pkgupd) reloadMetadata() error {
 	if err := json.Unmarshal(data, &p.metadata); err != nil {
 		return fmt.Errorf("failed to parse metadata from '%s': %v", metafile, err)
 	}
+	log.Println("FOUND:", len(p.metadata))
 	return nil
 }
 
@@ -27,7 +29,7 @@ func (p *Pkgupd) Sync(force bool) error {
 	var metafile = hierarchy.LocalPath(hierarchy.CACHE_DIR, APPID, "meta")
 	stat, err := os.Stat(metafile)
 	if err == nil {
-		if time.Since(stat.ModTime()).Minutes() < 5 {
+		if time.Since(stat.ModTime()).Minutes() < 5 && !force {
 			return p.reloadMetadata()
 		}
 	}

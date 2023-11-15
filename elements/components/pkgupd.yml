@@ -1,0 +1,7 @@
+id: pkgupd
+version: 0.0.2
+about: Package Manager
+
+build-type: go-pkg
+variables:
+  go-pkg: cmd/pkgupd

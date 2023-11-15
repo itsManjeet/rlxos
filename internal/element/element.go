@@ -150,6 +150,7 @@ func (elmnt *Element) resolveVariable(v string) string {
 	for key, value := range elmnt.Variables {
 		if len(value) != 0 {
 			v = strings.ReplaceAll(v, "%{"+key+"}", value)
+			v = strings.ReplaceAll(v, "%{"+key+":/-}", strings.ReplaceAll(key, "/", "-"))
 		}
 	}
 

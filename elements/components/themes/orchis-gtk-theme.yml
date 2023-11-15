@@ -1,12 +1,15 @@
 id: orchis-icon-theme
 version: 2023-10-20
-release: 2
+merge: [elements/include/gtk-theme.yml]
 about: Orchis is a [Material Design](https://material.io) theme for GNOME/GTK based desktop environments.
 
 script: |
   install -d %{install-root}%{datadir}/themes
   ./parse-sass.sh
-  ./install.sh \
+  ./install.sh            \
+    --round 3px           \
+    --size standard       \
+    --theme orange        \
     --dest %{install-root}%{datadir}/themes
 
 build-depends:

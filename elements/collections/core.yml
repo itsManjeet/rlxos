@@ -58,6 +58,7 @@ depends:
   - components/e2fsprogs.yml
   - components/pkgupd.yml
   - components/py/py-pip.yml
+  - components/ufw.yml
 
   - kernel/linux.yml
   - system/ostree-config.yml

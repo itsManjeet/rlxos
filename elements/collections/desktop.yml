@@ -15,6 +15,7 @@ depends:
 - components/xdg-utils.yml
 - components/flatpak.yml
 - components/appimage.yml
+- components/gufw.yml
 
 # X11
 - components/x11/xserver.yml

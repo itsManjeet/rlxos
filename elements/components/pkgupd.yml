@@ -5,3 +5,6 @@ about: Package Manager
 build-type: go-pkg
 variables:
   go-pkg: cmd/pkgupd
+
+build-depends:
+- components/go.yml

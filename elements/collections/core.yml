@@ -56,7 +56,7 @@ depends:
   - components/gst-plugins-bad.yml
   - components/gst-libav.yml
   - components/e2fsprogs.yml
-  - components/swupd.yml
+  - components/pkgupd.yml
   - components/py/py-pip.yml
 
   - kernel/linux.yml

@@ -384,17 +384,7 @@ func main() {
 					bldr := i.(*ignite.Ignite)
 
 					outputPath := s[0]
-					iconsPath := path.Join(outputPath, "icons")
-					appsPath := path.Join(outputPath, "apps")
-					layersPath := path.Join(outputPath, "layers")
 					jsonPath := path.Join(outputPath, "origin")
-
-					for _, dir := range []string{iconsPath, appsPath, layersPath} {
-						err := os.MkdirAll(dir, 0755)
-						if err != nil {
-							return err
-						}
-					}
 
 					var metadata []element.Metadata
 
@@ -407,61 +397,16 @@ func main() {
 						}
 						iconfile := "package.svg"
 						elementType := element.ElementTypeComponent
-						if strings.HasPrefix(elementID, "apps/") {
-							elementType = element.ElementTypeApp
-							if data, err := exec.Command("tar", "-xf", cachefile, "-C", appsPath).CombinedOutput(); err != nil {
-								color.Error("failed to extract %s: %s, %v", elementID, string(data), err)
-								continue
-							}
-
-							appfile := path.Join(appsPath, fmt.Sprintf("%s-%s.app", el.Id, el.Version))
-							if err := os.Chmod(appfile, 0755); err != nil {
-								color.Error("failed to chmod %s, %v", appfile, err)
-								continue
-							}
-
-							if data, err := exec.Command(appfile, "--appimage-extract", `*.DirIcon`).CombinedOutput(); err != nil {
-								color.Error("missing icon file %s: %s, %v", elementID, string(data), err)
-								continue
-							}
-
-							var err error
-							iconfile, err = os.Readlink(path.Join("squashfs-root", ".DirIcon"))
-							if err != nil {
-								color.Error("failed to read .DirIcon link %s: %v", elementID, err)
-								continue
-							}
-
-							if data, err := exec.Command(appfile, "--appimage-extract", iconfile).CombinedOutput(); err != nil {
-								color.Error("missing icon file %s: %s, %v", elementID, string(data), err)
-								continue
-							}
-
-							if data, err := exec.Command("mv", path.Join("squashfs-root", iconfile), path.Join(iconsPath, iconfile)).CombinedOutput(); err != nil {
-								color.Error("failed to copy icon file %s: %s, %v", elementID, string(data), err)
-								continue
-							}
-
-							if err := os.RemoveAll("squashfs-root"); err != nil {
-								return err
-							}
-						} else if strings.HasPrefix(elementID, "layers/") {
-							elementType = element.ElementTypeLayer
-
-							if output, err := exec.Command("cp", cachefile, path.Join(layersPath, fmt.Sprintf("%s.layer", el.Id))).CombinedOutput(); err != nil {
-								color.Error("failed to copy layer '%s': %s %v", elementID, string(output), err)
-								continue
-							}
-
-						}
 
 						metadata = append(metadata, element.Metadata{
-							Id:      strings.TrimSuffix(elementID, ".yml"),
-							Version: el.Version,
-							About:   el.About,
-							Icon:    path.Base(iconfile),
-							Cache:   path.Base(cachefile),
-							Type:    elementType,
+							Id:          strings.TrimSuffix(elementID, ".yml"),
+							Version:     el.Version,
+							About:       el.About,
+							Icon:        path.Base(iconfile),
+							Cache:       path.Base(cachefile),
+							Type:        elementType,
+							Depends:     el.GetDepends(element.DependencyRunTime),
+							Integration: el.Integration,
 						})
 					}
 

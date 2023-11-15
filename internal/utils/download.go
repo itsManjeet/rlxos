@@ -7,6 +7,7 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"path"
 	"strings"
 	"time"
 
@@ -34,6 +35,14 @@ func (wc WriteCounter) PrintProgress() {
 }
 
 func DownloadFile(filepath string, url string) error {
+	if _, err := os.Stat(filepath); err == nil {
+		return nil
+	}
+	if _, err := os.Stat(path.Dir(filepath)); err != nil {
+		if err := os.MkdirAll(path.Dir(filepath), 0755); err != nil {
+			return fmt.Errorf("failed to create required parent directory '%s': %v", path.Dir(filepath), err)
+		}
+	}
 	out, err := os.Create(filepath + ".tmp")
 	if err != nil {
 		return err

@@ -18,6 +18,8 @@ jobs:
         collection:
           - xfce4/desktop
           - xfce4/workstation
+          - gnome/desktop
+          - gnome/workstation
     steps:
       - uses: actions/checkout@v1
 
@@ -26,11 +28,13 @@ jobs:
           make
 
           VERSION=${GITHUB_REF#refs/*/}
+          COLLECTION="${{matrix.collection}}"
           cat > version.yml << EOF
           version: "${VERSION}"
           variables:
             collection: "${{matrix.collection}}"
             ostree-branch: "${VERSION}/${{matrix.collection}}"
+            installer-id: ${COLLECTION//\//-}
           EOF
           echo "VERSION=${VERSION}"   >> $GITHUB_ENV
 
@@ -52,6 +56,8 @@ jobs:
         collection:
           - xfce4/desktop
           - xfce4/workstation
+          - gnome/desktop
+          - gnome/workstation
     steps:
       - uses: actions/checkout@v1
 
@@ -60,11 +66,13 @@ jobs:
           make
 
           VERSION=${GITHUB_REF#refs/*/}
+          COLLECTION="${{matrix.collection}}"
           cat > version.yml << EOF
           version: "${VERSION}"
           variables:
             collection: "${{matrix.collection}}"
             ostree-branch: "${VERSION}/${{matrix.collection}}"
+            installer-id: ${COLLECTION//\//-}
           EOF
           echo "VERSION=${VERSION}"   >> $GITHUB_ENV
 
@@ -84,6 +92,8 @@ jobs:
         collection:
           - xfce4/desktop
           - xfce4/workstation
+          - gnome/desktop
+          - gnome/workstation
     steps:
       - uses: actions/checkout@v1
 
@@ -92,11 +102,13 @@ jobs:
           make
 
           VERSION=${GITHUB_REF#refs/*/}
+          COLLECTION="${{matrix.collection}}"
           cat > version.yml << EOF
           version: "${VERSION}"
           variables:
             collection: "${{matrix.collection}}"
             ostree-branch: "${VERSION}/${{matrix.collection}}"
+            installer-id: ${COLLECTION//\//-}
           EOF
           echo "VERSION=${VERSION}"   >> $GITHUB_ENV
       - name: Building Installer ISO

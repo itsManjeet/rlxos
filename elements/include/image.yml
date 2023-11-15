@@ -54,7 +54,7 @@ script: |-
   EOF
 
   cat >%{build-root}/stage-2/genimage.cfg << EOF
-  image rlxos-%{version}-%{collection:/-}.iso {
+  image rlxos-%{version}-%{installer-id}.iso {
     iso {
       extraargs = "-e /efi.img -no-emul-boot -boot-load-size 4 -efi-boot-part --efi-boot-image -sysid LINUX -publisher rlxos"
       volume-id = "%{installer-volume-id}"
@@ -76,10 +76,10 @@ script: |-
 
   (cd %{build-root}/stage-2; genimage)
 
-  mv %{build-root}/images/rlxos-%{version}-%{collection:/-}.iso %{install-root}
+  mv %{build-root}/images/rlxos-%{version}-%{installer-id}.iso %{install-root}
 
   cd %{install-root}
-  sha256sum rlxos-%{version}-%{collection:/-}.iso >rlxos-%{version}-%{collection:/-}.iso.sha265sum
+  sha256sum rlxos-%{version}-%{installer-id}.iso >rlxos-%{version}-%{installer-id}.iso.sha265sum
 
 build-depends:
   - components/e2fsprogs.yml

@@ -125,6 +125,9 @@ if [[ -n "${IS_EFI}" ]] ; then
 else
     disk="/dev/$(basename $(readlink -f /sys/class/block/$(basename ${ISE_ROOT})/..))"
     sudo grub-install --boot-directory=${SYSROOT}/boot --root-directory=${SYSROOT} --target=i386-pc ${disk}
+    (cd ${SYSROOT}/boot/loader; sudo /lib/ostree/ostree-grub-generator . ${SYSROOT}/boot/grub/grub.cfg)
+
+    sudo ostree config --repo=${SYSROOT}/ostree/repo set sysroot.bootloader grub2
 fi
 
 # Sleep for 2 seconds

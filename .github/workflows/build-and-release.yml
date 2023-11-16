@@ -87,6 +87,9 @@ jobs:
     timeout-minutes: 47000
     environment: RELEASE
     needs: update-repository
+    env:
+      SERVER_REPO_PATH: ${{secrets.SERVER_REPO_PATH}}
+      SERVER_REPO_URL: ${{secrets.SERVER_REPO_URL}}
     strategy:
       matrix:
         collection:
@@ -117,5 +120,5 @@ jobs:
 
       - name: Update Installer ISO
         run: |
-          ${IGNITE} checkout installer/image.yml ${{secrets.SERVER_REPO_PATH}}/releases/${VERSION}/
-          (cd ${{secrets.SERVER_REPO_PATH}}/releases/${VERSION}/; zsyncmake -b 2048 -C -u ${{secrets.SERVER_REPO_URL}}/releases/${VERSION}/rlxos-${VERSION}-${{matrix.collection}}.iso rlxos-${VERSION}-${{matrix.collection}}.iso)
+          ${IGNITE} checkout installer/image.yml ${SERVER_REPO_PATH}/releases/${VERSION}/
+          (cd ${SERVER_REPO_PATH}/releases/${VERSION}/; zsyncmake -b 2048 -C -u ${SERVER_REPO_URL}/releases/${VERSION}/rlxos-${VERSION}-${{matrix.collection}}.iso rlxos-${VERSION}-${{matrix.collection}}.iso)

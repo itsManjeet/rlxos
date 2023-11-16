@@ -9,7 +9,6 @@ script: |
   ./install.sh            \
     --round 3px           \
     --size standard       \
-    --theme orange        \
     --dest %{install-root}%{datadir}/themes
 
 build-depends:

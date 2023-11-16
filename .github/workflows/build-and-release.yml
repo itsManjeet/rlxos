@@ -95,8 +95,6 @@ jobs:
         collection:
           - xfce4/desktop
           - xfce4/workstation
-          - gnome/desktop
-          - gnome/workstation
     steps:
       - uses: actions/checkout@v1
 

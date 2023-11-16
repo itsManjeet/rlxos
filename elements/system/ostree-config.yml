@@ -39,20 +39,15 @@ script: |-
 
   install -D -m 0644 /dev/stdin %{install-root}/%{libdir}/systemd/system/boot.mount << "EOF"
   [Unit]
-  Description=Mount ESP on /boot
+  Description=Mount OStree boot on /boot
   DefaultDependencies=no
   Before=local-fs.target
-  ConditionPathExists=/sys/firmware/efi/efivars
 
   [Mount]
-  What=LABEL=EFI
+  What=/sysroot/boot
   Where=/boot
-  Type=vfat
-  Options=umask=0077
-
-  [Install]
-  WantedBy=local-fs.target
-  EOF
+  Type=none
+  Options=bind
 
   install -D -m 0644 /dev/stdin %{install-root}/%{libdir}/systemd/system/root.mount << "EOF"
   [Unit]

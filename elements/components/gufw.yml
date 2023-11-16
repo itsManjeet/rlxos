@@ -1,5 +1,5 @@
 id: gufw
-version: 22.04
+version: 24.04
 about: Uncomplicated way to manage linux firwall
 
 pre-script: |-

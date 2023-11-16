@@ -1,6 +1,12 @@
 package pkgupd
 
-import "rlxos/internal/element"
+import (
+	"fmt"
+	"os"
+	"rlxos/internal/element"
+
+	"gopkg.in/yaml.v2"
+)
 
 type Pkgupd struct {
 	Server  string `yaml:"server"`
@@ -11,9 +17,22 @@ type Pkgupd struct {
 
 const APPID = "pkgupd"
 
-func New() (*Pkgupd, error) {
-	return &Pkgupd{
+func New(configfile ...string) (*Pkgupd, error) {
+	pkgupd := &Pkgupd{
 		Server:  "http://repo.rlxos.dev",
-		Channel: "experimental",
-	}, nil
+		Channel: "stable",
+	}
+	if len(configfile) == 1 {
+		data, err := os.ReadFile(configfile[0])
+		if err != nil {
+			return nil, fmt.Errorf("failed to read configuration file '%s': %v", configfile[0], err)
+		}
+
+		if err := yaml.Unmarshal(data, pkgupd); err != nil {
+			return nil, fmt.Errorf("failed to read configuration file '%s': %v", configfile[0], err)
+		}
+
+	}
+
+	return pkgupd, nil
 }

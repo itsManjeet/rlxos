@@ -9,14 +9,20 @@ import (
 	"rlxos/internal/pkgupd"
 )
 
+const DEFAULT_CONFIG = "/etc/pkgupd.yml"
+
 func main() {
 	var root = "/"
+	var configfile = DEFAULT_CONFIG
 
 	var cmd = command.Command{
 		Id:    "pkgupd",
 		About: "Package Management and Updater tool",
 		Usage: "<TASK> <FLAGS?> <ARGS...>",
 		InitMethod: func() (interface{}, error) {
+			if _, err := os.Stat(configfile); err == nil {
+				return pkgupd.New(configfile)
+			}
 			return pkgupd.New()
 		},
 		Handler: func(c *command.Command, s []string, i interface{}) error {
@@ -30,6 +36,15 @@ func main() {
 				Count: 1,
 				Handler: func(s []string) error {
 					root = s[0]
+					return nil
+				},
+			},
+			{
+				Id:    "config",
+				About: "Specify configuration file",
+				Count: 1,
+				Handler: func(s []string) error {
+					configfile = s[0]
 					return nil
 				},
 			},

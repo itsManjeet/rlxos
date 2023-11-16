@@ -43,14 +43,18 @@ sudo mount ${ISE_ROOT} ${SYSROOT} || {
 echo ":: Creating System Hierarchy"
 sudo mkdir -p ${SYSROOT}/boot || {
     sudo umount ${SYSROOT}
-    echo "failed to create required sysroot path '${SYSROOT}'"
+    echo "failed to create required sysroot path '${SYSROOT}/boot'"
     exit 1
 }
 
 if [[ -n "$IS_EFI" ]] ; then
-    sudo mount ${ISE_EFI} ${SYSROOT}/boot || {
+    sudo mkdir -p ${SYSROOT}/efi || {
+        echo "failed to create efi directory"
+        exit 1
+    }
+    sudo mount ${ISE_EFI} ${SYSROOT}/efi || {
         sudo umount ${ISE_ROOT}
-        echo "Failed to mount ${ISE_EFI} ${SYSROOT}/boot"
+        echo "Failed to mount ${ISE_EFI} ${SYSROOT}/efi"
         exit 1
     }
 fi
@@ -121,11 +125,20 @@ sudo cp -fr "${SYSROOT}"/ostree/boot.1/rlxos/*/*/boot/EFI/ "${SYSROOT}"/boot/ ||
 echo ":: Installing Bootloader"
 if [[ -n "${IS_EFI}" ]] ; then
     # TODO: Fix bootctl install
-    sudo bootctl --esp-path=${SYSROOT}/boot install --graceful
+    sudo bootctl --esp-path=${SYSROOT}/efi install --graceful
 else
     disk="/dev/$(basename $(readlink -f /sys/class/block/$(basename ${ISE_ROOT})/..))"
     sudo grub-install --boot-directory=${SYSROOT}/boot --root-directory=${SYSROOT} --target=i386-pc ${disk}
-    (cd ${SYSROOT}/boot/loader; sudo /lib/ostree/ostree-grub-generator . ${SYSROOT}/boot/grub/grub.cfg)
+    
+    # TODO: fix this hack
+    (cd ${SYSROOT}/boot/loader; sudo /lib/ostree/ostree-grub-generator . grub.cfg)
+
+    sudo sed -i 's#linux /ostree#linux /boot/ostree#g' ${SYSROOT}/boot/loader/grub.cfg
+    sudo sed -i 's#initrd /ostree#initrd /boot/ostree#g' ${SYSROOT}/boot/loader/grub.cfg
+
+    sudo install -D -m 0644 /dev/stdin ${SYSROOT}/boot/grub/grub.cfg << EOF
+configfile /boot/loader/grub.cfg
+EOF
 
     sudo ostree config --repo=${SYSROOT}/ostree/repo set sysroot.bootloader grub2
 fi

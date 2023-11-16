@@ -4,6 +4,8 @@
 if [ -z ${ISE_ROOT+x} ]
 then
     echo "Installer script called without all environment variables set!"
+    sleep 999
+
     exit 1
 fi
 
@@ -12,6 +14,8 @@ EFI_GUID='c12a7328-f81f-11d2-ba4b-00a0c93ec93b'
 
 if [[ -z "${ISE_EFI}" ]] && [[ -n "$IS_EFI" ]] ; then
     echo "Unknown EFI partition"
+    sleep 999
+    
     exit 1
 fi
 
@@ -20,6 +24,8 @@ if [[ -n "$IS_EFI" ]] ; then
     # Make sure EFI parititon
     sudo fatlabel ${ISE_EFI} EFI || {
         echo "Failed to change EFI partition label"
+        sleep 999
+
         exit 1
     }
 fi
@@ -31,12 +37,16 @@ sudo mkdir -p ${SYSROOT}
 echo ":: Formatting ${ISE_ROOT}"
 sudo mkfs.ext4 -F ${ISE_ROOT} >/dev/null || {
     echo "Failed to mkfs.ext4 ${ISE_ROOT}"
+    sleep 999
+
     exit 1
 }
 
 echo ":: Mounting ${ISE_ROOT} on ${SYSROOT}"
 sudo mount ${ISE_ROOT} ${SYSROOT} || {
     echo "Failed to mount ${ISE_ROOT}"
+    sleep 999
+
     exit 1
 }
 
@@ -44,17 +54,23 @@ echo ":: Creating System Hierarchy"
 sudo mkdir -p ${SYSROOT}/boot || {
     sudo umount ${SYSROOT}
     echo "failed to create required sysroot path '${SYSROOT}/boot'"
+    sleep 999
+
     exit 1
 }
 
 if [[ -n "$IS_EFI" ]] ; then
     sudo mkdir -p ${SYSROOT}/efi || {
         echo "failed to create efi directory"
+        sleep 999
+
         exit 1
     }
     sudo mount ${ISE_EFI} ${SYSROOT}/efi || {
         sudo umount ${ISE_ROOT}
         echo "Failed to mount ${ISE_EFI} ${SYSROOT}/efi"
+        sleep 999
+
         exit 1
     }
 fi
@@ -69,30 +85,40 @@ trap cleanup EXIT
 
 sudo mkdir -p ${SYSROOT}/ostree/repo || {
     echo "failed to create repo dir"
+    sleep 999
+
     exit 1
 }
 
 echo ":: Creating OStree Repository"
 sudo ostree init --repo=${SYSROOT}/ostree/repo --mode=bare || {
     echo "failed to install '${SYSROOT}'"
+    sleep 999
+
     exit 1
 }
 
 echo ":: Cloning OStree into the device (this might take a while)"
 sudo ostree --repo=${SYSROOT}/ostree/repo pull-local "/ostree/repo" @@OSTREE_BRANCH@@ || {
     echo "failed to clone OStree repository"
+    sleep 999
+
     exit 1
 }
 
 echo ":: Creating OStree filesystem"
 sudo ostree admin init-fs ${SYSROOT} || {
     echo "failed to creating ostree filesystem"
+    sleep 999
+
     exit 1
 }
 
 echo ":: Initializing OStree filesystem"
 sudo ostree admin os-init --sysroot=${SYSROOT} rlxos || {
     echo "failed to initialize os roots"
+    sleep 999
+
     exit 1
 }
 
@@ -104,6 +130,8 @@ sudo ostree admin deploy --os="rlxos"   \
     --karg="rw" --karg="quiet" --karg="splash" \
     --karg="root=UUID=$ROOT_UUID" || {
     echo "failed to deploy OStree"
+    sleep 999
+
     exit 1
 }
 
@@ -111,6 +139,8 @@ echo ":: Setting up origin"
 sudo ostree admin set-origin --sysroot="${SYSROOT}" \
     --index=0 rlxos https://ostree.rlxos.dev/ @@OSTREE_BRANCH@@ || {
     echo "failed to setup origin"
+    sleep 999
+
     exit 1
 }
 
@@ -119,31 +149,32 @@ sudo ostree remote delete rlxos --repo=${SYSROOT}/ostree/repo
 echo ":: Installing boot files"
 sudo cp -fr "${SYSROOT}"/ostree/boot.1/rlxos/*/*/boot/EFI/ "${SYSROOT}"/boot/ || {
     echo "failed to install boot files"
+    sleep 999
+
     exit 1
 }
 
 echo ":: Installing Bootloader"
 if [[ -n "${IS_EFI}" ]] ; then
-    # TODO: Fix bootctl install
-    sudo bootctl --esp-path=${SYSROOT}/efi install --graceful
+    sudo grub-install --boot-directory=${SYSROOT}/boot --efi-directory=${SYSROOT}/efi --root-directory=${SYSROOT} --target=x86_64-efi
 else
     disk="/dev/$(basename $(readlink -f /sys/class/block/$(basename ${ISE_ROOT})/..))"
     sudo grub-install --boot-directory=${SYSROOT}/boot --root-directory=${SYSROOT} --target=i386-pc ${disk}
-    
-    # TODO: fix this hack
-    (cd ${SYSROOT}/boot/loader; sudo /lib/ostree/ostree-grub-generator . grub.cfg)
+fi
 
-    sudo sed -i 's#linux /ostree#linux /boot/ostree#g' ${SYSROOT}/boot/loader/grub.cfg
-    sudo sed -i 's#initrd /ostree#initrd /boot/ostree#g' ${SYSROOT}/boot/loader/grub.cfg
+# TODO: fix this hack
+(cd ${SYSROOT}/boot/loader; sudo /lib/ostree/ostree-grub-generator . grub.cfg)
 
-    sudo install -D -m 0644 /dev/stdin ${SYSROOT}/boot/grub/grub.cfg << EOF
+sudo sed -i 's#linux /ostree#linux /boot/ostree#g' ${SYSROOT}/boot/loader/grub.cfg
+sudo sed -i 's#initrd /ostree#initrd /boot/ostree#g' ${SYSROOT}/boot/loader/grub.cfg
+
+sudo install -D -m 0644 /dev/stdin ${SYSROOT}/boot/grub/grub.cfg << EOF
 configfile /boot/loader/grub.cfg
 EOF
 
-    sudo ostree config --repo=${SYSROOT}/ostree/repo set sysroot.bootloader grub2
-fi
+sudo ostree config --repo=${SYSROOT}/ostree/repo set sysroot.bootloader grub2
 
 # Sleep for 2 seconds
-sleep 2
+sleep 5
 
 exit 0

@@ -34,7 +34,7 @@ sudo rm -f /etc/lightdm/lightdm.conf.d/*-initial-setup.conf
 
 if [[ ${ISE_AUTOLOGIN} -eq 1 ]] ; then
 echo ":: Enabling autologin for ${ISE_USERNAME}"
-sudo install -vDm644 /dev/stdin /etc/lightdm/lightdm.conf.d/autologin.conf << EOF
+sudo install -D -m644 /dev/stdin /etc/lightdm/lightdm.conf.d/autologin.conf << EOF
 [SeatDefaults]
 autologin-user=${ISE_USERNAME}
 autologin-user-timeout=0

@@ -4,6 +4,9 @@ on:
     - cron: "* 0 * * *"
   workflow_dispatch:
 
+env:
+  NO_PRINT_PROGRESS: 1
+  IGNITE: ./build/ignite
 jobs:
   check-updates:
     name: check-updates
@@ -19,4 +22,4 @@ jobs:
           echo "version: experimental" > version.yml
 
       - name: Check Updates
-        run: ./build/ignite check-update
+        run: ./build/ignite check-updates

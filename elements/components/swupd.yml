@@ -5,6 +5,9 @@ about: Software Updater Daemon
 variables:
   commit: 7d7e27cf22dc33972a02158ea1628de405702a73
 
+post-script: |-
+  install -v -D -m 0755 -t %{install-root}%{bindir} target/release/%{id}
+
 depends:
   - components/ostree.yml
 

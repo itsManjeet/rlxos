@@ -27,12 +27,14 @@ jobs:
         
       - name: Setup Version
         run: |
-          echo "VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+          VERSION=${GITHUB_REF#refs/*/}"
           cat > version.yml << EOF
           version: ${VERSION}
           variables:
             ostree-branch: "x86_64/os/${VERSION}"
           EOF
+
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
       - name: Generate Cache
         run: ${IGNITE} build system/repo.yml

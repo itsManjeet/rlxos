@@ -55,7 +55,7 @@ script: |-
   EOF
 
   cat >%{build-root}/stage-2/genimage.cfg << EOF
-  image rlxos-%{version}-%{installer-id}.iso {
+  image rlxos-%{arch}-%{version}.iso {
     iso {
       extraargs = "-isohybrid-mbr %{datadir}/syslinux/isohdpfx.bin -c isolinux/boot.cat -b isolinux/isolinux.bin -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -e /efi.img -no-emul-boot -isohybrid-gpt-basdat -sysid LINUX -publisher rlxos"
       volume-id = "%{installer-volume-id}"
@@ -94,10 +94,10 @@ script: |-
 
   (cd %{build-root}/stage-2; genimage)
 
-  mv %{build-root}/images/rlxos-%{version}-%{installer-id}.iso %{install-root}
+  mv %{build-root}/images/rlxos-rlxos-%{arch}-%{version}.iso %{install-root}
 
   cd %{install-root}
-  sha256sum rlxos-%{version}-%{installer-id}.iso >rlxos-%{version}-%{installer-id}.iso.sha265sum
+  sha256sum rlxos-rlxos-%{arch}-%{version}.iso >rlxos-rlxos-%{arch}-%{version}.iso.sha265sum
 
 build-depends:
   - components/e2fsprogs.yml

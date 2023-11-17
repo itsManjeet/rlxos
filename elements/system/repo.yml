@@ -4,7 +4,6 @@ merge: [version.yml, elements/include/ostree.yml]
 
 variables:
   include-root: "/sysroot"
-  include-collection: "collections/%{collection}.yml"
   initial-commands: |-
     chroot %{include-root} /bin/bash << "EOT"
     if [ -d %{localstatedir}/lib/integrations ] ; then
@@ -13,20 +12,20 @@ variables:
         sh -e $i
       done
     fi
-    
+
     chown root:root / -v
 
     mkdir -p /sysroot
     ln -sv /sysroot/ostree /ostree
-    
+
     echo "LANG=en_IN.utf-8" > /etc/locale.conf
     ln -sfv /usr/share/zoneinfo/UTC /etc/localtime
-    
+
     echo "root:root" | chpasswd
 
     kerver=$(ls -1 /lib/modules | head -n1)
     cp /lib/modules/${kerver}/bzImage /lib/modules/${kerver}/vmlinuz
-    
+
     dracut -v --no-machineid \
       --kver ${kerver} \
       --add ostree  \
@@ -40,16 +39,57 @@ variables:
       --omit lvm  \
       --install 'fsck.ext4' \
       %{libdir}/modules/${kerver}/initramfs
-    
+
     dbus-uuidgen >/etc/machine-id
     SYSTEMD_ESP_PATH=/boot bootctl --no-variables install
     rm /etc/machine-id
-    
+
     cat <<EOF >/boot/loader/loader.conf
     timeout 3
     editor yes
     console-mode keep
     EOF
-    
+
     mv %{sysconfdir} %{prefix}/
     EOT
+
+include:
+  - collections/desktop.yml
+
+  - components/xfce4/libxfce4ui.yml
+  - components/xfce4/libxfce4util.yml
+  - components/xfce4/exo.yml
+  - components/xfce4/garcon.yml
+  - components/xfce4/tumbler.yml
+  - components/xfce4/xfce4-panel.yml
+  - components/xfce4/xfce4-power-manager.yml
+  - components/xfce4/xfce4-settings.yml
+  - components/xfce4/xfconf.yml
+  - components/xfce4/xfdesktop.yml
+  - components/xfce4/xfwm4.yml
+  - components/xfce4/xfce4-session.yml
+  - components/xfce4/xfce4-whiskermenu-plugin.yml
+  - components/xfce4/xfce4-xkb-plugin.yml
+  - components/xfce4/xfce4-docklike-plugin.yml
+  - components/xfce4/xfce4-pulseaudio-plugin.yml
+  - components/xfce4/xfce4-notifyd.yml
+  - components/xfce4/xfce4-screensaver.yml
+  - components/xfce4/xfce4-panel-profiles.yml
+
+  - components/xfce4/xfce4-appfinder.yml
+  - components/xfce4/thunar.yml
+  - components/xfce4/xfce4-terminal.yml
+  - components/xfce4/mousepad.yml
+  - components/xfce4/parole.yml
+  - components/xfce4/ristretto.yml
+  - components/xfce4/xfce4-screenshooter.yml
+  - components/xfce4/xfce4-taskmanager.yml
+
+  - components/network-manager-applet.yml
+
+  - apps/firefox.yml
+
+  - components/lightdm-gtk-greeter.yml
+  - components/lightdm.yml
+
+  - components/initial-setup.yml

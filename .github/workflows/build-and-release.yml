@@ -13,104 +13,39 @@ jobs:
     name: Generate cache
     runs-on: self-hosted
     timeout-minutes: 47000
-    strategy:
-      matrix:
-        collection:
-          - xfce4/desktop
+    env:
+      OSTREE_REPO: ${{ secrets.OSTREE_REPO }}
+      OSTREE_GPG: ${{ secrets.OSTREE_GPG }}
+      SERVER_REPO_PATH: ${{secrets.SERVER_REPO_PATH}}
+      SERVER_REPO_URL: ${{secrets.SERVER_REPO_URL}}
+
     steps:
       - uses: actions/checkout@v1
 
       - name: Configure
+        run: make
+        
+      - name: Setup Version
         run: |
-          make
-
-          VERSION=${GITHUB_REF#refs/*/}
-          COLLECTION="${{matrix.collection}}"
+          echo "VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
           cat > version.yml << EOF
-          version: "${VERSION}"
+          version: ${VERSION}
           variables:
-            collection: "${{matrix.collection}}"
-            ostree-branch: "${VERSION}/${{matrix.collection}}"
-            installer-id: ${COLLECTION//\//-}
+            ostree-branch: "x86_64/os/${VERSION}"
           EOF
-          echo "VERSION=${VERSION}"   >> $GITHUB_ENV
 
       - name: Generate Cache
         run: ${IGNITE} build system/repo.yml
 
-
-  update-repository:
-    name: Update Repository
-    runs-on: self-hosted
-    timeout-minutes: 47000
-    environment: RELEASE
-    needs: generate-cache
-    env:
-      OSTREE_REPO: ${{ secrets.OSTREE_REPO }}
-      OSTREE_GPG: ${{ secrets.OSTREE_GPG }}
-    strategy:
-      matrix:
-        collection:
-          - xfce4/desktop
-    steps:
-      - uses: actions/checkout@v1
-
-      - name: Configure
-        run: |
-          make
-
-          VERSION=${GITHUB_REF#refs/*/}
-          COLLECTION="${{matrix.collection}}"
-          cat > version.yml << EOF
-          version: "${VERSION}"
-          variables:
-            collection: "${{matrix.collection}}"
-            ostree-branch: "${VERSION}/${{matrix.collection}}"
-            installer-id: ${COLLECTION//\//-}
-          EOF
-          echo "VERSION=${VERSION}"   >> $GITHUB_ENV
-
-      - name: Update OStree repository
+      - name: Update OStree
         run: |
           echo "${{ github.event.head_commit.message }}" > commit_body
-          OSTREE_BRANCH="${VERSION}/${{matrix.collection}}" make update-ostree
-
-  update-installer-image:
-    name: Update Installer Image
-    runs-on: self-hosted
-    timeout-minutes: 47000
-    environment: RELEASE
-    needs: update-repository
-    env:
-      SERVER_REPO_PATH: ${{secrets.SERVER_REPO_PATH}}
-      SERVER_REPO_URL: ${{secrets.SERVER_REPO_URL}}
-    strategy:
-      matrix:
-        collection:
-          - xfce4/desktop
-    steps:
-      - uses: actions/checkout@v1
-
-      - name: Configure
-        run: |
-          make
-
-          VERSION=${GITHUB_REF#refs/*/}
-          COLLECTION="${{matrix.collection}}"
-          cat > version.yml << EOF
-          version: "${VERSION}"
-          variables:
-            collection: "${{matrix.collection}}"
-            ostree-branch: "${VERSION}/${{matrix.collection}}"
-            installer-id: ${COLLECTION//\//-}
-          EOF
-          echo "VERSION=${VERSION}"   >> $GITHUB_ENV
+          OSTREE_BRANCH="x86_64/os/${VERSION}" make update-ostree
+      
       - name: Building Installer ISO
-        run: |
-          ${IGNITE} build installer/image.yml
-
+        run: ${IGNITE} build installer/image.yml
+      
       - name: Update Installer ISO
         run: |
-          COLLECTION="${{matrix.collection}}"
           ${IGNITE} checkout installer/image.yml ${SERVER_REPO_PATH}/releases/${VERSION}/
-          (cd ${SERVER_REPO_PATH}/releases/${VERSION}/; zsyncmake -b 2048 -C -u ${SERVER_REPO_URL}/releases/${VERSION}/rlxos-${VERSION}-${COLLECTION//\//-}.iso rlxos-${VERSION}-${COLLECTION//\//-}.iso)
+          (cd ${SERVER_REPO_PATH}/releases/${VERSION}/; zsyncmake -b 2048 -C -u ${SERVER_REPO_URL}/releases/${VERSION}/rlxos-x86_64-${VERSION}.iso rlxos-x86_64-${VERSION}.iso)

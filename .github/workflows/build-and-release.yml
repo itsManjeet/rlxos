@@ -27,7 +27,7 @@ jobs:
         
       - name: Setup Version
         run: |
-          VERSION=${GITHUB_REF#refs/*/}"
+          VERSION="${GITHUB_REF#refs/*/}"
           cat > version.yml << EOF
           version: ${VERSION}
           variables:

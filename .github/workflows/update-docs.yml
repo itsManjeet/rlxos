@@ -1,0 +1,16 @@
+name: Update Docs
+on:
+  push:
+    branches:
+      - stable
+
+jobs:
+  update-docs:
+    name: Update Docs
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Compile Ignite
+        run: mdbook build -d ${{secrets.DOCS_DIR}}

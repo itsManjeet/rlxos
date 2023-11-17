@@ -2,15 +2,15 @@ name: Build and Release
 on:
   push:
     paths-ignore:
-      - 'docs/**'
+      - "docs/**"
 
 env:
   NO_PRINT_PROGRESS: 1
   IGNITE: ./build/ignite
 
 jobs:
-  generate-cache:
-    name: Generate cache
+  build-and-release:
+    name: Build and Release
     runs-on: self-hosted
     timeout-minutes: 47000
     env:
@@ -24,7 +24,7 @@ jobs:
 
       - name: Configure
         run: make
-        
+
       - name: Setup Version
         run: |
           VERSION="${GITHUB_REF#refs/*/}"
@@ -43,10 +43,10 @@ jobs:
         run: |
           echo "${{ github.event.head_commit.message }}" > commit_body
           OSTREE_BRANCH="x86_64/os/${VERSION}" make update-ostree
-      
+
       - name: Building Installer ISO
         run: ${IGNITE} build installer/image.yml
-      
+
       - name: Update Installer ISO
         run: |
           ${IGNITE} checkout installer/image.yml ${SERVER_REPO_PATH}/releases/${VERSION}/

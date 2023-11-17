@@ -3,8 +3,8 @@ merge: [version.yml]
 about: System Initial Setup
 
 variables:
-  commit: 762c102757ee626b9c42ff1774e3701b0bd8bac0
-  release: 12
+  commit: e67c8c3d91cd7f1d8165f596fd1abdf3eb35d0f4
+  release: 1
 
 post-script: |-
   install -vDm 755 %{build-dir}/src/initial_setup %{install-root}%{bindir}/initial-setup

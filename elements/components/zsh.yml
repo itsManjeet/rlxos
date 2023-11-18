@@ -36,7 +36,7 @@ post-script: |
   install -v -D -m 0644 /files/zsh/profile -t %{install-root}%{sysconfdir}/zsh
 
 integration: |
-  echo "/bin/zsh" >> %{sysconfdir}/shells
+  echo -e "\n/bin/zsh" >> %{sysconfdir}/shells
 
 depends:
   - components/gdbm.yml

@@ -59,6 +59,7 @@ depends:
   - components/swupd.yml
   - components/py/py-pip.yml
   - components/ufw.yml
+  - components/zram-generator.yml
 
   - kernel/linux.yml
   - system/ostree-config.yml

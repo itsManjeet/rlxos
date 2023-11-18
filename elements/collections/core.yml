@@ -20,6 +20,7 @@ depends:
   - components/locales.yml
   - components/openssh.yml
   - components/sed.yml
+  - components/ohmyzsh.yml
   - components/systemd.yml
   - components/tar.yml
   - components/util-linux.yml

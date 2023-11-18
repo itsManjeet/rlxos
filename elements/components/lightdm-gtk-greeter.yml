@@ -13,7 +13,7 @@ post-script: |-
   theme-name=Orchis-Light
   icon-theme-name=Tela-light
   cursor-theme-name=Adwaita
-  font-name=Noto Sans 11
+  font-name=IBM Plex Sans Regular 11
   panel-position=top
   indicators=~host;~spacer;~session;~a11y;~language;~clock;~power;
   EOF

@@ -1,0 +1,30 @@
+id: ohmyzsh
+version: master
+
+variables:
+  commit: c8e600f39779c6d2ef75b40304b5391a541c41df
+
+depends:
+  - components/zsh.yml
+  - components/zsh-autosuggestions.yml
+
+script: |-
+  mkdir -p %{install-root}%{datadir}/%{id}
+  cp -r * %{install-root}%{datadir}/%{id}/
+
+  install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/zshrc << EOF
+  export ZSH=%{datadir}/%{id}
+
+  ZSH_CACHE_DIR=$HOME/.cache/oh-my-zsh
+  [ ! -d $ZSH_CACHE_DIR ] && mkdir -p $ZSH_CACHE_DIR
+
+  ZSH_THEME="robbyrussell"
+
+  plugins=(git zsh-autosuggestions)
+
+  source $ZSH/oh-my-zsh.sh
+
+  EOF
+
+sources:
+  - ohmyzsh-%{commit}.tar.gz::https://github.com/ohmyzsh/ohmyzsh/archive/%{commit}.tar.gz

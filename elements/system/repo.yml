@@ -21,6 +21,16 @@ variables:
     echo "LANG=en_IN.utf-8" > /etc/locale.conf
     ln -sfv /usr/share/zoneinfo/UTC /etc/localtime
 
+    install -v -D -m 0644 /dev/stdin %{install-root}/%{sysconfdir}/default/useradd << EOF
+    GROUP=100
+    INACTIVE=-1
+    EXPIRE=
+    SHELL=/bin/zsh
+    SKEL=/etc/skel
+    CREATE_MAIL_SPOOL=no
+    HOME=/home
+    EOF
+
     echo "root:root" | chpasswd
 
     kerver=$(ls -1 /lib/modules | head -n1)

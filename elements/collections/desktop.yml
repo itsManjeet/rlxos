@@ -13,6 +13,7 @@ depends:
 - apps/gufw.yml
 - apps/gigolo.yml
 - apps/pinta.yml
+- apps/onboard.yml
 
 # Components
 - components/gvfs.yml

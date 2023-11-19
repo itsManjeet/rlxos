@@ -1,17 +1,9 @@
 # Installating RLXOS
 
-## Supported Hardware/Requirements
-
-- CPU: Intel/AMD with x86_64 Architecture
-- Memory: A minimum of 1 GiB work well
-- Storage: Atleast 5 GiB free space for installation
-
 ## Getting Installer Image
 
 Get the latest ISO release of RLXOS from [Repository](https://repo.rlxos.dev/releases/). Server Repository provides
 Zsync data from ISO, so if you already had the ISO of previous version you can simply zsync to save bandwith.
-
-**ISO with version **dot "x"** are rolling release and can be unstable or even unbootable**
 
 ## Creating Installation Media
 

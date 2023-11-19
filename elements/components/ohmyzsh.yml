@@ -3,6 +3,7 @@ version: master
 
 variables:
   commit: c8e600f39779c6d2ef75b40304b5391a541c41df
+  default-theme: lukerandall
 
 depends:
   - components/zsh.yml
@@ -18,7 +19,7 @@ script: |-
   ZSH_CACHE_DIR=$HOME/.cache/oh-my-zsh
   [ ! -d $ZSH_CACHE_DIR ] && mkdir -p $ZSH_CACHE_DIR
 
-  ZSH_THEME="robbyrussell"
+  ZSH_THEME="%{default-theme}"
 
   plugins=(git zsh-autosuggestions)
 

@@ -1,0 +1,8 @@
+id: thunar-media-tags-plugin
+version: 0.4.0
+about: Adds special features for media files to the Thunar File Manager
+
+depends:
+  - components/taglib.yml
+
+merge: [elements/include/thunar-plugin.yml]

@@ -61,6 +61,10 @@ depends:
   - components/py/py-pip.yml
   - components/ufw.yml
   - components/zram-generator.yml
+  - components/openjdk-jre.yml
 
   - kernel/linux.yml
+
   - system/ostree-config.yml
+
+  - apps/neofetch.yml

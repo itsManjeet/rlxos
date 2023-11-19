@@ -1,0 +1,15 @@
+id: gigolo
+version: 0.5.2
+about: Frontend to manage connections to remote filesystems using GIO/GVFS
+
+variables:
+  run-autogen: false
+  seperate-build-dir: false
+
+depends:
+  - components/gvfs.yml
+build-depends:
+  - components/intltool.yml
+
+sources:
+  - https://archive.xfce.org/src/apps/gigolo/%{version:1}/gigolo-%{version}.tar.bz2

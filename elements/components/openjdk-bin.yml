@@ -1,21 +1,23 @@
 id: openjdk-bin
-version: 18.0.2.1
+merge: [elements/include/java.yml]
 about: Java programming language [Binary]
 
 depends:
   - components/alsa-lib.yml
   - components/cups.yml
   - components/giflib.yml
-  - components/xorg-libs.yml
+  - components/x11/libx11.yml
+  - components/x11/libxext.yml
+  - components/x11/libxrandr.yml
+  - components/x11/libxrender.yml
+  - components/x11/libxt.yml
+  - components/x11/libxtst.yml
+
 sources:
-  - https://storage.rlxos.dev/sources/openjdk-%{version}_linux-x64_bin.tar.gz
+  - https://anduin.linuxfromscratch.org/BLFS/OpenJDK/OpenJDK-%{version}/OpenJDK-%{version}+9-x86_64-bin.tar.xz
+
 script: |
   JAVA_HOME=/opt/openjdk-bin-%{version}
   install -v -d -m 0755 %{install-root}/${JAVA_HOME}
   mv * %{install-root}/${JAVA_HOME}
   chown -R root:root %{install-root}/${JAVA_HOME}
-
-  install -v -D -m 0755 /files/source %{install-root}/${JAVA_HOME}/source
-  sed -i "s#@@install_dir@@#${JAVA_HOME}#g" %{install-root}/${JAVA_HOME}/source
-
-# TODO: fix update url

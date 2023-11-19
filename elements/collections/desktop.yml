@@ -8,14 +8,15 @@ depends:
 # AppImage
 - components/fuse2.yml
 
+# Apps
+- apps/file-roller.yml
+- apps/gufw.yml
+
 # Components
 - components/gvfs.yml
 - components/xdg-user-dirs-gtk.yml
-- components/qemu.yml
 - components/xdg-utils.yml
 - components/flatpak.yml
-- components/appimage.yml
-- components/gufw.yml
 
 # X11
 - components/x11/xserver.yml

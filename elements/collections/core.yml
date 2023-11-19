@@ -63,4 +63,7 @@ depends:
   - components/zram-generator.yml
 
   - kernel/linux.yml
+
   - system/ostree-config.yml
+
+  - apps/neofetch.yml

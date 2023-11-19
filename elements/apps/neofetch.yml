@@ -1,0 +1,12 @@
+id: neofetch
+version: latest
+about: A command-line system information tool written in bash 3.2+
+
+variables:
+  commit: c3c63b3d5fb5fe8ab96cd5b41f879586af07c78a
+
+script: |-
+  make install DESTDIR=%{install-root}
+
+sources:
+  - neofetch-%{commit}.tar.gz::https://github.com/itsManjeet/neofetch/archive/%{commit}.tar.gz

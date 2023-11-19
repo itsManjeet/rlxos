@@ -1,0 +1,35 @@
+id: openjdk-jre
+merge: [elements/include/java.yml]
+about: open-source implementation of Oracle's Java Standard Edition platform [RUNTIME]
+
+depends:
+  - components/alsa-lib.yml
+  - components/cpio.yml
+  - components/cups.yml
+  - components/unzip.yml
+  - components/which.yml
+  - components/x11/libx11.yml
+  - components/x11/libxext.yml
+  - components/x11/libxrandr.yml
+  - components/x11/libxrender.yml
+  - components/x11/libxt.yml
+  - components/x11/libxtst.yml
+  - components/zip.yml
+  - components/make-ca.yml
+  - components/giflib.yml
+  - components/lcms.yml
+  - components/libjpeg-turbo.yml
+  - components/libpng.yml
+build-depends:
+  - components/openjdk.yml
+
+script: |-
+  for bin in java jfr jrunscript jwebserver keytool rmiregistry ; do
+    install -v -D -m 0755 %{libdir}/openjdk-%{version:2}/bin/${bin} -t %{install-root}/%{libdir}/openjdk-%{version:2}/bin/
+  done
+
+  mkdir -p %{install-root}/%{libdir}/openjdk-%{version:2}/lib/
+  cp %{libdir}/openjdk-%{version:2}/lib/*.so %{install-root}/%{libdir}/openjdk-%{version:2}/lib/
+  cp -ar %{libdir}/openjdk-%{version:2}/lib/{jfr,jrt-fs.jar,jspawnhelper,jvm.cfg,modules,psfont*,security,server,tzdb.dat} %{install-root}/%{libdir}/openjdk-%{version:2}/lib/
+
+  install -v -D -m 0755 %{sysconfdir}/profiles.d/openjdk.sh -t %{install-root}%{sysconfdir}/profiles.d/openjdk.sh

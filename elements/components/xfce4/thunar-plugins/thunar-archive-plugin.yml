@@ -1,0 +1,5 @@
+id: thunar-archive-plugin
+version: 0.5.2
+about: Adds archive operations to the Thunar file context menus
+
+merge: [elements/include/thunar-plugin.yml]

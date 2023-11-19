@@ -1,0 +1,20 @@
+id: pinta
+version: 2.0.1
+about: Drawing/editing program modeled after Paint.NET. It's goal is to provide a simplified alternative to GIMP for casual users
+
+variables:
+  run-autogen: false
+  seperate-build-dir: false
+
+depends:
+  - components/dotnet-runtime.yml
+  - components/gtk.yml
+
+build-depends:
+  - components/intltool.yml
+  - components/dotnet.yml
+
+sources:
+  - https://github.com/PintaProject/Pinta/releases/download/%{version}/pinta-%{version}.tar.gz
+pre-script: |
+  sed -i '/^PINTA_BUILD_OPTS/ s/$/ -maxcpucount:1/' Makefile.in

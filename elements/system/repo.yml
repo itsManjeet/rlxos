@@ -13,6 +13,9 @@ variables:
       done
     fi
 
+    update-mime-database %{datadir}/mime/
+    update-desktop-database %{datadir}/applications/
+
     chown root:root / -v
 
     mkdir -p /sysroot
@@ -94,6 +97,33 @@ include:
   - components/xfce4/ristretto.yml
   - components/xfce4/xfce4-screenshooter.yml
   - components/xfce4/xfce4-taskmanager.yml
+
+  # Panel Plugins
+  - components/xfce4/panel-plugins/xfce4-clipman-plugin.yml
+  - components/xfce4/panel-plugins/xfce4-netload-plugin.yml
+  - components/xfce4/panel-plugins/xfce4-cpufreq-plugin.yml
+  - components/xfce4/panel-plugins/xfce4-sensors-plugin.yml
+  - components/xfce4/panel-plugins/xfce4-genmon-plugin.yml
+  - components/xfce4/panel-plugins/xfce4-cpugraph-plugin.yml
+  - components/xfce4/panel-plugins/xfce4-eyes-plugin.yml
+  - components/xfce4/panel-plugins/xfce4-fsguard-plugin.yml
+  - components/xfce4/panel-plugins/xfce4-smartbookmark-plugin.yml
+  - components/xfce4/panel-plugins/xfce4-time-out-plugin.yml
+  - components/xfce4/panel-plugins/xfce4-weather-plugin.yml
+  - components/xfce4/panel-plugins/xfce4-mailwatch-plugin.yml
+  - components/xfce4/panel-plugins/xfce4-mount-plugin.yml
+  - components/xfce4/panel-plugins/xfce4-mpc-plugin.yml
+  - components/xfce4/panel-plugins/xfce4-clipman-plugin.yml
+  - components/xfce4/panel-plugins/xfce4-wavelan-plugin.yml
+  - components/xfce4/panel-plugins/xfce4-diskperf-plugin.yml
+  - components/xfce4/panel-plugins/xfce4-systemload-plugin.yml
+  - components/xfce4/panel-plugins/xfce4-timer-plugin.yml
+  - components/xfce4/panel-plugins/xfce4-verve-plugin.yml
+  - components/xfce4/panel-plugins/xfce4-notes-plugin.yml
+
+  # Thunar plugins
+  - components/xfce4/thunar-plugins/thunar-media-tags-plugin.yml
+  - components/xfce4/thunar-plugins/thunar-archive-plugin.yml
 
   - components/network-manager-applet.yml
 

@@ -8,8 +8,8 @@ the __Application Menu__ are the workspaces, You can switch to the workspaces to
 there are Pinned application and task bar where your currently running applications are listed. On the right side of
 panel are __System Tray__ for quick settings.
 
-![Welcome Screen](assets/interface/application-menu.png)
+![Welcome Screen](../assets/interface/application-menu.png)
 
 ## Application Finder
 
-![Underconstruction](assets/underconstruction.png)
+![Underconstruction](../assets/underconstruction.png)

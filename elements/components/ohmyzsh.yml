@@ -3,7 +3,7 @@ version: master
 
 variables:
   commit: c8e600f39779c6d2ef75b40304b5391a541c41df
-  default-theme: jonathan
+  default-theme: lukerandall
 
 depends:
   - components/zsh.yml

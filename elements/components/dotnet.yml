@@ -16,5 +16,3 @@ script: |
   mv * %{install-root}%{datadir}/dotnet/
   mkdir -p %{install-root}/%{bindir}
   ln -sv %{datadir}/dotnet/dotnet %{install-root}/%{bindir}
-
-# TODO: fix update url

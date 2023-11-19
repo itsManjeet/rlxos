@@ -12,6 +12,7 @@ depends:
 - apps/file-roller.yml
 - apps/gufw.yml
 - apps/gigolo.yml
+- apps/pinta.yml
 
 # Components
 - components/gvfs.yml

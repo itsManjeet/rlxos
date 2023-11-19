@@ -13,6 +13,9 @@ variables:
       done
     fi
 
+    update-mime-database %{datadir}/mime/
+    update-desktop-database %{datadir}/applications/
+
     chown root:root / -v
 
     mkdir -p /sysroot

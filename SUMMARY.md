@@ -13,6 +13,8 @@
 # System Management
 
 - [Updates](./docs/system-management/updates.md)
+- [Containers](./docs/system-management/distrobox.md)
+- [Flatpaks](./docs/system-management/flatpak.md)
 
 # Community Guidelines
 

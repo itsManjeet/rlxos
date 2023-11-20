@@ -1,17 +1,9 @@
 # Installating RLXOS
 
-## Supported Hardware/Requirements
-
-- CPU: Intel/AMD with x86_64 Architecture
-- Memory: A minimum of 1 GiB work well
-- Storage: Atleast 5 GiB free space for installation
-
 ## Getting Installer Image
 
 Get the latest ISO release of RLXOS from [Repository](https://repo.rlxos.dev/releases/). Server Repository provides
 Zsync data from ISO, so if you already had the ISO of previous version you can simply zsync to save bandwith.
-
-**ISO with version **dot "x"** are rolling release and can be unstable or even unbootable**
 
 ## Creating Installation Media
 
@@ -54,32 +46,32 @@ Step by Step guide below.
 
 1. Initial Setup window will pop up to help you to setup RLXOS onto your system. Or you can Manully start it from the
    **Blue Installer Icon** on the bottom panel.
-   <p><img src="assets/installation/welcome.png" alt="installer" style="padding-top: 10px; padding-bottom: 18px;"></p>
+   <p><img src="../assets/installation/welcome.png" alt="installer" style="padding-top: 10px; padding-bottom: 18px;"></p>
 
 2. The first step is to select an appropriate partition to install RLXOS, you can edit your partition layout using the
    edit button or using Gparted **Disk Icon** from bottom panel
-   <p><img src="assets/installation/disk-selected.png" alt="installer" style="padding-top: 10px; padding-bottom: 18px;"></p>
+   <p><img src="../assets/installation/disk-selected.png" alt="installer" style="padding-top: 10px; padding-bottom: 18px;"></p>
 
 3. **If you are on Virtual System or have a blank drive** You need to create a new Parititon table from Gparted
    a. Select **msdos** Parition table if **BIOS** and **gpt** for **EFI** (or you can create a 1 MiB Leading partition
    with Bios Boot flag on EFI for **gpt**).
 
    **BIOS Partition Layout**
-   <p><img src="assets/installation/disk-gparted-msdos-layout.png" alt="installer" style="padding-top: 10px; padding-bottom: 18px;"></p>
+   <p><img src="../assets/installation/disk-gparted-msdos-layout.png" alt="installer" style="padding-top: 10px; padding-bottom: 18px;"></p>
 
    **GPT Partition Layout**
-   <p><img src="assets/installation/disk-gparted-gpt-layout.png" alt="installer" style="padding-top: 10px; padding-bottom: 18px;"></p>
+   <p><img src="../assets/installation/disk-gparted-gpt-layout.png" alt="installer" style="padding-top: 10px; padding-bottom: 18px;"></p>
 
 4. Once you are finished with the partition you can close the Select the appropriate partition to start the installation
    process, Click **Next** to proceed
 
 5. Confirm your selection for the final time, After Clicking the **Apply** Button you can not revert back. Click
    **Apply** to start the installation process.
-   <p><img src="assets/installation/confirm.png" alt="installer" style="padding-top: 10px; padding-bottom: 18px;"></p>
+   <p><img src="../assets/installation/confirm.png" alt="installer" style="padding-top: 10px; padding-bottom: 18px;"></p>
 
 6. Wait for the installation process to Finish, Once the installation process finished you will see a success label on
    the window as button to reboot your system.
-   <p><img src="assets/installation/success.png" alt="installer" style="padding-top: 10px; padding-bottom: 18px;"></p>
+   <p><img src="../assets/installation/success.png" alt="installer" style="padding-top: 10px; padding-bottom: 18px;"></p>
 
 **Congratulation! You have successfully Installed RLXOS into your system**
 

@@ -4,7 +4,7 @@ Once you compeleted the installation process you are ready to configure your sys
 perform the first boot initialization steps Like creating __User account__, __Configure system__ or
 __Update Bootloader__.
 
-![Welcome](assets/first-boot/welcome.png)
+![Welcome](../assets/first-boot/welcome.png)
 
 ## Create User Account
 
@@ -13,9 +13,9 @@ you forget, then there is now straight way to access your account. With check bu
 to `root` user and Also You can login without entering your password but still you need to remember your password to
 perfrom administration tasks.
 
-![User Account](assets/first-boot/user.png)
+![User Account](../assets/first-boot/user.png)
 
 Follow the steps prompted to you and wait for the process to finished. Once you finished all the steps you click the *
 *Finalize** button the enter your account and use the RLXOS.
 
-![Finalize](assets/first-boot/success.png)
+![Finalize](../assets/first-boot/success.png)

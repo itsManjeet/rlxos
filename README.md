@@ -1,8 +1,12 @@
 <p><img src="files/branding/rlxos-logo.svg" alt="LOGO" style="width: 128px; height: auto;"></p>
 
-## What is RLXOS?
+## rlxos GNU/Linux
 
-RLXOS is an __Independent__, __Safely Mutable__ and __Privacy Oriented__ Open Source Operating System built on
-__Linux kernel__ and __GNU Utilities__. The primary focus of this distribution is Investigate and build a Safe Immutable
-OS that is __Usable__. RLXOS follows the philosophy **"Do one thing well"**, For every feature there is a extension
-available which can be layered upon the System (without modifying).
+(rlxos, pronounced as "r-e-l-e-a-x" or "r-l-x-o-s")
+An Independent, __Safely Mutable__, and Privacy oriented rolling release Linux distribution, developed from scratch, with focus on making a usable __Immutable__ distribution.
+
+- The [Ostree](./docs/ostree.md) provides a git like model to manage root file system. And ensure safe and atomic transition between different versions.
+- [Xfce4](https://www.xfce.org) a lightweight desktop environment that is fast, beautiful and highly customizable.
+- [Swupd](./docs/swupd.md) fast, simple, in-house developed package manager, which provides a safe way to add layers/packages without breaking system.
+  
+rlxos is developed by a handful of developers in their spare time and is generally considered stable enough for daily use.

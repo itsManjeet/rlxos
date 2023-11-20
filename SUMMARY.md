@@ -12,7 +12,7 @@
 
 # System Management
 
-- [OStree](./docs/ostree.md)
+- [Updates](./docs/system-management/updates.md)
 
 # Community Guidelines
 

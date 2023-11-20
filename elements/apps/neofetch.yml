@@ -3,7 +3,7 @@ version: latest
 about: A command-line system information tool written in bash 3.2+
 
 variables:
-  commit: 5d69cdbe8764cb2a94e5284950f3f90ed9f58a32
+  commit: e1a1ed42e840c8ea84a9d34f006d63fac08aba7a
 
 script: |-
   make install DESTDIR=%{install-root}

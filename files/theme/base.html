@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>{% if page.title %}{{ page.title }} - {% endif %}{{ config.site_name }}</title>
+  <link rel="shortcut icon" href="{{ "img/favicon.ico"|url }}">
+  <link rel="stylesheet" href="{{ "css/theme.css"|url }}">
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+  {% for path in config.extra_css %}
+  <link href="{{ path|url }}" rel="stylesheet">
+  {% endfor %}
+
+  <script data-search-pseudo-elements defer
+    src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"
+    crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/82c3e4f9bf.js" crossorigin="anonymous"></script>
+
+  {% block extrahead %}
+  {% endblock %}
+
+
+  {% for script in config.extra_javascript %}
+  {{ script | script_tag }}
+  {% endfor %}
+
+  {% if config.google_analytics %}
+  <script>
+    (function (i, s, o, g, r, a, m) {
+      i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments)
+      }, i[r].l = 1 * new Date(); a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', '{{ config.google_analytics[0] }}', '{{ config.google_analytics[1] }}');
+    ga('send', 'pageview');
+  </script>
+  {% endif %}
+
+</head>
+
+<body>
+  <div id="layoutDefault">
+    <div id="layoutDefault_content">
+      <main>
+        <nav class="navbar navbar-marketing navbar-expand-lg bg-white navbar-light">
+          <div class="container px-5">
+            <a class="navbar-brand text-primary" href="{{ '/' }}">Handbook</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+              aria-label="Toggle navigation">
+              <i data-feather="menu"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav ms-auto me-lg-5">
+                <li class="nav-item">
+                  <a class="nav-link" href="https://rlxos.dev">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="https://rlxos.dev/blog">Blog</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="https://rlxos.dev/gallery">Gallery</a>
+                </li>
+                <li class="nav-item dropdown no-caret">
+                  <a class="nav-link dropdown-toggle" id="navbarDropdownDocs" role="button" data-bs-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Community
+                    <i class="fas fa-chevron-right dropdown-arrow"></i>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-end animated--fade-in-up"
+                    aria-labelledby="navbarDropdownDocs">
+                    <a class="dropdown-item py-3" href="https://github.com/itsManjeet/rlxos/discussions"
+                      target="_blank">
+                      <div class="icon-stack bg-primary-soft text-primary me-4">
+                        <i class="fa-brands fa-github"></i>
+                      </div>
+                      <div>
+                        <div class="small text-gray-500">Github</div>
+                        Central repository for rlxos meta data
+                      </div>
+                    </a>
+                    <div class="dropdown-divider m-0"></div>
+                    <a class="dropdown-item py-3" href="https://www.youtube.com/@rlxos2489" target="_blank">
+                      <div class="icon-stack bg-primary-soft text-primary me-4">
+                        <i class="fa-brands fa-youtube"></i>
+                      </div>
+                      <div>
+                        <div class="small text-gray-500">Youtube</div>
+                        Video Guided Tutorials
+                      </div>
+                    </a>
+                    <div class="dropdown-divider m-0"></div>
+                    <a class="dropdown-item py-3" href="https://twitter.com/rlxos_dev" target="_blank">
+                      <div class="icon-stack bg-primary-soft text-primary me-4">
+                        <i class="fa-brands fa-telegram"></i>
+                      </div>
+                      <div>
+                        <div class="small text-gray-500">Twitter</div>
+                        Latest news and updates from core team
+                      </div>
+                    </a>
+                  </div>
+                </li>
+                <li class="nav-item dropdown no-caret">
+                  <a class="nav-link dropdown-toggle" id="navbarDropdownDocs" role="button" data-bs-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Documentation
+                    <i class="fas fa-chevron-right dropdown-arrow"></i>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-end animated--fade-in-up"
+                    aria-labelledby="navbarDropdownDocs">
+                    <a class="dropdown-item py-3" href="https://docs.rlxos.dev" target="_blank">
+                      <div class="icon-stack bg-primary-soft text-primary me-4">
+                        <i data-feather="book-open"></i>
+                      </div>
+                      <div>
+                        <div class="small text-gray-500">Documentation</div>
+                        Usage instructions and reference
+                      </div>
+                    </a>
+                    <div class="dropdown-divider m-0"></div>
+                    <a class="dropdown-item py-3" href="https://github.com/itsManjeet/rlxos/commits/stable"
+                      target="_blank">
+                      <div class="icon-stack bg-primary-soft text-primary me-4">
+                        <i data-feather="file-text"></i>
+                      </div>
+                      <div>
+                        <div class="small text-gray-500">Changelog</div>
+                        Updates and changes
+                      </div>
+                    </a>
+                  </div>
+                </li>
+              </ul>
+              <!-- <a class="btn fw-500 ms-lg-4 btn-primary" href="{{ '/apps' }}">Apps<i class="ms-2"
+                    data-feather="arrow-right"></i>
+            </a> -->
+            </div>
+          </div>
+        </nav>
+
+        <section class="bg-light py-10">
+          <div class="container px-5 mt-5">
+            <div class="row gx-5">
+              <div class="col-lg-4 col-xl-3 mb-5">
+                <div class="card">
+                  <div class="list-group list-group-flush small">
+                    {% for nav_item in nav %}
+                    {% if not nav_item.children %}
+                    <a class="list-group-item list-group-item-action p-3" href="{{ nav_item.url|url }}">
+                      {{ nav_item.title }}
+                    </a>
+                    {% else %}
+                    <div class="accordion" id="accordionFaq">
+                      <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                          <button class="accordion-button py-4" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            {{ nav_item.title }}</button>
+                        </h2>
+                        <div class="accordion-collapse collapse show" id="collapseOne" aria-labelledby="headingOne"
+                          data-bs-parent="#accordionFaq">
+                          {% for nav_item in nav_item.children %}
+                          <a class="list-group-item list-group-item-action p-3" href="{{ nav_item.url|url }}">
+                            {{ nav_item.title }}
+                          </a>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-8 col-xl-9">
+                <div class="card mb-5">
+                  <div class="card-body">
+                    {% block content %}
+                    {{ page.content }}
+                    {% endblock %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <nav aria-label="Page navigation example">
+              <ul class="pagination pagination-blog justify-content-center">
+                {% if page.next_page or page.previous_page %}
+                {% if page.previous_page %}
+                <li class="page-item">
+                  <a class="page-link" href="{{ page.previous_page.url|url }}" title="{{ page.previous_page.title }}"
+                    aria-label="Previous"><span aria-hidden="true">« Previous</span></a>
+                </li>
+                {% endif %}
+                
+                {% if page.next_page %}
+                <li class="page-item">
+                  <a class="page-link" href="{{ page.next_page.url|url }}" title="{{ page.next_page.title }}"
+                    aria-label="Next"><span aria-hidden="true">Next »</span></a>
+                </li>
+                {% endif %}
+                {% endif %}
+              </ul>
+            </nav>
+          </div>
+          <div class="svg-border-rounded text-dark">
+            <!-- Rounded SVG Border-->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.54 17.34" preserveAspectRatio="none"
+              fill="currentColor">
+              <path d="M144.54,17.34H0V0H144.54ZM0,0S32.36,17.34,72.27,17.34,144.54,0,144.54,0"></path>
+            </svg>
+          </div>
+        </section>
+      </main>
+    </div>
+    <div id="layoutDefault_footer">
+      <footer class="footer pt-10 pb-5 mt-auto bg-dark footer-dark">
+        <div class="container px-5">
+          <div class="row gx-5">
+            <div class="col-lg-3">
+              <div class="footer-brand">rlxos</div>
+              <div class="mb-3">An Independent Open Source Operating System</div>
+              <div class="icon-list-social mb-5">
+                <a class="icon-list-social-link" href="https://github.com/itsManjeet/rlxos"><i
+                    class="fab fa-github"></i></a>
+                <a class="icon-list-social-link" href="https://www.youtube.com/@rlxos2489"><i
+                    class="fab fa-youtube"></i></a>
+                <a class="icon-list-social-link" href="https://t.me/rlxos_linux"><i class="fab fa-telegram"></i></a>
+                <a class="icon-list-social-link" href="https://twitter.com/rlxos_dev"><i class="fab fa-twitter"></i></a>
+              </div>
+            </div>
+            <div class="col-lg-9">
+              <div class="row gx-5">
+                <div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
+                  <div class="text-uppercase-expanded text-xs mb-4">HOME</div>
+                  <ul class="list-unstyled mb-0">
+                    <li class="mb-2"><a href="https://rlxos.dev">Site</a></li>
+                    <li class="mb-2"><a href="https://rlxos.dev/blog">Blog</a></li>
+                    <li class="mb-2"><a href="https://rlxos.dev/downloads">Downloads</a></li>
+                  </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
+                  <div class="text-uppercase-expanded text-xs mb-4">Technical</div>
+                  <ul class="list-unstyled mb-0">
+                    <li class="mb-2"><a href="https://docs.rlxos.dev/">Documentation</a></li>
+                    <li class="mb-2"><a href="https://github.com/itsManjeet/rlxos/commits/stable">Changelog</a></li>
+                  </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                  <div class="text-uppercase-expanded text-xs mb-4">Legal</div>
+                  <ul class="list-unstyled mb-0">
+                    <li class="mb-2"><a href="https://rlxos.dev/privacy">Privacy Policy</a></li>
+                    <li class="mb-2"><a href="https://rlxos.dev/terms">Terms and Conditions</a></li>
+                    <li><a href="https://rlxos.dev/license">License</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr class="my-5" />
+          <div class="row gx-5 align-items-center">
+            <div class="col-md-4 small">Copyright &copy; rlxos 2023</div>
+            <div class="col-md-4 small text-md-center">ॐ・जय श्री राम</div>
+            <div class="col-md-4 text-md-end small">
+              <a href="https://rlxos.dev/privacy">Privacy Policy</a>
+              &middot;
+              <a href="https://rlxos.dev/term">Terms &amp; Conditions</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    crossorigin="anonymous"></script>
+  <script src="{{ "js/theme.js"|url }}"></script>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      disable: 'mobile',
+      duration: 600,
+      once: true,
+    });
+  </script>
+</body>
+
+</html>

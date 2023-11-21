@@ -187,27 +187,28 @@
                     {% endblock %}
                   </div>
                 </div>
+                <nav aria-label="Page navigation example">
+                  <ul class="pagination pagination-blog justify-content-center">
+                    {% if page.next_page or page.previous_page %}
+                    {% if page.previous_page %}
+                    <li class="page-item">
+                      <a class="page-link" href="{{ page.previous_page.url|url }}"
+                        title="{{ page.previous_page.title }}" aria-label="Previous"><span aria-hidden="true">«
+                          Previous</span></a>
+                    </li>
+                    {% endif %}
+
+                    {% if page.next_page %}
+                    <li class="page-item">
+                      <a class="page-link" href="{{ page.next_page.url|url }}" title="{{ page.next_page.title }}"
+                        aria-label="Next"><span aria-hidden="true">Next »</span></a>
+                    </li>
+                    {% endif %}
+                    {% endif %}
+                  </ul>
+                </nav>
               </div>
             </div>
-            <nav aria-label="Page navigation example">
-              <ul class="pagination pagination-blog justify-content-center">
-                {% if page.next_page or page.previous_page %}
-                {% if page.previous_page %}
-                <li class="page-item">
-                  <a class="page-link" href="{{ page.previous_page.url|url }}" title="{{ page.previous_page.title }}"
-                    aria-label="Previous"><span aria-hidden="true">« Previous</span></a>
-                </li>
-                {% endif %}
-                
-                {% if page.next_page %}
-                <li class="page-item">
-                  <a class="page-link" href="{{ page.next_page.url|url }}" title="{{ page.next_page.title }}"
-                    aria-label="Next"><span aria-hidden="true">Next »</span></a>
-                </li>
-                {% endif %}
-                {% endif %}
-              </ul>
-            </nav>
           </div>
           <div class="svg-border-rounded text-dark">
             <!-- Rounded SVG Border-->

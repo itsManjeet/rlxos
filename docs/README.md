@@ -1,6 +1,4 @@
-<p><img src="assets/rlxos-logo.svg" alt="LOGO" style="width: 128px; height: auto;"></p>
-
-## rlxos GNU/Linux
+# rlxos GNU/Linux
 
 (rlxos, pronounced as "r-e-l-e-a-x" or "r-l-x-o-s")
 An Independent, __Safely Mutable__, and Privacy oriented rolling release Linux distribution, developed from scratch, with focus on making a usable __Immutable__ distribution.

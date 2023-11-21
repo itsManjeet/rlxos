@@ -12,5 +12,5 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - name: Compile Ignite
-        run: mdbook build -d ${{secrets.DOCS_DIR}}
+      - name: Build Documentation
+        run: mkdocs build -d ${{secrets.DOCS_DIR}}

@@ -1,0 +1,37 @@
+site_name: Handbook
+theme:
+  name: null
+  custom_dir: 'files/theme/'
+  palette:
+    accent: indigo
+  logo: assets/rlxos-logo-simple-white.svg
+  features:
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.expand
+  font:
+    text: Metropolis
+    code: Roboto Mono
+
+extra:
+  generator: false
+
+nav:
+  - Home: README.md
+  - History: HISTORY.md
+  - Getting Started:
+    - Supported Hardware: getting-started/supported-hardware.md
+    - Installation: getting-started/installation.md
+    - First Boot: getting-started/first-boot.md
+    - Welcome Tour: getting-started/welcome-tour.md
+  - System Management:
+    - Updates: system-management/updates.md
+    - Container: system-management/distrobox.md
+    - Flatpak: system-management/flatpak.md
+  - Community Guideline:
+    - Support and Help: SUPPORT.md
+    - Contributing Guideline: CONTRIBUTION.md
+    - Contributor Covenant Code Of Conduct: CODE_OF_CONDUCT.md
+    - Security Policy: SECURITY.md
+
+copyright: Copyright &copy; 2023 rlxos GNU/Linux

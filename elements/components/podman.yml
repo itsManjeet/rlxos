@@ -1,0 +1,22 @@
+id: podman
+version: 4.7.2
+about: Tool and library for running OCI-based containers in pods
+
+script: |-
+  export GOCACHE=$PWD/gocache
+  export GOPATH=$PWD/gopath
+  make BUILDTAGS="seccomp exclude_graphdriver_devicemapper"
+  make install PREFIX=%{prefix} LIBEXECDIR=%{libdir}/podman/ DESTDIR=%{install-root}
+
+depends:
+  - components/libseccomp.yml
+  - components/libassuan.yml
+  - components/libgpg-error.yml
+  - components/gpgme.yml
+  - components/btrfs-progs.yml
+
+build-depends:
+  - components/go.yml
+
+sources:
+  - https://github.com/containers/podman/archive/v%{version}/podman-%{version}.tar.gz

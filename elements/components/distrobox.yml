@@ -6,7 +6,7 @@ script: |-
   ./install -P %{install-root}/%{prefix}
 
 depends:
-  - components/docker.yml
+  - components/podman.yml
 
 sources:
   - distrobox-%{version}.tar.gz::https://github.com/89luca89/distrobox/archive/%{version}.tar.gz

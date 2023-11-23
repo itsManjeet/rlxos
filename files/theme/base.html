@@ -146,7 +146,7 @@
         </nav>
 
         <section class="bg-light py-10">
-          <div class="container px-5 mt-5">
+          <div class="container">
             <div class="row gx-5">
               <div class="col-lg-4 col-xl-3 mb-5">
                 <div class="card">
@@ -157,22 +157,13 @@
                       {{ nav_item.title }}
                     </a>
                     {% else %}
-                    <div class="accordion" id="accordionFaq">
-                      <div class="accordion-item">
-                        <h2 class="accordion-header" id="headingOne">
-                          <button class="accordion-button py-4" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            {{ nav_item.title }}</button>
-                        </h2>
-                        <div class="accordion-collapse collapse show" id="collapseOne" aria-labelledby="headingOne"
-                          data-bs-parent="#accordionFaq">
-                          {% for nav_item in nav_item.children %}
-                          <a class="list-group-item list-group-item-action p-3" href="{{ nav_item.url|url }}">
-                            {{ nav_item.title }}
-                          </a>
-                          {% endfor %}
-                        </div>
-                      </div>
+                    <div class="list-grop-item p-3">
+                      <div class="pb-1">{{ nav_item.title }}</div>
+                      {% for nav_item in nav_item.children %}
+                      <a class="list-group-item list-group-item-action p-3" href="{{ nav_item.url|url }}">
+                        {{ nav_item.title }}
+                      </a>
+                      {% endfor %}
                     </div>
                     {% endif %}
                     {% endfor %}

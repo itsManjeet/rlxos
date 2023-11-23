@@ -28,6 +28,7 @@ depends:
 - components/x11/xrdb.yml
 - components/x11/iceauth.yml
 - components/x11/xrandr.yml
+- components/x11/xhost.yml
 
 # Laptop and Touch devices
 - components/2in1.yml

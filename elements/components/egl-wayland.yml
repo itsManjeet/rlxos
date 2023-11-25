@@ -3,8 +3,14 @@ version: 1.1.11
 about: EGLStream-based Wayland external platform
 
 post-script: |-
-  install -Dt "%{install-root}/%{datadir}/egl/egl_external_platform.d" -m644 /files/10_nvidia_wayland.json
-  install -Dt "%{install-root}/%{datadir}/doc/%{id}" -m644 COPYING
+  install -D -m 0644 /dev/stdin "%{install-root}/%{datadir}/egl/egl_external_platform.d/10_nvidia_wayland.json" << "EOF"
+  {
+    "file_format_version" : "1.0.0",
+    "ICD" : {
+        "library_path" : "libnvidia-egl-wayland.so.1"
+    }
+  }
+  EOF
 
 depends:
   - components/eglexternalplatform.yml

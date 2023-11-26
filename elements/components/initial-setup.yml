@@ -3,7 +3,7 @@ merge: [version.yml]
 about: System Initial Setup
 
 variables:
-  commit: 5510897344c7314bc194d2a43ef93af18ab9e6ae
+  commit: f1dae25a548e32a9b309042ed57baeccc9360531
   release: 1
 
 post-script: |-

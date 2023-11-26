@@ -27,6 +27,7 @@ depends:
 - components/x11/xrdb.yml
 - components/x11/iceauth.yml
 - components/x11/xrandr.yml
+- components/x11/xhost.yml
 
 # X11 drivers
 - components/x11/xf86-input-libinput.yml

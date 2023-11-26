@@ -2,8 +2,8 @@ id: dracut
 version: 056
 about: An event driven initramfs infrastructure
 
-sources:
-  - dracut-%{version}.tar.gz::https://github.com/dracutdevs/dracut/archive/refs/tags/%{version}.tar.gz
+pre-script: |-
+  patch -Np1 -i /patches/dracut/zstd-firmware-support.patch
 
 variables:
   seperate-build-dir: false
@@ -28,4 +28,7 @@ depends:
   - components/systemd.yml
   - components/util-linux.yml
   - components/xz.yml
+  - components/zstd.yml
 
+sources:
+  - dracut-%{version}.tar.gz::https://github.com/dracutdevs/dracut/archive/refs/tags/%{version}.tar.gz

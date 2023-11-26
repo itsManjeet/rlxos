@@ -39,7 +39,7 @@ variables:
     kerver=$(ls -1 /lib/modules | head -n1)
     cp /lib/modules/${kerver}/bzImage /lib/modules/${kerver}/vmlinuz
 
-    dracut -v --no-machineid \
+    dracut --reproducible -v --no-machineid \
       --kver ${kerver} \
       --add ostree  \
       --add plymouth  \
@@ -134,3 +134,6 @@ include:
   - components/lightdm-gtk-greeter-settings.yml
 
   - components/initial-setup.yml
+
+  - components/nvidia.yml
+  - components/nvidia-settings.yml

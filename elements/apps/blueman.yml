@@ -2,6 +2,7 @@ id: blueman
 version: 2.3.5
 about: GTK+ Bluetooth Manager
 
+build-type: autotools
 configure: >
   --libexecdir=%{libdir}/blueman
   --disable-schemas-compile

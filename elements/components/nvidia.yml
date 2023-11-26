@@ -1,11 +1,14 @@
-id: nvidia-utils
-version: 515.65.01
-about: NVIDIA drivers utilities
-release: 0
+id: nvidia
+version: 535.129.03
+about: NVIDIA drivers and utilities
 depends:
   - components/egl-wayland.yml
   - components/libglvnd.yml
-  - components/xorg-server.yml
+  - components/x11/xserver.yml
+
+build-depends:
+  - kernel/linux.yml
+
 sources:
   - https://us.download.nvidia.com/XFree86/Linux-x86_64/%{version}/NVIDIA-Linux-x86_64-%{version}.run
 script: |-
@@ -14,6 +17,12 @@ script: |-
   bsdtar -xf nvidia-persistenced-init.tar.bz2
 
   cd kernel
+
+  KERNEL_VERSION=$(ls -1 %{libdir}/modules/ | head -n1)
+  MODDIR=%{libdir}/modules/${KERNEL_VERSION}
+  make KERNEL_UNAME=$KERNEL_VERSION KERNEL_MODLIB=$MODDIR modules
+  make modules_install INSTALL_MOD_PATH=%{install-root}%{prefix} KERNEL_UNAME=$KERNEL_VERSION KERNEL_MODLIB=$MODDIR
+
   sed -i "s/__VERSION_STRING/%{version}/" dkms.conf
   sed -i 's/__JOBS/`nproc`/' dkms.conf
   sed -i 's/__DKMS_MODULES//' dkms.conf
@@ -33,7 +42,7 @@ script: |-
 
   cd ..
   install -Dm644 nvidia.icd "%{install-root}%{sysconfdir}/OpenCL/vendors/nvidia.icd"
-  install -Dm755 "libnvidia-compiler.so.%{version}" "%{install-root}/usr/lib/libnvidia-compiler.so.%{version}"
+  # install -Dm755 "libnvidia-compiler.so.%{version}" "%{install-root}/usr/lib/libnvidia-compiler.so.%{version}"
   install -Dm755 "libnvidia-opencl.so.%{version}" "%{install-root}/usr/lib/libnvidia-opencl.so.%{version}"
 
   find "%{install-root}" -type f -name '*.so*' ! -path '*xorg/*' -print0 | while read -d $'\0' _lib; do
@@ -42,9 +51,6 @@ script: |-
     [[ -e "${_soname}" ]] || ln -s $(basename "${_lib}") "${_soname}"
     [[ -e "${_base}" ]] || ln -s $(basename "${_soname}") "${_base}"
   done
-
-  install -dm 755 "%{install-root}"/usr/src
-  cp -dr --no-preserve='ownership' kernel "%{install-root}/usr/src/nvidia-%{version}"
 
   install -Dm755 nvidia_drv.so "%{install-root}/usr/lib/xorg/modules/drivers/nvidia_drv.so"
 
@@ -55,7 +61,7 @@ script: |-
   ln -sr "%{install-root}/usr/lib/libnvidia-allocator.so.%{version}" "%{install-root}/usr/lib/gbm/nvidia-drm_gbm.so"
 
   # firmware
-  install -Dm644 firmware/gsp.bin "%{install-root}/usr/lib/firmware/nvidia/%{version}/gsp.bin"
+  install -Dm644 firmware/gsp_*.bin -t "%{install-root}/usr/lib/firmware/nvidia/%{version}/"
 
   # GLX extension module for X
   install -Dm755 "libglxserver_nvidia.so.%{version}" "%{install-root}/usr/lib/nvidia/xorg/libglxserver_nvidia.so.%{version}"
@@ -166,12 +172,25 @@ script: |-
   install -Dm644 nvidia-dbus.conf "%{install-root}"%{datadir}/dbus-1/system.d/nvidia-dbus.conf
 
   # distro specific files must be installed in %{datadir}/X11/xorg.conf.d
-  install -Dm644 "/files/nvidia-drm-outputclass.conf" "%{install-root}%{datadir}/X11/xorg.conf.d/10-nvidia-drm-outputclass.conf"
+  install -Dm644 /dev/stdin "%{install-root}%{datadir}/X11/xorg.conf.d/10-nvidia-drm-outputclass.conf" << "EOF"
+  Section "OutputClass"
+    Identifier "nvidia"
+    MatchDriver "nvidia-drm"
+    Driver "nvidia"
+    Option "AllowEmptyInitialConfiguration"
+    ModulePath "/usr/lib/nvidia/xorg"
+    ModulePath "/usr/lib/xorg/modules"
+  EndSection
+  EOF
 
-  install -Dm644 "/files/nvidia.rules" "%{install-root}"/usr/lib/udev/rules.d/60-nvidia.rules
+  install -Dm644 /dev/stdin "%{install-root}"/usr/lib/udev/rules.d/60-nvidia.rules << "EOF"
+  # Make sure device nodes are present even when the DDX is not started for the Wayland/EGLStream case
+  KERNEL=="nvidia", RUN+="/usr/bin/bash -c '/usr/bin/mknod -Z -m 666 /dev/nvidiactl c $$(grep nvidia-frontend /proc/devices | cut -d \  -f 1) 255'"
+  KERNEL=="nvidia", RUN+="/usr/bin/bash -c 'for i in $$(cat /proc/driver/nvidia/gpus/*/information | grep Minor | cut -d \  -f 4); do /usr/bin/mknod -Z -m 666 /dev/nvidia$${i} c $$(grep nvidia-frontend /proc/devices | cut -d \  -f 1) $${i}; done'"
+  KERNEL=="nvidia_modeset", RUN+="/usr/bin/bash -c '/usr/bin/mknod -Z -m 666 /dev/nvidia-modeset c $$(grep nvidia-frontend /proc/devices | cut -d \  -f 1) 254'"
+  KERNEL=="nvidia_uvm", RUN+="/usr/bin/bash -c '/usr/bin/mknod -Z -m 666 /dev/nvidia-uvm c $$(grep nvidia-uvm /proc/devices | cut -d \  -f 1) 0'"
+  KERNEL=="nvidia_uvm", RUN+="/usr/bin/bash -c '/usr/bin/mknod -Z -m 666 /dev/nvidia-uvm-tools c $$(grep nvidia-uvm /proc/devices | cut -d \  -f 1) 1'"
+  EOF
 
   echo "blacklist nouveau" | install -Dm644 /dev/stdin "%{install-root}/usr/lib/modprobe.d/%{id}.conf"
   echo "nvidia-uvm" | install -Dm644 /dev/stdin "%{install-root}/usr/lib/modules-load.d/%{id}.conf"
-
-# TODO: check update url
-# TODO: merge into nvidia layer

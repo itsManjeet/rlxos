@@ -133,3 +133,6 @@ include:
   - components/lightdm.yml
 
   - components/initial-setup.yml
+
+  - components/nvidia.yml
+  - components/nvidia-settings.yml

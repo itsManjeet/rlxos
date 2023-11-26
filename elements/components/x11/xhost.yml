@@ -1,7 +1,12 @@
 id: xhost
-version: "7"
-about: xorg apps xhost
-release: 0
-sources:
-- https://www.x.org/pub/individual/app/xhost-1.0.8.tar.bz2
+version: 1.0.9
+about: Server access control program for X
 
+depends:
+  - components/x11/libx11.yml
+  - components/x11/libxmu.yml
+
+build-depends:
+  - components/x11/util-macros.yml
+sources:
+  - https://www.x.org/pub/individual/app/xhost-%{version}.tar.xz

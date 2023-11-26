@@ -28,7 +28,9 @@ jobs:
       - name: Setup Version
         run: |
           VERSION="${GITHUB_REF#refs/*/}"
-          [ $VERSION != "stable" ] && VERSION="experimental"
+          if [ $VERSION != "stable" ] && [ $VERSION != "staging"] ; then
+            VERSION="experimental"
+          fi
           cat > version.yml << EOF
           version: ${VERSION}
           variables:

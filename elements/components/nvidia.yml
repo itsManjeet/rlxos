@@ -45,13 +45,6 @@ script: |-
   # install -Dm755 "libnvidia-compiler.so.%{version}" "%{install-root}/usr/lib/libnvidia-compiler.so.%{version}"
   install -Dm755 "libnvidia-opencl.so.%{version}" "%{install-root}/usr/lib/libnvidia-opencl.so.%{version}"
 
-  find "%{install-root}" -type f -name '*.so*' ! -path '*xorg/*' -print0 | while read -d $'\0' _lib; do
-    _soname=$(dirname "${_lib}")/$(readelf -d "${_lib}" | grep -Po 'SONAME.*: \[\K[^]]*' || true)
-    _base=$(echo ${_soname} | sed -r 's/(.*)\.so.*/\1.so/')
-    [[ -e "${_soname}" ]] || ln -s $(basename "${_lib}") "${_soname}"
-    [[ -e "${_base}" ]] || ln -s $(basename "${_soname}") "${_base}"
-  done
-
   install -Dm755 nvidia_drv.so "%{install-root}/usr/lib/xorg/modules/drivers/nvidia_drv.so"
 
   # Wayland/GBM
@@ -194,3 +187,11 @@ script: |-
 
   echo "blacklist nouveau" | install -Dm644 /dev/stdin "%{install-root}/usr/lib/modprobe.d/%{id}.conf"
   echo "nvidia-uvm" | install -Dm644 /dev/stdin "%{install-root}/usr/lib/modules-load.d/%{id}.conf"
+
+
+  find "%{install-root}" -type f -name '*.so*' ! -path '*xorg/*' -print0 | while read -d $'\0' _lib; do
+    _soname=$(dirname "${_lib}")/$(readelf -d "${_lib}" | grep -Po 'SONAME.*: \[\K[^]]*' || true)
+    _base=$(echo ${_soname} | sed -r 's/(.*)\.so.*/\1.so/')
+    [[ -e "${_soname}" ]] || ln -s $(basename "${_lib}") "${_soname}"
+    [[ -e "${_base}" ]] || ln -s $(basename "${_soname}") "${_base}"
+  done

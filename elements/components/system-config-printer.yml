@@ -18,6 +18,10 @@ post-script: |-
   mv %{install-root}/etc/dbus-1/system.d/* %{install-root}/usr/share/dbus-1/system.d
   rm -rf %{install-root}/etc/dbus-1
 
+  # TODO: Why we need to do this manually??
+  mv %{install-root}/%{libdir}/python3.11/site-packages/cupshelpers-1.0-py3.11.egg/cupshelpers \
+     %{install-root}/%{libdir}/python3.11/site-packages/
+
 
 depends:
 - components/gtk.yml

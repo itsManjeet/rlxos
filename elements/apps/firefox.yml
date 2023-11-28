@@ -1,5 +1,5 @@
 id: firefox
-version: 117.0
+version: 120.0
 about:
   Mozilla Firefox or simply Firefox is a free and open-source web browser developed
   by the Mozilla Foundation and its subsidiary, the Mozilla Corporation. Firefox uses
@@ -12,12 +12,21 @@ script: |-
   mkdir -p %{install-root}/%{bindir}
 
   mv firefox %{install-root}/%{libdir}/
-  install -D -m 0755 /dev/stdin %{install-root}/%{bindir}/firefox << EOF
-  #!/bin/sh
-  exec %{libdir}/firefox/firefox --class "Firefox" --name "Firefox" "$@"
-  EOF
+  ln -sv %{libdir}/firefox/firefox %{install-root}/%{bindir}/firefox
 
-  install -D -m 0644 -t %{install-root}/%{datadir}/applications/ /files/firefox/firefox.desktop
+  install -D -m 0644 /dev/stdin %{install-root}/%{datadir}/applications/firefox.desktop << "EOF"
+  [Desktop Entry]
+  Name=Firefox
+  Name[en_US]=Firefox
+  GenericName=Web Browser
+  GenericName[en_US]=Web Browser
+  Comment=Free web browser from Mozilla
+  Exec=firefox %U
+  Terminal=false
+  Type=Application
+  Icon=firefox
+  Categories=Network;
+  EOF
 
   rm -rf %{install-root}/%{libdir}/firefox/browser/features
   install -vDm644 /dev/stdin %{install-root}/%{libdir}/firefox/distribution/policies.json << "EOF"

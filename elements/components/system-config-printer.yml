@@ -2,6 +2,8 @@ id: system-config-printer
 version: 1.5.18
 about: A CUPS printer configuration tool and status applet
 
+build-type: autotools
+
 configure: >-
   --with-systemdsystemunitdir=%{libdir}/systemd/system
   --with-udevdir=%{libdir}/udev
@@ -11,6 +13,11 @@ configure: >-
 post-script: |-
   find %{install-root} -name "*.py" -exec python -mpy_compile {} +
   find %{install-root} -name "*.py" -exec python -O -mpy_compile {} +
+
+  install -dm755 %{install-root}/usr/share/dbus-1/system.d
+  mv %{install-root}/etc/dbus-1/system.d/* %{install-root}/usr/share/dbus-1/system.d
+  rm -rf %{install-root}/etc/dbus-1
+
 
 depends:
 - components/gtk.yml

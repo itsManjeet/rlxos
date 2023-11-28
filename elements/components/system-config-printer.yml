@@ -22,6 +22,9 @@ post-script: |-
   mv %{install-root}/%{libdir}/python3.11/site-packages/cupshelpers-1.0-py3.11.egg/cupshelpers \
      %{install-root}/%{libdir}/python3.11/site-packages/
 
+  # Show settings on Xfce4 Settings Manager
+  sed -i '/^Categories=/ s/$/X-XFCE-SettingsDialog;X-XFCE-HardwareSettings;/' %{install-root}/%{datadir}/applications/%{id}.desktop
+
 
 depends:
 - components/gtk.yml

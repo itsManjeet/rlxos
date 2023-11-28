@@ -126,6 +126,7 @@ include:
   - components/xfce4/thunar-plugins/thunar-archive-plugin.yml
 
   - components/network-manager-applet.yml
+  - components/system-config-printer.yml
 
   - apps/firefox.yml
 

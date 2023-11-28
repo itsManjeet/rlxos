@@ -1,0 +1,26 @@
+id: system-config-printer
+version: 1.5.18
+about: A CUPS printer configuration tool and status applet
+
+configure: >-
+  --with-systemdsystemunitdir=%{libdir}/systemd/system
+  --with-udevdir=%{libdir}/udev
+  --with-udev-rules
+  --with-cups-serverbin-dir=%{libdir}/cups
+
+post-script: |-
+  find %{install-root} -name "*.py" -exec python -mpy_compile {} +
+  find %{install-root} -name "*.py" -exec python -O -mpy_compile {} +
+
+depends:
+- components/gtk.yml
+- components/libnotify.yml
+- components/libusb.yml
+- components/libsecret.yml
+- components/py/py-cairo.yml
+- components/py/py-dbus.yml
+- components/py/py-cups.yml
+- components/py/py-curl.yml
+
+sources:
+- https://github.com/OpenPrinting/system-config-printer/releases/download/v%{version}/system-config-printer-%{version}.tar.xz

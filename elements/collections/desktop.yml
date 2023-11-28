@@ -21,6 +21,7 @@ depends:
 - components/xdg-user-dirs-gtk.yml
 - components/xdg-utils.yml
 - components/flatpak.yml
+- components/power-profiles-daemon.yml
 
 # X11
 - components/x11/xserver.yml

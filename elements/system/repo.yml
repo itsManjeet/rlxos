@@ -127,6 +127,7 @@ include:
 
   - components/network-manager-applet.yml
   - components/system-config-printer.yml
+  - components/networkmanager-openvpn.yml
 
   - apps/firefox.yml
 

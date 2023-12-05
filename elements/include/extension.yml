@@ -5,4 +5,4 @@ variables:
   include-root: /sysroot
   strip: false
   initial-commands: ""
-  ostree-branch: x86_64/extension/%{id}
+  ostree-branch: x86_64/extension/%{id}/%{version}

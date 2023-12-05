@@ -59,7 +59,7 @@ jobs:
         run: |
           for ext in elements/extensions/*.yml ; do
             ELEMENT=${ext#*/}
-            EXT_ID=${ELEMENT#*}
+            EXT_ID=${ELEMENT#*/}
             EXT_ID=${EXT_ID%.*}
             ${IGNITE} build ${ELEMENT}
             COMMIT_MESSAGE="UPDATED WITH BASE" OSTREE_BRANCH="x86_64/extension/${EXT_ID}/${VERSION}" ELEMENT_FILE=${ELEMENT} make update-ostree

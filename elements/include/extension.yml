@@ -1,0 +1,8 @@
+merge: [version.yml, elements/include/ostree.yml]
+variables:
+  force-rebuild: true
+  include-depends: false
+  include-root: /sysroot
+  strip: false
+  initial-commands: ""
+  ostree-branch: x86_64/extension/%{id}

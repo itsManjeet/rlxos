@@ -3,7 +3,7 @@ version: 0.1.0
 about: Software Updater Daemon
 
 variables:
-  commit: 35e069d6ee4e2df2f8c31b5a30ff86e1127a6e74
+  commit: 694784818bfc7baa9b538ff796998b6e6cf291c7
 
 post-script: |-
   install -v -D -m 0755 -t %{install-root}%{bindir} target/release/%{id}

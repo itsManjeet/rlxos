@@ -1,7 +1,5 @@
 github.com/dustin/go-humanize v1.0.1 h1:GzkhY7T5VNhEkwH0PVJgjz+fX1rhBrR7pRT3mDkpeCY=
 github.com/dustin/go-humanize v1.0.1/go.mod h1:Mu1zIs6XwVuF/gI1OepvI0qD18qycQx+mFykh5fBlto=
-github.com/itsmanjeet/framework v0.0.0-20231010170234-a2978b10eaf1 h1:lvkd7p4mPPXC1suOm7BaYlMl9mC25h7U6b8RDPe445g=
-github.com/itsmanjeet/framework v0.0.0-20231010170234-a2978b10eaf1/go.mod h1:EwFUbJJY2SbZJFs1j/prHjCNkSEDf7ZQwePk4U7EcTo=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/yaml.v2 v2.4.0 h1:D8xgwECY7CYvx+Y2n4sBz93Jn9JRvxdiyyo8CTfuKaY=

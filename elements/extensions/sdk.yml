@@ -16,4 +16,4 @@ include:
   - components/autoconf-archive.yml
   - components/pkg-config.yml
 
-merge: [elements/include/layer.yml]
+merge: [elements/include/extension.yml]

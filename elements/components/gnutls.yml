@@ -5,9 +5,7 @@ about:
   transport layer
 
 configure: >-
-  --disable-guile
-  --disable-rpath
-  --with-default-trust-store-file=/etc/ssl/certs/ca-certificates.crt
+  --with-default-trust-store-pkcs11="pkcs11:"
 
 depends:
   - components/nettle.yml

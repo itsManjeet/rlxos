@@ -26,5 +26,5 @@ script: |-
   install -m 755 -d %{install-root}%{sysconfdir}/mercurial
   cat <<-EOF > %{install-root}%{sysconfdir}/mercurial/hgrc
     [web]
-    cacerts = %{sysconfdir}/ssl/certs/ca-certificates.crt
+    cacerts = %{sysconfdir}/pki/tls/certs/ca-bundle.crt
     EOF

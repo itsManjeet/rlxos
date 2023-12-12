@@ -9,7 +9,7 @@ sources:
   - https://github.com/lfs-book/make-ca/releases/download/v%{version}/make-ca-%{version}.tar.xz
 
 script: |-
-  make install LIBEXECDIR=%{libdir} SBINDIR=%{bindir} DESTDIR=%{install-root}
+  make install LIBEXECDIR=%{libdir}/make-ca SBINDIR=%{bindir} DESTDIR=%{install-root}
 
   install -vDm 0754 /dev/stdin %{install-root}%{sysconfdir}/cron.weekly/update-pki.s << "EOF"
   #!/bin/bash

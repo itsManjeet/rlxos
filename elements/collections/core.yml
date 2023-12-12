@@ -3,7 +3,7 @@ merge: [version.yml, elements/include/meta.yml]
 
 depends:
   - components/busybox.yml
-  - components/ca-certificates.yml
+  - components/make-ca.yml
   - components/coreutils.yml
   - components/dbus.yml
   - components/diffutils.yml

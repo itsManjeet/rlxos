@@ -18,7 +18,6 @@ build-depends:
   - components/cmake.yml
   - components/gdb.yml
   - components/ninja.yml
-  - components/ca-certificates.yml
 
 sources:
   - https://static.rust-lang.org/dist/rustc-%{version}-src.tar.xz

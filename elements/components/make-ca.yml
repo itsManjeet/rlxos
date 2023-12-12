@@ -11,7 +11,7 @@ sources:
 script: |-
   make install LIBEXECDIR=%{libdir}/make-ca SBINDIR=%{bindir} DESTDIR=%{install-root}
 
-  install -vDm 0754 /dev/stdin %{install-root}%{sysconfdir}/cron.weekly/update-pki.s << "EOF"
+  install -vDm 0754 /dev/stdin %{install-root}%{sysconfdir}/cron.weekly/update-pki.sh << "EOF"
   #!/bin/bash
   %{bindir}/make-ca -g
   EOF

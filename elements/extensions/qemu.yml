@@ -1,0 +1,8 @@
+id: qemu
+about: RLXOS QEMU Virtualization Kit
+include:
+  - components/qemu.yml
+  - components/libcacard.yml
+  - components/usbredir.yml
+
+merge: [elements/include/extension.yml]

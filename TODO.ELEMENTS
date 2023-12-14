@@ -69,8 +69,6 @@ components/gc.yml: check patch
 components/openjdk.yml: fix update url
 components/nvidia-settings.yml: check patch
 components/udisks.yml: check update url
-components/make-ca.yml: fix certdata.txt file
-components/make-ca.yml: do we need this after ca-certificates
 components/openjdk-bin.yml: fix update url
 components/openldap.yml: fix post-script and configurations
 components/apr-util.yml: fix update url

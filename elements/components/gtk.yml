@@ -21,7 +21,7 @@ build-depends:
   - components/gtk-doc.yml
 
 depends:
-  - components/at-spi2-atk.yml
+  - components/at-spi2-core.yml
   - components/gdk-pixbuf.yml
   - components/libepoxy.yml
   - components/pango.yml

@@ -13,10 +13,11 @@ post-script: |-
   # chgrp kvm %{install-root}/%{libdir}/qemu-bridge-helper
   chmod -v 4750 %{install-root}/%{libdir}/qemu-bridge-helper
 
+  rmdir %{install-root}/var/run
+
 configure: >-
   --audio-drv-list=alsa
   --smbd=/usr/bin/smbd
-  --target-list=x86_64-softmmu
   --enable-modules
   --enable-sdl
   --enable-gtk

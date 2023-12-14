@@ -10,7 +10,6 @@ sources:
 
 depends:
   - components/glibc.yml
-  - components/ca-certificates.yml
   - components/openssl.yml
   - components/util-linux.yml
   - components/libidn2.yml

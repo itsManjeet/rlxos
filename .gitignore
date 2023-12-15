@@ -3,3 +3,5 @@
 /vendor
 /version.yml
 /ignite
+/build
+/cache

@@ -22,9 +22,6 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - name: Configure
-        run: make
-
       - name: Setup Version
         run: |
           VERSION="${GITHUB_REF#refs/*/}"
@@ -40,7 +37,7 @@ jobs:
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
       - name: Generate Cache
-        run: ${IGNITE} build system/repo.yml
+        run: pkgupd ignite build system/repo.yml ignite.cache=${SERVER_REPO_PATH}
 
       - name: Update OStree
         run: |
@@ -48,7 +45,7 @@ jobs:
           OSTREE_BRANCH="x86_64/os/${VERSION}" make update-ostree
 
       - name: Building Installer ISO
-        run: ${IGNITE} build installer/image.yml
+        run: pkgupd ignite build installer/image.yml ignite.cache=${SERVER_REPO_PATH}
 
       - name: Update Installer ISO
         run: |

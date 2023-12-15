@@ -1,6 +1,6 @@
 id: kcontacts
 about: KF5 kcontacts
-merge: [elements/include/kf5.yml]
+merge: [elements/include/kf5.inc]
 depends:
   - components/kcodecs.yml
   - components/kconfig.yml

@@ -1,7 +1,7 @@
 id: android-studio
 version: 2021.2.1.14
 about: Android IDE (stable branch)
-merge: [elements/include/appimage.yml]
+merge: [elements/include/appimage.inc]
 
 variables:
   prepare-appimage: |

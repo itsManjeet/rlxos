@@ -8,4 +8,4 @@ depends:
 build-depends:
   - components/extra-cmake-modules.yml
   - components/plasma-framework.yml
-merge: [elements/include/plasma.yml]
+merge: [elements/include/plasma.inc]

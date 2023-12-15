@@ -1,5 +1,5 @@
 id: devel
-merge: [version.yml, elements/include/meta.yml]
+merge: [version.yml, elements/include/meta.inc]
 
 depends:
   - components/gcc.yml

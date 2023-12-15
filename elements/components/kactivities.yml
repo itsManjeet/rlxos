@@ -9,4 +9,4 @@ build-depends:
   - components/boost.yml
   - components/extra-cmake-modules.yml
 
-merge: [elements/include/kf5.yml]
+merge: [elements/include/kf5.inc]

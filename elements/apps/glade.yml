@@ -42,4 +42,4 @@ build-depends:
 sources:
   - https://gitlab.gnome.org/GNOME/glade/-/archive/GLADE_3_40_0/glade-GLADE_3_40_0.tar.gz
 
-merge: [elements/include/appimage.yml]
+merge: [elements/include/appimage.inc]

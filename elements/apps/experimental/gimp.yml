@@ -19,4 +19,4 @@ build-depends:
 sources:
   - gimp-%{version}.AppImage::https://github.com/ivan-hc/GIMP-appimage/releases/download/continuous/GNU-Image-Manipulation-Program_%{version}-x86_64.AppImage
 
-merge: [elements/include/appimage.yml]
+merge: [elements/include/appimage.inc]

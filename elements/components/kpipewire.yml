@@ -1,6 +1,6 @@
 id: kpipewire
 about: Components relating to pipewire use in Plasma
-merge: [elements/include/plasma.yml]
+merge: [elements/include/plasma.inc]
 
 depends:
   - components/ffmpeg.yml

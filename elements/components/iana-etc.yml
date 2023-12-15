@@ -2,9 +2,11 @@ id: iana-etc
 version: 20230524
 about: Provides data for network services and protocols
 
-no-strip: true
+strip: false
 
 build-dir: iana-etc-%{version}
+build-depends:
+- bootstrap.yml
 
 script: |
   install -v -D -m 644 services protocols -t %{install-root}/etc/

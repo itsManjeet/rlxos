@@ -1,6 +1,6 @@
 id: glibc
 merge:
-  - elements/include/glibc.yml
+  - elements/include/glibc.inc
 
 depends:
   - components/filesystem.yml

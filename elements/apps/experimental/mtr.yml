@@ -1,4 +1,4 @@
-merge: [elements/include/appimage.yml]
+merge: [elements/include/appimage.inc]
 id: mtr
 version: 0.95
 about: Combines the functionality of traceroute and ping into one tool

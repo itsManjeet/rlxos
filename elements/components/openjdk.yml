@@ -1,5 +1,5 @@
 id: openjdk
-merge: [elements/include/java.yml]
+merge: [elements/include/java.inc]
 about: open-source implementation of Oracle's Java Standard Edition platform
 
 depends:

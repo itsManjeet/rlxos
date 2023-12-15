@@ -1,5 +1,5 @@
 id: qqc2-breeze-style
-merge: [elements/include/plasma.yml]
+merge: [elements/include/plasma.inc]
 about: Plasma qqc2-breeze-style
 
 depends:

@@ -7,4 +7,4 @@ depends:
   - components/polkit-qt.yml
 build-depends:
   - components/extra-cmake-modules.yml
-merge: [elements/include/kf5.yml]
+merge: [elements/include/kf5.inc]

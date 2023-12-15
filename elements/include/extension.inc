@@ -1,4 +1,4 @@
-merge: [version.yml, elements/include/ostree.yml]
+merge: [version.yml, elements/include/ostree.inc]
 variables:
   force-rebuild: true
   include-depends: false

@@ -1,5 +1,5 @@
 id: desktop
-merge: [version.yml, elements/include/meta.yml]
+merge: [version.yml, elements/include/meta.inc]
 
 depends:
 - collections/core.yml

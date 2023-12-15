@@ -1,5 +1,5 @@
 id: installer
-merge: [version.yml, elements/include/image.yml]
+merge: [version.yml, elements/include/image.inc]
 about: System Installer
 
 include:

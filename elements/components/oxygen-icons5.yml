@@ -1,5 +1,5 @@
 id: oxygen-icons5
-merge: [elements/include/plasma.yml]
+merge: [elements/include/plasma.inc]
 about: KF5 oxygen-icons5
 
 depends:

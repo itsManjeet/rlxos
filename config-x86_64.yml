@@ -1,0 +1,57 @@
+container.image: itsmanjeet/rlxos:2307
+container.runtime: /bin/docker
+variables:
+  prefix: /usr
+  bindir: /usr/bin
+  sysconfdir: /etc
+  libdir: /usr/lib
+  libexecdir: /usr/lib
+  datadir: /usr/share
+  localstatedir: /var
+
+environ:
+  - PATH=/usr/bin:/bin:/usr/sbin:/sbin
+  - TERM=linux
+
+compiler:
+  autotools:
+    file: configure
+    script: |-
+      mkdir -p build && cd build
+      ../configure --prefix=%{prefix}
+
+      make 
+      make install DESTDIR=%{install-root}
+
+
+strip: |-
+  if [ "$nostrip" ]; then
+  	for i in $nostrip; do
+  		xstrip="$xstrip -e $i"
+  	done
+  	FILTER="grep -v $xstrip"
+  else
+  	FILTER="cat"
+  fi
+  
+  find . -type f -printf "%P\n" 2>/dev/null | $FILTER | while read -r binary ; do
+  	case "$(file -bi "$binary")" in
+  		*application/x-sharedlib*)  # Libraries (.so)
+   			${CROSS_COMPILE}strip --strip-unneeded "$binary" 2>/dev/null ;;
+  		*application/x-pie-executable*)  # Libraries (.so)
+   			${CROSS_COMPILE}strip --strip-unneeded "$binary" 2>/dev/null ;;
+  		*application/x-archive*)    # Libraries (.a)
+   			${CROSS_COMPILE}strip --strip-debug "$binary" 2>/dev/null ;;
+  		*application/x-object*)
+   			case "$binary" in
+  				*.ko)                   # Kernel module
+    				${CROSS_COMPILE}strip --strip-unneeded "$binary" 2>/dev/null ;;
+  				*)
+    				continue;;
+   			esac;;
+  		*application/x-executable*) # Binaries
+   			${CROSS_COMPILE}strip --strip-all "$binary" 2>/dev/null ;;
+  		*)
+   			continue ;;
+  	esac
+  done

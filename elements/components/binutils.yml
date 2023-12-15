@@ -1,6 +1,6 @@
 id: binutils
 merge:
-  - elements/include/binutils.yml
+  - elements/include/binutils.inc
 
 depends:
   - components/zlib.yml

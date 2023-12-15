@@ -5,4 +5,4 @@ depends:
   - components/x11/libxtst.yml
   - components/qrencode.yml
 
-merge: [elements/include/xfce4-panel-plugin.yml]
+merge: [elements/include/xfce4-panel-plugin.inc]

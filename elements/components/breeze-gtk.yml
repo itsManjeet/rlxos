@@ -8,4 +8,4 @@ build-depends:
   - components/extra-cmake-modules.yml
   - components/py/py-cairo.yml
   - components/sassc.yml
-merge: [elements/include/plasma.yml]
+merge: [elements/include/plasma.inc]

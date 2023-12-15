@@ -1,5 +1,5 @@
 id: polkit-kde-agent-1
-merge: [elements/include/plasma.yml]
+merge: [elements/include/plasma.inc]
 about: Plasma polkit-kde-agent-1
 
 depends:

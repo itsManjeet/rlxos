@@ -1,5 +1,5 @@
 id: layer-shell-qt
-merge: [elements/include/plasma.yml]
+merge: [elements/include/plasma.inc]
 about: Plasma layer-shell-qt
 
 depends:

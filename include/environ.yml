@@ -4,3 +4,6 @@ environ:
   - LDFLAGS=-Wl,-O1,--sort-common,--as-needed,-z,relro,--hash-style=gnu
   - MAKEFLAGS=-j8
   - ARCH=x86_64
+  - PATH=/usr/bin
+  - TERM=linux
+  - PS1='(rlxos) \\W \\$'

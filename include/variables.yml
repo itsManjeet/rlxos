@@ -13,3 +13,7 @@ variables:
 
   run-autogen: true
   seperate-build-dir: true
+
+  configure: ""
+  install: ""
+  compile: ""

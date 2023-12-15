@@ -7,3 +7,4 @@ sources:
 
 build-type: import
 strip: false
+build-dir: .

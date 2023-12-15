@@ -5,4 +5,4 @@ about: Adds special features for media files to the Thunar File Manager
 depends:
   - components/taglib.yml
 
-merge: [elements/include/thunar-plugin.yml]
+merge: [elements/include/thunar-plugin.inc]

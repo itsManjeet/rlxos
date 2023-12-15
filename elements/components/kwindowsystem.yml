@@ -1,5 +1,5 @@
 id: kwindowsystem
-merge: [elements/include/kf5.yml]
+merge: [elements/include/kf5.inc]
 about: Access to windowing system
 
 depends:

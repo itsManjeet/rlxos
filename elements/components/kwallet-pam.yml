@@ -1,5 +1,5 @@
 id: kwallet-pam
-merge: [elements/include/plasma.yml]
+merge: [elements/include/plasma.inc]
 about: Plasma kwallet-pam
 
 depends:

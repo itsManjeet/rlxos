@@ -1,5 +1,5 @@
 id: sddm-kcm
-merge: [elements/include/plasma.yml]
+merge: [elements/include/plasma.inc]
 about: Plasma sddm-kcm
 
 depends:

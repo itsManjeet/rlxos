@@ -1,5 +1,5 @@
 id: xdg-desktop-portal-kde
-merge: [elements/include/plasma.yml]
+merge: [elements/include/plasma.inc]
 about: Plasma xdg-desktop-portal-kde
 
 depends:

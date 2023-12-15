@@ -6,4 +6,4 @@ depends:
   - components/libsoup.yml
   - components/libxml2.yml
 
-merge: [elements/include/xfce4-panel-plugin.yml]
+merge: [elements/include/xfce4-panel-plugin.inc]

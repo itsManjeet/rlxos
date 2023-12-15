@@ -1,6 +1,6 @@
 id: kconfigwidgets
 about: KF5 kconfigwidgets
-merge: [elements/include/kf5.yml]
+merge: [elements/include/kf5.inc]
 depends:
   - components/kauth.yml
   - components/kcodecs.yml

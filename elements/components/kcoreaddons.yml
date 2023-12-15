@@ -1,5 +1,5 @@
 id: kcoreaddons
-merge: [elements/include/kf5.yml]
+merge: [elements/include/kf5.inc]
 about: KF5 kcoreaddons
 depends:
   - components/qt.yml

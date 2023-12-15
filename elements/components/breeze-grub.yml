@@ -3,4 +3,4 @@ about: Plasma breeze-grub
 
 depends:
   - components/grub.yml
-merge: [elements/include/plasma.yml]
+merge: [elements/include/plasma.inc]

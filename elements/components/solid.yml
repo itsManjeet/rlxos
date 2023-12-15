@@ -1,5 +1,5 @@
 id: solid
-merge: [elements/include/kf5.yml]
+merge: [elements/include/kf5.inc]
 about: KF5 solid
 
 depends:

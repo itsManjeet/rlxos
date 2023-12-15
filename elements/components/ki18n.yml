@@ -1,5 +1,5 @@
 id: ki18n
-merge: [elements/include/kf5.yml]
+merge: [elements/include/kf5.inc]
 about: KF5 ki18n
 
 depends:

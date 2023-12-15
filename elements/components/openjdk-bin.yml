@@ -1,5 +1,5 @@
 id: openjdk-bin
-merge: [elements/include/java.yml]
+merge: [elements/include/java.inc]
 about: Java programming language [Binary]
 
 depends:

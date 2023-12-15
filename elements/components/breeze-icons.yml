@@ -5,4 +5,4 @@ depends:
   - components/qt.yml
 build-depends:
   - components/extra-cmake-modules.yml
-merge: [elements/include/plasma.yml]
+merge: [elements/include/plasma.inc]

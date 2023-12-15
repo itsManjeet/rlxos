@@ -5,4 +5,4 @@ include:
   - components/libcacard.yml
   - components/usbredir.yml
 
-merge: [elements/include/extension.yml]
+merge: [elements/include/extension.inc]

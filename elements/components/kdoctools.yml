@@ -1,5 +1,5 @@
 id: kdoctools
-merge: [elements/include/kf5.yml]
+merge: [elements/include/kf5.inc]
 about: KF5 kdoctools
 depends:
   - components/qt.yml

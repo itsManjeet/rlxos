@@ -5,4 +5,4 @@ about: System load plugin for the Xfce panel
 build-depends:
   - components/libgtop.yml
 
-merge: [elements/include/xfce4-panel-plugin.yml]
+merge: [elements/include/xfce4-panel-plugin.inc]

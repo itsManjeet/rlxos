@@ -1,5 +1,5 @@
 id: core
-merge: [version.yml, elements/include/meta.yml]
+merge: [version.yml, elements/include/meta.inc]
 
 depends:
   - components/busybox.yml

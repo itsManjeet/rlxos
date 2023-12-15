@@ -1,6 +1,6 @@
 id: kcompletion
 about: KF5 kcompletion
-merge: [elements/include/kf5.yml]
+merge: [elements/include/kf5.inc]
 depends:
   - components/qt.yml
   - components/kconfig.yml

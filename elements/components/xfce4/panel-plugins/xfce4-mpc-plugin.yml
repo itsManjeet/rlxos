@@ -5,4 +5,4 @@ about: Control the Music Player Daemon from the Xfce4 panel
 depends:
   - components/libmpd.yml
 
-merge: [elements/include/xfce4-panel-plugin.yml]
+merge: [elements/include/xfce4-panel-plugin.inc]

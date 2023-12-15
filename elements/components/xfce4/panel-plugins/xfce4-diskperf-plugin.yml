@@ -2,4 +2,4 @@ id: xfce4-diskperf-plugin
 version: 2.7.0
 about: Displays instant disk/partition performance in the Xfce4 panel
 
-merge: [elements/include/xfce4-panel-plugin.yml]
+merge: [elements/include/xfce4-panel-plugin.inc]

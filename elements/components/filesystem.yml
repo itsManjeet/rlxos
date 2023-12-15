@@ -1,7 +1,7 @@
 id: filesystem
 version: 0.0.3
 about: rlxos filesystem
-no-strip: true
+strip: false
 
 script: |
   for d in boot dev etc home mnt usr var opt srv/http run; do
@@ -31,7 +31,7 @@ script: |
   done
   install -d -m1777 %{install-root}/%{localstatedir}/{tmp,spool/mail}
 
-  install -d -m755 -g 50 %{install-root}/%{localstatedir}/games
+  install -d -m755 %{install-root}/%{localstatedir}/games
   ln -s spool/mail %{install-root}/%{localstatedir}/mail
   ln -s ../run %{install-root}/%{localstatedir}/run
   ln -s ../run/lock %{install-root}/%{localstatedir}/lock

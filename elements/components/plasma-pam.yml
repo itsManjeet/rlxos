@@ -1,5 +1,5 @@
 id: plasma-pam
-merge: [elements/include/plasma.yml]
+merge: [elements/include/plasma.inc]
 about: Plasma pam permissions
 script: |-
   mkdir -p %{install-root}%{sysconfdir}/pam.d/

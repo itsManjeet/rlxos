@@ -1,5 +1,5 @@
 id: plasma-workspace
-merge: [elements/include/plasma.yml]
+merge: [elements/include/plasma.inc]
 about: Plasma plasma-workspace
 
 depends:

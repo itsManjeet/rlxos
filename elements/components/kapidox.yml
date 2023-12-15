@@ -1,7 +1,7 @@
 id: kapidox
 about: KF5 kapidox
 
-merge: [elements/include/kf5.yml]
+merge: [elements/include/kf5.inc]
 script: |-
   pip install build installer wheel
 

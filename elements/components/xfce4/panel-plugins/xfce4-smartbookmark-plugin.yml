@@ -5,4 +5,4 @@ about: Allows you to send requests directly to your browser and perform a custom
 build-depends:
   - components/x11/libxt.yml
 
-merge: [elements/include/xfce4-panel-plugin.yml]
+merge: [elements/include/xfce4-panel-plugin.inc]

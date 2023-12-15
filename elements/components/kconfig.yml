@@ -1,6 +1,6 @@
 id: kconfig
 about: KF5 kconfig
-merge: [elements/include/kf5.yml]
+merge: [elements/include/kf5.inc]
 depends:
   - components/qt.yml
 build-depends:

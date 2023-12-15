@@ -1,7 +1,7 @@
 id: fluent-icon-theme
 version: 2023-06-07
 about: A Fluent design icon theme
-merge: [elements/include/update-icon-cache.yml]
+merge: [elements/include/update-icon-cache.inc]
 
 script: |-
   install -d %{install-root}%{datadir}/icons

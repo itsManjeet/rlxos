@@ -9,4 +9,4 @@ depends:
 build-depends:
   - components/extra-cmake-modules.yml
   - components/kcmutils.yml
-merge: [elements/include/plasma.yml]
+merge: [elements/include/plasma.inc]

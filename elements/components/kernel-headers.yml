@@ -2,7 +2,9 @@ id: kernel-headers
 version: 6.3.8
 about: Linux kernel, modules and headers
 
-no-strip: true
+strip: false
+build-depends:
+- bootstrap.yml
 
 script: |
   make headers

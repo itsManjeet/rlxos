@@ -1,6 +1,6 @@
 id: orchis-gtk-theme
 version: 2023-10-20
-merge: [elements/include/gtk-theme.yml]
+merge: [elements/include/gtk-theme.inc]
 about: Orchis is a [Material Design](https://material.io) theme for GNOME/GTK based desktop environments.
 
 variables:

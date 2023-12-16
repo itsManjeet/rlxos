@@ -4,11 +4,17 @@ about: Test if stripping working properly
 
 variables:
   force-rebuild: true
-skip-strip:
-  - ".*\\.acb$"
+
+build-depends:
+  - bootstrap.yml
+
+keep-files:
+  - lib(.*)\.dbg
 
 script: |-
   echo 'int main(){ return 0;}' > code.c
   mkdir -p %{install-root}/lib/
-  gcc -o %{install-root}/lib/mycode.acb code.c
+  gcc -o %{install-root}/lib/libmy.so code.c
   gcc -o %{install-root}/lib/code code.c
+
+  echo "SOME DATAT" > %{install-root}/lib/libsome.so

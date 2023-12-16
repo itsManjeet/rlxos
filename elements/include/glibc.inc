@@ -4,11 +4,8 @@ about: GNU C Library
 environ:
   - M4=m4
 
-skip-strip:
-  - lib.*/ld-.*\.so$
-  - lib.*/libc-.*\.so$
-  - lib.*/libpthread-.*\.so$
-  - lib.*/libthread_db-.*\.so$
+keep-files:
+  - lib*.dbg
 
 pre-script: |
   patch -Np1 -i %{build-root}/glibc-%{version}-fhs-1.patch

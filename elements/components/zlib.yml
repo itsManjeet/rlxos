@@ -5,6 +5,7 @@ about: Compression and decompression routines
 post-script: |
   rm -fv %{install-root}/usr/lib/libz.a
 
+build-type: cmake
 depends:
   - components/glibc.yml
 

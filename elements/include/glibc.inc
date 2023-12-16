@@ -5,7 +5,7 @@ environ:
   - M4=m4
 
 keep-files:
-  - lib*.dbg
+  - lib(.*)\.dbg
 
 pre-script: |
   patch -Np1 -i %{build-root}/glibc-%{version}-fhs-1.patch

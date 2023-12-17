@@ -40,8 +40,6 @@ configure: >-
   -Dstorage_rbd=disabled
 
 post-script: |-
-  chown root:polkitd %{install-root}%{datadir}/polkit-1/rules.d
-  chown 0750 %{install-root}%{datadir}/polkit-1/rules.d
   chmod 600 %{install-root}%{sysconfdir}/libvirt/nwfilter/*.xml \
     %{install-root}%{sysconfdir}/libvirt/qemu/networks/default.xml
   chmod 700 %{install-root}%{sysconfdir}/libvirt/secrets

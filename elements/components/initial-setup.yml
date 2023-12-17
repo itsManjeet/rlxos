@@ -181,7 +181,7 @@ post-script: |-
   </channel>
   EOF
 
-  chown 69:69 %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup -R
+  # chown 69:69 %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup -R
 
 depends:
   - components/gtkmm.yml

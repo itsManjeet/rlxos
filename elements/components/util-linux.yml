@@ -1,29 +1,24 @@
 id: util-linux
-version: 2.39.1
+version: 2.39.3
 about: Uilities for handling file systems, consoles, partitions, and messages
 
 sources:
   - https://www.kernel.org/pub/linux/utils/util-linux/v2.39/util-linux-%{version}.tar.xz
 
-build-type: autotools
-
-post-script: |
-  mv %{install-root}/usr/sbin/* %{install-root}/usr/bin/
-  rmdir %{install-root}/usr/sbin
+build-type: meson
 
 configure: >-
-  --disable-chfn-chsh
-  --disable-login
-  --disable-nologin
-  --disable-su
-  --disable-setpriv
-  --disable-runuser
-  --disable-pylibmount
-  --disable-static
-  --without-python
-  --runstatedir=/run
-  ADJTIME_PATH=/var/lib/hwclock/adjtime
-
+  -Dfs-search-path=/usr/bin:/opt/bin
+  -Dlibuser=disabled
+  -Dncurses=disabled
+  -Dncursesw=enabled
+  -Deconf=disabled
+  -Dbuild-chfn-chsh=enabled
+  -Dbuild-line=disabled
+  -Dbuild-mesg=enabled
+  -Dbuild-newgrp=enabled
+  -Dbuild-vipw=enabled
+  -Dbuild-write=enabled
 
 depends:
   - components/coreutils.yml

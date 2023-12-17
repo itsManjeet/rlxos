@@ -20,7 +20,6 @@ pre-script: |
   ls ../
   mv %{build-root}/clang-%{version}.src tools/clang
   mv %{build-root}/compiler-rt-%{version}.src projects/compiler-rt
-  mv %{build-root}/cmake-%{version}.src .
   sed '/LLVM_COMMON_CMAKE_UTILS/s@../cmake@cmake-15.0.7.src@' \
       -i CMakeLists.txt
   grep -rl "#!.*python" | xargs sed -i "1s/python$/python3/"

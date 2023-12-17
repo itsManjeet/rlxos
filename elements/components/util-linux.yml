@@ -7,14 +7,6 @@ sources:
 
 build-type: autotools
 
-pre-script: |
-  sed -i '/test_mkfds/s/^/#/' tests/helpers/Makemodule.am
-  
-  # TODO Fix this in filesystem intergation command
-  systemd-sysusers
-  systemd-tmpfiles --create || true
-
-
 post-script: |
   mv %{install-root}/usr/sbin/* %{install-root}/usr/bin/
   rmdir %{install-root}/usr/sbin

@@ -4,6 +4,8 @@ about: TIFF libraries and associated utilities
 sources:
   - https://download.osgeo.org/libtiff/tiff-%{version}.tar.gz
 
+variables:
+  run-autogen: false
 depends:
   - components/glibc.yml
   - components/xz.yml

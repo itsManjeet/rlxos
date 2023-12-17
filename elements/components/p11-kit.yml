@@ -3,16 +3,21 @@ version: 0.25.3
 about: |
   Provides a way to load and enumerate PKCS #11 (a Cryptographic Token Interface Standard) modules
 
+build-type: meson
+
 pre-script: |-
   sed '20,$ d' -i trust/trust-extract-compat
   cat >> trust/trust-extract-compat << "EOF"
+  # Copy existing anchor modifications to %{sysconfdir}/local
   %{libdir}/make-ca/copy-trust-modifications
+
+  # Update Trust stores
   %{bindir}/make-ca -f -g
   EOF
 
 post-script: |-
   ln -sfv ./pkcs11/p11-kit-trust.so %{install-root}%{libdir}/libnssckbi.so
-  ln -s %{libdir}/p11-kit/trust-extract-compat %{install-root}%{bindir}/update-ca-trust
+  ln -s %{libdir}/p11-kit/trust-extract-compat %{install-root}%{bindir}/update-ca-certificates
 
 configure: >-
   -D trust_paths=%{sysconfdir}/pki/anchors

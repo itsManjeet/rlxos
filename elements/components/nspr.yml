@@ -16,3 +16,6 @@ configure: >-
 
 sources:
   - https://archive.mozilla.org/pub/nspr/releases/v%{version}/src/nspr-%{version}.tar.gz
+
+depends:
+  - components/glibc.yml

@@ -6,7 +6,6 @@ on:
 
 env:
   NO_PRINT_PROGRESS: 1
-  IGNITE: ./build/ignite
 
 jobs:
   build-and-release:
@@ -37,7 +36,7 @@ jobs:
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
       - name: Generate Cache
-        run: pkgupd ignite build system/repo.yml ignite.cache=${SERVER_REPO_PATH}
+        run: pkgupd ignite build collections/xfce4.yml ignite.cache=${SERVER_REPO_PATH}
 
       - name: Update OStree
         run: |

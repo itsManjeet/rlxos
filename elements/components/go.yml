@@ -8,15 +8,15 @@ sources:
 
 variables:
   no-extract: true
-  strip: false
+strip: false
 
 build-depends:
   - components/bash.yml
 
 script: |-
   export GOROOT_BOOTSTRAP=%{build-root}/go%{version}
-  GOROOT_FINAL=%{libdir}/go
-  GOCACHE=%{build-root}/go-build
+  export GOROOT_FINAL=%{libdir}/go
+  export GOCACHE=%{build-root}/go-build
   install -d go%{version}
 
   tar -xaf %{build-root}/go%{version}.linux-amd64 -C go%{version} --strip-components 1

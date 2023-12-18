@@ -7,6 +7,11 @@ sources:
 
 build-dir: "."
 
+build-depends:
+  - components/bash.yml
+
+strip: false
+
 script: |
   fwdir=%{install-root}/usr/lib/firmware/intel
   mkdir -p ${fwdir}

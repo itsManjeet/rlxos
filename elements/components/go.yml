@@ -3,12 +3,15 @@ version: 1.21.1
 about: The Go Programming Language
 
 sources:
-  - https://golang.org/dl/go%{version}.src.tar.gz
-  - https://golang.org/dl/go%{version}.linux-amd64.tar.gz
+  - go%{version}.src::https://golang.org/dl/go%{version}.src.tar.gz
+  - go%{version}.linux-amd64::https://golang.org/dl/go%{version}.linux-amd64.tar.gz
 
 variables:
   no-extract: true
   strip: false
+
+build-depends:
+  - components/bash.yml
 
 script: |-
   export GOROOT_BOOTSTRAP=%{build-root}/go%{version}
@@ -16,8 +19,8 @@ script: |-
   GOCACHE=%{build-root}/go-build
   install -d go%{version}
 
-  tar -xaf %{build-root}/go%{version}.linux-amd64.tar.gz -C go%{version} --strip-components 1
-  tar -xaf %{build-root}/go%{version}.src.tar.gz
+  tar -xaf %{build-root}/go%{version}.linux-amd64 -C go%{version} --strip-components 1
+  tar -xaf %{build-root}/go%{version}.src
 
   cd go/src
   bash make.bash

@@ -5,6 +5,9 @@ about: A program maintenance (make) utility using a C like grammar
 sources:
   - https://gitlab.com/fbb-git/icmake/-/archive/%{version}/icmake-%{version}.tar.gz
 
+build-depends:
+  - components/glibc.yml
+
 script: |
   cd icmake
 

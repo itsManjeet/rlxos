@@ -2,6 +2,9 @@ id: release-info
 merge: [version.yml]
 about: rlxos Release information
 
+build-depends:
+  - components/bash.yml
+
 script: |
   mkdir -p %{install-root}/%{sysconfdir}
 

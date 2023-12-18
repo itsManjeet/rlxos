@@ -45,3 +45,9 @@ depends:
 
 # Laptop and Touch devices
 - components/2in1.yml
+
+
+# Nvidia graphics driver
+- components/nvidia.yml
+- components/nvidia-settings.yml
+

@@ -1,6 +1,9 @@
 id: zsh-autosuggestions
 version: 0.7.0
 
+build-depends:
+  - bootstrap.yml
+
 script: |-
   mkdir -p %{install-root}%{datadir}/ohmyzsh/custom/plugins/zsh-autosuggestions
   cp -r *  %{install-root}%{datadir}/ohmyzsh/custom/plugins/zsh-autosuggestions/

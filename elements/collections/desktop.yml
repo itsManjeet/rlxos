@@ -9,12 +9,12 @@ depends:
 - components/fuse2.yml
 
 # Apps
-- apps/file-roller.yml
-- apps/gufw.yml
-- apps/gigolo.yml
-- apps/pinta.yml
-- apps/onboard.yml
-- apps/blueman.yml
+# - apps/file-roller.yml
+# - apps/gufw.yml
+# - apps/gigolo.yml
+# - apps/pinta.yml
+# - apps/onboard.yml
+# - apps/blueman.yml
 
 # Components
 - components/gvfs.yml

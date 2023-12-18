@@ -11,7 +11,7 @@ script: |-
   mkdir -p src/github.com/%{id}
 
   cd src/github.com/%{id}
-  ln -s %{build-root}/%{id}-%{version} %{id}
+  ln -s %{build-root}/ %{id}
   cd %{id}
 
   make GIT_COMMIT=%{commit}

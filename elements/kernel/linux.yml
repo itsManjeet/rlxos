@@ -6,11 +6,11 @@ sources:
   - https://www.kernel.org/pub/linux/kernel/v%{version:2}.x/linux-%{version}.tar.xz
 
 environ:
-  - ARCH=%{arch}
   - KBUILD_BUILD_TIMESTAMP=Fri Nov 12 12:00:00 UTC 2011
   - KBUILD_BUILD_USER=rlxos
 
 script: |-
+  export ARCH=%{arch}
   has() {
     state="$(scripts/config --keep-case -s "${1}")"
     case "${state}" in

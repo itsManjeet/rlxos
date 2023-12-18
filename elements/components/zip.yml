@@ -4,6 +4,10 @@ about: Compressor/archiver for creating and modifiying zipfiles
 
 sources:
   - https://downloads.sourceforge.net/infozip/zip30.tar.gz
+
+depends:
+  - components/glibc.yml
+
 script: |-
   make -f unix/Makefile prefix=/usr generic_gcc
 

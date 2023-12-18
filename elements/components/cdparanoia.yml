@@ -6,8 +6,11 @@ sources:
   - https://downloads.xiph.org/releases/cdparanoia/cdparanoia-III-10.2.src.tgz
   - https://www.linuxfromscratch.org/patches/blfs/svn/cdparanoia-III-10.2-gcc_fixes-1.patch
 
+depends:
+- components/glibc.yml
+
 pre-script: |
-  patch -Np1 -i ../cdparanoia-III-10.2-gcc_fixes-1.patch
+  patch -Np1 -i cdparanoia-III-10.2-gcc_fixes-1.patch
 
 script: |
   ./configure --prefix=%{prefix} --mandir=%{datadir}/man

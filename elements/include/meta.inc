@@ -1,1 +1,2 @@
-script: true
+script: |-
+  mkdir -p %{install-root}

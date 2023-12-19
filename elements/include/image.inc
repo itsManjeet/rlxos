@@ -58,7 +58,21 @@ script: |-
   # Dracut otherwise fail to detect OS!!
   mkdir -p /%{include-root}/proc
 
-  echo "root:root" | chpasswd -R /%{include-root}
+  # TODO: better way to do this
+  chroot /%{include-root} /bin/bash << "EOT"
+    for i in %{datadir}/pkgupd/manifest/*/integration ; do
+      sh -e $i
+    done
+
+    update-mime-database %{datadir}/mime
+    update-desktop-database %{datadir}/applications
+
+    echo "root:root" | chpasswd
+
+    echo "LANG=en_IN.UTF-8" > %{sysconfdir}/locale.conf
+    ln -sfv %{datadir}/zoneinfo/UTC %{sysconfdir}/localtime
+  EOT
+
 
   mksquashfs /%{include-root} ISO/LiveOS/squashfs.img -noappend
 

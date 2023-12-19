@@ -3,7 +3,7 @@ variables:
   strip: false
 
 capabilities:
-  - CAP_SYS_ADMIN
+  - CAP_SYS_CHROOT
 
 script: |-
   mkdir -p ISO/{boot/grub/{fonts,x86_64-efi},efi/boot,isolinux,LiveOS}

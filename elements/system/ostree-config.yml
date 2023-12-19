@@ -3,6 +3,9 @@ merge: [version.yml]
 
 about: OStree remote and mount configurations
 
+build-depends:
+- components/bash.yml
+
 script: |-
   install -D -m 0644 -t %{install-root}/%{sysconfdir}/pki/ostree/ /files/rlxos.gpg
   install -D -m 0644 /dev/stdin %{install-root}/%{sysconfdir}/ostree/remotes.d/rlxos.conf << "EOF"

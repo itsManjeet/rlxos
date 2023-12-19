@@ -20,7 +20,7 @@ post-script: |-
   
 
   install -vDm0644 /dev/stdin %{install-root}/%{libdir}/tmpfiles.d/initial-setup.conf << "EOF"
-  C %{localstatedir}/lib/initial-setup
+  C %{localstatedir}/lib/initial-setup - 69 69
   EOF
 
   install -vDm 0644 /dev/stdin %{install-root}/etc/sudoers.d/initial-setup << "EOF"
@@ -180,8 +180,6 @@ post-script: |-
     </property>
   </channel>
   EOF
-
-  # chown 69:69 %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup -R
 
 depends:
   - components/gtkmm.yml

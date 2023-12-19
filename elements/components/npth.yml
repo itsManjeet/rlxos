@@ -5,5 +5,8 @@ about:
   non-preemptive priority-based scheduling for multiple threads of execution (multithreading)
   inside event-driven applications
 
+depends:
+- components/glibc.yml
+
 sources:
   - https://www.gnupg.org/ftp/gcrypt/npth/npth-%{version}.tar.bz2

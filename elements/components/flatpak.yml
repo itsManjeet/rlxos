@@ -16,7 +16,7 @@ post-script: |
     append_path /var/lib/flatpak/exports/bin
   fi
   EOF
-  install -v -D -t %{install-root}%{sysconfdir}/flatpak/remotes.d ../flathub.flatpakrepo
+  install -v -D -t %{install-root}%{sysconfdir}/flatpak/remotes.d flathub.flatpakrepo
 configure: >-
   --disable-static
   --enable-gtk-doc

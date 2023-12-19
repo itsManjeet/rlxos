@@ -6,4 +6,4 @@ depends:
 - components/python.yml
 - components/py/py-setuptools.yml
 sources:
-- py-psutil-%{verison}.tar.gz::https://github.com/giampaolo/psutil/archive/release-%{version}.tar.gz
+- py-psutil-%{version}.tar.gz::https://github.com/giampaolo/psutil/archive/release-%{version}.tar.gz

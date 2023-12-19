@@ -2,6 +2,9 @@ id: snowball
 version: 2.2.0
 about: String processing language for creating stemming algorithms
 
+depends:
+  - components/glibc.yml
+
 sources:
   - snowball-%{version}.tar.gz::https://github.com/snowballstem/snowball/archive/refs/tags/v%{version}.tar.gz
 script: |

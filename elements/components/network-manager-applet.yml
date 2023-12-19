@@ -4,6 +4,8 @@ about:
   NetworkManager Applet provides a tool and a panel applet used to configure
   wired and wireless network connections through GUI
 
+build-type: meson
+
 configure: >-
   --buildtype=release
   -D appindicator=no

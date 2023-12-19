@@ -6,3 +6,6 @@ sources:
 
 variables:
   run-autogen: false
+
+build-depends:
+  - components/coreutils.yml

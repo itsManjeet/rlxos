@@ -58,6 +58,8 @@ script: |-
   # Dracut otherwise fail to detect OS!!
   mkdir -p /%{include-root}/proc
 
+  echo "root:root" | chpasswd -R /%{include-root}
+
   mksquashfs /%{include-root} ISO/LiveOS/squashfs.img -noappend
 
   dracut --reproducible -v --no-machineid \

@@ -64,6 +64,6 @@ depends:
 
   - kernel/linux.yml
 
-  - system/ostree-config.yml
+  - system/systemd-preset.yml
 
  # - apps/neofetch.yml

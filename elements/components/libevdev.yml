@@ -15,5 +15,3 @@ kernel:
   - CONFIG_INPUT_UINPUT
 
 build-dir: libevdev-%{version}
-configure: >
-  -D documentation=disabled

@@ -52,7 +52,7 @@ post-script: |-
   Alias=display-manager.service
   EOF
 
-  install -vDm 750 -g 102 /dev/stdin %{install-root}%{datadir}/polkit-1/rules.d/lightdm.rules << "EOF"
+  install -vDm 750 /dev/stdin %{install-root}%{datadir}/polkit-1/rules.d/lightdm.rules << "EOF"
   polkit.addRule(function(action, subject) {
       if (subject.user == "lightdm") {
           polkit.log("action=" + action);

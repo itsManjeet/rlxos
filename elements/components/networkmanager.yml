@@ -2,6 +2,8 @@ id: networkmanager
 version: 1.44.0
 about: A set of co-operative tools that make networking simple and straightforward
 
+build-type: meson
+
 configure: >-
   -Dlibaudit=no
   -Dlibpsl=false

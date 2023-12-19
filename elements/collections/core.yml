@@ -57,7 +57,6 @@ depends:
   - components/gst-plugins-bad.yml
   - components/gst-libav.yml
   - components/e2fsprogs.yml
-  - components/swupd.yml
   - components/py/py-pip.yml
   - components/ufw.yml
   - components/zram-generator.yml

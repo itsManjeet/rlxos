@@ -48,6 +48,6 @@ depends:
 
 
 # Nvidia graphics driver
-- components/nvidia.yml
-- components/nvidia-settings.yml
+# - components/nvidia.yml
+# - components/nvidia-settings.yml
 

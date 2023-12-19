@@ -3,8 +3,8 @@ merge: [version.yml, elements/include/image.inc]
 about: System Installer
 
 include:
-  - system/repo.yml
+  - collections/xfce4.yml
 
-variables:
-  installer-volume-id: RLXOS
-  include-root: /source-repo
+include-root: sysroot
+installer-volume-id: RLXOS
+kargs: root=live:LABEL=RLXOS quiet splash rd.live=1 rd.live.overlay.overlayfs=1

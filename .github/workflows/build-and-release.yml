@@ -38,25 +38,10 @@ jobs:
       - name: Generate Cache
         run: pkgupd ignite build collections/xfce4.yml ignite.cache=${SERVER_REPO_PATH}
 
-      - name: Update OStree
-        run: |
-          echo "${{ github.event.head_commit.message }}" > commit_body
-          OSTREE_BRANCH="x86_64/os/${VERSION}" make update-ostree
-
-      - name: Building Installer ISO
+      - name: Build Installer ISO
         run: pkgupd ignite build installer/image.yml ignite.cache=${SERVER_REPO_PATH}
 
       - name: Update Installer ISO
         run: |
-          ${IGNITE} checkout installer/image.yml ${SERVER_REPO_PATH}/releases/${VERSION}/
+          pkgupd ignite checkout installer/image.yml ${SERVER_REPO_PATH}/releases/${VERSION}/ ignite.cache=${SERVER_REPO_PATH}
           (cd ${SERVER_REPO_PATH}/releases/${VERSION}/; zsyncmake -b 2048 -C -u ${SERVER_REPO_URL}/releases/${VERSION}/rlxos-x86_64-${VERSION}.iso rlxos-x86_64-${VERSION}.iso)
-
-      - name: Update Extensions
-        run: |
-          for ext in elements/extensions/*.yml ; do
-            ELEMENT=${ext#*/}
-            EXT_ID=${ELEMENT#*/}
-            EXT_ID=${EXT_ID%.*}
-            ${IGNITE} build ${ELEMENT}
-            COMMIT_MESSAGE="UPDATED WITH BASE" OSTREE_BRANCH="x86_64/extension/${EXT_ID}/${VERSION}" ELEMENT_FILE=${ELEMENT} make update-ostree
-          done

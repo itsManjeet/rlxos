@@ -2,11 +2,8 @@ id: spice
 version: 0.15.2
 about: SPICE server
 
-pre-script: |-
-  sed -i "s/if not version_info.contains('git')/if version_info.length() >= 4/" server/meson.build
-  sed -i "/doxygen.sh/d" meson.build
 configure: >-
-  -D gstreamer=no
+  --enable-gstreamer=no
 
 depends:
   - components/glib.yml

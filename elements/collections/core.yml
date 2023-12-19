@@ -67,4 +67,4 @@ depends:
 
   - system/ostree-config.yml
 
-  - apps/neofetch.yml
+ # - apps/neofetch.yml

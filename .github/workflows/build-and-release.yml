@@ -32,15 +32,20 @@ jobs:
 
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
-      - name: Generate Cache
+      - name: Generate Installer
+        run: |
+          pkgupd ignite build collections/xfce4.yml
+          pkgupd ignite build installer/image.yml
+
+      - name: Update Installer ISO
+        run: |
+          pkgupd ignite checkout installer/image.yml ${SERVER_REPO_PATH}/releases/${VERSION}/ ignite.cache=${SERVER_REPO_PATH}
+          (cd ${SERVER_REPO_PATH}/releases/${VERSION}/; zsyncmake -b 2048 -C -u ${SERVER_REPO_URL}/releases/${VERSION}/rlxos-${VERSION}-installer.iso rlxos-${VERSION}-installer.iso)
+
+      - name: Build All Packages
         run: |
           pkgupd ignite build
 
       - name: Update Meta Information
         run: |
           pkgupd ignite meta ${SERVER_REPO_PATH}/${VERSION}
-
-      - name: Update Installer ISO
-        run: |
-          pkgupd ignite checkout installer/image.yml ${SERVER_REPO_PATH}/releases/${VERSION}/ ignite.cache=${SERVER_REPO_PATH}
-          (cd ${SERVER_REPO_PATH}/releases/${VERSION}/; zsyncmake -b 2048 -C -u ${SERVER_REPO_URL}/releases/${VERSION}/rlxos-${VERSION}-installer.iso rlxos-${VERSION}-installer.iso)

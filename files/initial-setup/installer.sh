@@ -84,7 +84,7 @@ trap cleanup EXIT
 
 
 echo ":: Installing System Image"
-sudo unsquashfs -f -d ${SYSROOT} /run/initramfs/live/LiveOS/squashfs.img || {
+sudo unsquashfs -q -f -d ${SYSROOT} /run/initramfs/live/LiveOS/squashfs.img || {
     echo "failed to install system image"
     sleep 999
 

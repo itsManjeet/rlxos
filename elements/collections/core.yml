@@ -43,6 +43,7 @@ depends:
   - components/squashfs-tools.yml
   - components/wget.yml
   - components/sudo.yml
+  - components/pkgupd.yml
   # - components/distrobox.yml
   - components/libgtop.yml
   - components/libwnck.yml

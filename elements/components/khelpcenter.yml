@@ -8,10 +8,10 @@ configure: >-
   -Wno-dev
 
 depends:
-  - components/grantlee.yml
+  # - components/grantlee.yml
   - components/kf5.yml
   - components/libxml2.yml
-  - components/xapian.yml
+  # - components/xapian.yml
   - components/kio-extras.yml
 sources:
   - https://download.kde.org/stable/release-service/%{version}/src/khelpcenter-%{version}.tar.xz

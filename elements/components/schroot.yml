@@ -25,7 +25,7 @@ configure: >-
 depends:
   - components/libboost.yml
   - components/e2fsprogs.yml
-  - components/lockdev.yml
+  # - components/lockdev.yml
   - components/pam.yml
 build-depends:
   - components/boost.yml

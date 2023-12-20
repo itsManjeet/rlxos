@@ -11,7 +11,7 @@ configure: >-
 
 depends:
   - components/kf5.yml
-  - components/libmusicbrainz.yml
+  # - components/libmusicbrainz.yml
 sources:
   - https://download.kde.org/stable/release-service/%{version}/src/libkcddb-%{version}.tar.xz
 

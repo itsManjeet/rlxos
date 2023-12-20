@@ -11,7 +11,7 @@ configure: >-
   -DENABLE_YTNEF=OFF
 
 depends:
-  - components/adwaita-icon-theme.yml
+  - components/themes/adwaita-icon-theme.yml
   - components/evolution-data-server.yml
   - components/gnome-autoar.yml
   - components/itstool.yml
@@ -27,7 +27,7 @@ depends:
   - components/libgweather.yml
   - components/libnotify.yml
   - components/libldap.yml
-  - components/seahorse.yml
+  # - components/seahorse.yml
   - components/clutter-gtk.yml
   - components/geoclue.yml
   - components/geocode-glib.yml

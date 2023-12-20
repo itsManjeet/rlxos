@@ -22,7 +22,7 @@ depends:
   - components/glib.yml
   - components/gtk.yml
   - components/libdrm.yml
-  - components/libpciaccess.yml
+  - components/x11/libpciaccess.yml
   - components/x11/libxfixes.yml
   - components/x11/libxinerama.yml
   - components/x11/libxrandr.yml

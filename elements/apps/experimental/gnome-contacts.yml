@@ -8,7 +8,7 @@ build-depends:
 - components/gnome-online-accounts.yml
 - components/dconf.yml
 - components/libgee.yml
-- components/cheese.yml
+# - components/cheese.yml
 - components/libhandy.yml
 - components/vala.yml
 - components/gobject-introspection.yml

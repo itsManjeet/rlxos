@@ -4,7 +4,7 @@ about: Multitouch gesture recognizer
 depends:
   - components/gtk.yml
   - components/libinput.yml
-  - components/x11/xorg.yml
+  - components/x11/libx11.yml
   - components/systemd.yml
   - components/pugixml.yml
 build-depends:

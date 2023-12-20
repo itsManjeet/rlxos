@@ -6,17 +6,14 @@ on:
 
 env:
   NO_PRINT_PROGRESS: 1
+  SERVER_REPO_PATH: ${{secrets.SERVER_REPO_PATH}}
+  SERVER_REPO_URL: ${{secrets.SERVER_REPO_URL}}
 
 jobs:
   build-and-release:
     name: Build and Release
     runs-on: self-hosted
     timeout-minutes: 47000
-    env:
-      OSTREE_REPO: ${{ secrets.OSTREE_REPO }}
-      OSTREE_GPG: ${{ secrets.OSTREE_GPG }}
-      SERVER_REPO_PATH: ${{secrets.SERVER_REPO_PATH}}
-      SERVER_REPO_URL: ${{secrets.SERVER_REPO_URL}}
 
     steps:
       - uses: actions/checkout@v1
@@ -36,10 +33,12 @@ jobs:
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
       - name: Generate Cache
-        run: pkgupd ignite build collections/xfce4.yml ignite.cache=${SERVER_REPO_PATH}
+        run: |
+          pkgupd ignite build
 
-      - name: Build Installer ISO
-        run: pkgupd ignite build installer/image.yml ignite.cache=${SERVER_REPO_PATH}
+      - name: Update Meta Information
+        run: |
+          pkgupd ignite meta ${SERVER_REPO_PATH}/${VERSION}
 
       - name: Update Installer ISO
         run: |

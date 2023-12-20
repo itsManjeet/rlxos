@@ -47,7 +47,7 @@ post-script: |-
 depends:
   - components/fuse.yml
   - components/gnutls.yml
-  - components/libpciaccess.yml
+  - components/x11/libpciaccess.yml
   - components/libssh.yml
   - components/libxml2.yml
   - components/numactl.yml

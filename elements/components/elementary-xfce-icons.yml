@@ -8,7 +8,7 @@ script: |-
   make DESTDIR=%{install-root} install
 
 depends:
-  - components/adwaita-icon-theme.yml
+  - components/themes/adwaita-icon-theme.yml
 build-depends:
   - components/gtk.yml
   - components/optipng.yml

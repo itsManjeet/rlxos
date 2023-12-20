@@ -24,7 +24,7 @@ depends:
   - components/curl.yml
   - components/glib.yml
   - components/imlib2.yml
-  - components/xorg-libs.yml
+  - components/x11/libx11.yml
   - components/lua.yml
   - components/ncurses.yml
   - components/desktop-file-utils.yml

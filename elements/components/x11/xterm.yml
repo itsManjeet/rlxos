@@ -3,7 +3,7 @@ version: "368"
 about: A terminal emulator for the X Window System
 release: 0
 depends:
-- components/xorg-server.yml
+- components/x11/libx11.yml
 sources:
 - https://invisible-mirror.net/archives/xterm/xterm-368.tgz
 pre-script: |

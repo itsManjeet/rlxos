@@ -7,7 +7,6 @@ about:
 release: 0
 build-depends:
   - components/appimagetool.yml
-  - components/pkgupd-port.yml
   - components/rsync.yml
 script: |
   pkgupd-port generate %{install-root} inkscape

@@ -21,7 +21,7 @@ depends:
   - components/xz.yml
   - components/zlib.yml
 build-depends:
-  - components/perl-io-string.yml
-  - components/perl-timedate.yml
+  - components/perl/perl-io-string.yml
+  - components/perl/perl-timedate.yml
 sources:
   - https://salsa.debian.org/dpkg-team/dpkg/-/archive/%{version}/dpkg-%{version}.tar.bz2

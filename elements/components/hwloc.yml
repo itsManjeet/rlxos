@@ -4,11 +4,11 @@ about: Portable Hardware Locality is a portable abstraction of hierarchical arch
 
 depends:
   - components/glibc.yml
-  - components/libpciaccess.yml
   - components/libtool.yml
   - components/systemd.yml
   - components/cairo.yml
   - components/x11/libx11.yml
+  - components/x11/libpciaccess.yml
   - components/libxml2.yml
   - components/pciutils.yml
 sources:

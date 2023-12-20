@@ -27,7 +27,7 @@ post-script: |
 
 depends:
   - components/apr.yml
-  - components/apr-utils.yml
+  # - components/apr-utils.yml
   - components/pcre.yml
   - components/openssl.yml
   - components/libxml2.yml

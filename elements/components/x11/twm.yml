@@ -3,7 +3,7 @@ version: 1.0.11
 about: A very minimal window manager
 release: 0
 depends:
-  - components/xorg-server.yml
+  - components/x11/xserver.yml
 sources:
   - https://www.x.org/pub/individual/app/twm-1.0.11.tar.xz
 pre-script:

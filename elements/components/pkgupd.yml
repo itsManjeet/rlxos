@@ -1,17 +1,17 @@
 id: pkgupd
 version: 0.1.0
 about: Package Management and Updater Daemon
-
-commit: 92c89f465617387e03942976aa63742b53f8dc54
+commit: 589baff0242885c3cca3879465341b4e5ff4ea91
 
 post-script: |-
-  install -v -D -m 0755 -t %{install-root}%{bindir} target/release/%{id}
+  rm -rf %{install-root}/%{libdir} %{install-root}/%{prefix}/include
 
 depends:
   - components/glibc.yml
 
 build-depends:
   - components/git.yml
+  - components/libyaml-cpp.yml
 
 sources:
   - pkgupd-%{commit}.tar.gz::https://github.com/itsManjeet/pkgupd/archive/%{commit}.tar.gz

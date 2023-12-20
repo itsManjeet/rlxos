@@ -6,7 +6,7 @@ depends:
   - components/fontconfig.yml
   - components/freetype.yml
   - components/glibc.yml
-  - components/gsfonts.yml
+  - components/fonts/gsfonts.yml
 build-depends:
   - components/go.yml
   - components/nodejs.yml

@@ -11,7 +11,6 @@ build-depends:
 - components/docbook-xsl.yml
 - components/intltool.yml
 - components/python2.yml
-- components/pkgupd-image.yml
 - components/appimagetool.yml
 sources:
 - https://ftp.gnome.org/pub/gnome/sources/dia/0.97/dia-%{version}.tar.xz

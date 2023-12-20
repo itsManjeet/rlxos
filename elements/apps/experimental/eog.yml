@@ -9,7 +9,7 @@ configure: >-
   -D libportal=false
 
 depends:
-  - components/adwaita-icon-theme.yml
+  - components/themes/adwaita-icon-theme.yml
   - components/exempi.yml
   - components/gnome-desktop.yml
   - components/itstool.yml

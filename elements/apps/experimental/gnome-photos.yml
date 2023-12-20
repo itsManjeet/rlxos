@@ -5,10 +5,10 @@ about: |
 release: 0
 depends:
 - components/babl.yml
-- components/dleyna-renderer.yml
-- components/dleyna-server.yml
+# - components/dleyna-renderer.yml
+# - components/dleyna-server.yml
 - components/exempi.yml
-- components/gegl.yml
+# - components/gegl.yml
 - components/geocode-glib.yml
 - components/gfbgraph.yml
 - components/gnome-online-accounts.yml
@@ -20,11 +20,11 @@ depends:
 - components/libdazzle.yml
 - components/libexif.yml
 - components/libgdata.yml
-- components/libgexiv2.yml
+# - components/libgexiv2.yml
 - components/libhandy.yml
 - components/libraw.yml
 - components/librsvg.yml
-- components/tracker-miner.yml
+# - components/tracker-miner.yml
 build-depends:
 - components/gobject-introspection.yml
 - components/meson.yml

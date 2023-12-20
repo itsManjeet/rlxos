@@ -8,7 +8,7 @@ script: |
 
 depends:
   - components/busybox.yml
-  - components/make-ca.yml
+  - components/ca-certificates.yml
   - components/coreutils.yml
   - components/dbus.yml
   - components/diffutils.yml

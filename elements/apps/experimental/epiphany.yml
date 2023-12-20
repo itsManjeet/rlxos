@@ -17,6 +17,5 @@ depends:
   - components/libdazzle.yml
   - components/libhandy.yml
   - components/gnome-keyring.yml
-  - components/make-ca.yml
 sources:
   - https://download.gnome.org/sources/epiphany/%{version:1}/epiphany-%{version}.tar.xz

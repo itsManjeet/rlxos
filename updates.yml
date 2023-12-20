@@ -1,7 +1,6 @@
 url: https://release-monitoring.org/api/v2/packages
 skip:
   - iana-etc
-  - make-ca
   - gnome-shell-extension-x11gestures
 
 alias:

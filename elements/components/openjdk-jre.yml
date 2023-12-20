@@ -15,7 +15,6 @@ depends:
   - components/x11/libxt.yml
   - components/x11/libxtst.yml
   - components/zip.yml
-  - components/make-ca.yml
   - components/giflib.yml
   - components/lcms.yml
   - components/libjpeg-turbo.yml

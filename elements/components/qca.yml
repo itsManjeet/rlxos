@@ -13,6 +13,5 @@ depends:
 build-depends:
   - components/cmake.yml
   - components/which.yml
-  - components/make-ca.yml
 sources:
   - https://download.kde.org/stable/qca/%{version}/qca-%{version}.tar.xz

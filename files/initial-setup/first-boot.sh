@@ -11,7 +11,7 @@ then
 fi
 
 echo ":: Creating user ${ISE_USERNAME}"
-sudo useradd -G wheel,docker,audio,video,kvm,netdev ${ISE_USERNAME} -m >/dev/null || {
+sudo useradd -G wheel ${ISE_USERNAME} -m >/dev/null || {
     echo "failed to create user '${ISE_USERNAME}'"
     exit 1
 }

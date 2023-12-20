@@ -1,0 +1,18 @@
+id: ca-certificates
+version: 2023-12-12
+about: Bundle of CA Root Certificates from Mozilla
+
+script: |-
+  install -D -m 644 %{build-root}/cacert-%{version}.pem %{install-root}/%{sysconfdir}/ssl/cert.pem
+
+  install -d %{install-root}/%{sysconfdir}/ssl/certs/
+  ln -s %{sysconfdir}/ssl/cert.pem %{install-root}/%{sysconfdir}/ssl/certs/ca-certificates.crt
+  ln -s %{sysconfdir}/ssl/cert.pem %{install-root}/%{sysconfdir}/ssl/ca-bundle.crt
+
+  install -v -D -m 0755 /files/update-ca-certificates %{install-root}%{bindir}/update-ca-certificates
+
+build-depends:
+  - components/bash.yml
+
+sources:
+  - https://curl.se/ca/cacert-%{version}.pem

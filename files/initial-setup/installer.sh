@@ -83,172 +83,51 @@ cleanup() {
 trap cleanup EXIT
 
 
-sudo mkdir -p ${SYSROOT}/ostree/repo || {
-    echo "failed to create repo dir"
+echo ":: Installing System Image"
+sudo unsquashfs -f -d ${SYSROOT} /run/initramfs/live/LiveOS/squashfs.img || {
+    echo "failed to install system image"
     sleep 999
 
     exit 1
 }
 
-echo ":: Creating OStree Repository"
-sudo ostree init --repo=${SYSROOT}/ostree/repo --mode=bare || {
-    echo "failed to install '${SYSROOT}'"
-    sleep 999
+KERNEL_VERSION=$(ls -1 ${SYSROOT}/lib/modules/ | head -n1)
 
-    exit 1
-}
+sudo chroot ${SYSROOT} /bin/bash -e << EOT
+echo ":: Creating file hierarchy"
+mkdir -p /dev /sys /proc
 
-echo ":: Cloning OStree into the device (this might take a while)"
-sudo ostree --repo=${SYSROOT}/ostree/repo pull-local "/ostree/repo" @@OSTREE_BRANCH@@ || {
-    echo "failed to clone OStree repository"
-    sleep 999
+mount -t devtmpfs none /dev
+mount -t sysfs    none /sys
+mount -t proc     none /proc
 
-    exit 1
-}
+if [[ -n ${IS_EFI} ]] ; then
+    mount -t efivarfs none /sys/firmware/efi/efivars
+fi
 
-echo ":: Creating OStree filesystem"
-sudo ostree admin init-fs ${SYSROOT} || {
-    echo "failed to creating ostree filesystem"
-    sleep 999
+echo ":: Generating initramfs"
+dracut /boot/initramfs-${KERNEL_VERSION}.img
 
-    exit 1
-}
-
-echo ":: Initializing OStree filesystem"
-sudo ostree admin os-init --sysroot=${SYSROOT} rlxos || {
-    echo "failed to initialize os roots"
-    sleep 999
-
-    exit 1
-}
-
-ROOT_UUID=$(sudo lsblk -no uuid ${ISE_ROOT})
-
-echo ":: Deploying OStree"
-sudo ostree admin deploy --os="rlxos"   \
-    --sysroot="${SYSROOT}" @@OSTREE_BRANCH@@ \
-    --karg="rw" --karg="quiet" --karg="splash" \
-    --karg="root=UUID=$ROOT_UUID" || {
-    echo "failed to deploy OStree"
-    sleep 999
-
-    exit 1
-}
-
-echo ":: Setting up origin"
-sudo ostree admin set-origin --sysroot="${SYSROOT}" \
-    --index=0 rlxos https://ostree.rlxos.dev/ @@OSTREE_BRANCH@@ || {
-    echo "failed to setup origin"
-    sleep 999
-
-    exit 1
-}
-
-sudo ostree remote delete rlxos --repo=${SYSROOT}/ostree/repo
-
-echo ":: Installing boot files"
-sudo cp -fr "${SYSROOT}"/ostree/boot.1/rlxos/*/*/boot/EFI/ "${SYSROOT}"/boot/ || {
-    echo "failed to install boot files"
-    sleep 999
-
-    exit 1
-}
+echo ":: Installing kernel"
+cp /lib/modules/${KERNEL_VERSION}/bzImage /boot/vmlinuz-${KERNEL_VERSION}
 
 echo ":: Installing Bootloader"
 if [[ -n "${IS_EFI}" ]] ; then
-    sudo grub-install --boot-directory=${SYSROOT}/boot --efi-directory=${SYSROOT}/efi --root-directory=${SYSROOT} --target=x86_64-efi
+    grub-install --boot-directory=${SYSROOT}/boot --efi-directory=${SYSROOT}/efi --root-directory=${SYSROOT} --target=x86_64-efi
 else
     disk="/dev/$(basename $(readlink -f /sys/class/block/$(basename ${ISE_ROOT})/..))"
-    sudo grub-install --boot-directory=${SYSROOT}/boot --root-directory=${SYSROOT} --target=i386-pc ${disk}
+    grub-install --boot-directory=${SYSROOT}/boot --root-directory=${SYSROOT} --target=i386-pc ${disk}
 fi
 
-# TODO: fix this hack
-(cd ${SYSROOT}/boot/loader; sudo /lib/ostree/ostree-grub-generator . grub.cfg)
+echo ":: Generating bootloader configuration"
+update-grub
+EOT || {
+    echo "Failed to configure system"
+    sleep 999
 
-sudo sed -i 's#linux /ostree#linux /boot/ostree#g' ${SYSROOT}/boot/loader/grub.cfg
-sudo sed -i 's#initrd /ostree#initrd /boot/ostree#g' ${SYSROOT}/boot/loader/grub.cfg
-
-sudo install -D -m 0644 /dev/stdin ${SYSROOT}/boot/grub/grub.cfg << "EOF"
-set timeout=5
-if [ -s $prefix/grubenv ] ; then
-    set have_grubenv=true
-    load_env
-fi
-
-if [ x"${feature_menuentry_id}" = xy ] ; then
-    menuentry_id_option="--id"
-else
-    menuentry_id_option=""
-fi
-
-export menuentry_id_option
-
-if [ "${prev_saved_entry}" ] ; then
-    set saved_entry="${prev_saved_entry}"
-    save_env saved_entry
-    set pre_saved_entry=
-    save_env prev_saved_entry
-    set boot_once=true
-fi
-
-function savedefault {
-    if [ -z "${boot_once}" ] ; then
-        saved_entry="${chosed}"
-        save_env saved_entry
-    fi
+    exit 1
 }
 
-function load_video {
-    if [ x$feature_all_video_module = xy ] ; then
-        insmod all_video
-    else
-        insmod efi_gop
-        insmod efi_uga
-        insmod ieee1275_fb
-        insmod vbe
-        insmod vga
-        insmod video_bochs
-        insmod video_cirrus
-    fi
-}
-
-font=unicode
-
-if loadfont $font ; then
-    set gfxmode=auto
-    load_video
-    insmod gfxterm
-    set locale_dir=$prefix/locale
-    set lang=en_US
-    insmod gettext
-fi
-
-terminal_output gfxterm
-if [ "${recordfail}" = 1 ] ; then
-    set timeout=30
-else
-    if [ x$feature_timeout_style = xy ] ; then
-        set timeout_style=menu
-        set timeout=5
-    else
-        set timeout=5
-    fi
-fi
-
-function gfxmode {
-    set gfxpayload="${1}"
-}
-
-set linux_gfx_mode=
-export linux_gfx_mode
-
-insmod part_gpt
-insmod ext2
-
-configfile /boot/loader/grub.cfg
-EOF
-
-sudo ostree config --repo=${SYSROOT}/ostree/repo set sysroot.bootloader grub2
 
 # Sleep for 2 seconds
 sleep 5

@@ -67,6 +67,9 @@ script: |-
     update-mime-database %{datadir}/mime
     update-desktop-database %{datadir}/applications
 
+    chmod 4755 %{bindir}/pkexec
+    chmod 4755 %{bindir}/sudo
+
     echo "root:root" | chpasswd
 
     echo "LANG=en_IN.UTF-8" > %{sysconfdir}/locale.conf

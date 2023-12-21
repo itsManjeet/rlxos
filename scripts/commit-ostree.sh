@@ -81,8 +81,8 @@ on_exit() {
 }
 trap on_exit EXIT
 
-${IGNITE} build "${element}"
-${IGNITE} checkout "${element}" "${checkout}"
+pkgupd ignite build "${element}"
+pkgupd ignite checkout "${element}" "${checkout}"
 
 if ! [ -d "${OSTREE_REPO}" ]; then
     ostree init --repo="${OSTREE_REPO}" --mode=archive

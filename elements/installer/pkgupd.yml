@@ -36,7 +36,7 @@ script: |-
   EOT
 
   kerver=$(ls -1 /lib/modules/ | head -n1)
-  for f in ISO/boot/grub.cfg ISO/isolinux/isolinux.cfg ; do
+  for f in ISO/boot/grub/grub.cfg ISO/isolinux/isolinux.cfg ; do
     m4 -D"__KERNEL__=/boot/vmlinuz-${kerver}" \
       -D"__INITRD__=/boot/initrd-${kerver}.img" \
       -D"__KARGS__=%{kargs}" $f

@@ -39,7 +39,8 @@ script: |-
   for f in ISO/boot/grub/grub.cfg ISO/isolinux/isolinux.cfg ; do
     m4 -D"__KERNEL__=/boot/vmlinuz-${kerver}" \
       -D"__INITRD__=/boot/initrd-${kerver}.img" \
-      -D"__KARGS__=%{kargs}" $f
+      -D"__KARGS__=%{kargs}" $f > $f.tmp
+    mv $f.tmp $f
   done
 
 

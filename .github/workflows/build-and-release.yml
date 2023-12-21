@@ -10,42 +10,65 @@ env:
   SERVER_REPO_URL: ${{secrets.SERVER_REPO_URL}}
 
 jobs:
-  build-and-release:
-    name: Build and Release
+  build-collection:
+    name: Build Collection
     runs-on: self-hosted
     timeout-minutes: 47000
+    strategy:
+      matrix:
+        collection:
+          - core
+          - xfce4
 
     steps:
       - uses: actions/checkout@v1
 
-      - name: Setup Version
-        run: |
-          VERSION="${GITHUB_REF#refs/*/}"
-          if [ $VERSION != "stable" ] && [ $VERSION != "staging" ] ; then
-            VERSION="experimental"
-          fi
-          cat > version.yml << EOF
-          version: ${VERSION}
-          variables:
-            ostree-branch: "x86_64/os/${VERSION}"
-          EOF
-
-          echo "VERSION=${VERSION}" >> $GITHUB_ENV
-
       - name: Generate Installer
         run: |
-          pkgupd ignite build collections/xfce4.yml
-          pkgupd ignite build installer/image.yml
+          pkgupd ignite build collections/${{matrix.collection}}.yml
 
-      - name: Update Installer ISO
-        run: |
-          pkgupd ignite checkout installer/image.yml ${SERVER_REPO_PATH}/releases/${VERSION}/ ignite.cache=${SERVER_REPO_PATH}
-          (cd ${SERVER_REPO_PATH}/releases/${VERSION}/; zsyncmake -b 2048 -C -u ${SERVER_REPO_URL}/releases/${VERSION}/rlxos-${VERSION}-installer.iso rlxos-${VERSION}-installer.iso)
+  update-ostree:
+    name: Update OStree
+    runs-on: self-hosted
+    timeout-minutes: 47000
+    needs: build-collection
+    steps:
+      - uses: actions/checkout@v1
+      - run: |
+          echo "${{ github.event.head_commit.message }}" > commit_body
+          VERSION=$(cat version.yml | grep "^version:" | awk '{print $2}')
+          OSTREE_BRANCH="x86_64/os/${VERSION}" make update-ostree
 
-      - name: Build All Packages
-        run: |
-          pkgupd ignite build
-
-      - name: Update Meta Information
-        run: |
+  update-pkgupd:
+    name: Update PKGUPD
+    runs-on: self-hosted
+    timeout-minutes: 47000
+    needs: build-collection
+    steps:
+      - uses: actions/checkout@v1
+      - run: |
+          VERSION=$(cat version.yml | grep "^version:" | awk '{print $2}')
           pkgupd ignite meta ${SERVER_REPO_PATH}/${VERSION}
+
+
+  build-installer-iso:
+    name: Build Installer ISO
+    runs-on: self-hosted
+    timeout-minutes: 47000
+    environment: deploy
+    needs: [update-ostree, update-pkgupd]
+    strategy:
+      matrix:
+        variant: 
+          - pkgupd
+          - ostree
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Build Installer ISO
+        run: pkgupd ignite build installer/${{matrix.variant}}.yml
+
+      - name: Update installer ISO
+        run: |
+          pkgupd ignite checkout installer/${{matrix.variant}}.yml ${SERVER_REPO_PATH}/releases/${VERSION}/${{matrix.variant}}
+          (cd ${SERVER_REPO_PATH}/releases/${VERSION}/${{matrix.variant}}/; zsyncmake -b 2048 -C -u ${SERVER_REPO_URL}/releases/${VERSION}/${{matrix.variant}}/rlxos-${VERSION}-${{matrix.variant}}-installer.iso rlxos-${VERSION}-${{matrix.variant}}-installer.iso)

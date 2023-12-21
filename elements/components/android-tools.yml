@@ -1,7 +1,10 @@
 id: android-tools
 version: 31.0.3p2
 about: Android platform tools
-release: 0
+
+configure: >-
+  -DCMAKE_BUILD_TYPE=Release
+
 depends:
   - components/android-udev.yml
   - components/libusb.yml
@@ -18,5 +21,3 @@ build-depends:
   - components/gtest.yml
 sources:
   - https://github.com/nmeum/android-tools/releases/download/%{version}/android-tools-%{version}.tar.xz
-configure: |
-  -DCMAKE_BUILD_TYPE=Release

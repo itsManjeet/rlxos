@@ -1,4 +1,3 @@
-IGNITE					?= build/ignite
 DOCS_DIR				?= build/docs
 COLLECTION				?= xfce4
 CHANNEL					?= experimental

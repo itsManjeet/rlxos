@@ -1,0 +1,57 @@
+id: pkgupd-installer
+merge: [version.yml]
+about: PKGUPD Installer ISO
+
+include:
+  - collections/xfce4.yml
+
+include-root: /sysroot
+sysroot: /sysroot
+installer-volume-id: RLXOS
+kargs: root=live:LABEL=RLXOS quiet splash rd.live=1 rd.live.overlay.overlayfs=1
+force-rebuild: true
+strip: false
+dracut-args: ""
+
+capabilities:
+  - CAP_SYS_CHROOT
+
+script: |-
+  # TODO: better way to do this
+  chroot %{include-root} /bin/bash << "EOT"
+    for i in %{datadir}/pkgupd/manifest/*/integration ; do
+      sh -e $i
+    done
+
+    update-mime-database %{datadir}/mime
+    update-desktop-database %{datadir}/applications
+
+    chmod 4755 %{bindir}/pkexec
+    chmod 4755 %{bindir}/sudo
+
+    echo "root:root" | chpasswd
+
+    echo "LANG=en_IN.UTF-8" > %{sysconfdir}/locale.conf
+    ln -sfv %{datadir}/zoneinfo/UTC %{sysconfdir}/localtime
+  EOT
+
+  kerver=$(ls -1 /lib/modules/ | head -n1)
+  for f in ISO/boot/grub.cfg ISO/isolinux/isolinux.cfg ; do
+    m4 -D"__KERNEL__=/boot/vmlinuz-${kerver}" \
+      -D"__INITRD__=/boot/initrd-${kerver}.img" \
+      -D"__KARGS__=%{kargs}" $f
+  done
+
+
+build-depends:
+  - components/e2fsprogs.yml
+  - components/dracut.yml
+  - components/mtools.yml
+  - components/grub.yml
+  - kernel/linux.yml
+  - components/systemd.yml
+  - components/cryptsetup.yml
+  - components/squashfs-tools.yml
+  - components/syslinux.yml
+  - components/plymouth.yml
+  - components/genimage.yml

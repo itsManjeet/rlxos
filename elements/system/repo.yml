@@ -2,71 +2,61 @@ id: system-repo
 about: System Repository
 merge: [version.yml, elements/include/ostree.inc]
 
-variables:
-  include-root: "/sysroot"
-  initial-commands: |-
-    chroot %{include-root} /bin/bash << "EOT"
-    if [ -d %{localstatedir}/lib/integrations ] ; then
-      for i in %{localstatedir}/lib/integrations/* ; do
-        echo "=> integrating $(basename $i)"
-        sh -e $i
-      done
-    fi
+capabilities:
+  - CAP_SYS_CHROOT
 
-    update-mime-database %{datadir}/mime/
-    update-desktop-database %{datadir}/applications/
+include-root: /sysroot
+initial-commands: |-
+  chroot %{include-root} /bin/bash << "EOT"
+  for i in %{datadir}/pkgupd/manifest/*/integration ; do
+    sh -e $i
+  done
 
-    chown root:root / -v
+  mkdir -p /sysroot
+  ln -sv /sysroot/ostree /ostree
 
-    mkdir -p /sysroot
-    ln -sv /sysroot/ostree /ostree
+  update-mime-database %{datadir}/mime
+  update-desktop-database %{datadir}/applications
 
-    echo "LANG=en_IN.utf-8" > /etc/locale.conf
-    ln -sfv /usr/share/zoneinfo/UTC /etc/localtime
+  chmod 4755 %{bindir}/pkexec
+  chmod 4755 %{bindir}/sudo
 
-    install -v -D -m 0644 /dev/stdin %{sysconfdir}/default/useradd << EOF
-    GROUP=100
-    INACTIVE=-1
-    EXPIRE=
-    SHELL=/bin/zsh
-    SKEL=/etc/skel
-    CREATE_MAIL_SPOOL=no
-    HOME=/home
-    EOF
+  echo "root:root" | chpasswd
 
-    echo "root:root" | chpasswd
+  echo "LANG=en_IN.UTF-8" > %{sysconfdir}/locale.conf
+  ln -sfv %{datadir}/zoneinfo/UTC %{sysconfdir}/localtime
 
-    kerver=$(ls -1 /lib/modules | head -n1)
-    cp /lib/modules/${kerver}/bzImage /lib/modules/${kerver}/vmlinuz
+  kerver=$(ls -1 /lib/modules | head -n1)
+  cp /lib/modules/${kerver}/bzImage /lib/modules/${kerver}/vmlinuz
 
-    dracut --reproducible -v --no-machineid \
-      --kver ${kerver} \
-      --add ostree  \
-      --add plymouth  \
-      --add dmsquash-live \
-      --install grep  \
-      --install head \
-      --install tail \
-      --install less  \
-      --install lsof  \
-      --omit lvm  \
-      --install 'fsck.ext4' \
-      %{libdir}/modules/${kerver}/initramfs
+  dracut --reproducible -v --no-machineid \
+    --kver ${kerver} \
+    --add ostree  \
+    --add plymouth  \
+    --add dmsquash-live \
+    --install grep  \
+    --install head \
+    --install tail \
+    --install less  \
+    --install lsof  \
+    --omit lvm  \
+    --install 'fsck.ext4' \
+    %{libdir}/modules/${kerver}/initramfs
 
-    dbus-uuidgen >/etc/machine-id
-    SYSTEMD_ESP_PATH=/boot bootctl --no-variables install
-    rm /etc/machine-id
+  dbus-uuidgen >/etc/machine-id
+  SYSTEMD_ESP_PATH=/boot bootctl --no-variables install
+  rm /etc/machine-id
 
-    cat <<EOF >/boot/loader/loader.conf
-    timeout 3
-    editor yes
-    console-mode keep
-    EOF
+  cat <<EOF >/boot/loader/loader.conf
+  timeout 3
+  editor yes
+  console-mode keep
+  EOF
 
-    mv %{sysconfdir} %{prefix}/
-    EOT
+  mv %{sysconfdir} %{prefix}/
+  EOT
 
 include:
-  - collections/desktop.yml
-
-  
+  - collections/xfce4.yml
+  - components/ostree.yml
+  - system/ostree-config.yml

@@ -6,6 +6,9 @@ about: GRand Unified Bootloader
 environ:
   - PYTHON=python3
 
+pre-script: |-
+  patch -Np1 -i grub-2.06-upstream_fixes-1.patch
+
 configure: >
   --disable-werror
   --disable-efiemu
@@ -21,14 +24,14 @@ configure: >
   --enable-cache-stats
   CFLAGS="-Os"
   CXXFLAGS="${CFLAGS}"
+ 
 
-pre-script: |-
-  patch -Np1 -i /patches/grub/grub-2.06-upstream_fixes-1.patch
+post-script: |-
+  sed -i 's/ ro / rw /g' %{install-root}/%{sysconfdir}/grub.d/10_linux
 
-  install -v -D -m 0644 %{build-root}/grub.default %{install-root}/etc/default/grub
-  install -v -D -m 0755 %{build-root}/update-grub.sh %{install-root}/usr/bin/update-grub
+  install -v -D -m 0644  %{build-root}/grub.default %{install-root}/etc/default/grub
+  install -v -D -m 0755  %{build-root}/update-grub.sh %{install-root}/usr/bin/update-grub
   install -v -D -m 0644  %{build-root}/unicode.pf2 %{install-root}/usr/share/grub/unicode.pf2
-  
 
 depends:
   - components/gettext.yml
@@ -51,3 +54,4 @@ sources:
   - files/grub/update-grub.sh
   - files/grub/unicode.pf2
   - files/grub/grub.default
+  - patches/grub/grub-2.06-upstream_fixes-1.patch

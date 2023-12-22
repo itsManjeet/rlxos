@@ -1,7 +1,7 @@
 id: pkgupd
 version: 0.1.0
 about: Package Management and Updater Daemon
-commit: 61b700bc9878015e130b3b6fe3eca873297bd43e
+commit: 608c22190a55de495d2243be29ff323ed9945a55
 
 post-script: |-
   rm -rf %{install-root}/%{libdir} %{install-root}/%{prefix}/include

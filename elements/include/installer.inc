@@ -53,19 +53,6 @@ post-script: |-
 
     mksquashfs %{sysroot} ISO/LiveOS/squashfs.img -noappend
 
-    dracut --reproducible -v --no-machineid \
-        --kver ${kerver} \
-        --add plymouth \
-        --add dmsquash-live \
-        --install grep \
-        --install head \
-        --install tail \
-        --install less \
-        --install lsof \
-        --omit lvm %{dracut-args} \
-        --install 'fsck.ext4' \
-        ISO/boot/initramfs-${kerver}.img
-
     mkdir -p %{install-root}/
     xorriso -as mkisofs \
         -isohybrid-mbr %{datadir}/syslinux/isohdpfx.bin \

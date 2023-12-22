@@ -8,8 +8,6 @@ include:
 include-root: /source-repo
 sysroot: /sysroot
 installer-volume-id: RLXOS
-dracut-args: >-
-  --add ostree
 
 kargs: >-
   --karg=root=live:LABEL=RLXOS
@@ -50,8 +48,8 @@ script: |-
   for f in ISO/boot/grub/grub.cfg ISO/isolinux/isolinux.cfg ; do
     m4 -D"__KERNEL__=$KERNEL" \
       -D"__INITRD__=$INITRD" \
-      -D"__KARGS__=$KARGS" $f > $f.tmp
-    mv $f.tmp $f
+      -D"__KARGS__=$KARGS" $f > ${f}.tmp
+    mv ${f}.tmp ${f}
   done
 
 build-depends:

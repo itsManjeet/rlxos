@@ -35,7 +35,7 @@ script: |
   --with-libjpeg=system             \
   --with-libpng=system              \
   --with-zlib=system                \
-  --with-version-build="%{version:2}"          \
+  --with-version-build="%{version:1}"          \
   --with-version-pre=""             \
   --with-version-opt=""             \
   --with-cacerts-file=%{sysconfdir}/ssl/cert.pem

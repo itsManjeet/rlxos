@@ -1,6 +1,6 @@
 id: initial-setup
 merge: [version.yml]
-release: 9
+release: 10
 
 about: System Initial Setup
 

@@ -91,22 +91,6 @@ if [ -d /sysroot/ostree/repo ] ; then
         exit 1
     }
 
-    echo ":: Creating OStree Repository"
-    sudo ostree init --repo=${SYSROOT}/ostree/repo --mode=bare || {
-        echo "failed to install '${SYSROOT}'"
-        sleep 999
-
-        exit 1
-    }
-
-    echo ":: Cloning OStree into the device (this might take a while)"
-    sudo ostree --repo=${SYSROOT}/ostree/repo pull-local "/ostree/repo" @@OSTREE_BRANCH@@ || {
-        echo "failed to clone OStree repository"
-        sleep 999
-
-        exit 1
-    }
-
     echo ":: Creating OStree filesystem"
     sudo ostree admin init-fs ${SYSROOT} || {
         echo "failed to creating ostree filesystem"
@@ -118,6 +102,16 @@ if [ -d /sysroot/ostree/repo ] ; then
     echo ":: Initializing OStree filesystem"
     sudo ostree admin os-init --sysroot=${SYSROOT} rlxos || {
         echo "failed to initialize os roots"
+        sleep 999
+
+        exit 1
+    }
+
+    sudo ostree config --repo=${SYSROOT}/ostree/repo set sysroot.bootloader none
+
+    echo ":: Cloning OStree into the device (this might take a while)"
+    sudo ostree --repo=${SYSROOT}/ostree/repo pull-local "/ostree/repo" @@OSTREE_BRANCH@@ || {
+        echo "failed to clone OStree repository"
         sleep 999
 
         exit 1
@@ -146,6 +140,8 @@ if [ -d /sysroot/ostree/repo ] ; then
     }
 
     sudo ostree remote delete rlxos --repo=${SYSROOT}/ostree/repo
+
+    sudo mkdir -p ${SYSROOT}/proc
 
     echo ":: Installing Bootloader"
     if [[ -n "${IS_EFI}" ]] ; then

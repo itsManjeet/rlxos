@@ -59,22 +59,6 @@ sudo mkdir -p ${SYSROOT}/boot || {
     exit 1
 }
 
-if [[ -n "$IS_EFI" ]] ; then
-    sudo mkdir -p ${SYSROOT}/efi || {
-        echo "failed to create efi directory"
-        sleep 999
-
-        exit 1
-    }
-    sudo mount ${ISE_EFI} ${SYSROOT}/efi || {
-        sudo umount ${ISE_ROOT}
-        echo "Failed to mount ${ISE_EFI} ${SYSROOT}/efi"
-        sleep 999
-
-        exit 1
-    }
-fi
-
 cleanup() {
     [[ -n "$IS_EFI" ]] && sudo umount ${SYSROOT}/efi/
     sudo umount ${SYSROOT}
@@ -83,6 +67,23 @@ cleanup() {
 trap cleanup EXIT
 
 if [ -d /sysroot/ostree/repo ] ; then
+
+    if [[ -n "$IS_EFI" ]] ; then
+        sudo mkdir -p ${SYSROOT}/boot || {
+            echo "failed to create efi directory"
+            sleep 999
+
+            exit 1
+        }
+        sudo mount ${ISE_EFI} ${SYSROOT}/boot || {
+            sudo umount ${ISE_ROOT}
+            echo "Failed to mount ${ISE_EFI} ${SYSROOT}/boot"
+            sleep 999
+
+            exit 1
+        }
+    fi
+
     echo "OStree based installation"
     sudo mkdir -p ${SYSROOT}/ostree/repo || {
         echo "failed to create repo dir"
@@ -147,17 +148,9 @@ if [ -d /sysroot/ostree/repo ] ; then
 
     sudo ostree remote delete rlxos --repo=${SYSROOT}/ostree/repo
 
-    echo ":: Installing boot files"
-    sudo cp -fr "${SYSROOT}"/ostree/boot.1/rlxos/*/*/boot/EFI/ "${SYSROOT}"/boot/ || {
-        echo "failed to install boot files"
-        sleep 999
-
-        exit 1
-    }
-
     echo ":: Installing Bootloader"
     if [[ -n "${IS_EFI}" ]] ; then
-        sudo grub-install --boot-directory=${SYSROOT}/boot --efi-directory=${SYSROOT}/efi --root-directory=${SYSROOT} --target=x86_64-efi
+        sudo grub-install --boot-directory=${SYSROOT}/boot --efi-directory=${SYSROOT}/boot --root-directory=${SYSROOT} --target=x86_64-efi
     else
         disk="/dev/$(basename $(readlink -f /sys/class/block/$(basename ${ISE_ROOT})/..))"
         sudo grub-install --boot-directory=${SYSROOT}/boot --root-directory=${SYSROOT} --target=i386-pc ${disk}
@@ -165,9 +158,6 @@ if [ -d /sysroot/ostree/repo ] ; then
 
     # TODO: fix this hack
     (cd ${SYSROOT}/boot/loader; sudo /lib/ostree/ostree-grub-generator . grub.cfg)
-
-    sudo sed -i 's#linux /ostree#linux /boot/ostree#g' ${SYSROOT}/boot/loader/grub.cfg
-    sudo sed -i 's#initrd /ostree#initrd /boot/ostree#g' ${SYSROOT}/boot/loader/grub.cfg
 
     sudo install -D -m 0644 /dev/stdin ${SYSROOT}/boot/grub/grub.cfg << "EOF"
     set timeout=5
@@ -251,6 +241,22 @@ EOF
 
     sudo ostree config --repo=${SYSROOT}/ostree/repo set sysroot.bootloader grub2
 else
+    if [[ -n "$IS_EFI" ]] ; then
+        sudo mkdir -p ${SYSROOT}/efi || {
+            echo "failed to create efi directory"
+            sleep 999
+
+            exit 1
+        }
+        sudo mount ${ISE_EFI} ${SYSROOT}/efi || {
+            sudo umount ${ISE_ROOT}
+            echo "Failed to mount ${ISE_EFI} ${SYSROOT}/efi"
+            sleep 999
+
+            exit 1
+        }
+    fi
+
     echo "PKGUPD based installation"
     echo ":: Installing System Image"
     sudo unsquashfs -q -n -f -d ${SYSROOT} /run/initramfs/live/LiveOS/squashfs.img || {

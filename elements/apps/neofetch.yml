@@ -5,6 +5,8 @@ about: A command-line system information tool written in bash 3.2+
 variables:
   commit: e1a1ed42e840c8ea84a9d34f006d63fac08aba7a
 
+depends:
+  - components/bash.yml
 script: |-
   make install DESTDIR=%{install-root}
 

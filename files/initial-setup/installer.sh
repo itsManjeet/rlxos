@@ -290,12 +290,14 @@ else
 
     echo ":: Generating bootloader configuration"
     update-grub
-EOT || {
+EOT
+
+if [[ $? -ne 0 ]] ; then
     echo "Failed to configure system"
     sleep 999
 
     exit 1
-}
+fi
 
 fi
 

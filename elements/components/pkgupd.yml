@@ -1,7 +1,7 @@
 id: pkgupd
 merge: [version.yml]
 about: Package Management and Updater Daemon
-commit: 81559429b9137e8f8b2b9eba9f568f4476e8654a
+commit: 0512cfb16227271246d53f65aaa12c0708359c1e
 
 post-script: |-
   install -v -D -m 0644 /dev/stdin %{install-root}/%{sysconfdir}/%{id}.yml << "EOF"

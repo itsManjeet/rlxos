@@ -1,7 +1,6 @@
-variables:
-  include-root: "/sysroot"
-  strip: false
-  force-rebuild: true
+include-root: "/sysroot"
+strip: false
+force-rebuild: true
 
 script: |-
   %{initial-commands}

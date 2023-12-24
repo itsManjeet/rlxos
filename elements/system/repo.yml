@@ -17,6 +17,7 @@ initial-commands: |-
 
   update-mime-database %{datadir}/mime
   update-desktop-database %{datadir}/applications
+  update-ca-certificates
 
   chmod 4755 %{bindir}/pkexec
   chmod 4755 %{bindir}/sudo

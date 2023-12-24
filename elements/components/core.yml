@@ -1,10 +1,6 @@
 id: core
-version: 2307
+merge: [version.yml,elements/include/meta.inc]
 about: rlxos core components
-
-script: |
-  mkdir -p %{install-root}/
-  echo %{version} > %{install-root}/.version
 
 depends:
   - components/busybox.yml

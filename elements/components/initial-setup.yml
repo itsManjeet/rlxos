@@ -1,6 +1,6 @@
 id: initial-setup
 merge: [version.yml]
-release: 8
+release: 9
 
 about: System Initial Setup
 
@@ -34,7 +34,7 @@ post-script: |-
   autologin-session=xfce
   EOF
 
-  install -vDm0644 /dev/stdin %{install-root}/%{datadir}/polkit-1/rules.d/10-initial-setup.rules << "EOF"
+  install -v -D /dev/stdin %{install-root}/%{datadir}/polkit-1/rules.d/10-initial-setup.rules << "EOF"
   polkit.addRule(function(action, subject) {
     if ((action.id == "org.gnome.gparted") &&
           subject.local && subject.active &&

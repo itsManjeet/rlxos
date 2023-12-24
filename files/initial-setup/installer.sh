@@ -59,6 +59,22 @@ sudo mkdir -p ${SYSROOT}/boot || {
     exit 1
 }
 
+if [[ -n "$IS_EFI" ]] ; then
+    sudo mkdir -p ${SYSROOT}/efi || {
+        echo "failed to create efi directory"
+        sleep 999
+
+        exit 1
+    }
+    sudo mount ${ISE_EFI} ${SYSROOT}/efi || {
+        sudo umount ${ISE_ROOT}
+        echo "Failed to mount ${ISE_EFI} ${SYSROOT}/boot"
+        sleep 999
+
+        exit 1
+    }
+fi
+
 cleanup() {
     [[ -n "$IS_EFI" ]] && sudo umount ${SYSROOT}/efi/
     sudo umount ${SYSROOT}
@@ -67,23 +83,6 @@ cleanup() {
 trap cleanup EXIT
 
 if [ -d /sysroot/ostree/repo ] ; then
-
-    if [[ -n "$IS_EFI" ]] ; then
-        sudo mkdir -p ${SYSROOT}/boot || {
-            echo "failed to create efi directory"
-            sleep 999
-
-            exit 1
-        }
-        sudo mount ${ISE_EFI} ${SYSROOT}/boot || {
-            sudo umount ${ISE_ROOT}
-            echo "Failed to mount ${ISE_EFI} ${SYSROOT}/boot"
-            sleep 999
-
-            exit 1
-        }
-    fi
-
     echo "OStree based installation"
     sudo mkdir -p ${SYSROOT}/ostree/repo || {
         echo "failed to create repo dir"
@@ -150,7 +149,7 @@ if [ -d /sysroot/ostree/repo ] ; then
 
     echo ":: Installing Bootloader"
     if [[ -n "${IS_EFI}" ]] ; then
-        sudo grub-install --boot-directory=${SYSROOT}/boot --efi-directory=${SYSROOT}/boot --root-directory=${SYSROOT} --target=x86_64-efi
+        sudo grub-install --boot-directory=${SYSROOT}/boot --efi-directory=${SYSROOT}/efi --root-directory=${SYSROOT} --target=x86_64-efi
     else
         disk="/dev/$(basename $(readlink -f /sys/class/block/$(basename ${ISE_ROOT})/..))"
         sudo grub-install --boot-directory=${SYSROOT}/boot --root-directory=${SYSROOT} --target=i386-pc ${disk}
@@ -160,83 +159,83 @@ if [ -d /sysroot/ostree/repo ] ; then
     (cd ${SYSROOT}/boot/loader; sudo /lib/ostree/ostree-grub-generator . grub.cfg)
 
     sudo install -D -m 0644 /dev/stdin ${SYSROOT}/boot/grub/grub.cfg << "EOF"
-    set timeout=5
-    if [ -s $prefix/grubenv ] ; then
-        set have_grubenv=true
-        load_env
-    fi
+set timeout=5
+if [ -s $prefix/grubenv ] ; then
+    set have_grubenv=true
+    load_env
+fi
 
-    if [ x"${feature_menuentry_id}" = xy ] ; then
-        menuentry_id_option="--id"
-    else
-        menuentry_id_option=""
-    fi
+if [ x"${feature_menuentry_id}" = xy ] ; then
+    menuentry_id_option="--id"
+else
+    menuentry_id_option=""
+fi
 
-    export menuentry_id_option
+export menuentry_id_option
 
-    if [ "${prev_saved_entry}" ] ; then
-        set saved_entry="${prev_saved_entry}"
+if [ "${prev_saved_entry}" ] ; then
+    set saved_entry="${prev_saved_entry}"
+    save_env saved_entry
+    set pre_saved_entry=
+    save_env prev_saved_entry
+    set boot_once=true
+fi
+
+function savedefault {
+    if [ -z "${boot_once}" ] ; then
+        saved_entry="${chosed}"
         save_env saved_entry
-        set pre_saved_entry=
-        save_env prev_saved_entry
-        set boot_once=true
     fi
+}
 
-    function savedefault {
-        if [ -z "${boot_once}" ] ; then
-            saved_entry="${chosed}"
-            save_env saved_entry
-        fi
-    }
-
-    function load_video {
-        if [ x$feature_all_video_module = xy ] ; then
-            insmod all_video
-        else
-            insmod efi_gop
-            insmod efi_uga
-            insmod ieee1275_fb
-            insmod vbe
-            insmod vga
-            insmod video_bochs
-            insmod video_cirrus
-        fi
-    }
-
-    font=unicode
-
-    if loadfont $font ; then
-        set gfxmode=auto
-        load_video
-        insmod gfxterm
-        set locale_dir=$prefix/locale
-        set lang=en_US
-        insmod gettext
-    fi
-
-    terminal_output gfxterm
-    if [ "${recordfail}" = 1 ] ; then
-        set timeout=30
+function load_video {
+    if [ x$feature_all_video_module = xy ] ; then
+        insmod all_video
     else
-        if [ x$feature_timeout_style = xy ] ; then
-            set timeout_style=menu
-            set timeout=5
-        else
-            set timeout=5
-        fi
+        insmod efi_gop
+        insmod efi_uga
+        insmod ieee1275_fb
+        insmod vbe
+        insmod vga
+        insmod video_bochs
+        insmod video_cirrus
     fi
+}
 
-    function gfxmode {
-        set gfxpayload="${1}"
-    }
+font=unicode
 
-    set linux_gfx_mode=
-    export linux_gfx_mode
+if loadfont $font ; then
+    set gfxmode=auto
+    load_video
+    insmod gfxterm
+    set locale_dir=$prefix/locale
+    set lang=en_US
+    insmod gettext
+fi
 
-    insmod part_gpt
-    insmod ext2
+terminal_output gfxterm
+if [ "${recordfail}" = 1 ] ; then
+    set timeout=30
+else
+    if [ x$feature_timeout_style = xy ] ; then
+        set timeout_style=menu
+        set timeout=5
+    else
+        set timeout=5
+    fi
+fi
 
-    configfile /boot/loader/grub.cfg
+function gfxmode {
+    set gfxpayload="${1}"
+}
+
+set linux_gfx_mode=
+export linux_gfx_mode
+
+insmod part_gpt
+insmod ext2
+
+configfile /boot/loader/grub.cfg
 EOF
 
     sudo ostree config --repo=${SYSROOT}/ostree/repo set sysroot.bootloader grub2

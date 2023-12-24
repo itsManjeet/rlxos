@@ -66,5 +66,3 @@ depends:
   - kernel/linux.yml
 
   - system/systemd-preset.yml
-
- # - apps/neofetch.yml

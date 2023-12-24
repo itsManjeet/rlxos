@@ -1,10 +1,12 @@
 id: pkgupd
-version: 0.1.0
+merge: [version.yml]
 about: Package Management and Updater Daemon
-commit: 608c22190a55de495d2243be29ff323ed9945a55
+commit: 81559429b9137e8f8b2b9eba9f568f4476e8654a
 
 post-script: |-
-  rm -rf %{install-root}/%{libdir} %{install-root}/%{prefix}/include
+  install -v -D -m 0644 /dev/stdin %{install-root}/%{sysconfdir}/%{id}.yml << "EOF"
+  version: %{version}
+  EOF
 
 depends:
   - components/glibc.yml

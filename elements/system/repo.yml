@@ -7,17 +7,20 @@ capabilities:
 
 include-root: /sysroot
 initial-commands: |-
-  chroot %{include-root} /bin/bash << "EOT"
+  chroot %{include-root} /bin/bash -e << "EOT"
   for i in %{datadir}/pkgupd/manifest/*/integration ; do
     sh -e $i
   done
 
-  mkdir -p /sysroot
+  mkdir -p /sysroot /dev/ /sys /proc
   ln -sv /sysroot/ostree /ostree
 
   update-mime-database %{datadir}/mime
   update-desktop-database %{datadir}/applications
+
+  [ ! -e /dev/null ] && touch /dev/null
   update-ca-certificates
+  
 
   chmod 4755 %{bindir}/pkexec
   chmod 4755 %{bindir}/sudo
@@ -43,16 +46,6 @@ initial-commands: |-
     --omit lvm  \
     --install 'fsck.ext4' \
     %{libdir}/modules/${kerver}/initramfs
-
-  dbus-uuidgen >/etc/machine-id
-  SYSTEMD_ESP_PATH=/boot bootctl --no-variables install
-  rm /etc/machine-id
-
-  cat <<EOF >/boot/loader/loader.conf
-  timeout 3
-  editor yes
-  console-mode keep
-  EOF
 
   mv %{sysconfdir} %{prefix}/
   EOT

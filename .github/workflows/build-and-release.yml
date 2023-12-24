@@ -35,6 +35,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - run: |
+          pkgupd ignite build system/ostree-config.yml
           echo "${{ github.event.head_commit.message }}" > commit_body
           VERSION=$(cat version.yml | grep "^version:" | awk '{print $2}')
           OSTREE_BRANCH="x86_64/os/${VERSION}" make update-ostree

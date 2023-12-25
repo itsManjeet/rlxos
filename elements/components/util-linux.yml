@@ -18,7 +18,7 @@ configure: >-
   --disable-pylibmount
   --disable-static
   --without-python
-  ADJTIME_PATH=%{localestatedir}/lib/hwclock/adjtime
+  ADJTIME_PATH=%{localstatedir}/lib/hwclock/adjtime
   --docdir=%{datadir}/%{id}-%{version}
 
 depends:

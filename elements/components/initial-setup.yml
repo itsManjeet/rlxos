@@ -13,16 +13,6 @@ post-script: |-
     sed -i s'#@@OSTREE_BRANCH@@#%{ostree-branch}#g' %{install-root}%{libdir}/%{id}/${script}.sh
   done
 
-  install -vDm0644 /dev/stdin %{install-root}/%{libdir}/sysusers.d/initial-setup.conf << "EOF"
-  u initial-setup 69 "System Initial Setup" %{localstatedir}/lib/initial-setup /bin/bash
-  m initial-setup wheel
-  EOF
-  
-
-  install -vDm0644 /dev/stdin %{install-root}/%{libdir}/tmpfiles.d/initial-setup.conf << "EOF"
-  C %{localstatedir}/lib/initial-setup - 69 69
-  EOF
-
   install -vDm 0644 /dev/stdin %{install-root}/etc/sudoers.d/initial-setup << "EOF"
   initial-setup ALL=(ALL) NOPASSWD: ALL
   EOF

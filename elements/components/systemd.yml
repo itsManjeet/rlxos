@@ -3,7 +3,7 @@ version: 252
 about: Package contains programs for controlling the startup, running, and shutdown of the system
 
 environ:
-  - LANG=en_IN.UTF-8
+  - LANG=en_IN.utf-8
   - PKG_CONFIG_PATH="%{libdir}/pkgconfig"
 
 pre-script: |
@@ -27,9 +27,9 @@ configure: >
   -D mode=release
   -D efi=true
   -D gnu-efi=true
-  -D nologin-path=/bin/nologin
-  -D debug-shell=/bin/bash
-  -D default-user-shell=/bin/bash
+  -D nologin-path=%{bindir}/nologin
+  -D debug-shell=%{bindir}/sh
+  -D default-user-shell=%{bindir}/sh
   -D dev-kvm-mode=0660
   -D fallback-hostname='rlxos'
   -D docdir=%{datadir}/doc/system-%{version}
@@ -38,6 +38,12 @@ configure: >
   -Dsbat-distro-pkgname="%{id}"
   -Dsbat-distro-version="%{version}"
   -Dsbat-distro-url="https://rlxos.dev/"
+
+post-script: |-
+  rm -f %{install-root}%{libdir}/sysusers.d/*.conf
+  for f in etc home legacy tmp var x11  ; do
+    rm %{install-root}%{libdir}/tmpfiles.d/$f.conf
+  done
 
 depends:
   - components/acl.yml

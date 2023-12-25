@@ -2,6 +2,7 @@ id: filesystem
 version: 0.0.3
 about: rlxos filesystem
 strip: false
+clean-empty-dir: false
 
 script: |
   for d in boot dev etc home mnt usr var opt srv/http run; do
@@ -20,6 +21,8 @@ script: |
     install -m644 /files/filesystem/$f %{install-root}/%{sysconfdir}
     install -m644 /files/filesystem/$f %{install-root}/%{datadir}/factory/%{sysconfdir}
   done
+
+  echo "en_IN.utf-8" > %{install-root}%{sysconfdir}/locale.conf
 
   ln -s ../proc/self/mounts %{install-root}%{sysconfdir}/mtab
   for f in gshadow shadow; do
@@ -59,5 +62,3 @@ script: |
 
 depends:
   - components/iana-etc.yml
-
-# TODO: use no-strip: from variables

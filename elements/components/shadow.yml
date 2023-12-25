@@ -34,5 +34,8 @@ post-script: |
   rmdir %{install-root}/usr/sbin
 
 integration: |
-  pwconv
-  grpconv
+  for u in su passwd gpasswd chsh chfn newgrp \
+           expiry chage \
+           newuidmap newgidmap ; do
+    chmod 4755 %{bindir}/$u
+  done

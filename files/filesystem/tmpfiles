@@ -1,24 +1,38 @@
-# copy from factory when missing
+d /run/lock             0755    root    root    -
+d /var/log              0755    root    root    -
+d /var/cache            0755    root    root    -
+d /var/lib              0755    root    root    -
+d /var/spool            0755    root    root    -
 
-C /etc/crypttab
-C /etc/fstab
-C /etc/group
-C /etc/gshadow
-C /etc/host.conf
-C /etc/hosts
-C /etc/issue
-C /etc/ld.so.conf
-C /etc/nsswitch.conf
-C /etc/passwd
-C /etc/profile
-C /etc/profile.d
-C /etc/securetty
-C /etc/shadow
-C /etc/shells
-C /etc/subuid
-C /etc/subgid
+D! /tmp/.X11-unix       1777    root    root    10d
+D! /tmp/.ICE-unix       1777    root    root    10d
+D! /tmp/.XIM-unix       1777    root    root    10d
+D! /tmp/.font-unix      1777    root    root    10d
 
-C /etc/protocols
-C /etc/services
-C /etc/skel
-C /etc/fonts
+
+r! /tmp/.X[0-9]*-lock
+
+f /var/log/btmp         600     root    utmp    -   -
+f /var/log/lastlog      644     root    utmp    -   -
+f /var/log/faillog      644     root    utmp    -   -
+f /var/log/wtmp         644     root    utmp    -   -
+
+L  /var/run             -       -       -       -   ../run
+L  /var/lock            -       -       -       -   ../run/lock
+L+ /etc/mtab            -       -       -       -   ../proc/self/mounts
+
+C! /etc/locale.conf     -       -       -       -   -
+C! /etc/nsswitch.conf   -       -       -       -   -
+C! /etc/pam.d           -       -       -       -   -
+C! /etc/issue           -       -       -       -   -
+C  /var/lib/initial-setup -     initial-setup initial-setup
+
+Q  /home                0755    -       -       -   -
+q  /srv                 0755    -       -       -   -
+q  /var                 0755    -       -       -   -
+q  /tmp                 1777    -       -       10d -
+q  /var/tmp             1777    -       -       30d -
+
+h  /var/log/journal     -       -       -       -   +C
+h  /var/log/journal/%m  -       -       -       -   +C
+h  /var/log/journal/remote   -  -       -       -   +C

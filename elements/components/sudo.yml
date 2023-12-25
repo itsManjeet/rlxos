@@ -37,3 +37,8 @@ depends:
 
 build-depends:
   - components/libtool.yml
+
+integration: |-
+  chmod 0600 %{sysconfdir}/sudoers
+  chmod 0600 %{sysconfdir}/sudoers.d/*
+  chmod 4755 %{bindir}/sudo

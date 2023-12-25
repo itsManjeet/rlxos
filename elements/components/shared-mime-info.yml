@@ -19,3 +19,6 @@ environ:
 configure: >
   --buildtype=release
   -Dupdate-mimedb=true
+
+integration: |-
+  update-mime-database %{datadir}/mime

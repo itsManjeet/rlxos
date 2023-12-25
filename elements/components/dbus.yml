@@ -22,12 +22,6 @@ configure: >-
 post-script: |-
   rm -rf %{install-root}/%{localstatedir}/run
 
-  ln -sfv %{localstatedir}/lib/dbus/machine-id %{install-root}/%{sysconfdir}/
-
-  install -vDm 0644 /dev/stdin %{install-root}%{libdir}/sysusers.d/%{id}.conf << "EOF"
-  u dbus 81 "System Message Bus"
-  EOF
-
 build-depends:
   - components/python.yml
 depends:

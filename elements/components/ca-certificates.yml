@@ -28,3 +28,8 @@ sources:
   - files/ca-certificates/certdata2pem.c
   - files/ca-certificates/update-ca-certificates
   - files/ca-certificates/blacklist.txt
+
+integration: |-
+  # TODO: better work around
+  [ ! -e /dev/null ] && touch /dev/null
+  update-ca-certificates

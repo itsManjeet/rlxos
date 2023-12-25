@@ -12,25 +12,13 @@ initial-commands: |-
     sh -e $i
   done
 
-  mkdir -p /sysroot /dev/ /sys /proc /run
+  mkdir -p /proc
   ln -sv /sysroot/ostree /ostree
 
-  update-mime-database %{datadir}/mime
-  update-desktop-database %{datadir}/applications
-
-  [ ! -e /dev/null ] && touch /dev/null
   update-ca-certificates
-  
-
-  chmod 4755 %{bindir}/pkexec
-  chmod 4755 %{bindir}/sudo
 
   echo "root:root" | chpasswd
-
-  echo -e "\n%{bindir}/bash" >> %{sysconfdir}/shells
-  echo -e "\n%{bindir}/sh" >> %{sysconfdir}/shells
   
-  echo "LANG=C" > %{sysconfdir}/locale.conf
   ln -sfv %{datadir}/zoneinfo/UTC %{sysconfdir}/localtime
 
   kerver=$(ls -1 /lib/modules | head -n1)

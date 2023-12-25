@@ -27,6 +27,9 @@ initial-commands: |-
 
   echo "root:root" | chpasswd
 
+  echo -e "\n%{bindir}/bash" >> %{sysconfdir}/shells
+  echo -e "\n%{bindir}/sh" >> %{sysconfdir}/shells
+
   echo "LANG=en_IN.UTF-8" > %{sysconfdir}/locale.conf
   ln -sfv %{datadir}/zoneinfo/UTC %{sysconfdir}/localtime
 

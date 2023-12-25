@@ -23,16 +23,8 @@ script: |-
       sh -e $i
     done
 
-    update-mime-database %{datadir}/mime
-    update-desktop-database %{datadir}/applications
-    update-ca-certificates
-
-    chmod 4755 %{bindir}/pkexec
-    chmod 4755 %{bindir}/sudo
-
     echo "root:root" | chpasswd
 
-    echo "LANG=en_IN.UTF-8" > %{sysconfdir}/locale.conf
     ln -sfv %{datadir}/zoneinfo/UTC %{sysconfdir}/localtime    
   EOT
 

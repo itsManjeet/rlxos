@@ -205,7 +205,7 @@ if loadfont $font ; then
     load_video
     insmod gfxterm
     set locale_dir=$prefix/locale
-    set lang=en_US
+    set lang=en_IN
     insmod gettext
 fi
 

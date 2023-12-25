@@ -13,7 +13,7 @@ configure: >
   -D tests=false
 
 post-script: |
-  install -d -m 750 %{install-root}/%{sysconfdir}/polkit-1/rules.d %{install-root}/%{datadir}/polkit-1/rules.d
+  install -d -m 755 %{install-root}/%{sysconfdir}/polkit-1/rules.d %{install-root}/%{datadir}/polkit-1/rules.d
   install -Dm644 /dev/stdin "%{install-root}/%{libdir}/sysusers.d/polkit.conf" <<END
   u polkitd 102 "PolicyKit Daemon"
   m polkitd proc
@@ -33,3 +33,6 @@ build-depends:
 sources:
   - https://gitlab.freedesktop.org/polkit/polkit/-/archive/%{version}/polkit-%{version}.tar.gz
 
+integration: |-
+  chmod 4755 %{bindir}/pkexec
+  chmod 4755 %{libdir}/polkit-1/polkit-agent-helper-1

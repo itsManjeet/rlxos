@@ -34,4 +34,7 @@ depends:
 
 build-depends:
   - components/libtool.yml
-# TODO: fix update url
+
+integration: |-
+  chmod 4755 %{bindir}/fusermount
+

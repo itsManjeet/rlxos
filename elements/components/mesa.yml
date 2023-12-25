@@ -3,13 +3,16 @@ version: 23.1.7
 about: OpenGL compatible 3D graphics library
 sources:
   - https://mesa.freedesktop.org/archive/mesa-%{version}.tar.xz
-
+  - https://www.linuxfromscratch.org/patches/blfs/svn/mesa-add_xdemos-2.patch
 depends:
   - components/libelf.yml
   - components/libxml2.yml
   - components/libllvm.yml
   - components/libdrm.yml
   - components/wayland.yml
+  - components/lm-sensors.yml
+  - components/libva-nomesa.yml
+  - components/libvdpau.yml
   - components/x11/libxdamage.yml
   - components/x11/libxrandr.yml
   - components/x11/libxshmfence.yml
@@ -24,6 +27,9 @@ build-depends:
   - components/glslang.yml
   - components/llvm.yml
 
+pre-script: |-
+  patch -Np1 -i mesa-add_xdemos-2.patch
+
 configure: >-
   -D valgrind=disabled
   -D glx=dri
@@ -33,16 +39,17 @@ configure: >-
   -D llvm=enabled 
   -D b_lto=true 
   -D b_ndebug=true 
-  -D gallium-drivers=i915,iris,nouveau,r300,r600,radeonsi,svga,swrast,virgl 
+  -D lmsensors=enabled
+  -D gallium-drivers=i915,iris,crocus,nouveau,r300,r600,radeonsi,svga,swrast,virgl 
   -D gallium-extra-hud=true
   -D gallium-nine=true
+  -D vulkan-drivers=amd,intel,intel_hasvk,swrast
+  -D vulkan-layers=device-select,intel-nullhw,overlay
   -D gbm=enabled
   -D gles1=disabled
   -D gles2=enabled
   -D dri3=enabled
   -D buildtype=release
-
-# TODO add vdpau support
-# -D gallium-va=enabled
-# -D gallium-vdpau=enabled
-# -D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc
+  -D gallium-va=enabled
+  -D gallium-vdpau=enabled
+  -D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc

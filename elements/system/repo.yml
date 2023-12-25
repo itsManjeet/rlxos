@@ -12,7 +12,7 @@ initial-commands: |-
     sh -e $i
   done
 
-  mkdir -p /sysroot /dev/ /sys /proc
+  mkdir -p /sysroot /dev/ /sys /proc /run
   ln -sv /sysroot/ostree /ostree
 
   update-mime-database %{datadir}/mime

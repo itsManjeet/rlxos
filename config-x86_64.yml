@@ -4,6 +4,4 @@ project-version: 2400
 merge:
   - include/compiler.yml
   - include/environ.yml
-  - include/shell.yml
   - include/variables.yml
-  - include/strip.yml

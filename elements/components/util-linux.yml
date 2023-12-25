@@ -17,6 +17,7 @@ configure: >-
   --disable-runuser
   --disable-pylibmount
   --disable-static
+  --disable-wall
   --without-python
   ADJTIME_PATH=%{localstatedir}/lib/hwclock/adjtime
   --docdir=%{datadir}/%{id}-%{version}

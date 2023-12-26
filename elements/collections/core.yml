@@ -68,3 +68,4 @@ depends:
 
   - system/systemd-preset.yml
   - system/etc-shells.yml
+  - system/etc-default-useradd.yml

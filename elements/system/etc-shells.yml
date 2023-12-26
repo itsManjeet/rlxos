@@ -1,0 +1,13 @@
+id: etc-shells
+merge: [version.yml]
+about: System shells
+
+build-depends:
+  - components/bash.yml
+
+script: |-
+  install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/shells << "EOF"
+  %{bindir}/sh
+  %{bindir}/bash
+  %{bindir}/zsh
+  EOF

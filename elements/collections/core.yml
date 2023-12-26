@@ -66,3 +66,4 @@ depends:
   - kernel/linux.yml
 
   - system/systemd-preset.yml
+  - system/etc-shells.yml

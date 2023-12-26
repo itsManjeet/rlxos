@@ -7,6 +7,9 @@ build-depends:
 
 script: |-
   install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/shells << "EOF"
+  /bin/sh
+  /bin/bash
+  /bin/zsh
   %{bindir}/sh
   %{bindir}/bash
   %{bindir}/zsh

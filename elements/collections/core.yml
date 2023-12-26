@@ -29,6 +29,7 @@ depends:
   - components/zstd.yml
   - components/release-info.yml
   - components/pam-config.yml
+  - components/pciutils.yml
   - components/firmware.yml
   - components/sof-firmware.yml
   - components/tzdata.yml

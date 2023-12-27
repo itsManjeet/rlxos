@@ -12,7 +12,7 @@ initial-commands: |-
     sh -e $i
   done
 
-  mkdir -p /proc
+  mkdir -p /proc /sysroot
   ln -sv /sysroot/ostree /ostree
 
   update-ca-certificates

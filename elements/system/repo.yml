@@ -45,3 +45,9 @@ include:
   - collections/xfce4.yml
   - components/ostree.yml
   - system/ostree-config.yml
+  - system/updatectl.yml
+
+build-depends:
+  - components/ostree.yml
+  - system/ostree-config.yml
+  - system/updatectl.yml

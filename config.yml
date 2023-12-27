@@ -1,9 +1,0 @@
-container: itsmanjeet/rlxos:2307
-
-artifact-server: https://storage.rlxos.dev/
-
-(@):
-  - include/variables.yml
-  - include/environ.yml
-  - include/build-tools.yml
-  - include/shell.yml

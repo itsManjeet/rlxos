@@ -1,2 +1,2 @@
-version: experimental
-ostree-branch: "x86_64/os/experimental"
+version: staging
+ostree-branch: "x86_64/os/staging"

@@ -25,9 +25,11 @@ nav:
     - First Boot: getting-started/first-boot.md
     - Welcome Tour: getting-started/welcome-tour.md
   - System Management:
-    - Swupd: system-management/swupd.md
-    - Container: system-management/distrobox.md
-    - Flatpak: system-management/flatpak.md
+    - Updates: system-management/updates.md
+    - Secure System:  system-management/secure-system.md
+    - Unlock System:  system-management/unlocked-system.md
+    - Flatpaks: system-management/flatpak.md
+    - Distrobox: system-management/distrobox.md
   - Community Guideline:
     - Support and Help: SUPPORT.md
     - Contributing Guideline: CONTRIBUTION.md

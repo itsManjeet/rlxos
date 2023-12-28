@@ -1,16 +1,46 @@
 #! /bin/bash
 
-# sanity check that all variables were set
-if [ -z ${ISE_ROOT+x} ]
-then
-    echo "Installer script called without all environment variables set!"
-    sleep 999
-
-    exit 1
-fi
-
 EFI_GUID='c12a7328-f81f-11d2-ba4b-00a0c93ec93b'
 [[ -d /sys/firmware/efi ]] && IS_EFI=1
+
+if [[ "${ISE_CLEAN_INSTALL}" -eq "1" ]] ; then
+    # sanity check that all variables were set
+    if [[ -z ${ISE_DEVICE+x} ]] ; then
+        echo "Installer script called without all environment variables set!"
+        sleep 999
+
+        exit 1
+    fi
+
+    if [[ -n "$IS_EFI" ]] ; then
+        sudo parted --script "${ISE_DEVICE}" \
+            mklabel gpt                      \
+            mkpart primary 1MiB 500MiB       \
+            set 1 esp on                     \
+            mkpart primary 500MiB 100% || {
+                echo "Failed to partition '${ISE_DEVICE}'"
+                sleep 999
+
+                exit 1
+            }
+        ISE_EFI=$(lsblk ${ISE_DEVICE} -no path | sed '2!d')
+        ISE_ROOT=$(lsblk ${ISE_DEVICE} -no path | sed '3!d')
+
+        echo "Device Path: ${ISE_DEVICE}"
+    else
+        sudo parted --script "${ISE_DEVICE}" \
+            mklabel msdos                    \
+            mkpart primary 1MiB 100% || {
+                echo "Failed to partition '${ISE_DEVICE}'"
+                sleep 999
+
+                exit 1
+            }
+        ISE_ROOT=$(lsblk ${ISE_DEVICE} -no path | sed '2!d')
+
+        echo "Device Path: ${ISE_DEVICE}"
+    fi
+fi
 
 if [[ -z "${ISE_EFI}" ]] && [[ -n "$IS_EFI" ]] ; then
     echo "Unknown EFI partition"
@@ -28,6 +58,14 @@ if [[ -n "$IS_EFI" ]] ; then
 
         exit 1
     }
+fi
+
+# sanity check that all variables were set
+if [[ -z ${ISE_ROOT+x} ]] ; then
+    echo "Installer script called without all environment variables set!"
+    sleep 999
+
+    exit 1
 fi
 
 SYSROOT="/.installer-root"

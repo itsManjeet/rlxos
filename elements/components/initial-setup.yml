@@ -4,10 +4,7 @@ release: 10
 
 about: System Initial Setup
 
-commit: e67c8c3d91cd7f1d8165f596fd1abdf3eb35d0f4
-
-pre-script: |-
-  sed -i 's@INITIAL_SETUP_USER_ID 69@INITIAL_SETUP_USER_ID 82@g' src/Page/Welcome/Welcome.cxx
+commit: f28650f0ec232afdd8a819ae5ec1def14a9b4efc
 
 post-script: |-
   install -vDm 755 %{build-dir}/src/initial_setup %{install-root}%{bindir}/initial-setup

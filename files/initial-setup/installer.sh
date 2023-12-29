@@ -24,6 +24,12 @@ if [[ "${ISE_CLEAN_INSTALL}" -eq "1" ]] ; then
                 exit 1
             }
         ISE_EFI=$(lsblk ${ISE_DEVICE} -no path | sed '2!d')
+        sudo mkfs.vfat ${ISE_EFI} || {
+            echo "Failed to format EFI partition ${IS_EFI}"
+            sleep 999
+
+            exit 1
+        }
         ISE_ROOT=$(lsblk ${ISE_DEVICE} -no path | sed '3!d')
 
         echo "Device Path: ${ISE_DEVICE}"

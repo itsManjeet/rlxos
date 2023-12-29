@@ -6,7 +6,7 @@ If you are utilizing the Ostree-based system of rlxos, your dedicated tool for m
 
 Before applying updates, it is advisable to review the changelog. To check for updates using `updatectl`, execute the following command:
 
-`updatectl update --dry-run`
+`updatectl check`
 
 ### Applying Updates
 
@@ -14,7 +14,15 @@ You have the option to directly update the system or review the changelog before
 
 `updatectl update`
 
-### Switching Update Channels
+
+### Checking System Status
+
+To view the system version, available rollback version, and installed extensions:
+
+`updatectl status`
+
+
+<!-- ### Switching Update Channels
 
 By default, you are provided with the stable channel, which releases updates once a month after ensuring the stability of changes.
 
@@ -45,12 +53,6 @@ To list available extensions:
 
 To remove already installed extensions:
 
-`updatectl update --exclude <ext1> --exclude <ext2>`
+`updatectl update --exclude <ext1> --exclude <ext2>` -->
 
 **Please note that a system restart is required to implement transactions.**
-
-### Checking System Status
-
-To view the system version, available rollback version, and installed extensions:
-
-`updatectl status`

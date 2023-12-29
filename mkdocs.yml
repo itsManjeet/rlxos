@@ -27,7 +27,7 @@ nav:
   - System Management:
     - Updates: system-management/updates.md
     - Secure System:  system-management/secure-system.md
-    - Unlock System:  system-management/unlocked-system.md
+    - Unlocked System:  system-management/unlocked-system.md
     - Flatpaks: system-management/flatpak.md
     - Distrobox: system-management/distrobox.md
   - Community Guideline:

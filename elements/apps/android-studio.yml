@@ -1,18 +1,8 @@
 id: android-studio
-version: 2021.2.1.14
+version: 2023.1.1
 about: Android IDE (stable branch)
 merge: [elements/include/appimage.inc]
 
-variables:
-  prepare-appimage: |
-    cp %{install-root}/bin/studio.svg %{install-root}/
-
-    echo "desktopfile: %{id}.desktop" >> %{install-root}/info
-    echo "icon: studio.svg" >> %{install-root}/info
-    echo "bin: studio.sh" >> %{install-root}/info
-
-  skip-libraries: >
-    libc.so*
 
 build-depends:
   - components/appimagetool.yml
@@ -20,9 +10,10 @@ sources:
   - https://dl.google.com/dl/android/studio/ide-zips/%{version}/android-studio-%{version}-linux.tar.gz
 
 script: |-
+  mkdir -p %{install-root}
   mv * %{install-root}/
 
-  install -vDm0644 /dev/stdin %{install-root}/%{id}.desktop << EOF
+  install -vDm0644 /dev/stdin %{install-root}/%{datadir}/applications/%{id}.desktop << EOF
   [Desktop Entry]
   Version=1.0
   Type=Application

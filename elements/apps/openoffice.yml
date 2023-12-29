@@ -2,23 +2,7 @@ id: openoffice
 version: 4.1.14
 about: A free and open productivity suite
 
-variables:
-  prepare-appimage: |
-    echo "desktopfile: %{id}.desktop" >> %{install-root}/info
-    echo "icon: %{id}.png" >> %{install-root}/info
-    echo "bin: soffice" >> %{install-root}/info
-
-    cat > %{install-root}/AppRun << "EOF"
-    SELF=$(readlink -f "$0")
-    HERE=${SELF%/*}
-    export PATH="${HERE}/programs/${PATH:+:$PATH}"
-    export LD_LIBRARY_PATH="${HERE}/programs/${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
-
-    exec ${HERE}/programs/soffice
-    EOF
-
-  skip-libraries: >
-    libc.so*
+merge: [elements/include/appimage.inc]
 
 build-depends:
 - components/appimagetool.yml
@@ -35,10 +19,9 @@ script: |
     bsdtar -xf ${file}
   done
 
+  mkdir -p %{install-root}/
   mv opt/openoffice4/* %{install-root}
 
-  cp usr/share/icons/hicolor/128x128/apps/openoffice4-main.png %{install-root}/%{id}.png
-    cp usr/share/icons/hicolor/128x128/apps/openoffice4-main.png %{install-root}/openoffice4-startcenter.png
-  cp %{install-root}/share/xdg/startcenter.desktop %{install-root}/%{id}.desktop
-
-merge: [elements/include/appimage.inc]
+  install -D usr/share/icons/hicolor/128x128/apps/openoffice4-main.png %{install-root}/%{datadir}/icons/%{id}.png
+  install -D usr/share/icons/hicolor/128x128/apps/openoffice4-main.png %{install-root}/%{datadir}/icons/openoffice4-startcenter.png
+  install -D %{install-root}/share/xdg/startcenter.desktop %{install-root}/%{datadir}/applications/%{id}.desktop

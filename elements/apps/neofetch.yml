@@ -1,6 +1,7 @@
 id: neofetch
 version: latest
 about: A command-line system information tool written in bash 3.2+
+merge: [elements/include/appimage.inc]
 
 variables:
   commit: e1a1ed42e840c8ea84a9d34f006d63fac08aba7a

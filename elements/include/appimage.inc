@@ -1,5 +1,15 @@
-variables:
-  strip: false
+strip: false
+skip-libraries: >-
+  libc.so*
+
+prepare-appimage: ""
+
+build-depends:
+- components/appimagetool.yml
+- components/zsync.yml
+- components/gnupg.yml
+- components/appstream.yml
+
 post-script: |
   cat > %{install-root}/info << "EOF"
   id: %{id}
@@ -10,7 +20,11 @@ post-script: |
   install -vDm0755 %{libdir}/appimagekit/AppRun -t %{install-root}
   %{prepare-appimage}
 
+  [ -d %{install-root}/%{datadir}/glib-2.0/schemas/ ] && glib-compile-schemas %{install-root}/%{datadir}/glib-2.0/schemas/
   
+  for i in help man doc gtk-doc ; do
+    [ -d %{install-root}/%{datadir}/${i} ] && rm -rf %{install-root}/%{datadir}/${i}
+  done
 
   find %{install-root}/ -type f -executable | xargs objdump -p | grep NEEDED | awk '{print $2}' >> required-libraries
 
@@ -36,7 +50,13 @@ post-script: |
     fi
   done
 
+  cp %{install-root}/%{datadir}/applications/*.desktop %{install-root}/
+  for i in $(find %{install-root}/%{datadir}/icons/ -name "*.png" -o -name "*.svg") ; do
+    cp -v ${i} %{install-root}/
+  done
+
   mkdir -p AppDir/
   mv %{install-root}/* AppDir/
 
-  appimagetool ./AppDir/ %{install-root}/%{id}-%{version}.app
+  cd %{install-root}/
+  appimagetool -nu "zsync|http://repo.rlxos.dev/apps/%{id}.app.zsync" %{build-root}/AppDir/ %{id}.app

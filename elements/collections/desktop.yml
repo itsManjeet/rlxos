@@ -7,14 +7,17 @@ depends:
 
 # AppImage
 - components/fuse2.yml
+- components/appimaged.yml
 
 # Apps
-# - apps/file-roller.yml
 # - apps/gufw.yml
 # - apps/gigolo.yml
 # - apps/pinta.yml
 # - apps/onboard.yml
 # - apps/blueman.yml
+- apps/file-roller.yml
+- apps/firefox.yml
+- system/install-appimages.yml
 
 # Components
 - components/gvfs.yml

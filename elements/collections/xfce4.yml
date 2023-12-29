@@ -64,8 +64,6 @@ depends:
 
   - components/networkmanager-openvpn.yml
 
-  - apps/firefox.yml
-
   - components/lightdm-gtk-greeter.yml
   - components/lightdm.yml
   - components/lightdm-gtk-greeter-settings.yml

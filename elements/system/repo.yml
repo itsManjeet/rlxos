@@ -12,6 +12,9 @@ initial-commands: |-
     sh -e $i
   done
 
+  # TODO: should be enabled via systemd user-preset
+  systemctl enable --global appimaged.service
+
   mkdir -p /proc /sysroot
   ln -sv /sysroot/ostree /ostree
 

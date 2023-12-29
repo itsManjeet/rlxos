@@ -12,9 +12,6 @@ initial-commands: |-
     sh -e $i
   done
 
-  systemctl preset-all
-  systemctl preset-all --global
-
   mkdir -p /proc /sysroot
   ln -sv /sysroot/ostree /ostree
 

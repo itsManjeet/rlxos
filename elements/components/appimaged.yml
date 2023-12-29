@@ -8,7 +8,7 @@ script: |-
   ./appimaged-%{version}-x86_64.AppImage --appimage-extract
   install -v -D -m 0755 -t %{install-root}/%{bindir} squashfs-root/%{bindir}/appimaged
   install -v -D -m 0644 /dev/stdin %{install-root}/%{libdir}/systemd/user-preset/appimaged.preset << "EOF"
-  enable appimaged.service
+  enable appimaged
   EOF
   install -v -D -m 0644 /dev/stdin %{install-root}/%{libdir}/systemd/user/appimaged.service << "EOF"
   [Unit]

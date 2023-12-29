@@ -4,7 +4,7 @@ release: 10
 
 about: System Initial Setup
 
-commit: acd6059ce1674793b132432725a70355a0c69697
+commit: f1bbcfbd2db9c17eaf42e2c03647bad3713b9632
 
 post-script: |-
   install -vDm 755 %{build-dir}/src/initial_setup %{install-root}%{bindir}/initial-setup

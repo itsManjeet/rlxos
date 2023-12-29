@@ -1,7 +1,7 @@
 id: updatectl
 version: 0.0.1
 about: Ostree frontend for rlxos
-commit: 5bf80c590be25117640ef1cc724b85ca895405e3
+commit: a98ab6dd03b5da83065138465a4b335818668c0c
 
 depends:
   - components/ostree.yml
@@ -11,9 +11,6 @@ build-depends:
 
 post-script: |-
   install -v -D -m 0644 -t %{install-root}/%{bindir} target/release/%{id}
-
-  # backward compatibality link
-  ln -sv updatectl %{install-root}%{bindir}/swupd
 
 sources:
   - updatectl-%{commit}.tar.gz::https://github.com/itsManjeet/%{id}/archive/%{commit}.tar.gz

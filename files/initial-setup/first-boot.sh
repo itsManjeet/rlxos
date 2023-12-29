@@ -51,8 +51,4 @@ fi
 echo ":: setting up timezone: ${ISE_TIMEZONE}"
 sudo ln -sf /usr/share/zoneinfo/${ISE_TIMEZONE} /etc/localtime
 
-# TODO: This should be done via preset
-echo ":: Enabling appimaged service"
-sudo systemctl enable appimaged --global
-
 exit 0

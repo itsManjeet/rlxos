@@ -4,7 +4,7 @@ release: 10
 
 about: System Initial Setup
 
-commit: 4cb29858620fbce9cc4643eb5f61fe2e87ff79af
+commit: 5be28e20fd71653e6a0195aac86ff3f063d0b728
 
 post-script: |-
   install -vDm 755 %{build-dir}/src/initial_setup %{install-root}%{bindir}/initial-setup
@@ -57,7 +57,7 @@ post-script: |-
 
   install -vDm0644 /dev/stdin %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/xfce4/panel/docklike-4.rc << "EOF"
   [user]
-  pinned=/usr/share/applications/xfce4-terminal.desktop;/usr/share/applications/firefox.desktop;/usr/share/applications/gparted.desktop;/usr/share/applications/initial-setup.desktop;
+  pinned=/usr/share/applications/xfce4-terminal.desktop;/usr/share/applications/gparted.desktop;/usr/share/applications/initial-setup.desktop;
   EOF
 
   install -vDm 0644 /dev/stdin %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-screensaver.xml << "EOF"

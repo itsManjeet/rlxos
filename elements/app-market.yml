@@ -1,5 +1,5 @@
-id: bazaar database
-merge: [version.yml]
+id: bazaar-database
+merge: [version.yml, elements/include/meta.inc]
 about: Bazaar database
 
 depends:
@@ -10,8 +10,3 @@ depends:
 - apps/glade.yml
 - apps/openoffice.yml
 - apps/peek.yml
-
-script: |-
-  install -D -m 0644 /dev/stdin %{install-root}/bazaar-database-version << "EOF"
-  VERSION=%{version}
-  EOF

@@ -1,0 +1,11 @@
+id: install-appimages
+merge: [version.yml, elements/include/meta.inc]
+about: Install apps on proper position
+
+integration: |-
+  mkdir -p /Applications/
+  mv /*.app /Applications/
+  rm /*.zsync
+
+build-depends:
+  - components/bash.yml

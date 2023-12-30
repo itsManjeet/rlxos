@@ -7,6 +7,5 @@
 |           | EFI or Legacy BIOS                                     |          |
 | CPU       | Intel or AMD                                           |          |
 | Memory    | 700 MiB                                                | 2 GiB    |
-| Storage   | 10 GiB                                                 | 50 GiB   |
+| Storage   | 16 GiB                                                 | 50 GiB   |
 | Graphics  | i915,iris,nouveau,r300,r600,radeonsi,svga,swrast,virgl |          |
-|           | (Please check status of Nvidia Proprietary Drivers)    |          |

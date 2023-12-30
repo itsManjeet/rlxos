@@ -1,0 +1,16 @@
+id: updatectl
+version: 0.0.1
+about: Ostree frontend for rlxos
+commit: 1a130b1ca7ff14fee453a9feaf86e3c71ff7491f
+
+depends:
+  - components/ostree.yml
+
+build-depends:
+  - components/rustc.yml
+
+post-script: |-
+  install -v -D -m 0755 -t %{install-root}/%{bindir} target/release/%{id}
+
+sources:
+  - updatectl-%{commit}.tar.gz::https://github.com/itsManjeet/%{id}/archive/%{commit}.tar.gz

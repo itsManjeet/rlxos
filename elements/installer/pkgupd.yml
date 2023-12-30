@@ -25,7 +25,7 @@ script: |-
 
     echo "root:root" | chpasswd
 
-    ln -sfv %{datadir}/zoneinfo/UTC %{sysconfdir}/localtime    
+    ln -sfv %{datadir}/zoneinfo/UTC %{sysconfdir}/localtime
   EOT
 
   dracut --reproducible -v --no-machineid \

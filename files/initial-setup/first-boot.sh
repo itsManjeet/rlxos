@@ -4,7 +4,8 @@
 if [ -z ${ISE_USERNAME+x}  ] || \
    [ -z ${ISE_PASSWORD+x}  ] || \
    [ -z ${ISE_AUTOLOGIN+x} ] || \
-   [ -z ${ISE_UPDATE_ROOT_PASSWORD+x} ]
+   [ -z ${ISE_UPDATE_ROOT_PASSWORD+x} ] || \
+   [ -z ${ISE_TIMEZONE} ]
 then
     echo "Configure script called without all environment variables set!"
     exit 1
@@ -47,7 +48,7 @@ fi
 #LANG=${OSI_LOCALE}
 #EOF
 
-#echo ":: setting up timezone: ${ISE_TIMEZONE}"
-#sudo ln -sf /usr/share/zoneinfo/${OSI_TIMEZONE} /etc/localtime
+echo ":: setting up timezone: ${ISE_TIMEZONE}"
+sudo ln -sf /usr/share/zoneinfo/${ISE_TIMEZONE} /etc/localtime
 
 exit 0

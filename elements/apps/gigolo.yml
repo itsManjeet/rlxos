@@ -1,14 +1,13 @@
 id: gigolo
 version: 0.5.2
 about: Frontend to manage connections to remote filesystems using GIO/GVFS
+merge: [elements/include/appimage.inc]
 
-variables:
-  run-autogen: false
-  seperate-build-dir: false
+run-autogen: false
+seperate-build-dir: false
 
-depends:
-  - components/gvfs.yml
 build-depends:
+  - components/gvfs.yml
   - components/intltool.yml
 
 sources:

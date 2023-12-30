@@ -1,3 +1,4 @@
+
 id: firefox
 version: 120.0
 about:
@@ -7,12 +8,23 @@ about:
   web standards.
 
 build-dir: .
-script: |-
-  mkdir -p %{install-root}/%{libdir}
-  mkdir -p %{install-root}/%{bindir}
 
-  mv firefox %{install-root}/%{libdir}/
-  ln -sv %{libdir}/firefox/firefox %{install-root}/%{bindir}/firefox
+script: |-
+  mkdir -p %{install-root}
+  mv firefox/* %{install-root}/
+  mkdir -p %{install-root}/%{bindir}
+  ln -srv %{install-root}/firefox %{install-root}/%{bindir}/
+  install -D %{install-root}/browser/chrome/icons/default/default128.png %{install-root}/%{datadir}/icons/firefox.png
+
+  rm -rf %{install-root}/browser/features
+
+  install -vDm644 /dev/stdin %{install-root}/distribution/policies.json << "EOF"
+  {
+    "policies": {
+          "DisableAppUpdate": true
+          }
+  }
+  EOF
 
   install -D -m 0644 /dev/stdin %{install-root}/%{datadir}/applications/firefox.desktop << "EOF"
   [Desktop Entry]
@@ -28,13 +40,14 @@ script: |-
   Categories=Network;
   EOF
 
-  rm -rf %{install-root}/%{libdir}/firefox/browser/features
-  install -vDm644 /dev/stdin %{install-root}/%{libdir}/firefox/distribution/policies.json << "EOF"
-  {
-    "policies": {
-          "DisableAppUpdate": true
-      }
-  }
+prepare-appimage: |-
+  install -vDm 0755 /dev/stdin %{install-root}/AppRun << "EOF"
+  #!/bin/sh
+  SELF=$(readlink -f "$0")
+  HERE=${SELF%/*}
+  export SNAP_NAME="firefox"
+  export MOZ_LEGACY_PROFILES=1
+  exec "${HERE}/firefox" "$@"
   EOF
 
 build-depends:
@@ -43,3 +56,5 @@ build-depends:
 
 sources:
   - http://ftp.mozilla.org/pub/firefox/releases/%{version}/linux-x86_64/en-US/firefox-%{version}.tar.bz2
+
+merge: [elements/include/appimage.inc]

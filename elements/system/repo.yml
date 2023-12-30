@@ -12,6 +12,9 @@ initial-commands: |-
     sh -e $i
   done
 
+  # TODO: should be enabled via systemd user-preset
+  systemctl enable --global appimaged.service
+
   mkdir -p /proc /sysroot
   ln -sv /sysroot/ostree /ostree
 
@@ -45,3 +48,9 @@ include:
   - collections/xfce4.yml
   - components/ostree.yml
   - system/ostree-config.yml
+  - system/updatectl.yml
+
+build-depends:
+  - components/ostree.yml
+  - system/ostree-config.yml
+  - system/updatectl.yml

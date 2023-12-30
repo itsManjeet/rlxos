@@ -2,31 +2,6 @@ id: glade
 version: 3.40.0
 about: User Interface Builder for GTK+ applications
 
-variables:
-  prepare-appimage: |-
-    cp %{install-root}/%{datadir}/applications/org.gnome.Glade.desktop %{install-root}/
-    cp %{install-root}/%{datadir}/icons/hicolor/scalable/apps/org.gnome.Glade.svg %{install-root}/
-
-    echo "desktopfile: org.gnome.Glade.desktop" >> %{install-root}/info
-    echo "icon: org.gnome.Glade.svg" >> %{install-root}/info
-    echo "bin: %{id}" >> %{install-root}/info
-
-    install -vDm 0755 /dev/stdin %{install-root}/AppRun << "EOF"
-    #!/bin/sh
-    SELF=$(readlink -f "$0")
-    HERE=${SELF%/*}
-    export PATH="${HERE}/usr/bin/:${HERE}/usr/sbin/:${HERE}/usr/games/:${HERE}/bin/:${HERE}/sbin/${PATH:+:$PATH}"
-    export LD_LIBRARY_PATH="${HERE}/usr/lib/:${HERE}/usr/lib/i386-linux-gnu/:${HERE}/usr/lib/x86_64-linux-gnu/:${HERE}/usr/lib32/:${HERE}/usr/lib64/:${HERE}/lib/:${HERE}/lib/i386-linux-gnu/:${HERE}/lib/x86_64-linux-gnu/:${HERE}/lib32/:${HERE}/lib64/${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
-    export XDG_DATA_DIRS="${HERE}/usr/share/${XDG_DATA_DIRS:+:$XDG_DATA_DIRS}"
-    export GSETTINGS_SCHEMA_DIR="${HERE}/usr/share/glib-2.0/schemas/${GSETTINGS_SCHEMA_DIR:+:$GSETTINGS_SCHEMA_DIR}"
-    export GLADE_ENV_PREFIX="${HERE}/usr/"
-    EXEC=$(grep -e '^Exec=.*' "${HERE}"/*.desktop | head -n 1 | cut -d "=" -f 2 | cut -d " " -f 1)
-    exec "${EXEC}" "$@"
-    EOF
-
-  skip-libraries: >
-    libc.so*
-
 pre-script: |-
   patch gladeui/glade-app.c < /patches/glade/0001-generate-dir.patch
 
@@ -38,7 +13,6 @@ build-depends:
   - components/itstool.yml
   - components/meson.yml
   - components/py/py-gobject.yml
-  - components/appimagetool.yml
 sources:
   - https://gitlab.gnome.org/GNOME/glade/-/archive/GLADE_3_40_0/glade-GLADE_3_40_0.tar.gz
 

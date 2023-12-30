@@ -11,12 +11,6 @@ build-depends:
 - components/appstream.yml
 
 post-script: |
-  cat > %{install-root}/info << "EOF"
-  id: %{id}
-  version: %{version}
-  about: %{about}
-  EOF
-
   install -vDm0755 %{libdir}/appimagekit/AppRun -t %{install-root}
   %{prepare-appimage}
 

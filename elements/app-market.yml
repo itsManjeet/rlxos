@@ -1,13 +1,17 @@
 id: bazaar database
-merge: [version.yml, elements/include/meta.inc]
+merge: [version.yml]
 about: Bazaar database
 
 depends:
 - apps/alacritty.yml
-- apps/android-studio.yml
 - apps/file-roller.yml
 - apps/firefox.yml
 - apps/gigolo.yml
 - apps/glade.yml
 - apps/openoffice.yml
-- apps/pinta.yml
+- apps/peek.yml
+
+script: |-
+  install -D -m 0644 /dev/stdin %{install-root}/bazaar-database-version << "EOF"
+  VERSION=%{version}
+  EOF

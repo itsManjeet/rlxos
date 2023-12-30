@@ -1,10 +1,24 @@
 # rlxos GNU/Linux
 
-(rlxos, pronounced as "r-e-l-e-a-x" or "r-l-x-o-s")
-An Independent, __Safely Mutable__, and Privacy oriented rolling release Linux distribution, developed from scratch, with focus on making a usable __Immutable__ distribution.
+(rlxos, pronounced as "__R E L A X OS__" or "__R L X OS__") is an independent effort to build a **Safe**, **Secure**, and **Beginner-friendly** distribution of GNU/Linux for users around the globe.
 
-- The `Ostree` provides a git like model to manage root file system. And ensure safe and atomic transition between different versions.
-- [Xfce4](https://www.xfce.org) a lightweight desktop environment that is fast, beautiful and highly customizable.
-- [Swupd](./system-management/updates.md) fast, simple, in-house developed package manager, which provides a safe way to add layers/packages without breaking system.
-  
-rlxos is developed by a handful of developers in their spare time and is generally considered stable enough for daily use.
+rlxos is available in 2 variants, each with 3 channels.
+
+## Variants
+
+The variation in the working and management of the core components of rlxos defines its different variants.
+
+1. **Secure**: An **Immutable** variant of rlxos that uses `libostree` to manage and update the core of rlxos. The entire core is treated like a git repository, updating only the files changed during different releases. Please note that in immutable distributions, you cannot change the core components.
+
+2. **Unlocked**: A new variant of rlxos that operates and behaves like a traditional Linux distribution, using `pkgupd` as a package manager. PKGUPD allows users to quickly install and update core components. Please note that the unlocked variant, like any traditional distribution, is not specifically secured but provides users more control over the components.
+
+## Update Channels
+
+Update channels define the frequency and stability of updates:
+
+| Channel      | Description                                                                  | Stability                        | Frequency |
+| ------------ | ---------------------------------------------------------------------------- | -------------------------------- | --------- |
+| Stable       | The default channel for stable releases                                      | Maximum                          | Monthly   |
+| Staging      | Updates waiting for final verification before merging into stable            | Might have edge cases            | Weekly    |
+| Experimental | Updates for beta testers and the development team to check changes on **VM** | Unstable, might break the system | Daily     |
+

@@ -48,29 +48,32 @@ Step by Step guide below.
    **Blue Installer Icon** on the bottom panel.
    ![Welcome](../assets/installation/welcome.png)
 
-2. The first step is to select an appropriate partition to install RLXOS, you can edit your partition layout using the
+2. Initial Setup offers you the following installation methods
+    - **Clean Install**: This method format the Selected Disk **i.e delete each and every file on that complete disk** and install rlxos on a single partition.
+    - **Selected Partition**: Since rlxos need a single partition and you want to install rlxos along side your current operating system. You can choose a single partition to install rlxos on it
+    - **Manual Partition**: If you are an advance user and need custom partitioning then follow 3rd and 4th steps
+   ![Welcome](../assets/installation/installation-method.png)
+
+3. **You can skip to 5th step if you are not choosing manual partition**. The first step is to select an appropriate partition to install RLXOS, you can edit your partition layout using the
    edit button or using Gparted **Disk Icon** from bottom panel
    ![Disk Selected](../assets/installation/disk-selected.png)
 
-3. **If you are on Virtual System or have a blank drive** You need to create a new Parititon table from Gparted
+4. **If you are on Virtual System or have a blank drive** You need to create a new Parititon table from Gparted
    a. Select **msdos** Parition table if **BIOS** and **gpt** for **EFI** (or you can create a 1 MiB Leading partition
    with Bios Boot flag on EFI for **gpt**).
-
    **BIOS Partition Layout**
    ![Disk Selected](../assets/installation/disk-gparted-msdos-layout.png)
-
-
    **GPT Partition Layout**
    ![Disk Selected](../assets/installation/disk-gparted-gpt-layout.png)
 
-4. Once you are finished with the partition you can close the Select the appropriate partition to start the installation
+5. Once you are finished with the partition you can close the Select the appropriate partition to start the installation
    process, Click **Next** to proceed
 
-5. Confirm your selection for the final time, After Clicking the **Apply** Button you can not revert back. Click
+6. Confirm your selection for the final time, After Clicking the **Apply** Button you can not revert back. Click
    **Apply** to start the installation process.
    ![Confifm](../assets/installation/confirm.png)
 
-6. Wait for the installation process to Finish, Once the installation process finished you will see a success label on
+7. Wait for the installation process to Finish, Once the installation process finished you will see a success label on
    the window as button to reboot your system.
    ![Confifm](../assets/installation/success.png)
 

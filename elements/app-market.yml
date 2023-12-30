@@ -1,0 +1,13 @@
+id: bazaar database
+merge: [version.yml, elements/include/meta.inc]
+about: Bazaar database
+
+depends:
+- apps/alacritty.yml
+- apps/android-studio.yml
+- apps/file-roller.yml
+- apps/firefox.yml
+- apps/gigolo.yml
+- apps/glade.yml
+- apps/openoffice.yml
+- apps/pinta.yml

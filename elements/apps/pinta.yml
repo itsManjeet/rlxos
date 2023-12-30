@@ -1,10 +1,11 @@
 id: pinta
 version: 2.0.1
 about: Drawing/editing program modeled after Paint.NET. It's goal is to provide a simplified alternative to GIMP for casual users
+merge: [elements/include/appimage.inc]
 
-variables:
-  run-autogen: false
-  seperate-build-dir: false
+run-autogen: false
+seperate-build-dir: false
+build-dir: "."
 
 depends:
   - components/dotnet-runtime.yml

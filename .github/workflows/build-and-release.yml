@@ -69,6 +69,7 @@ jobs:
     name: Update Market
     runs-on: self-hosted
     needs: [build-installer-iso]
+    if: github.ref == 'refs/heads/stable'
     steps:
       - uses: actions/checkout@v1
       - name: Build registered AppImages

@@ -1,2 +1,2 @@
-version: staging
-ostree-branch: "x86_64/os/staging"
+version: stable
+ostree-branch: "x86_64/os/stable"

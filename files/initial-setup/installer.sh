@@ -191,8 +191,7 @@ if [ -d /sysroot/ostree/repo ] ; then
     if [[ -n "${IS_EFI}" ]] ; then
         sudo grub-install --boot-directory=${SYSROOT}/boot --efi-directory=${SYSROOT}/efi --root-directory=${SYSROOT} --target=x86_64-efi
     else
-        disk="/dev/$(basename $(readlink -f /sys/class/block/$(basename ${ISE_ROOT})/..))"
-        sudo grub-install --boot-directory=${SYSROOT}/boot --root-directory=${SYSROOT} --target=i386-pc ${disk}
+        sudo grub-install --boot-directory=${SYSROOT}/boot --root-directory=${SYSROOT} --target=i386-pc ${ISE_BOOT_DEVICE}
     fi
 
     # TODO: fix this hack
@@ -315,7 +314,7 @@ else
     mount -t sysfs    none /sys
     mount -t proc     none /proc
 
-    if [[ -n ${IS_EFI} ]] ; then
+    if [[ -n "${IS_EFI}" ]] ; then
         mount -t efivarfs none /sys/firmware/efi/efivars
     fi
 
@@ -329,8 +328,7 @@ else
     if [[ -n "${IS_EFI}" ]] ; then
         grub-install --boot-directory=/boot --efi-directory=/efi --target=x86_64-efi
     else
-        disk="/dev/$(basename $(readlink -f /sys/class/block/$(basename ${ISE_ROOT})/..))"
-        grub-install --boot-directory=/boot --target=i386-pc ${disk}
+        grub-install --boot-directory=/boot --target=i386-pc ${ISE_BOOT_DEVICE}
     fi
 
     echo ":: Generating bootloader configuration"

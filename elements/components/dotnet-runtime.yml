@@ -2,6 +2,7 @@ id: dotnet-runtime
 version: 6.0.300
 about: Binary release of .NET [RUNTIME]
 
+strip: false
 depends:
   - components/libgcc.yml
   - components/glibc.yml

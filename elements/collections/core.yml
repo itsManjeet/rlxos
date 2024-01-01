@@ -47,7 +47,7 @@ depends:
   - components/pkgupd.yml
   - components/dmidecode.yml
   - components/libsmbios.yml
-  # - components/distrobox.yml
+  - components/distrobox.yml
   - components/libgtop.yml
   - components/libwnck.yml
   - components/libnotify.yml

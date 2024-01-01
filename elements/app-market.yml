@@ -8,5 +8,5 @@ depends:
 - apps/firefox.yml
 - apps/gigolo.yml
 - apps/glade.yml
-- apps/openoffice.yml
+- apps/pinta.yml
 - apps/peek.yml

@@ -5,7 +5,6 @@ merge: [elements/include/appimage.inc]
 
 run-autogen: false
 seperate-build-dir: false
-build-dir: "."
 
 depends:
   - components/dotnet-runtime.yml

@@ -108,5 +108,5 @@ depends:
 build-depends:
   - components/vala.yml
 sources:
-  - https://archive.xfce.org/src/xfce/xfce4-panel/%{version:1}/xfce4-panel-%{version}.tar.bz2
+  - https://archive.xfce.org/src/xfce/xfce4-panel/%{version:2}/xfce4-panel-%{version}.tar.bz2
 # TODO: fix update url

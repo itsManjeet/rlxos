@@ -17,6 +17,11 @@ configure: >-
   --libexecdir=/usr/lib/dbus-1.0 
   --localstatedir=/var
   --with-dbus-user=dbus
+  --enable-inotify
+  --enable-systemd
+  --enable-user-session
+  --disable-static
+  --without-x
   runstatedir=/run
 
 post-script: |-
@@ -27,9 +32,6 @@ build-depends:
 depends:
   - components/expat.yml
   - components/systemd.yml
-  - components/x11/libx11.yml
-  - components/x11/libice.yml
-  - components/x11/libsm.yml
 
 sources:
   - https://dbus.freedesktop.org/releases/dbus/dbus-%{version}.tar.xz

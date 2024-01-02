@@ -2,8 +2,7 @@ id: srclang
 version: 0.0.1
 about: An Easy to learn programming Language
 
-variables:
-  commit: bfe206209385d7e589e1b14e92a3dc4f33cdf37a
+commit: c46a6080e18c9ae902bc94fd7446dc321781b878
 
 configure: >-
   -DCMAKE_BUILD_TYPE=Release

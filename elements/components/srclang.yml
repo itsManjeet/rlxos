@@ -3,7 +3,7 @@ version: 0.0.1
 about: An Easy to learn programming Language
 
 variables:
-  commit: 92e6d27e9a61f19ef0b73c74493bfb628c2195ce
+  commit: bfe206209385d7e589e1b14e92a3dc4f33cdf37a
 
 configure: >-
   -DCMAKE_BUILD_TYPE=Release
@@ -15,6 +15,7 @@ post-script: |-
 
 depends:
   - components/glibc.yml
+  - components/libffi.yml
   - components/readline.yml
 
 build-depends:

@@ -21,3 +21,4 @@ configure: >
 
 post-script: |
   rm %{install-root}/%{datadir}/applications/ -r
+  ln -sv vim %{install-root}%{bindir}/vim

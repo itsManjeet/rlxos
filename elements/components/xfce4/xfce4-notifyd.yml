@@ -1,9 +1,12 @@
 id: xfce4-notifyd
-version: 0.8.2
+version: 0.9.3
 about: Notification daemon for Xfce
 
 variables:
   run-autogen: false
+
+configure: >-
+    --disable-debug
 
 post-script: |-
 
@@ -23,8 +26,11 @@ post-script: |-
 depends:
   - components/hicolor-icon-theme.yml
   - components/libnotify.yml
+  - components/libcanberra.yml
+  - components/xfce4/xfconf.yml
+  - components/sqlite.yml
   - components/xfce4/libxfce4ui.yml
-  - components/vte.yml
+  - components/xfce4/libxfce4util.yml
 build-depends:
   - components/intltool.yml
   - components/python.yml

@@ -1,10 +1,14 @@
 id: xfce4-panel
-version: 4.18.4
+version: 4.18.5
 about: xfce4 panel
 
 variables:
   run-autogen: false
   seperate-build-dir: false
+
+configure: >-
+  --enable-gio-unix
+  --disable-debug
 
 post-script: |-
   install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/xdg/xfce4/panel/default.xml << "EOF"

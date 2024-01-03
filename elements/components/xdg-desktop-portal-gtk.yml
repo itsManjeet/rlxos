@@ -2,6 +2,15 @@ id: xdg-desktop-portal-gtk
 version: 1.14.1
 about: A backend implementation of xdg-desktop-portal using GTK
 
+configure: >-
+  --disable-wallpaper
+
+post-script: |-
+  install -v -D -m 0644 /dev/stdin %{install-root}%{datadir}/xdg-desktop-portal/gtk-portals.conf << "EOF"
+  [preferred]
+  default=gtk
+  EOF
+
 depends:
   - components/xdg-desktop-portal.yml
 

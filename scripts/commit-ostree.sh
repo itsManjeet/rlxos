@@ -85,8 +85,8 @@ if ! [ -d "${OSTREE_REPO}" ]; then
 fi
 
 if [ -f commit_message ] ; then
-    SUBJECT="$(head -n1 commit_message)"
-    BODY="$(tail -n +2 commit_message)"
+    SUBJECT="$(cat commit_message | sed '/^$/d' | head -n1)"
+    BODY="$(cat commit_message | sed '/^$/d' | tail -n +2)"
 fi
 
 echo "=> getting commit init"
@@ -103,8 +103,8 @@ ostree commit ${gpg_opts[*]}    \
     --branch="${ref}"           \
     --tree=ref="${commit}"      \
     --skip-if-unchanged         \
-    --subject=${SUBJECT:-""}    \
-    --body=${BODY:-""}
+    --subject="${SUBJECT:-''}"  \
+    --body="${BODY:-''}"
 
 new_commit="$(ostree rev-parse "${ref}")"
 

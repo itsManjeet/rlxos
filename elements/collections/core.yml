@@ -41,6 +41,7 @@ depends:
   - components/srclang.yml
   - components/cups.yml
   - components/vim.yml
+  - components/nano.yml
   - components/squashfs-tools.yml
   - components/wget.yml
   - components/sudo.yml

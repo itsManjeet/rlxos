@@ -1,6 +1,13 @@
 id: thunar
-version: 4.18.7
+version: 4.18.10
 about: Xfce file manager
+
+configure: >-
+  --enable-gio-unix
+  --enable-gudev
+  --enable-notifications
+  --enable-exif
+  --disable-debug
 
 depends:
   - components/xfce4/exo.yml
@@ -11,6 +18,7 @@ depends:
   - components/pcre.yml
   - components/libexif.yml
   - components/xfce4/tumbler.yml
+  - components/xfce4/xfce4-panel.yml
 
 sources:
-  - https://archive.xfce.org/src/xfce/thunar/%{version:1}/thunar-%{version}.tar.bz2
+  - https://archive.xfce.org/src/xfce/thunar/%{version:2}/thunar-%{version}.tar.bz2

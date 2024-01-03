@@ -10,11 +10,8 @@ depends:
 - components/appimaged.yml
 
 # Apps
-# - apps/gufw.yml
 # - apps/gigolo.yml
 # - apps/pinta.yml
-# - apps/onboard.yml
-# - apps/blueman.yml
 - apps/file-roller.yml
 - apps/firefox.yml
 - system/install-appimages.yml
@@ -25,6 +22,13 @@ depends:
 - components/xdg-utils.yml
 - components/flatpak.yml
 - components/power-profiles-daemon.yml
+- components/gufw.yml
+- components/onboard.yml
+- components/blueman.yml
+- components/dotnet-runtime.yml
+- components/xdg-desktop-portal-gtk.yml
+- components/xdg-dbus-proxy.yml
+- components/wireplumber.yml
 
 # X11
 - components/x11/xserver.yml

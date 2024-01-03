@@ -2,8 +2,11 @@ id: xfce4-session
 version: 4.18.3
 about: A session manager for Xfce
 
+pre-script: |-
+  patch -Np1 -i source-system-xinitrc-scripts.patch
+
 configure: >-
-  --disable-legacy-sm
+  --disable-debug
 
 depends:
   - components/libwnck.yml
@@ -16,4 +19,5 @@ depends:
   - components/x11/iceauth.yml
 sources:
   - https://archive.xfce.org/src/xfce/xfce4-session/%{version:1}/xfce4-session-%{version}.tar.bz2
+  - patches/xfce4/source-system-xinitrc-scripts.patch
 # TODO: fix update url

@@ -1,8 +1,9 @@
 id: pipewire
-version: 0.3.79
+version: 1.0.0
 about: A server and user-space API to handle multimedia pipelines
 
 configure: >-
+  -D session-managers="[]"
   --buildtype=release
 
 depends:
@@ -16,4 +17,4 @@ depends:
   - components/sdl.yml
   - components/v4l-utils.yml
 sources:
-  - https://github.com/PipeWire/pipewire/archive/%{version}/pipewire-%{version}.tar.gz
+  - https://gitlab.freedesktop.org/pipewire/pipewire/-/archive/%{version}/pipewire-%{version}.tar.bz2

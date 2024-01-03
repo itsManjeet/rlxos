@@ -2,8 +2,7 @@ id: srclang
 version: 0.0.1
 about: An Easy to learn programming Language
 
-variables:
-  commit: 92e6d27e9a61f19ef0b73c74493bfb628c2195ce
+commit: b6c8de43e96df969ab65423347be69a270510386
 
 configure: >-
   -DCMAKE_BUILD_TYPE=Release
@@ -15,6 +14,7 @@ post-script: |-
 
 depends:
   - components/glibc.yml
+  - components/libffi.yml
   - components/readline.yml
 
 build-depends:

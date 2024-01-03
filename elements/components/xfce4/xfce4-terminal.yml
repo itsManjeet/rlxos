@@ -9,4 +9,4 @@ depends:
   - components/vte.yml
 
 sources:
-  - https://archive.xfce.org/src/apps/xfce4-terminal/%{version:1}/xfce4-terminal-%{version}.tar.bz2
+  - https://archive.xfce.org/src/apps/xfce4-terminal/%{version:2}/xfce4-terminal-%{version}.tar.bz2

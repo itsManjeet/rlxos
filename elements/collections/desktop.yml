@@ -26,7 +26,7 @@ depends:
 - components/onboard.yml
 - components/blueman.yml
 - components/dotnet-runtime.yml
-- components/xdg-desktop-portal-gtk.yml
+- components/xdg-desktop-portal-xapp.yml
 - components/xdg-dbus-proxy.yml
 - components/wireplumber.yml
 

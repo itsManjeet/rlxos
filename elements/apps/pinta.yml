@@ -6,15 +6,20 @@ merge: [elements/include/appimage.inc]
 run-autogen: false
 seperate-build-dir: false
 
-depends:
-  - components/dotnet-runtime.yml
-  - components/gtk.yml
+pre-script: |-
+  sed -i '/^PINTA_BUILD_OPTS/ s/$/ -maxcpucount:1/' Makefile.in
+
+prepare-appimage: |-
+  install -v -D -m 0755 /dev/stdin %{install-root}/%{bindir}/pinta << "EOF"
+  #!/bin/sh
+  exec dotnet $(dirname $0)/../lib/pinta/Pinta.dll "$@"
+  EOF
 
 build-depends:
+  - components/dotnet-runtime.yml
+  - components/gtk.yml
   - components/intltool.yml
   - components/dotnet.yml
 
 sources:
   - https://github.com/PintaProject/Pinta/releases/download/%{version}/pinta-%{version}.tar.gz
-pre-script: |
-  sed -i '/^PINTA_BUILD_OPTS/ s/$/ -maxcpucount:1/' Makefile.in

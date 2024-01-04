@@ -15,6 +15,7 @@ depends:
   - components/libvdpau.yml
   - components/libglvnd.yml
   - components/libunwind.yml
+  - components/x11/libx11.yml
   - components/x11/libxdamage.yml
   - components/x11/libxrandr.yml
   - components/x11/libxshmfence.yml

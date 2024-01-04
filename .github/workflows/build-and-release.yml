@@ -48,6 +48,7 @@ jobs:
     timeout-minutes: 47000
     environment: deploy
     needs: [update-ostree]
+    if: github.ref == 'refs/heads/stable'
     strategy:
       matrix:
         variant: 

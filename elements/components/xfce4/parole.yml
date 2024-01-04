@@ -16,4 +16,4 @@ build-depends:
   - components/python.yml
 
 sources:
-  - https://archive.xfce.org/src/apps/parole/4.16/parole-%{version}.tar.bz2
+  - https://archive.xfce.org/src/apps/parole/%{version:2}/parole-%{version}.tar.bz2

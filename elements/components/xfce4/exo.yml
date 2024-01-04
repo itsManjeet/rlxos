@@ -7,5 +7,5 @@ depends:
 build-depends:
   - components/intltool.yml
 sources:
-  - https://archive.xfce.org/src/xfce/exo/%{version:1}/exo-%{version}.tar.bz2
+  - https://archive.xfce.org/src/xfce/exo/%{version:2}/exo-%{version}.tar.bz2
 # TODO: fix update url

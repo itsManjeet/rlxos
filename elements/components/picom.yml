@@ -1,9 +1,10 @@
 id: picom
 version: 10.2
 about: X compositor that may fix tearing issue
+commit: 217284642aff70c9203dc7eca7769781c1f8ff7e
 
 sources:
-  - picom-%{version}.tar.gz::https://github.com/yshui/picom/archive/refs/tags/v%{version}.tar.gz
+  - picom-%{commit}.tar.gz::https://github.com/FT-Labs/picom/archive/%{commit}.tar.gz
 
 depends:
   - components/hicolor-icon-theme.yml
@@ -13,6 +14,7 @@ depends:
   - components/pcre.yml
   - components/pixman.yml
   - components/mesa.yml
+  - components/libglvnd.yml
   - components/x11/xcb-util-image.yml
   - components/x11/xcb-util-renderutil.yml
 

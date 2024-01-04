@@ -61,6 +61,10 @@ depends:
 
   - components/network-manager-applet.yml
   - components/system-config-printer.yml
+  
+  # Extra compositors and Window Managers
+  - components/picom.yml
+  - components/i3.yml
 
   - components/networkmanager-openvpn.yml
 

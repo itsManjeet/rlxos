@@ -28,6 +28,7 @@ build-depends:
   - components/bison.yml
   - components/glslang.yml
   - components/llvm.yml
+  - components/directx-headers.yml
 
 pre-script: |-
   patch -Np1 -i mesa-add_xdemos-2.patch
@@ -42,7 +43,7 @@ configure: >-
   -D b_lto=true 
   -D b_ndebug=true 
   -D lmsensors=enabled
-  -D gallium-drivers=i915,iris,crocus,nouveau,r300,r600,radeonsi,svga,swrast,virgl,zink,d3d12
+  -D gallium-drivers=i915,iris,crocus,nouveau,r300,r600,radeonsi,svga,swrast,virgl,d3d12
   -D gallium-extra-hud=true
   -D gallium-nine=true
   -D gallium-va=enabled
@@ -54,7 +55,6 @@ configure: >-
   -D gles1=disabled
   -D gles2=enabled
   -D glvnd=true
-  -D intel-clc=enabled
   -D libunwind=enabled
   -D rust_std=2021
   -D shared-glapi=enabled

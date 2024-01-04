@@ -31,8 +31,8 @@ build-depends:
   - components/llvm.yml
   - components/directx-headers.yml
 
-pre-script: |-
-  patch -Np1 -i mesa-add_xdemos-2.patch
+#pre-script: |-
+#  patch -Np1 -i mesa-add_xdemos-2.patch
 
 configure: >-
   -D valgrind=disabled

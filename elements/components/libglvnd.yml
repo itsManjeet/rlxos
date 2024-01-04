@@ -1,13 +1,12 @@
 id: libglvnd
-version: 1.4.0
+version: 1.7.0
 about: The GL Vendor Neutral Dispatch library
-depends:
-  - components/x11/libxext.yml
-  - components/mesa.yml
 
 build-depends:
+  - components/x11/libxext.yml
   - components/x11/libx11.yml
   - components/x11/xorgproto.yml
+  
 sources:
   - https://gitlab.freedesktop.org/glvnd/libglvnd/-/archive/v%{version}/libglvnd-v%{version}.tar.gz
 

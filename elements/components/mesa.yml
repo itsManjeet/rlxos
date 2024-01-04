@@ -13,6 +13,8 @@ depends:
   - components/lm-sensors.yml
   - components/libva-nomesa.yml
   - components/libvdpau.yml
+  - components/libglvnd.yml
+  - components/libunwind.yml
   - components/x11/libxdamage.yml
   - components/x11/libxrandr.yml
   - components/x11/libxshmfence.yml
@@ -40,16 +42,22 @@ configure: >-
   -D b_lto=true 
   -D b_ndebug=true 
   -D lmsensors=enabled
-  -D gallium-drivers=i915,iris,crocus,nouveau,r300,r600,radeonsi,svga,swrast,virgl 
+  -D gallium-drivers=i915,iris,crocus,nouveau,r300,r600,radeonsi,svga,swrast,virgl,zink,d3d12
   -D gallium-extra-hud=true
   -D gallium-nine=true
+  -D gallium-va=enabled
+  -D gallium-vdpau=enabled
+  -D gallium-xa=enabled
   -D vulkan-drivers=amd,intel,intel_hasvk,swrast
   -D vulkan-layers=device-select,intel-nullhw,overlay
   -D gbm=enabled
   -D gles1=disabled
   -D gles2=enabled
+  -D glvnd=true
+  -D intel-clc=enabled
+  -D libunwind=enabled
+  -D rust_std=2021
+  -D shared-glapi=enabled
   -D dri3=enabled
   -D buildtype=release
-  -D gallium-va=enabled
-  -D gallium-vdpau=enabled
   -D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc

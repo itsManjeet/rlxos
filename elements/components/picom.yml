@@ -1,7 +1,7 @@
 id: picom
 version: 10.2
 about: X compositor that may fix tearing issue
-
+release: 2
 sources:
   - picom-%{version}.tar.gz::https://github.com/yshui/picom/archive/refs/tags/v%{version}.tar.gz
 

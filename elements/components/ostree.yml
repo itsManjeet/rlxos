@@ -21,6 +21,9 @@ configure: >-
     --with-ed25519-libsodium
     --disable-static
 
+post-script: |-
+  install -v -D -m 0755 src/boot/grub2/grub2-15_ostree %{install-root}/%{sysconfdir}/grub.d/15_ostree
+
 depends:
   - components/fuse.yml
   - components/glibc.yml

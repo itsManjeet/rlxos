@@ -1,0 +1,10 @@
+id: libclc
+version: 16.0.6
+about: Library requirements of the OpenCL C programming language
+
+build-depends:
+  - components/llvm.yml
+  - components/cmake.yml
+
+sources:
+  - https://github.com/llvm/llvm-project/releases/download/llvmorg-%{version}/libclc-%{version}.src.tar.xz

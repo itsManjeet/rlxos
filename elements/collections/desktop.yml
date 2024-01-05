@@ -26,9 +26,11 @@ depends:
 - components/onboard.yml
 - components/blueman.yml
 - components/dotnet-runtime.yml
+- components/openjdk-jre.yml
 - components/xdg-desktop-portal-gtk.yml
 - components/xdg-dbus-proxy.yml
 - components/wireplumber.yml
+- components/gnome-keyring.yml
 
 # X11
 - components/x11/xserver.yml

@@ -1,5 +1,5 @@
 id: valgrind
-version: 3.21.0
+version: 3.22.0
 about: Tool to help find memory-management problems in programs
 
 pre-script: |-

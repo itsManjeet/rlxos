@@ -51,6 +51,7 @@ jobs:
           for ext in sdk ; do
             OSTREE_BRANCH="x86_64/extension/${ext}/${VERSION}" \
             ELEMENT_FILE=extensions/${ext}.yml make update-ostree
+          done
 
   build-installer-iso:
     name: Build Installer ISO

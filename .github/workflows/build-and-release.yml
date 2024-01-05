@@ -12,34 +12,38 @@ env:
   OSTREE_GPG: ${{secrets.OSTREE_GPG}}
 
 jobs:
-  build-collection:
+  build:
     name: Build Collection
     runs-on: self-hosted
     timeout-minutes: 47000
-    strategy:
-      matrix:
-        collection:
-          - core
-          - xfce4
 
     steps:
       - uses: actions/checkout@v1
+
+      - name: Configure Version
+        run: |
+          VERSION="${GITHUB_REF#refs/*/}"
+          if [ $VERSION != "stable" ] ; then
+            VERSION="experimental"
+          fi
+          cat > version.yml << EOF
+          version: ${VERSION}
+          variables:
+            ostree-branch: "x86_64/os/${VERSION}"
+          EOF
+
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
       - name: Generate Installer
         run: |
-          pkgupd ignite build collections/${{matrix.collection}}.yml
-
-  update-ostree:
-    name: Update OStree
-    runs-on: self-hosted
-    timeout-minutes: 47000
-    needs: build-collection
-    steps:
-      - uses: actions/checkout@v1
-      - run: |
+          pkgupd ignite build collections/xfce4.yml
+      
+      - name: Update Ostree
+        run: |
           pkgupd ignite build system/ostree-config.yml
+
           echo "${{ github.event.head_commit.message }}" > commit_message
-          VERSION=$(cat version.yml | grep "^version:" | awk '{print $2}')
+
           OSTREE_BRANCH="x86_64/os/${VERSION}" make update-ostree
 
   build-installer-iso:
@@ -47,7 +51,8 @@ jobs:
     runs-on: self-hosted
     timeout-minutes: 47000
     environment: deploy
-    needs: [update-ostree]
+    needs: [build]
+    if: github.ref == 'refs/heads/stable'
     strategy:
       matrix:
         variant: 
@@ -56,12 +61,25 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
+      - name: Configure Version
+        run: |
+          VERSION="${GITHUB_REF#refs/*/}"
+          if [ $VERSION != "stable" ] ; then
+            VERSION="experimental"
+          fi
+          cat > version.yml << EOF
+          version: ${VERSION}
+          variables:
+            ostree-branch: "x86_64/os/${VERSION}"
+          EOF
+
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+
       - name: Build Installer ISO
         run: pkgupd ignite build installer/${{matrix.variant}}.yml
 
       - name: Update installer ISO
         run: |
-          VERSION=$(cat version.yml | grep "^version:" | awk '{print $2}')
           pkgupd ignite checkout installer/${{matrix.variant}}.yml ${SERVER_REPO_PATH}/releases/${VERSION}/${{matrix.variant}}
           (cd ${SERVER_REPO_PATH}/releases/${VERSION}/${{matrix.variant}}/; zsyncmake -b 2048 -C -u ${SERVER_REPO_URL}/releases/${VERSION}/${{matrix.variant}}/rlxos-${VERSION}-${{matrix.variant}}-installer.iso rlxos-${VERSION}-${{matrix.variant}}-installer.iso)
 
@@ -72,9 +90,22 @@ jobs:
     if: github.ref == 'refs/heads/stable'
     steps:
       - uses: actions/checkout@v1
+      - name: Configure Version
+        run: |
+          VERSION="${GITHUB_REF#refs/*/}"
+          if [ $VERSION != "stable" ] ; then
+            VERSION="experimental"
+          fi
+          cat > version.yml << EOF
+          version: ${VERSION}
+          variables:
+            ostree-branch: "x86_64/os/${VERSION}"
+          EOF
+
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+
       - name: Build registered AppImages
         run: |-
-          VERSION=$(cat version.yml | grep "^version:" | awk '{print $2}')
           pkgupd ignite meta ${SERVER_REPO_PATH}/${VERSION}
 
       - name: Extract icons

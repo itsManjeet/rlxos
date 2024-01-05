@@ -31,4 +31,4 @@ script: |-
   cp %{libdir}/openjdk-%{version:2}/lib/*.so %{install-root}/%{libdir}/openjdk-%{version:2}/lib/
   cp -ar %{libdir}/openjdk-%{version:2}/lib/{jfr,jrt-fs.jar,jspawnhelper,jvm.cfg,modules,psfont*,security,server,tzdb.dat} %{install-root}/%{libdir}/openjdk-%{version:2}/lib/
 
-  install -v -D -m 0755 %{sysconfdir}/profiles.d/openjdk.sh -t %{install-root}%{sysconfdir}/profiles.d/openjdk.sh
+  install -v -D -m 0755 %{sysconfdir}/profile.d/openjdk.sh %{install-root}%{sysconfdir}/profile.d/openjdk.sh

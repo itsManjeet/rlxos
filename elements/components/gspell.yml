@@ -10,4 +10,4 @@ build-depends:
   - components/vala.yml
   - components/iso-codes.yml
 sources:
-  - https://download.gnome.org/sources/gspell/%{version:1}/gspell-%{version}.tar.xz
+  - https://download.gnome.org/sources/gspell/%{version:2}/gspell-%{version}.tar.xz

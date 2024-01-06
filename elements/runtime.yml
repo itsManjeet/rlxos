@@ -121,6 +121,7 @@ depends:
   - components/x11/libxfixes.yml
   - components/x11/xmodmap.yml
   - components/x11/xbitmaps.yml
+  - components/x11/xserver.yml
   - components/x11/libxcb.yml
   - components/x11/xhost.yml
   - components/x11/xauth.yml

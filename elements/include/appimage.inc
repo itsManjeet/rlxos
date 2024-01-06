@@ -3,7 +3,7 @@ skip-libraries: >-
   libc.so*
 
 prepare-appimage: ""
-
+type: app
 build-depends:
 - components/appimagetool.yml
 - components/zsync.yml

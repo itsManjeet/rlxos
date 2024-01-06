@@ -40,15 +40,13 @@ jobs:
       
       - name: Update Ostree
         run: |
-          pkgupd ignite build system/ostree-config.yml
-
           echo "${{ github.event.head_commit.message }}" > commit_message
 
           OSTREE_BRANCH="x86_64/os/${VERSION}" make update-ostree
 
       - name: Update Extensions
         run: |
-          for ext in sdk ; do
+          for ext in sdk i3; do
             OSTREE_BRANCH="x86_64/extension/${ext}/${VERSION}" \
             ELEMENT_FILE=extensions/${ext}.yml make update-ostree
           done
@@ -113,6 +111,7 @@ jobs:
 
       - name: Build registered AppImages
         run: |-
+          pkgupd ignite build app-market.yml
           pkgupd ignite meta ${SERVER_REPO_PATH}/${VERSION}
 
       - name: Extract icons

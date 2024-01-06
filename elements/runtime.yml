@@ -1,5 +1,6 @@
-id: core
-merge: [version.yml, elements/include/meta.inc]
+id: runtime
+merge: [version.yml]
+about: RLXOS common runtime
 
 depends:
   - components/busybox.yml
@@ -30,11 +31,7 @@ depends:
   - components/release-info.yml
   - components/pam-config.yml
   - components/pciutils.yml
-  - components/firmware.yml
-  - components/sof-firmware.yml
   - components/tzdata.yml
-  - components/grub.yml
-  - components/dracut.yml
   - components/kbd.yml
   - components/branding.yml
   - components/ostree.yml
@@ -48,7 +45,6 @@ depends:
   - components/pkgupd.yml
   - components/dmidecode.yml
   - components/libsmbios.yml
-  - components/distrobox.yml
   - components/libgtop.yml
   - components/libwnck.yml
   - components/libnotify.yml
@@ -66,9 +62,20 @@ depends:
   - components/ufw.yml
   - components/zram-generator.yml
   - components/openjdk-jre.yml
-
-  - kernel/linux.yml
-
-  - system/systemd-preset.yml
-  - system/etc-shells.yml
-  - system/etc-default-useradd.yml
+  - components/libconfuse.yml
+  - components/plymouth.yml
+  - components/fuse2.yml
+  - components/dotnet-runtime.yml
+  - components/openjdk-jre.yml
+  - components/xdg-desktop-portal-gtk.yml
+  - components/xdg-dbus-proxy.yml
+  - components/wireplumber.yml
+  - components/gnome-keyring.yml
+  # X11
+  - components/x11/xserver.yml
+  - components/x11/xinit.yml
+  - components/x11/xrdb.yml
+  - components/x11/iceauth.yml
+  - components/x11/xrandr.yml
+  - components/x11/xhost.yml
+  - components/x11/libxft.yml

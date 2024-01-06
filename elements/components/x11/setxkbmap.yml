@@ -9,5 +9,5 @@ depends:
 build-depends:
   - components/x11/util-macros.yml
 sources:
-- https://www.x.org/pub/individual/app/setxkbmap-%{version}.tar.bz2
+- https://www.x.org/pub/individual/app/setxkbmap-%{version}.tar.xz
 

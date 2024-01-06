@@ -16,5 +16,5 @@ build-depends:
   - components/x11/xorgproto.yml
 
 sources:
-  - https://www.x.org/pub/individual/app/xdpyinfo-%{version}.tar.bz2
+  - https://www.x.org/pub/individual/app/xdpyinfo-%{version}.tar.xz
 

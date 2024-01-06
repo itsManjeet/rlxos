@@ -72,6 +72,8 @@ depends:
   - components/wireplumber.yml
   - components/gnome-keyring.yml
   - components/yajl.yml
+  # utilities
+  - components/libva-utils.yml
   # X11
   - components/x11/setxkbmap.yml
   - components/x11/xtrans.yml
@@ -93,9 +95,7 @@ depends:
   - components/x11/libxcursor.yml
   - components/x11/libsm.yml
   - components/x11/xcb-util-keysyms.yml
-  - components/x11/xdelta3.yml
   - components/x11/xcb-util.yml
-  - components/x11/libxcrypt.yml
   - components/x11/xcb-proto.yml
   - components/x11/libxrender.yml
   - components/x11/xcb-util-wm.yml

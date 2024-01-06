@@ -9,5 +9,5 @@ build-depends:
   - components/x11/util-macros.yml
   - components/x11/xorgproto.yml
 sources:
-  - https://www.x.org/pub/individual/app/xev-%{version}.tar.bz2
+  - https://www.x.org/pub/individual/app/xev-%{version}.tar.xz
 

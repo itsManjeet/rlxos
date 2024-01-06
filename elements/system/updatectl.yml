@@ -1,7 +1,7 @@
 id: updatectl
 version: 0.0.1
 about: Ostree frontend for rlxos
-commit: 1a130b1ca7ff14fee453a9feaf86e3c71ff7491f
+commit: 59bd8071d792205794870a7f31a9d20b0e96b953
 
 depends:
   - components/ostree.yml

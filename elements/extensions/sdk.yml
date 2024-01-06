@@ -16,4 +16,7 @@ include:
   - components/autoconf-archive.yml
   - components/pkg-config.yml
 
+include-parts:
+  - devel
+
 merge: [elements/include/extension.inc]

@@ -1,7 +1,0 @@
-id: xdriinfo
-version: "7"
-about: xorg apps xdriinfo
-release: 0
-sources:
-- https://www.x.org/pub/individual/app/xdriinfo-1.0.6.tar.bz2
-

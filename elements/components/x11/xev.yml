@@ -1,7 +1,13 @@
 id: xev
-version: "7"
-about: xorg apps xev
-release: 0
+version: 1.2.5
+about: Print contents of X events
+
+depends:
+  - components/x11/libx11.yml
+  - components/x11/libxrandr.yml
+build-depends:
+  - components/x11/util-macros.yml
+  - components/x11/xorgproto.yml
 sources:
-- https://www.x.org/pub/individual/app/xev-1.2.4.tar.bz2
+  - https://www.x.org/pub/individual/app/xev-%{version}.tar.bz2
 

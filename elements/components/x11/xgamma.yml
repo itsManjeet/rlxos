@@ -1,7 +1,13 @@
 id: xgamma
-version: "7"
-about: xorg apps xgamma
-release: 0
+version: 1.0.7
+about: Alter a monitor's gamma correction
+
+depends:
+  - components/x11/libx11.yml
+  - components/x11/libxxf86vm.yml
+build-depends:
+  - components/x11/util-macros.yml
+
 sources:
-- https://www.x.org/pub/individual/app/xgamma-1.0.6.tar.bz2
+  - https://www.x.org/pub/individual/app/xgamma-%{version}.tar.bz2
 

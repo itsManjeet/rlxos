@@ -1,6 +1,12 @@
 id: sessreg
-version: "7"
-about: xorg apps sessreg
-release: 0
+version: 1.1.3
+about: Register X sessions in system utmp/utmpx database
+
+depends:
+  - components/glibc.yml
+build-depends:
+  - components/x11/util-macros.yml
+  - components/x11/xorgproto.yml
+
 sources:
-  - https://www.x.org/pub/individual/app/sessreg-1.1.2.tar.bz2
+  - https://www.x.org/pub/individual/app/sessreg-1.1.3.tar.bz2

@@ -1,7 +1,0 @@
-id: xorg-fonts-bhtype1
-version: "7"
-about: xorg fonts xorg-fonts-bhtype1
-release: 0
-sources:
-- https://www.x.org/pub/individual/font/font-bh-type1-1.0.3.tar.bz2
-

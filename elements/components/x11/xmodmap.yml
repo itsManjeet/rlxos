@@ -1,7 +1,12 @@
 id: xmodmap
-version: "7"
-about: xorg apps xmodmap
-release: 0
+version: 1.0.11
+about: Utility for modifying keymaps and button mappings
+
+depends:
+  - components/x11/libx11.yml
+build-depends:
+  - components/x11/util-macros.yml
+
 sources:
-- https://www.x.org/pub/individual/app/xmodmap-1.0.10.tar.bz2
+  - https://www.x.org/pub/individual/app/xmodmap-%{version}.tar.bz2
 

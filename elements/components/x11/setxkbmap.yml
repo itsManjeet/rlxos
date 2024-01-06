@@ -1,7 +1,13 @@
 id: setxkbmap
-version: "7"
-about: xorg apps setxkbmap
-release: 0
+version: 1.3.4
+about: Set the keyboard using the X keyboard extension
+
+depends:
+  - components/x11/libxkbfile.yml
+  - components/x11/libxrandr.yml
+
+build-depends:
+  - components/x11/util-macros.yml
 sources:
-- https://www.x.org/pub/individual/app/setxkbmap-1.3.2.tar.bz2
+- https://www.x.org/pub/individual/app/setxkbmap-%{version}.tar.bz2
 

@@ -1,5 +1,5 @@
 id: runtime
-merge: [version.yml]
+merge: [version.yml, elements/include/meta.inc]
 about: RLXOS common runtime
 
 depends:

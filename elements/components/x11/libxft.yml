@@ -1,7 +1,11 @@
 id: libXft
-version: "7"
-about: xorg library libXft
-release: 0
+version: 2.3.8
+about: Freetyp based font drawing library for X
+
+depends:
+  - components/fontconfig.yml
+  - components/x11/libxrender.yml
+
 sources:
-- https://www.x.org/pub/individual/lib/libXft-2.3.3.tar.bz2
+- https://www.x.org/pub/individual/lib/libXft-%{version}.tar.xz
 

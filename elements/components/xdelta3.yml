@@ -8,13 +8,8 @@ build-depends:
 - components/python.yml
 sources:
 - xdelta-%{version}.tar.gz::https://github.com/jmacd/xdelta/archive/refs/tags/v%{version}.tar.gz
-pre-script: |
-  aclocal
-  autoreconf --install
-  libtoolize
-  autoconf
-  autoheader
-  automake --add-missing
-  automake
-configure: --disable-dependency-tracking --with-liblzma
+
+configure: >-
+  --disable-dependency-tracking
+  --with-liblzma
 

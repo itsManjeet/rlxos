@@ -1,7 +1,0 @@
-id: xlsatoms
-version: "7"
-about: xorg apps xlsatoms
-release: 0
-sources:
-- https://www.x.org/pub/individual/app/xlsatoms-1.1.3.tar.bz2
-

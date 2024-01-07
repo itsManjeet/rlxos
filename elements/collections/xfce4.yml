@@ -2,7 +2,14 @@ id: desktop
 merge: [version.yml, elements/include/meta.inc]
 
 depends:
-  - collections/desktop.yml
+  - runtime.yml
+
+  - components/grub.yml
+  - components/dracut.yml
+  - components/distrobox.yml
+  - components/firmware.yml
+  - components/sof-firmware.yml
+
   - components/xfce4/libxfce4ui.yml
   - components/xfce4/libxfce4util.yml
   - components/xfce4/exo.yml
@@ -64,7 +71,6 @@ depends:
   
   # Extra compositors and Window Managers
   - components/picom.yml
-  - components/i3.yml
 
   - components/networkmanager-openvpn.yml
 
@@ -73,3 +79,53 @@ depends:
   - components/lightdm-gtk-greeter-settings.yml
 
   - components/initial-setup.yml
+
+  # X11 drivers
+  - components/x11/xf86-input-libinput.yml
+  - components/x11/xf86-input-wacom.yml
+  #- components/x11/xf86-video-intel.yml
+  - components/x11/xf86-video-amdgpu.yml
+  - components/x11/xf86-video-ati.yml
+  - components/x11/xf86-video-fbdev.yml
+  - components/x11/xf86-video-nouveau.yml
+  - components/x11/xf86-video-qxl.yml
+  - components/x11/xf86-video-vmware.yml
+
+    # Components
+  - components/gvfs.yml
+  - components/xdg-user-dirs-gtk.yml
+  - components/xdg-utils.yml
+  - components/flatpak.yml
+  - components/power-profiles-daemon.yml
+  - components/gufw.yml
+  - components/onboard.yml
+  - components/blueman.yml
+
+
+  # AppImage
+
+  - components/appimaged.yml
+
+  # Apps
+  # - apps/gigolo.yml
+  # - apps/pinta.yml
+  - apps/file-roller.yml
+  - apps/firefox.yml
+  - system/install-appimages.yml
+
+  - kernel/linux.yml
+
+  - system/systemd-preset.yml
+  - system/etc-shells.yml
+  - system/etc-default-useradd.yml
+  - system/x11-config.yml
+
+  # Laptop and Touch devices
+  - components/2in1.yml
+
+
+  # Nvidia graphics driver
+  # - components/nvidia.yml
+  # - components/nvidia-settings.yml
+
+

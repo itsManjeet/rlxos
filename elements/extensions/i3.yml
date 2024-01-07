@@ -1,0 +1,11 @@
+id: i3
+about: I3 Window Manager
+include:
+  - extensions/i3/i3.yml
+  - extensions/i3/i3lock.yml
+  - extensions/i3/i3status.yml
+  - components/dmenu.yml
+
+include-depends: false
+
+merge: [elements/include/extension.inc]

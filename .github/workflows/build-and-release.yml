@@ -23,7 +23,7 @@ jobs:
       - name: Configure Version
         run: |
           VERSION="${GITHUB_REF#refs/*/}"
-          if [ $VERSION != "stable" ] ; then
+          if [ $VERSION != "stable" ] || [ $VERSION != "staging" ] ; then
             VERSION="experimental"
           fi
           cat > version.yml << EOF
@@ -71,7 +71,7 @@ jobs:
       - name: Configure Version
         run: |
           VERSION="${GITHUB_REF#refs/*/}"
-          if [ $VERSION != "stable" ] ; then
+          if [ $VERSION != "stable" ] || [ $VERSION != "staging" ] ; then
             VERSION="experimental"
           fi
           cat > version.yml << EOF
@@ -100,7 +100,7 @@ jobs:
       - name: Configure Version
         run: |
           VERSION="${GITHUB_REF#refs/*/}"
-          if [ $VERSION != "stable" ] ; then
+          if [ $VERSION != "stable" ] || [ $VERSION != "staging" ] ; then
             VERSION="experimental"
           fi
           cat > version.yml << EOF

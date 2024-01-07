@@ -84,6 +84,8 @@ depends:
   - components/x11/xprop.yml
   - components/x11/xmessage.yml
   - components/x11/xcb-util-xrm.yml
+  - components/x11/xcb-util-cursor.yml
+  - components/x11/xcb-util-image.yml
   - components/x11/libxvmc.yml
   - components/x11/xbacklight.yml
   - components/x11/libxkbfile.yml

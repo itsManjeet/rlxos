@@ -16,7 +16,7 @@ include:
   - components/autoconf.yml
   - components/autoconf-archive.yml
   - components/pkg-config.yml
+  - components/cppgir.yml
 
 include-parts: [devel]
-include-depends: false
 merge: [elements/include/extension.inc]

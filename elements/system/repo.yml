@@ -45,10 +45,10 @@ initial-commands: |-
   EOT
 
 include:
-  - collections/xfce4.yml
-  - components/ostree.yml
-  - system/ostree-config.yml
-  - system/updatectl.yml
+  - system/filesystem.yml
+
+include-parts:
+  - doc
 
 build-depends:
   - components/ostree.yml

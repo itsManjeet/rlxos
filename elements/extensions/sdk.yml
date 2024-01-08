@@ -1,6 +1,7 @@
 id: sdk
 about: RLXOS Software Development Kit
 include:
+  - system/filesystem-devel.yml
   - components/gcc.yml
   - components/kernel-headers.yml
   - components/binutils.yml
@@ -16,7 +17,6 @@ include:
   - components/autoconf-archive.yml
   - components/pkg-config.yml
 
-include-parts:
-  - devel
-
+include-parts: [devel]
+include-depends: false
 merge: [elements/include/extension.inc]

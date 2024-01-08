@@ -1,5 +1,15 @@
 id: sdk
 about: RLXOS Software Development Kit
+
+extra-commands: |-
+  # required by gtk
+  mkdir -p %{install-root}/usr/local/include
+
+  for i in %{datadir}/gir-1.0/*.gir ; do
+    gir=$(basename ${i%.*})
+    cppgir $gir --output %{install-root}/%{prefix}/rlxpp
+  done
+
 include:
   - system/filesystem-devel.yml
   - components/gcc.yml
@@ -20,3 +30,6 @@ include:
 
 include-parts: [devel]
 merge: [elements/include/extension.inc]
+build-depends:
+  - components/cppgir.yml
+  - system/filesystem.yml

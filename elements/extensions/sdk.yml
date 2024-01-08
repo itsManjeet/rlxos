@@ -6,9 +6,9 @@ extra-commands: |-
   mkdir -p %{install-root}/usr/local/include
 
   for i in %{datadir}/gir-1.0/*.gir ; do
-    gir=$(basename ${i%.*})
-    cppgir $gir --output %{install-root}/%{prefix}/rlxpp
+    cppgir $(basename ${i%.*}) --gir-path %{datadir}/gir-1.0/ --output %{install-root}/%{prefix}/include/cppgir/
   done
+
 
 include:
   - system/filesystem-devel.yml

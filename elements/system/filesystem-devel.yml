@@ -1,0 +1,11 @@
+id: filesystem-devel
+about: filesystem development headers and libraries
+merge: [version.yml, elements/include/meta.inc]
+strip: false
+
+include:
+  - system/deps.yml
+  
+include-core: false
+include-parts:
+  - devel

@@ -7,7 +7,6 @@ depends:
 build-depends:
   - components/cmake.yml
   - components/ninja.yml
-  - components/nodejs.yml
   - components/py/py-pip.yml
 
 sources:

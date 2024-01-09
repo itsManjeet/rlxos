@@ -1,6 +1,17 @@
 id: sdk
 about: RLXOS Software Development Kit
+
+extra-commands: |-
+  # required by gtk
+  mkdir -p %{install-root}/usr/local/include
+
+  for i in %{datadir}/gir-1.0/*.gir ; do
+    cppgir $(basename ${i%.*}) --gir-path %{datadir}/gir-1.0/ --output %{install-root}/%{prefix}/include/cppgir/
+  done
+
+
 include:
+  - system/filesystem-devel.yml
   - components/gcc.yml
   - components/kernel-headers.yml
   - components/binutils.yml
@@ -15,8 +26,16 @@ include:
   - components/autoconf.yml
   - components/autoconf-archive.yml
   - components/pkg-config.yml
+  - components/cppgir.yml
+  - components/m4.yml
+  - components/flex.yml
+  - components/bison.yml
+  - components/texinfo.yml
+  
+  - components/xfce4/xfce4-dev-tools.yml
 
-include-parts:
-  - devel
-
+include-parts: [devel]
 merge: [elements/include/extension.inc]
+build-depends:
+  - components/cppgir.yml
+  - system/filesystem.yml

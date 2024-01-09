@@ -1,0 +1,18 @@
+id: filesystem
+merge: [version.yml]
+strip: false
+
+include-parts:
+  - doc
+
+script: |-
+  mkdir -p %{install-root}/Applications
+  mv %{install-root}/*.app %{install-root}/Applications/
+  rm %{install-root}/*.app.zsync
+  
+include: 
+  - system/deps.yml
+
+
+build-depends: 
+  - components/bash.yml

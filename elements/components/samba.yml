@@ -2,9 +2,7 @@ id: samba
 version: 4.19.0
 about: Package provides file and print services to SMB/CIFS clients and Windows networking to Linux clients
 
-variables:
-  run-autogen: false
-  seperate-build-dir: false
+build-type: autoconf
 
 configure: >-
   --enable-fhs

@@ -34,9 +34,9 @@ jobs:
 
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
-      - name: Build cache
+      - name: Build filesystem
         run: |
-          pkgupd ignite build collections/xfce4.yml
+          pkgupd ignite build system/filesystem.yml
       
       - name: Update Ostree
         run: |

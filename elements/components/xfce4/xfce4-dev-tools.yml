@@ -2,5 +2,10 @@ id: xfce4-dev-tools
 version: 4.19.0
 about: Xfce developer tools
 
+depends:
+  - components/glib.yml
+  - components/gtk-doc.yml
+  - components/intltool.yml
+
 sources:
-  - https://archive.xfce.org/src/xfce/xfce4-dev-tools/%{version:1}/xfce4-dev-tools-%{version}.tar.bz2
+  - https://archive.xfce.org/src/xfce/xfce4-dev-tools/%{version:2}/xfce4-dev-tools-%{version}.tar.bz2

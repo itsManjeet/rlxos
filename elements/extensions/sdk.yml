@@ -27,6 +27,12 @@ include:
   - components/autoconf-archive.yml
   - components/pkg-config.yml
   - components/cppgir.yml
+  - components/m4.yml
+  - components/flex.yml
+  - components/bison.yml
+  - components/texinfo.yml
+  
+  - components/xfce4/xfce4-dev-tools.yml
 
 include-parts: [devel]
 merge: [elements/include/extension.inc]

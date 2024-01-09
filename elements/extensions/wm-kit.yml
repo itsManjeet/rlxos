@@ -1,0 +1,8 @@
+id: wm-kit
+about: Essential tools for window managers
+include:
+  - components/dmenu.yml
+  - components/rofi.yml
+  - components/scrot.yml
+  - components/tint2.yml
+merge: [elements/include/extension.inc]

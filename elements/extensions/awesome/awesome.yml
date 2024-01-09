@@ -3,7 +3,7 @@ version: 4.3
 about: Highly configurable framework window manager
 
 post-script: |
-  install -Dm066 -t %{install-root}/%{datadir}/xsessions awesome.desktop
+  install -Dm0644 -t %{install-root}/%{datadir}/xsessions awesome.desktop
 
 configure: >
   -DSYSCONFDIR=%{sysconfdir}

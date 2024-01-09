@@ -25,7 +25,12 @@ depends:
   - components/glib.yml
   - components/imlib2.yml
   - components/x11/libx11.yml
+  - components/x11/libxdamage.yml
+  - components/x11/libxft.yml
+  - components/x11/libxfixes.yml
+  - components/x11/libxinerama.yml
   - components/lua.yml
+  - components/pulseaudio.yml
   - components/ncurses.yml
   - components/desktop-file-utils.yml
 build-depends:

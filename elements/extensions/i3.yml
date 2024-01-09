@@ -6,6 +6,4 @@ include:
   - extensions/i3/i3status.yml
   - components/dmenu.yml
 
-include-depends: false
-
 merge: [elements/include/extension.inc]

@@ -46,7 +46,7 @@ jobs:
 
       - name: Update Extensions
         run: |
-          for ext in sdk i3; do
+          for ext in sdk i3 awesome wm-kit; do
             OSTREE_BRANCH="x86_64/extension/${ext}/${VERSION}" \
             ELEMENT_FILE=extensions/${ext}.yml make update-ostree
           done

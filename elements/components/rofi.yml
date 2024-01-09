@@ -1,0 +1,20 @@
+id: rofi
+version: 1.7.5
+about: A window switcher, application launcher and dmenu replacement
+
+pre-script: |-
+  autoreconf -i
+
+depends:
+  - components/librsvg.yml
+  - components/libxdg-basedir.yml
+  - components/startup-notification.yml
+  - components/x11/libxkbcommon.yml
+  - components/x11/xcb-util-cursor.yml
+  - components/x11/xcb-util-wm.yml
+  - components/x11/xcb-util-xrm.yml
+
+build-depends:
+  - components/check.yml
+sources:
+  - https://github.com/davatorium/rofi/releases/download/%{version}/rofi-%{version}.tar.xz

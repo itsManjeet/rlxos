@@ -15,7 +15,7 @@ build-depends:
   - components/gettext.yml
 
 sources:
-  - https://download.gnome.org/sources/glib/%{version:1}/glib-%{version}.tar.xz
+  - https://download.gnome.org/sources/glib/%{version:2}/glib-%{version}.tar.xz
 
 configure: >-
   -D man=false 

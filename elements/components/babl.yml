@@ -10,4 +10,4 @@ build-depends:
   - components/meson.yml
   - components/vala.yml
 sources:
-  - https://download.gimp.org/pub/babl/%{version:1}/babl-%{version}.tar.xz
+  - https://download.gimp.org/pub/babl/%{version:2}/babl-%{version}.tar.xz

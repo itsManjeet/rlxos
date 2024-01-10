@@ -12,4 +12,4 @@ build-depends:
   - components/gobject-introspection.yml
   - components/meson.yml
 sources:
-  - https://download.gnome.org/sources/libhandy/%{version:1}/libhandy-%{version}.tar.xz
+  - https://download.gnome.org/sources/libhandy/%{version:2}/libhandy-%{version}.tar.xz

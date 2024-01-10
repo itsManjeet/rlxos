@@ -10,4 +10,4 @@ depends:
   - components/libtiff.yml
   - components/libxslt.yml
 sources:
-  - https://download.gnome.org/sources/libgxps/%{version:1}/libgxps-%{version}.tar.xz
+  - https://download.gnome.org/sources/libgxps/%{version:2}/libgxps-%{version}.tar.xz

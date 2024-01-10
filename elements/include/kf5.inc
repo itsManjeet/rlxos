@@ -6,4 +6,4 @@ configure: >-
   -Wno-dev
 
 sources:
-  - https://download.kde.org/stable/frameworks/%{version:1}/%{id}-%{version}.tar.xz
+  - https://download.kde.org/stable/frameworks/%{version:2}/%{id}-%{version}.tar.xz

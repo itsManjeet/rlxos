@@ -9,4 +9,4 @@ depends:
   - components/x11/libxmu.yml
 
 sources:
-  - https://archive.xfce.org/src/apps/xfce4-taskmanager/%{version:1}/xfce4-taskmanager-%{version}.tar.bz2
+  - https://archive.xfce.org/src/apps/xfce4-taskmanager/%{version:2}/xfce4-taskmanager-%{version}.tar.bz2

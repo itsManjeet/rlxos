@@ -8,4 +8,4 @@ depends:
   - components/glib.yml
   - components/gobject-introspection.yml
 sources:
-  - https://download.gnome.org/sources/atk/%{version:1}/atk-%{version}.tar.xz
+  - https://download.gnome.org/sources/atk/%{version:2}/atk-%{version}.tar.xz

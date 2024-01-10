@@ -5,4 +5,4 @@ about:
   Desktop environment
 
 sources:
-  - https://download.gnome.org/sources/gnome-backgrounds/%{version:1}/gnome-backgrounds-%{version}.tar.xz
+  - https://download.gnome.org/sources/gnome-backgrounds/%{version:2}/gnome-backgrounds-%{version}.tar.xz

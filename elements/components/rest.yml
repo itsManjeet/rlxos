@@ -14,4 +14,4 @@ depends:
 build-depends:
   - components/gobject-introspection.yml
 sources:
-  - https://download.gnome.org/sources/rest/%{version:1}/rest-%{version}.tar.xz
+  - https://download.gnome.org/sources/rest/%{version:2}/rest-%{version}.tar.xz

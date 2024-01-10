@@ -11,4 +11,4 @@ depends:
   - components/icu.yml
   - components/uchardet.yml
 sources:
-  - https://download.gnome.org/sources/tepl/%{version:1}/tepl-%{version}.tar.xz
+  - https://download.gnome.org/sources/tepl/%{version:2}/tepl-%{version}.tar.xz

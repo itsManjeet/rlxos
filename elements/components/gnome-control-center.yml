@@ -29,4 +29,4 @@ depends:
   - components/libnma.yml
   - components/modemmanager.yml
 sources:
-  - https://download.gnome.org/sources/gnome-control-center/%{version:1}/gnome-control-center-%{version}.tar.xz
+  - https://download.gnome.org/sources/gnome-control-center/%{version:2}/gnome-control-center-%{version}.tar.xz

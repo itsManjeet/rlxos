@@ -16,4 +16,4 @@ build-depends:
   - components/vala.yml
   - components/git.yml
 sources:
-  - https://download.gnome.org/sources/gedit/%{version:1}/gedit-%{version}.tar.xz
+  - https://download.gnome.org/sources/gedit/%{version:2}/gedit-%{version}.tar.xz

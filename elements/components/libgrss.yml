@@ -9,4 +9,4 @@ pre-script: |-
 depends:
   - components/libsoup.yml
 sources:
-  - https://download.gnome.org/sources/libgrss/%{version:1}/libgrss-%{version}.tar.xz
+  - https://download.gnome.org/sources/libgrss/%{version:2}/libgrss-%{version}.tar.xz

@@ -13,4 +13,4 @@ build-depends:
   - components/gtk-doc.yml
 
 sources:
-  - https://download.gnome.org/sources/geocode-glib/%{version:1}/geocode-glib-%{version}.tar.xz
+  - https://download.gnome.org/sources/geocode-glib/%{version:2}/geocode-glib-%{version}.tar.xz

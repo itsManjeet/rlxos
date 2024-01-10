@@ -13,4 +13,4 @@ depends:
   - components/libtasn1.yml
   - components/p11-kit.yml
 sources:
-  - https://www.gnupg.org/ftp/gcrypt/gnutls/v%{version:1}/gnutls-%{version}.tar.xz
+  - https://www.gnupg.org/ftp/gcrypt/gnutls/v%{version:2}/gnutls-%{version}.tar.xz

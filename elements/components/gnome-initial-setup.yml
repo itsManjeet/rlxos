@@ -22,4 +22,4 @@ depends:
   - components/gstreamer.yml
   - components/libpwquality.yml
 sources:
-  - http://ftp.gnome.org/pub/gnome/sources/gnome-initial-setup/%{version:1}/gnome-initial-setup-%{version}.tar.xz
+  - http://ftp.gnome.org/pub/gnome/sources/gnome-initial-setup/%{version:2}/gnome-initial-setup-%{version}.tar.xz

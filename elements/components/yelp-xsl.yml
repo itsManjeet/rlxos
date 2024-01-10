@@ -5,4 +5,4 @@ depends:
   - components/libxslt.yml
   - components/itstool.yml
 sources:
-  - https://download.gnome.org/sources/yelp-xsl/%{version:1}/yelp-xsl-%{version}.tar.xz
+  - https://download.gnome.org/sources/yelp-xsl/%{version:2}/yelp-xsl-%{version}.tar.xz

@@ -8,4 +8,4 @@ configure: >-
   --disable-debug
 
 sources:
-  - https://archive.xfce.org/src/panel-plugins/%{id}/%{version:1}/%{id}-%{version}.tar.bz2
+  - https://archive.xfce.org/src/panel-plugins/%{id}/%{version:2}/%{id}-%{version}.tar.bz2

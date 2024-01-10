@@ -11,4 +11,4 @@ build-depends:
   - components/intltool.yml
 
 sources:
-  - https://archive.xfce.org/src/apps/gigolo/%{version:1}/gigolo-%{version}.tar.bz2
+  - https://archive.xfce.org/src/apps/gigolo/%{version:2}/gigolo-%{version}.tar.bz2

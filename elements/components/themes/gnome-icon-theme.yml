@@ -7,7 +7,7 @@ build-depends:
   - components/hicolor-icon-theme.yml
   - components/icon-naming-utils.yml
 sources:
-  - https://download.gnome.org/sources/gnome-icon-theme/%{version:1}/gnome-icon-theme-%{version}.tar.xz
+  - https://download.gnome.org/sources/gnome-icon-theme/%{version:2}/gnome-icon-theme-%{version}.tar.xz
 
 integration: |-
   gtk-update-icon-cache %{datadir}/icons/gnome

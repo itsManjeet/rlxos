@@ -39,4 +39,4 @@ build-depends:
   - components/openldap.yml
   - components/gperf.yml
 sources:
-  - https://download.gnome.org/sources/evolution-data-server/%{version:1}/evolution-data-server-%{version}.tar.xz
+  - https://download.gnome.org/sources/evolution-data-server/%{version:2}/evolution-data-server-%{version}.tar.xz

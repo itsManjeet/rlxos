@@ -31,7 +31,7 @@ build-depends:
   - components/sassc.yml
 
 sources:
-  - https://download.gnome.org/sources/gnome-shell/%{version:1}/gnome-shell-%{version}.tar.xz
+  - https://download.gnome.org/sources/gnome-shell/%{version:2}/gnome-shell-%{version}.tar.xz
 
 configure: >-
   --buildtype=release

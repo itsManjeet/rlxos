@@ -9,4 +9,4 @@ build-depends:
   - components/kdoctools.yml
 
 sources:
-  - https://download.kde.org/stable/frameworks/%{version:1}/portingAids/%{id}-%{version}.tar.xz
+  - https://download.kde.org/stable/frameworks/%{version:2}/portingAids/%{id}-%{version}.tar.xz

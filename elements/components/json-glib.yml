@@ -9,4 +9,4 @@ depends:
 build-depends:
   - components/gobject-introspection.yml
 sources:
-  - https://download.gnome.org/sources/json-glib/%{version:1}/json-glib-%{version}.tar.xz
+  - https://download.gnome.org/sources/json-glib/%{version:2}/json-glib-%{version}.tar.xz

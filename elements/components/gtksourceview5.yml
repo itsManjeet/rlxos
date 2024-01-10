@@ -12,4 +12,4 @@ build-depends:
   - components/gtk-doc.yml
 
 sources:
-  - https://download.gnome.org/sources/gtksourceview/%{version:1}/gtksourceview-%{version}.tar.xz
+  - https://download.gnome.org/sources/gtksourceview/%{version:2}/gtksourceview-%{version}.tar.xz

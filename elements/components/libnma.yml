@@ -20,5 +20,5 @@ build-depends:
   - components/vala.yml
   - components/gtk-doc.yml
 sources:
-  - https://download.gnome.org/sources/libnma/%{version:1}/libnma-%{version}.tar.xz
+  - https://download.gnome.org/sources/libnma/%{version:2}/libnma-%{version}.tar.xz
 

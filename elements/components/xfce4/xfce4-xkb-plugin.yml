@@ -15,4 +15,4 @@ build-depends:
   - components/intltool.yml
   - components/cmake.yml
 sources:
-  - https://archive.xfce.org/src/panel-plugins/xfce4-xkb-plugin/%{version:1}/xfce4-xkb-plugin-%{version}.tar.bz2
+  - https://archive.xfce.org/src/panel-plugins/xfce4-xkb-plugin/%{version:2}/xfce4-xkb-plugin-%{version}.tar.bz2

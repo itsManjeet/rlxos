@@ -35,4 +35,4 @@ build-depends:
   - components/cmake.yml
   - components/openldap.yml
 sources:
-  - https://download.gnome.org/sources/evolution/%{version:1}/evolution-%{version}.tar.xz
+  - https://download.gnome.org/sources/evolution/%{version:2}/evolution-%{version}.tar.xz

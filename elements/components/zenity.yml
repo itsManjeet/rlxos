@@ -11,4 +11,4 @@ depends:
 build-depends:
   - components/itstool.yml
 sources:
-  - https://download.gnome.org/sources/zenity/%{version:1}/zenity-%{version}.tar.xz
+  - https://download.gnome.org/sources/zenity/%{version:2}/zenity-%{version}.tar.xz

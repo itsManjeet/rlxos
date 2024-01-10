@@ -20,4 +20,4 @@ build-depends:
   - components/itstool.yml
 
 sources:
-  - https://download.gnome.org/sources/file-roller/%{version:1}/file-roller-%{version}.tar.xz
+  - https://download.gnome.org/sources/file-roller/%{version:2}/file-roller-%{version}.tar.xz

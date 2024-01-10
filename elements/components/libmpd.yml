@@ -6,6 +6,6 @@ depends:
   - components/glib.yml
 
 sources:
-  - https://download.sarine.nl/Programs/gmpc/%{version:1}/libmpd-%{version}.tar.gz
+  - https://download.sarine.nl/Programs/gmpc/%{version:2}/libmpd-%{version}.tar.gz
 
 # TODO: check issues and add patches

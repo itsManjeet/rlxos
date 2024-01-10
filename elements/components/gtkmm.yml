@@ -11,4 +11,4 @@ depends:
   - components/pangomm.yml
 
 sources:
-  - https://download.gnome.org/sources/gtkmm/%{version:1}/gtkmm-%{version}.tar.xz
+  - https://download.gnome.org/sources/gtkmm/%{version:2}/gtkmm-%{version}.tar.xz

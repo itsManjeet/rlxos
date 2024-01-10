@@ -22,4 +22,4 @@ build-depends:
   - components/perl.yml
 
 sources:
-  - https://kerberos.org/dist/krb5/%{version:1}/krb5-%{version}.tar.gz
+  - https://kerberos.org/dist/krb5/%{version:2}/krb5-%{version}.tar.gz

@@ -44,7 +44,7 @@ depends:
 build-depends:
   - components/gperf.yml
 sources:
-  - https://download.qt.io/archive/qt/%{version:1}/%{version}/single/qt-everywhere-opensource-src-%{version}.tar.xz
+  - https://download.qt.io/archive/qt/%{version:2}/%{version}/single/qt-everywhere-opensource-src-%{version}.tar.xz
 script: |-
   patch -Np1 -i /patches/qt/qt-everywhere-opensource-src-%{version}-kf5-1.patch
   mkdir -pv qtbase/.git

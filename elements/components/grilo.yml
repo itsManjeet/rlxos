@@ -15,6 +15,6 @@ build-depends:
   - components/vala.yml
   - components/gtk-doc.yml
 sources:
-  - https://download.gnome.org/sources/grilo/%{version:1}/grilo-%{version}.tar.xz
+  - https://download.gnome.org/sources/grilo/%{version:2}/grilo-%{version}.tar.xz
 configure: >-
   --buildtype=release

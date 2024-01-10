@@ -26,4 +26,4 @@ depends:
   - components/libnotify.yml
   - components/startup-notification.yml
 sources:
-  - https://archive.xfce.org/src/xfce/xfdesktop/%{version:1}/xfdesktop-%{version}.tar.bz2
+  - https://archive.xfce.org/src/xfce/xfdesktop/%{version:2}/xfdesktop-%{version}.tar.bz2

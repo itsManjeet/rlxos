@@ -18,4 +18,4 @@ depends:
   - components/zlib.yml
 
 sources:
-  - https://cache.ruby-lang.org/pub/ruby/%{version:1}/ruby-%{version}.tar.xz
+  - https://cache.ruby-lang.org/pub/ruby/%{version:2}/ruby-%{version}.tar.xz

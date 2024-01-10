@@ -21,7 +21,7 @@ depends:
   - components/libsoup3.yml
   - components/openssh.yml
 sources:
-  - https://download.gnome.org/sources/gvfs/%{version:1}/gvfs-%{version}.tar.xz
+  - https://download.gnome.org/sources/gvfs/%{version:2}/gvfs-%{version}.tar.xz
 configure: >-
   -D fuse=true
   -D gphoto2=false

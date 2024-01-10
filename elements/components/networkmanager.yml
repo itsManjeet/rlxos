@@ -80,4 +80,4 @@ depends:
 build-depends:
   - components/vala.yml
 sources:
-  - https://download.gnome.org/sources/NetworkManager/%{version:1}/NetworkManager-%{version}.tar.xz
+  - https://download.gnome.org/sources/NetworkManager/%{version:2}/NetworkManager-%{version}.tar.xz

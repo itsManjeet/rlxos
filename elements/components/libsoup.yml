@@ -17,4 +17,4 @@ build-depends:
   - components/vala.yml
   - components/sysprof.yml
 sources:
-  - https://download.gnome.org/sources/libsoup/%{version:1}/libsoup-%{version}.tar.xz
+  - https://download.gnome.org/sources/libsoup/%{version:2}/libsoup-%{version}.tar.xz

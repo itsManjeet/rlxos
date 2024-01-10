@@ -11,7 +11,7 @@ integration: |-
   gdk-pixbuf-query-loaders --update-cache
 
 sources:
-  - https://download.gnome.org/sources/gdk-pixbuf/%{version:1}/gdk-pixbuf-%{version}.tar.xz
+  - https://download.gnome.org/sources/gdk-pixbuf/%{version:2}/gdk-pixbuf-%{version}.tar.xz
 
 build-depends:
   - components/gobject-introspection.yml

@@ -11,4 +11,4 @@ build-depends:
   - components/gtk-doc.yml
 
 sources:
-  - https://archive.xfce.org/src/xfce/libxfce4util/%{version:1}/libxfce4util-%{version}.tar.bz2
+  - https://archive.xfce.org/src/xfce/libxfce4util/%{version:2}/libxfce4util-%{version}.tar.bz2

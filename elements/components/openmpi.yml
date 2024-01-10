@@ -25,4 +25,4 @@ depends:
 build-depends:
   - components/inetutils.yml
 sources:
-  - https://www.open-mpi.org/software/ompi/v%{version:1}/downloads/openmpi-%{version}.tar.bz2
+  - https://www.open-mpi.org/software/ompi/v%{version:2}/downloads/openmpi-%{version}.tar.bz2

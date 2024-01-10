@@ -79,5 +79,5 @@ build-depends:
   - components/intltool.yml
   - components/x11/xf86-input-libinput.yml
 sources:
-  - https://archive.xfce.org/src/xfce/xfce4-settings/%{version:1}/xfce4-settings-%{version}.tar.bz2
+  - https://archive.xfce.org/src/xfce/xfce4-settings/%{version:2}/xfce4-settings-%{version}.tar.bz2
 

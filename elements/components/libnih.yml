@@ -7,4 +7,4 @@ depends:
 build-depends:
   - components/expat.yml
 sources:
-  - https://launchpad.net/libnih/%{version:1}/%{version}/+download/libnih-%{version}.tar.gz
+  - https://launchpad.net/libnih/%{version:2}/%{version}/+download/libnih-%{version}.tar.gz

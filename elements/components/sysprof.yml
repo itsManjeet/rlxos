@@ -11,4 +11,4 @@ depends:
   - components/libdazzle.yml
   - components/polkit.yml
 sources:
-  - https://download.gnome.org/sources/sysprof/%{version:1}/sysprof-%{version}.tar.xz
+  - https://download.gnome.org/sources/sysprof/%{version:2}/sysprof-%{version}.tar.xz

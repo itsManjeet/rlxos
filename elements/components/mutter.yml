@@ -22,4 +22,4 @@ build-depends:
   - components/sysprof.yml
   - components/gobject-introspection.yml
 sources:
-  - https://download.gnome.org/sources/mutter/%{version:1}/mutter-%{version}.tar.xz
+  - https://download.gnome.org/sources/mutter/%{version:2}/mutter-%{version}.tar.xz

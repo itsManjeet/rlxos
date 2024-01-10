@@ -6,4 +6,4 @@ about: |
 depends:
   - components/cmake.yml
 sources:
-  - https://download.kde.org/stable/frameworks/%{version:1}/extra-cmake-modules-%{version}.tar.xz
+  - https://download.kde.org/stable/frameworks/%{version:2}/extra-cmake-modules-%{version}.tar.xz

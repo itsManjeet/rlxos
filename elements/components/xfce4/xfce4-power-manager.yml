@@ -10,4 +10,4 @@ depends:
   - components/polkit.yml
 
 sources:
-  - https://archive.xfce.org/src/xfce/xfce4-power-manager/%{version:1}/xfce4-power-manager-%{version}.tar.bz2
+  - https://archive.xfce.org/src/xfce/xfce4-power-manager/%{version:2}/xfce4-power-manager-%{version}.tar.bz2

@@ -12,4 +12,4 @@ depends:
   - components/gobject-introspection.yml
 
 sources:
-  - https://download.gnome.org/sources/at-spi2-core/%{version:1}/at-spi2-core-%{version}.tar.xz
+  - https://download.gnome.org/sources/at-spi2-core/%{version:2}/at-spi2-core-%{version}.tar.xz

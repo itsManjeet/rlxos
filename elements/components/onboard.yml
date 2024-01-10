@@ -17,4 +17,4 @@ build-depends:
   - components/py/py-distutils-extra.yml
   - components/intltool.yml
 sources:
-  - https://launchpad.net/onboard/%{version:1}/%{version}/+download/onboard-%{version}.tar.gz
+  - https://launchpad.net/onboard/%{version:2}/%{version}/+download/onboard-%{version}.tar.gz

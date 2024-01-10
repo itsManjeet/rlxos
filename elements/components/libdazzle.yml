@@ -9,4 +9,4 @@ build-depends:
 
 pre-script: mkdir -p /usr/local/include
 sources:
-  - https://download.gnome.org/sources/libdazzle/%{version:1}/libdazzle-%{version}.tar.xz
+  - https://download.gnome.org/sources/libdazzle/%{version:2}/libdazzle-%{version}.tar.xz

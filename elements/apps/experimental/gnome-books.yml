@@ -17,4 +17,4 @@ build-depends:
   - components/git.yml
   - components/docbook-xsl.yml
 sources:
-  - https://download.gnome.org/sources/gnome-books/%{version:1}/gnome-books-%{version}.tar.xz
+  - https://download.gnome.org/sources/gnome-books/%{version:2}/gnome-books-%{version}.tar.xz

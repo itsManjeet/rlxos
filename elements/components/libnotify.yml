@@ -14,4 +14,4 @@ build-depends:
   - components/gtk-doc.yml
 
 sources:
-  - https://download.gnome.org/sources/libnotify/%{version:1}/libnotify-%{version}.tar.xz
+  - https://download.gnome.org/sources/libnotify/%{version:2}/libnotify-%{version}.tar.xz

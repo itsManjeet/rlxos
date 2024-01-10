@@ -13,4 +13,4 @@ build-depends:
   - components/meson.yml
   - components/vala.yml
 sources:
-  - https://download.gnome.org/sources/%{id}/%{version:1}/%{id}-%{version}.tar.xz
+  - https://download.gnome.org/sources/%{id}/%{version:2}/%{id}-%{version}.tar.xz

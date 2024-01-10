@@ -27,5 +27,5 @@ depends:
 build-depends:
   - components/itstool.yml
 sources:
-  - https://download.gnome.org/sources/gdm/%{version:1}/gdm-%{version}.tar.xz
+  - https://download.gnome.org/sources/gdm/%{version:2}/gdm-%{version}.tar.xz
 # TODO: We need to setup and use our PAM configuration

@@ -122,4 +122,4 @@ build-depends:
   - components/vala.yml
 
 sources:
-  - https://archive.xfce.org/src/xfce/libxfce4ui/%{version:1}/libxfce4ui-%{version}.tar.bz2
+  - https://archive.xfce.org/src/xfce/libxfce4ui/%{version:2}/libxfce4ui-%{version}.tar.bz2

@@ -30,4 +30,4 @@ depends:
   - components/nss.yml
   - components/wayland.yml
 sources:
-  - https://download.gnome.org/sources/gnome-settings-daemon/%{version:1}/gnome-settings-daemon-%{version}.tar.xz
+  - https://download.gnome.org/sources/gnome-settings-daemon/%{version:2}/gnome-settings-daemon-%{version}.tar.xz

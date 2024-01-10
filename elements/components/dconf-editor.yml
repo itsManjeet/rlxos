@@ -8,6 +8,6 @@ depends:
 build-depends:
   - components/vala.yml
 sources:
-  - https://download.gnome.org/sources/dconf-editor/%{version:1}/dconf-editor-%{version}.tar.xz
+  - https://download.gnome.org/sources/dconf-editor/%{version:2}/dconf-editor-%{version}.tar.xz
 
 # TODO: check version

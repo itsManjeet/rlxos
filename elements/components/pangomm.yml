@@ -10,4 +10,4 @@ depends:
   - components/glibmm.yml
   - components/pango.yml
 sources:
-  - https://download.gnome.org/sources/pangomm/%{version:1}/pangomm-%{version}.tar.xz
+  - https://download.gnome.org/sources/pangomm/%{version:2}/pangomm-%{version}.tar.xz

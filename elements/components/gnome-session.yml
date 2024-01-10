@@ -16,4 +16,4 @@ depends:
   - components/upower.yml
   - components/gconf.yml
 sources:
-  - https://download.gnome.org/sources/gnome-session/%{version:1}/gnome-session-%{version}.tar.xz
+  - https://download.gnome.org/sources/gnome-session/%{version:2}/gnome-session-%{version}.tar.xz

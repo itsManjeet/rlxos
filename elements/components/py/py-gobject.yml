@@ -6,5 +6,5 @@ depends:
   - components/gobject-introspection.yml
   - components/py/py-cairo.yml
 sources:
-  - https://download.gnome.org/sources/pygobject/%{version:1}/pygobject-%{version}.tar.xz
+  - https://download.gnome.org/sources/pygobject/%{version:2}/pygobject-%{version}.tar.xz
 pre-script: mv -v tests/test_gdbus.py{,.nouse}

@@ -26,4 +26,4 @@ depends:
 build-depends:
   - components/gobject-introspection.yml
 sources:
-  - https://download.gnome.org/sources/cogl/%{version:1}/cogl-%{version}.tar.xz
+  - https://download.gnome.org/sources/cogl/%{version:2}/cogl-%{version}.tar.xz

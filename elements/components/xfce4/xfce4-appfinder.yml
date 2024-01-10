@@ -10,4 +10,4 @@ build-depends:
   - components/intltool.yml
 
 sources:
-  - https://archive.xfce.org/src/xfce/xfce4-appfinder/%{version:1}/xfce4-appfinder-%{version}.tar.bz2
+  - https://archive.xfce.org/src/xfce/xfce4-appfinder/%{version:2}/xfce4-appfinder-%{version}.tar.bz2

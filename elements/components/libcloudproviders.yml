@@ -10,4 +10,4 @@ depends:
   - components/glib.yml
 
 sources:
-  - https://download.gnome.org/sources/libcloudproviders/%{version:1}/libcloudproviders-%{version}.tar.xz
+  - https://download.gnome.org/sources/libcloudproviders/%{version:2}/libcloudproviders-%{version}.tar.xz

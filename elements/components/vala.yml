@@ -11,4 +11,4 @@ depends:
 build-depends:
   - components/graphviz.yml
 sources:
-  - https://download.gnome.org/sources/vala/%{version:1}/vala-%{version}.tar.xz
+  - https://download.gnome.org/sources/vala/%{version:2}/vala-%{version}.tar.xz

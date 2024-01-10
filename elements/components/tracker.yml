@@ -18,5 +18,5 @@ build-depends:
   - components/vala.yml
   - components/gobject-introspection.yml
 sources:
-  - https://download.gnome.org/sources/tracker/%{version:1}/tracker-%{version}.tar.xz
+  - https://download.gnome.org/sources/tracker/%{version:2}/tracker-%{version}.tar.xz
 # TODO: enable documentation

@@ -11,4 +11,4 @@ depends:
   - components/gnutls.yml
   - components/gsettings-desktop-schemas.yml
 sources:
-  - https://download.gnome.org/sources/glib-networking/%{version:1}/glib-networking-%{version}.tar.xz
+  - https://download.gnome.org/sources/glib-networking/%{version:2}/glib-networking-%{version}.tar.xz

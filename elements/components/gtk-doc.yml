@@ -11,5 +11,5 @@ depends:
   - components/glib.yml
 
 sources:
-  - https://download.gnome.org/sources/gtk-doc/%{version:1}/gtk-doc-%{version}.tar.xz
+  - https://download.gnome.org/sources/gtk-doc/%{version:2}/gtk-doc-%{version}.tar.xz
 # TODO: fix update url

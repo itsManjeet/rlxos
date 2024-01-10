@@ -10,5 +10,5 @@ depends:
 build-depends:
   - components/vala.yml
 sources:
-  - https://download.gnome.org/sources/baobab/%{version:1}/baobab-%{version}.tar.xz
+  - https://download.gnome.org/sources/baobab/%{version:2}/baobab-%{version}.tar.xz
 configure: --buildtype=release

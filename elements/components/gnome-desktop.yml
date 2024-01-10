@@ -17,4 +17,4 @@ depends:
 build-depends:
   - components/itstool.yml
 sources:
-  - https://download.gnome.org/sources/gnome-desktop/%{version:1}/gnome-desktop-%{version}.tar.xz
+  - https://download.gnome.org/sources/gnome-desktop/%{version:2}/gnome-desktop-%{version}.tar.xz

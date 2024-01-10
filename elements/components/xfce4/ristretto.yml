@@ -14,4 +14,4 @@ build-depends:
   - components/intltool.yml
   - components/file.yml
 sources:
-  - https://archive.xfce.org/src/apps/ristretto/%{version:1}/ristretto-%{version}.tar.bz2
+  - https://archive.xfce.org/src/apps/ristretto/%{version:2}/ristretto-%{version}.tar.bz2

@@ -6,7 +6,7 @@ variables:
   run-autogen: false
 
 sources:
-  - https://download.gnome.org/sources/libsigc++/%{version:1}/libsigc++-%{version}.tar.xz
+  - https://download.gnome.org/sources/libsigc++/%{version:2}/libsigc++-%{version}.tar.xz
 
 depends:
   - components/glibc.yml

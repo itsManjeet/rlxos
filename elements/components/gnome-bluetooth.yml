@@ -20,4 +20,4 @@ build-depends:
   - components/itstool.yml
   - components/gtk-doc.yml
 sources:
-  - https://download.gnome.org/sources/gnome-bluetooth/%{version:1}/gnome-bluetooth-%{version}.tar.xz
+  - https://download.gnome.org/sources/gnome-bluetooth/%{version:2}/gnome-bluetooth-%{version}.tar.xz

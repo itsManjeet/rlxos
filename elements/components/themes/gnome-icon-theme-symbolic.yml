@@ -4,4 +4,4 @@ about: GNOME Icon Theme Symbolic package
 depends:
   - components/themes/gnome-icon-theme.yml
 sources:
-  - https://download.gnome.org/sources/gnome-icon-theme-symbolic/%{version:1}/gnome-icon-theme-symbolic-%{version}.tar.xz
+  - https://download.gnome.org/sources/gnome-icon-theme-symbolic/%{version:2}/gnome-icon-theme-symbolic-%{version}.tar.xz

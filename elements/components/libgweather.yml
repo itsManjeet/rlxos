@@ -20,4 +20,4 @@ build-depends:
   - components/py/py-markupsafe.yml
   - components/py/py-pygments.yml
 sources:
-  - https://download.gnome.org/sources/libgweather/%{version:1}/libgweather-%{version}.tar.xz
+  - https://download.gnome.org/sources/libgweather/%{version:2}/libgweather-%{version}.tar.xz

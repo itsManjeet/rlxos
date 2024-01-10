@@ -26,4 +26,4 @@ build-depends:
   - components/gobject-introspection.yml
   - components/git.yml
 sources:
-  - https://download.gnome.org/sources/gtk/%{version:1}/gtk-%{version}.tar.xz
+  - https://download.gnome.org/sources/gtk/%{version:2}/gtk-%{version}.tar.xz

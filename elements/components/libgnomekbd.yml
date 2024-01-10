@@ -10,4 +10,4 @@ depends:
   - components/gtk.yml
 
 sources:
-  - https://download.gnome.org/sources/libgnomekbd/%{version:1}/libgnomekbd-%{version}.tar.xz
+  - https://download.gnome.org/sources/libgnomekbd/%{version:2}/libgnomekbd-%{version}.tar.xz

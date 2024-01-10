@@ -11,4 +11,4 @@ build-depends:
   - components/vala.yml
   # - components/glade.yml
 sources:
-  - https://download.gnome.org/sources/libpeas/%{version:1}/libpeas-%{version}.tar.xz
+  - https://download.gnome.org/sources/libpeas/%{version:2}/libpeas-%{version}.tar.xz

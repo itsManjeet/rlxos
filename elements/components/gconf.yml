@@ -16,4 +16,4 @@ depends:
   - components/gtk.yml
   - components/polkit.yml
 sources:
-  - https://download.gnome.org/sources/GConf/%{version:1}/GConf-%{version}.tar.xz
+  - https://download.gnome.org/sources/GConf/%{version:2}/GConf-%{version}.tar.xz

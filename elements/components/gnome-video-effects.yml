@@ -9,4 +9,4 @@ depends:
   - components/glibc.yml
 
 sources:
-  - https://download.gnome.org/sources/gnome-video-effects/%{version:1}/gnome-video-effects-%{version}.tar.xz
+  - https://download.gnome.org/sources/gnome-video-effects/%{version:2}/gnome-video-effects-%{version}.tar.xz

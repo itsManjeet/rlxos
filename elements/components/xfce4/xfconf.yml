@@ -7,4 +7,4 @@ depends:
 build-depends:
   - components/vala.yml
 sources:
-  - https://archive.xfce.org/src/xfce/xfconf/%{version:1}/xfconf-%{version}.tar.bz2
+  - https://archive.xfce.org/src/xfce/xfconf/%{version:2}/xfconf-%{version}.tar.bz2

@@ -18,4 +18,4 @@ build-depends:
   - components/gobject-introspection.yml
   - components/sysprof.yml
 sources:
-  - https://download.gnome.org/sources/gjs/%{version:1}/gjs-%{version}.tar.xz
+  - https://download.gnome.org/sources/gjs/%{version:2}/gjs-%{version}.tar.xz

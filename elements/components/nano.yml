@@ -11,4 +11,4 @@ depends:
   - components/file.yml
   - components/ncurses.yml
 sources:
-  - https://www.nano-editor.org/dist/v%{version:2}/nano-%{version}.tar.xz
+  - https://www.nano-editor.org/dist/v%{version:1}/nano-%{version}.tar.xz

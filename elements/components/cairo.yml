@@ -2,7 +2,7 @@ id: cairo
 version: 1.17.8
 about: A 2D graphics library with support for multiple output devices
 sources:
-  - https://www.cairographics.org/snapshots/cairo-%{version}.tar.xz
+  - https://gitlab.freedesktop.org/cairo/cairo/-/archive/%{version}/cairo-%{version}.tar.gz
 
 depends:
   - components/libpng.yml

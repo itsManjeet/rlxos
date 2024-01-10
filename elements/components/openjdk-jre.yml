@@ -24,11 +24,11 @@ build-depends:
 
 script: |-
   for bin in java jfr jrunscript jwebserver keytool rmiregistry ; do
-    install -v -D -m 0755 %{libdir}/openjdk-%{version:2}/bin/${bin} -t %{install-root}/%{libdir}/openjdk-%{version:2}/bin/
+    install -v -D -m 0755 %{libdir}/openjdk-%{version:1}/bin/${bin} -t %{install-root}/%{libdir}/openjdk-%{version:1}/bin/
   done
 
-  mkdir -p %{install-root}/%{libdir}/openjdk-%{version:2}/lib/
-  cp %{libdir}/openjdk-%{version:2}/lib/*.so %{install-root}/%{libdir}/openjdk-%{version:2}/lib/
-  cp -ar %{libdir}/openjdk-%{version:2}/lib/{jfr,jrt-fs.jar,jspawnhelper,jvm.cfg,modules,psfont*,security,server,tzdb.dat} %{install-root}/%{libdir}/openjdk-%{version:2}/lib/
+  mkdir -p %{install-root}/%{libdir}/openjdk-%{version:1}/lib/
+  cp %{libdir}/openjdk-%{version:1}/lib/*.so %{install-root}/%{libdir}/openjdk-%{version:1}/lib/
+  cp -ar %{libdir}/openjdk-%{version:1}/lib/{jfr,jrt-fs.jar,jspawnhelper,jvm.cfg,modules,psfont*,security,server,tzdb.dat} %{install-root}/%{libdir}/openjdk-%{version:1}/lib/
 
   install -v -D -m 0755 %{sysconfdir}/profile.d/openjdk.sh %{install-root}%{sysconfdir}/profile.d/openjdk.sh

@@ -7,4 +7,4 @@ depends:
   - components/gobject-introspection.yml
   - components/startup-notification.yml
 sources:
-  - https://download.gnome.org/sources/libwnck/%{version:2}/libwnck-%{version}.tar.xz
+  - https://download.gnome.org/sources/libwnck/%{version:1}/libwnck-%{version}.tar.xz

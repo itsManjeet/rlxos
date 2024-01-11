@@ -12,4 +12,4 @@ depends:
   - components/libxslt.yml
   - components/openssh.yml
 sources:
-  - https://download.gnome.org/sources/gnome-keyring/%{version:2}/gnome-keyring-%{version}.tar.xz
+  - https://download.gnome.org/sources/gnome-keyring/%{version:1}/gnome-keyring-%{version}.tar.xz

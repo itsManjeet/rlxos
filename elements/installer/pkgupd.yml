@@ -3,7 +3,7 @@ merge: [version.yml, elements/include/installer.inc]
 about: PKGUPD Installer ISO
 
 include:
-  - collections/xfce4.yml
+  - system/filesystem.yml
 
 include-root: /sysroot
 sysroot: /sysroot

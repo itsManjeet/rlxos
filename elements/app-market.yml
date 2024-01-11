@@ -10,6 +10,5 @@ depends:
 - apps/glade.yml
 - apps/pinta.yml
 - apps/peek.yml
-- apps/neofetch.yml
 - apps/visual-studio-code.yml
 

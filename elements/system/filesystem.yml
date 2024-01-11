@@ -1,6 +1,7 @@
 id: filesystem
 merge: [version.yml]
 strip: false
+force-rebuild: true
 
 include-parts:
   - doc

@@ -29,8 +29,7 @@ jobs:
           fi
           cat > version.yml << EOF
           version: ${VERSION}
-          variables:
-            ostree-branch: "x86_64/os/${VERSION}"
+          ostree-branch: "x86_64/os/${VERSION}"
           EOF
 
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
@@ -75,8 +74,7 @@ jobs:
           fi
           cat > version.yml << EOF
           version: ${VERSION}
-          variables:
-            ostree-branch: "x86_64/os/${VERSION}"
+          ostree-branch: "x86_64/os/${VERSION}"
           EOF
 
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
@@ -104,8 +102,7 @@ jobs:
           fi
           cat > version.yml << EOF
           version: ${VERSION}
-          variables:
-            ostree-branch: "x86_64/os/${VERSION}"
+          ostree-branch: "x86_64/os/${VERSION}"
           EOF
 
           echo "VERSION=${VERSION}" >> $GITHUB_ENV

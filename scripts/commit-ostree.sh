@@ -23,12 +23,8 @@ while [ $# -gt 0 ]; do
         --collection-id=*)
             collection_id="${1#--collection-id=}"
         ;;
-        --collection-id)
-            collection_id="${2}"
-            shift
-        ;;
-        --build-id)
-            build_id="${2}"
+        --build-id=*)
+            build_id="${1#--build-id=}"
             shift
         ;;
         --help)

@@ -27,6 +27,10 @@ while [ $# -gt 0 ]; do
             collection_id="${2}"
             shift
         ;;
+        --build-id)
+            build_id="${2}"
+            shift
+        ;;
         --help)
             help
             exit 0
@@ -103,8 +107,9 @@ ostree commit ${gpg_opts[*]}    \
     --branch="${ref}"           \
     --tree=ref="${commit}"      \
     --skip-if-unchanged         \
-    --subject="${SUBJECT:-''}"  \
-    --body="${BODY:-''}"
+    --add-metadata=ostree.commit.version=${build_id} \
+    --subject="${SUBJECT:-}"    \
+    --body="${BODY:-}"
 
 new_commit="$(ostree rev-parse "${ref}")"
 

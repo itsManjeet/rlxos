@@ -5,6 +5,7 @@ OSTREE_BRANCH 		    ?= $(CHANNEL)/$(COLLECTION)
 OSTREE_REPO 			?= ostree-repo
 OSTREE_GPG 				?= ostree-gpg
 ELEMENT_FILE			?= system/repo.yml
+BUILD_ID				?= 1
 
 define OSTREE_GPG_CONFIG
 Key-Type: DSA
@@ -58,5 +59,6 @@ update-ostree: files/rlxos.gpg
 	  --gpg-homedir=$(OSTREE_GPG)												\
 	  --gpg-sign=$$(cat $(OSTREE_GPG)/default-id)								\
 	  --collection-id=dev.rlxos.System											\
+	  --build-id=$(BUILD_ID)													\
 	  $(OSTREE_REPO) $(ELEMENT_FILE)											\
 	  $(OSTREE_BRANCH)

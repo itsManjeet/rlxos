@@ -25,7 +25,6 @@ while [ $# -gt 0 ]; do
         ;;
         --build-id=*)
             build_id="${1#--build-id=}"
-            shift
         ;;
         --help)
             help

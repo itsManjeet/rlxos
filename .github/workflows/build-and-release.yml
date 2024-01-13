@@ -51,13 +51,17 @@ jobs:
             ELEMENT_FILE=extensions/${ext}.yml make update-ostree
           done
 
+      - name: Build AppImages
+        run: |
+          pkgupd ignite build app-market.yml
+
   build-installer-iso:
     name: Build Installer ISO
     runs-on: self-hosted
     timeout-minutes: 47000
     environment: deploy
     needs: [build]
-    if: github.ref == 'refs/heads/stable'
+    if: github.ref == 'refs/heads/stable' || github.ref == 'refs/heads/staging'
     strategy:
       matrix:
         variant: 
@@ -107,9 +111,8 @@ jobs:
 
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
-      - name: Build registered AppImages
+      - name: Generate AppImages meta
         run: |-
-          pkgupd ignite build app-market.yml
           pkgupd ignite meta ${SERVER_REPO_PATH}/${VERSION}
 
       - name: Extract icons

@@ -8,6 +8,22 @@ If you are using the secure (ostree-based) version of rlxos, you can enjoy the f
 2. **Rollback Option:** You can always revert to a previous version of your system in case of faulty updates.
 3. **Delta Transactions:** You will receive only the changes instead of the complete updated file or packages, unlike in traditional packaging systems.
 
-However, if you are using the unlocked (pkgupd-based) version of rlxos, you might miss out on these benefits in exchange for increased customizability.
 
-Follow the appropriate guide below according to your system version for applying updates.
+### Checking for Updates
+
+Before applying updates, it is advisable to review the changelog. To check for updates using `updatectl`, execute the following command:
+
+`updatectl update --dry-run`
+
+### Applying Updates
+
+You have the option to directly update the system or review the changelog before applying updates.
+
+`updatectl update`
+
+
+### Checking System Status
+
+To view the system version, available rollback version, and installed extensions:
+
+`updatectl status`

@@ -24,8 +24,8 @@ jobs:
       - name: Configure Version
         run: |
           VERSION="${GITHUB_REF#refs/*/}"
-          if [ $VERSION != "stable" ] && [ $VERSION != "staging" ] ; then
-            VERSION="experimental"
+          if [ $VERSION != "stable" ] && [ $VERSION != "preview" ] ; then
+            VERSION="unstable"
           fi
           cat > version.yml << EOF
           version: ${VERSION}
@@ -42,7 +42,7 @@ jobs:
         run: |
           echo "${{ github.event.head_commit.message }}" > commit_message
 
-          OSTREE_BRANCH="x86_64/os/${VERSION}" make update-ostree
+          OSTREE_BRANCH="x86_64/os/${VERSION}" BUILD_ID="${{ github.run_number }}" make update-ostree
 
       - name: Update Extensions
         run: |

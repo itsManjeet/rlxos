@@ -119,6 +119,7 @@ depends:
   - components/startup-notification.yml
 build-depends:
   - components/gobject-introspection.yml
+  - components/glade.yml
   - components/vala.yml
 
 sources:

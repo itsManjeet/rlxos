@@ -24,6 +24,8 @@ depends:
   - components/ohmyzsh.yml
   - components/systemd.yml
   - components/tar.yml
+  - components/man-pages.yml
+  - components/man-db.yml
   - components/util-linux.yml
   - components/which.yml
   - components/xz.yml

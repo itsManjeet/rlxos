@@ -34,9 +34,9 @@ jobs:
 
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
-      - name: Build filesystem
+      - name: Build system packages
         run: |
-          pkgupd ignite build system/filesystem.yml
+          pkgupd ignite build system/deps.yml
       
       - name: Update Ostree
         run: |

@@ -260,7 +260,7 @@ depends:
   - system/etc-default-useradd.yml
   - system/x11-config.yml
   - system/ostree-config.yml
-  - system/updatectl.yml
+  - system/updates.yml
 
   # Laptop and Touch devices
   - components/2in1.yml

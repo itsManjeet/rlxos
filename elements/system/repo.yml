@@ -45,7 +45,7 @@ initial-commands: |-
   EOT
 
 include:
-  - system/filesystem.yml
+  - system/deps.yml
 
 include-parts:
   - doc
@@ -53,4 +53,4 @@ include-parts:
 build-depends:
   - components/ostree.yml
   - system/ostree-config.yml
-  - system/updatectl.yml
+  - system/updates.yml

@@ -1,0 +1,21 @@
+id: updates
+version: 0.2.1
+about: System updates server
+
+depends:
+  - components/ostree.yml
+
+build-depends:
+  - components/rustc.yml
+
+post-script: |-
+  install -v -D -m 0755 -t %{install-root}/%{libdir}/dev.rlxos.updates target/release/%{id}
+  install -v -D -m 0644 -t %{install-root}/%{datadir}/dbus-1/system.d/ data/dev.rlxos.updates.conf
+
+  mkdir -p %{install-root}%{libdir}/systemd/system/
+  sed 's@libexecdir@%{libdir}@g' data/system-updates.service.in > %{install-root}%{libdir}/systemd/system/system-updates.service
+
+
+
+sources:
+  - updates-%{version}.tar.gz::https://github.com/itsManjeet/updates/archive/refs/tags/%{version}.tar.gz

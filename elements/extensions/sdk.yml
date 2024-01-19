@@ -2,7 +2,7 @@ id: sdk
 about: RLXOS Software Development Kit
 
 include:
-  - system/filesystem-devel.yml
+  - system/deps.yml
   - components/gcc.yml
   - components/kernel-headers.yml
   - components/binutils.yml
@@ -28,7 +28,9 @@ include:
   - components/valgrind.yml
   - components/xfce4/xfce4-dev-tools.yml
 
-include-parts: [devel]
+include-parts: 
+  - devel
+
 merge: [elements/include/extension.inc]
 build-depends:
-  - system/filesystem.yml
+  - system/deps.yml

@@ -1,7 +1,7 @@
 id: updates
 version: 0.2.1
 about: System updates server
-
+commit: bf12d27ce537ef979dc0467ad0cb60ba80421f27
 depends:
   - components/ostree.yml
 
@@ -18,4 +18,4 @@ post-script: |-
 
 
 sources:
-  - updates-%{version}.tar.gz::https://github.com/itsManjeet/updates/archive/refs/tags/%{version}.tar.gz
+  - updates-%{commit}.tar.gz::https://github.com/itsManjeet/updates/archive/%{commit}.tar.gz

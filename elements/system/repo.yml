@@ -12,6 +12,8 @@ initial-commands: |-
     sh -e $i
   done
 
+  rmdir /install-root
+
   # TODO: should be enabled via systemd user-preset
   systemctl enable --global appimaged.service
 
@@ -49,6 +51,7 @@ include:
 
 include-parts:
   - doc
+  - devel
 
 build-depends:
   - components/ostree.yml

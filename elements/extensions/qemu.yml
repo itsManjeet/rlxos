@@ -2,8 +2,8 @@ id: qemu
 about: RLXOS QEMU Virtualization Kit
 include:
   - components/qemu.yml
-  - components/libcacard.yml
-  - components/usbredir.yml
+  - components/libvirt.yml
+  - components/libvirt-glib.yml
 
 include-depends: false
 

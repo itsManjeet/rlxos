@@ -12,6 +12,12 @@ initial-commands: |-
     sh -e $i
   done
 
+  mkdir -p /Applications
+  for app in /*.app ; do
+    mv ${app} /Applications/
+    rm ${app}.zsync
+  done
+
   rmdir /install-root
 
   # TODO: should be enabled via systemd user-preset

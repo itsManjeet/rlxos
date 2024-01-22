@@ -4,6 +4,9 @@ about: A full virtualization solution for Linux on x86 hardware containing virtu
 
 build-type: autotools
 
+strip-skip-mime:
+  - application/octet-stream
+
 post-script: |-
   install -v -D -m 644 /dev/stdin %{install-root}/%{libdir}/udev/rules.d/65-kvm.rules << "EOF"
   KERNEL=="vhost-net", GROUP="kvm", MODE="0660", TAG+="uaccess", OPTIONS+="static_node=vhost-net"

@@ -50,8 +50,8 @@ jobs:
             extension_path="$(echo ${extension_path} | cut -d '/' -f2-)"
             extension="$(basename ${extension_path})"
             extension="${extension%.*}"
-            OSTREE_BRANCH="x86_64/extension/${ext}/${VERSION}" \
-            ELEMENT_FILE=extensions/${ext}.yml make update-ostree
+            OSTREE_BRANCH="x86_64/extension/${extension}/${VERSION}" \
+            ELEMENT_FILE=${extension_path} make update-ostree
           done
 
       - name: Build AppImages

@@ -1,8 +1,14 @@
 id: samba
-version: 4.19.0
+version: 4.19.3
 about: Package provides file and print services to SMB/CIFS clients and Windows networking to Linux clients
 
-build-type: autoconf
+build-type: autotools
+
+run-autogen: false
+seperate-build-dir: false
+
+pre-script: |-
+  patch -Np1 -i fix-root-build.patch
 
 configure: >-
   --enable-fhs
@@ -49,3 +55,4 @@ build-depends:
   - components/openldap.yml
 sources:
   - https://www.samba.org/ftp/samba/stable/samba-%{version}.tar.gz
+  - patches/samba/fix-root-build.patch

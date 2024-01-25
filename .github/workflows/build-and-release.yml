@@ -46,14 +46,20 @@ jobs:
 
       - name: Update Extensions
         run: |
-          for ext in sdk i3 awesome wm-kit; do
-            OSTREE_BRANCH="x86_64/extension/${ext}/${VERSION}" \
-            ELEMENT_FILE=extensions/${ext}.yml make update-ostree
+          for extension_path in elements/extensions/*.yml; do
+            extension_path="$(echo ${extension_path} | cut -d '/' -f2-)"
+            extension="$(basename ${extension_path})"
+            extension="${extension%.*}"
+            OSTREE_BRANCH="x86_64/extension/${extension}/${VERSION}" \
+            ELEMENT_FILE=${extension_path} make update-ostree
           done
 
       - name: Build AppImages
         run: |
           pkgupd ignite build app-market.yml
+      
+      - name: Build Installer ISO
+        run: pkgupd ignite build installer/ostree.yml
 
   build-installer-iso:
     name: Build Installer ISO
@@ -62,11 +68,6 @@ jobs:
     environment: deploy
     needs: [build]
     if: github.ref == 'refs/heads/stable' || github.ref == 'refs/heads/staging'
-    strategy:
-      matrix:
-        variant: 
-          - pkgupd
-          - ostree
     steps:
       - uses: actions/checkout@v1
 
@@ -83,13 +84,10 @@ jobs:
 
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
-      - name: Build Installer ISO
-        run: pkgupd ignite build installer/${{matrix.variant}}.yml
-
       - name: Update installer ISO
         run: |
-          pkgupd ignite checkout installer/${{matrix.variant}}.yml ${SERVER_REPO_PATH}/releases/${VERSION}/${{matrix.variant}}
-          (cd ${SERVER_REPO_PATH}/releases/${VERSION}/${{matrix.variant}}/; zsyncmake -b 2048 -C -u ${SERVER_REPO_URL}/releases/${VERSION}/${{matrix.variant}}/rlxos-${VERSION}-${{matrix.variant}}-installer.iso rlxos-${VERSION}-${{matrix.variant}}-installer.iso)
+          pkgupd ignite checkout installer/ostree.yml ${SERVER_REPO_PATH}/releases/${VERSION}/ostree
+          (cd ${SERVER_REPO_PATH}/releases/${VERSION}/ostree/; zsyncmake -b 2048 -C -u ${SERVER_REPO_URL}/releases/${VERSION}/ostree/rlxos-${VERSION}-ostree-installer.iso rlxos-${VERSION}-ostree-installer.iso)
 
   update-market:
     name: Update Market

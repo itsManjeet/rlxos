@@ -241,6 +241,7 @@ depends:
   - components/gufw.yml
   - components/onboard.yml
   - components/blueman.yml
+  - components/wine.yml
 
 
   # AppImage

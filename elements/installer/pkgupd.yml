@@ -3,7 +3,7 @@ merge: [version.yml, elements/include/installer.inc]
 about: PKGUPD Installer ISO
 
 include:
-  - system/filesystem.yml
+  - system/deps.yml
 
 include-root: /sysroot
 sysroot: /sysroot

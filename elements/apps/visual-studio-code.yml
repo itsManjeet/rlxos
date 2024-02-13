@@ -3,10 +3,18 @@ version: 1.85.1
 about: unofficial release visual studio code release
 merge: [elements/include/appimage.inc]
 build-dir: "."
+
+prepare-appimage: |-
+  install -v -D -m 0755 /dev/stdin %{install-root}/AppRun << "EOF"
+  #!/bin/sh
+  SELF=$(readlink -f "$0")
+  HERE=${SELF%/*}
+  exec ${HERE}/code "$@"
+  EOF
+
 script: |-
   mkdir -p %{install-root}
   mv VSCode-linux-x64/* %{install-root}/
-  ln -svf ../code %{install-root}/bin/code
   
   install -v -D -m 0644 %{install-root}/resources/app/resources/linux/code.png %{install-root}/%{datadir}/icons/%{id}.png 
   install -v -D -m 0644 /dev/stdin %{install-root}/%{datadir}/applications/%{id}.desktop << "EOF"

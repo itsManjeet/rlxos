@@ -1,7 +1,7 @@
 id: updates
 version: 0.2.1
 about: System updates server
-commit: ee8d09178b26ac834473c1185dcdc58b9a12ff69
+commit: 1412ffb73640cc90594da1986584cc240b77b2a9
 depends:
   - components/ostree.yml
 

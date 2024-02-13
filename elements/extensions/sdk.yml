@@ -27,6 +27,7 @@ include:
   - components/strace.yml
   - components/valgrind.yml
   - components/uncrustify.yml
+  - components/libyaml-cpp.yml
   - components/xfce4/xfce4-dev-tools.yml
 
 include-parts: 

@@ -30,6 +30,7 @@ jobs:
           cat > version.yml << EOF
           version: ${VERSION}
           ostree-branch: "x86_64/os/${VERSION}"
+          build-id: ${{ github.run_number }}
           EOF
 
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
@@ -68,6 +69,11 @@ jobs:
     environment: deploy
     needs: [build]
     if: github.ref == 'refs/heads/stable' || github.ref == 'refs/heads/staging'
+    strategy:
+      matrix:
+        variant:
+          - pkgupd
+          - ostree
     steps:
       - uses: actions/checkout@v1
 
@@ -86,8 +92,8 @@ jobs:
 
       - name: Update installer ISO
         run: |
-          pkgupd ignite checkout installer/ostree.yml ${SERVER_REPO_PATH}/releases/${VERSION}/ostree
-          (cd ${SERVER_REPO_PATH}/releases/${VERSION}/ostree/; zsyncmake -b 2048 -C -u ${SERVER_REPO_URL}/releases/${VERSION}/ostree/rlxos-${VERSION}-ostree-installer.iso rlxos-${VERSION}-ostree-installer.iso)
+          pkgupd ignite checkout installer/${{matrix.variant}}.yml ${SERVER_REPO_PATH}/releases/${VERSION}/${{matrix.variant}}
+          (cd ${SERVER_REPO_PATH}/releases/${VERSION}/${{matrix.variant}}/; zsyncmake -b 2048 -C -u ${SERVER_REPO_URL}/releases/${VERSION}/${{matrix.variant}}/rlxos-${VERSION}-${{matrix.variant}}-installer.iso rlxos-${VERSION}-${{matrix.variant}}-installer.iso)
 
   update-market:
     name: Update Market

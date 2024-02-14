@@ -70,6 +70,7 @@ depends:
   - components/dotnet-runtime.yml
   - components/openjdk-jre.yml
   - components/xdg-desktop-portal-gtk.yml
+  - components/xdg-desktop-portal-xapp.yml
   - components/xdg-dbus-proxy.yml
   - components/wireplumber.yml
   - components/gnome-keyring.yml
@@ -260,8 +261,6 @@ depends:
   - system/etc-shells.yml
   - system/etc-default-useradd.yml
   - system/x11-config.yml
-  - system/ostree-config.yml
-  - system/updates.yml
 
   # Laptop and Touch devices
   - components/2in1.yml

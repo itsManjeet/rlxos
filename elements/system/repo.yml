@@ -63,4 +63,3 @@ include-parts:
 build-depends:
   - components/ostree.yml
   - system/ostree-config.yml
-  - system/updates.yml

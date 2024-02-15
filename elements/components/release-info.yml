@@ -14,11 +14,11 @@ script: |
   ID=rlxos
   PRETTY_NAME="rlxos GNU/Linux"
   VERSION_CODENAME="%{version}"
-  IMAGE_VERSION="%{version}"
+  IMAGE_VERSION="%{build-id}"
   EOF
 
   cat > %{install-root}/%{sysconfdir}/lsb-release <<EOF
   DISTRIB_ID="rlxos GNU/Linux"
-  DISTRIB_RELEASE="%{version}"
+  DISTRIB_RELEASE="%{version} %{build-id}"
   DISTRIB_DESCRIPTION="rlxos %{version}"
   EOF

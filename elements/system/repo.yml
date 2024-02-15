@@ -54,6 +54,7 @@ initial-commands: |-
 
 include:
   - system/deps.yml
+  - system/ostree-config.yml
 
 include-parts:
   - doc
@@ -62,4 +63,3 @@ include-parts:
 build-depends:
   - components/ostree.yml
   - system/ostree-config.yml
-  - system/updates.yml

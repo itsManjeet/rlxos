@@ -1,7 +1,10 @@
 id: pkgupd
 merge: [version.yml]
 about: Package Management and Updater Daemon
-commit: 0512cfb16227271246d53f65aaa12c0708359c1e
+commit: af38cc7cd9424dc573db74712059e2d3326f1e7b
+
+pre-script: |-
+  sed -i 's#yaml-cpp::yaml-cpp#yaml-cpp#g' src/CMakeLists.txt
 
 post-script: |-
   install -v -D -m 0644 /dev/stdin %{install-root}/%{sysconfdir}/%{id}.yml << "EOF"
@@ -10,10 +13,12 @@ post-script: |-
 
 depends:
   - components/glibc.yml
+  - components/libyaml-cpp.yml
+  - components/curl.yml
+  - components/ostree.yml
 
 build-depends:
-  - components/git.yml
-  - components/libyaml-cpp.yml
+  - components/git.yml  
 
 sources:
   - pkgupd-%{commit}.tar.gz::https://github.com/itsManjeet/pkgupd/archive/%{commit}.tar.gz

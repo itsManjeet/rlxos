@@ -1,11 +1,10 @@
 id: pkgupd
 merge: [version.yml]
 about: Package Management and Updater Daemon
-commit: af38cc7cd9424dc573db74712059e2d3326f1e7b
+commit: 4b9e6d773deca1d95e8e2bee39f976a20e08d967
 
 pre-script: |-
-  sed -i 's#yaml-cpp::yaml-cpp#yaml-cpp#g' src/CMakeLists.txt
-
+  sed -i 's#${YAML_CPP_LIBRARIES}#yaml-cpp#g' src/CMakeLists.txt
 post-script: |-
   install -v -D -m 0644 /dev/stdin %{install-root}/%{sysconfdir}/%{id}.yml << "EOF"
   version: %{version}

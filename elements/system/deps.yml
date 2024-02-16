@@ -243,6 +243,7 @@ depends:
   - components/onboard.yml
   - components/blueman.yml
   - components/wine.yml
+  - components/wlroots.yml
 
 
   # AppImage

@@ -1,5 +1,5 @@
 id: wlroots
-version: 0.16.2
+version: 0.17.1
 about: A modular wayland compositor library
 depends:
   - components/systemd.yml

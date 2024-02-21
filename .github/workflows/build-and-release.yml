@@ -13,7 +13,7 @@ env:
   OSTREE_GPG: ${{secrets.OSTREE_GPG}}
   VERSION: ${{ github.run_number }}
   CHANNEL: ${{ endsWith(github.ref, 'stable') && 'stable' || (endsWith(github.ref, 'preview' && 'preview' || 'unstable')) }}
-  OSTREE_BRANCH: "x86_64/os/${{ env.CHANNEL }}"
+  OSTREE_BRANCH: "x86_64/os/${{ endsWith(github.ref, 'stable') && 'stable' || (endsWith(github.ref, 'preview' && 'preview' || 'unstable')) }}"
 
 jobs:
   build:

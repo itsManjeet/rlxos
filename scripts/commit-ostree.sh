@@ -76,8 +76,8 @@ on_exit() {
 }
 trap on_exit EXIT
 
-${IGNITE} build "${element}"
-${IGNITE} checkout "${element}" "${checkout}"
+${IGNITE} cache-path="${CACHE_PATH}" build "${element}"
+${IGNITE} cache-path="${CACHE_PATH}" checkout "${element}" "${checkout}"
 
 if ! [ -d "${OSTREE_REPO}" ]; then
     ostree init --repo="${OSTREE_REPO}" --mode=archive
@@ -102,7 +102,7 @@ ostree commit ${gpg_opts[*]}    \
     --branch="${ref}"           \
     --tree=ref="${commit}"      \
     --skip-if-unchanged         \
-    --add-metadata=ostree.commit.version="${version}" \
+    --add-metadata=version="${version}" \
     --subject="${SUBJECT:-}"    \
     --body="${BODY:-}"
 

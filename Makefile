@@ -5,6 +5,7 @@ OSTREE_GPG 				?= ostree-gpg
 VERSION					?= 2.0
 CHANNEL					?= unstable
 IGNITE					?= build/src/ignite/ignite
+CACHE_PATH				?= build/
 
 define OSTREE_GPG_CONFIG
 Key-Type: DSA
@@ -21,12 +22,13 @@ endef
 
 export OSTREE_GPG_CONFIG
 export IGNITE
+export CACHE_PATH
 
 .PHONY: $(IGNITE) clean all docs version.yml apps
 
 all: $(IGNITE) version.yml
 ifdef ELEMENT
-	$(IGNITE) build $(ELEMENT)
+	$(IGNITE) cache-path=$(CACHE_PATH) build $(ELEMENT)
 endif
 
 build/build.ninja: CMakeLists.txt
@@ -59,7 +61,7 @@ files/rlxos.gpg: $(OSTREE_GPG)/key-config
 
 update-app-market:
 ifdef MARKET_PATH
-	$(IGNITE) meta $(MARKET_PATH)
+	$(IGNITE) cache-path=$(CACHE_PATH) meta $(MARKET_PATH)
 	./scripts/extract-icons.sh $(MARKET_PATH)/../apps/ $(MARKET_PATH)/../icons/
 else
 	@echo "no MARKET_PATH specified"

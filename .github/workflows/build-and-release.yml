@@ -9,6 +9,7 @@ env:
   NO_PROGRESS: 1
   SERVER_REPO_PATH: ${{secrets.SERVER_REPO_PATH}}
   SERVER_REPO_URL: ${{secrets.SERVER_REPO_URL}}
+  CACHE_PATH: ${{secrets.SERVER_REPO_PATH}}
   OSTREE_REPO: ${{secrets.OSTREE_REPO}}
   OSTREE_GPG: ${{secrets.OSTREE_GPG}}
   VERSION: ${{ github.run_number }}

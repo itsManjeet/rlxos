@@ -6,7 +6,7 @@ on:
       - "docs/**"
 
 env:
-  NO_PRINT_PROGRESS: 1
+  NO_PROGRESS: 1
   SERVER_REPO_PATH: ${{secrets.SERVER_REPO_PATH}}
   SERVER_REPO_URL: ${{secrets.SERVER_REPO_URL}}
   OSTREE_REPO: ${{secrets.OSTREE_REPO}}

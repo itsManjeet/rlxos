@@ -1,4 +1,4 @@
-id: pkgupd
+id: sysroot
 version: 2.0.0
 about: Package Management and Updater Daemon
 merge: [ elements/include/rlxos.inc ]

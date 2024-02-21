@@ -4,7 +4,7 @@ OSTREE_REPO 			?= ostree-repo
 OSTREE_GPG 				?= ostree-gpg
 VERSION					?= 2.0
 CHANNEL					?= unstable
-IGNITE					?= build/bin/ignite/ignite
+IGNITE					?= build/src/ignite/ignite
 
 define OSTREE_GPG_CONFIG
 Key-Type: DSA

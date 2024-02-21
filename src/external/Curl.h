@@ -3,7 +3,6 @@
 
 #include "json.h"
 #include <curl/curl.h>
-#include <format>
 #include <fstream>
 #include <utility>
 

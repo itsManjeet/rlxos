@@ -81,7 +81,7 @@ struct Application {
         handler h = nullptr;
         int count = -1;
         for (int i = 1; i < argc; i++) {
-            if (auto arg = std::string(argv[i]); arg.contains('=')) {
+            if (auto arg = std::string(argv[i]); arg.find('=') == std::string::npos) {
                 auto idx = arg.find('=');
                 ctxt.values[arg.substr(0, idx)] = arg.substr(idx + 1);
             } else if (h == nullptr && handlers.contains(argv[i])) {

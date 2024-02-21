@@ -29,7 +29,10 @@ ifdef ELEMENT
 	$(IGNITE) build $(ELEMENT)
 endif
 
-$(IGNITE): src/ignite/CMakeLists.txt
+build/build.ninja: CMakeLists.txt
+	cmake -B build
+
+$(IGNITE): build/build.ninja src/ignite/CMakeLists.txt
 	@cmake --build build --target ignite
 
 clean:

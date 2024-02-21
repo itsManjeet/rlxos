@@ -1,7 +1,12 @@
 project-name: rlxos
 project-version: 2400
 
+arch: "x86_64"
+triplet: "x86_64-linux-gnu"
+artifact-server: https://repo.rlxos.dev/
+
 merge:
   - include/compiler.yml
   - include/environ.yml
   - include/variables.yml
+  - include/strip.yml

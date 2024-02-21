@@ -1,7 +1,5 @@
 id: initial-setup
-merge: [version.yml]
-release: 12
-
+version: 0.0.1
 about: System Initial Setup
 
 commit: 42a23b5392f075e6166bc0d62eca36031c32bdab

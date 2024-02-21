@@ -1,5 +1,6 @@
 id: core
-merge: [version.yml,elements/include/meta.inc]
+version: 2.0
+merge: [elements/include/meta.inc]
 about: rlxos core components
 
 depends:

@@ -11,6 +11,9 @@ env:
   SERVER_REPO_URL: ${{secrets.SERVER_REPO_URL}}
   OSTREE_REPO: ${{secrets.OSTREE_REPO}}
   OSTREE_GPG: ${{secrets.OSTREE_GPG}}
+  VERSION: ${{ github.run_number }}
+  CHANNEL: ${{ endsWith(github.ref, 'stable') && 'stable' || (endsWith(github.ref, 'preview' && 'preview' || 'unstable')) }}
+  OSTREE_BRANCH: "x86_64/os/${{ env.CHANNEL }}"
 
 jobs:
   build:
@@ -20,30 +23,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-
-      - name: Configure Version
-        run: |
-          VERSION="${GITHUB_REF#refs/*/}"
-          if [ $VERSION != "stable" ] && [ $VERSION != "preview" ] ; then
-            VERSION="unstable"
-          fi
-          cat > version.yml << EOF
-          version: ${VERSION}
-          ostree-branch: "x86_64/os/${VERSION}"
-          build-id: ${{ github.run_number }}
-          EOF
-
-          echo "VERSION=${VERSION}" >> $GITHUB_ENV
-
       - name: Build system packages
-        run: |
-          pkgupd ignite build system/deps.yml
-      
-      - name: Update Ostree
-        run: |
-          echo "${{ github.event.head_commit.message }}" > commit_message
+        run: make ELEMENT=system/deps.yml
 
-          OSTREE_BRANCH="x86_64/os/${VERSION}" BUILD_ID="${{ github.run_number }}" make update-ostree
+      - name: Write changelog
+        run: echo "${{ github.event.head_commit.message }}" > ChangeLog
+
+      - name: Update Ostree
+        run: make update-ostree
 
       - name: Update Extensions
         run: |
@@ -52,72 +39,36 @@ jobs:
             extension="$(basename ${extension_path})"
             extension="${extension%.*}"
             OSTREE_BRANCH="x86_64/extension/${extension}/${VERSION}" \
-            ELEMENT_FILE=${extension_path} make update-ostree
+            ELEMENT=${extension_path} make update-ostree
           done
 
       - name: Build AppImages
-        run: |
-          pkgupd ignite build app-market.yml
-      
+        run: make ELEMENT=app-market.yml
+
       - name: Build Installer ISO
-        run: pkgupd ignite build installer/ostree.yml
+        run: make ELEMENT=installer/ostree.yml
 
   build-installer-iso:
     name: Build Installer ISO
     runs-on: self-hosted
     timeout-minutes: 47000
     environment: deploy
-    needs: [build]
-    if: github.ref == 'refs/heads/stable' || github.ref == 'refs/heads/staging'
-    strategy:
-      matrix:
-        variant:
-          - pkgupd
-          - ostree
+    needs: [ build ]
+    if: github.ref == 'refs/heads/stable' || github.ref == 'refs/heads/preview'
+
     steps:
       - uses: actions/checkout@v1
-
-      - name: Configure Version
-        run: |
-          VERSION="${GITHUB_REF#refs/*/}"
-          if [ $VERSION != "stable" ] && [ $VERSION != "staging" ] ; then
-            VERSION="experimental"
-          fi
-          cat > version.yml << EOF
-          version: ${VERSION}
-          ostree-branch: "x86_64/os/${VERSION}"
-          EOF
-
-          echo "VERSION=${VERSION}" >> $GITHUB_ENV
-
       - name: Update installer ISO
         run: |
-          pkgupd ignite checkout installer/${{matrix.variant}}.yml ${SERVER_REPO_PATH}/releases/${VERSION}/${{matrix.variant}}
-          (cd ${SERVER_REPO_PATH}/releases/${VERSION}/${{matrix.variant}}/; zsyncmake -b 2048 -C -u ${SERVER_REPO_URL}/releases/${VERSION}/${{matrix.variant}}/rlxos-${VERSION}-${{matrix.variant}}-installer.iso rlxos-${VERSION}-${{matrix.variant}}-installer.iso)
+          pkgupd ignite checkout installer/image.yml ${SERVER_REPO_PATH}/releases/${CHANNEL}/
+          (cd ${SERVER_REPO_PATH}/releases/${CHANNEL}/; zsyncmake -b 2048 -C -u ${SERVER_REPO_URL}/releases/${CHANNEL}/rlxos-${VERSION}-installer.iso rlxos-${VERSION}-installer.iso)
 
   update-market:
     name: Update Market
     runs-on: self-hosted
-    needs: [build-installer-iso]
+    needs: [ build-installer-iso ]
     if: github.ref == 'refs/heads/stable'
     steps:
       - uses: actions/checkout@v1
-      - name: Configure Version
-        run: |
-          VERSION="${GITHUB_REF#refs/*/}"
-          if [ $VERSION != "stable" ] && [ $VERSION != "staging" ] ; then
-            VERSION="experimental"
-          fi
-          cat > version.yml << EOF
-          version: ${VERSION}
-          ostree-branch: "x86_64/os/${VERSION}"
-          EOF
-
-          echo "VERSION=${VERSION}" >> $GITHUB_ENV
-
       - name: Generate AppImages meta
-        run: |-
-          pkgupd ignite meta ${SERVER_REPO_PATH}/${VERSION}
-
-      - name: Extract icons
-        run: ./scripts/extract-icons.sh ${SERVER_REPO_PATH}/apps/ ${SERVER_REPO_PATH}/icons/
+        run: make update-app-market MARKET_PATH="${SERVER_REPO_PATH}/${CHANNEL}"

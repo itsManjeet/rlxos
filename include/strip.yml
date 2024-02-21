@@ -1,0 +1,6 @@
+strip-mimetype:
+  - application/x-sharedlib
+  - application/x-pie-executable
+  - application/x-archive
+  - application/x-object
+  - application/x-executable

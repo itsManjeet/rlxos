@@ -6,6 +6,7 @@ OSTREE_GPG 				?= ostree-gpg
 VERSION					?= 2.0
 IGNITE					?= build/src/ignite/ignite
 CACHE_PATH				?= build/
+DESTDIR					?= checkout/
 
 -include config.mk
 
@@ -32,6 +33,23 @@ all: $(IGNITE) version.yml ostree-branch.yml
 ifdef ELEMENT
 	$(IGNITE) cache-path=$(CACHE_PATH) build $(ELEMENT)
 endif
+
+status: $(IGNITE) version.yml ostree-branch.yml
+ifdef ELEMENT
+	$(IGNITE) cache-path=$(CACHE_PATH) status $(ELEMENT)
+else
+	@echo "no ELEMENT specified"
+	exit 1
+endif
+
+checkout: $(IGNITE) version.yml ostree-branch.yml
+ifdef ELEMENT
+	$(IGNITE) cache-path=$(CACHE_PATH) checkout $(ELEMENT) $(DESTDIR)
+else
+	@echo "no ELEMENT specified"
+	exit 1
+endif
+
 
 build/build.ninja: CMakeLists.txt
 	cmake -B build

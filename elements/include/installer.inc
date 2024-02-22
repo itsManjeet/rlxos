@@ -68,10 +68,10 @@ post-script: |-
             -no-emul-boot \
             -isohybrid-gpt-basdat \
             -volid %{installer-volume-id} \
-        -o %{install-root}/rlxos-%{version}-%{id}.iso ISO/
+        -o %{install-root}/rlxos-%{version}-installer.iso ISO/
 
     cd %{install-root}
-    sha256sum rlxos-%{version}-%{id}.iso >rlxos-%{version}-%{id}.iso.sha265sum
+    sha256sum rlxos-%{version}-installer.iso >rlxos-%{version}-installer.iso.sha265sum
 
 
 build-depends:

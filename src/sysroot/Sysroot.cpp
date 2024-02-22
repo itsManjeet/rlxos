@@ -17,7 +17,7 @@
 
 #include "Sysroot.h"
 
-#include "../Common/Colors.h"
+#include "../common/Colors.h"
 #include "Error.h"
 #include <algorithm>
 #include <filesystem>

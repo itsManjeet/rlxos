@@ -61,7 +61,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: Update installer ISO
         run: |
-          make ELEMENT=installer/image.yml DESTDIR=${SERVER_REPO_PATH}/releases/${CHANNEL}/
+          make checkout ELEMENT=installer/image.yml DESTDIR=${SERVER_REPO_PATH}/releases/${CHANNEL}/
           (cd ${SERVER_REPO_PATH}/releases/${CHANNEL}/; zsyncmake -b 2048 -C -u ${SERVER_REPO_URL}/releases/${CHANNEL}/rlxos-${VERSION}-installer.iso rlxos-${VERSION}-installer.iso)
 
   update-market:

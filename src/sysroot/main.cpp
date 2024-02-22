@@ -30,6 +30,7 @@ struct SysrootApp : Application {
         REGISTER_COMMAND(SysrootApp, install, "Install system extensions", -1);
         REGISTER_COMMAND(SysrootApp, remove, "Remove system extensions", -1);
         REGISTER_COMMAND(SysrootApp, list, "List available extensions", 0);
+        REGISTER_COMMAND(SysrootApp, update, "Check and apply for system updates", 0);
     }
 
     void init() override { backend = std::make_unique<Sysroot>(true); }

@@ -3,7 +3,7 @@ about: A linker, an assembler, and other tools for handling object files
 
 pre-script: |-
   sed -i '/^development=/s/true/false/' bfd/development.sh
-  patch -Np1 -i patches/binutils/gold-warn-unsupported.patch
+  patch -Np1 -i gold-warn-unsupported.patch
 
 configure: >
   --with-lib-path=/usr/lib
@@ -14,14 +14,13 @@ configure: >
   --enable-deterministic-archives
   --enable-gold
   --enable-install-libiberty
-  --enable-jansson
   --enable-ld=default
   --enable-new-dtags
   --enable-pgo-build=lto
   --enable-plugins
   --enable-relro
   --enable-shared
-  --enable-targets=x86_64-pip,bpf-unknown-none
+  --enable-targets=x86_64-pep,bpf-unknown-none
   --enable-threads
   --disable-gdb
   --disable-gdbserver
@@ -29,7 +28,6 @@ configure: >
   --disable-readline
   --disable-sim
   --disable-werror
-  --with-debuginfod
   --with-pic
   --with-system-zlib
 
@@ -37,7 +35,7 @@ compile: -O tooldir=%{prefix}
 install: prefix=%{prefix} -O tooldir=%{install-root}/%{prefix}
 
 post-script: |-
-  install -m644 libiberty/pic/libiberty.a %{install-root}/%{libdir}/
+  install -m644 %{build-dir}/libiberty/pic/libiberty.a %{install-root}/%{libdir}/
   
   rm -fv %{install-root}/%{datadir}/man/man1/{dlltool,windres,windmc}*
   

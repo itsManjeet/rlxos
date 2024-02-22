@@ -19,7 +19,6 @@ configure: >-
   --enable-kernel=4.4
   --enable-multi-arch
   --enable-stack-protector=strong
-  --enable-systemtap
   --disable-nscd
   --disable-profile
   --disable-werror
@@ -41,7 +40,7 @@ post-script: |
     localedata/SUPPORTED > %{install-root}/%{datadir}/i18n/SUPPORTED
 
   install -dm755 %{install-root}/%{libdir}/locale
-  cp -r %{build-root}/locales/%{libdir}/locale/C.utf-8 -t %{install-root}/%{libdir}/locale
+  cp -r %{build-root}/locales/%{libdir}/locale/C.utf8 -t %{install-root}/%{libdir}/locale
 
 
 sources:

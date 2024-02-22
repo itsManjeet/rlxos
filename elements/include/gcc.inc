@@ -1,4 +1,4 @@
-version: 13.2.1
+version: 13.2.0
 release: 1
 about: The GNU compiler collection, which includes the C and C++ compilers
 
@@ -34,7 +34,7 @@ configure: >-
   --disable-libstdcxx-pch
   --disable-werror
 
-compile: -O STAGE1_CFLAGS="-O2" BOOT_CFLAGS="%{cflags}" BOOT_LDFLAGS="%{ldflags}" LDFLAGS_FOR_TARGET="%{ldflags}" bootstrap
+compile: -O STAGE1_CFLAGS="-O2" BOOT_CFLAGS="${CFLAGS}" BOOT_LDFLAGS="${LDFLAGS}" LDFLAGS_FOR_TARGET="${LDFLAGS}" bootstrap
   
 post-script: |
   ln -sv ../bin/cpp %{install-root}/%{libdir}/

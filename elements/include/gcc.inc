@@ -24,7 +24,6 @@ configure: >-
   --enable-link-serialization=1
   --enable-linker-build-id
   --enable-lto
-  --enable-multilib
   --enable-plugin
   --enable-shared
   --enable-threads=posix

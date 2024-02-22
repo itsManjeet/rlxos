@@ -17,3 +17,6 @@ add_executable(sysroot
 
 target_link_libraries(sysroot PUBLIC
         OSTree)
+
+install(TARGETS sysroot
+        RUNTIME DESTINATION bin)

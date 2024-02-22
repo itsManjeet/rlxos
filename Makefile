@@ -7,6 +7,8 @@ CHANNEL					?= unstable
 IGNITE					?= build/src/ignite/ignite
 CACHE_PATH				?= build/
 
+-include config.mk
+
 define OSTREE_GPG_CONFIG
 Key-Type: DSA
 Key-Length: 1024

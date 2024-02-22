@@ -7,6 +7,9 @@ variables:
   sbindir: "/usr/bin"
   datadir: "/usr/share"
   localstatedir: "/var"
+  arch: "x86_64"
+  triplet: "x86_64-linux-gnu"
+  artifact-server: https://repo.rlxos.dev/
 
   run-autogen: true
   seperate-build-dir: true

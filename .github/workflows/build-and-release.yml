@@ -31,7 +31,7 @@ jobs:
         run: echo "${{ github.event.head_commit.message }}" > ChangeLog
 
       - name: Update Ostree
-        run: make update-ostree
+        run: make ELEMENT=system/repo.yml update-ostree
 
       - name: Update Extensions
         run: |

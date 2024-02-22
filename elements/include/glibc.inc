@@ -1,45 +1,49 @@
-version: 2.37
+version: 2.39
 about: GNU C Library
-
-environ:
-  - M4=m4
 
 keep-files:
   - lib(.*)\.dbg
 
-pre-script: |
-  patch -Np1 -i %{build-root}/glibc-%{version}-fhs-1.patch
-  sed '/width -=/s/workend - string/number_length/' \
-    -i stdio-common/vfprintf-process-arg.c
+pre-script: |-
+  echo "slibdir=%{libdir}"      >> configparms
+  echo "rtlddir=%{libdir}"      >> configparms
+  echo "sbindir=%{bindir}"      >> configparms
+  echo "rootsbindir=%{bindir}"  >> configparms
 
-script: |
-  mkdir -p _pkgupd_build_dir && cd _pkgupd_build_dir
-  echo "rootsbindir=%{bindir}" > configparms
-  echo "slibdir=%{libdir}" >> configparms
-  echo "rtlddir=%{libdir}" >> configparms
-  echo "sbindir=%{bindir}" >> configparms
+configure: >-
+  --with-headers=%{prefix}/include
+  --with-bugurl=https://github.com/itsmanjeet/rlxos/issues
+  --enable-bind-now
+  --enable-cet
+  --enable-fortify-source
+  --enable-kernel=4.4
+  --enable-multi-arch
+  --enable-stack-protector=strong
+  --enable-systemtap
+  --disable-nscd
+  --disable-profile
+  --disable-werror
 
-  ../configure                            \
-    --prefix=%{prefix}                    \
-    --libexecdir=%{libexecdir}            \
-    --disable-werror                      \
-    --enable-kernel=4.14                  \
-    --enable-stack-protector=strong       \
-    --with-headers=%{prefix}/include      \
-    libc_cv_slibdir=%{libdir}
-
-  make ${MAKEFLAGS}
-  make install DESTDIR=%{install-root}
+compile: -O
 
 post-script: |
-  cp -v nscd/nscd.conf %{install-root}/%{sysconfdir}/
-  mkdir -p %{install-root}/%{localstatedir}/cache/nscd
+  make -C %{build-root}/localedata objdir=%{build-root}/%{build-dir} \
+    DESTDIR=%{build-root}/locales install-locale-files
+  
+  rm -f %{install-root}/%{sysconfdir}/ld.so.cache
+  rm -f %{install-root}/%{bindir}/{tzselect,zdump,zic}
+  
+  install -dm755 %{install-root}/usr/lib/{locale,systemd/system,tmpfiles.d}
+  
+  install -m644 posix/gai.conf %{install-root}/%{sysconfdir}/gai.conf
+  
+  sed -e '1,3d' -e 's|/| |g' -e 's| \\||g' \
+    localedata/SUPPORTED > %{install-root}/%{datadir}/i18n/SUPPORTED
 
-  install -v -Dm644 nscd/nscd.tmpfiles %{install-root}/%{libdir}/tmpfiles.d/nscd.conf
-  install -v -Dm644 nscd/nscd.service  %{install-root}/%{libdir}/systemd/system/nscd.service
-  install -d "%{install-root}"/%{datadir}/i18n/
-  sed -e '1,3d' -e 's|/| |g' -e 's| \\||g' localedata/SUPPORTED > "%{install-root}"/%{datadir}/i18n/SUPPORTED
+  install -dm755 %{install-root}/%{libdir}/locale
+  cp -r %{build-root}/locales/%{libdir}/locale/C.utf-8 -t %{install-root}/%{libdir}/locale
+
 
 sources:
   - https://ftp.gnu.org/gnu/glibc/glibc-%{version}.tar.xz
-  - patches/core/glibc/glibc-%{version}-fhs-1.patch
+  

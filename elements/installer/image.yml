@@ -1,5 +1,5 @@
 id: ostree-installer
-merge: [version.yml, elements/include/installer.inc]
+merge: [version.yml, ostree-branch.yml, elements/include/installer.inc]
 about: OSTree Installer ISO
 
 include:

@@ -1,5 +1,5 @@
 id: etc-default-useradd
-merge: [version.yml]
+version: 0.0.1
 about: System user default
 
 build-depends:

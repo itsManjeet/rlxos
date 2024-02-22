@@ -44,7 +44,7 @@ depends:
   - components/squashfs-tools.yml
   - components/wget.yml
   - components/sudo.yml
-  - components/pkgupd.yml
+  - components/sysroot.yml
   - components/dmidecode.yml
   - components/libsmbios.yml
   - components/libgtop.yml

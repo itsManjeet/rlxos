@@ -47,7 +47,7 @@ jobs:
         run: make ELEMENT=app-market.yml
 
       - name: Build Installer ISO
-        run: make ELEMENT=installer/ostree.yml
+        run: make ELEMENT=installer/image.yml
 
   build-installer-iso:
     name: Build Installer ISO
@@ -61,7 +61,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: Update installer ISO
         run: |
-          pkgupd ignite checkout installer/image.yml ${SERVER_REPO_PATH}/releases/${CHANNEL}/
+          make ELEMENT=installer/image.yml DESTDIR=${SERVER_REPO_PATH}/releases/${CHANNEL}/
           (cd ${SERVER_REPO_PATH}/releases/${CHANNEL}/; zsyncmake -b 2048 -C -u ${SERVER_REPO_URL}/releases/${CHANNEL}/rlxos-${VERSION}-installer.iso rlxos-${VERSION}-installer.iso)
 
   update-market:

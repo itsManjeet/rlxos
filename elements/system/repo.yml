@@ -1,6 +1,6 @@
 id: system-repo
 about: System Repository
-merge: [version.yml, elements/include/ostree.inc]
+merge: [version.yml, ostree-branch.yml, elements/include/ostree.inc]
 
 capabilities:
   - CAP_SYS_CHROOT

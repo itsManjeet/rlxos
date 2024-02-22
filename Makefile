@@ -1,9 +1,9 @@
 DOCS_DIR				?= build/docs
-OSTREE_BRANCH 		    ?= $(CHANNEL)/$(COLLECTION)
+CHANNEL					?= unstable
+OSTREE_BRANCH 		    ?= $(shell uname -m)/os/$(CHANNEL)
 OSTREE_REPO 			?= ostree-repo
 OSTREE_GPG 				?= ostree-gpg
 VERSION					?= 2.0
-CHANNEL					?= unstable
 IGNITE					?= build/src/ignite/ignite
 CACHE_PATH				?= build/
 
@@ -26,9 +26,9 @@ export OSTREE_GPG_CONFIG
 export IGNITE
 export CACHE_PATH
 
-.PHONY: $(IGNITE) clean all docs version.yml apps
+.PHONY: $(IGNITE) clean all docs version.yml ostree-branch.yml apps
 
-all: $(IGNITE) version.yml
+all: $(IGNITE) version.yml ostree-branch.yml
 ifdef ELEMENT
 	$(IGNITE) cache-path=$(CACHE_PATH) build $(ELEMENT)
 endif
@@ -85,5 +85,9 @@ endif
 
 version.yml:
 	@echo "version: ${VERSION}" > $@
-	@echo "channel: ${CHANNEL}" >> $@
-	@echo "ostree-branch: ${OSTREE_BRANCH}" >> $@
+	@echo "variables:" >> $@
+	@echo "  channel: ${CHANNEL}" >> $@
+
+ostree-branch.yml:
+	@echo "variables:" > $@
+	@echo "  ostree-branch: ${OSTREE_BRANCH}" >> $@

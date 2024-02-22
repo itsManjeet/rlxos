@@ -1,7 +1,7 @@
 id: initial-setup
 version: 0.0.1
 about: System Initial Setup
-
+merge: [ ostree-branch.yml ]
 commit: 42a23b5392f075e6166bc0d62eca36031c32bdab
 
 post-script: |-

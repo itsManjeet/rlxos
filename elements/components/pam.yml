@@ -7,11 +7,9 @@ depends:
 
 sources:
   - https://github.com/linux-pam/linux-pam/releases/download/v%{version}/Linux-PAM-%{version}.tar.xz
-environ:
-  - SCONFIGDIR=/etc/security
 
 configure: >
-  --disable-db
+  --enable-securedir=/usr/lib/security
 
 post-script: |
   chmod +s "%{install-root}"/usr/bin/unix_chkpwd

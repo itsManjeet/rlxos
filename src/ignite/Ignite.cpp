@@ -273,12 +273,14 @@ Container Ignite::setup_container(const Builder::BuildInfo &build_info, const Co
             include_parts.push_back(i.as<std::string>());
 
         auto include_core = build_info.config.get<bool>("include-core", true);
+        auto installation_path = std::filesystem::path("install-root") / build_info.package_name();
         for (auto const &[path, info, cached]: states) {
-            auto installation_path = std::filesystem::path("install-root") / build_info.package_name();
-            installation_path = build_info.config.get<std::string>(build_info.name() + "-include-path",
-                                                                   build_info.config.get<std::string>("include-root",
-                                                                                                      installation_path.string()));
-            integrate(container, info, installation_path, include_parts, !include_core);
+            auto local_installation_path = build_info.config.get<std::string>(info.name() + "-include-path",
+                                                                              build_info.config.get<std::string>(
+                                                                                      "include-root",
+                                                                                      installation_path.string()));
+            local_installation_path = build_info.resolve(local_installation_path, config);
+            integrate(container, info, local_installation_path, include_parts, !include_core);
         }
     }
 

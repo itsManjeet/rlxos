@@ -1,8 +1,10 @@
 id: rlxos-container-devel
-version: 2307
+merge: [version.yml, elements/include/container.inc]
 about: rlxos container developers image
 
-build-type: system
+capabilities:
+  - CAP_SYS_CHROOT
+
 include:
   - components/core.yml
   - components/meson.yml
@@ -20,23 +22,17 @@ include:
   - components/texinfo.yml
   - components/cmake.yml
   - components/libtool.yml
+  - components/jansson.yml
 
+include-parts:
+  - devel
 build-depends:
   - components/squashfs-tools.yml
 
-variables:
-  root-password: rlxos
-  strip: false
+pre-script: |-
+  cp /files/sdt{,-config}.h %{include-root}/%{prefix}/include/sys/
 
-script: |
-  # executing integration scripts
-  if [ -d %{localstatedir}/lib/integrations ] ; then
-    for i in %{localstatedir}/lib/integrations/* ; do
-      echo "=> integrating $(basename $i)"
-      sh -e $i
-    done
-  fi
-
+initial-commands: |-
   systemd-sysusers
   systemd-tmpfiles --create || true
   systemctl preset-all || true
@@ -44,6 +40,3 @@ script: |
 
   pwconv
   grpconv
-
-  echo -e "%{root-password}\n%{root-password}" | passwd
-

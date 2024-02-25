@@ -27,7 +27,7 @@ export OSTREE_GPG_CONFIG
 export IGNITE
 export CACHE_PATH
 
-.PHONY: $(IGNITE) clean all docs version.yml ostree-branch.yml apps
+.PHONY: clean all docs version.yml ostree-branch.yml apps
 
 all: $(IGNITE) version.yml ostree-branch.yml
 ifdef ELEMENT
@@ -37,6 +37,14 @@ endif
 status: $(IGNITE) version.yml ostree-branch.yml
 ifdef ELEMENT
 	$(IGNITE) cache-path=$(CACHE_PATH) status $(ELEMENT)
+else
+	@echo "no ELEMENT specified"
+	exit 1
+endif
+
+filepath: $(IGNITE) version.yml ostree-branch.yml
+ifdef ELEMENT
+	@PKGUPD_NO_MESSAGE=1 $(IGNITE) cache-path=$(CACHE_PATH) filepath $(ELEMENT)
 else
 	@echo "no ELEMENT specified"
 	exit 1

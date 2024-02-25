@@ -29,6 +29,7 @@ struct IgniteApp : Application {
         REGISTER_COMMAND(IgniteApp, checkout, "Checkout cached component", 2);
         REGISTER_COMMAND(IgniteApp, meta, "Generate metadata", 1);
         REGISTER_COMMAND(IgniteApp, pull, "Pull already built cache from server", 1);
+        REGISTER_COMMAND(IgniteApp, filepath, "Print filepath of cached artifact", 1);
     }
 
     void init() override {
@@ -37,6 +38,19 @@ struct IgniteApp : Application {
         backend = std::make_unique<Ignite>(project_path, cache_path);
 
         backend->load();
+    }
+
+    void filepath() {
+        auto source = ctxt.args[0];
+
+        std::vector<std::tuple<std::string, Builder::BuildInfo, bool>> status;
+        backend->resolve({source}, status);
+
+        auto [path, build_info, cached] = status.back();
+        if (!cached) { throw std::runtime_error(path + " not cached yet"); }
+
+        build_info.cache = backend->hash(build_info);
+        std::cout << backend->cachefile(build_info).string() << std::endl;
     }
 
     void pull() {

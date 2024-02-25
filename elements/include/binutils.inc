@@ -14,6 +14,7 @@ configure: >
   --enable-deterministic-archives
   --enable-gold
   --enable-install-libiberty
+  --enable-jansson
   --enable-ld=default
   --enable-new-dtags
   --enable-pgo-build=lto

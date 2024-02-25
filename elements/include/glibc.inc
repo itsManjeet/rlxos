@@ -19,6 +19,7 @@ configure: >-
   --enable-kernel=4.4
   --enable-multi-arch
   --enable-stack-protector=strong
+  --enable-systemtap
   --disable-nscd
   --disable-profile
   --disable-werror
@@ -42,7 +43,11 @@ post-script: |
   install -dm755 %{install-root}/%{libdir}/locale
   cp -r %{build-root}/locales/%{libdir}/locale/C.utf8 -t %{install-root}/%{libdir}/locale
 
+  install -Dm644 sdt.h %{install-root}/%{prefix}/include/sys/sdt.h
+  install -Dm644 sdt-config.h %{install-root}/%{prefix}/include/sys/sdt-config.h
 
 sources:
   - https://ftp.gnu.org/gnu/glibc/glibc-%{version}.tar.xz
+  - files/sdt.h
+  - files/sdt-config.h
   

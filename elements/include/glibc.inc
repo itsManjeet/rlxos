@@ -19,7 +19,6 @@ configure: >-
   --enable-kernel=4.4
   --enable-multi-arch
   --enable-stack-protector=strong
-  --enable-systemtap
   --disable-nscd
   --disable-profile
   --disable-werror

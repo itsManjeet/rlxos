@@ -22,8 +22,6 @@
 #include <functional>
 #include <utility>
 
-const std::vector<std::string> Ignite::SUB_PACKAGES = {"dev", "doc", "devel",};
-
 Ignite::Ignite(std::filesystem::path project_path, std::filesystem::path cache_path) : project_path(
         std::move(project_path)), cache_path(
         cache_path.empty() ? this->project_path / "cache" : std::move(cache_path)) {
@@ -53,7 +51,7 @@ void Ignite::load() {
     DEBUG("TOTAL ELEMENTS: " << pool.size());
 }
 
-void Ignite::resolve(const std::vector<std::string> &id, std::vector<State> &output, bool devel, bool include_depends,
+void Ignite::resolve(const std::vector <std::string> &id, std::vector <State> &output, bool devel, bool include_depends,
                      bool include_extra) {
     std::map<std::string, bool> visited;
 
@@ -130,7 +128,7 @@ std::string Ignite::hash(const Builder::BuildInfo &build_info) {
         picosha2::hash256_hex_string(ss.str(), hash_sum);
     }
 
-    std::vector<std::string> includes;
+    std::vector <std::string> includes;
     if (build_info.config.node["include"]) {
         for (auto const &i: build_info.config.node["include"]) {
             includes.push_back(i.as<std::string>());
@@ -177,7 +175,10 @@ void Ignite::build(const Builder::BuildInfo &build_info) {
 
     auto package_path = cachefile(build_info);
     auto builder = Builder(config, build_info, container);
-    auto subdir = builder.prepare_sources(cache_path / "sources", container.host_root / "build-root");
+    auto subdir = builder.prepare_sources(
+            cache_path / "sources",
+            container.host_root / "build-root",
+            build_info.config.get<std::string>("build-dir", "") != "");
     if (!subdir) subdir = ".";
 
     auto build_root =
@@ -195,8 +196,8 @@ void Ignite::build(const Builder::BuildInfo &build_info) {
 }
 
 Container Ignite::setup_container(const Builder::BuildInfo &build_info, const ContainerType container_type) {
-    auto env = std::vector<std::string>{"NOCONFIGURE=1", "HOME=/", "SHELL=/bin/sh", "TERM=dumb", "USER=nishu",
-                                        "LOGNAME=nishu", "LC_ALL=C", "TZ=UTC", "SOURCE_DATA_EPOCH=918239400"};
+    auto env = std::vector < std::string > {"NOCONFIGURE=1", "HOME=/", "SHELL=/bin/sh", "TERM=dumb", "USER=nishu",
+                                            "LOGNAME=nishu", "LC_ALL=C", "TZ=UTC", "SOURCE_DATA_EPOCH=918239400"};
     if (auto n = config.node["environ"]; n) {
         for (auto const &i: n) env.push_back(i.as<std::string>());
     }
@@ -207,7 +208,7 @@ Container Ignite::setup_container(const Builder::BuildInfo &build_info, const Co
     auto host_root = (cache_path / "temp" / build_info.package_name(build_info.element_id));
     std::filesystem::create_directories(host_root);
 
-    std::vector<std::string> capabilities;
+    std::vector <std::string> capabilities;
     if (build_info.config.node["capabilities"]) {
         for (auto const &i: build_info.config.node["capabilities"]) {
             capabilities.push_back(i.as<std::string>());
@@ -232,7 +233,7 @@ Container Ignite::setup_container(const Builder::BuildInfo &build_info, const Co
     // -Werror=missing-include-dir
     std::filesystem::create_directories(host_root / "usr" / "local" / "include");
 
-    std::vector<State> states;
+    std::vector <State> states;
     auto depends = build_info.depends;
     if (container_type == ContainerType::Build) {
         depends.insert(depends.end(), build_info.build_time_depends.begin(), build_info.build_time_depends.end());
@@ -251,7 +252,7 @@ Container Ignite::setup_container(const Builder::BuildInfo &build_info, const Co
     if (build_info.config.node["include"]) {
         states.clear();
 
-        std::vector<std::string> include;
+        std::vector <std::string> include;
         for (auto const &i: build_info.config.node["include"]) {
             include.push_back(build_info.resolve(i.as<std::string>(), config));
         }
@@ -259,7 +260,7 @@ Container Ignite::setup_container(const Builder::BuildInfo &build_info, const Co
         resolve(include, states, false, build_info.config.get<bool>("include-depends", true), false);
 
         if (build_info.config.node["include-upon"]) {
-            std::vector<State> sub_states;
+            std::vector <State> sub_states;
             resolve({build_info.config.node["include-upon"].as<std::string>()}, sub_states, false, true, false);
             states.erase(std::remove_if(states.begin(), states.end(), [&sub_states](const State &state) -> bool {
                 return std::find_if(sub_states.begin(), sub_states.end(), [&state](const State &other_state) -> bool {
@@ -273,14 +274,14 @@ Container Ignite::setup_container(const Builder::BuildInfo &build_info, const Co
             include_parts.push_back(i.as<std::string>());
 
         auto include_core = build_info.config.get<bool>("include-core", true);
-        auto installation_path = std::filesystem::path("install-root") / build_info.package_name();
+
         for (auto const &[path, info, cached]: states) {
-            auto local_installation_path = build_info.config.get<std::string>(info.name() + "-include-path",
-                                                                              build_info.config.get<std::string>(
-                                                                                      "include-root",
-                                                                                      installation_path.string()));
-            local_installation_path = build_info.resolve(local_installation_path, config);
-            integrate(container, info, local_installation_path, include_parts, !include_core);
+            auto installation_path = std::filesystem::path("install-root") / build_info.package_name();
+            installation_path = build_info.config.get<std::string>(info.name() + "-include-path",
+                                                                   build_info.config.get<std::string>(
+                                                                           "include-root",
+                                                                           installation_path.string()));
+            integrate(container, info, installation_path, include_parts, !include_core);
         }
     }
 
@@ -292,7 +293,7 @@ std::filesystem::path Ignite::cachefile(const Builder::BuildInfo &build_info) {
 }
 
 void Ignite::integrate(Container &container, const Builder::BuildInfo &build_info, const std::filesystem::path &root,
-                       std::vector<std::string> extras, bool skip_core) {
+                       std::vector <std::string> extras, bool skip_core) {
     auto container_root =
             container.host_root / (root.has_root_path() ? std::filesystem::path(root.string().substr(1)) : root);
     PROCESS("Integrating " << build_info.id);
@@ -307,12 +308,21 @@ void Ignite::integrate(Container &container, const Builder::BuildInfo &build_inf
             throw std::runtime_error(build_info.id + " not yet cached at " + sub_cache_file_path);
         }
         try {
-            auto extractor = Executor("/bin/tar").arg("-xPhf").arg(sub_cache_file_path).arg("-C").arg(container_root);
+            auto extractor = Executor("/bin/tar")
+                    .arg("-xPhf")
+                    .arg(sub_cache_file_path)
+                    .arg("-C")
+                    .arg(container_root);
 
             if (root.empty()) {
-                extractor.arg("--exclude=./etc/hosts").arg("--exclude=./etc/hostname").arg(
-                        "--exclude=./etc/resolve.conf").arg("--exclude=./proc").arg("--exclude=./run").arg(
-                        "--exclude=./sys").arg("--exclude=./dev");
+                extractor
+                        .arg("--exclude=./etc/hosts")
+                        .arg("--exclude=./etc/hostname")
+                        .arg("--exclude=./etc/resolve.conf")
+                        .arg("--exclude=./proc")
+                        .arg("--exclude=./run")
+                        .arg("--exclude=./sys")
+                        .arg("--exclude=./dev");
             }
 
             extractor.execute();

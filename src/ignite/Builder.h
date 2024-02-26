@@ -27,23 +27,23 @@
 class Builder {
 public:
     struct BuildInfo : MetaInfo {
-        std::vector<std::string> build_time_depends, sources;
+        std::vector <std::string> build_time_depends, sources;
         std::string element_id;
 
         BuildInfo() = default;
 
-        explicit BuildInfo(const std::string& filepath,
-                const std::filesystem::path& search_path = {});
+        explicit BuildInfo(const std::string &filepath,
+                           const std::filesystem::path &search_path = {});
 
-        static std::string resolve(const std::string& data,
-                const std::map<std::string, std::string>& variables);
+        static std::string resolve(const std::string &data,
+                                   const std::map <std::string, std::string> &variables);
 
-        void resolve(const Config& global,
-                const std::map<std::string, std::string>& extra = {});
+        void resolve(const Config &global,
+                     const std::map <std::string, std::string> &extra = {});
 
-        std::string resolve(const std::string& value,
-                const Config& global,
-                const std::map<std::string, std::string>& extra = {}) const;
+        std::string resolve(const std::string &value,
+                            const Config &global,
+                            const std::map <std::string, std::string> &extra = {}) const;
     };
 
     struct Compiler {
@@ -52,27 +52,28 @@ public:
     };
 
 private:
-    const Config& config;
-    const BuildInfo& build_info;
-    std::map<std::string, Compiler> compilers;
+    const Config &config;
+    const BuildInfo &build_info;
+    std::map <std::string, Compiler> compilers;
 
-    std::optional<Container> container;
+    std::optional <Container> container;
 
 public:
-    explicit Builder(const Config& config, const BuildInfo& build_info,
-            const std::optional<Container>& container);
+    explicit Builder(const Config &config, const BuildInfo &build_info,
+                     const std::optional <Container> &container);
 
-    std::optional<std::filesystem::path> prepare_sources(
-            const std::filesystem::path& source_dir,
-            const std::filesystem::path& build_root);
+    std::optional <std::filesystem::path> prepare_sources(
+            const std::filesystem::path &source_dir,
+            const std::filesystem::path &build_root,
+            bool with_build_dir);
 
-    Compiler get_compiler(const std::filesystem::path& build_root);
+    Compiler get_compiler(const std::filesystem::path &build_root);
 
-    void compile_source(const std::filesystem::path& build_root,
-            const std::filesystem::path& install_root);
+    void compile_source(const std::filesystem::path &build_root,
+                        const std::filesystem::path &install_root);
 
-    void pack(const std::filesystem::path& install_root,
-            const std::filesystem::path& package);
+    void pack(const std::filesystem::path &install_root,
+              const std::filesystem::path &package);
 };
 
 #endif // PKGUPD_BUILDER_H

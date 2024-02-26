@@ -26,24 +26,24 @@
 #include <regex>
 
 Builder::BuildInfo::BuildInfo(
-        const std::string& filepath, const std::filesystem::path& search_path) {
+        const std::string &filepath, const std::filesystem::path &search_path) {
     config.search_path.push_back(search_path);
     config.node["cache"] = "none";
     update_from_file(filepath);
     if (config.node["build-depends"]) {
-        for (auto const& dep : config.node["build-depends"]) {
+        for (auto const &dep: config.node["build-depends"]) {
             build_time_depends.push_back(dep.as<std::string>());
         };
     }
     if (config.node["sources"]) {
-        for (auto const& dep : config.node["sources"])
+        for (auto const &dep: config.node["sources"])
             sources.emplace_back(dep.as<std::string>());
     }
     element_id = std::filesystem::relative(filepath, search_path / "elements")
-                         .replace_extension();
+            .replace_extension();
 }
 
-std::vector<std::string> split(const std::string& str, char del) {
+std::vector<std::string> split(const std::string &str, char del) {
     std::stringstream ss(str);
     std::vector<std::string> l;
     for (std::string s; std::getline(ss, s, del);) { l.push_back(s); }
@@ -51,14 +51,14 @@ std::vector<std::string> split(const std::string& str, char del) {
 }
 
 std::string replace(std::string v, char old, char n) {
-    for (auto& i : v) {
+    for (auto &i: v) {
         if (i == old) i = n;
     }
     return v;
 }
 
-std::string Builder::BuildInfo::resolve(const std::string& data,
-        const std::map<std::string, std::string>& variables) {
+std::string Builder::BuildInfo::resolve(const std::string &data,
+                                        const std::map<std::string, std::string> &variables) {
     std::regex pattern(R"(\%\{([^}]+)\})");
     std::smatch match;
     std::string result = data;
@@ -87,12 +87,12 @@ std::string Builder::BuildInfo::resolve(const std::string& data,
                         count++;
                     }
                     result.replace(match[0].first, match[0].second,
-                            version.substr(0, position));
-                } catch (const std::string& error) {
+                                   version.substr(0, position));
+                } catch (const std::string &error) {
                     throw std::runtime_error(error);
                 } catch (...) {
                     result.replace(match[0].first, match[0].second,
-                            replace(version, '.', data[0]));
+                                   replace(version, '.', data[0]));
                 }
             } else {
                 throw std::runtime_error(
@@ -104,27 +104,27 @@ std::string Builder::BuildInfo::resolve(const std::string& data,
 }
 
 void Builder::BuildInfo::resolve(
-        const Config& global, const std::map<std::string, std::string>& extra) {
-    for (auto& source : sources) { source = resolve(source, global, extra); }
+        const Config &global, const std::map<std::string, std::string> &extra) {
+    for (auto &source: sources) { source = resolve(source, global, extra); }
 }
 
-std::string Builder::BuildInfo::resolve(const std::string& value,
-        const Config& global,
-        const std::map<std::string, std::string>& extra) const {
+std::string Builder::BuildInfo::resolve(const std::string &value,
+                                        const Config &global,
+                                        const std::map<std::string, std::string> &extra) const {
     std::map<std::string, std::string> variables = extra;
     if (global.node["variables"]) {
-        for (auto const& v : global.node["variables"]) {
+        for (auto const &v: global.node["variables"]) {
             variables[v.first.as<std::string>()] = v.second.as<std::string>();
         }
     }
 
     if (this->config.node["variables"]) {
-        for (auto const& v : this->config.node["variables"]) {
+        for (auto const &v: this->config.node["variables"]) {
             variables[v.first.as<std::string>()] = v.second.as<std::string>();
         }
     }
 
-    for (auto const& i : this->config.node) {
+    for (auto const &i: this->config.node) {
         if (i.second.IsScalar()) {
             try {
                 variables[i.first.as<std::string>()] =
@@ -139,13 +139,14 @@ std::string Builder::BuildInfo::resolve(const std::string& value,
 }
 
 std::optional<std::filesystem::path> Builder::prepare_sources(
-        const std::filesystem::path& source_dir,
-        const std::filesystem::path& build_root) {
+        const std::filesystem::path &source_dir,
+        const std::filesystem::path &build_root,
+        bool with_build_dir) {
     std::optional<std::filesystem::path> subdir;
 
     std::filesystem::create_directories(build_root);
 
-    for (auto url : build_info.sources) {
+    for (auto url: build_info.sources) {
         auto filename = std::filesystem::path(url).filename().string();
         if (auto idx = url.find("::"); idx != std::string::npos) {
             filename = url.substr(0, idx);
@@ -165,20 +166,20 @@ std::optional<std::filesystem::path> Builder::prepare_sources(
                 std::filesystem::copy(
                         (container ? container->base_dir
                                    : std::filesystem::current_path()) /
-                                url,
+                        url,
                         filepath,
                         std::filesystem::copy_options::recursive |
-                                std::filesystem::copy_options::
-                                        overwrite_existing);
+                        std::filesystem::copy_options::
+                        overwrite_existing);
             }
         }
         if (ArchiveManager::is_archive(filepath)) {
             std::vector<std::string> files_list;
 
             ArchiveManager::extract(filepath,
-                    build_root / (subdir ? *subdir : std::filesystem::path("")),
-                    files_list);
-            if (!subdir) {
+                                    build_root / (subdir ? *subdir : std::filesystem::path("")),
+                                    files_list);
+            if (!subdir && !with_build_dir) {
                 std::string dir = files_list.front();
                 auto idx = dir.find('/');
                 if (idx != std::string::npos) { dir = dir.substr(0, idx); }
@@ -186,26 +187,26 @@ std::optional<std::filesystem::path> Builder::prepare_sources(
             }
         } else {
             std::filesystem::copy_file(filepath,
-                    build_root /
-                            (subdir ? *subdir : std::filesystem::path("")) /
-                            filename,
-                    std::filesystem::copy_options::overwrite_existing);
+                                       build_root /
+                                       (subdir ? *subdir : std::filesystem::path("")) /
+                                       filename,
+                                       std::filesystem::copy_options::overwrite_existing);
         }
     }
     return subdir;
 }
 
-void Builder::compile_source(const std::filesystem::path& build_root,
-        const std::filesystem::path& install_root) {
+void Builder::compile_source(const std::filesystem::path &build_root,
+                             const std::filesystem::path &install_root) {
     std::vector<std::string> env;
     if (config.node["environ"]) {
-        for (auto const& e : config.node["environ"]) {
+        for (auto const &e: config.node["environ"]) {
             env.push_back(e.as<std::string>());
         }
     }
 
     if (build_info.config.node["environ"]) {
-        for (auto const& e : build_info.config.node["environ"]) {
+        for (auto const &e: build_info.config.node["environ"]) {
             env.push_back(e.as<std::string>());
         }
     }
@@ -287,7 +288,7 @@ void Builder::compile_source(const std::filesystem::path& build_root,
     }
 
     if (auto post_script =
-                    build_info.config.get<std::string>("post-script", "");
+                build_info.config.get<std::string>("post-script", "");
             !post_script.empty()) {
         post_script = build_info.resolve(post_script, config, extra_variables);
         PROCESS("Executing pre compilation script")
@@ -303,45 +304,45 @@ void Builder::compile_source(const std::filesystem::path& build_root,
     }
 
     if (build_info.config.get<bool>("strip", true)) {
-        for (auto const& iter : std::filesystem::recursive_directory_iterator(
-                     resolved_install_root)) {
+        for (auto const &iter: std::filesystem::recursive_directory_iterator(
+                resolved_install_root)) {
             if (!iter.is_regular_file()) continue;
             // if file is executable and writable or
             // if file ends with .so and .a
             // TODO check if it cover all cases
             if (((iter.path().has_extension() &&
-                         (iter.path().extension() == ".so" ||
-                                 iter.path().extension() == ".a")) ||
-                        (access(iter.path().c_str(), X_OK) == 0)) &&
-                    access(iter.path().c_str(), W_OK) == 0) {
+                  (iter.path().extension() == ".so" ||
+                   iter.path().extension() == ".a")) ||
+                 (access(iter.path().c_str(), X_OK) == 0)) &&
+                access(iter.path().c_str(), W_OK) == 0) {
 
                 auto [status, mime_type] = Executor("/bin/file")
-                                                   .arg("-b")
-                                                   .arg("--mime-type")
-                                                   .arg(iter.path())
-                                                   .output();
+                        .arg("-b")
+                        .arg("--mime-type")
+                        .arg(iter.path())
+                        .output();
                 if (status != 0) {
                     ERROR("failed to read MIME TYPE for " +
-                            iter.path().string() + ": " + mime_type);
+                          iter.path().string() + ": " + mime_type);
                     continue;
                 }
 
                 std::vector<std::string> mime_to_strip;
                 if (config.node["strip-mimetype"]) {
-                    for (auto const& i : config.node["strip-mimetype"]) {
+                    for (auto const &i: config.node["strip-mimetype"]) {
                         mime_to_strip.emplace_back(i.as<std::string>());
                     }
                 }
 
                 if (build_info.config.node["strip-mimetype"]) {
-                    for (auto const& i :
+                    for (auto const &i:
                             build_info.config.node["strip-mimetype"]) {
                         mime_to_strip.emplace_back(i.as<std::string>());
                     }
                 }
 
                 if (std::find(mime_to_strip.begin(), mime_to_strip.end(),
-                            mime_type) == mime_to_strip.end()) {
+                              mime_type) == mime_to_strip.end()) {
                     continue;
                 }
 
@@ -375,7 +376,7 @@ void Builder::compile_source(const std::filesystem::path& build_root,
                 // Link to the extracted debugging symbols
                 Executor("/bin/objcopy")
                         .arg("--add-gnu-debuglink=" +
-                                iter.path().filename().string() + ".dbg")
+                             iter.path().filename().string() + ".dbg")
                         .arg(iter.path())
                         .path(iter.path().parent_path())
                         .execute();
@@ -384,50 +385,50 @@ void Builder::compile_source(const std::filesystem::path& build_root,
     }
 }
 
-void Builder::pack(const std::filesystem::path& install_root,
-        const std::filesystem::path& package) {
+void Builder::pack(const std::filesystem::path &install_root,
+                   const std::filesystem::path &package) {
     auto install_root_package = install_root / build_info.package_name();
     auto install_root_devel =
             install_root / (build_info.package_name() + ".devel");
     auto install_root_dbg = install_root / (build_info.package_name() + ".dbg");
     auto install_root_doc = install_root / (build_info.package_name() + ".doc");
 
-    for (auto const& i :
+    for (auto const &i:
             {install_root_dbg, install_root_devel, install_root_doc}) {
         std::filesystem::create_directories(i);
     }
 
     std::vector<std::regex> keep_files;
     if (build_info.config.node["keep-files"]) {
-        for (auto const& i : build_info.config.node["keep-files"]) {
+        for (auto const &i: build_info.config.node["keep-files"]) {
             keep_files.push_back(std::regex(i.as<std::string>()));
         }
     }
 
-    auto keep_file = [&keep_files](const std::string& filename) -> bool {
-        for (auto const& i : keep_files) {
+    auto keep_file = [&keep_files](const std::string &filename) -> bool {
+        for (auto const &i: keep_files) {
             if (std::regex_match(filename, i)) { return true; }
         }
         return false;
     };
 
-    auto replace_directory = [&](const std::filesystem::path& filepath,
-                                     const std::filesystem::path& old_parent,
-                                     const std::filesystem::path& new_parent)
+    auto replace_directory = [&](const std::filesystem::path &filepath,
+                                 const std::filesystem::path &old_parent,
+                                 const std::filesystem::path &new_parent)
             -> std::filesystem::path {
         auto relative_path = std::filesystem::relative(filepath, old_parent);
         return new_parent / relative_path;
     };
 
-    auto move_file = [&](const std::filesystem::path& filepath,
-                             const std::filesystem::path& new_path) {
+    auto move_file = [&](const std::filesystem::path &filepath,
+                         const std::filesystem::path &new_path) {
         auto replaced_path =
                 replace_directory(filepath, install_root_package, new_path);
         std::filesystem::create_directories(replaced_path.parent_path());
         std::filesystem::rename(filepath, replaced_path);
     };
 
-    for (auto const& devel :
+    for (auto const &devel:
             {"usr/include", "usr/lib/cmake", "usr/lib/pkgconfig"}) {
         if (auto path = install_root_package / devel;
                 std::filesystem::exists(path)) {
@@ -435,25 +436,25 @@ void Builder::pack(const std::filesystem::path& install_root,
         }
     }
 
-    for (auto const& dbg : {"usr/src", "usr/lib/debug"}) {
+    for (auto const &dbg: {"usr/src", "usr/lib/debug"}) {
         if (auto path = install_root_package / dbg;
                 std::filesystem::exists(path)) {
             move_file(path, install_root_dbg);
         }
     }
 
-    for (auto const& dbg : {"usr/share/doc", "usr/share/man"}) {
+    for (auto const &dbg: {"usr/share/doc", "usr/share/man"}) {
         if (auto path = install_root_package / dbg;
                 std::filesystem::exists(path)) {
             move_file(path, install_root_doc);
         }
     }
 
-    for (auto const& i : std::filesystem::recursive_directory_iterator(
-                 install_root_package)) {
+    for (auto const &i: std::filesystem::recursive_directory_iterator(
+            install_root_package)) {
         if (i.is_directory()) {
             if (i.path().empty() &&
-                    build_info.config.get<bool>("clean-empty-dir", true)) {
+                build_info.config.get<bool>("clean-empty-dir", true)) {
                 std::filesystem::remove(i.path());
             }
         } else if (!keep_files.empty() && keep_file(i.path().filename())) {
@@ -481,12 +482,12 @@ void Builder::pack(const std::filesystem::path& install_root,
               << build_info.config.get<std::string>("group-map", "") << '\n';
     group_map.close();
 
-    for (auto const& i : std::map<std::string, std::string>{
-                 {"", install_root_package},
-                 {".dbg", install_root_dbg},
-                 {".devel", install_root_devel},
-                 {".doc", install_root_doc},
-         }) {
+    for (auto const &i: std::map<std::string, std::string>{
+            {"",       install_root_package},
+            {".dbg",   install_root_dbg},
+            {".devel", install_root_devel},
+            {".doc",   install_root_doc},
+    }) {
         Executor("/bin/tar")
                 .arg("--zstd")
                 .arg("--owner-map=" + (install_root / "user-map").string())
@@ -501,12 +502,12 @@ void Builder::pack(const std::filesystem::path& install_root,
 }
 
 Builder::Compiler Builder::get_compiler(
-        const std::filesystem::path& build_root) {
+        const std::filesystem::path &build_root) {
     std::string build_type;
     if (build_info.config.node["build-type"]) {
         build_type = build_info.config.node["build-type"].as<std::string>();
     } else {
-        for (auto const& [id, compiler] : compilers) {
+        for (auto const &[id, compiler]: compilers) {
             if (std::filesystem::exists(build_root / compiler.file)) {
                 build_type = id;
                 break;
@@ -522,11 +523,11 @@ Builder::Compiler Builder::get_compiler(
     return compilers[build_type];
 }
 
-Builder::Builder(const Config& config, const Builder::BuildInfo& build_info,
-        const std::optional<Container>& container)
+Builder::Builder(const Config &config, const Builder::BuildInfo &build_info,
+                 const std::optional<Container> &container)
         : config{config}, build_info{build_info}, container{container} {
     if (config.node["compiler"]) {
-        for (auto const& c : config.node["compiler"]) {
+        for (auto const &c: config.node["compiler"]) {
             compilers[c.first.as<std::string>()] = Compiler{
                     c.second["file"].as<std::string>(),
                     c.second["script"].as<std::string>(),

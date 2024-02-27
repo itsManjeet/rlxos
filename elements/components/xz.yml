@@ -12,7 +12,7 @@ configure: >-
   --enable-werror
 
 sources:
-  - https://tukaani.org/xz/xz-%{version}.tar.xz
+  - https://github.com/tukaani-project/xz/releases/download/v%{version}/xz-%{version}.tar.xz
 
 depends:
   - components/glibc.yml

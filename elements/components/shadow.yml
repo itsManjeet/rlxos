@@ -7,6 +7,7 @@ depends:
   - components/libcap.yml
   - components/pam.yml
   - components/bash.yml
+  - components/libxcrypt.yml
 
 sources:
   - https://github.com/shadow-maint/shadow/releases/download/%{version}/shadow-%{version}.tar.xz
@@ -25,6 +26,9 @@ configure: >
   --with-libpam
   --with-group-name-max-length=32
   --without-selinux
+  --without-libbsd
+  --with-bcrypt
+  --with-yescrypt
   --without-audit
 
 install: exec_prefix=/usr

@@ -10,3 +10,7 @@ depends:
 environ:
   - SETUPTOOLS_INSTALL_WINDOWS_SPECIFIC_FILES=0
   - SETUPTOOLS_DISABLE_VERSIONED_EASY_INSTALL_SCRIPT=1
+
+script: |-
+  python3 setup.py build
+  python3 setup.py install --root=%{install-root}

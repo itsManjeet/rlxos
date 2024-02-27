@@ -17,8 +17,8 @@ sources:
 build-dir: llvm-%{version}.src
 
 pre-script: |-
-  mv %{build-root}/clang-%{version}.src tools/clang
-  mv %{build-root}/compiler-rt-%{version}.src projects/compiler-rt
+  mv clang-%{version}.src tools/clang
+  mv compiler-rt-%{version}.src projects/compiler-rt
 
 environ:
   - CC=gcc

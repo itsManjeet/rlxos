@@ -1,6 +1,5 @@
 id: grub-i386
-version: 2.06
-release: 1
+version: 2.12
 about: GRand Unified Bootloader
 
 environ:

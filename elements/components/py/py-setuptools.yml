@@ -1,5 +1,5 @@
 id: py-setuptools
-version: 68.0.0
+version: 69.1.0
 about: Easily download, build, install, upgrade and uninstall python packages
 sources:
   - https://files.pythonhosted.org/packages/dc/98/5f896af066c128669229ff1aa81553ac14cfb3e5e74b6b44594132b8540e/setuptools-%{version}.tar.gz

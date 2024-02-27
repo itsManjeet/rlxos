@@ -1,6 +1,5 @@
 id: attr
-version: 2.5.1
-release: 1
+version: 2.5.2
 about: Utilities to administer the extended attributes on filesystem objects
 
 build-dir: attr-%{version}

@@ -1,5 +1,5 @@
 id: perl
-version: 5.38.0
+version: 5.38.2
 about: Practical Extraction and Report Language
 
 environ:
@@ -31,6 +31,7 @@ script: |
 
 depends:
   - components/gdbm.yml
+  - components/libxcrypt.yml
 
 sources:
-  - https://www.cpan.org/src/5.0/perl-%{version}.tar.xz
+  - https://www.cpan.org/src/%{version:1}.0/perl-%{version}.tar.xz

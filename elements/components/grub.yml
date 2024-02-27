@@ -1,6 +1,5 @@
 id: grub
-version: 2.06
-release: 5
+version: 2.12
 about: GRand Unified Bootloader
 
 environ:

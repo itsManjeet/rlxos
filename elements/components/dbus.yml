@@ -1,5 +1,5 @@
 id: dbus
-version: 1.14.8
+version: 1.14.10
 about: A message bus system, a simple way for applications to talk to one another
 
 build-type: autotools

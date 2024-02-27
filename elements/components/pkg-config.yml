@@ -3,7 +3,7 @@ version: 2.1.1
 about: Tool for passing the include path and/or library paths to build tools during the configure and make phases of package installations
 
 configure: >-
-  -D tests=false
+  -D tests=disabled
 sources:
   - https://gitea.treehouse.systems/ariadne/pkgconf/archive/pkgconf-%{version}.tar.gz
 

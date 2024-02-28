@@ -41,3 +41,6 @@ configure: >-
   -DLLVM_BINUTILS_INCDIR=/usr/include
   -DLLVM_INCLUDE_BENCHMARKS=OFF
   -DCLANG_DEFAULT_PIE_ON_LINUX=ON
+
+post-script: |-
+  cp %{build-dir}/bin/FileCheck %{install-root}/%{bindir}

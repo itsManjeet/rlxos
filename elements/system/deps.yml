@@ -240,7 +240,6 @@ depends:
   - components/flatpak.yml
   - components/power-profiles-daemon.yml
   - components/gufw.yml
-  - components/onboard.yml
   - components/blueman.yml
   - components/wine.yml
   - components/wlroots.yml

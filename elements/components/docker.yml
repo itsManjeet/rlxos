@@ -1,5 +1,5 @@
 id: docker
-version: 24.0.6
+version: 25.0.2
 about: Pack, ship and run any application as a lightweight container
 
 tini-version: 0.19.0
@@ -17,7 +17,6 @@ script: |-
   export CGO_LDFLAGS="${LDFLAGS}"
   export GOFLAGS="-buildmode=pie -trimpath -mod=readonly -modcacherw -ldflags=-linkmode=external"
 
-  mv moby-%{version}/cli-%{version} .
   mkdir -p src/github.com/docker
 
   pushd src/github.com/docker
@@ -40,7 +39,7 @@ script: |-
   install -D -m 0755 moby-%{version}/bundles/dynbinary-daemon/docker-proxy \
       %{install-root}/%{bindir}/docker-proxy
 
-  install -Dm755 %{build-root}/moby-%{version}/tini-static-amd64 "%{install-root}/%{bindir}/docker-init"
+  install -Dm755 %{build-root}/tini-static-amd64 "%{install-root}/%{bindir}/docker-init"
 
   ln -s containerd %{install-root}/%{bindir}/docker-containerd
   ln -s containerd-shim %{install-root}/%{bindir}/docker-containerd-shim

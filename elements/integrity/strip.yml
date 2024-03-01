@@ -16,5 +16,3 @@ script: |-
   mkdir -p %{install-root}/lib/
   gcc -o %{install-root}/lib/libmy.so code.c
   gcc -o %{install-root}/lib/code code.c
-
-  echo "SOME DATAT" > %{install-root}/lib/libsome.so

@@ -1,10 +1,9 @@
 id: ostree-config
-merge: [version.yml]
-
+version: 0.0.1
 about: OStree remote and mount configurations
 
 build-depends:
-- components/bash.yml
+  - components/bash.yml
 
 script: |-
   install -D -m 0644 -t %{install-root}/%{sysconfdir}/pki/ostree/ /files/rlxos.gpg

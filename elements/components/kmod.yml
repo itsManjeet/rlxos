@@ -1,6 +1,5 @@
 id: kmod
-version: 30
-release: 2
+version: 31
 about: Libraries and utilities for loading kernel modules
 
 configure: >-

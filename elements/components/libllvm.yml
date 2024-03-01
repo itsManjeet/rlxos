@@ -1,38 +1,17 @@
 id: libllvm
-version: 15.0.7
+version: 16.0.6
 about: LLVM runtime libraries
 
-script: |
-  for lib in usr/lib/clang/15.0.7/lib/x86_64-unknown-linux-gnu/libclang_rt.ubsan_minimal.so \
-              usr/lib/clang/15.0.7/lib/x86_64-unknown-linux-gnu/libclang_rt.scudo.so \
-              usr/lib/clang/15.0.7/lib/x86_64-unknown-linux-gnu/libclang_rt.scudo_minimal.so \
-              usr/lib/clang/15.0.7/lib/x86_64-unknown-linux-gnu/libclang_rt.scudo_standalone.so \
-              usr/lib/clang/15.0.7/lib/x86_64-unknown-linux-gnu/libclang_rt.asan.so \
-              usr/lib/clang/15.0.7/lib/x86_64-unknown-linux-gnu/libclang_rt.tsan.so \
-              usr/lib/clang/15.0.7/lib/x86_64-unknown-linux-gnu/libclang_rt.dyndd.so \
-              usr/lib/clang/15.0.7/lib/x86_64-unknown-linux-gnu/libclang_rt.memprof.so \
-              usr/lib/clang/15.0.7/lib/x86_64-unknown-linux-gnu/libclang_rt.hwasan.so \
-              usr/lib/clang/15.0.7/lib/x86_64-unknown-linux-gnu/libclang_rt.hwasan_aliases.so \
-              usr/lib/clang/15.0.7/lib/x86_64-unknown-linux-gnu/libclang_rt.ubsan_standalone.so \
-              usr/lib/libclang.so.15 \
-              usr/lib/libclang.so \
-              usr/lib/libLTO.so.15 \
-              usr/lib/libRemarks.so.15 \
-              usr/lib/libclang-cpp.so.15 \
-              usr/lib/libLLVM.so \
-              usr/lib/libLLVM-15.so \
-              usr/lib/libLLVM-15.0.7.so \
-              usr/lib/libclang.so.15.0.7 \
-              usr/lib/libLTO.so \
-              usr/lib/LLVMgold.so \
-              usr/lib/libRemarks.so \
-              usr/lib/libclang-cpp.so; do
-      mkdir -p %{install-root}/$(dirname $lib)
-      cp -rap /$lib %{install-root}/$lib
-    done
+include-root: /sysroot
+include-depends: false
+include:
+  - components/llvm.yml
+
+script: |-
+  for lib in $(find %{include-root}/ -type f -name "*.so*"); do
+    mkdir -p %{install-root}/$(dirname $lib)
+    cp -rap /$lib %{install-root}/$lib
+  done
 
 depends:
   - components/libgcc.yml
-
-build-depends:
-  - components/llvm.yml

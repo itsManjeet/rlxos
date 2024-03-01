@@ -1,5 +1,5 @@
 id: perl-xml-parser
-version: 2.46
+version: 2.47
 about: Module is a Perl interface to James Clark's XML parser, Expat
 depends:
   - components/perl.yml

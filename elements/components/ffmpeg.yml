@@ -1,5 +1,5 @@
 id: ffmpeg
-version: 6.0
+version: 6.1.1
 about: A solution to record, convert and stream audio and video
 
 script: |-
@@ -49,5 +49,6 @@ depends:
   - components/sdl2.yml
 build-depends:
   - components/yasm.yml
+  - components/texinfo.yml
 sources:
   - https://ffmpeg.org/releases/ffmpeg-%{version}.tar.xz

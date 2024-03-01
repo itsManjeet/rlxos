@@ -1,5 +1,5 @@
 id: etc-shells
-merge: [version.yml]
+version: 0.0.1
 about: System shells
 
 build-depends:

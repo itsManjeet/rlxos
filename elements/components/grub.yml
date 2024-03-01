@@ -1,13 +1,12 @@
 id: grub
-version: 2.06
-release: 5
+version: 2.12
 about: GRand Unified Bootloader
 
 environ:
   - PYTHON=python3
 
 pre-script: |-
-  patch -Np1 -i grub-2.06-upstream_fixes-1.patch
+  echo depends bli part_gpt > grub-core/extra_deps.lst
 
 configure: >
   --disable-werror

@@ -1,6 +1,6 @@
 id: system-repo
 about: System Repository
-merge: [version.yml, elements/include/ostree.inc]
+merge: [version.yml, ostree-branch.yml, elements/include/ostree.inc]
 
 capabilities:
   - CAP_SYS_CHROOT
@@ -18,7 +18,7 @@ initial-commands: |-
     rm ${app}.zsync
   done
 
-  rmdir /install-root
+  rm -rf /install-root
 
   # TODO: should be enabled via systemd user-preset
   systemctl enable --global appimaged.service

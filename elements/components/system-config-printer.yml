@@ -19,8 +19,8 @@ post-script: |-
   rm -rf %{install-root}/etc/dbus-1
 
   # TODO: Why we need to do this manually??
-  mv %{install-root}/%{libdir}/python3.11/site-packages/cupshelpers-1.0-py3.11.egg/cupshelpers \
-     %{install-root}/%{libdir}/python3.11/site-packages/
+  mv %{install-root}/%{libdir}/python*/site-packages/cupshelpers-*.egg/cupshelpers \
+     %{install-root}/%{libdir}/python*/site-packages/
 
   # Show settings on Xfce4 Settings Manager
   sed -i '/^Categories=/ s/$/X-XFCE-SettingsDialog;X-XFCE-HardwareSettings;/' %{install-root}/%{datadir}/applications/%{id}.desktop

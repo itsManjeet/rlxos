@@ -1,5 +1,5 @@
 id: bc
-version: 6.7.5
+version: 1.07.1
 about: An arbitrary precision calculator language
 
 configure: >-
@@ -12,4 +12,4 @@ build-depends:
   - components/ed.yml
 
 sources:
-  - https://github.com/gavinhoward/bc/releases/download/%{version}/bc-%{version}.tar.xz
+  - https://ftp.gnu.org/gnu/bc/bc-%{version}.tar.gz

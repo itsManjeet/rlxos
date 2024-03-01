@@ -39,7 +39,7 @@ jobs:
             extension_path="$(echo ${extension_path} | cut -d '/' -f2-)"
             extension="$(basename ${extension_path})"
             extension="${extension%.*}"
-            OSTREE_BRANCH="x86_64/extension/${extension}/${VERSION}" \
+            OSTREE_BRANCH="x86_64/extension/${extension}/${CHANNEL}" \
             ELEMENT=${extension_path} make update-ostree
           done
 

@@ -13,6 +13,7 @@ env:
   OSTREE_REPO: ${{secrets.OSTREE_REPO}}
   OSTREE_GPG: ${{secrets.OSTREE_GPG}}
   VERSION: ${{ github.run_number }}
+  SOURCEFORGE_PREFIX: ${{secrets.SOURCEFORGE_PREFIX}}
   CHANNEL: ${{ endsWith(github.ref, 'stable') && 'stable' || (endsWith(github.ref, 'preview') && 'preview' || 'unstable') }}
   OSTREE_BRANCH: "x86_64/os/${{ endsWith(github.ref, 'stable') && 'stable' || (endsWith(github.ref, 'preview') && 'preview' || 'unstable') }}"
 
@@ -61,8 +62,8 @@ jobs:
       - uses: actions/checkout@v1
       - name: Update installer ISO
         run: |
-          make checkout ELEMENT=installer/image.yml DESTDIR=${SERVER_REPO_PATH}/releases/${CHANNEL}/
-          (cd ${SERVER_REPO_PATH}/releases/${CHANNEL}/; zsyncmake -b 2048 -C -u ${SERVER_REPO_URL}/releases/${CHANNEL}/rlxos-${VERSION}-installer.iso rlxos-${VERSION}-installer.iso)
+          make checkout ELEMENT=installer/image.yml DESTDIR=HERE/${VERSION}
+          scp -pr HERE/${VERSION} ${SOURCEFORGE_PREFIX}/${CHANNEL}/
 
   update-market:
     name: Update Market

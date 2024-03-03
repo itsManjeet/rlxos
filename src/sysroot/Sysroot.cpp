@@ -165,107 +165,102 @@ std::optional<UpdateInfo> Sysroot::pull(const Deployment& deployment,
     std::unique_ptr<GKeyFile, decltype(&g_key_file_unref)> origin(
             nullptr, g_key_file_unref);
 
-    if (deployment.refspec.ends_with("/local")) {
-        gboolean resume = false;
-        if (!ostree_repo_prepare_transaction(repo, &resume, nullptr, &error))
-            throw Error(error);
+    gboolean resume = false;
+    if (!ostree_repo_prepare_transaction(repo, &resume, nullptr, &error))
+        throw Error(error);
 
-        std::unique_ptr<OstreeMutableTree, decltype(&g_object_unref)>
-                mutableTree(ostree_mutable_tree_new_from_commit(
-                                    repo, refs[0].c_str(), &error),
-                        g_object_unref);
-        if (mutableTree == nullptr) throw Error(error);
+    std::unique_ptr<OstreeMutableTree, decltype(&g_object_unref)>
+            mutableTree(ostree_mutable_tree_new_from_commit(
+                                repo, refs[0].c_str(), &error),
+                    g_object_unref);
+    if (mutableTree == nullptr) throw Error(error);
 
-        for (int i = 1; i < refs.size(); i++) {
-            std::unique_ptr<GFile, decltype(&g_object_unref)> commit(
-                    nullptr, g_object_unref);
-            GFile* res;
-            gchar* file;
-            if (!ostree_repo_read_commit(
-                        repo, crefs[i], &res, &file, nullptr, &error)) {
-                throw Error(error);
-            }
-            commit.reset(res);
-            g_free(file);
-
-            if (!ostree_repo_write_directory_to_mtree(repo, commit.get(),
-                        mutableTree.get(), nullptr, nullptr, &error))
-                throw Error(error);
-        }
+    for (int i = 1; i < refs.size(); i++) {
+        std::unique_ptr<GFile, decltype(&g_object_unref)> commit(
+                nullptr, g_object_unref);
         GFile* res;
-        if (!ostree_repo_write_mtree(
-                    repo, mutableTree.get(), &res, nullptr, &error))
-            throw Error(error);
-        std::unique_ptr<GFile, decltype(&g_object_unref)> root(
-                res, g_object_unref);
-        gchar* commit_checksum;
-        std::unique_ptr<GVariantDict, decltype(&g_variant_dict_unref)> options(
-                g_variant_dict_new(nullptr), g_variant_dict_unref);
-        g_variant_dict_insert_value(options.get(), "rlxos.revision.core",
-                g_variant_new_string(updated_revisions[0].c_str()));
-        for (int i = 0; i < deployment.extensions.size(); i++) {
-            g_variant_dict_insert_value(options.get(),
-                    ("rlxos.revision." + deployment.extensions[i].first)
-                            .c_str(),
-                    g_variant_new_string(updated_revisions[i + 1].c_str()));
-        }
-
-        if (!ostree_repo_write_commit(repo, nullptr, nullptr, nullptr,
-                    g_variant_dict_end(options.get()), OSTREE_REPO_FILE(res),
-                    &commit_checksum, nullptr, &error)) {
+        gchar* file;
+        if (!ostree_repo_read_commit(
+                    repo, crefs[i], &res, &file, nullptr, &error)) {
             throw Error(error);
         }
-        ostree_repo_transaction_set_ref(
-                repo, nullptr, "x86_64/os/local", commit_checksum);
-        OstreeRepoTransactionStats stats;
-        if (!ostree_repo_commit_transaction(repo, &stats, nullptr, &error)) {
+        commit.reset(res);
+        g_free(file);
+
+        if (!ostree_repo_write_directory_to_mtree(repo, commit.get(),
+                    mutableTree.get(), nullptr, nullptr, &error))
             throw Error(error);
-        }
-
-        char* out_rev;
-        if (!ostree_repo_resolve_rev(
-                    repo, "x86_64/os/local", false, &out_rev, &error)) {
-            throw Error(error);
-        }
-        revision = out_rev;
-
-        origin.reset(ostree_sysroot_origin_new_from_refspec(
-                backend, "x86_64/os/local"));
-        g_key_file_set_boolean(origin.get(), "rlxos", "merged", true);
-
-        std::vector<gchar*> ext_id;
-        for (auto const& [id, _] : deployment.extensions) {
-            ext_id.push_back((gchar*)id.c_str());
-        }
-        g_key_file_set_string_list(origin.get(), "rlxos", "extensions",
-                ext_id.data(), ext_id.size());
-        g_key_file_set_string(
-                origin.get(), "rlxos", "channel", deployment.channel.c_str());
-    } else {
-        revision = updated_revisions[0];
-        origin.reset(ostree_sysroot_origin_new_from_refspec(
-                backend, deployment.refspec.c_str()));
-        g_key_file_set_boolean(origin.get(), "rlxos", "merged", false);
     }
+    GFile* res;
+    if (!ostree_repo_write_mtree(
+                repo, mutableTree.get(), &res, nullptr, &error))
+        throw Error(error);
+    std::unique_ptr<GFile, decltype(&g_object_unref)> root(
+            res, g_object_unref);
+    gchar* commit_checksum;
+    std::unique_ptr<GVariantDict, decltype(&g_variant_dict_unref)> options(
+            g_variant_dict_new(nullptr), g_variant_dict_unref);
+    g_variant_dict_insert_value(options.get(), "rlxos.revision.core",
+            g_variant_new_string(updated_revisions[0].c_str()));
+    for (int i = 0; i < deployment.extensions.size(); i++) {
+        g_variant_dict_insert_value(options.get(),
+                ("rlxos.revision." + deployment.extensions[i].first)
+                        .c_str(),
+                g_variant_new_string(updated_revisions[i + 1].c_str()));
+    }
+
+    if (!ostree_repo_write_commit(repo, nullptr, nullptr, nullptr,
+                g_variant_dict_end(options.get()), OSTREE_REPO_FILE(res),
+                &commit_checksum, nullptr, &error)) {
+        throw Error(error);
+    }
+    ostree_repo_transaction_set_ref(
+            repo, nullptr, "x86_64/os/local", commit_checksum);
+    OstreeRepoTransactionStats stats;
+    if (!ostree_repo_commit_transaction(repo, &stats, nullptr, &error)) {
+        throw Error(error);
+    }
+
+    char* out_rev;
+    if (!ostree_repo_resolve_rev(
+                repo, "x86_64/os/local", false, &out_rev, &error)) {
+        throw Error(error);
+    }
+    revision = out_rev;
+
+    origin.reset(ostree_sysroot_origin_new_from_refspec(
+            backend, "x86_64/os/local"));
+    g_key_file_set_boolean(origin.get(), "rlxos", "merged", true);
+
+    std::vector<gchar*> ext_id;
+    for (auto const& [id, _] : deployment.extensions) {
+        ext_id.push_back((gchar*)id.c_str());
+    }
+    g_key_file_set_string_list(origin.get(), "rlxos", "extensions",
+            ext_id.data(), ext_id.size());
+    g_key_file_set_string(
+            origin.get(), "rlxos", "channel", deployment.channel.c_str());
 
     std::unique_ptr<OstreeDeployment, decltype(&g_object_unref)> new_deployment(
             nullptr, g_object_unref);
 
-    OstreeDeployment* res;
-    if (!ostree_sysroot_deploy_tree_with_options(backend, OSNAME,
-                revision.c_str(), origin.get(), deployment.backend, nullptr,
-                &res, nullptr, &error)) {
-        ostree_sysroot_cleanup(backend, nullptr, nullptr);
-        throw Error(error);
-    }
-    new_deployment.reset(res);
+    {
+        OstreeDeployment* res;
+        if (!ostree_sysroot_deploy_tree_with_options(backend, OSNAME,
+                    revision.c_str(), origin.get(), deployment.backend, nullptr,
+                    &res, nullptr, &error)) {
+            ostree_sysroot_cleanup(backend, nullptr, nullptr);
+            throw Error(error);
+        }
+        new_deployment.reset(res);
 
-    if (!ostree_sysroot_simple_write_deployment(backend, OSNAME, res,
-                merged_deployment,
-                OSTREE_SYSROOT_SIMPLE_WRITE_DEPLOYMENT_FLAGS_NO_CLEAN, nullptr,
-                &error)) {
-        ostree_sysroot_cleanup(backend, nullptr, nullptr);
-        throw Error(error);
+        if (!ostree_sysroot_simple_write_deployment(backend, OSNAME, res,
+                    merged_deployment,
+                    OSTREE_SYSROOT_SIMPLE_WRITE_DEPLOYMENT_FLAGS_NO_CLEAN, nullptr,
+                    &error)) {
+            ostree_sysroot_cleanup(backend, nullptr, nullptr);
+            throw Error(error);
+        }
     }
 
     ostree_sysroot_cleanup(backend, nullptr, nullptr);

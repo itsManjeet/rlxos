@@ -50,9 +50,12 @@ void Deployment::parse(OstreeRepo *repo) {
     if (origin == nullptr) { throw Error("no origin file found"); }
 
     refspec = origin_get_string(origin, "origin", "refspec");
+    auto idx = refspec.find(':');
+    if (idx != std::string::npos) {
+        refspec = refspec.substr(idx+1);
+    }
 
-    bool merged = origin_get_boolean(origin, "rlxos", "merged", false);
-    if (merged) {
+    if (refspec.ends_with("/local")) {
         GError *error;
         // fallback to stable if error
         channel = origin_get_string(origin, "rlxos", "channel", "stable");

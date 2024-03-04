@@ -18,6 +18,9 @@ post-script: |-
         <property name="show-filesystem" type="bool" value="false"/>
       </property>
     </property>
+    <property name="desktop-menu" type="empty">
+      <property name="show" type="bool" value="false"/>
+    </property>
   </channel>
   EOF
 depends:

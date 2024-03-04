@@ -31,7 +31,6 @@ nav:
     - Distrobox: app-management/distrobox.md
   - System Management:
     - Updates: system-management/updates.md
-    - Switching Channels:  system-management/switching-channels.md
     - Extensions:  system-management/extensions.md
   - Community Guideline:
     - Support and Help: SUPPORT.md

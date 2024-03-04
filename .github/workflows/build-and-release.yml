@@ -4,6 +4,8 @@ on:
   push:
     paths-ignore:
       - "docs/**"
+      - ".github/workflows/update-docs.yml"
+      - "mkdocs.yml"
 
 env:
   NO_PROGRESS: 1

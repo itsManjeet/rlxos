@@ -54,16 +54,25 @@ jobs:
     name: Build Installer ISO
     runs-on: self-hosted
     timeout-minutes: 47000
-    environment: deploy
     needs: [ build ]
-    if: github.ref == 'refs/heads/stable' || github.ref == 'refs/heads/preview'
 
     steps:
       - uses: actions/checkout@v1
       - name: Update installer ISO
         run: |
-          make checkout ELEMENT=installer/image.yml DESTDIR=HERE/${VERSION}
-          scp -pr HERE/${VERSION} ${SOURCEFORGE_PREFIX}/${CHANNEL}/
+          make checkout ELEMENT=installer/image.yml DESTDIR=${SERVER_REPO_PATH}/releases/${CHANNEL}/
+          (cd ${SERVER_REPO_PATH}/releases/${CHANNEL}/; zsyncmake -b 2048 -C -u ${SERVER_REPO_URL}/releases/${CHANNEL}/rlxos-${CHANNEL}-installer.iso rlxos-${CHANNEL}-installer.iso)
+
+  update-mirrors:
+    name: Update ISO on mirrors
+    runs-on: self-hosted
+    environment: deploy
+    needs: [build-installer-iso]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Upload to sourceforge
+        run: |
+          scp -pr ${SERVER_REPO_PATH}/releases/${CHANNEL}/ ${SOURCEFORGE_PREFIX}/
 
   update-market:
     name: Update Market

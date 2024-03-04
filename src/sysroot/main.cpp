@@ -31,9 +31,16 @@ struct SysrootApp : Application {
         REGISTER_COMMAND(SysrootApp, remove, "Remove system extensions", -1);
         REGISTER_COMMAND(SysrootApp, list, "List available extensions", 0);
         REGISTER_COMMAND(SysrootApp, update, "Check and apply for system updates", 0);
+        REGISTER_COMMAND_WITH_NAME(SysrootApp, "switch", switch_, "Switch to different update channel", 1);
     }
 
     void init() override { backend = std::make_unique<Sysroot>(true); }
+
+    void switch_() {
+        auto new_channel = ctxt.args[0];
+        PROCESS("Switching to " << new_channel);
+        backend->switch_(new_channel);
+    }
 
     void update() {
         PROCESS("Checking for remote updates");

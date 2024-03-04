@@ -43,6 +43,8 @@ struct Sysroot {
     void install(const std::vector<std::string>& refs);
     void uninstall(const std::vector<std::string>& refs);
 
+    void switch_(const std::string& channel);
+
     [[nodiscard]] Deployment get_active() const;
 
     [[nodiscard]] const std::vector<Deployment>& get_deployments() const {

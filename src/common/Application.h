@@ -37,7 +37,10 @@ struct Application {
     };
 
 #define REGISTER_COMMAND(App, id, help, count)                                         \
-    handlers[#id] = {reinterpret_cast<handler>(&App::id), help, count}
+    REGISTER_COMMAND_WITH_NAME(App, #id, id, help, count)
+
+#define REGISTER_COMMAND_WITH_NAME(App, id, fun, help, count)                                         \
+    handlers[id] = {reinterpret_cast<handler>(&App::fun), help, count}
 
 #define REGISTER_MAIN(App, id, count) REGISTER_COMMAND(App, id, description, count)
 

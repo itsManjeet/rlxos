@@ -102,6 +102,12 @@ void Sysroot::uninstall(const std::vector<std::string>& refs) {
     apply_changes(deployment, false, true);
 }
 
+void Sysroot::switch_(const std::string& channel) {
+    auto deployment = get_active();
+    deployment.channel = channel;
+    apply_changes(deployment, false, true);
+}
+
 std::optional<UpdateInfo> Sysroot::upgrade(bool dry_run) {
     return apply_changes(get_active(), dry_run);
 }
@@ -309,7 +315,7 @@ Deployment Sysroot::get_active() const {
 }
 std::optional<UpdateInfo> Sysroot::apply_changes(
         const Deployment& deployment, bool dry_run, bool force) {
-    PROCESS("Writing new deployment")
+    PROCESS("Pulling changes");
     DEBUG("REFSPEC     : " << deployment.refspec)
     DEBUG("CHANNEL     : " << deployment.channel)
     std::stringstream ss;
@@ -382,8 +388,8 @@ static char* formatted_time_remaining_from_seconds(guint64 seconds_remaining) {
 }
 
 void progress_callback(OstreeAsyncProgress* progress, gpointer user_data) {
-    auto* self = reinterpret_cast<Sysroot*>(user_data);
-    g_autofree char* status = nullptr;
+    auto self = reinterpret_cast<Sysroot*>(user_data);
+    g_autofree char* status = NULL;
     gboolean caught_error, scanning;
     guint outstanding_fetches;
     guint outstanding_metadata_fetches;
@@ -410,13 +416,14 @@ void progress_callback(OstreeAsyncProgress* progress, gpointer user_data) {
     if (*status != '\0') {
         g_string_append(buf, status);
     } else if (caught_error) {
-        self->progress(0.0, "Caught error, waiting for outstanding tasks");
+        g_string_append_printf(
+                buf, "Caught error, waiting for outstanding tasks");
     } else if (outstanding_fetches) {
         guint64 bytes_transferred, start_time, total_delta_part_size;
         guint fetched, metadata_fetched, requested;
         guint64 current_time = g_get_monotonic_time();
-        g_autofree char* formatted_bytes_transferred = nullptr;
-        g_autofree char* formatted_bytes_sec = nullptr;
+        g_autofree char* formatted_bytes_transferred = NULL;
+        g_autofree char* formatted_bytes_sec = NULL;
         guint64 bytes_sec;
 
         /* Note: This is not atomic wrt the above getter call. */
@@ -446,9 +453,16 @@ void progress_callback(OstreeAsyncProgress* progress, gpointer user_data) {
         if (total_delta_parts > 0) {
             guint64 fetched_delta_part_size = ostree_async_progress_get_uint64(
                     progress, "fetched-delta-part-size");
+            g_autofree char* formatted_fetched = NULL;
+            g_autofree char* formatted_total = NULL;
 
+            /* Here we merge together deltaparts + fallbacks to avoid bloating
+             * the text UI */
             fetched_delta_parts += fetched_delta_part_fallbacks;
             total_delta_parts += total_delta_part_fallbacks;
+
+            formatted_fetched = g_format_size(fetched_delta_part_size);
+            formatted_total = g_format_size(total_delta_part_size);
 
             if (bytes_sec > 0) {
                 guint64 est_time_remaining = 0;
@@ -456,24 +470,40 @@ void progress_callback(OstreeAsyncProgress* progress, gpointer user_data) {
                     est_time_remaining =
                             (total_delta_part_size - fetched_delta_part_size) /
                             bytes_sec;
-                self->progress((double)fetched_delta_parts / total_delta_parts,
-                        "Downloading delta parts");
+                g_autofree char* formatted_est_time_remaining =
+                        formatted_time_remaining_from_seconds(
+                                est_time_remaining);
+                /* No space between %s and remaining, since
+                 * formatted_est_time_remaining has a trailing space */
+                g_string_append_printf(buf,
+                        "Receiving delta parts: %u/%u %s/%s %s/s %sremaining",
+                        fetched_delta_parts, total_delta_parts,
+                        formatted_fetched, formatted_total, formatted_bytes_sec,
+                        formatted_est_time_remaining);
             } else {
-                self->progress((double)fetched_delta_parts / total_delta_parts,
-                        "Downloading delta parts");
+                g_string_append_printf(buf,
+                        "Receiving delta parts: %u/%u %s/%s",
+                        fetched_delta_parts, total_delta_parts,
+                        formatted_fetched, formatted_total);
             }
         } else if (scanning || outstanding_metadata_fetches) {
-            self->progress(0.0, "Downloading metadata objects " +
-                                        std::to_string(metadata_fetched));
+            g_string_append_printf(buf,
+                    "Receiving metadata objects: %u/(estimating) %s/s %s",
+                    metadata_fetched, formatted_bytes_sec,
+                    formatted_bytes_transferred);
         } else {
-            self->progress((double)fetched / requested,
-                    "Downloading objects " + std::to_string(metadata_fetched));
+            g_string_append_printf(buf,
+                    "Receiving objects: %u%% (%u/%u) %s/s %s",
+                    (guint)((((double)fetched) / requested) * 100), fetched,
+                    requested, formatted_bytes_sec,
+                    formatted_bytes_transferred);
         }
     } else if (outstanding_writes) {
-        self->progress(
-                1.0, "Writing objects: " + std::to_string(outstanding_writes));
+        g_string_append_printf(buf, "Writing objects: %u", outstanding_writes);
     } else {
-        self->progress(
-                1.0, "Scanning metadata " + std::to_string(n_scanned_metadata));
+        g_string_append_printf(
+                buf, "Scanning metadata: %u", n_scanned_metadata);
     }
+
+    std::cout << "\r" << buf->str << std::flush;
 }

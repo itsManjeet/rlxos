@@ -1,29 +1,41 @@
 # Updates
 
-Updating the system is a critical task, and it is imperative to ensure that the system always remains in a functional state. rlxos provides dedicated tools to manage system updates and fallbacks.
+Updating the system is a crucial task, ensuring the system remains functional is paramount. RLXOS provides dedicated
+tools for managing system updates and fallbacks.
 
-If you are using the secure (ostree-based) version of rlxos, you can enjoy the following benefits:
+## Sysroot
 
-1. **Atomic Updates:** Updates either complete successfully or fail without making any alterations to your system.
-2. **Rollback Option:** You can always revert to a previous version of your system in case of faulty updates.
-3. **Delta Transactions:** You will receive only the changes instead of the complete updated file or packages, unlike in traditional packaging systems.
+Sysroot is a command-line utility designed for managing your system's roots, updates, and extensions, similar to other
+package managers but with the following features:
 
+1. **Atomic Updates:** Updates either complete successfully or fail without making any partial alterations to your
+   system.
+2. **Rollback Option:** You can revert to a previous version of your system in case updates are faulty.
+3. **Delta Transactions:** Instead of receiving complete updated files or packages, you will only get the changes,
+   unlike traditional packaging systems.
 
 ### Checking for Updates
 
-Before applying updates, it is advisable to review the changelog. To check for updates using `updatectl`, execute the following command:
+Before applying updates, it's advisable to review the changelog. Execute the following command:
 
-`updatectl update --dry-run`
+`$ sudo sysroot update`
 
-### Applying Updates
+### System Status
 
-You have the option to directly update the system or review the changelog before applying updates.
+The `sysroot` utility maintains two deployments (or versions) for better understanding:
 
-`updatectl update`
+1. **Active**: This is the current deployment (or version) that you are currently using.
+2. **Inactive**: This represents either the previous or future deployment after any changes have been made.
 
+### Switching Update Channels
 
-### Checking System Status
+RLXOS offers three update channels based on stability:
 
-To view the system version, available rollback version, and installed extensions:
+| Channel Name | Description                                                                                      | Release Cycle        |
+|--------------|--------------------------------------------------------------------------------------------------|----------------------|
+| `stable`     | (Default) This channel provides point releases after verifying stability on the preview channel. | Monthly to Quarterly |
+| `preview`    | This channel offers monthly to weekly changes for the next major release for stability testing.  | Weekly to Monthly    |
+| `unstable`   | This channel is used by distro developers to test their changes.                                 | Daily to Weekly      |
 
-`updatectl status`
+While it's recommended to stay on the `stable` channel, you can switch channels via `$ sysroot switch <channel>` and
+reboot.

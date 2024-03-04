@@ -50,10 +50,6 @@ void Deployment::parse(OstreeRepo *repo) {
     if (origin == nullptr) { throw Error("no origin file found"); }
 
     refspec = origin_get_string(origin, "origin", "refspec");
-    auto idx = refspec.find(':');
-    if (idx != std::string::npos) {
-        refspec = refspec.substr(idx+1);
-    }
 
     if (refspec.ends_with("/local")) {
         GError *error;

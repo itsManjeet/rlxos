@@ -107,6 +107,11 @@ std::optional<UpdateInfo> Sysroot::upgrade(bool dry_run) {
     return apply_changes(get_active(), dry_run);
 }
 
+static bool ends_with(std::string_view str, std::string_view suffix) {
+    return str.size() >= suffix.size() && str.compare(str.size()-suffix.size(), suffix.size(), suffix) == 0;
+}
+
+
 std::optional<UpdateInfo>
 Sysroot::pull(const Deployment &deployment, std::vector<std::string> &updated_revisions, bool dry_run, bool forced) {
     GError *error = nullptr;
@@ -208,11 +213,15 @@ Sysroot::pull(const Deployment &deployment, std::vector<std::string> &updated_re
         throw Error(error);
     }
 
-    char *out_rev;
-    if (!ostree_repo_resolve_rev(repo, "x86_64/os/local", false, &out_rev, &error)) {
-        throw Error(error);
+    if (ends_with(deployment.refspec, "/local")) {
+        char *out_rev;
+        if (!ostree_repo_resolve_rev(repo, "x86_64/os/local", false, &out_rev, &error)) {
+            throw Error(error);
+        }
+        revision = out_rev;
+    } else {
+        revision = updated_revisions[0];
     }
-    revision = out_rev;
 
     origin.reset(ostree_sysroot_origin_new_from_refspec(backend, "x86_64/os/local"));
     g_key_file_set_boolean(origin.get(), "rlxos", "merged", true);

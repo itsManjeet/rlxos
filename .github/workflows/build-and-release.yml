@@ -27,6 +27,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
+        with:
+          token: ${{ secrets.CI_TOKEN }}
+          submodules: true
       - name: Build system packages
         run: make ELEMENT=system/deps.yml
 
@@ -60,6 +63,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
+        with:
+          token: ${{ secrets.CI_TOKEN }}
+          submodules: true
       - name: Update installer ISO
         run: |
           make checkout ELEMENT=installer/image.yml DESTDIR=${SERVER_REPO_PATH}/releases/${CHANNEL}/
@@ -72,6 +78,9 @@ jobs:
     needs: [build-installer-iso]
     steps:
       - uses: actions/checkout@v1
+        with:
+          token: ${{ secrets.CI_TOKEN }}
+          submodules: true
       - name: Upload to sourceforge
         run: |
           scp -pr ${SERVER_REPO_PATH}/releases/${CHANNEL}/ ${SOURCEFORGE_PREFIX}/
@@ -83,5 +92,8 @@ jobs:
     if: github.ref == 'refs/heads/stable'
     steps:
       - uses: actions/checkout@v1
+        with:
+          token: ${{ secrets.CI_TOKEN }}
+          submodules: true
       - name: Generate AppImages meta
         run: make update-app-market MARKET_PATH="${SERVER_REPO_PATH}/${CHANNEL}"

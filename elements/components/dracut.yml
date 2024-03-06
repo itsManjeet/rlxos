@@ -1,13 +1,9 @@
 id: dracut
-version: 059
+version: 056
 about: An event driven initramfs infrastructure
 
 pre-script: |-
-  patch -Np1 -i dracut-systemd-253.patch
-  patch -Np1 -i dracut-systemd-254-uki.patch
   patch -Np1 -i dracut-systemd-255-systemd-executor.patch
-  patch -Np1 -i dracut-systemd-255-pcrphase.patch
-  patch -Np1 -i dracut-systemd-255-hibernate-resume.patch
 
 variables:
   seperate-build-dir: false
@@ -36,9 +32,4 @@ depends:
 
 sources:
   - dracut-%{version}.tar.gz::https://github.com/dracutdevs/dracut/archive/refs/tags/%{version}.tar.gz
-  - patches/dracut/dracut-systemd-253.patch
-  - patches/dracut/dracut-systemd-255-pcrphase.patch
-  - dracut-systemd-254-uki.patch::https://github.com/dracutdevs/dracut/commit/f32e95bcadbc5158843530407adc1e7b700561b1.patch
   - dracut-systemd-255-systemd-executor.patch::https://github.com/dracutdevs/dracut/pull/2535/commits/62fd8ebe4776dbb60ca04a865c2d160e45d65e91.patch
-  - dracut-systemd-255-hibernate-resume.patch::https://github.com/dracutdevs/dracut/pull/2527/commits/a2fe89116db4b286fbf515f26bd1773b5e6ee8ad.patch
-

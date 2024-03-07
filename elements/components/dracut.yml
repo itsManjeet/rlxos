@@ -3,7 +3,7 @@ version: 056
 about: An event driven initramfs infrastructure
 
 pre-script: |-
-  patch -Np1 -i /patches/dracut/zstd-firmware-support.patch
+  patch -Np1 -i dracut-systemd-255-systemd-executor.patch
 
 variables:
   seperate-build-dir: false
@@ -32,3 +32,4 @@ depends:
 
 sources:
   - dracut-%{version}.tar.gz::https://github.com/dracutdevs/dracut/archive/refs/tags/%{version}.tar.gz
+  - dracut-systemd-255-systemd-executor.patch::https://github.com/dracutdevs/dracut/pull/2535/commits/62fd8ebe4776dbb60ca04a865c2d160e45d65e91.patch

@@ -1,5 +1,5 @@
 id: x11-config
-merge: [version.yml]
+version: 0.0.1
 about: X11 configurations
 
 script: |-

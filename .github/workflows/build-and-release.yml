@@ -4,13 +4,20 @@ on:
   push:
     paths-ignore:
       - "docs/**"
+      - ".github/workflows/update-docs.yml"
+      - "mkdocs.yml"
 
 env:
-  NO_PRINT_PROGRESS: 1
+  NO_PROGRESS: 1
   SERVER_REPO_PATH: ${{secrets.SERVER_REPO_PATH}}
   SERVER_REPO_URL: ${{secrets.SERVER_REPO_URL}}
+  CACHE_PATH: ${{secrets.SERVER_REPO_PATH}}
   OSTREE_REPO: ${{secrets.OSTREE_REPO}}
   OSTREE_GPG: ${{secrets.OSTREE_GPG}}
+  VERSION: ${{ github.run_number }}
+  SOURCEFORGE_PREFIX: ${{secrets.SOURCEFORGE_PREFIX}}
+  CHANNEL: ${{ endsWith(github.ref, 'stable') && 'stable' || (endsWith(github.ref, 'preview') && 'preview' || 'unstable') }}
+  OSTREE_BRANCH: "x86_64/os/${{ endsWith(github.ref, 'stable') && 'stable' || (endsWith(github.ref, 'preview') && 'preview' || 'unstable') }}"
 
 jobs:
   build:
@@ -20,100 +27,73 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
+        with:
+          token: ${{ secrets.CI_TOKEN }}
+          submodules: true
+      - name: Build system packages
+        run: make ELEMENT=system/deps.yml
 
-      - name: Configure Version
-        run: |
-          VERSION="${GITHUB_REF#refs/*/}"
-          if [ $VERSION != "stable" ] && [ $VERSION != "preview" ] ; then
-            VERSION="unstable"
-          fi
-          cat > version.yml << EOF
-          version: ${VERSION}
-          ostree-branch: "x86_64/os/${VERSION}"
-          EOF
+      - name: Write changelog
+        run: echo "${{ github.event.head_commit.message }}" > ChangeLog
 
-          echo "VERSION=${VERSION}" >> $GITHUB_ENV
-
-      - name: Build filesystem
-        run: |
-          pkgupd ignite build system/filesystem.yml
-      
       - name: Update Ostree
-        run: |
-          echo "${{ github.event.head_commit.message }}" > commit_message
-
-          OSTREE_BRANCH="x86_64/os/${VERSION}" BUILD_ID="${{ github.run_number }}" make update-ostree
+        run: make ELEMENT=system/repo.yml update-ostree
 
       - name: Update Extensions
         run: |
-          for ext in sdk i3 awesome wm-kit; do
-            OSTREE_BRANCH="x86_64/extension/${ext}/${VERSION}" \
-            ELEMENT_FILE=extensions/${ext}.yml make update-ostree
+          for extension_path in elements/extensions/*.yml; do
+            extension_path="$(echo ${extension_path} | cut -d '/' -f2-)"
+            extension="$(basename ${extension_path})"
+            extension="${extension%.*}"
+            OSTREE_BRANCH="x86_64/extension/${extension}/${CHANNEL}" \
+            ELEMENT=${extension_path} make update-ostree
           done
 
       - name: Build AppImages
-        run: |
-          pkgupd ignite build app-market.yml
+        run: make ELEMENT=app-market.yml
+
+      - name: Build Installer ISO
+        run: make ELEMENT=installer/image.yml
 
   build-installer-iso:
     name: Build Installer ISO
     runs-on: self-hosted
     timeout-minutes: 47000
-    environment: deploy
-    needs: [build]
-    if: github.ref == 'refs/heads/stable' || github.ref == 'refs/heads/staging'
-    strategy:
-      matrix:
-        variant: 
-          - pkgupd
-          - ostree
+    needs: [ build ]
+
     steps:
       - uses: actions/checkout@v1
-
-      - name: Configure Version
-        run: |
-          VERSION="${GITHUB_REF#refs/*/}"
-          if [ $VERSION != "stable" ] && [ $VERSION != "staging" ] ; then
-            VERSION="experimental"
-          fi
-          cat > version.yml << EOF
-          version: ${VERSION}
-          ostree-branch: "x86_64/os/${VERSION}"
-          EOF
-
-          echo "VERSION=${VERSION}" >> $GITHUB_ENV
-
-      - name: Build Installer ISO
-        run: pkgupd ignite build installer/${{matrix.variant}}.yml
-
+        with:
+          token: ${{ secrets.CI_TOKEN }}
+          submodules: true
       - name: Update installer ISO
         run: |
-          pkgupd ignite checkout installer/${{matrix.variant}}.yml ${SERVER_REPO_PATH}/releases/${VERSION}/${{matrix.variant}}
-          (cd ${SERVER_REPO_PATH}/releases/${VERSION}/${{matrix.variant}}/; zsyncmake -b 2048 -C -u ${SERVER_REPO_URL}/releases/${VERSION}/${{matrix.variant}}/rlxos-${VERSION}-${{matrix.variant}}-installer.iso rlxos-${VERSION}-${{matrix.variant}}-installer.iso)
+          make checkout ELEMENT=installer/image.yml DESTDIR=${SERVER_REPO_PATH}/releases/${CHANNEL}/
+          (cd ${SERVER_REPO_PATH}/releases/${CHANNEL}/; zsyncmake -b 2048 -C -u ${SERVER_REPO_URL}/releases/${CHANNEL}/rlxos-${CHANNEL}-installer.iso rlxos-${CHANNEL}-installer.iso)
+
+  update-mirrors:
+    name: Update ISO on mirrors
+    runs-on: self-hosted
+    environment: deploy
+    needs: [build-installer-iso]
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          token: ${{ secrets.CI_TOKEN }}
+          submodules: true
+      - name: Upload to sourceforge
+        run: |
+          scp -pr ${SERVER_REPO_PATH}/releases/${CHANNEL}/ ${SOURCEFORGE_PREFIX}/
 
   update-market:
     name: Update Market
     runs-on: self-hosted
-    needs: [build-installer-iso]
+    needs: [ build-installer-iso ]
     if: github.ref == 'refs/heads/stable'
     steps:
       - uses: actions/checkout@v1
-      - name: Configure Version
-        run: |
-          VERSION="${GITHUB_REF#refs/*/}"
-          if [ $VERSION != "stable" ] && [ $VERSION != "staging" ] ; then
-            VERSION="experimental"
-          fi
-          cat > version.yml << EOF
-          version: ${VERSION}
-          ostree-branch: "x86_64/os/${VERSION}"
-          EOF
-
-          echo "VERSION=${VERSION}" >> $GITHUB_ENV
-
+        with:
+          token: ${{ secrets.CI_TOKEN }}
+          submodules: true
       - name: Generate AppImages meta
-        run: |-
-          pkgupd ignite meta ${SERVER_REPO_PATH}/${VERSION}
-
-      - name: Extract icons
-        run: ./scripts/extract-icons.sh ${SERVER_REPO_PATH}/apps/ ${SERVER_REPO_PATH}/icons/
+        run: make update-app-market MARKET_PATH="${SERVER_REPO_PATH}/${CHANNEL}"

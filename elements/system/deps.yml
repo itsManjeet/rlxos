@@ -24,6 +24,8 @@ depends:
   - components/ohmyzsh.yml
   - components/systemd.yml
   - components/tar.yml
+  - components/man-pages.yml
+  - components/man-db.yml
   - components/util-linux.yml
   - components/which.yml
   - components/xz.yml
@@ -42,7 +44,7 @@ depends:
   - components/squashfs-tools.yml
   - components/wget.yml
   - components/sudo.yml
-  - components/pkgupd.yml
+  - components/sysroot.yml
   - components/dmidecode.yml
   - components/libsmbios.yml
   - components/libgtop.yml
@@ -68,6 +70,7 @@ depends:
   - components/dotnet-runtime.yml
   - components/openjdk-jre.yml
   - components/xdg-desktop-portal-gtk.yml
+  - components/xdg-desktop-portal-xapp.yml
   - components/xdg-dbus-proxy.yml
   - components/wireplumber.yml
   - components/gnome-keyring.yml
@@ -237,8 +240,9 @@ depends:
   - components/flatpak.yml
   - components/power-profiles-daemon.yml
   - components/gufw.yml
-  - components/onboard.yml
   - components/blueman.yml
+  - components/wine.yml
+  - components/wlroots.yml
 
 
   # AppImage
@@ -257,8 +261,6 @@ depends:
   - system/etc-shells.yml
   - system/etc-default-useradd.yml
   - system/x11-config.yml
-  - system/ostree-config.yml
-  - system/updatectl.yml
 
   # Laptop and Touch devices
   - components/2in1.yml

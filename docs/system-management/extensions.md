@@ -1,26 +1,25 @@
-# Ostree System (Secure)
+# Extensions
 
-If you are utilizing the Ostree-based system of rlxos, your dedicated tool for managing system updates is `updatectl`.
+Extensions are collections of components that layer up on the system roots to extend specific functionality of rlxos.
+For example, You want to host a webserver you may need LAMP or LEMP which are not provided in default installation and
+can't be installed manually as rlxos is immutable in nature. Or you want a different window manager or Development
+tools. RLXOS provides a solution to handle these types of requirement with preconfigured collections called extension
+that can be managed via [sysroot](updates.md).
 
+## Extensions vs Traditional Linux Packages.
 
-Channels following the pattern `<arch>/extensions/<id>/<channel>` are extensions.
+`Traditional Linux Packages` mostly provide binary files for a specific software while expect dependencies to
+available or installed separately.
 
-### Adding Extensions
+While `Extensions` are self-contained preconfigured collections of multiple softwares with
+its dependencies that are not available on the Standard rlxos runtime.
 
-To include extensions on the base channel:
+## Manage Extensions via sysroot
 
-`updatectl update --include <arch>/extensions/<id>/<channel>`
+`$ sudo sysroot list` will print all available extensions compatible for current deployment.
 
-Multiple extensions can be included simultaneously using the syntax: `--include <ext1> --include <ext2>`
+`$ sudo sysroot install <extension-id> ....` You can specify multiple extensions to install.
 
-To list available extensions:
+`$ sudo sysroot remove <extensions-id> ....` To remove installed extensions
 
-`updatectl list`
-
-### Removing Extensions
-
-To remove already installed extensions:
-
-`updatectl update --exclude <arch>/extensions/<id>/<channel>`
-
-**Please note that a system restart is required to implement transactions.**
+**Please note that you need to reboot your system for every transaction to deploy changes**

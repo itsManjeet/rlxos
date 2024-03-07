@@ -1,21 +1,19 @@
 id: libxml2
-version: 2.9.12
+version: 2.12.5
 about: Package contains libraries and utilities used for parsing XML files
-sources:
-  - http://xmlsoft.org/sources/libxml2-%{version}.tar.gz
-
-variables:
-  run-autogen: false
 
 build-type: autotools
 
 configure: >-
   --disable-static
   --with-history 
-  --with-python=%{bindir}/python3 
+  --with-python=%{bindir}/python
   --with-threads
 
 depends:
   - components/readline.yml
   - components/python.yml
   - components/libtool.yml
+
+sources:
+  - https://gitlab.gnome.org/GNOME/libxml2/-/archive/v%{version}/libxml2-v%{version}.tar.gz

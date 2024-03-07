@@ -1,5 +1,5 @@
 id: locales
-merge: [version.yml]
+version: 0.0.1
 about: Locale cache
 
 build-depends:

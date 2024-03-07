@@ -1,13 +1,9 @@
 id: initial-setup
-merge: [version.yml]
-release: 12
-
+version: 1.0.1
 about: System Initial Setup
-
-commit: 42a23b5392f075e6166bc0d62eca36031c32bdab
+merge: [ostree-branch.yml, elements/include/rlxos.inc]
 
 post-script: |-
-  install -vDm 755 %{build-dir}/src/initial_setup %{install-root}%{bindir}/initial-setup
   for script in first-boot installer ; do
     install -Dm0755 -t "%{install-root}%{libdir}/%{id}/" /files/%{id}/${script}.sh
     sed -i s'#@@OSTREE_BRANCH@@#%{ostree-branch}#g' %{install-root}%{libdir}/%{id}/${script}.sh
@@ -82,8 +78,8 @@ post-script: |-
       <value type="int" value="1"/>
       <property name="dark-mode" type="bool" value="false"/>
       <property name="panel-1" type="empty">
-        <property name="position" type="string" value="p=10;x=0;y=0"/>
-        <property name="size" type="uint" value="48"/>
+        <property name="position" type="string" value="p=6;x=0;y=0"/>
+        <property name="size" type="uint" value="32"/>
         <property name="length" type="double" value="100"/>
         <property name="position-locked" type="bool" value="true"/>
         <property name="plugin-ids" type="array">
@@ -116,7 +112,12 @@ post-script: |-
       <property name="plugin-8" type="string" value="pulseaudio">
         <property name="enable-keyboard-shortcuts" type="bool" value="true"/>
       </property>
-      <property name="plugin-9" type="string" value="showdesktop"/>
+      <property name="plugin-9" type="string" value="actions">
+        <property name="appearance" type="uint" value="0"/>
+        <property name="items" type="array">
+          <value type="string" value="+logout"/>
+        </property>
+      </property>
       <property name="plugin-10" type="string" value="systray">
         <property name="icon-size" type="int" value="0"/>
         <property name="single-row" type="bool" value="true"/>
@@ -175,6 +176,3 @@ depends:
   - components/gtkmm.yml
   - components/glib.yml
   - components/gparted.yml
-
-sources:
-  - initial-setup-%{commit}.tar.gz::https://github.com/itsManjeet/initial-setup/archive/%{commit}.tar.gz

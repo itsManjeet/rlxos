@@ -1,5 +1,5 @@
 id: firmware
-version: 20230804
+version: 20240220
 about: Firmware files for Linux
 
 environ:
@@ -10,6 +10,7 @@ script: |-
 
 build-depends:
   - components/zstd.yml
+  - components/rdfind.yml
 
 sources:
   - https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-%{version}.tar.gz

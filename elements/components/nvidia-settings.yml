@@ -1,5 +1,5 @@
 id: nvidia-settings
-version: 535.129.03
+merge: [elements/include/nvidia.inc]
 about: Tool for configuring the NVIDIA graphics driver
 
 depends:
@@ -9,7 +9,6 @@ depends:
   - components/x11/libxv.yml
   - components/nvidia.yml
 build-depends:
-  - components/gtk2.yml
   - components/inetutils.yml
   - components/jansson.yml
   - components/libvdpau.yml
@@ -18,7 +17,7 @@ sources:
   - nvidia-settings-%{version}.tar.gz::https://github.com/NVIDIA/nvidia-settings/archive/%{version}.tar.gz
 script: |-
   # patch -p0 < /files/libxnvctrl_so.patch
-  make PREFIX=%{preifx}
+  make PREFIX=%{prefix}
   make -C src/libXNVCtrl PREFIX=%{prefix}
   make DESTDIR=%{install-root} PREFIX=%{prefix} install
 

@@ -1,5 +1,5 @@
 id: linux
-version: 6.5.3
+version: 6.7.8
 about: |
   Linux kernel, modules and headers
 sources:
@@ -7,7 +7,7 @@ sources:
 
 environ:
   - KBUILD_BUILD_TIMESTAMP=Fri Nov 12 12:00:00 UTC 2011
-  - KBUILD_BUILD_USER=rlxos
+  - KBUILD_BUILD_USER=nishu
 
 script: |-
   export ARCH=%{arch}

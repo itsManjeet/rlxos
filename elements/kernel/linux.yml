@@ -8519,7 +8519,7 @@ script: |-
 
   find %{install-root}/%{libdir}/modules/$release -type f -name '*.ko' | xargs -P 4 -n 2 -r xz;
 
-  rm %{install-root}/%{libdir}/modules/$release/{source,build}
+  rm -f %{install-root}/%{libdir}/modules/$release/build
   targetdir=%{install-root}/%{libdir}/modules/$release/source
 
   to_copy=(

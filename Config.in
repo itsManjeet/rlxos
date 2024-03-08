@@ -1,0 +1,3 @@
+config BR2BOARD_NAME
+    string
+    option env="BOARD_NAME"

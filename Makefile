@@ -1,119 +1,77 @@
-DOCS_DIR				?= build/docs
-CHANNEL					?= unstable
-OSTREE_BRANCH 		    ?= $(shell uname -m)/os/$(CHANNEL)
-OSTREE_REPO 			?= ostree-repo
-OSTREE_GPG 				?= ostree-gpg
-VERSION					?= 2.0
-IGNITE					?= build/src/ignite/ignite
-CACHE_PATH				?= build/
-DESTDIR					?= checkout/
+CACHE_PATH	?= $(CURDIR)/build/
 
--include config.mk
+ifndef BOARD_NAME
+$(error BOARD_NAME not defined)
+endif
 
-define OSTREE_GPG_CONFIG
-Key-Type: DSA
-Key-Length: 1024
-Subkey-Type: ELG-E
-Subkey-Length: 1024
-Name-Real: RLXOS
-Expire-Date: 0
-%no-protection
-%commit
-%echo finished
+MAKEARGS := -C $(CURDIR)/buildroot	\
+			O=$(CACHE_PATH)/$(BOARD_NAME)/ \
+			BR2_EXTERNAL=$(CURDIR) \
+			BOARD_NAME=$(BOARD_NAME) \
+			--no-print-directory
+
+# location of default defconfig
+DEFCONFIG_FILE=$(CURDIR)/board/$(BOARD_NAME)/defconfig
+DEFCONFIG := BR2_DEFCONFIG=$(DEFCONFIG_FILE)
+ALT_DEFCONFIG := BR2_DEFCONFIG=$(CURDIR)/defconfig
+
+#these targets change the config file
+config_change_targets:=menuconfig nconfig xconfig gconfig oldconfig \
+       	silentoldconfig randconfig allyesconfig allnoconfig randpackageconfig \
+       	allyespackageconfig allnopackageconfig
+
+special_target:=$(config_change_targets) Makefile defconfig savedefconfig %_defconfig
+
+all	:= $(filter-out $(special_target),$(MAKECMDGOALS))
+
+default:  
+	$(MAKE) $(MAKEARGS) $(DEFCONFIG) defconfig
+	$(MAKE) $(MAKEARGS) $(DEFCONFIG)
+
+
+.PHONY: $(special_target) $(all) 
+
+# update from current config and save it as defconfig
+defconfig:
+	$(MAKE) $(MAKEARGS) $(ALT_DEFCONFIG) $@
+	$(MAKE) $(MAKEARGS) $(DEFCONFIG) savedefconfig
+
+# update from defconfig and save it as current configuration
+savedefconfig:
+	$(MAKE) $(MAKEARGS) $(DEFCONFIG) defconfig
+	$(MAKE) $(MAKEARGS) $(ALT_DEFCONFIG) savedefconfig
+
+# generate from a defconfig then save as current configuration
+%_defconfig:
+	$(MAKE) $(MAKEARGS) $(DEFCONFIG) $@
+	$(MAKE) $(MAKEARGS) $(DEFCONFIG) savedefconfig
+	$(call UPDATE_DEFCONFIG)
+
+
+# update from current configuration, run the command, then save the result
+$(config_change_targets): $(DEFCONFIG_FILE)
+	$(MAKE) $(MAKEARGS) $(DEFCONFIG) defconfig $@
+	$(MAKE) $(MAKEARGS) $(DEFCONFIG) savedefconfig
+
+_all:
+	$(MAKE) $(MAKEARGS) $(DEFCONFIG) $(all)
+
+$(all): _all
+	@:
+
+%/: _all
+	@:
+
+Makefile:;
+
+$(DEFCONFIG_FILE):
+	$(call UPDATE_DEFCONFIG)
+
+define UPDATE_DEFCONFIG
+	echo 'BR2_DL_DIR="$$(BR2_EXTERNAL_RLXOS_PATH)/dl"' >> $(DEFCONFIG_FILE)
+	echo 'BR2_ROOTFS_OVERLAY="$$(BR2_EXTERNAL_RLXOS_PATH)/overlay"' >> $(DEFCONFIG_FILE)
+	echo 'BR2_PACKAGE_OVERRIDE_FILE="$$(BR2_EXTERNAL_RLXOS_PATH)/local.mk"' >> $(DEFCONFIG_FILE)
+	echo 'BR2_GLOBAL_PATCH_DIR="$$(BR2_EXTERNAL_RLXOS_PATH)/patch"' >> $(DEFCONFIG_FILE)
+	$(MAKE) $(MAKEARGS) $(DEFCONFIG) defconfig
+	$(MAKE) $(MAKEARGS) $(DEFCONFIG) savedefconfig
 endef
-
-
-export OSTREE_GPG_CONFIG
-export IGNITE
-export CACHE_PATH
-
-.PHONY: clean all docs version.yml ostree-branch.yml apps
-
-all: $(IGNITE) version.yml ostree-branch.yml
-ifdef ELEMENT
-	$(IGNITE) cache-path=$(CACHE_PATH) build $(ELEMENT)
-endif
-
-status: $(IGNITE) version.yml ostree-branch.yml
-ifdef ELEMENT
-	$(IGNITE) cache-path=$(CACHE_PATH) status $(ELEMENT)
-else
-	@echo "no ELEMENT specified"
-	exit 1
-endif
-
-filepath: $(IGNITE) version.yml ostree-branch.yml
-ifdef ELEMENT
-	@PKGUPD_NO_MESSAGE=1 $(IGNITE) cache-path=$(CACHE_PATH) filepath $(ELEMENT)
-else
-	@echo "no ELEMENT specified"
-	exit 1
-endif
-
-checkout: $(IGNITE) version.yml ostree-branch.yml
-ifdef ELEMENT
-	$(IGNITE) cache-path=$(CACHE_PATH) checkout $(ELEMENT) $(DESTDIR)
-else
-	@echo "no ELEMENT specified"
-	exit 1
-endif
-
-
-build/build.ninja: CMakeLists.txt
-	cmake -B build
-
-$(IGNITE): build/build.ninja src/ignite/CMakeLists.txt
-	@cmake --build build --target ignite
-
-clean:
-	rm -rf $(DOCS_DIR)
-
-TODO.ELEMENTS:
-	grep -R "# TODO:" elements | sed 's/# TODO://g' | sed 's#elements/##g' > $@
-
-docs:
-	mdbook build -d $(DOCS_DIR)
-
-
-$(OSTREE_GPG)/key-config:
-	rm -rf ostree-gpg.tmp
-	mkdir ostree-gpg.tmp
-	chmod 0700 ostree-gpg.tmp
-	echo "$${OSTREE_GPG_CONFIG}" >ostree-gpg.tmp/key-config
-	gpg --batch --homedir=ostree-gpg.tmp --generate-key ostree-gpg.tmp/key-config
-	gpg --homedir=ostree-gpg.tmp -k --with-colons | sed '/^fpr:/q;d' | cut -d: -f10 >ostree-gpg.tmp/default-id
-	mv ostree-gpg.tmp $(OSTREE_GPG)
-
-files/rlxos.gpg: $(OSTREE_GPG)/key-config
-	gpg --homedir=$(OSTREE_GPG) --export --armor >"$@"
-
-update-app-market:
-ifdef MARKET_PATH
-	$(IGNITE) cache-path=$(CACHE_PATH) meta $(MARKET_PATH)
-	./scripts/extract-icons.sh $(MARKET_PATH)/../apps/ $(MARKET_PATH)/../icons/
-else
-	@echo "no MARKET_PATH specified"
-	@exit 1
-endif
-
-update-ostree: files/rlxos.gpg
-ifndef ELEMENT
-	@echo "no ELEMENT specified"
-	@exit 1
-endif
-	scripts/commit-ostree.sh													\
-	  --gpg-homedir=$(OSTREE_GPG)												\
-	  --gpg-sign=$$(cat $(OSTREE_GPG)/default-id)								\
-	  --collection-id=dev.rlxos.System											\
-	  --version=$(VERSION)													\
-	  $(OSTREE_REPO) $(ELEMENT)													\
-	  $(OSTREE_BRANCH)
-
-version.yml:
-	@echo "version: ${VERSION}" > $@
-	@echo "variables:" >> $@
-	@echo "  channel: ${CHANNEL}" >> $@
-
-ostree-branch.yml:
-	@echo "variables:" > $@
-	@echo "  ostree-branch: ${OSTREE_BRANCH}" >> $@

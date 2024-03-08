@@ -1,0 +1,31 @@
+name: Build and Release
+on:
+  workflow_dispatch:
+  push:
+    paths-ignore:
+      - "docs/**"
+      - ".github/workflows/update-docs.yml"
+      - "mkdocs.yml"
+
+env:
+  CACHE_PATH: ${{ secrets.CACHE_PATH }}
+  VERSION: ${{ github.run_number }}
+  BRANCH: ${{ endsWith(github.ref, 'stable') && 'stable' || (endsWith(github.ref, 'preview') && 'preview' || 'unstable') }}
+
+jobs:
+  build:
+    name: Build Collection
+    runs-on: self-hosted
+    timeout-minutes: 47000
+    strategy:
+      matrix:
+        board:
+          - x86_64
+
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          token: ${{ secrets.CI_TOKEN }}
+          submodules: true
+      - name: Build system packages
+        run: make CACHE_PATH=$CACHE_PATH BOARD_NAME=${{matrix.board}}

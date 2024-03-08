@@ -44,7 +44,7 @@ depends:
 build-depends:
   - components/gperf.yml
 sources:
-  - https://download.qt.io/archive/qt/%{version:2}/%{version}/single/qt-everywhere-opensource-src-%{version}.tar.xz
+  - https://download.qt.io/archive/qt/%{version:2}/%{version}/single/qt-everywhere-src-%{version}.tar.xz
 script: |-
   ./configure -prefix %{prefix} \
     -sysconfdir %{sysconfdir}/xdg \

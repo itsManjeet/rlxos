@@ -39,6 +39,7 @@ depends:
   - components/opus.yml
   - components/libevent.yml
   - components/krb5.yml
+  - components/cups.yml
   - components/pipewire.yml
   - components/poppler.yml
 build-depends:

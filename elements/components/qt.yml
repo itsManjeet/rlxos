@@ -43,8 +43,13 @@ depends:
   - components/poppler.yml
 build-depends:
   - components/gperf.yml
+  - components/py/py-pip.yml
 sources:
   - https://download.qt.io/archive/qt/%{version:2}/%{version}/single/qt-everywhere-src-%{version}.tar.xz
+
+pre-script: |-
+  pip install html5lib
+
 script: |-
   ./configure -prefix %{prefix} \
     -sysconfdir %{sysconfdir}/xdg \
@@ -58,9 +63,9 @@ script: |-
     -Wno-dev \
     -journald
 
-  make
+  ninja
 
-  make install INSTALL_ROOT=%{install-root}
+  DESTDIR=%{install-root} ninja install
 
   find %{install-root}/ -name \*.prl \
     -exec sed -i -e "/^QMAKE_PRL_BUILD_DIR/d" {} \;

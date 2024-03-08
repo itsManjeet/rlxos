@@ -1,6 +1,0 @@
-include_directories(common)
-include_directories(external)
-add_subdirectory(ignite)
-add_subdirectory(sysroot)
-add_subdirectory(srclang)
-add_subdirectory(initial-setup)

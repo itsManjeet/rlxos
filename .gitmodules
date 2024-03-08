@@ -1,3 +1,0 @@
-[submodule "src/initial-setup"]
-	path = src/initial-setup
-	url = git@github.com:itsmanjeet/initial-setup

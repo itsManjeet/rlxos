@@ -1,5 +1,5 @@
 id: nodejs
-version: 18.17.1
+version: 21.7.0
 about: A JavaScript runtime built on Chrome's V8 JavaScript engine.
 
 script: |-

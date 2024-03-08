@@ -1,5 +1,5 @@
 id: qt
-version: 5.15.10
+version: 6.6.2
 about: Cross-platform application framework
 
 depends:
@@ -46,23 +46,7 @@ build-depends:
 sources:
   - https://download.qt.io/archive/qt/%{version:2}/%{version}/single/qt-everywhere-opensource-src-%{version}.tar.xz
 script: |-
-  patch -Np1 -i /patches/qt/qt-everywhere-opensource-src-%{version}-kf5-1.patch
-  mkdir -pv qtbase/.git
-  sed -e "/pragma once/a#include <cstdint>"                                      \
-    -i qtlocation/src/3rdparty/mapbox-gl-native/include/mbgl/util/geometry.hpp \
-       qtlocation/src/3rdparty/mapbox-gl-native/include/mbgl/util/string.hpp   \
-       qtlocation/src/3rdparty/mapbox-gl-native/src/mbgl/gl/stencil_mode.hpp
-
   ./configure -prefix %{prefix} \
-    -archdatadir %{libdir}/qt5 \
-    -bindir %{bindir} \
-    -plugindir %{libdir}/qt5/plugins \
-    -importdir %{libdir}/qt5/imports \
-    -headerdir %{prefix}/include/qt5 \
-    -datadir %{datadir}/qt5 \
-    -docdir %{datadir}/doc/qt5 \
-    -translationdir %{datadir}/qt5/translations \
-    -examplesdir %{datadir}/doc/qt5/examples \
     -sysconfdir %{sysconfdir}/xdg \
     -confirm-license -opensource \
     -dbus-linked \
@@ -71,7 +55,7 @@ script: |-
     -system-sqlite \
     -nomake examples \
     -no-rpath \
-    -syslog \
+    -Wno-dev \
     -journald
 
   make
@@ -82,18 +66,13 @@ script: |-
     -exec sed -i -e "/^QMAKE_PRL_BUILD_DIR/d" {} \;
 
   install -v -D -m 644 qttools/src/assistant/assistant/images/assistant-128.png \
-    %{install-root}%{datadir}/pixmaps/assistant-qt5.png
+    %{install-root}%{datadir}/pixmaps/assistant-qt6.png
 
   install -v -D -m 644 qttools/src/designer/src/designer/images/designer.png \
-    %{install-root}%{datadir}/pixmaps/designer-qt5.png
+    %{install-root}%{datadir}/pixmaps/designer-qt6.png
 
   install -v -Dm644 qttools/src/linguist/linguist/images/icons/linguist-128-32.png \
-              %{install-root}%{datadir}/pixmaps/linguist-qt5.png
+              %{install-root}%{datadir}/pixmaps/linguist-qt6.png
 
   install -v -Dm644 qttools/src/qdbus/qdbusviewer/images/qdbusviewer-128.png \
-              %{install-root}%{datadir}/pixmaps/qdbusviewer-qt5.png
-
-  # install -v -D /files/*.desktop -t %{install-root}%{datadir}/applications/
-
-# TODO: fix configuration files
-# TODO: check dependencies
+              %{install-root}%{datadir}/pixmaps/qdbusviewer-qt6.png

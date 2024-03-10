@@ -173,14 +173,14 @@ Sysroot::pull(const Deployment &deployment, std::vector<std::string> &updated_re
         throw Error(error);
 
     std::unique_ptr<OstreeMutableTree, decltype(&g_object_unref)> mutableTree(
-            ostree_mutable_tree_new_from_commit(repo, refs[0].c_str(), &error), g_object_unref);
+            ostree_mutable_tree_new_from_commit(repo, ("rlxos:" + refs[0]).c_str(), &error), g_object_unref);
     if (mutableTree == nullptr) throw Error(error);
 
     for (int i = 1; i < refs.size(); i++) {
         std::unique_ptr<GFile, decltype(&g_object_unref)> commit(nullptr, g_object_unref);
         GFile *res;
         gchar *file;
-        if (!ostree_repo_read_commit(repo, crefs[i], &res, &file, nullptr, &error)) {
+        if (!ostree_repo_read_commit(repo, ("rlxos:" + refs[i]).c_str(), &res, &file, nullptr, &error)) {
             throw Error(error);
         }
         commit.reset(res);

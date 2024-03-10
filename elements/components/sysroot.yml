@@ -1,5 +1,5 @@
 id: sysroot
-version: 2.0.5
+version: 2.0.6
 about: Package Management and Updater Daemon
 merge: [ elements/include/rlxos.inc ]
 

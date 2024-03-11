@@ -5,6 +5,7 @@ depends:
   - components/qt.yml
   - components/kcoreaddons.yml
   - components/polkit-qt.yml
+  - components/kwindowsystem.yml
 build-depends:
   - components/extra-cmake-modules.yml
 merge: [elements/include/kf5.inc]

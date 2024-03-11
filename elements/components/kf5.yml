@@ -57,7 +57,6 @@ depends:
   - components/ktexteditor.yml
   - components/kdesignerplugin.yml
   - components/kwayland.yml
-  - components/plasma-framework.yml
   - components/kpeople.yml
   - components/kxmlrpcclient.yml
   - components/bluez-qt.yml

@@ -439,8 +439,8 @@ script: |-
   enable X86_PAT
   enable ARCH_USES_PG_UNCACHED
   enable X86_UMIP
-  enable CC_HAS_IBT
-  enable X86_KERNEL_IBT
+  #enable CC_HAS_IBT
+  #enable X86_KERNEL_IBT
   enable X86_INTEL_MEMORY_PROTECTION_KEYS
   enable X86_INTEL_TSX_MODE_OFF
   enable X86_SGX

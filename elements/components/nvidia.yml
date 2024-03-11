@@ -1,6 +1,7 @@
 id: nvidia
 merge: [elements/include/nvidia.inc]
 about: NVIDIA drivers and utilities
+strip: false
 depends:
   - components/egl-wayland.yml
   - components/libglvnd.yml

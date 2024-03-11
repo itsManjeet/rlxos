@@ -265,6 +265,7 @@ depends:
   # Laptop and Touch devices
   - components/2in1.yml
   - components/qt.yml
+  - components/layer-shell-qt.yml
 
 
   # Nvidia graphics driver

@@ -28,7 +28,7 @@ script: |-
   StartupNotify=false
   StartupWMClass=Code
   Categories=TextEditor;Development;IDE;
-  MimeType=text/plain;inode/directory;application/x-code-workspace;
+  MimeType=text/plain;application/x-code-workspace;
   Actions=new-empty-window;
   Keywords=vscode;
   

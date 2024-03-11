@@ -53,7 +53,6 @@ depends:
   - components/frameworkintegration.yml
   - components/kinit.yml
   - components/kparts.yml
-  - components/kactivities.yml
   - components/syntax-highlighting.yml
   - components/ktexteditor.yml
   - components/kdesignerplugin.yml
@@ -64,7 +63,6 @@ depends:
   - components/bluez-qt.yml
   - components/kfilemetadata.yml
   - components/baloo.yml
-  - components/kactivities-stats.yml
   - components/krunner.yml
   - components/prison.yml
   - components/qqc2-desktop-style.yml

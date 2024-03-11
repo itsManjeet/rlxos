@@ -262,6 +262,8 @@ depends:
   - system/etc-default-useradd.yml
   - system/x11-config.yml
 
+  - components/plasma.yml
+
   # Laptop and Touch devices
   - components/2in1.yml
   - components/qt.yml

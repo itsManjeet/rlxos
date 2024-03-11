@@ -4,7 +4,6 @@ about: Plasma plasma-workspace
 
 depends:
   - components/accountsservice.yml
-  - components/kactivities-stats.yml
   - components/kio.yml
   - components/knotifyconfig.yml
   - components/kpeople.yml

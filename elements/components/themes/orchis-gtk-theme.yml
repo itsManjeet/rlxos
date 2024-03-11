@@ -2,7 +2,7 @@ id: orchis-gtk-theme
 version: 2024-01-08
 merge: [elements/include/gtk-theme.inc]
 about: Orchis is a [Material Design](https://material.io) theme for GNOME/GTK based desktop environments.
-commit: e171b964e25da638acf547b94d5fe427db28223c
+commit: b18c7d1d1145906f37e51b882248cdefea810f6d
 
 script: |
   install -d %{install-root}%{datadir}/themes
@@ -10,7 +10,6 @@ script: |
   ./install.sh            \
     --size standard       \
     --tweaks primary      \
-    --round 3px           \
     --dest %{install-root}%{datadir}/themes
 
 build-depends:

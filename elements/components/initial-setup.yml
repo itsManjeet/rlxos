@@ -1,7 +1,7 @@
 id: initial-setup
 version: 1.0.1
 about: System Initial Setup
-merge: [ostree-branch.yml, elements/include/rlxos.inc]
+merge: [ ostree-branch.yml, elements/include/rlxos.inc ]
 
 post-script: |-
   for script in first-boot installer ; do
@@ -78,8 +78,8 @@ post-script: |-
       <value type="int" value="1"/>
       <property name="dark-mode" type="bool" value="false"/>
       <property name="panel-1" type="empty">
-        <property name="position" type="string" value="p=6;x=0;y=0"/>
-        <property name="size" type="uint" value="32"/>
+        <property name="position" type="string" value="p=10;x=0;y=0"/>
+        <property name="size" type="uint" value="48"/>
         <property name="length" type="double" value="100"/>
         <property name="position-locked" type="bool" value="true"/>
         <property name="plugin-ids" type="array">
@@ -112,12 +112,7 @@ post-script: |-
       <property name="plugin-8" type="string" value="pulseaudio">
         <property name="enable-keyboard-shortcuts" type="bool" value="true"/>
       </property>
-      <property name="plugin-9" type="string" value="actions">
-        <property name="appearance" type="uint" value="0"/>
-        <property name="items" type="array">
-          <value type="string" value="+logout"/>
-        </property>
-      </property>
+      <property name="plugin-9" type="string" value="showdesktop"/>
       <property name="plugin-10" type="string" value="systray">
         <property name="icon-size" type="int" value="0"/>
         <property name="single-row" type="bool" value="true"/>

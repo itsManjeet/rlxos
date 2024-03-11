@@ -1,5 +1,6 @@
 id: xfdesktop
 version: 4.18.1
+release: 2
 about: Xfce desktop manager
 
 pre-script: |-

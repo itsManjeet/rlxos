@@ -3,6 +3,7 @@ about: KF5 kcompletion
 merge: [elements/include/kf5.inc]
 depends:
   - components/qt.yml
+  - components/kcodecs.yml
   - components/kconfig.yml
   - components/kwidgetsaddons.yml
 build-depends:

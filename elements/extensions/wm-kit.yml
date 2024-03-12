@@ -5,4 +5,5 @@ include:
   - components/rofi.yml
   - components/scrot.yml
   - components/tint2.yml
+  - components/picom.yml
 merge: [elements/include/extension.inc]

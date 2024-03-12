@@ -211,9 +211,6 @@ depends:
   - components/network-manager-applet.yml
   - components/system-config-printer.yml
 
-  # Extra compositors and Window Managers
-  - components/picom.yml
-
   - components/networkmanager-openvpn.yml
 
   - components/lightdm-gtk-greeter.yml
@@ -241,9 +238,7 @@ depends:
   - components/power-profiles-daemon.yml
   - components/gufw.yml
   - components/blueman.yml
-  - components/wine.yml
   - components/wlroots.yml
-
 
   # AppImage
 
@@ -262,15 +257,8 @@ depends:
   - system/etc-default-useradd.yml
   - system/x11-config.yml
 
-  - components/plasma.yml
-
   # Laptop and Touch devices
   - components/2in1.yml
-  - components/qt.yml
-  - components/layer-shell-qt.yml
-  - components/qwlroots.yml
-
 
   # Nvidia graphics driver
   - components/nvidia.yml
-  - components/nvidia-settings.yml

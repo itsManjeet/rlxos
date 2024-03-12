@@ -1,0 +1,6 @@
+id: wine
+about: Window Compatibility layer (64bit only)
+include:
+  - components/wine.yml
+
+merge: [elements/include/extension.inc]

@@ -146,6 +146,13 @@ post-script: |-
     </property>
   </channel>
   EOF
+  
+  install -vDm 0644 /dev/stdin %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/autostart/welcome-tour.desktop << "EOF"
+  [Desktop Entry]
+  Hidden=true
+  EOF
+  
+  touch %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/.welcome-tour-done
 
   install -vDm 0644 /dev/stdin %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml << "EOF"
   <?xml version="1.0" encoding="UTF-8"?>

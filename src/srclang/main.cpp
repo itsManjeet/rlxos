@@ -39,7 +39,7 @@ struct SrcLangApplication : Application {
     }
 
     [[noreturn]]
-    void main() {
+    void main() const {
         std::string line;
         for (;;) {
             std::cout << ">> ";

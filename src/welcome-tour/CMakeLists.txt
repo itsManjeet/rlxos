@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(dev.rlxos.WelcomeTour
+project(welcome-tour
         VERSION "0.0.1"
         DESCRIPTION "Welcome Tour"
         LANGUAGES C CXX)

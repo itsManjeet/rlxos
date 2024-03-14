@@ -1,11 +1,10 @@
 id: srclang
-version: 0.0.1
+version: 0.0.2
 about: An Easy to learn programming Language
 merge: [ elements/include/rlxos.inc ]
 
 depends:
   - components/glibc.yml
-  - components/libffi.yml
   - components/readline.yml
 
 build-depends:

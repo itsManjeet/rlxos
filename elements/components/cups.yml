@@ -25,7 +25,7 @@ post-script: |-
   enable cups
   EOF
 
-  install -v -Dm 644 /dev/stdin %{install-root}%{libdir}/systemd/system-preset/%{id}.conf << "EOF"
+  install -v -Dm 644 /dev/stdin %{install-root}%{libdir}/sysusers.d/%{id}.conf << "EOF"
   u cups 9 "Print Service User"
   m cups lp
   EOF

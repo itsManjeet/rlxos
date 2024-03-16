@@ -1,5 +1,5 @@
 id: initial-setup
-version: 1.0.1
+version: 1.0.2
 about: System Initial Setup
 merge: [ ostree-branch.yml, elements/include/rlxos.inc ]
 
@@ -87,12 +87,10 @@ post-script: |-
           <value type="int" value="4"/>
           <value type="int" value="11"/>
           <value type="int" value="5"/>
-          <value type="int" value="6"/>
           <value type="int" value="10"/>
           <value type="int" value="7"/>
           <value type="int" value="8"/>
           <value type="int" value="12"/>
-          <value type="int" value="9"/>
           <value type="int" value="13"/>
         </property>
         <property name="icon-size" type="uint" value="16"/>
@@ -107,12 +105,10 @@ post-script: |-
         <property name="display-type" type="uint" value="2"/>
         <property name="display-name" type="uint" value="1"/>
       </property>
-      <property name="plugin-6" type="string" value="notification-plugin"/>
       <property name="plugin-7" type="string" value="power-manager-plugin"/>
       <property name="plugin-8" type="string" value="pulseaudio">
         <property name="enable-keyboard-shortcuts" type="bool" value="true"/>
       </property>
-      <property name="plugin-9" type="string" value="showdesktop"/>
       <property name="plugin-10" type="string" value="systray">
         <property name="icon-size" type="int" value="0"/>
         <property name="single-row" type="bool" value="true"/>

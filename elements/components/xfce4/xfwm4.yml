@@ -15,6 +15,12 @@ post-script: |-
       <property name="show_popup_shadow" type="bool" value="true"/>
       <property name="move_opacity" type="int" value="80"/>
       <property name="resize_opacity" type="int" value="80"/>
+      <property name="workspace_names" type="array">
+        <value type="string" value="1" />
+        <value type="string" value="2" />
+        <value type="string" value="3" />
+        <value type="string" value="4" />
+      </property>
     </property>
   </channel>
   EOF

@@ -1,5 +1,5 @@
 id: initial-setup
-version: 1.0.2
+version: 1.0.3
 about: System Initial Setup
 merge: [ ostree-branch.yml, elements/include/rlxos.inc ]
 

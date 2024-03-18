@@ -1,6 +1,6 @@
 id: system-repo
 about: System Repository
-merge: [version.yml, elements/include/ostree.inc]
+merge: [version.yml, ostree-branch.yml, elements/include/ostree.inc]
 
 capabilities:
   - CAP_SYS_CHROOT
@@ -11,6 +11,14 @@ initial-commands: |-
   for i in %{datadir}/pkgupd/manifest/*/integration ; do
     sh -e $i
   done
+
+  mkdir -p /Applications
+  for app in /*.app ; do
+    mv ${app} /Applications/
+    rm ${app}.zsync
+  done
+
+  rm -rf /install-root
 
   # TODO: should be enabled via systemd user-preset
   systemctl enable --global appimaged.service
@@ -23,6 +31,7 @@ initial-commands: |-
   echo "root:root" | chpasswd
   
   ln -sfv %{datadir}/zoneinfo/UTC %{sysconfdir}/localtime
+  touch %{sysconfdir}/skel/.zshrc
 
   kerver=$(ls -1 /lib/modules | head -n1)
   cp /lib/modules/${kerver}/bzImage /lib/modules/${kerver}/vmlinuz
@@ -45,12 +54,13 @@ initial-commands: |-
   EOT
 
 include:
-  - system/filesystem.yml
+  - system/deps.yml
+  - system/ostree-config.yml
 
 include-parts:
   - doc
+  - devel
 
 build-depends:
   - components/ostree.yml
   - system/ostree-config.yml
-  - system/updatectl.yml

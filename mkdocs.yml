@@ -19,6 +19,7 @@ extra:
 nav:
   - Home: README.md
   - History: HISTORY.md
+  - Release Mode: RELEASE_MODEL.md
   - Getting Started:
     - Supported Hardware: getting-started/supported-hardware.md
     - Installation: getting-started/installation.md
@@ -30,8 +31,7 @@ nav:
     - Distrobox: app-management/distrobox.md
   - System Management:
     - Updates: system-management/updates.md
-    - Secure System:  system-management/secure-system.md
-    - Unlocked System:  system-management/unlocked-system.md
+    - Extensions:  system-management/extensions.md
   - Community Guideline:
     - Support and Help: SUPPORT.md
     - Contributing Guideline: CONTRIBUTION.md

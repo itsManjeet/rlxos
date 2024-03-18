@@ -17,5 +17,7 @@ post-script: |-
 depends:
   - components/iptables.yml
   - components/python.yml
+build-depends:
+  - components/py/py-setuptools.yml
 sources:
   - https://launchpad.net/ufw/%{version:2}/%{version}/+download/ufw-%{version}.tar.gz

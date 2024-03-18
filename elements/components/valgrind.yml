@@ -1,14 +1,15 @@
 id: valgrind
-version: 3.22.0
+version: 3.20.0
 about: Tool to help find memory-management problems in programs
 
 pre-script: |-
-  # patch -Np1 < /files/0001-flags.patch
   sed -i 's|sgml/docbook/xsl-stylesheets|xml/docbook/xsl-stylesheets-1.79.2-nons|' docs/Makefile.am
 
-  autoreconf -fiv
-post-script: |-
-  install -D -m 0644 docs/*.1 -t %{install-root}%{datadir}/man/man1/
+run-autogen: false
+
+configure: >-
+  CFLAGS="${CFLAGS} -fno-stack-protector"
+  CXXFLAGS="${CXXFLAGS} -fno-stack-protector"
 
 depends:
   - components/glibc.yml

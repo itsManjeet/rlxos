@@ -1,17 +1,16 @@
 id: pam
-version: 1.5.3
+version: 1.6.0
 about: Pluggable Authentication Modules library
 
 depends:
   - components/glibc.yml
+  - components/libxcrypt.yml
 
 sources:
   - https://github.com/linux-pam/linux-pam/releases/download/v%{version}/Linux-PAM-%{version}.tar.xz
-environ:
-  - SCONFIGDIR=/etc/security
 
 configure: >
-  --disable-db
+  --enable-securedir=/usr/lib/security
 
 post-script: |
   chmod +s "%{install-root}"/usr/bin/unix_chkpwd

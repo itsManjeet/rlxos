@@ -1,25 +1,12 @@
 id: srclang
-version: 0.0.1
+version: 0.0.2
 about: An Easy to learn programming Language
-
-commit: b6c8de43e96df969ab65423347be69a270510386
-
-configure: >-
-  -DCMAKE_BUILD_TYPE=Release
-
-post-script: |-
-  install -vDm 0755 -t %{install-root}/%{bindir} %{build-dir}/src/%{id}
-  mkdir -p %{install-root}%{libdir}/srclang/
-  cp -ar modules/* %{install-root}%{libdir}/srclang/
+merge: [ elements/include/rlxos.inc ]
 
 depends:
   - components/glibc.yml
-  - components/libffi.yml
   - components/readline.yml
 
 build-depends:
   - components/gcc.yml
   - components/git.yml
-
-sources:
-  - srclang-%{commit}.tar.gz::https://github.com/itsManjeet/srclang/archive/%{commit}.tar.gz

@@ -5,3 +5,4 @@ merge:
   - include/compiler.yml
   - include/environ.yml
   - include/variables.yml
+  - include/strip.yml

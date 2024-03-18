@@ -1,5 +1,5 @@
 id: libgmp
-version: 6.2.1
+version: 6.3.0
 release: 1
 about: Library for arbitrary precision arithmetic.
 

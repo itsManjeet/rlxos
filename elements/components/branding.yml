@@ -1,5 +1,5 @@
 id: branding
-merge: [version.yml]
+version: 2.0
 about: rlxos branding icons
 
 build-depends: 

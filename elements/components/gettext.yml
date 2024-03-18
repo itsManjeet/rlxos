@@ -1,5 +1,5 @@
 id: gettext
-version: 0.22
+version: 0.22.4
 about: Utilities for internationalization and localization
 
 build-dir: gettext-%{version}

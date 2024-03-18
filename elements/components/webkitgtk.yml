@@ -1,6 +1,13 @@
 id: webkitgtk
-version: 2.41.92
+version: 2.42.5
 about: A port of the portable web rendering engine WebKit
+
+environ:
+  - CC=clang
+  - CXX=clang++
+  - CFLAGS=-march=x86-64 -mtune=generic -O2 -pipe -fstack-protector-strong -D_FORTIFY_SOURCE=2 --param=ssp-buffer-size=4 -fcf-protection=none
+  - CXXFLAGS=-march=x86-64 -mtune=generic -O2 -pipe -fstack-protector-strong -D_FORTIFY_SOURCE=2 --param=ssp-buffer-size=4 -fcf-protection=none
+  - LDFLAGS=-Wl,-O1,--sort-common,--as-needed,-z,relro,--hash-style=gnu -fuse-ld=lld
 
 configure: >-
   -DCMAKE_BUILD_TYPE=Release
@@ -11,6 +18,7 @@ configure: >-
   -DENABLE_GAMEPAD=OFF
   -DENABLE_MINIBROWSER=ON
   -DUSE_WOFF2=OFF
+  -DUSE_GTK4=OFF
   -DUSE_WPE_RENDERER=ON
   -DUSE_JPEGXL=OFF
   -DENABLE_BUBBLEWRAP_SANDBOX=OFF
@@ -49,5 +57,7 @@ build-depends:
   - components/ruby.yml
   - components/enchant.yml
   - components/gperf.yml
+  - components/llvm.yml
+  - components/lld.yml
 sources:
   - https://webkitgtk.org/releases/webkitgtk-%{version}.tar.xz

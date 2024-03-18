@@ -2,6 +2,7 @@ id: libevent
 version: 2.1.12
 about: An event notification library
 
+build-type: cmake
 configure: >-
   -DCMAKE_BUILD_TYPE=Release
   -DEVENT_LIBRARY_TYPE=SHARED

@@ -9,9 +9,6 @@ environ:
 
 build-type: autotools
 
-configure: >-
-  --prefix=/usr
-
 sources:
   - http://files.itstool.org/itstool/itstool-%{version}.tar.bz2
 

@@ -1,12 +1,14 @@
 id: strace
-version: 6.5
+version: 6.7
 about: A diagnostic, debugging and instructional userspace tracer
 
 configure: >-
   --enable-mpers=no
+  --with-libunwind
 
 sources:
   - https://github.com/strace/strace/releases/download/v%{version}/strace-%{version}.tar.xz
+
 depends:
   - components/perl.yml
-
+  - components/libunwind.yml

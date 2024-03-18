@@ -5,3 +5,7 @@
 /build
 /cache
 /version.yml
+/config.mk
+/ostree-branch.yml
+/.cache
+*.ui~

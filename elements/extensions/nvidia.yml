@@ -1,0 +1,6 @@
+id: nvidia
+about: Nvidia userland utilities
+include:
+  - components/nvidia-settings.yml
+
+merge: [elements/include/extension.inc]

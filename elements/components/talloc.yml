@@ -9,7 +9,7 @@ configure: >-
 
 depends:
   - components/glibc.yml
-  - components/x11/libxcrypt.yml
+  - components/libxcrypt.yml
 build-depends:
   - components/python.yml
   - components/docbook-xsl.yml

@@ -8,6 +8,6 @@ initial-commands: |-
   [ -d %{include-root}/%{sysconfdir} ] && mv %{include-root}/%{sysconfdir} %{include-root}/%{prefix}/
   %{extra-commands}
 
-ostree-branch: x86_64/extension/%{id}/%{version}
+ostree-branch: x86_64/extension/%{id}/%{channel}
 
 merge: [version.yml, elements/include/ostree.inc]

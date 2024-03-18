@@ -1,10 +1,10 @@
 id: kernel-headers
-version: 6.3.8
+version: 6.7
 about: Linux kernel, modules and headers
 
 strip: false
 build-depends:
-- bootstrap.yml
+  - bootstrap.yml
 
 script: |
   make headers

@@ -3,7 +3,7 @@ version: 1.0.4
 about: A backend implementation for xdg-desktop-portal using GTK and various pieces of Cinnamon/MATE/Xfce4 infrastructure
 
 post-script: |-
-  install -v -D -m 0644 /dev/stdin %{install-root}%{datadir}/xdg-desktop-portal/gtk-portals.conf << "EOF"
+  install -v -D -m 0644 /dev/stdin %{install-root}%{datadir}/xdg-desktop-portal/xapp-portals.conf << "EOF"
   [preferred]
   default=xapp
   EOF

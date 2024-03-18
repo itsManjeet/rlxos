@@ -96,7 +96,7 @@ post-script: |-
 
   install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/skel/.config/xfce4/panel/docklike-4.rc << "EOF"
   [user]
-  pinned=/usr/share/applications/xfce4-appfinder.desktop;/usr/share/applications/xfce4-terminal.desktop;/usr/share/applications/thunar.desktop;/usr/share/applications/firefox.desktop;
+  pinned=xfce4-appfinder;xfce4-terminal;thunar;firefox;
   EOF
 
 depends:

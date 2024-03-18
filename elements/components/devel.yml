@@ -1,5 +1,5 @@
 id: devel
-merge: [version.yml]
+version: 2.0
 about: rlxos developers tool kit
 
 depends:
@@ -19,5 +19,3 @@ depends:
 script: |-
   mkdir -p %{install-root}/usr/rlxos/kits/
   echo %{version} > %{install-root}/usr/rlxos/kits/devel
-
-# TODO: convert to layer

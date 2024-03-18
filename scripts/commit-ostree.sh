@@ -23,9 +23,8 @@ while [ $# -gt 0 ]; do
         --collection-id=*)
             collection_id="${1#--collection-id=}"
         ;;
-        --collection-id)
-            collection_id="${2}"
-            shift
+        --version=*)
+            version="${1#--version=}"
         ;;
         --help)
             help
@@ -77,16 +76,16 @@ on_exit() {
 }
 trap on_exit EXIT
 
-pkgupd ignite build "${element}"
-pkgupd ignite checkout "${element}" "${checkout}"
+${IGNITE} cache-path="${CACHE_PATH}" build "${element}"
+${IGNITE} cache-path="${CACHE_PATH}" checkout "${element}" "${checkout}"
 
 if ! [ -d "${OSTREE_REPO}" ]; then
     ostree init --repo="${OSTREE_REPO}" --mode=archive
 fi
 
-if [ -f commit_message ] ; then
-    SUBJECT="$(cat commit_message | sed '/^$/d' | head -n1)"
-    BODY="$(cat commit_message | sed '/^$/d' | tail -n +2)"
+if [ -f ChangeLog ] ; then
+    SUBJECT="$(cat ChangeLog | sed '/^$/d' | head -n1)"
+    BODY="$(cat ChangeLog | sed '/^$/d' | tail -n +2)"
 fi
 
 echo "=> getting commit init"
@@ -103,8 +102,9 @@ ostree commit ${gpg_opts[*]}    \
     --branch="${ref}"           \
     --tree=ref="${commit}"      \
     --skip-if-unchanged         \
-    --subject="${SUBJECT:-''}"  \
-    --body="${BODY:-''}"
+    --add-metadata=version="${version}" \
+    --subject="${SUBJECT:-}"    \
+    --body="${BODY:-}"
 
 new_commit="$(ostree rev-parse "${ref}")"
 

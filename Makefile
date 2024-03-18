@@ -1,10 +1,14 @@
 DOCS_DIR				?= build/docs
-COLLECTION				?= xfce4
-CHANNEL					?= experimental
-OSTREE_BRANCH 		    ?= $(CHANNEL)/$(COLLECTION)
+CHANNEL					?= unstable
+OSTREE_BRANCH 		    ?= $(shell uname -m)/os/$(CHANNEL)
 OSTREE_REPO 			?= ostree-repo
 OSTREE_GPG 				?= ostree-gpg
-ELEMENT_FILE			?= system/repo.yml
+VERSION					?= 2.0
+IGNITE					?= build/src/ignite/ignite
+CACHE_PATH				?= build/
+DESTDIR					?= checkout/
+
+-include config.mk
 
 define OSTREE_GPG_CONFIG
 Key-Type: DSA
@@ -19,20 +23,49 @@ Expire-Date: 0
 endef
 
 
-
 export OSTREE_GPG_CONFIG
 export IGNITE
+export CACHE_PATH
 
-$(IGNITE):
-	@mkdir -p $(shell dirname $(IGNITE))
-	go build -o $(IGNITE) rlxos/cmd/ignite
+.PHONY: clean all docs version.yml ostree-branch.yml apps
 
-.PHONY: $(IGNITE) clean all docs
+all: $(IGNITE) version.yml ostree-branch.yml
+ifdef ELEMENT
+	$(IGNITE) cache-path=$(CACHE_PATH) build $(ELEMENT)
+endif
 
-all: $(IGNITE)
+status: $(IGNITE) version.yml ostree-branch.yml
+ifdef ELEMENT
+	$(IGNITE) cache-path=$(CACHE_PATH) status $(ELEMENT)
+else
+	@echo "no ELEMENT specified"
+	exit 1
+endif
+
+filepath: $(IGNITE) version.yml ostree-branch.yml
+ifdef ELEMENT
+	@PKGUPD_NO_MESSAGE=1 $(IGNITE) cache-path=$(CACHE_PATH) filepath $(ELEMENT)
+else
+	@echo "no ELEMENT specified"
+	exit 1
+endif
+
+checkout: $(IGNITE) version.yml ostree-branch.yml
+ifdef ELEMENT
+	$(IGNITE) cache-path=$(CACHE_PATH) checkout $(ELEMENT) $(DESTDIR)
+else
+	@echo "no ELEMENT specified"
+	exit 1
+endif
+
+
+build/build.ninja: CMakeLists.txt
+	cmake -B build
+
+$(IGNITE): build/build.ninja src/ignite/CMakeLists.txt
+	@cmake --build build --target ignite
 
 clean:
-	rm $(IGNITE)
 	rm -rf $(DOCS_DIR)
 
 TODO.ELEMENTS:
@@ -40,6 +73,7 @@ TODO.ELEMENTS:
 
 docs:
 	mdbook build -d $(DOCS_DIR)
+
 
 $(OSTREE_GPG)/key-config:
 	rm -rf ostree-gpg.tmp
@@ -53,10 +87,33 @@ $(OSTREE_GPG)/key-config:
 files/rlxos.gpg: $(OSTREE_GPG)/key-config
 	gpg --homedir=$(OSTREE_GPG) --export --armor >"$@"
 
+update-app-market:
+ifdef MARKET_PATH
+	$(IGNITE) cache-path=$(CACHE_PATH) meta $(MARKET_PATH)
+	./scripts/extract-icons.sh $(MARKET_PATH)/../apps/ $(MARKET_PATH)/../icons/
+else
+	@echo "no MARKET_PATH specified"
+	@exit 1
+endif
+
 update-ostree: files/rlxos.gpg
-	scripts/commit-ostree.sh														\
+ifndef ELEMENT
+	@echo "no ELEMENT specified"
+	@exit 1
+endif
+	scripts/commit-ostree.sh													\
 	  --gpg-homedir=$(OSTREE_GPG)												\
 	  --gpg-sign=$$(cat $(OSTREE_GPG)/default-id)								\
 	  --collection-id=dev.rlxos.System											\
-	  $(OSTREE_REPO) $(ELEMENT_FILE)											\
+	  --version=$(VERSION)													\
+	  $(OSTREE_REPO) $(ELEMENT)													\
 	  $(OSTREE_BRANCH)
+
+version.yml:
+	@echo "version: ${VERSION}" > $@
+	@echo "variables:" >> $@
+	@echo "  channel: ${CHANNEL}" >> $@
+
+ostree-branch.yml:
+	@echo "variables:" > $@
+	@echo "  ostree-branch: ${OSTREE_BRANCH}" >> $@

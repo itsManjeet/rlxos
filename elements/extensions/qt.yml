@@ -1,0 +1,8 @@
+id: qt
+about: Qt ui toolkit
+include:
+  - components/qt.yml
+  - components/layer-shell-qt.yml
+  - components/qwlroots.yml
+
+merge: [elements/include/extension.inc]

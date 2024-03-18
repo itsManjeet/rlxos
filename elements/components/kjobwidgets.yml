@@ -4,6 +4,7 @@ about: KF5 kjobwidgets
 
 depends:
   - components/kcoreaddons.yml
+  - components/knotifications.yml
   - components/kwidgetsaddons.yml
 build-depends:
   - components/extra-cmake-modules.yml

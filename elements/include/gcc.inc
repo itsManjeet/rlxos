@@ -1,33 +1,55 @@
-version: 13.1.0
+version: 13.2.0
 release: 1
 about: The GNU compiler collection, which includes the C and C++ compilers
 
-pre-script: |
-  sed -e '/m64=/s/lib64/lib/' \
-        -i.orig gcc/config/i386/t-linux64
+pre-script: |-
+  sed -i 's@\./fixinc\.sh@-c true@' gcc/Makefile.in
+  sed -e '/m64=/s/lib64/lib/' -i.orig gcc/config/i386/t-linux64
+  patch -Np3 < fix-asan-allocator-aslr.patch -d libsanitizer/
 
-configure: >
-  LD=ld 
-  --enable-languages=c,c++,lto
+configure: >-
+  --with-bugurl=https://github.com/itsmanjeet/rlxos/issues
+  --with-build-config=bootstrap-lto
+  --with-linker-hash-style=gnu
+  --with-system-zlib
+  --enable-__cax_atexit
+  --enable-cet
+  --enable-checking=release
+  --enable-clocale=gnu
   --enable-default-pie
   --enable-default-ssp
+  --enable-gnu-indirect-function
+  --enable-gnu-unique-object
+  --enable-libstdcxx-backtrace
+  --enable-link-serialization=1
+  --enable-linker-build-id
+  --enable-lto
+  --enable-plugin
+  --enable-shared
+  --enable-threads=posix
+  --enable-languages=c,c++,lto
+  --enable-bootstrap
+  --disable-libssp
+  --disable-libstdcxx-pch
+  --disable-werror
   --disable-multilib
-  --disable-bootstrap
-  --disable-fixincludes
-  --with-system-zlib
 
+compile: -O STAGE1_CFLAGS="-O2" BOOT_CFLAGS="${CFLAGS}" BOOT_LDFLAGS="${LDFLAGS}" LDFLAGS_FOR_TARGET="${LDFLAGS}" bootstrap
+  
 post-script: |
-  mkdir -p %{install-root}/usr/lib/bfd-plugins/
-  ln -sv ../bin/cpp %{install-root}/usr/lib/
+  ln -sv ../bin/cpp %{install-root}/%{libdir}/
+
+  mkdir -p %{install-root}/%{libdir}/bfd-plugins/
   ln -sfv ../../lib/gcc/x86_64-pc-linux-gnu/%{version}/liblto_plugin.so \
-    %{install-root}/usr/lib/bfd-plugins/
+    %{install-root}/%{libdir}/bfd-plugins/
 
   ln -sv gcc %{install-root}/usr/bin/cc
 
   if [[ -d %{install-root}/lib ]] ; then
-    cp %{install-root}/lib/* %{install-root}/usr/lib/ -a
+    cp %{install-root}/lib/* %{install-root}/%{libdir}/ -a
     rm %{install-root}/lib -r
   fi
 
 sources:
   - https://ftp.gnu.org/gnu/gcc/gcc-%{version}/gcc-%{version}.tar.xz
+  - patches/gcc/fix-asan-allocator-aslr.patch

@@ -1,5 +1,5 @@
 id: ostree
-version: 2023.7
+version: 2024.4
 about: Operating system and container binary deployment and upgrade
 
 variables:

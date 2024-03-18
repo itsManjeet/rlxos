@@ -1,5 +1,5 @@
 id: linux
-version: 6.5.3
+version: 6.7.8
 about: |
   Linux kernel, modules and headers
 sources:
@@ -7,7 +7,7 @@ sources:
 
 environ:
   - KBUILD_BUILD_TIMESTAMP=Fri Nov 12 12:00:00 UTC 2011
-  - KBUILD_BUILD_USER=rlxos
+  - KBUILD_BUILD_USER=nishu
 
 script: |-
   export ARCH=%{arch}
@@ -439,8 +439,8 @@ script: |-
   enable X86_PAT
   enable ARCH_USES_PG_UNCACHED
   enable X86_UMIP
-  enable CC_HAS_IBT
-  enable X86_KERNEL_IBT
+  #enable CC_HAS_IBT
+  #enable X86_KERNEL_IBT
   enable X86_INTEL_MEMORY_PROTECTION_KEYS
   enable X86_INTEL_TSX_MODE_OFF
   enable X86_SGX
@@ -8519,7 +8519,7 @@ script: |-
 
   find %{install-root}/%{libdir}/modules/$release -type f -name '*.ko' | xargs -P 4 -n 2 -r xz;
 
-  rm %{install-root}/%{libdir}/modules/$release/{source,build}
+  rm -f %{install-root}/%{libdir}/modules/$release/build
   targetdir=%{install-root}/%{libdir}/modules/$release/source
 
   to_copy=(

@@ -1,8 +1,11 @@
 id: qemu
-version: 8.1.2
+version: 8.2.0
 about: A full virtualization solution for Linux on x86 hardware containing virtualization extensions
 
 build-type: autotools
+
+strip-skip-mime:
+  - application/octet-stream
 
 post-script: |-
   install -v -D -m 644 /dev/stdin %{install-root}/%{libdir}/udev/rules.d/65-kvm.rules << "EOF"
@@ -11,7 +14,7 @@ post-script: |-
   EOF
 
   # chgrp kvm %{install-root}/%{libdir}/qemu-bridge-helper
-  chmod -v 4750 %{install-root}/%{libdir}/qemu-bridge-helper
+  chmod -v 4755 %{install-root}/%{libdir}/qemu-bridge-helper
 
   rmdir %{install-root}/var/run
 
@@ -44,6 +47,4 @@ build-depends:
   - components/pkg-config.yml
   - components/spice-protocol.yml
 sources:
-  - https://download.qemu-project.org/qemu-%{version}.tar.xz
-
-# TODO: fix qemu-bridge-helper ownership
+  - https://download.qemu.org/qemu-%{version}.tar.xz

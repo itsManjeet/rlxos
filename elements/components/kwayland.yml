@@ -1,5 +1,5 @@
 id: kwayland
-merge: [elements/include/kf5.inc]
+merge: [elements/include/plasma.inc]
 about: KF5 kwayland
 
 depends:

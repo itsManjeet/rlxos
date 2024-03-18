@@ -90,7 +90,7 @@ files/rlxos.gpg: $(OSTREE_GPG)/key-config
 update-app-market:
 ifdef MARKET_PATH
 	$(IGNITE) cache-path=$(CACHE_PATH) meta $(MARKET_PATH)
-	./scripts/extract-icons.sh $(MARKET_PATH)/../apps/ $(MARKET_PATH)/../icons/
+	./scripts/extract-icons.sh $(shell dirname $(MARKET_PATH))/apps/ $(shell dirname $(MARKET_PATH))/icons/
 else
 	@echo "no MARKET_PATH specified"
 	@exit 1

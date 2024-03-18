@@ -1,3 +1,6 @@
 [submodule "src/initial-setup"]
 	path = src/initial-setup
 	url = git@github.com:itsmanjeet/initial-setup
+[submodule "src/srclang"]
+	path = src/srclang
+	url = git@github.com:itsmanjeet/srclang

@@ -31,6 +31,7 @@ initial-commands: |-
   echo "root:root" | chpasswd
   
   ln -sfv %{datadir}/zoneinfo/UTC %{sysconfdir}/localtime
+  touch %{sysconfdir}/skel/.zshrc
 
   kerver=$(ls -1 /lib/modules | head -n1)
   cp /lib/modules/${kerver}/bzImage /lib/modules/${kerver}/vmlinuz

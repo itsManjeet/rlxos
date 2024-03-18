@@ -8,3 +8,4 @@
 /config.mk
 /ostree-branch.yml
 /.cache
+*.ui~

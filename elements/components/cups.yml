@@ -8,7 +8,8 @@ variables:
   run-autogen: false
 
 configure: >-
-  --with-system-groups=lpadmin
+  --with-system-groups=lp
+  --with-system-user=cups
   --with-rundir=/run/cups
 
 post-script: |-
@@ -22,6 +23,11 @@ post-script: |-
 
   install -v -Dm 644 /dev/stdin %{install-root}%{libdir}/systemd/system-preset/%{id}.conf << "EOF"
   enable cups
+  EOF
+
+  install -v -Dm 644 /dev/stdin %{install-root}%{libdir}/sysusers.d/%{id}.conf << "EOF"
+  u cups 9 "Print Service User"
+  m cups lp
   EOF
 
 depends:

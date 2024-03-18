@@ -239,6 +239,7 @@ depends:
   - components/gufw.yml
   - components/blueman.yml
   - components/wlroots.yml
+  - components/welcome-tour.yml
 
   # AppImage
 

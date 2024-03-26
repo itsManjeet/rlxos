@@ -20,7 +20,7 @@ jobs:
     strategy:
       matrix:
         board:
-          - x86_64
+          - x86_64-bios
 
     steps:
       - uses: actions/checkout@v1

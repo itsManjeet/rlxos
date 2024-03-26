@@ -6,3 +6,6 @@ include:
   - components/qwlroots.yml
 
 merge: [elements/include/extension.inc]
+include-parts: 
+  - devel
+  - doc

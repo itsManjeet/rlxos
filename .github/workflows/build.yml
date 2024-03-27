@@ -30,10 +30,13 @@ jobs:
       - name: Build system packages
         run: make CACHE_PATH=$CACHE_PATH BOARD_NAME=${{matrix.board}}
 
+      - name: Compress Image
+        run: zstd -19 ${{env.CACHE_PATH}}/${{matrix.board}}/images/disk.img -o disk.img.zst
+
       - uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ${{env.CACHE_PATH}}/${{matrix.board}}/images/disk.img
-          asset_name: rlxos-${{matrix.board}}.img
+          file: disk.img.zst
+          asset_name: rlxos-${{matrix.board}}.img.zst
           tag: ${{env.BRANCH}}
           overwrite: true

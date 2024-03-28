@@ -90,6 +90,7 @@ depends:
 
   - components/sway.yml
   - components/greetd.yml
+  - components/cog.yml
 
     # Components
   - components/gvfs.yml

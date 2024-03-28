@@ -1,5 +1,5 @@
 id: libwpe
-version: 1.14.1
+version: 1.16.0
 about: A general purpose library for WPE WebKit and the WPE Renderer
 
 depends:

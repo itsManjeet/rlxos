@@ -40,3 +40,4 @@ jobs:
           asset_name: rlxos-${{matrix.board}}.img.zst
           tag: ${{env.BRANCH}}
           overwrite: true
+          body: ${{ github.event.head_commit.message }}

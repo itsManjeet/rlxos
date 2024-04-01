@@ -19,7 +19,7 @@
 #include "Sysroot.h"
 #include <memory>
 
-static std::string truncate(const std::string &revision) {
+static std::string truncate(const std::string& revision) {
     auto size = revision.size();
     return revision.substr(0, std::min<size_t>(6, size));
 }
@@ -30,8 +30,10 @@ struct SysrootApp : Application {
         REGISTER_COMMAND(SysrootApp, install, "Install system extensions", -1);
         REGISTER_COMMAND(SysrootApp, remove, "Remove system extensions", -1);
         REGISTER_COMMAND(SysrootApp, list, "List available extensions", 0);
-        REGISTER_COMMAND(SysrootApp, update, "Check and apply for system updates", 0);
-        REGISTER_COMMAND_WITH_NAME(SysrootApp, "switch", switch_, "Switch to different update channel", 1);
+        REGISTER_COMMAND(
+                SysrootApp, update, "Check and apply for system updates", 0);
+        REGISTER_COMMAND_WITH_NAME(SysrootApp, "switch", switch_,
+                "Switch to different update channel", 1);
     }
 
     void init() override { backend = std::make_unique<Sysroot>(true); }
@@ -65,11 +67,13 @@ struct SysrootApp : Application {
         INFO("Found " << list.size() << " extension(s) from remote");
 
         auto active_deployment = backend->get_active();
-        for (auto const &i: list) {
-            bool is_installed = std::find_if(active_deployment.extensions.begin(), active_deployment.extensions.end(),
-                                             [&](const std::pair<std::string, std::string> &p) -> bool {
-                                                 return i == p.first;
-                                             }) != active_deployment.extensions.end();
+        for (auto const& i : list) {
+            bool is_installed =
+                    std::find_if(active_deployment.extensions.begin(),
+                            active_deployment.extensions.end(),
+                            [&](const std::pair<std::string, std::string>& p)
+                                    -> bool { return i == p.first; }) !=
+                    active_deployment.extensions.end();
             std::cout << " - ";
             if (is_installed) {
                 MESSAGE(GREEN("✔"), i);
@@ -85,19 +89,22 @@ struct SysrootApp : Application {
         }
         std::vector<std::string> extensions_to_remove;
         auto active_deployment = backend->get_active();
-        for (auto const &arg: ctxt.args) {
-            bool is_installed = std::find_if(active_deployment.extensions.begin(), active_deployment.extensions.end(),
-                                             [&](const std::pair<std::string, std::string> &p) -> bool {
-                                                 return arg == p.first;
-                                             }) != active_deployment.extensions.end();
+        for (auto const& arg : ctxt.args) {
+            bool is_installed =
+                    std::find_if(active_deployment.extensions.begin(),
+                            active_deployment.extensions.end(),
+                            [&](const std::pair<std::string, std::string>& p)
+                                    -> bool { return arg == p.first; }) !=
+                    active_deployment.extensions.end();
             if (is_installed) { extensions_to_remove.emplace_back(arg); }
         }
         if (extensions_to_remove.empty()) {
             throw std::runtime_error("no extension found for removal");
         }
 
-        PROCESS("Uninstalling following " << extensions_to_remove.size() << " extension(s)")
-        for (auto const &extension: extensions_to_remove) {
+        PROCESS("Uninstalling following " << extensions_to_remove.size()
+                                          << " extension(s)")
+        for (auto const& extension : extensions_to_remove) {
             std::cout << " - " << extension << std::endl;
         }
 
@@ -113,19 +120,21 @@ struct SysrootApp : Application {
         auto available_extensions = backend->get_available();
 
         std::vector<std::string> extensions;
-        for (auto const &arg: ctxt.args) {
-            auto extension = std::find_if(available_extensions.begin(), available_extensions.end(),
-                                          [&arg](const std::string &ref) -> bool {
-                                              return ref == arg;
-                                          });
+        for (auto const& arg : ctxt.args) {
+            auto extension = std::find_if(available_extensions.begin(),
+                    available_extensions.end(),
+                    [&arg](const std::string& ref) -> bool {
+                        return ref == arg;
+                    });
             if (extension == available_extensions.end()) {
-                throw std::runtime_error("no extension found with id '" + arg + "'");
+                throw std::runtime_error(
+                        "no extension found with id '" + arg + "'");
             }
             extensions.emplace_back(*extension);
         }
 
         PROCESS("Installing following " << extensions.size() << " extension(s)")
-        for (auto const &extension: extensions) {
+        for (auto const& extension : extensions) {
             std::cout << " - " << extension << std::endl;
         }
 
@@ -138,38 +147,55 @@ struct SysrootApp : Application {
         g_autoptr(OstreeDeployment) pending_deployment = nullptr;
         g_autoptr(OstreeDeployment) rolling_deployment = nullptr;
 
-        ostree_sysroot_query_deployments_for(backend->backend, OSNAME, &pending_deployment, &rolling_deployment);
+        ostree_sysroot_query_deployments_for(backend->backend, OSNAME,
+                &pending_deployment, &rolling_deployment);
 
-        for (auto const &deployment: backend->get_deployments()) {
+        for (auto const& deployment : backend->get_deployments()) {
             std::cout << std::endl;
             if (deployment.is_active)
                 std::cout << GREEN("(active)") << "    ";
             else
                 std::cout << YELLOW("(inactive)") << "  ";
-            std::cout << BOLD(deployment.refspec) << ":" << BLUE(truncate(deployment.revision)) << std::endl;
+            std::cout << BOLD(deployment.refspec) << ":"
+                      << BLUE(truncate(deployment.revision)) << std::endl;
 
             if (deployment.refspec.ends_with("/local")) {
-                std::cout << "  " << BOLD("MERGED") << "        : " << GREEN("TRUE") << std::endl;
-                std::cout << "  " << BOLD("EXTENSIONS") << "    : " << deployment.extensions.size() << std::endl;
-                std::cout << "  " << BOLD("CHANNEL") << "       : " << BLUE(deployment.channel) << std::endl;
-                std::cout << "  " << BOLD("REVISION") << "      : " << truncate(deployment.base_revision) << std::endl;
+                std::cout << "  " << BOLD("MERGED") << "        : "
+                          << GREEN("TRUE") << std::endl;
+                std::cout << "  " << BOLD("EXTENSIONS") << "    : "
+                          << deployment.extensions.size() << std::endl;
+                std::cout << "  " << BOLD("CHANNEL") << "       : "
+                          << BLUE(deployment.channel) << std::endl;
+                std::cout << "  " << BOLD("REVISION") << "      : "
+                          << truncate(deployment.base_revision) << std::endl;
                 if (ostree_deployment_is_staged(deployment.backend)) {
-                    std::cout << "  " << BOLD("STAGING") << "       : " << GREEN("TRUE") << std::endl;
+                    std::cout << "  " << BOLD("STAGING") << "       : "
+                              << GREEN("TRUE") << std::endl;
                 }
-                if (auto unlocked = ostree_deployment_get_unlocked(deployment.backend);
+                if (auto unlocked = ostree_deployment_get_unlocked(
+                            deployment.backend);
                         unlocked != OSTREE_DEPLOYMENT_UNLOCKED_NONE) {
-                    std::cout << "  " << BOLD("UNLOCKED") << "      : "
-                              << GREEN(ostree_deployment_unlocked_state_to_string(unlocked)) << std::endl;
+                    std::cout
+                            << "  " << BOLD("UNLOCKED") << "      : "
+                            << GREEN(ostree_deployment_unlocked_state_to_string(
+                                       unlocked))
+                            << std::endl;
                 }
-                if (ostree_deployment_equal(pending_deployment, deployment.backend)) {
-                    std::cout << "  " << BOLD("PENDING") << "      : " << GREEN("TRUE") << std::endl;
+                if (ostree_deployment_equal(
+                            pending_deployment, deployment.backend)) {
+                    std::cout << "  " << BOLD("PENDING") << "      : "
+                              << GREEN("TRUE") << std::endl;
                 }
-                if (ostree_deployment_equal(rolling_deployment, deployment.backend)) {
-                    std::cout << "  " << BOLD("ROLLING") << "      : " << GREEN("TRUE") << std::endl;
+                if (ostree_deployment_equal(
+                            rolling_deployment, deployment.backend)) {
+                    std::cout << "  " << BOLD("ROLLING") << "      : "
+                              << GREEN("TRUE") << std::endl;
                 }
-                for (auto const &extension: deployment.extensions) {
-                    std::cout << "   - " << BOLD(extension.first) << std::string(10 - extension.first.length(), ' ')
-                              << " : " << BOLD(truncate(extension.second)) << std::endl;
+                for (auto const& extension : deployment.extensions) {
+                    std::cout << "   - " << BOLD(extension.first)
+                              << std::string(10 - extension.first.length(), ' ')
+                              << " : " << BOLD(truncate(extension.second))
+                              << std::endl;
                 }
             }
         }
@@ -179,7 +205,7 @@ private:
     std::unique_ptr<Sysroot> backend{nullptr};
 };
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
     auto app = SysrootApp();
     return app.run(argc, argv);
 }

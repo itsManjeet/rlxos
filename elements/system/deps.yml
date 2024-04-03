@@ -73,7 +73,7 @@ depends:
 
   - components/greetd.yml
   - components/seatd.yml
-  - components/labwc.yml
+  - components/cage.yml
   - components/cog.yml
 
     # Components

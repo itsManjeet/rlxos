@@ -52,11 +52,6 @@ depends:
   - components/e2fsprogs.yml
   - components/py/py-pip.yml
 
-  - components/fonts/ibm-plex.yml
-  - components/fonts/adobe-source-code-pro-fonts.yml
-
-  - components/rt1.yml
-
   - components/zram-generator.yml
   - components/plymouth.yml
   # utilities
@@ -79,6 +74,7 @@ depends:
   - components/greetd.yml
   - components/seatd.yml
   - components/labwc.yml
+  - components/cog.yml
 
     # Components
   - components/gvfs.yml

@@ -87,7 +87,7 @@ $(OSTREE_GPG)/key-config:
 files/rlxos.gpg: $(OSTREE_GPG)/key-config
 	gpg --homedir=$(OSTREE_GPG) --export --armor >"$@"
 
-update-app-market:
+update-app-market: $(IGNITE)
 ifdef MARKET_PATH
 	$(IGNITE) cache-path=$(CACHE_PATH) meta $(MARKET_PATH)
 	./scripts/extract-icons.sh $(shell dirname $(MARKET_PATH))/apps/ $(shell dirname $(MARKET_PATH))/icons/

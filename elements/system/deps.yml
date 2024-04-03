@@ -90,7 +90,7 @@ depends:
   - components/networkmanager-openvpn.yml
 
   - components/fonts/ibm-plex.yml
-  - components/adobe-source-code-pro-fonts.yml
+  - components/fonts/adobe-source-code-pro-fonts.yml
 
   - components/greetd.yml
   - components/seatd.yml

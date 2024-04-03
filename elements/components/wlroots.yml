@@ -1,5 +1,5 @@
 id: wlroots
-version: 0.17.1
+version: 0.16.2
 about: A modular wayland compositor library
 depends:
   - components/libdisplay-info.yml
@@ -25,6 +25,3 @@ build-depends:
 
 sources:
   - https://gitlab.freedesktop.org/wlroots/wlroots/-/archive/%{version}/wlroots-%{version}.tar.gz
-
-post-script: |
-  install -v -Dm 0755 -t %{install-root}/%{bindir} %{build-dir}/tinywl/tinywl

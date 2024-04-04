@@ -71,10 +71,10 @@ depends:
   - components/fonts/ibm-plex.yml
   - components/fonts/adobe-source-code-pro-fonts.yml
 
-  - components/greetd.yml
   - components/seatd.yml
   - components/cage.yml
   - components/cog.yml
+  - components/interface.yml
 
     # Components
   - components/gvfs.yml

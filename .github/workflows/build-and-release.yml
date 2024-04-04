@@ -30,14 +30,13 @@ jobs:
         with:
           token: ${{ secrets.CI_TOKEN }}
           submodules: true
-      - name: Build system packages
-        run: make ELEMENT=system/deps.yml
+      - run: ./scripts/cleanup.sh
 
-      - name: Write changelog
-        run: echo "${{ github.event.head_commit.message }}" > ChangeLog
-
-      - name: Update Ostree
-        run: make ELEMENT=system/repo.yml update-ostree
+      - run: make ELEMENT=system/deps.yml
+      
+      - run: echo "${{ github.event.head_commit.message }}" > ChangeLog
+      
+      - run: make ELEMENT=system/repo.yml update-ostree
 
       # - name: Update Extensions
       #   run: |

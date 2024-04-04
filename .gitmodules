@@ -4,3 +4,7 @@
 [submodule "src/srclang"]
 	path = src/srclang
 	url = git@github.com:itsmanjeet/srclang
+
+[submodule "src/desktop"]
+	path = src/desktop
+	url = git@github.com:itsmanjeet/rlxos-web

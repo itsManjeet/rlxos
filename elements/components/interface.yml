@@ -1,6 +1,6 @@
 id: interface
 version: 0.1.0
-about: Web Interface for rlxos
+about: Web interface for rlxos
 
 depends:
   - components/bash.yml
@@ -15,9 +15,9 @@ script: |-
   m user_01 seatd
   EOF
 
-  install -v -Dm0644 /dev/stdin %{install-root}%{libdir}/systemd/system/interface@.service << "EOF"
+  install -v -Dm0644 /dev/stdin %{install-root}%{libdir}/systemd/system/%{id}@.service << "EOF"
   [Unit]
-  Description=Web interface for %I
+  Description=Web %{id} for %I
   After=systemd-user-sessions.service plymouth-quit-wait.service
   Before=graphical.target
   ConditionPathExists=/dev/tty0
@@ -38,6 +38,7 @@ script: |-
   TTYVHangup=yes
   TTYVDisallocate=yes
   StandardInput=tty-fail
+  PAMName=%{id}
 
   [Install]
   WantedBy=graphical.target
@@ -45,6 +46,13 @@ script: |-
   DefaultInstance=tty7
   EOF
 
-  install -v -Dm0644 /dev/stdin %{install-root}%{libdir}/systemd/system-preset/80-interface.preset << "EOF"
-  enable interface@.service tty1
+  install -v -Dm0644 /dev/stdin %{install-root}%{libdir}/systemd/system-preset/80-%{id}.preset << "EOF"
+  enable %{id}@.service tty1
+  EOF
+
+  install -v -Dm0644 /dev/stdin %{install-root}%{sysconfdir}/pam.d/%{id} << "EOF"
+  auth    required pam_unix.so nullok
+  account required pam_unix.so
+  session required pam_unix.so
+  session required pam_systemd.so
   EOF

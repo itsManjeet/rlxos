@@ -57,6 +57,7 @@ script: |-
 
   install -v -Dm0644 /dev/stdin %{install-root}%{libdir}/systemd/system-preset/80-%{id}.preset << "EOF"
   enable %{id}@.service tty1
+  enable %{id}-server.service
   EOF
 
   install -v -Dm0644 /dev/stdin %{install-root}%{sysconfdir}/pam.d/%{id} << "EOF"

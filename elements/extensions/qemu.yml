@@ -1,9 +1,8 @@
 id: qemu
 about: RLXOS QEMU Virtualization Kit
 include:
-  - components/qemu.yml
-  - components/libvirt.yml
-  - components/libvirt-glib.yml
+  - extensions/qemu/qemu.yml
+  - extensions/qemu/bridge-utils.yml
 
 include-depends: false
 

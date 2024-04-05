@@ -29,6 +29,7 @@ include:
   - components/uncrustify.yml
   - components/libyaml-cpp.yml
   - components/sysprof.yml
+  - components/sassc.yml
   - components/xfce4/xfce4-dev-tools.yml
 
 include-parts: 

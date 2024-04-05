@@ -242,7 +242,7 @@ depends:
   - components/welcome-tour.yml
   - components/desktop.yml
   - components/firefox.yml
-  - components/file-rollefr.yml
+  - components/file-roller.yml
 
   # AppImage
   - components/appimaged.yml

@@ -2,6 +2,7 @@ id: qemu
 about: RLXOS QEMU Virtualization Kit
 include:
   - extensions/qemu/qemu.yml
+  - extensions/qemu/bridge-utils.yml
 
 include-depends: false
 

@@ -4,8 +4,6 @@ about: Bazaar database
 
 depends:
 - apps/alacritty.yml
-- apps/file-roller.yml
-- apps/firefox.yml
 - apps/gigolo.yml
 - apps/glade.yml
 - apps/pinta.yml

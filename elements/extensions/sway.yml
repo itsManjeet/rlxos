@@ -1,0 +1,10 @@
+id: sway
+about: Sway wayland compositor
+merge: [elements/include/extension.inc]
+
+include:
+  - extensions/sway/sway.yml
+  - extensions/sway/sfwbar.yml
+  - extensions/sway/swaybg.yml
+  - extensions/sway/swaylock.yml
+  - extensions/sway/greetd.yml

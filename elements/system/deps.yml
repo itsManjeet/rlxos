@@ -240,16 +240,12 @@ depends:
   - components/blueman.yml
   - components/wlroots.yml
   - components/welcome-tour.yml
+  - components/desktop.yml
+  - components/firefox.yml
+  - components/file-roller.yml
 
   # AppImage
-
   - components/appimaged.yml
-
-  # Apps
-  # - apps/gigolo.yml
-  # - apps/pinta.yml
-  - apps/file-roller.yml
-  - apps/firefox.yml
 
   - kernel/linux.yml
 

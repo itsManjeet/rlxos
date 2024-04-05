@@ -19,6 +19,6 @@ Update channels define the frequency and stability of updates:
 | Channel      | Description                                                                  | Stability                        | Frequency |
 | ------------ | ---------------------------------------------------------------------------- | -------------------------------- | --------- |
 | Stable       | The default channel for stable releases                                      | Maximum                          | Monthly   |
-| Staging      | Updates waiting for final verification before merging into stable            | Might have edge cases            | Weekly    |
-| Experimental | Updates for beta testers and the development team to check changes on **VM** | Unstable, might break the system | Daily     |
+| Preview      | Updates waiting for final verification before merging into stable            | Might have edge cases            | Weekly    |
+| Unstable     | Updates for beta testers and the development team to check changes on **VM** | Unstable, might break the system | Daily     |
 

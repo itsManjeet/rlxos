@@ -8,6 +8,7 @@ configure: >-
 depends:
   - components/glib.yml
   - components/libepoxy.yml
+  - components/libglvnd.yml
   - components/libwpe.yml
   - components/wayland.yml
 build-depends:

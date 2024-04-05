@@ -6,7 +6,7 @@ sources:
   - https://github.com/labwc/labwc/archive/refs/tags/%{version}.tar.gz
 
 depends:
-  - components/wlroots.yml
+  - components/wlroots0.16.yml
   - components/wayland.yml
   - components/libinput.yml
   - components/cairo.yml

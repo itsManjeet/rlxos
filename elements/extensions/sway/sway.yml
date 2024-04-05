@@ -5,7 +5,7 @@ about: Tiling Wayland compositor and replacement for the i3 window manager
 pre-script: |-
   sed -i "s/branch \\\'@1@\\\'/rlxos/g" meson.build
 post-script: |-
-  install -v -D -m 0644 /dev/stdin -t %{install-root}%{sysconfdir}/sway/config.d/50-systemd-user.conf << "EOF"
+  install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/sway/config.d/50-systemd-user.conf << "EOF"
   exec systemctl --user set-environment XDG_CURRENT_DESKTOP=sway
   exec systemctl --user import-environment DISPLAY \
                                            SWAYSOCK \
@@ -29,10 +29,6 @@ post-script: |-
 
   install -v -D -m 0644 LICENSE -t %{install-root}%{datadir}/doc/%{id}/
 
-  for i in autoname-workspaces.py inactive-windows-transparency.py grimshot ; do
-  install -D -m 0755 contrib/${i} -t %{install-root}%{datadir}/%{id}/scripts/
-  done
-
 configure: >-
   -D sd-bus-provider=libsystemd
   -D werror=false
@@ -51,6 +47,7 @@ depends:
   - components/x11/libxkbcommon.yml
   - components/pango.yml
   - components/pcre.yml
+  - components/seatd.yml
 build-depends:
   - components/meson.yml
   - components/ninja.yml

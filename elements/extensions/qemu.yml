@@ -4,6 +4,4 @@ include:
   - extensions/qemu/qemu.yml
   - extensions/qemu/bridge-utils.yml
 
-include-depends: false
-
 merge: [elements/include/extension.inc]

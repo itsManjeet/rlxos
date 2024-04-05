@@ -4,7 +4,7 @@ about: WPE launcher and webapp container
 
 configure: >-
   -D manpages=true
-  -D platforms=drm,headless,wayland
+  -D platforms=drm,headless,gtk4,wayland,x11
   -D programs=true
   -D wpe_api=2.0
 
@@ -18,8 +18,11 @@ depends:
   - components/libinput.yml
   # - components/libmanette.yml
   - components/wpewebkit.yml
+  - components/gtk4.yml
   - components/wayland.yml
   - components/openjpeg.yml
+  - components/x11/libxcb.yml
+  - components/x11/libxkbcommon.yml
 
 build-depends:
   - components/wayland-protocols.yml

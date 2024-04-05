@@ -12,12 +12,6 @@ initial-commands: |-
     sh -e $i
   done
   
-  mkdir -p /Applications
-  for app in /*.app ; do
-    mv ${app} /Applications/
-    rm ${app}.zsync
-  done
-
   rm -rf /install-root
 
   mkdir -p /proc /sysroot

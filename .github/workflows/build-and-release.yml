@@ -30,26 +30,27 @@ jobs:
         with:
           token: ${{ secrets.CI_TOKEN }}
           submodules: true
-      - run: ./scripts/cleanup.sh
+      - name: Build system packages
+        run: make ELEMENT=system/deps.yml
 
-      - run: make ELEMENT=system/deps.yml
-      
-      - run: echo "${{ github.event.head_commit.message }}" > ChangeLog
-      
-      - run: make ELEMENT=system/repo.yml update-ostree
+      - name: Write changelog
+        run: echo "${{ github.event.head_commit.message }}" > ChangeLog
 
-      # - name: Update Extensions
-      #   run: |
-      #     for extension_path in elements/extensions/*.yml; do
-      #       extension_path="$(echo ${extension_path} | cut -d '/' -f2-)"
-      #       extension="$(basename ${extension_path})"
-      #       extension="${extension%.*}"
-      #       OSTREE_BRANCH="x86_64/extension/${extension}/${CHANNEL}" \
-      #       ELEMENT=${extension_path} make update-ostree
-      #     done
+      - name: Update Ostree
+        run: make ELEMENT=system/repo.yml update-ostree
 
-      # - name: Build AppImages
-      #   run: make ELEMENT=app-market.yml
+      - name: Update Extensions
+        run: |
+          for extension_path in elements/extensions/*.yml; do
+            extension_path="$(echo ${extension_path} | cut -d '/' -f2-)"
+            extension="$(basename ${extension_path})"
+            extension="${extension%.*}"
+            OSTREE_BRANCH="x86_64/extension/${extension}/${CHANNEL}" \
+            ELEMENT=${extension_path} make update-ostree
+          done
+
+      - name: Build AppImages
+        run: make ELEMENT=app-market.yml
 
       - name: Build Installer ISO
         run: make ELEMENT=installer/image.yml

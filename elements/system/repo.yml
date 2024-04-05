@@ -11,6 +11,12 @@ initial-commands: |-
   for i in %{datadir}/pkgupd/manifest/*/integration ; do
     sh -e $i
   done
+  
+  mkdir -p /Applications
+  for app in /*.app ; do
+    mv ${app} /Applications/
+    rm ${app}.zsync
+  done
 
   rm -rf /install-root
 

@@ -1,0 +1,13 @@
+id: elementary-xfce-icon
+version: 0.19
+about: Elementary icons forked from upstream, extended and maintained for Xfce
+
+seperate-build-dir: false
+
+depends:
+  - components/hicolor-icon-theme.yml
+  - components/gtk.yml
+  - components/optipng.yml
+
+sources:
+  - elementary-xfce-icon-%{version}.tar.gz::https://github.com/shimmerproject/elementary-xfce/archive/refs/tags/v%{version}.tar.gz

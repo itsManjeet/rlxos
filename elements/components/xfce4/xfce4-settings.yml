@@ -11,7 +11,7 @@ post-script: |-
   <?xml version="1.0" encoding="UTF-8"?>
   <channel name="xsettings" version="1.0">
     <property name="Net" type="empty">
-      <property name="ThemeName" type="string" value="elemtary-xfce"/>
+      <property name="ThemeName" type="string" value="elementary-xfce"/>
       <property name="IconThemeName" type="string" value="elementary Xfce"/>
       <property name="DoubleClickTime" type="int" value="400"/>
       <property name="DoubleClickDistance" type="int" value="5"/>

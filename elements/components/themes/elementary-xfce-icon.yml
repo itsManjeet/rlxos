@@ -4,11 +4,20 @@ about: Elementary icons forked from upstream, extended and maintained for Xfce
 merge: [elements/include/update-icon-cache.inc]
 
 seperate-build-dir: false
+strip: false
+
+script: |-
+  ./configure --prefix=%{prefix}
+  make ${MAKEFLAGS}
+  make install DESTDIR=%{install-root}
 
 depends:
   - components/hicolor-icon-theme.yml
   - components/themes/adwaita-icon-theme.yml
   - components/gtk.yml
+  - components/librsvg.yml
+build-depends:
+  - components/gdk-pixbuf.yml
   - components/optipng.yml
 
 sources:

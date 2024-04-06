@@ -20,7 +20,7 @@ post-script: |-
       <value type="int" value="2"/>
       <property name="dark-mode" type="bool" value="true"/>
       <property name="panel-1" type="empty">
-        <property name="position" type="string" value="p=6"/>
+        <property name="position" type="string" value="p=6;x=0;y=0"/>
         <property name="size" type="uint" value="32"/>
         <property name="length" type="double" value="100"/>
         <property name="position-locked" type="bool" value="true"/>
@@ -47,7 +47,7 @@ post-script: |-
         <property name="autohide-behavior" type="uint" value="0"/>
       </property>
       <property name="panel-2" type="empty">
-        <property name="position" type="string" value="p=10"/>
+        <property name="position" type="string" value="p=10;x=0;y=0"/>
         <property name="size" type="uint" value="64"/>
         <property name="plugin-ids" type="array">
           <value type="int" value="4"/>

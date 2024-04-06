@@ -21,6 +21,8 @@ initial-commands: |-
 
   echo "root:root" | chpasswd
   
+  echo -e "\nGTK_CSD=1" >> %{sysconfdir}/environment
+
   ln -sfv %{datadir}/zoneinfo/UTC %{sysconfdir}/localtime
   touch %{sysconfdir}/skel/.zshrc
 

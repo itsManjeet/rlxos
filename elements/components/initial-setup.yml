@@ -35,7 +35,7 @@ post-script: |-
   [Desktop Entry]
   Name=Initial Setup
   Terminal=false
-  Exec=while true ; do %{bindir}/initial-setup; sleep 1; done
+  Exec=%{bindir}/bash -c "while true ; do %{bindir}/initial-setup; sleep 1; done"
   Type=Application
   Icon=system-os-installer
   Categories=Utility;

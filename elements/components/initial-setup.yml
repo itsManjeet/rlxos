@@ -30,22 +30,12 @@ post-script: |-
   });
   EOF
 
-  install -v -D 0755 /dev/stdin %{install-root}%{bindir}/inital-setup-run.sh << "EOF"
-  #!/bin/sh
-
-  # run initial-setup on exit
-  while true ; do
-    %{bindir}/initial-setup
-    sleep 1
-  done
-  EOF
-
   mkdir -p %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/autostart
   install -vDm0644 /dev/stdin %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/autostart/initial-setup.desktop << "EOF"
   [Desktop Entry]
   Name=Initial Setup
   Terminal=false
-  Exec=%{bindir}/initial-setup-run.sh
+  Exec=while true ; do %{bindir}/initial-setup; sleep 1; done
   Type=Application
   Icon=system-os-installer
   Categories=Utility;

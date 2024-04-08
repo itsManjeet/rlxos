@@ -11,7 +11,7 @@ post-script: |-
   [greeter]
   background=%{datadir}/backgrounds/default.jpeg
   theme-name=elementary-xfce
-  icon-theme-name=elementary Xfce
+  icon-theme-name=elementary-xfce
   cursor-theme-name=Adwaita
   font-name=IBM Plex Sans Regular 11
   panel-position=top

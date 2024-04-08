@@ -9,5 +9,10 @@ script: |-
   x-scheme-handler/https=firefox.desktop
   EOF
 
+  install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/skel/.config/xfce4/panel/docklike-4.rc << "EOF"
+  [user]
+  pinned=xfce4-appfinder;xfce4-terminal;thunar;firefox;org.dev.mousepad;parole;xfce4-settings-manager;xfce4-taskmanager;
+  EOF
+
 build-depends:
   - components/bash.yml

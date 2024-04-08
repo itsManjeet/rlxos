@@ -1,5 +1,5 @@
 id: initial-setup
-version: 1.0.6
+version: 0.1.7
 about: System Initial Setup
 merge: [ ostree-branch.yml, elements/include/rlxos.inc ]
 
@@ -138,6 +138,12 @@ post-script: |-
   install -vDm 0644 /dev/stdin %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/autostart/welcome-tour.desktop << "EOF"
   [Desktop Entry]
   Hidden=true
+  EOF
+
+  install -v -D -m 0644 /dev/stdin %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/mimeapps.list << "EOF"
+  [Default Applications]
+  x-scheme-handler/http=firefox.desktop
+  x-scheme-handler/https=firefox.desktop
   EOF
   
   touch %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/.welcome-tour-done

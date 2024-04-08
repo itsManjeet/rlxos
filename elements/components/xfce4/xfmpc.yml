@@ -1,0 +1,13 @@
+id: xfmpc
+version: 0.3.1
+about: A graphical GTK+ MPD client focusing on low footprint
+
+depends:
+  - components/libmpd.yml
+  - components/xfce4/libxfce4ui.yml
+
+build-depends:
+  - components/xfce4/xfce4-dev-tools.yml
+
+sources:
+  - https://archive.xfce.org/src/apps/xfmpc/%{version:2}/xfmpc-%{version}.tar.bz2

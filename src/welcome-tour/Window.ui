@@ -19,6 +19,9 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="orientation">vertical</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
+            <property name="margin-bottom">90</property>
             <child>
               <object class="GtkImage">
                 <property name="visible">True</property>
@@ -54,7 +57,7 @@
               <object class="GtkLabel" id="welcome-message">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes">Follow the guided tour to know more about your 
+                <property name="label" translatable="yes">Follow the guided tour to know more about your
 operating system and new features of this release</property>
                 <property name="justify">center</property>
                 <property name="wrap">True</property>
@@ -69,7 +72,7 @@ operating system and new features of this release</property>
               <object class="GtkButtonBox">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="margin-bottom">18</property>
+                <property name="margin-top">45</property>
                 <property name="layout-style">spread</property>
                 <child>
                   <object class="GtkLinkButton">
@@ -146,8 +149,8 @@ operating system and new features of this release</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="margin-bottom">17</property>
-                <property name="pixel-size">256</property>
-                <property name="icon-name">software-center</property>
+                <property name="pixel-size">128</property>
+                <property name="icon-name">preferences-system</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -225,7 +228,7 @@ operating system and new features of this release</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="margin-bottom">17</property>
-                <property name="pixel-size">256</property>
+                <property name="pixel-size">128</property>
                 <property name="icon-name">computer</property>
               </object>
               <packing>
@@ -305,8 +308,8 @@ operating system and new features of this release</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="margin-bottom">17</property>
-                <property name="pixel-size">256</property>
-                <property name="icon-name">preferences-security</property>
+                <property name="pixel-size">128</property>
+                <property name="icon-name">security-high</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -384,8 +387,8 @@ operating system and new features of this release</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="margin-bottom">17</property>
-                <property name="pixel-size">256</property>
-                <property name="icon-name">extensions</property>
+                <property name="pixel-size">128</property>
+                <property name="icon-name">folder-download</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -464,7 +467,7 @@ operating system and new features of this release</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="margin-bottom">17</property>
-                <property name="pixel-size">256</property>
+                <property name="pixel-size">128</property>
                 <property name="icon-name">help</property>
               </object>
               <packing>
@@ -544,8 +547,8 @@ operating system and new features of this release</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="margin-bottom">17</property>
-                <property name="pixel-size">256</property>
-                <property name="icon-name">emblem-success</property>
+                <property name="pixel-size">128</property>
+                <property name="icon-name">process-completed</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -594,7 +597,7 @@ operating system and new features of this release</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
                 <style>
-                  <class name="circular"/>
+                  <class name="suggested-action"/>
                 </style>
               </object>
               <packing>
@@ -630,6 +633,9 @@ operating system and new features of this release</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">True</property>
+            <style>
+              <class name="suggested-action"/>
+            </style>
           </object>
           <packing>
             <property name="pack-type">end</property>

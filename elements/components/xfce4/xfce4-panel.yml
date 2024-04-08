@@ -72,6 +72,11 @@ post-script: |-
         <property name="button-icon" type="string" value="start-here"/>
         <property name="launcher-show-description" type="bool" value="false"/>
         <property name="profile-shape" type="int" value="2"/>
+        <property name="show-command-settings" type="bool" value="false" />
+        <property name="show-command-lockscreen" type="bool" value="false" />
+        <property name="show-command-logout" type="bool" value="false" />
+        <property name="show-command-menueditor" type="bool" value="false" />
+        <property name="show-command-profile" type="bool" value="false" />
       </property>
       <property name="plugin-2" type="string" value="pager">
         <property name="rows" type="uint" value="1"/>
@@ -138,7 +143,7 @@ post-script: |-
 
   install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/skel/.config/xfce4/panel/docklike-4.rc << "EOF"
   [user]
-  pinned=xfce4-appfinder;xfce4-terminal;thunar;firefox;mousepad;parole;xfce4-settings;xfce4-taskmanager;
+  pinned=xfce4-appfinder;xfce4-terminal;thunar;firefox;mousepad;parole;xfce4-settings-manager;xfce4-taskmanager;
   EOF
 
 depends:

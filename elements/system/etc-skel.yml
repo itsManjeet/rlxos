@@ -1,0 +1,13 @@
+id: etc-skel
+version: 0.1.0
+about: System skeleton configuration
+
+script: |-
+  install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/skel/.config/mimeapps.list << "EOF"
+  [Default Applications]
+  x-scheme-handler/http=firefox.desktop
+  x-scheme-handler/https=firefox.desktop
+  EOF
+
+build-depends:
+  - components/bash.yml

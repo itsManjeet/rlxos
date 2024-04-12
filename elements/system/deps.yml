@@ -242,7 +242,6 @@ depends:
   - components/blueman.yml
   - components/wlroots.yml
   - components/welcome-tour.yml
-  - components/desktop.yml
   - components/firefox.yml
   - components/file-roller.yml
 

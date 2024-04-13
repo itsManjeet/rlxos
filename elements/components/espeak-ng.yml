@@ -2,21 +2,10 @@ id: espeak-ng
 version: 1.51.1
 about: Multi-lingual software speech synthesizer
 
+build-type: autotools
+seperate-build-dir: false
+
 depends:
   - components/pcaudiolib.yml
 sources:
   - https://github.com/espeak-ng/espeak-ng/archive/%{version}/espeak-ng-%{version}.tar.gz
-  - espeak-ng-fix-699.patch::https://github.com/espeak-ng/espeak-ng/commit/e11cd42b03d1628f7a0cf45c9406123282e25c63.patch
-script: |-
-  ./autogen.sh
-
-  patch --forward --strip=1 --input=../espeak-ng-fix-699.patch
-
-  ./configure --prefix=/usr \
-    --with-extdict-{ru,zh,zhy}
-  make src/espeak-ng src/speak-ng
-  make -j1
-  make install DESTDIR=%{install-root}
-
-# TODO: check patch
-# TODO: build using builtin autotools

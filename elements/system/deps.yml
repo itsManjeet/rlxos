@@ -1,5 +1,6 @@
 id: system-deps
-merge: [version.yml, elements/include/meta.inc]
+version: 0.1.0
+merge: [elements/include/meta.inc]
 about: System components
 
 depends:
@@ -244,6 +245,7 @@ depends:
   - components/welcome-tour.yml
   - components/firefox.yml
   - components/file-roller.yml
+  - components/onboard.yml
 
   # AppImage
   - components/appimaged.yml

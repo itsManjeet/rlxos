@@ -2,6 +2,8 @@ id: onboard
 version: 1.4.1
 about: On-screen keyboard useful on tablet PCs or for mobility impaired users
 
+pre-script: |-
+  sed -i 's#"-Werror=declaration-after-statement"##g' setup.py
 depends:
   - components/gtk.yml
   - components/hunspell.yml

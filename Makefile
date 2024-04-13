@@ -1,12 +1,11 @@
-DOCS_DIR				?= build/docs
-CHANNEL					?= unstable
+CHANNEL								?= unstable
 OSTREE_BRANCH 		    ?= $(shell uname -m)/os/$(CHANNEL)
-OSTREE_REPO 			?= ostree-repo
-OSTREE_GPG 				?= ostree-gpg
-VERSION					?= 2.0
-IGNITE					?= build/src/ignite/ignite
-CACHE_PATH				?= build/
-DESTDIR					?= checkout/
+OSTREE_REPO 					?= ostree-repo
+OSTREE_GPG 						?= ostree-gpg
+VERSION								?= 2.0
+IGNITE								?= build/src/ignite/ignite
+CACHE_PATH						?= build/
+DESTDIR								?= checkout/
 
 -include config.mk
 
@@ -71,10 +70,6 @@ clean:
 TODO.ELEMENTS:
 	grep -R "# TODO:" elements | sed 's/# TODO://g' | sed 's#elements/##g' > $@
 
-docs:
-	mdbook build -d $(DOCS_DIR)
-
-
 $(OSTREE_GPG)/key-config:
 	rm -rf ostree-gpg.tmp
 	mkdir ostree-gpg.tmp
@@ -87,7 +82,7 @@ $(OSTREE_GPG)/key-config:
 files/rlxos.gpg: $(OSTREE_GPG)/key-config
 	gpg --homedir=$(OSTREE_GPG) --export --armor >"$@"
 
-update-app-market: $(IGNITE)
+update-app-market: $(IGNITE) version.yml ostree-branch.yml
 ifdef MARKET_PATH
 	$(IGNITE) cache-path=$(CACHE_PATH) meta $(MARKET_PATH)
 	./scripts/extract-icons.sh $(shell dirname $(MARKET_PATH))/apps/ $(shell dirname $(MARKET_PATH))/icons/

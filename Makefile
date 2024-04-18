@@ -1,11 +1,12 @@
 CHANNEL								?= unstable
-OSTREE_BRANCH 		    ?= $(shell uname -m)/os/$(CHANNEL)
-OSTREE_REPO 					?= ostree-repo
-OSTREE_GPG 						?= ostree-gpg
+OSTREE_BRANCH 		    			?= $(shell uname -m)/os/$(CHANNEL)
+OSTREE_REPO 						?= ostree-repo
+OSTREE_GPG 							?= ostree-gpg
 VERSION								?= 2.0
 IGNITE								?= build/src/ignite/ignite
-CACHE_PATH						?= build/
+CACHE_PATH							?= build/
 DESTDIR								?= checkout/
+APPMARKET_PATH						?= appmarket/
 
 -include config.mk
 
@@ -83,13 +84,8 @@ files/rlxos.gpg: $(OSTREE_GPG)/key-config
 	gpg --homedir=$(OSTREE_GPG) --export --armor >"$@"
 
 update-app-market: $(IGNITE) version.yml ostree-branch.yml
-ifdef MARKET_PATH
-	$(IGNITE) cache-path=$(CACHE_PATH) meta $(MARKET_PATH)
-	./scripts/extract-icons.sh $(shell dirname $(MARKET_PATH))/apps/ $(shell dirname $(MARKET_PATH))/icons/
-else
-	@echo "no MARKET_PATH specified"
-	@exit 1
-endif
+	$(IGNITE) cache-path=$(CACHE_PATH) meta $(APPMARKET_PATH)/$(CHANNEL)
+	./scripts/extract-icons.sh $(APPMARKET_PATH)/$(CHANNEL)/apps/ $(APPMARKET_PATH)/$(CHANNEL)/icons/
 
 update-ostree: files/rlxos.gpg
 ifndef ELEMENT

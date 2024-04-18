@@ -18,6 +18,7 @@ env:
   SOURCEFORGE_PREFIX: ${{secrets.SOURCEFORGE_PREFIX}}
   CHANNEL: ${{ endsWith(github.ref, 'stable') && 'stable' || (endsWith(github.ref, 'preview') && 'preview' || 'unstable') }}
   OSTREE_BRANCH: "x86_64/os/${{ endsWith(github.ref, 'stable') && 'stable' || (endsWith(github.ref, 'preview') && 'preview' || 'unstable') }}"
+  APPMARKET_PATH: ${{secrets.APPMARKET_PATH}}
 
 jobs:
   build:
@@ -49,8 +50,14 @@ jobs:
             ELEMENT=${extension_path} make update-ostree
           done
 
-      - name: Build AppImages
-        run: make ELEMENT=app-market.yml
+      - name: Update Applications
+        run: |
+          for app_path in elements/apps/*.yml; do
+            app_path="$(echo ${app_path} | cut -d '/' -f2-)"
+            app="$(basename ${app_path})"
+            app="${app%.*}"
+            make ELEMENT=${app_path} || echo "failed to build ${app_path}"
+          done
 
       - name: Build Installer ISO
         run: make ELEMENT=installer/image.yml
@@ -71,6 +78,18 @@ jobs:
           make checkout ELEMENT=installer/image.yml DESTDIR=${SERVER_REPO_PATH}/releases/${CHANNEL}/
           (cd ${SERVER_REPO_PATH}/releases/${CHANNEL}/; zsyncmake -b 2048 -C -u ${SERVER_REPO_URL}/releases/${CHANNEL}/rlxos-${CHANNEL}-installer.iso rlxos-${CHANNEL}-installer.iso)
 
+  update-market:
+    name: Update Market
+    runs-on: self-hosted
+    needs: [ build ]
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          token: ${{ secrets.CI_TOKEN }}
+          submodules: true
+      - name: Generate AppImages meta
+        run: make update-app-market
+
   update-mirrors:
     name: Update ISO on mirrors
     runs-on: self-hosted
@@ -84,16 +103,3 @@ jobs:
       - name: Upload to sourceforge
         run: |
           scp -pr ${SERVER_REPO_PATH}/releases/${CHANNEL}/ ${SOURCEFORGE_PREFIX}/
-
-  update-market:
-    name: Update Market
-    runs-on: self-hosted
-    needs: [ build-installer-iso ]
-    if: github.ref == 'refs/heads/stable'
-    steps:
-      - uses: actions/checkout@v1
-        with:
-          token: ${{ secrets.CI_TOKEN }}
-          submodules: true
-      - name: Generate AppImages meta
-        run: make update-app-market MARKET_PATH="${SERVER_REPO_PATH}/${CHANNEL}"

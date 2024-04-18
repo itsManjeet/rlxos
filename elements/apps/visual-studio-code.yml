@@ -1,5 +1,5 @@
 id: visual-studio-code
-version: 1.85.1
+version: 1.88.1
 about: unofficial release visual studio code release
 merge: [elements/include/appimage.inc]
 build-dir: "."

@@ -77,10 +77,10 @@ struct IgniteApp : Application {
     }
 
     void meta() {
-        auto file = ctxt.args[0];
+        std::filesystem::path target_path = ctxt.args[0];
 
         nlohmann::json data;
-        auto target_path = std::filesystem::path(file).parent_path();
+        auto meta_json = target_path / "meta.json";
         std::filesystem::remove_all(target_path / "apps");
         std::filesystem::create_directories(target_path / "apps");
 
@@ -110,7 +110,7 @@ struct IgniteApp : Application {
             }
         }
 
-        std::ofstream writer(file);
+        std::ofstream writer(meta_json);
         writer << data;
     }
 

@@ -14,7 +14,6 @@ depends:
 - components/libsecret.yml
 - components/libvirt-glib.yml
 - components/mtools.yml
-- components/qemu.yml
 - components/spice-gtk.yml
 - components/tracker.yml
 - components/enchant.yml

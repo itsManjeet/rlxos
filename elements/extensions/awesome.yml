@@ -1,5 +1,6 @@
 id: awesome
 about: Awesome Window Manager
+version: 0.1.0
 include:
   - extensions/awesome/awesome.yml
 merge: [elements/include/extension.inc]

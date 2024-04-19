@@ -1,4 +1,5 @@
 id: qemu
+version: 0.1.0
 about: RLXOS QEMU Virtualization Kit
 include:
   - extensions/qemu/qemu.yml

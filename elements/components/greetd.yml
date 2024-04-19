@@ -10,34 +10,29 @@ script: |-
 
   cargo test --frozen --all-features
 
+  install -Dm0755 -t "%{install-root}/%{bindir}" "target/release/greetd"
+  install -Dm0755 -t "%{install-root}/%{bindir}" "target/release/agreety"
   
-  install -Dm0755 -t "%{install-root}/%{bindir}/" "target/release/greetd"
-  install -Dm0755 -t "%{install-root}/%{bindir}/" "target/release/agreety"
-
   install -Dm0644 -t "%{install-root}/%{libdir}/systemd/system/" "greetd.service"
 
-  install -Dm0644 /dev/stdin "%{install-root}%{libdir}/systemd/system-preset/greetd.preset" << "EOF"
-  enable greetd.service
-  EOF
   install -Dm0644 -t "%{install-root}/%{sysconfdir}/greetd/" config.toml
-  
-  install -Dm0644 /dev/stdin "%{install-root}/%{sysconfdir}/pam.d/greetd" << "EOF"
-  auth      required  pam_securetty.so
-  auth      requisite pam_nologin.so
-  auth      include   system-auth
-  account   include   system-account
-  session   include   system-session
+  install -Dm0644 /dev/stdin "%{install-root}/etc/%{sysconfdir}/greetd" << "EOF"
+  auth       required     pam_securetty.so
+  auth       requisite    pam_nologin.so
+  auth       include      system-auth
+  account    include      system-account
+  session    include      system-session
   EOF
 
   install -Dm0644 /dev/stdin "%{install-root}/%{libdir}/sysusers.d/greetd.conf" << "EOF"
-  u greeter - "greeted greeter user" - %{bindir}/bash
+  u greeter - "greetd greeter user" - %{bindir}/bash
   m greeter video
   EOF
+  make -C man DESTDIR="%{install-root}" PREFIX=/usr install
 
-  make -C man DESTDIR=%{install-root} PREFIX=%{prefix} install
 
 depends:
-  - components/glibc.yml
+  - components/pam.yml
   - components/systemd.yml
 
 build-depends:

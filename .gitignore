@@ -9,3 +9,4 @@
 /ostree-branch.yml
 /.cache
 *.ui~
+/channel.yml

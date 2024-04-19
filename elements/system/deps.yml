@@ -246,6 +246,7 @@ depends:
   - components/firefox.yml
   - components/file-roller.yml
   - components/onboard.yml
+  - components/ntfs-3g.yml
 
   # AppImage
   - components/appimaged.yml

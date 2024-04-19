@@ -1,4 +1,5 @@
 id: wm-kit
+version: 0.1.0
 about: Essential tools for window managers
 include:
   - components/dmenu.yml

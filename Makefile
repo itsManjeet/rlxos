@@ -27,14 +27,14 @@ export OSTREE_GPG_CONFIG
 export IGNITE
 export CACHE_PATH
 
-.PHONY: clean all docs version.yml ostree-branch.yml apps
+.PHONY: clean all docs version.yml channel.yml ostree-branch.yml apps
 
-all: $(IGNITE) version.yml ostree-branch.yml
+all: $(IGNITE) version.yml ostree-branch.yml channel.yml
 ifdef ELEMENT
 	$(IGNITE) cache-path=$(CACHE_PATH) build $(ELEMENT)
 endif
 
-status: $(IGNITE) version.yml ostree-branch.yml
+status: $(IGNITE) version.yml ostree-branch.yml channel.yml
 ifdef ELEMENT
 	$(IGNITE) cache-path=$(CACHE_PATH) status $(ELEMENT)
 else
@@ -42,7 +42,7 @@ else
 	exit 1
 endif
 
-filepath: $(IGNITE) version.yml ostree-branch.yml
+filepath: $(IGNITE) version.yml ostree-branch.yml  channel.yml
 ifdef ELEMENT
 	@PKGUPD_NO_MESSAGE=1 $(IGNITE) cache-path=$(CACHE_PATH) filepath $(ELEMENT)
 else
@@ -50,7 +50,7 @@ else
 	exit 1
 endif
 
-checkout: $(IGNITE) version.yml ostree-branch.yml
+checkout: $(IGNITE) version.yml ostree-branch.yml  channel.yml
 ifdef ELEMENT
 	$(IGNITE) cache-path=$(CACHE_PATH) checkout $(ELEMENT) $(DESTDIR)
 else
@@ -83,7 +83,7 @@ $(OSTREE_GPG)/key-config:
 files/rlxos.gpg: $(OSTREE_GPG)/key-config
 	gpg --homedir=$(OSTREE_GPG) --export --armor >"$@"
 
-update-app-market: $(IGNITE) version.yml ostree-branch.yml
+update-app-market: $(IGNITE) version.yml ostree-branch.yml  channel.yml
 	$(IGNITE) cache-path=$(CACHE_PATH) meta $(APPMARKET_PATH)/$(CHANNEL)
 	./scripts/extract-icons.sh $(APPMARKET_PATH)/$(CHANNEL)/apps/ $(APPMARKET_PATH)/$(CHANNEL)/icons/
 
@@ -108,3 +108,7 @@ version.yml:
 ostree-branch.yml:
 	@echo "variables:" > $@
 	@echo "  ostree-branch: ${OSTREE_BRANCH}" >> $@
+
+ channel.yml:
+	@echo "variables:" > $@
+	@echo "  channel: ${CHANNEL}" >> $@

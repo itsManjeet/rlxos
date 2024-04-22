@@ -19,6 +19,7 @@ env:
   CHANNEL: ${{ endsWith(github.ref, 'stable') && 'stable' || (endsWith(github.ref, 'preview') && 'preview' || 'unstable') }}
   OSTREE_BRANCH: "x86_64/os/${{ endsWith(github.ref, 'stable') && 'stable' || (endsWith(github.ref, 'preview') && 'preview' || 'unstable') }}"
   APPMARKET_PATH: ${{secrets.APPMARKET_PATH}}
+  SIGN_KEYS_PATH: ${{secrets.SIGN_KEYS_PATH}}
 
 jobs:
   build:
@@ -31,6 +32,9 @@ jobs:
         with:
           token: ${{ secrets.CI_TOKEN }}
           submodules: true
+      - name: Add sign keys
+        run: rm -rf files/sign-keys && cp ${SIGN_KEYS_PATH} files/sign-keys
+
       - name: Build system packages
         run: make ELEMENT=system/deps.yml
 

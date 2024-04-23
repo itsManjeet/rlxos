@@ -33,7 +33,7 @@ jobs:
           token: ${{ secrets.CI_TOKEN }}
           submodules: true
       - name: Add sign keys
-        run: rm -rf files/sign-keys && cp ${SIGN_KEYS_PATH} files/sign-keys
+        run: rm -rf files/sign-keys && cp -r ${SIGN_KEYS_PATH} files/sign-keys
 
       - name: Build system packages
         run: make ELEMENT=system/deps.yml

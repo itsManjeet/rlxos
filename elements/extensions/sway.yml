@@ -2,8 +2,7 @@ id: sway
 version: 0.1.0
 about: Meta sway compositor
 
-
-depends:
+include:
   - extensions/sway/sway.yml
   - extensions/sway/swaybg.yml
   - extensions/sway/swayidle.yml

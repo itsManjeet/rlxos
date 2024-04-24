@@ -26,7 +26,7 @@ depends:
   - components/libwnck.yml
   - components/libnotify.yml
   - components/startup-notification.yml
-  - components/fluent-wallpaper.yml
+  - components/themes/fluent-wallpaper.yml
   - components/xfce4/exo.yml
   - components/xfce4/garcon.yml
   - components/xfce4/thunar.yml

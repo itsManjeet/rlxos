@@ -1,5 +1,6 @@
 id: linux
 version: 6.7.8
+release: 2
 about: |
   Linux kernel, modules and headers
 sources:

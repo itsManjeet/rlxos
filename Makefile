@@ -129,7 +129,7 @@ files/sign-keys/modules/linux-module-cert.crt: files/sign-keys/linux-module-cert
 
 files/sign-keys/%.crt files/sign-keys/%.key:
 	[ -d files/sign-keys ] || mkdir -p files/sign-keys
-	openssl req -new -x509 -newkey rsa:2048 -subj "/CN=Freedesktop SDK $(basename $(notdir $@)) key/" -keyout "$(basename $@).key" -out "$(basename $@).crt" -days 3650 -nodes -sha256
+	openssl req -new -x509 -newkey rsa:2048 -subj "/CN=RLXOS $(basename $(notdir $@)) key/" -keyout "$(basename $@).key" -out "$(basename $@).crt" -days 3650 -nodes -sha256
 
 download-microsoft-keys: files/sign-keys/extra-db/.keep files/sign-keys/extra-kek/.keep
 	curl https://www.microsoft.com/pkiops/certs/MicCorUEFCA2011_2011-06-27.crt | openssl x509 -inform der -outform pem >files/sign-keys/extra-kek/mic-kek.crt

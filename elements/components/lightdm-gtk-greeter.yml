@@ -14,7 +14,7 @@ post-script: |-
   icon-theme-name=Fluent
   cursor-theme-name=Adwaita
   font-name=IBM Plex Sans Regular 11
-  panel-position=top
+  panel-position=bottom
   indicators=~host;~spacer;~session;~a11y;~language;~clock;~power;
   EOF
 

@@ -9,12 +9,12 @@ variables:
 post-script: |-
   install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/lightdm/lightdm-gtk-greeter.conf << "EOF"
   [greeter]
-  background=%{datadir}/backgrounds/default.jpeg
-  theme-name=elementary-xfce
-  icon-theme-name=elementary-xfce
+  background=%{datadir}/backgrounds/Fluent-building-day.png
+  theme-name=Fluent-light
+  icon-theme-name=Fluent
   cursor-theme-name=Adwaita
   font-name=IBM Plex Sans Regular 11
-  panel-position=top
+  panel-position=bottom
   indicators=~host;~spacer;~session;~a11y;~language;~clock;~power;
   EOF
 

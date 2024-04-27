@@ -1,5 +1,5 @@
 id: fluent-icon-theme
-version: 2023-06-07
+version: 2024-02-25
 about: A Fluent design icon theme
 merge: [elements/include/update-icon-cache.inc]
 

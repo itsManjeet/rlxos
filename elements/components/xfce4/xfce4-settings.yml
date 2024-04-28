@@ -11,8 +11,8 @@ post-script: |-
   <?xml version="1.0" encoding="UTF-8"?>
   <channel name="xsettings" version="1.0">
     <property name="Net" type="empty">
-      <property name="ThemeName" type="string" value="Fluent-light"/>
-      <property name="IconThemeName" type="string" value="Fluent"/>
+      <property name="ThemeName" type="string" value="Orchis-Light"/>
+      <property name="IconThemeName" type="string" value="Tela-light"/>
       <property name="DoubleClickTime" type="int" value="400"/>
       <property name="DoubleClickDistance" type="int" value="5"/>
       <property name="DndDragThreshold" type="int" value="8"/>
@@ -67,8 +67,9 @@ depends:
   - components/colord.yml
   - components/libinput.yml
   - components/upower.yml
-  - components/themes/fluent-gtk-theme.yml
-  - components/themes/fluent-icon-theme.yml
+  - components/themes/adwaita-icon-theme.yml
+  - components/themes/orchis-gtk-theme.yml
+  - components/themes/tela-icon-theme.yml
   - components/fonts/adobe-source-code-pro-fonts.yml
   - components/fonts/noto.yml
   - components/fonts/noto-cjk.yml

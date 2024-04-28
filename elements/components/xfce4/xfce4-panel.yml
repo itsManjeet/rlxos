@@ -19,8 +19,10 @@ post-script: |-
       <value type="int" value="1"/>
       <property name="dark-mode" type="bool" value="false"/>
       <property name="panel-1" type="empty">
-        <property name="icon-size" type="uint" value="16"/>
+        <property name="position" type="string" value="p=10;x=0;y=0"/>
+        <property name="size" type="uint" value="48"/>
         <property name="length" type="double" value="100"/>
+        <property name="position-locked" type="bool" value="true"/>
         <property name="plugin-ids" type="array">
           <value type="int" value="1"/>
           <value type="int" value="2"/>
@@ -35,32 +37,45 @@ post-script: |-
           <value type="int" value="12"/>
           <value type="int" value="9"/>
         </property>
-        <property name="position" type="string" value="p=10;x=0;y=0"/>
-        <property name="position-locked" type="bool" value="true"/>
-        <property name="size" type="uint" value="48"/>
+        <property name="icon-size" type="uint" value="16"/>
       </property>
     </property>
     <property name="plugins" type="empty">
       <property name="plugin-1" type="string" value="whiskermenu">
-        <property name="button-icon" type="string" value="start-here"/>
-        <property name="category-icon-size" type="int" value="2"/>
+        <property name="view-mode" type="int" value="1"/>
+        <property name="launcher-icon-size" type="int" value="1"/>
+        <property name="category-icon-size" type="int" value="1"/>
+        <property name="menu-width" type="int" value="450"/>
+        <property name="menu-height" type="int" value="550"/>
+        <property name="position-search-alternate" type="bool" value="true"/>
+        <property name="position-commands-alternate" type="bool" value="true"/>
+        <property name="position-categories-horizontal" type="bool" value="false"/>
+        <property name="position-categories-alternate" type="bool" value="false"/>
         <property name="default-category" type="int" value="2"/>
         <property name="hover-switch-category" type="bool" value="true"/>
-        <property name="launcher-icon-size" type="int" value="4"/>
+        <property name="button-icon" type="string" value="start-here"/>
         <property name="launcher-show-description" type="bool" value="false"/>
-        <property name="menu-height" type="int" value="750"/>
-        <property name="menu-opacity" type="int" value="100"/>
-        <property name="menu-width" type="int" value="750"/>
-        <property name="position-categories-alternate" type="bool" value="false"/>
-        <property name="position-categories-horizontal" type="bool" value="false"/>
-        <property name="position-commands-alternate" type="bool" value="true"/>
-        <property name="position-search-alternate" type="bool" value="true"/>
         <property name="profile-shape" type="int" value="2"/>
-        <property name="view-mode" type="int" value="0"/>
-        <property name="launcher-show-tooltip" type="bool" value="true"/>
-        <property name="launcher-show-name" type="bool" value="true"/>
-        <property name="position-profile-alternate" type="bool" value="false"/>
+        <property name="menu-opacity" type="int" value="0"/>
       </property>
+      <property name="plugin-2" type="string" value="pager">
+        <property name="rows" type="uint" value="1"/>
+        <property name="miniature-view" type="bool" value="false"/>
+      </property>
+      <property name="plugin-3" type="string" value="separator">
+        <property name="style" type="uint" value="2"/>
+      </property>
+      <property name="plugin-4" type="string" value="docklike"/>
+      <property name="plugin-5" type="string" value="xkb">
+        <property name="display-type" type="uint" value="2"/>
+        <property name="display-name" type="uint" value="1"/>
+      </property>
+      <property name="plugin-6" type="string" value="notification-plugin"/>
+      <property name="plugin-7" type="string" value="power-manager-plugin"/>
+      <property name="plugin-8" type="string" value="pulseaudio">
+        <property name="enable-keyboard-shortcuts" type="bool" value="true"/>
+      </property>
+      <property name="plugin-9" type="string" value="showdesktop"/>
       <property name="plugin-10" type="string" value="systray">
         <property name="icon-size" type="int" value="0"/>
         <property name="single-row" type="bool" value="true"/>
@@ -71,38 +86,17 @@ post-script: |-
         <property name="style" type="uint" value="0"/>
       </property>
       <property name="plugin-12" type="string" value="clock">
-        <property name="digital-date-font" type="string" value="Sans 11"/>
+        <property name="digital-date-font" type="string" value="Sans 10"/>
+        <property name="digital-time-font" type="string" value="Sans 12"/>
         <property name="digital-layout" type="uint" value="1"/>
-        <property name="digital-time-font" type="string" value="Sans 13"/>
-        <property name="digital-date-format" type="string" value="%a, %b %d, %Y"/>
-        <property name="digital-time-format" type="string" value="%H:%M"/>
       </property>
-      <property name="plugin-2" type="string" value="pager">
-        <property name="miniature-view" type="bool" value="true"/>
-        <property name="rows" type="uint" value="2"/>
-      </property>
-      <property name="plugin-3" type="string" value="separator">
-        <property name="style" type="uint" value="2"/>
-      </property>
-      <property name="plugin-4" type="string" value="docklike"/>
-      <property name="plugin-5" type="string" value="xkb">
-        <property name="display-name" type="uint" value="1"/>
-        <property name="display-type" type="uint" value="2"/>
-      </property>
-      <property name="plugin-6" type="string" value="notification-plugin"/>
-      <property name="plugin-7" type="string" value="power-manager-plugin"/>
-      <property name="plugin-8" type="string" value="pulseaudio">
-        <property name="enable-keyboard-shortcuts" type="bool" value="true"/>
-      </property>
-      <property name="plugin-9" type="string" value="showdesktop"/>
     </property>
   </channel>
-
   EOF
 
   install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/skel/.config/xfce4/panel/docklike-4.rc << "EOF"
   [user]
-  pinned=xfce4-appfinder;xfce4-terminal;thunar;firefox;mousepad;parole;xfce4-settings-manager;xfce4-taskmanager;
+  pinned=xfce4-appfinder;xfce4-terminal;thunar;firefox;
   EOF
 
 depends:

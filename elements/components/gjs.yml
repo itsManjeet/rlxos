@@ -1,5 +1,5 @@
 id: gjs
-version: 1.78.0
+version: 1.80.2
 about: A set of Javascript bindings for GNOME
 
 post-script: |-

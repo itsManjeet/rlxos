@@ -247,6 +247,7 @@ depends:
   - components/file-roller.yml
   - components/onboard.yml
   - components/ntfs-3g.yml
+  - components/gjs.yml
 
   # AppImage
   - components/appimaged.yml

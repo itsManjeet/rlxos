@@ -1,0 +1,46 @@
+id: compiz
+version: 0.9.14.2
+about: Composite manager for Aiglx and Xgl, with plugins and CCSM
+
+configure: >-
+  -DCMAKE_CXX_STANDARD=17
+  -DCMAKE_BUILD_TYPE="Release"
+  -DCOMPIZ_BUILD_WITH_RPATH=OFF
+  -DCOMPIZ_PACKAGING_ENABLED=ON
+  -DBUILD_GTK=ON
+  -DCOMPIZ_DEFAULT_PLUGINS="composite,opengl,decor,resize,place,move,compiztoolbox,staticswitcher,regex,animation,wall,ccp"
+  -DCOMPIZ_BUILD_TESTING=OFF
+  -DCOMPIZ_WERROR=OFF
+  -Wno-dev
+
+post-script: |-
+  install -D -m644 COPYING{,.GPL,.LGPL,.MIT} -t %{install-root}%{datadir}/licenses/%{id}
+
+depends:
+  - components/libboost.yml
+  - components/fuse.yml
+  - components/libnotify.yml
+  - components/libwnck.yml
+  - components/libxslt.yml
+  - components/protobuf.yml
+  - components/py/py-cairo.yml
+  - components/py/py-gobject.yml
+  - components/x11/xserver.yml
+  - components/x11/xprop.yml
+  - components/gtkmm.yml
+  - components/startup-notification.yml
+  - components/glu.yml
+ 
+build-depends:
+  - components/boost.yml
+  - components/cmake.yml
+  - components/py/py-cython.yml
+  - components/intltool.yml
+  - components/py/py-setuptools.yml
+
+sources:
+  - https://launchpad.net/compiz/%{version:3}/%{version}/+download/compiz-%{version}.tar.xz
+
+integration: |-
+  SESSION_FILE="%{sysconfdir}/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-session.xml"
+  [ -f "${SESSION_FILE}" ] && sed -i 's#xfwm4#compiz#g' ${SESSION_FILE}

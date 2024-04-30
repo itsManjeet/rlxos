@@ -1,15 +1,18 @@
 id: lua
-version: 5.3.6
+version: 5.4.6
 about: A powerful light-weight programming language designed for extending applications
 sources:
   - https://www.lua.org/ftp/lua-%{version}.tar.gz
   - patches/lua/liblua.so.patch
+  - patches/lua/paths.patch
 
 depends:
   - components/glibc.yml
 
 script: |
   patch -Np1 -i liblua.so.patch
+  patch -Np1 -i paths.patch
+  
   sed -i '/#define LUA_ROOT/s:/usr/local/:/usr/:' \
     src/luaconf.h
   make MYCFLAGS="$CFLAGS -fPIC" MYLDFLAGS="$LDFLAGS" linux

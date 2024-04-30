@@ -27,6 +27,9 @@ depends:
   - components/py/py-gobject.yml
   - components/x11/xserver.yml
   - components/x11/xprop.yml
+  - components/gtkmm.yml
+  - components/startup-notification.yml
+  - components/glu.yml
  
 build-depends:
   - components/boost.yml
@@ -37,3 +40,7 @@ build-depends:
 
 sources:
   - https://launchpad.net/compiz/%{version:3}/%{version}/+download/compiz-%{version}.tar.xz
+
+integration: |-
+  SESSION_FILE="%{sysconfdir}/xfce4/xfconf/xfce-perchannel-xml/xfce4-session.xml"
+  [ -f "${SESSION_FILE}" ] && sed -i 's#xfwm4#compiz#g' ${SESSION_FILE}

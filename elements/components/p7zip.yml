@@ -1,11 +1,11 @@
 id: p7zip
-version: 17.04
+version: 17.05
 about: commandline file archive with high compression ratio
 
 depends:
   - components/glibc.yml
 sources:
-  - https://github.com/jinfeihan57/p7zip/archive/v%{version}/p7zip-v%{version}.tar.gz
+  - https://github.com/p7zip-project/p7zip/archive/v%{version}/p7zip-v%{version}.tar.gz
 
 script: |-
   make 7z 7zr 7za

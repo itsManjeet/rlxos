@@ -1,4 +1,5 @@
 id: sdk
+version: 0.1.0
 about: RLXOS Software Development Kit
 
 include:

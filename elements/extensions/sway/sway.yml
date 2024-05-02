@@ -20,7 +20,7 @@ post-script: |-
 
   EOF
 
-  install -v -D -m 0644 /dev/stdin -t %{install-root}%{datadir}/xdg-desktop-portal/sway-portals.conf << "EOF"
+  install -v -D -m 0644 /dev/stdin %{install-root}%{datadir}/xdg-desktop-portal/sway-portals.conf << "EOF"
   [preferred]
   default=gtk
   org.freedesktop.impl.portal.ScreenCast=wlr
@@ -51,6 +51,7 @@ depends:
 build-depends:
   - components/meson.yml
   - components/ninja.yml
+  - components/scdoc.yml
   - components/setconf.yml
   - components/wayland-protocols.yml
 sources:

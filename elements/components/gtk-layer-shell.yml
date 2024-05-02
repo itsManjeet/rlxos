@@ -9,12 +9,12 @@ configure: >-
   -D introspection=true
 
 depends:
-- components/gtk.yml
-- components/wayland.yml
+  - components/gtk.yml
+  - components/wayland.yml
 
 build-depends:
-- components/gobject-introspection.yml
-- components/gtk-doc.yml
+  - components/gobject-introspection.yml
+  - components/gtk-doc.yml
 
 sources:
-- gtk-layer-shell-%{version}.tar.gz::https://github.com/wmww/gtk-layer-shell/archive/v%{version}.tar.gz
+  - gtk-layer-shell-%{version}.tar.gz::https://github.com/wmww/gtk-layer-shell/archive/v%{version}.tar.gz

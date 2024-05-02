@@ -9,3 +9,5 @@
 /ostree-branch.yml
 /.cache
 *.ui~
+/files/sign-keys
+/channel.yml

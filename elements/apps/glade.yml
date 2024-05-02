@@ -5,7 +5,7 @@ prepare-appimage: |-
   #!/bin/sh
   export GLADE_CATALOG_SEARCH_PATH=${APPDIR}/%{datadir}/glade/catalogs/:%{datadir}/glade/catalogs/
   export GLADE_MODULE_SEARCH_PATH=${APPDIR}/%{libdir}/glade/modules/:%{libdir}/glade/modules/
-  exec $APPDIR/%{bindir}/glade $@
+  exec $APPDIR/%{bindir}/glade-run $@
   EOF
 
 merge:

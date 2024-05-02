@@ -222,6 +222,9 @@ depends:
 
   - components/initial-setup.yml
 
+  - components/compiz.yml
+  - components/conky-manager.yml
+
   # X11 drivers
   - components/x11/xf86-input-libinput.yml
   - components/x11/xf86-input-wacom.yml
@@ -246,6 +249,8 @@ depends:
   - components/firefox.yml
   - components/file-roller.yml
   - components/onboard.yml
+  - components/ntfs-3g.yml
+  - components/gjs.yml
 
   # AppImage
   - components/appimaged.yml

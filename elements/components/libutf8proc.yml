@@ -1,5 +1,5 @@
 id: libutf8proc
-version: 2.7.0
+version: 2.9.0
 about: C library for processing UTF-8 encoded Unicode strings
 
 pre-script: |-

@@ -7,7 +7,6 @@ depends:
   - components/pango.yml
   - components/gtk.yml
   - components/systemd.yml
-  - components/x11/xf86-video-fbdev.yml
   - components/branding.yml
 build-depends:
   - components/docbook-xsl.yml
@@ -24,9 +23,9 @@ pre-script: |-
   sed -i 's/^Theme=spinner$/Theme=bgrt/' src/plymouthd.defaults
 
 configure: >-
-    --runstatedir=/run
-    --with-runtimedir=/run
-    --with-logo=%{datadir}/icons/rlxos-plymouth-logo.png
+  --runstatedir=/run
+  --with-runtimedir=/run
+  --with-logo=%{datadir}/icons/rlxos-plymouth-logo.png
 
 post-script: |-
-    install -D -m 0644 %{datadir}/icons/rlxos-plymouth-logo.png %{install-root}/%{datadir}/plymouth/themes/spinner/watermark.png
+  install -D -m 0644 %{datadir}/icons/rlxos-plymouth-logo.png %{install-root}/%{datadir}/plymouth/themes/spinner/watermark.png

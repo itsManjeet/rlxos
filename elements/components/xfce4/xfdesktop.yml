@@ -1,6 +1,6 @@
 id: xfdesktop
 version: 4.18.1
-release: 3
+release: 4
 about: Xfce desktop manager
 
 pre-script: |-
@@ -8,7 +8,6 @@ pre-script: |-
 
 post-script: |-
   install -vm 0644 /files/background.jpeg %{install-root}%{datadir}/backgrounds/default.jpeg
-
   install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml << "EOF"
   <?xml version="1.0" encoding="UTF-8"?>
   <channel name="xfce4-desktop" version="1.0">

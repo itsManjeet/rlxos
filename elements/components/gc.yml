@@ -1,9 +1,6 @@
 id: gc
-version: 8.2.2
+version: 8.2.6
 about: A garbage collector for C and C++
-
-pre-script: |
-  patch -p1 < ../gc-missing-header.patch # Install missing header
 
 configure: >-
   --enable-cplusplus
@@ -13,6 +10,3 @@ depends:
   - components/libgcc.yml
 sources:
   - https://github.com/ivmai/bdwgc/releases/download/v%{version}/gc-%{version}.tar.gz
-  - gc-missing-header.patch::https://github.com/ivmai/bdwgc/commit/c876dc2b.patch
-
-# TODO: check patch

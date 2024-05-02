@@ -8,6 +8,7 @@ ICONS_DIR=$2
     exit 1
 }
 
+mkdir -p ${ICONS_DIR}
 cd /tmp/
 for i in $APPS_DIR/*.app ; do
     chmod +x $i

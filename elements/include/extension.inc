@@ -10,4 +10,4 @@ initial-commands: |-
 
 ostree-branch: x86_64/extension/%{id}/%{channel}
 
-merge: [version.yml, elements/include/ostree.inc]
+merge: [channel.yml, elements/include/ostree.inc]

@@ -44,10 +44,15 @@ post-script: |
     fi
   done
 
-  cp %{install-root}/%{datadir}/applications/*.desktop %{install-root}/
-  for i in $(find %{install-root}/%{datadir}/icons/ -name "*.png" -o -name "*.svg") ; do
-    cp -v ${i} %{install-root}/
-  done
+  if [ "$(find %{install-root}/ -maxdepth 1 -type f -name '*.desktop' 2>/dev/null | wc -l)" -eq "0" ] ; then
+    cp -v %{install-root}/%{datadir}/applications/*.desktop %{install-root}/
+  fi
+  
+  if [ "$(find %{install-root}/ -maxdepth 1 -type f -name '*.svg' 2>/dev/null | wc -l)" -eq "0" ] ; then
+    for i in $(find %{install-root}/%{datadir}/icons/ -name "*.png" -o -name "*.svg") ; do
+      cp -v ${i} %{install-root}/
+    done
+  fi
 
   mkdir -p AppDir/
   mv %{install-root}/* AppDir/

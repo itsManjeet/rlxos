@@ -2,12 +2,6 @@ id: gimp
 version: 2.10.34-3
 about: GIMP is a free and open-source raster graphics editor used for image manipulation and image editing, free-form drawing, transcoding between different image file formats, and more specialized tasks. It is not designed to be used for drawing, though some artists and creators have used it for such.
 
-variables:
-  prepare-appimage: |-
-    echo "desktopfile: gimp.desktop" >> %{install-root}/info
-    echo "icon: gimp.png" >> %{install-root}/info
-    echo "bin: gimp" >> %{install-root}/info
-
 script: |-
   chmod +x gimp-%{version}.AppImage
   ./gimp-%{version}.AppImage --appimage-extract
@@ -20,3 +14,5 @@ sources:
   - gimp-%{version}.AppImage::https://github.com/ivan-hc/GIMP-appimage/releases/download/continuous/GNU-Image-Manipulation-Program_%{version}-x86_64.AppImage
 
 merge: [elements/include/appimage.inc]
+
+# TODO: build from source

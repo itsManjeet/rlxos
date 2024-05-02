@@ -1,5 +1,5 @@
 id: foot
-version: 1.15.3
+version: 1.17.2
 about: Fast, lightweight and minimalistic wayland terminal emulator
 
 configure: >

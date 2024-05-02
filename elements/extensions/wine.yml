@@ -1,4 +1,5 @@
 id: wine
+version: 0.1.0
 about: Window Compatibility layer (64bit only)
 include:
   - components/wine.yml

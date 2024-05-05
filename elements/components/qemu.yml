@@ -52,7 +52,7 @@ depends:
   - components/libusb.yml
   - components/usbredir.yml
   - components/libcacard.yml
-  - extensions/qemu/libslirp.yml
+  - components/libslirp.yml
 build-depends:
   - components/pkg-config.yml
   - components/spice-protocol.yml

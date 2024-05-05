@@ -1,5 +1,5 @@
 id: system-deps
-version: 0.1.0
+version: 0.2.0
 merge: [elements/include/meta.inc]
 about: System components
 
@@ -75,24 +75,20 @@ depends:
   - components/xdg-dbus-proxy.yml
   - components/wireplumber.yml
   - components/gnome-keyring.yml
-
   - components/grub.yml
   - components/dracut.yml
 
   - components/firmware.yml
   - components/sof-firmware.yml
 
-  - components/meta-x11.yml
-  - components/meta-xfce4.yml
 
   - components/network-manager-applet.yml
   - components/system-config-printer.yml
 
   - components/networkmanager-openvpn.yml
 
-  - components/lightdm.yml
-
-    # Components
+  # Components
+  - components/gvfs.yml
   - components/xdg-user-dirs-gtk.yml
   - components/xdg-utils.yml
   - components/flatpak.yml
@@ -109,16 +105,3 @@ depends:
   - system/etc-shells.yml
   - system/etc-default-useradd.yml
   - system/etc-skel.yml
-  - system/x11-config.yml
-  - system/initial-setup-config.yml
-  - system/pre-installed.yml
-
-
-  - components/fonts/fira-code.yml
-  - components/themes/orchis-gtk-theme.yml
-  - components/themes/tela-icon-theme.yml
-  - components/fonts/adobe-source-code-pro-fonts.yml
-  - components/fonts/noto.yml
-  - components/fonts/noto-cjk.yml
-  - components/fonts/noto-emoji.yml
-  - components/fonts/ibm-plex.yml

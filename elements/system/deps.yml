@@ -81,6 +81,8 @@ depends:
   - components/firmware.yml
   - components/sof-firmware.yml
 
+  - components/desktop-shell.yml
+
 
   - components/network-manager-applet.yml
   - components/system-config-printer.yml

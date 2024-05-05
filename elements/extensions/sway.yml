@@ -3,9 +3,9 @@ version: 0.1.0
 about: Meta sway compositor
 
 include:
-  - extensions/sway/sway.yml
-  - extensions/sway/swaybg.yml
-  - extensions/sway/swayidle.yml
-  - extensions/sway/swaylock.yml
+  - components/sway.yml
+  - components/swaybg.yml
+  - components/swayidle.yml
+  - components/swaylock.yml
 
 merge: [elements/include/extension.inc]

@@ -5,7 +5,6 @@ about: Utility to sync large files archives over a network
 configure: >-
   --enable-ipv6
   --disable-debug
-  --with-rrsync
   --with-included-popt=no
   --with-included-zlib=no
 

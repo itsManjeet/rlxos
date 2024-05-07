@@ -70,6 +70,8 @@ depends:
   - components/parted.yml
   - components/dosfstools.yml
 
+  - components/libconfuse.yml
+  - components/fuse2.yml
   - components/xdg-desktop-portal-gtk.yml
   - components/xdg-desktop-portal-xapp.yml
   - components/xdg-dbus-proxy.yml

@@ -16,7 +16,7 @@ build-depends:
   - components/py/py-cairo.yml
   - components/pam_wrapper.yml
   - components/py/py-dbus.yml
-  - components/py/py-dbusmock.yml
+  # - components/py/py-dbusmock.yml
 
 sources:
   - https://gitlab.freedesktop.org/libfprint/fprintd/-/archive/v%{version}/fprintd-v%{version}.tar.gz

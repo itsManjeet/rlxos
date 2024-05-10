@@ -20,6 +20,8 @@ initial-commands: |-
   update-ca-certificates
 
   echo "root:root" | chpasswd
+
+  echo -e "\nGTK_CSD=1" >> %{sysconfdir}/environment
   
   # TODO: should be done in components/pam::integration
   chmod 4755 %{bindir}/unix_chkpwd -v

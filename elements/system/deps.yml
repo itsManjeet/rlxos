@@ -251,6 +251,7 @@ depends:
   - components/onboard.yml
   - components/ntfs-3g.yml
   - components/gjs.yml
+  - components/squashfuse.yml
 
   # AppImage
   - components/appimaged.yml

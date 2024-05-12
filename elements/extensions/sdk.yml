@@ -32,6 +32,9 @@ include:
   - components/sysprof.yml
   - components/sassc.yml
   - components/xfce4/xfce4-dev-tools.yml
+  - components/gdb.yml
+  - components/openjdk.yml
+  - components/dotnet.yml
 
 include-parts: 
   - devel

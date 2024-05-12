@@ -35,6 +35,7 @@ include:
   - components/gdb.yml
   - components/openjdk.yml
   - components/dotnet.yml
+  - components/patch.yml
 
 include-parts: 
   - devel

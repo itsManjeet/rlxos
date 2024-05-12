@@ -263,8 +263,7 @@ depends:
   - system/etc-skel.yml
   - system/x11-config.yml
 
-  # Laptop and Touch devices
-  - components/2in1.yml
-
   # Nvidia graphics driver
   - components/nvidia.yml
+
+  - components/fonts/fira-code.yml

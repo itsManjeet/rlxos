@@ -1,7 +1,7 @@
 id: meta-x11
 version:
 about: X11 package group
-
+merge: [elements/include/appimage.inc]
 depends:
   - components/x11/setxkbmap.yml
   - components/x11/xtrans.yml

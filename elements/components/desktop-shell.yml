@@ -28,7 +28,7 @@ script: |-
   vt = 1
   
   [default_session]
-  command = "labwc --config-dir %{sysconfdir}/greetd/labwc"
+  command = "labwc -s 'gtkgreet -l' --config-dir %{sysconfdir}/greetd/labwc"
   EOF
 
   install -v -D -m 0755 /dev/stdin %{install-root}%{sysconfdir}/greetd/environments << "EOF"

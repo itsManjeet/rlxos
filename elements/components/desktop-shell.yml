@@ -3,13 +3,14 @@ version: 0.1.0
 about: Desktop shell for rlxos
 
 depends:
-- components/sway.yml
+- components/labwc.yml
 - components/swaybg.yml
 - components/swayidle.yml
 - components/swaylock.yml
 - components/greetd.yml
 - components/gtkgreet.yml
 - components/wmenu.yml
+- components/sfwbar.yml
 - components/foot.yml
 - components/fonts/ibm-plex.yml
 - components/fonts/noto.yml
@@ -27,22 +28,136 @@ script: |-
   vt = 1
   
   [default_session]
-  command = "sway --config %{sysconfdir}/greetd/sway-config"
+  command = "labwc --config-dir %{sysconfdir}/greetd/labwc"
   EOF
 
   install -v -D -m 0755 /dev/stdin %{install-root}%{sysconfdir}/greetd/environments << "EOF"
-  sway
+  labwc
   EOF
 
-  install -v -D -m 0755 /dev/stdin %{install-root}%{sysconfdir}/greetd/sway-config << "EOF"
-  exec "gtkgreet -l; swaymsg exit"
-  bindsym Mod4+shift+e exec swaynag \
-    -t warning \
-    -m 'What do you want to do?' \
-    -b 'Poweroff' 'systemctl poweroff' \
-    -b 'Reboot' 'systemctl reboot'
-
-  include /etc/sway/config.d/*
+  install -v -D -m 0755 /dev/stdin %{install-root}%{sysconfdir}/greetd/labwc/rc.xml << "EOF"
+  <?xml version="1.0"?>
+  <labwc_config>
+    <theme>
+        <name></name>
+        <cornerRadius>2</cornerRadius>
+        <font name="sans" size="10"/>
+    </theme>
+    <keyboard>
+        <default />
+        <keybind key="W-Return">
+          <action name="Execute" command="foot" />
+        </keybind>
+    </keyboard>
+  </labwc_config>
   EOF
-     
+
+  install -v -D -m 0755 /dev/stdin %{install-root}%{sysconfdir}/xdg/labwc/autostart << "EOF"
+  %{bindir}/swaybg -c '#113344' >/dev/null 2>&1 &
+  %{bindir}/sfwbar >/dev/null 2>&1 &
+
+  %{bindir}/swayidle -w \
+    timeout 300 'swaylock -f -c 000000' \
+    before-sleep 'swaylock -f -c 000000' >/dev/null 2>&1 &
+  EOF
+
+  install -v -D -m 0755 /dev/stdin %{install-root}%{sysconfdir}/xdg/labwc/menu.xml << "EOF"
+  <?xml version="1.0" encoding="UTF-8"?>
+  <openbox_menu>
+      <menu id="client-menu">
+      <item label="Minimize">
+        <action name="Iconify" />
+      </item>
+      <item label="Maximize">
+        <action name="ToggleMaximize" />
+      </item>
+      <item label="Fullscreen">
+        <action name="ToggleFullscreen" />
+      </item>
+      <item label="Roll up/down">
+        <action name="ToggleShade" />
+      </item>
+      <item label="Decorations">
+        <action name="ToggleDecorations" />
+      </item>
+      <item label="Always on Top">
+        <action name="ToggleAlwaysOnTop" />
+      </item>
+
+      <menu id="workspaces" label="Workspace">
+        <item label="Move left">
+          <action name="SendToDesktop" to="left" />
+        </item>
+        <item label="Move right">
+          <action name="SendToDesktop" to="right" />
+        </item>
+        <separator />
+        <item label="Always on Visible Workspace">
+          <action name="ToggleOmnipresent" />
+        </item>
+      </menu>
+
+      <item label="Close">
+        <action name="Close" />
+      </item>
+    </menu>
+    <menu id="root-menu">
+      <item label="Web browser">
+        <action name="Execute" command="firefox" />
+      </item>
+      <item label="Terminal">
+        <action name="Execute" command="foot" />
+      </item>
+      <item label="Reconfigure">
+        <action name="Reconfigure" />
+      </item>
+      <item label="Exit">
+        <action name="Exit" />
+      </item>
+      <item label="Poweroff">
+        <action name="Execute" command="systemctl -i poweroff" />
+      </item>
+    </menu>
+
+    <menu id="some-custom-menu">
+      <item label="Reconfigure">
+        <action name="Reconfigure" />
+      </item>
+      <item label="Exit">
+        <action name="Exit" />
+      </item>
+    </menu>
+  </openbox_menu>
+  EOF
+
+  install -v -D -m 0755 /dev/stdin %{install-root}%{sysconfdir}/xdg/labwc/environment << "EOF"
+  MOZ_ENABLE_WAYLAND=1
+  EOF
   
+  install -v -D -m 0755 /dev/stdin %{install-root}%{sysconfdir}/xdg/labwc/rc.xml << "EOF"
+  <?xml version="1.0"?>
+  <labwc_config>
+    <theme>
+        <name></name>
+        <cornerRadius>2</cornerRadius>
+        <font name="sans" size="10"/>
+    </theme>
+    <keyboard>
+        <default />
+        <keybind key="W-Return">
+          <action name="Execute" command="foot" />
+        </keybind>
+        <keybind key="W-d">
+          <action name="Execute" command="wmenu" />
+        </keybind>
+    </keyboard>
+    <mouse>
+        <default/>
+        <context name="Root">
+            <mousebind button="Right" action="Press">
+                <action name="ShowMenu" menu="root-menu"/>
+            </mousebind>
+        </context>
+    </mouse>
+  </labwc_config>
+  EOF

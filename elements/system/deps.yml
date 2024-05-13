@@ -85,7 +85,6 @@ depends:
 
   - components/desktop-shell.yml
 
-
   - components/network-manager-applet.yml
   - components/system-config-printer.yml
 

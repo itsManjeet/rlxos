@@ -5,7 +5,7 @@ about: D-Bus thumbnailing service based on the thumbnail management D-Bus Specif
 sources:
   - https://archive.xfce.org/src/xfce/tumbler/%{version:2}/tumbler-%{version}.tar.bz2
 
-depends:
+build-depends:
   - components/glib.yml
   - components/freetype.yml
   - components/curl.yml
@@ -16,6 +16,6 @@ depends:
   - components/libpng.yml
   - components/xfce4/libxfce4util.yml
   - components/poppler.yml
-
-build-depends:
   - components/intltool.yml
+
+merge: [elements/include/appimage.inc]

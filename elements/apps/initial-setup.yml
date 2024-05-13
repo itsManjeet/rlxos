@@ -1,0 +1,28 @@
+id: initial-setup
+version: 0.1.7
+about: System Initial Setup
+merge:
+  - ostree-branch.yml
+  - elements/include/rlxos.inc
+  - elements/include/appimage.inc
+
+pre-script: |-
+  for script in first-boot installer ; do
+    install -Dm0755 -t "%{install-root}%{libdir}/%{id}/" /files/%{id}/${script}.sh
+    sed -i s'#@@OSTREE_BRANCH@@#%{ostree-branch}#g' %{install-root}%{libdir}/%{id}/${script}.sh
+  done
+
+  install -vDm0644 /dev/stdin %{install-root}/%{datadir}/applications/initial-setup.desktop << "EOF"
+  [Desktop Entry]
+  Name=Initial Setup
+  Terminal=false
+  Exec=initial-setup
+  Type=Application
+  Icon=system-os-installer
+  Categories=Utility;
+  EOF
+
+
+build-depends:
+  - components/gtkmm.yml
+  - components/glib.yml

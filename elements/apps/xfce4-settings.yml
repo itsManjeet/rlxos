@@ -57,7 +57,7 @@ post-script: |-
   </channel>
   EOF
 
-depends:
+build-depends:
   - components/xfce4/exo.yml
   - components/xfce4/garcon.yml
   - components/xfce4/xfconf.yml
@@ -75,9 +75,10 @@ depends:
   - components/fonts/noto-cjk.yml
   - components/fonts/noto-emoji.yml
   - components/fonts/ibm-plex.yml
-build-depends:
   - components/intltool.yml
   - components/x11/xf86-input-libinput.yml
+
 sources:
   - https://archive.xfce.org/src/xfce/xfce4-settings/%{version:2}/xfce4-settings-%{version}.tar.bz2
 
+merge: [elements/include/appimage.inc]

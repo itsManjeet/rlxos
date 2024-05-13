@@ -29,6 +29,5 @@ depends:
   - components/startup-notification.yml
   - components/xfce4/exo.yml
   - components/xfce4/garcon.yml
-  - components/xfce4/thunar.yml
 sources:
   - https://archive.xfce.org/src/xfce/xfdesktop/%{version:2}/xfdesktop-%{version}.tar.bz2

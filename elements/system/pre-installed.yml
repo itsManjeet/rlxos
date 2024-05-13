@@ -1,0 +1,14 @@
+id: pre-installed
+version: 0.1.1
+about: Preinstall applications
+
+depends:
+  - apps/initial-setup.yml
+  - apps/thunar.yml
+  - apps/xfce4-terminal.yml
+  - apps/xfce4-settings.yml
+  - apps/xfce4-screenshooter.yml
+  - apps/mousepad.yml
+
+script: |-
+  install -vDm 0755 -t %{install-root}/Applications/ *.app

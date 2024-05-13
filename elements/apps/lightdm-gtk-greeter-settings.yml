@@ -1,7 +1,7 @@
 id: lightdm-gtk-greeter-settings
 version: 1.2.2
 about: Settings editor for the LightDM GTK+ Greeter
-depends:
+build-depends:
   - components/gtk4.yml
   - components/lightdm-gtk-greeter.yml
   - components/py/py-gobject.yml
@@ -10,3 +10,5 @@ install: --xfce-integration
 
 sources:
   - https://github.com/Xubuntu/lightdm-gtk-greeter-settings/releases/download/lightdm-gtk-greeter-settings-%{version}/lightdm-gtk-greeter-settings-%{version}.tar.gz
+
+merge: [elements/include/appimage.inc]

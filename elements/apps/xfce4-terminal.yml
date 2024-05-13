@@ -15,7 +15,7 @@ post-script: |-
   </channel>
   EOF
 
-depends:
+build-depends:
   - components/intltool.yml
   - components/hicolor-icon-theme.yml
   - components/xfce4/libxfce4ui.yml
@@ -23,3 +23,5 @@ depends:
 
 sources:
   - https://archive.xfce.org/src/apps/xfce4-terminal/%{version:2}/xfce4-terminal-%{version}.tar.bz2
+
+merge: [elements/include/appimage.inc]

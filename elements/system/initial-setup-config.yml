@@ -1,14 +1,8 @@
-id: initial-setup
-version: 0.1.7
-about: System Initial Setup
-merge: [ ostree-branch.yml, elements/include/rlxos.inc ]
+id: initial-setup-config
+version: 0.0.1
+about: Initial setup environment configuration
 
-post-script: |-
-  for script in first-boot installer ; do
-    install -Dm0755 -t "%{install-root}%{libdir}/%{id}/" /files/%{id}/${script}.sh
-    sed -i s'#@@OSTREE_BRANCH@@#%{ostree-branch}#g' %{install-root}%{libdir}/%{id}/${script}.sh
-  done
-
+script: |-
   install -vDm 0644 /dev/stdin %{install-root}/etc/sudoers.d/initial-setup << "EOF"
   initial-setup ALL=(ALL) NOPASSWD: ALL
   EOF
@@ -35,17 +29,7 @@ post-script: |-
   [Desktop Entry]
   Name=Initial Setup
   Terminal=false
-  Exec=%{bindir}/bash -c "while true ; do %{bindir}/initial-setup; sleep 1; done"
-  Type=Application
-  Icon=system-os-installer
-  Categories=Utility;
-  EOF
-
-  install -vDm0644 /dev/stdin %{install-root}/%{datadir}/applications/initial-setup.desktop << "EOF"
-  [Desktop Entry]
-  Name=Initial Setup
-  Terminal=false
-  Exec=/usr/bin/initial-setup
+  Exec=%{bindir}/bash -c "while true ; do /Applications/initial-setup.app; sleep 1; done"
   Type=Application
   Icon=system-os-installer
   Categories=Utility;
@@ -133,7 +117,7 @@ post-script: |-
     </property>
   </channel>
   EOF
-  
+
   install -vDm 0644 /dev/stdin %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/autostart/welcome-tour.desktop << "EOF"
   [Desktop Entry]
   Hidden=true
@@ -144,7 +128,7 @@ post-script: |-
   x-scheme-handler/http=firefox.desktop
   x-scheme-handler/https=firefox.desktop
   EOF
-  
+
   touch %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/.welcome-tour-done
 
   install -vDm 0644 /dev/stdin %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml << "EOF"
@@ -168,6 +152,4 @@ post-script: |-
   EOF
 
 depends:
-  - components/gtkmm.yml
-  - components/glib.yml
-  - components/gparted.yml
+  - components/bash.yml

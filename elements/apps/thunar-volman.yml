@@ -5,13 +5,12 @@ about: Automatic management of removable drives and media for Thunar
 configure: >-
   --disable-debug
 
-depends:
+build-depends:
   - components/hicolor-icon-theme.yml
   - components/xfce4/libxfce4ui.yml
-  - components/xfce4/thunar.yml
-
-build-depends:
   - components/intltool.yml
 
 sources:
   - https://archive.xfce.org/src/xfce/thunar-volman/%{version:2}/thunar-volman-%{version}.tar.bz2
+
+merge: [elements/include/appimage.inc]

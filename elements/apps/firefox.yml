@@ -1,4 +1,3 @@
-
 id: firefox
 version: 124.0.2
 about:
@@ -12,7 +11,7 @@ build-dir: .
 script: |-
   mkdir -p %{install-root}%{libdir}/firefox/
   mv firefox/* %{install-root}%{libdir}/firefox/
-  
+
   mkdir -p %{install-root}/%{bindir}
   ln -srv %{install-root}%{libdir}/firefox/firefox %{install-root}/%{bindir}/
   install -D %{install-root}%{libdir}/firefox/browser/chrome/icons/default/default128.png %{install-root}/%{datadir}/icons/firefox.png
@@ -41,9 +40,11 @@ script: |-
   Categories=Network;
   EOF
 
-depends:
+build-depends:
   - components/dbus-glib.yml
   - components/alsa-lib.yml
 
 sources:
   - http://ftp.mozilla.org/pub/firefox/releases/%{version}/linux-x86_64/en-US/firefox-%{version}.tar.bz2
+
+merge: [elements/include/appimage.inc]

@@ -10,4 +10,4 @@ depends:
   - apps/mousepad.yml
 
 script: |-
-  install -vDm 0755 -t %{install-root}/Applications/ *.app
+  install -vDm 0755 -t %{install-root}/Applications/ /*.app

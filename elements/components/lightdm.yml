@@ -10,6 +10,7 @@ depends:
   - components/libgcrypt.yml
   - components/pam.yml
   - components/pcre.yml
+  - components/gtk.yml
   - components/x11/libxklavier.yml
   - components/accountsservice.yml
 

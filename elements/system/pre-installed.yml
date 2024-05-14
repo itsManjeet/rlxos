@@ -7,7 +7,6 @@ depends:
   - apps/thunar.yml
   - apps/xfce4-terminal.yml
   - apps/xfce4-settings.yml
-  - apps/xfce4-screenshooter.yml
   - apps/mousepad.yml
 
 script: |-

@@ -12,6 +12,8 @@ pre-script: |-
     sed -i s'#@@OSTREE_BRANCH@@#%{ostree-branch}#g' %{install-root}%{libdir}/%{id}/${script}.sh
   done
 
+  install -Dm0644 /files/AppImage.svg %{install-root}%{datadir}/icons/system-os-installer.svg
+
   install -vDm0644 /dev/stdin %{install-root}/%{datadir}/applications/initial-setup.desktop << "EOF"
   [Desktop Entry]
   Name=Initial Setup

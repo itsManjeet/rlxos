@@ -16,5 +16,7 @@ pre-script: |-
   Type=Application
   EOF
 
+  install -Dm0644 /files/AppImage.svg %{install-root}%{datadir}/icons/welcome-tour.svg
+
 build-depends:
   - components/gtkmm.yml

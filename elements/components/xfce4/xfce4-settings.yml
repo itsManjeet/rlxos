@@ -57,7 +57,7 @@ prepare-appimage: |-
   </channel>
   EOF
 
-build-depends:
+depends:
   - components/xfce4/exo.yml
   - components/xfce4/garcon.yml
   - components/xfce4/xfconf.yml
@@ -68,10 +68,10 @@ build-depends:
   - components/libinput.yml
   - components/upower.yml
   - components/themes/adwaita-icon-theme.yml
-  - components/intltool.yml
   - components/x11/xf86-input-libinput.yml
 
+build-depends:
+  - components/intltool.yml
+  
 sources:
   - https://archive.xfce.org/src/xfce/xfce4-settings/%{version:2}/xfce4-settings-%{version}.tar.bz2
-
-merge: [elements/include/appimage.inc]

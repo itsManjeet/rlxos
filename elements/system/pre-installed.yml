@@ -7,7 +7,6 @@ build-depends:
   - apps/initial-setup.yml
   - apps/thunar.yml
   - apps/xfce4-terminal.yml
-  - apps/xfce4-settings.yml
   - apps/mousepad.yml
 
 script: |-

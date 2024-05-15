@@ -6,7 +6,7 @@ merge:
   - elements/include/rlxos.inc
   - elements/include/appimage.inc
 
-pre-script: |-
+prepare-appimage: |-
   for script in first-boot installer ; do
     install -Dm0755 -t "%{install-root}%{libdir}/%{id}/" /files/%{id}/${script}.sh
     sed -i s'#@@OSTREE_BRANCH@@#%{ostree-branch}#g' %{install-root}%{libdir}/%{id}/${script}.sh

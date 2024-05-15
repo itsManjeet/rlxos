@@ -20,7 +20,21 @@ post-script: |
     [ -d %{install-root}/%{datadir}/${i} ] && rm -rf %{install-root}/%{datadir}/${i}
   done
 
-  find %{install-root}/ -type f -executable | xargs objdump -p | grep NEEDED | awk '{print $2}' >> required-libraries
+  list_libraries() {
+    echo "installing library $1"
+    dependencies=$(ldd $1 | awk '{print $3}')
+
+    for dep in $dependencies ; do
+      grep "$dep" required-libraries && continue
+      echo "$dep" >> required-libraries
+      list_libraries "$dep"
+    done
+  }
+
+  for i in $(find %{install-root}/ -type f -executable); do
+    grep "$i" required-libraries && continue
+    list_libraries $i
+  done
 
   if [[ -n "%{skip-libraries}" ]] ; then
     skipped=""
@@ -35,9 +49,9 @@ post-script: |
 
   mkdir -p %{install-root}/%{libdir}
   for i in $(cat required-libraries | sort | uniq | ${FILTER}) ; do
-    if [[ -e %{libdir}/$i ]] ; then
-      cp %{libdir}/$i %{install-root}/%{libdir}
-    elif [[ -e %{install-root}/%{libdir}/$i ]] ; then
+    if [[ -e $i ]] ; then
+      cp $i %{install-root}/%{libdir}
+    elif [[ -e %{install-root}/$i ]] ; then
       continue
     else
       echo "MISSING REQUIRED LIBRARY $i"

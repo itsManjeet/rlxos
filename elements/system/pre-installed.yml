@@ -1,8 +1,9 @@
 id: pre-installed
 version: 0.1.1
 about: Preinstall applications
+strip: false
 
-depends:
+build-depends:
   - apps/initial-setup.yml
   - apps/thunar.yml
   - apps/xfce4-terminal.yml

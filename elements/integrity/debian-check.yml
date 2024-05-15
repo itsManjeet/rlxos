@@ -1,9 +1,0 @@
-id: debian-check
-version: 0.0.1
-about: debian check up script
-
-script: |-
-  ls -al
-
-depends:
-  - debian.yml

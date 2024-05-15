@@ -5,7 +5,7 @@ merge:
   - elements/include/rlxos.inc
   - elements/include/appimage.inc
 
-pre-script: |-
+prepare-appimage: |-
   install -v -D -m 0755 /dev/stdin %{install-root}/%{datadir}/applications/welcome-tour.desktop << "EOF"
   [Desktop Entry]
   Name=Welcome Tour

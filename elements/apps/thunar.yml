@@ -9,7 +9,7 @@ configure: >-
   --enable-exif
   --disable-debug
 
-post-script: |-
+prepare-appimage: |-
   install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/xdg/xfce4/xfconf/xfce-perchannel-xml/thunar.xml << "EOF"
   <?xml version="1.0" encoding="UTF-8"?>
   <channel name="thunar" version="1.0">

@@ -2,6 +2,9 @@ id: xfce4-panel-profiles
 version: 1.0.14
 about: Application to manage xfce panel layouts
 
+pre-script: |-
+  sed -i '11d' org.xfce.PanelProfiles.desktop.in
+
 script: |-
   ./configure --prefix=%{prefix} --python=python3
   make ${MAKEFLAGS}
@@ -19,6 +22,7 @@ script: |-
 build-depends:
   - components/py/py-gobject.yml
   - components/py/py-psutil.yml
+  - components/xfce4/xfce4-panel.yml
 sources:
   - https://github.com/xfce-mirror/xfce4-panel-profiles/archive/refs/tags/xfce4-panel-profiles-%{version}.tar.gz
 

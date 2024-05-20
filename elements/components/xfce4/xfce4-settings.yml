@@ -6,7 +6,7 @@ configure: >-
   --enable-sound-settings
   --enable-pluggable-dialogs
 
-prepare-appimage: |-
+post-script: |-
   install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/xdg/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml << "EOF"
   <?xml version="1.0" encoding="UTF-8"?>
   <channel name="xsettings" version="1.0">

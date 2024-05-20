@@ -6,6 +6,7 @@ build-depends:
   - components/libsoup3.yml
   - components/xfce4/libxfce4ui.yml
   - components/xfce4/libxfce4util.yml
+  - components/xfce4/xfce4-panel.yml
 
 sources:
   - https://archive.xfce.org/src/apps/xfce4-screenshooter/%{version:2}/xfce4-screenshooter-%{version}.tar.bz2

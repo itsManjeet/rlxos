@@ -4,6 +4,7 @@ about: Settings editor for the LightDM GTK+ Greeter
 build-depends:
   - components/gtk4.yml
   - components/py/py-gobject.yml
+  - components/py/py-distutils-extra.yml
 
 install: --xfce-integration
 

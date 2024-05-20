@@ -24,6 +24,10 @@ prepare-appimage: |-
   Categories=Utility;
   EOF
 
+  for bin in parted fatlabel unsquashfs; do
+    cp %{bindir}/bin %{install-root}%{bindir}/
+  done
+
 
 build-depends:
   - components/gtkmm.yml

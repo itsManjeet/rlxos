@@ -25,10 +25,13 @@ prepare-appimage: |-
   EOF
 
   for bin in parted fatlabel unsquashfs; do
-    cp %{bindir}/bin %{install-root}%{bindir}/
+    cp %{bindir}/$bin %{install-root}%{bindir}/
   done
 
 
 build-depends:
   - components/gtkmm.yml
   - components/glib.yml
+  - components/parted.yml
+  - components/dosfstools.yml
+  - components/squashfs-tools.yml

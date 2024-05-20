@@ -1,7 +1,6 @@
 id: alacritty
 version: 0.12.2
 about: A cross-platform, GPU-accelerated terminal emulator
-merge: [elements/include/appimage.inc]
 
 prepare-appimage: |-
   desktop-file-install -m 644 --dir %{install-root}/%{datadir}/applications/ extra/linux/Alacritty.desktop
@@ -24,3 +23,5 @@ build-depends:
   - components/x11/libxi.yml
   - components/x11/libxkbcommon.yml
   - components/x11/libxrandr.yml
+
+merge: [elements/include/appimage.inc]

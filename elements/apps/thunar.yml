@@ -25,6 +25,9 @@ prepare-appimage: |-
     (cd $i; ./configure --prefix=%{prefix} --disable-static --sysconfdir=%{sysconfdir} --libexecdir=%{libdir}/xfce4 && make && make install DESTDIR=%{install-root})
   done
 
+  rm -f %{install-root}%{datadir}/applications/thunar-*.desktop
+  cp %{install-root}%{datadir}/icons/hicolor/scalable/apps/apps/org.xfce.thunar.svg %{install-root}/
+
 build-depends:
   - components/xfce4/exo.yml
   - components/hicolor-icon-theme.yml

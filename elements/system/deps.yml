@@ -63,9 +63,12 @@ depends:
   - components/py/py-pip.yml
   - components/ufw.yml
   - components/zram-generator.yml
-
+  
   - components/plymouth.yml
   - components/fuse2.yml
+
+  - components/parted.yml
+  - components/dosfstools.yml
 
   - components/xdg-desktop-portal-gtk.yml
   - components/xdg-desktop-portal-xapp.yml

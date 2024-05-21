@@ -1,22 +1,23 @@
 id: desktop-shell
-version: 0.1.0
+version: 0.1.1
 about: Desktop shell for rlxos
 
 depends:
-- components/labwc.yml
-- components/swaybg.yml
-- components/swayidle.yml
-- components/swaylock.yml
-- components/greetd.yml
-- components/gtkgreet.yml
-- components/wmenu.yml
-- components/sfwbar.yml
-- components/foot.yml
-- components/fonts/ibm-plex.yml
-- components/fonts/noto.yml
-- components/fonts/noto-cjk.yml
-- components/fonts/noto-emoji.yml
-- components/fonts/adobe-source-code-pro-fonts.yml
+  - components/labwc.yml
+  - components/cage.yml
+  - components/swaybg.yml
+  - components/swayidle.yml
+  - components/swaylock.yml
+  - components/greetd.yml
+  - components/gtkgreet.yml
+  - components/wmenu.yml
+  - components/sfwbar.yml
+  - components/foot.yml
+  - components/fonts/ibm-plex.yml
+  - components/fonts/noto.yml
+  - components/fonts/noto-cjk.yml
+  - components/fonts/noto-emoji.yml
+  - components/fonts/adobe-source-code-pro-fonts.yml
 
 script: |-
   install -v -D -m 0755 /dev/stdin %{install-root}%{libdir}/systemd/systemd-preset << "EOF"
@@ -26,30 +27,13 @@ script: |-
   install -v -D -m 0755 /dev/stdin %{install-root}%{sysconfdir}/greetd/config.toml << "EOF"
   [terminal]
   vt = 1
-  
+
   [default_session]
-  command = "labwc -s 'gtkgreet -l' --config-dir %{sysconfdir}/greetd/labwc"
+  command = "cage gtkgreet"
   EOF
 
   install -v -D -m 0755 /dev/stdin %{install-root}%{sysconfdir}/greetd/environments << "EOF"
   labwc
-  EOF
-
-  install -v -D -m 0755 /dev/stdin %{install-root}%{sysconfdir}/greetd/labwc/rc.xml << "EOF"
-  <?xml version="1.0"?>
-  <labwc_config>
-    <theme>
-        <name></name>
-        <cornerRadius>2</cornerRadius>
-        <font name="sans" size="10"/>
-    </theme>
-    <keyboard>
-        <default />
-        <keybind key="W-Return">
-          <action name="Execute" command="foot" />
-        </keybind>
-    </keyboard>
-  </labwc_config>
   EOF
 
   install -v -D -m 0755 /dev/stdin %{install-root}%{sysconfdir}/xdg/labwc/autostart << "EOF"
@@ -133,15 +117,48 @@ script: |-
   install -v -D -m 0755 /dev/stdin %{install-root}%{sysconfdir}/xdg/labwc/environment << "EOF"
   MOZ_ENABLE_WAYLAND=1
   EOF
-  
+
   install -v -D -m 0755 /dev/stdin %{install-root}%{sysconfdir}/xdg/labwc/rc.xml << "EOF"
   <?xml version="1.0"?>
   <labwc_config>
+    <core>
+      <decoration>server</decoration>
+      <gap>2</gap>
+      <adaptiveSync>no</adaptiveSync>
+      <reuseOutputMode>no</reuseOutputMode>
+    </core>
     <theme>
-        <name></name>
-        <cornerRadius>2</cornerRadius>
+        <name>Elegent</name>
+        <cornerRadius>8</cornerRadius>
+        <animateIconify>yes</animateIconify>
+        <dropShadows>yes</dropShadows>
         <font name="sans" size="10"/>
     </theme>
+    <windowSwitcher show="yes" preview="no" outlines="no">
+      <fields>
+        <field content="type" width="25%"/>
+        <field content="app_id" width="25%"/>
+        <field content="title" width="100%"/>
+      </fields>
+    </windowSwitcher>
+    <resistance>
+      <screenEdgeStrength>20</screenEdgeStrength>
+    </resistance>
+    <focus>
+      <followMouse>no</followMouse>
+      <followMouseRequiresMovement>yes</followMouseRequiresMovement>
+      <raiseOnFocus>no</raiseOnFocus>
+    </focus>
+    <snapping>
+      <range>1</range>
+      <topMaximize>yes</topMaximize>
+    </snapping>
+    <desktops>
+      <popupTime>1000</popupTime>
+      <names>
+        <name>Default</name>
+      </names>
+    </desktops>
     <keyboard>
         <default />
         <keybind key="W-Return">

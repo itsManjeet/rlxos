@@ -15,6 +15,8 @@ prepare-appimage: |-
   </channel>
   EOF
 
+  rm -f %{install-root}/%{datadir}/applications/xfce4-terminal-settings.desktop
+
 build-depends:
   - components/intltool.yml
   - components/hicolor-icon-theme.yml

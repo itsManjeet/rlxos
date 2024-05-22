@@ -11,13 +11,19 @@ depends:
   - components/greetd.yml
   - components/gtkgreet.yml
   - components/wmenu.yml
+  
   - components/sfwbar.yml
   - components/foot.yml
+
   - components/fonts/ibm-plex.yml
   - components/fonts/noto.yml
   - components/fonts/noto-cjk.yml
   - components/fonts/noto-emoji.yml
   - components/fonts/adobe-source-code-pro-fonts.yml
+
+  - components/themes/adwaita-icon-theme.yml
+  - components/themes/tela-icon-theme.yml
+  - components/themes/orchis-gtk-theme.yml
 
 script: |-
   install -v -D -m 0755 /dev/stdin %{install-root}%{libdir}/systemd/systemd-preset << "EOF"
@@ -29,7 +35,7 @@ script: |-
   vt = 1
 
   [default_session]
-  command = "cage gtkgreet"
+  command = "cage -- gtkgreet -l"
   EOF
 
   install -v -D -m 0755 /dev/stdin %{install-root}%{sysconfdir}/greetd/environments << "EOF"
@@ -177,4 +183,336 @@ script: |-
         </context>
     </mouse>
   </labwc_config>
+  EOF
+
+  install -v -D -m 0755 /dev/stdin %{install-root}%{sysconfdir}/sfwbar/sfwbar.config << "EOF"
+  theme = "Orchis-Light"
+  IconTheme = "Tela-light"
+
+  # Display minimized windows on taskbars across all outputs
+  # DisownMinimized = true
+
+  # Select terminal emulator to use
+  Set Term = "foots"
+
+  TriggerAction "SIGRTMIN+1", SwitcherEvent "forward"
+  TriggerAction "SIGRTMIN+2", SwitcherEvent "back"
+
+  Function("SfwbarInit") {
+    SetMirror "*"
+  #  Config "PopUp 'XVolumeWindow' { AutoClose = true }"
+  #  SetBarSensor "1000"
+  }
+
+  # Window Placer
+  placer {
+    xorigin = 5  # place the first window at X% from the left
+    yorigin = 5  # place the first window at X% from the top
+    xstep = 5    # step by X% of desktop horizontally
+    ystep = 5    # step by X% of desktop vertically
+    children = true
+  }
+
+  # Task Switcher
+  switcher {
+    interval = 700
+    icons = true
+    labels = false
+    cols = 5
+  }
+
+  include("winops.widget")
+
+  layout {
+    size = "100%"
+    layer = "top"
+    exclusive_zone = "auto"
+    css = "* { min-height: 20px }"
+
+    include("startmenu.widget")
+
+    taskbar {
+      style = "taskbar"
+      rows = 1;
+      icons = true;
+      labels = true;
+      sort = false;
+  #    filter = workspace;
+      action[3] = Menu "winops"
+      action[Drag] = Focus
+    }
+
+    label {
+      css = "* { -GtkWidget-hexpand: true; }"
+    }
+
+    pager {
+      style = "pager"
+      rows = 1
+      pins = "1","2","3","4"
+      preview = true
+      action[Drag] = WorkspaceActivate
+    }
+
+    include("cpu.widget")
+    include("memory.widget")
+
+    tray {
+      rows = 1
+    }
+
+    include("battery-svg.widget")
+    include("bluez.widget")
+  # include("idle.widget")
+  # include("rfkill-wifi.widget")
+  # include("rfkill-bt.widget")
+    include("network-module.widget")
+    include("volume.widget")
+    include("mpd-intmod.widget")
+    include("sway-lang.widget")
+
+    grid {
+      css = "* { -GtkWidget-direction: bottom; }"
+      label {
+        value = Time("%k:%M")
+        style ="clock"
+      }
+      label {
+        value = Time("%x")
+        style ="clock"
+      }
+    }
+  }
+
+  #CSS
+  #hidden {
+    -GtkWidget-visible: false;
+  }
+
+  button,
+  button image {
+    outline-style: none;
+    box-shadow: none;
+    background-image: none;
+    border-image: none;
+  }
+
+  label {
+    font: 14px Sans;
+  }
+
+  image {
+    -ScaleImage-symbolic: true;
+  }
+
+  button#startmenu,
+  button#module {
+    border: none;
+    padding: 3px;
+    margin: 0px;
+    -GtkWidget-vexpand: true;
+  }
+
+  button#startmenu image,
+  button#module image {
+    min-height: 32px;
+    min-width: 32px;
+    padding: 2px 4px;
+    margin: 0px;
+    -GtkWidget-valign: center;
+    -GtkWidget-vexpand: true;
+  }
+
+  button#taskbar_normal,
+  button#taskbar_active,
+  button#taskbar_normal:hover {
+    padding: 3px;
+    border-radius: 3px;
+    border-width: 0px;
+    -GtkWidget-hexpand: false;
+  }
+
+  grid#taskbar > :not(:last-child) button#taskbar_normal:hover,
+  grid#taskbar > :not(:last-child) button#taskbar_active,
+  grid#taskbar > :not(:last-child) button#taskbar_normal {
+    border-radius: 0px;
+    border-right: 1px solid alpha(@theme_fg_color,0.15);
+  }
+
+  button#taskbar_active {
+    background-color: rgba(199,227,255,0.6);
+  }
+
+  button#taskbar_normal:hover {
+    background-color: rgba(213,213,213,0.6);
+  }
+
+  button#taskbar_normal grid,
+  button#taskbar_active grid,
+  button#taskbar_normal:hover grid {
+    -GtkWidget-valign: center;
+  }
+
+  button#taskbar_normal image,
+  button#taskbar_active image,
+  button#taskbar_normal:hover image {
+    min-width: 20px;
+    min-height: 20px;
+    padding-right: 6px;
+    -ScaleImage-symbolic: false;
+  }
+
+  button#taskbar_normal label,
+  button#taskbar_active label,
+  button#taskbar_normal:hover label {
+  }
+
+  button#tray_active,
+  button#tray_passive,
+  button#tray_attention {
+    margin: 0px;
+    border: none;
+    padding: 0px;
+  }
+
+  button#tray_passive {
+    -GtkWidget-visible: false;
+  }
+
+  button#tray_active image,
+  button#tray_passive image,
+  button#tray_attention image {
+    -GtkWidget-valign: center;
+    -GtkWidget-vexpand: true;
+    min-height: 16px;
+    min-width: 16px;
+    padding: 3px;
+    margin: 0px;
+    border: none;
+  }
+
+  grid#pager {
+    border-radius: 3px;
+    border-color: @theme_fg_color;
+    border-style: solid;
+    border-width: 1px;
+    margin: 2px;
+    padding: 0px;
+  }
+
+  button#pager_normal,
+  button#pager_visible,
+  button#pager_focused {
+    border-radius: 5px;
+    border: none;
+    outline: 0px;
+    margin-right: 2px;
+    margin-left: 2px;
+    padding: 0px;
+    -GtkWidget-halign: center;
+    -GtkWidget-valign: center;
+  }
+
+  button#pager_focused {
+    background-color: rgba(199,227,255,0.6);
+  }
+
+  button#pager_preview {
+    border-radius: 0;
+    border-color: #000000;
+    border-width: 0.25mm;
+    color: #777777;
+    min-width: 5cm;
+    min-height: 2.8125cm;
+  }
+
+  #menu_item,
+  #menu_item image,
+  #menu_item label {
+    -GtkWidget-halign: start;
+  }
+
+  #menu_item image {
+    min-width: 16px;
+    min-height: 16px;
+    padding-right: 2px;
+  }
+
+  label#clock {
+    padding-left: 2px;
+    padding-right: 2px;
+    -GtkWidget-vexpand: true;
+    -GtkWidget-valign: center;
+    font: 10px Sans;
+  }
+
+  chart#cpu_chart {
+    background: rgba(127,127,127,0.3);
+    min-width: 9px;
+    -GtkWidget-vexpand: true;
+    margin: 2px;
+    border: 1px solid @theme_fg_color;
+    color: red;
+  }
+
+  progressbar#memory {
+    -GtkWidget-direction: top;
+    -GtkWidget-vexpand: true;
+    min-width: 9px;
+    border: 1px solid @theme_fg_color;
+    margin: 2px;
+  }
+
+  progressbar#memory trough {
+    min-height: 2px;
+    min-width: 9px;
+    border: none;
+    border-radius: 0px;
+    background: rgba(127,127,127,0.3);
+  }
+
+  progressbar#memory progress {
+    -GtkWidget-hexpand: true;
+    min-width: 9px;
+    border-radius: 0px;
+    border: none;
+    margin: 0px;
+    background-color: alpha(green,0.9);
+  }
+
+  grid#switcher_active image,
+  grid#switcher_active {
+    background-color: #bbddff;
+  }
+
+  grid#switcher_active image,
+  grid#switcher_active,
+  grid#switcher_normal image,
+  grid#switcher_normal {
+    min-width: 50px;
+    min-height: 50px;
+    border-radius: 5px;
+    padding: 5px;
+    -GtkWidget-direction: right;
+    -GtkWidget-hexpand: true;
+    -ScaleImage-symbolic: false;
+  }
+
+  window#switcher { 
+    border: 1px solid @borders;
+    border-radius: 6px; 
+    padding: 60px; 
+    -GtkWidget-hexpand: true;
+  }
+
+  grid#switcher { 
+    border-radius: 5px;
+    padding: 5px;
+    -GtkWidget-hexpand: true;
+  }
+
+  label#sway_lang {
+    margin-left: 3px;
+    margin-right: 5px;
+  }
   EOF

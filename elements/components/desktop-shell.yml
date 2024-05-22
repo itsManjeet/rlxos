@@ -36,6 +36,7 @@ script: |-
 
   [default_session]
   command = "cage -- /Applications/initial-setup.app"
+  user = "initial-setup"
   EOF
 
   install -v -D -m 0755 /dev/stdin %{install-root}%{sysconfdir}/greetd/environments << "EOF"

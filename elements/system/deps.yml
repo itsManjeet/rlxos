@@ -110,3 +110,4 @@ depends:
   - system/etc-default-useradd.yml
   - system/etc-skel.yml
   - system/pre-installed.yml
+  - system/initial-setup-config.yml

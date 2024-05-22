@@ -31,15 +31,24 @@ echo "root":"${ISE_PASSWORD}" | sudo chpasswd || {
 }
 fi
 
-sudo rm -f /etc/lightdm/lightdm.conf.d/*-initial-setup.conf
-
+echo ":: Installing greetd configuration"
 if [[ ${ISE_AUTOLOGIN} -eq 1 ]] ; then
 echo ":: Enabling autologin for ${ISE_USERNAME}"
-sudo install -D -m644 /dev/stdin /etc/lightdm/lightdm.conf.d/autologin.conf << EOF
-[SeatDefaults]
-autologin-user=${ISE_USERNAME}
-autologin-user-timeout=0
-autologin-session=xfce
+sudo install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/greetd/config.toml << EOF
+[terminal]
+vt = 1
+
+[default_session]
+command = "labwc"
+user = "${ISE_USERNAME}"
+EOF
+else
+sudo install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/greetd/config.toml << "EOF"
+[terminal]
+vt = 1
+
+[default_session]
+command = "cage -- gtkgreet -l"
 EOF
 fi
 

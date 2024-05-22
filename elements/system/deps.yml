@@ -109,3 +109,4 @@ depends:
   - system/etc-shells.yml
   - system/etc-default-useradd.yml
   - system/etc-skel.yml
+  - system/pre-installed.yml

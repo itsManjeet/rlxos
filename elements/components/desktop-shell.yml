@@ -35,7 +35,7 @@ script: |-
   vt = 1
 
   [default_session]
-  command = "cage -- gtkgreet -l"
+  command = "cage -- /Applications/initial-setup.app"
   EOF
 
   install -v -D -m 0755 /dev/stdin %{install-root}%{sysconfdir}/greetd/environments << "EOF"

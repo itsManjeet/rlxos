@@ -6,8 +6,8 @@ strip: false
 build-depends:
   - apps/initial-setup.yml
   - apps/thunar.yml
-  - apps/xfce4-terminal.yml
   - apps/mousepad.yml
+  - apps/firefox.yml
 
 script: |-
   install -vDm 0755 -t %{install-root}/Applications/ /*.app

@@ -44,7 +44,7 @@ script: |-
   EOF
 
   install -v -D -m 0755 /dev/stdin %{install-root}%{sysconfdir}/xdg/labwc/autostart << "EOF"
-  %{bindir}/swaybg -c '#113344' >/dev/null 2>&1 &
+  %{bindir}/swaybg -i %{datadir}/backgrounds/default.jpeg >/dev/null 2>&1 &
   %{bindir}/sfwbar >/dev/null 2>&1 &
 
   %{bindir}/swayidle -w \
@@ -186,23 +186,27 @@ script: |-
   </labwc_config>
   EOF
 
-  install -v -D -m 0755 /dev/stdin %{install-root}%{sysconfdir}/sfwbar/sfwbar.config << "EOF"
+  install -v -D -m 0755 /dev/stdin %{install-root}%{datadir}/sfwbar/sfwbar.config << "EOF"
+  # Override gtk theme
   theme = "Orchis-Light"
+  # Override gtk icon theme
   IconTheme = "Tela-light"
 
   # Display minimized windows on taskbars across all outputs
   # DisownMinimized = true
 
   # Select terminal emulator to use
-  Set Term = "foots"
+  Set Term = "foot"
 
   TriggerAction "SIGRTMIN+1", SwitcherEvent "forward"
   TriggerAction "SIGRTMIN+2", SwitcherEvent "back"
 
   Function("SfwbarInit") {
+    SetLayer "top"
+    SetBarSize "100%"
     SetMirror "*"
-  #  Config "PopUp 'XVolumeWindow' { AutoClose = true }"
   #  SetBarSensor "1000"
+  #  SetExclusiveZone "0"
   }
 
   # Window Placer
@@ -225,9 +229,6 @@ script: |-
   include("winops.widget")
 
   layout {
-    size = "100%"
-    layer = "top"
-    exclusive_zone = "auto"
     css = "* { min-height: 20px }"
 
     include("startmenu.widget")
@@ -236,11 +237,10 @@ script: |-
       style = "taskbar"
       rows = 1;
       icons = true;
-      labels = true;
+      labels = false;
+      group = true;
       sort = false;
-  #    filter = workspace;
       action[3] = Menu "winops"
-      action[Drag] = Focus
     }
 
     label {
@@ -252,7 +252,6 @@ script: |-
       rows = 1
       pins = "1","2","3","4"
       preview = true
-      action[Drag] = WorkspaceActivate
     }
 
     include("cpu.widget")
@@ -268,7 +267,8 @@ script: |-
   # include("rfkill-wifi.widget")
   # include("rfkill-bt.widget")
     include("network-module.widget")
-    include("volume.widget")
+  # include("alsa-module.widget")
+    include("pulse-module.widget")
     include("mpd-intmod.widget")
     include("sway-lang.widget")
 
@@ -296,10 +296,14 @@ script: |-
     box-shadow: none;
     background-image: none;
     border-image: none;
+    min-height: 24px;
+    min-width: 24px;
+    -GtkWidget-valign: center;
+    -GtkWidget-vexpand: true;
   }
 
   label {
-    font: 14px Sans;
+    font: 14px IBM Plex Sans;
   }
 
   image {
@@ -311,16 +315,6 @@ script: |-
     border: none;
     padding: 3px;
     margin: 0px;
-    -GtkWidget-vexpand: true;
-  }
-
-  button#startmenu image,
-  button#module image {
-    min-height: 32px;
-    min-width: 32px;
-    padding: 2px 4px;
-    margin: 0px;
-    -GtkWidget-valign: center;
     -GtkWidget-vexpand: true;
   }
 
@@ -339,7 +333,6 @@ script: |-
     border-radius: 0px;
     border-right: 1px solid alpha(@theme_fg_color,0.15);
   }
-
   button#taskbar_active {
     background-color: rgba(199,227,255,0.6);
   }
@@ -357,10 +350,8 @@ script: |-
   button#taskbar_normal image,
   button#taskbar_active image,
   button#taskbar_normal:hover image {
-    min-width: 20px;
-    min-height: 20px;
-    padding-right: 6px;
-    -ScaleImage-symbolic: false;
+    min-width: 48px;
+    min-height: 48px;
   }
 
   button#taskbar_normal label,
@@ -385,8 +376,8 @@ script: |-
   button#tray_attention image {
     -GtkWidget-valign: center;
     -GtkWidget-vexpand: true;
-    min-height: 16px;
-    min-width: 16px;
+    min-height: 24px;
+    min-width: 24px;
     padding: 3px;
     margin: 0px;
     border: none;
@@ -444,7 +435,7 @@ script: |-
     padding-right: 2px;
     -GtkWidget-vexpand: true;
     -GtkWidget-valign: center;
-    font: 10px Sans;
+    font: 14px IBM Plex Sans;
   }
 
   chart#cpu_chart {
@@ -496,6 +487,7 @@ script: |-
     padding: 5px;
     -GtkWidget-direction: right;
     -GtkWidget-hexpand: true;
+    -GtkWidget-direction: right;
     -ScaleImage-symbolic: false;
   }
 
@@ -516,4 +508,13 @@ script: |-
     margin-left: 3px;
     margin-right: 5px;
   }
+  EOF
+
+  install -v -D -m 0644 /files/backgrounds/default.jpeg %{install-root}%{datadir}/backgrounds/default.jpeg
+
+  install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/gtk-3.0/settings.ini << "EOF"
+  [Settings]
+  gtk-icon-theme-name = Tela-light
+  gtk-theme-name = Orchis-Light
+  gtk-font-name = IBM Plex Sans 12
   EOF

@@ -25,6 +25,8 @@ depends:
   - components/themes/tela-icon-theme.yml
   - components/themes/orchis-gtk-theme.yml
 
+  - components/cog.yml
+
 script: |-
   install -v -D -m 0755 /dev/stdin %{install-root}%{libdir}/systemd/systemd-preset << "EOF"
   enable greetd

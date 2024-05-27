@@ -1,18 +1,15 @@
 strip: false
 skip-libraries: >-
   libc.so*
+prepare-bundle:
+type: bundle
 
-prepare-appimage: ""
-type: app
 build-depends:
-- components/appimagetool.yml
-- components/zsync.yml
-- components/gnupg.yml
-- components/appstream.yml
+  - components/ApplicationManager.yml
+  - components/squashfs-tools.yml
 
 post-script: |
-  install -vDm0755 %{libdir}/appimagekit/AppRun -t %{install-root}
-  %{prepare-appimage}
+  %{prepare-bundle}
 
   [ -d %{install-root}/%{datadir}/glib-2.0/schemas/ ] && glib-compile-schemas %{install-root}/%{datadir}/glib-2.0/schemas/
   
@@ -67,9 +64,22 @@ post-script: |
       cp -v ${i} %{install-root}/
     done
   fi
+  
+  install -vDm 0644 /dev/stdin %{install-root}/manifest.json << "EOF"
+  {
+    "id": "dev.rlxos.%{id}",
+    "name": "%{id}",
+    "version": "%{version}",
+    "description": "%{about}",
+    "entry": "%{entry}",
+    "icon": "%{iconfile}",
+    "category": "%{category}",
+    "mimetypes": "%{mimetypes}"
+  }
+  EOF
 
   mkdir -p AppDir/
-  mv %{install-root}/usr/* AppDir/
+  mv %{install-root}/* AppDir/
 
-  cd %{install-root}/
-  appimagetool -nu "zsync|http://repo.rlxos.dev/apps/%{id}.app.zsync" %{build-root}/AppDir/ %{id}.app
+  cd AppDir/
+  mksquashfs . %{install-root}/%{id}.bundle

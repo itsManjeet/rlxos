@@ -1,0 +1,7 @@
+id: ApplicationManager
+version: 0.1.0
+about: Application Bundle Manager
+merge: [ elements/include/rlxos.inc ]
+
+depends:
+  - components/squashfuse.yml

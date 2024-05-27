@@ -9,7 +9,13 @@ configure: >-
   --enable-exif
   --disable-debug
 
-prepare-appimage: |-
+variables:
+  iconfile: share/icons/hicolor/scalable/apps/org.xfce.thunar.svg
+  entry: bin/thunar
+  mimetypes: inode/directory;
+  categories: System;Core;FileManager;
+
+prepare-bundle: |-
   install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/xdg/xfce4/xfconf/xfce-perchannel-xml/thunar.xml << "EOF"
   <?xml version="1.0" encoding="UTF-8"?>
   <channel name="thunar" version="1.0">
@@ -24,9 +30,6 @@ prepare-appimage: |-
     plugin_id=$(basename $i)
     (cd $i; ./configure --prefix=%{prefix} --disable-static --sysconfdir=%{sysconfdir} --libexecdir=%{libdir}/xfce4 && make && make install DESTDIR=%{install-root})
   done
-
-  rm -f %{install-root}%{datadir}/applications/thunar-*.desktop
-  cp %{install-root}%{datadir}/icons/hicolor/scalable/apps/org.xfce.thunar.svg %{install-root}/
 
 build-depends:
   - components/xfce4/exo.yml
@@ -44,4 +47,4 @@ sources:
   - https://archive.xfce.org/src/thunar-plugins/thunar-archive-plugin/0.5/thunar-archive-plugin-0.5.2.tar.bz2
   - https://archive.xfce.org/src/thunar-plugins/thunar-media-tags-plugin/0.4/thunar-media-tags-plugin-0.4.0.tar.bz2
 
-merge: [elements/include/appimage.inc]
+merge: [ elements/include/bundle.inc ]

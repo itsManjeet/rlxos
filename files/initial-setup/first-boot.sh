@@ -39,7 +39,7 @@ sudo install -v -D -m 0644 /dev/stdin /etc/greetd/config.toml << EOF
 vt = 1
 
 [default_session]
-command = "labwc"
+command = "sway"
 user = "${ISE_USERNAME}"
 EOF
 else
@@ -48,7 +48,7 @@ sudo install -v -D -m 0644 /dev/stdin /etc/greetd/config.toml << "EOF"
 vt = 1
 
 [default_session]
-command = "cage -- gtkgreet -l"
+command = "sway --config /etc/greetd/sway-config"
 EOF
 fi
 

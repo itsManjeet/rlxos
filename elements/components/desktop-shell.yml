@@ -45,11 +45,11 @@ script: |-
 
   install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/greetd/sway-config << "EOF"
   exec "gtkgreet -l; swaymsg exit"
-  bindsym Mod4+shift+e exec swayng \
+  bindsym Mod4+shift+e exec swaynag \
     -t warning \
     -m "What do you want to do?" \
-    -m "Poweroff" "systemctl poweroff" \
-    -m "Reboot" "systemctl reboot"
+    -b "Poweroff" "systemctl poweroff" \
+    -b "Reboot" "systemctl reboot"
 
   include /etc/sway/config.d/*
   EOF

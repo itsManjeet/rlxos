@@ -1,5 +1,5 @@
 id: desktop-shell
-version: 0.1.1
+version: 0.1.2
 about: Desktop shell for rlxos
 
 depends:
@@ -187,326 +187,127 @@ script: |-
   EOF
 
   install -v -D -m 0755 /dev/stdin %{install-root}%{datadir}/sfwbar/sfwbar.config << "EOF"
-  # Override gtk theme
   theme = "Orchis-Light"
-  # Override gtk icon theme
   IconTheme = "Tela-light"
-
-  # Display minimized windows on taskbars across all outputs
-  # DisownMinimized = true
-
-  # Select terminal emulator to use
   Set Term = "foot"
 
-  TriggerAction "SIGRTMIN+1", SwitcherEvent "forward"
-  TriggerAction "SIGRTMIN+2", SwitcherEvent "back"
-
-  Function("SfwbarInit") {
+  function("SfwbarInit") {
+    SetBarId "bar-0"
     SetLayer "top"
-    SetBarSize "100%"
-    SetMirror "*"
-  #  SetBarSensor "1000"
-  #  SetExclusiveZone "0"
-  }
-
-  # Window Placer
-  placer {
-    xorigin = 5  # place the first window at X% from the left
-    yorigin = 5  # place the first window at X% from the top
-    xstep = 5    # step by X% of desktop horizontally
-    ystep = 5    # step by X% of desktop vertically
-    children = true
-  }
-
-  # Task Switcher
-  switcher {
-    interval = 700
-    icons = true
-    labels = false
-    cols = 5
   }
 
   include("winops.widget")
 
-  layout {
-    css = "* { min-height: 20px }"
-
+  layout "sfwbar" {
     include("startmenu.widget")
 
+    button {
+      style = "launcher"
+      value = $Term
+      action = Exec $Term
+    }
+
     taskbar {
-      style = "taskbar"
-      rows = 1;
-      icons = true;
-      labels = false;
-      group = true;
-      sort = false;
-      action[3] = Menu "winops"
+      rows = 1
+      group = true
+      icons = true
+      labels = true
+      actions[3] = Menu "winops"
+    }
+    
+    label { css = "* { -GtkWidget-hexpand: true; min-height: 30x; }" }
+
+    include ("battery-svg.widget")
+
+    label {
+      value = Time("%k:%M")
+      style = "clock"
+    }
+
+    #CSS
+    @define-color lab_bg_color RGBA(0, 0, 0, 0.85);
+    @define-color lab_active_color #bc4b4f;
+    @define-color lab_hover_color RGBA(255, 255, 255, 0.1);
+    @define-color lab_text_color #d1d1d1;
+    @define-color lab_menu_bg_color #353535;
+
+    window {
+      -GtkWidget-direction: bottom;
+      background-color: @lab_bg_color;
     }
 
     label {
-      css = "* { -GtkWidget-hexpand: true; }"
+      font-size: 14px;
+      color: @lab_text_color;
+      text-shadow: none;
     }
 
-    pager {
-      style = "pager"
-      rows = 1
-      pins = "1","2","3","4"
-      preview = true
+    button,
+    button image {
+      outline-style: none;
+      box-shadow: none;
+      background-image: none;
+      border-image: none;
+      border-radius: 0;
+      min-height: 30px;
+      min-width: 30px;
+      margin: 0px;
+      margin-right: 3px;
+      border: 0px;
+      background-color: RGBA(0, 0, 0, 0.0);
+      -GtkWidget-valign: center;
     }
 
-    include("cpu.widget")
-    include("memory.widget")
-
-    tray {
-      rows = 1
+    button:hover {
+      background-color: @lab_hover_color;
     }
 
-    include("battery-svg.widget")
-    include("bluez.widget")
-  # include("idle.widget")
-  # include("rfkill-wifi.widget")
-  # include("rfkill-bt.widget")
-    include("network-module.widget")
-  # include("alsa-module.widget")
-    include("pulse-module.widget")
-    include("mpd-intmod.widget")
-    include("sway-lang.widget")
-
-    grid {
-      css = "* { -GtkWidget-direction: bottom; }"
-      label {
-        value = Time("%k:%M")
-        style ="clock"
-      }
-      label {
-        value = Time("%x")
-        style ="clock"
-      }
+    button#taskbar_group_normal,
+    button#taskbar_group_normal:hover,
+    button#taskbar_group_active {
+      border: 0px;
+      -GtkWidget-valign: center;
     }
-  }
 
-  #CSS
-  #hidden {
-    -GtkWidget-visible: false;
-  }
+    button#taskbar_group_active {
+      background-color: @lab_active_color;
+    }
 
-  button,
-  button image {
-    outline-style: none;
-    box-shadow: none;
-    background-image: none;
-    border-image: none;
-    min-height: 24px;
-    min-width: 24px;
-    -GtkWidget-valign: center;
-    -GtkWidget-vexpand: true;
-  }
+    button#taskbar_group_active:hover {
+      background-color: @lab_hover_color;
+    }
 
-  label {
-    font: 14px IBM Plex Sans;
-  }
+    #menu_item,
+    #menu_item *,
+    #menu_item image,
+    #menu_item label {
+      -GtkWidget-halign: start;
+      color: white;
+    }
 
-  image {
-    -ScaleImage-symbolic: true;
-  }
+    #menu_item image {
+      min-width: 16px;
+      min-height: 16px;
+      padding-right: 2px;
+      margin-right: 7px;
+      margin-left: 3px;
+    }
 
-  button#startmenu,
-  button#module {
-    border: none;
-    padding: 3px;
-    margin: 0px;
-    -GtkWidget-vexpand: true;
-  }
+    menu {
+      background-color: @lab_menu_bg_color;
+    }
 
-  button#taskbar_normal,
-  button#taskbar_active,
-  button#taskbar_normal:hover {
-    padding: 3px;
-    border-radius: 3px;
-    border-width: 0px;
-    -GtkWidget-hexpand: false;
-  }
+    menu arrow {
+      background: none;
+    }
 
-  grid#taskbar > :not(:last-child) button#taskbar_normal:hover,
-  grid#taskbar > :not(:last-child) button#taskbar_active,
-  grid#taskbar > :not(:last-child) button#taskbar_normal {
-    border-radius: 0px;
-    border-right: 1px solid alpha(@theme_fg_color,0.15);
-  }
-  button#taskbar_active {
-    background-color: rgba(199,227,255,0.6);
-  }
-
-  button#taskbar_normal:hover {
-    background-color: rgba(213,213,213,0.6);
-  }
-
-  button#taskbar_normal grid,
-  button#taskbar_active grid,
-  button#taskbar_normal:hover grid {
-    -GtkWidget-valign: center;
-  }
-
-  button#taskbar_normal image,
-  button#taskbar_active image,
-  button#taskbar_normal:hover image {
-    min-width: 48px;
-    min-height: 48px;
-  }
-
-  button#taskbar_normal label,
-  button#taskbar_active label,
-  button#taskbar_normal:hover label {
-  }
-
-  button#tray_active,
-  button#tray_passive,
-  button#tray_attention {
-    margin: 0px;
-    border: none;
-    padding: 0px;
-  }
-
-  button#tray_passive {
-    -GtkWidget-visible: false;
-  }
-
-  button#tray_active image,
-  button#tray_passive image,
-  button#tray_attention image {
-    -GtkWidget-valign: center;
-    -GtkWidget-vexpand: true;
-    min-height: 24px;
-    min-width: 24px;
-    padding: 3px;
-    margin: 0px;
-    border: none;
-  }
-
-  grid#pager {
-    border-radius: 3px;
-    border-color: @theme_fg_color;
-    border-style: solid;
-    border-width: 1px;
-    margin: 2px;
-    padding: 0px;
-  }
-
-  button#pager_normal,
-  button#pager_visible,
-  button#pager_focused {
-    border-radius: 5px;
-    border: none;
-    outline: 0px;
-    margin-right: 2px;
-    margin-left: 2px;
-    padding: 0px;
-    -GtkWidget-halign: center;
-    -GtkWidget-valign: center;
-  }
-
-  button#pager_focused {
-    background-color: rgba(199,227,255,0.6);
-  }
-
-  button#pager_preview {
-    border-radius: 0;
-    border-color: #000000;
-    border-width: 0.25mm;
-    color: #777777;
-    min-width: 5cm;
-    min-height: 2.8125cm;
-  }
-
-  #menu_item,
-  #menu_item image,
-  #menu_item label {
-    -GtkWidget-halign: start;
-  }
-
-  #menu_item image {
-    min-width: 16px;
-    min-height: 16px;
-    padding-right: 2px;
-  }
-
-  label#clock {
-    padding-left: 2px;
-    padding-right: 2px;
-    -GtkWidget-vexpand: true;
-    -GtkWidget-valign: center;
-    font: 14px IBM Plex Sans;
-  }
-
-  chart#cpu_chart {
-    background: rgba(127,127,127,0.3);
-    min-width: 9px;
-    -GtkWidget-vexpand: true;
-    margin: 2px;
-    border: 1px solid @theme_fg_color;
-    color: red;
-  }
-
-  progressbar#memory {
-    -GtkWidget-direction: top;
-    -GtkWidget-vexpand: true;
-    min-width: 9px;
-    border: 1px solid @theme_fg_color;
-    margin: 2px;
-  }
-
-  progressbar#memory trough {
-    min-height: 2px;
-    min-width: 9px;
-    border: none;
-    border-radius: 0px;
-    background: rgba(127,127,127,0.3);
-  }
-
-  progressbar#memory progress {
-    -GtkWidget-hexpand: true;
-    min-width: 9px;
-    border-radius: 0px;
-    border: none;
-    margin: 0px;
-    background-color: alpha(green,0.9);
-  }
-
-  grid#switcher_active image,
-  grid#switcher_active {
-    background-color: #bbddff;
-  }
-
-  grid#switcher_active image,
-  grid#switcher_active,
-  grid#switcher_normal image,
-  grid#switcher_normal {
-    min-width: 50px;
-    min-height: 50px;
-    border-radius: 5px;
-    padding: 5px;
-    -GtkWidget-direction: right;
-    -GtkWidget-hexpand: true;
-    -GtkWidget-direction: right;
-    -ScaleImage-symbolic: false;
-  }
-
-  window#switcher { 
-    border: 1px solid @borders;
-    border-radius: 6px; 
-    padding: 60px; 
-    -GtkWidget-hexpand: true;
-  }
-
-  grid#switcher { 
-    border-radius: 5px;
-    padding: 5px;
-    -GtkWidget-hexpand: true;
-  }
-
-  label#sway_lang {
-    margin-left: 3px;
-    margin-right: 5px;
+    label#clock {
+      color: @lab_text_color;
+      -GtkWidget-vexpand: true;
+      -GtkWidget-valign: center;
+      font-size: 18px;
+      margin-right: 8px;
+    }
   }
   EOF
 

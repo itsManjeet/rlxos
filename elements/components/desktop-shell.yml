@@ -20,6 +20,7 @@ depends:
   - components/mako.yml
   - components/playerctl.yml
   - components/iio-sway.yml
+  - components/wvkbd.yml
 
   - components/fonts/ibm-plex.yml
   - components/fonts/noto.yml
@@ -45,10 +46,6 @@ script: |-
   user = "initial-setup"
   EOF
 
-  install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/greetd/environments << "EOF"
-  sway
-  EOF
-
   install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/greetd/sway-config << "EOF"
   exec "wlgreet --command sway; swaymsg exit"
   bindsym Mod4+shift+e exec swaynag \
@@ -57,10 +54,22 @@ script: |-
     -b "Poweroff" "systemctl poweroff" \
     -b "Reboot" "systemctl reboot"
 
+  output * bg %{datadir}/backgrounds/default_blur.jpeg fill
+  blur on
+  blur_xray on
+  blur_passes 2
+  blur_radius 5
+
+  shadows on
+  shadows_on_csd on
+  shadow_blur_radius 20
+  shadow_color #0000007F
+
   include /etc/sway/config.d/*
   EOF
 
   install -v -D -m 0644 /files/backgrounds/default.jpeg %{install-root}%{datadir}/backgrounds/default.jpeg
+  install -v -D -m 0644 /files/backgrounds/default_blur.jpeg %{install-root}%{datadir}/backgrounds/default_blur.jpeg
 
   install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/gtk-3.0/settings.ini << "EOF"
   [Settings]
@@ -89,10 +98,12 @@ script: |-
 
   set $term foot
 
-  set $menu bemenu-run --fn "IBM Plex Sans 11" -b -p "▶" --tf #18B218 --hf "#3DAEE9" --sf "#3DAEE9" --scf "#3DAEE9" | xargs swaymsg exec
+  set $menu bemenu-run --fn "IBM Plex Sans 12" -p "▶" --tf "#4477ff" --hf "#4477ff" --sf "#4477ff" --scf "#2f343f" -H 30 --nb "#2f343f" --bdr "#4477ff" -B 1 | xargs swaymsg exec
 
   set $background %{datadir}/backgrounds/default.jpeg
   set $background_blur %{datadir}/backgrounds/default_blur.jpeg
+
+  set $lock swaylock -f -i $background_blur
 
   corner_radius 0
   titlebar_border_thickness 2
@@ -126,13 +137,13 @@ script: |-
 
   output * bg $background fill
   
-  bindswitch lid:on output * disable
-  bindswitch lid:off output * enable
+  bindswitch lid:on output eDPI-1 disable
+  bindswitch lid:off output eDPI-1 enable
 
   exec swayidle -w \
-          timeout 300 'swaylock -f -i $background_blur' \
+          timeout 300 '$lock' \
           timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
-          before-sleep 'swaylock -f -i $background_blur'
+          before-sleep '$lock'
   exec iio-sway
   # Start a terminal
   bindsym $mod+Return exec $term
@@ -233,9 +244,9 @@ script: |-
   bindsym $mod+a focus parent
   
   # Audio
-  bindsym $mod+F1 exec pactl set-sink-mute `pactl list sinks short | grep RUNNING | awk '{print $1}'` toggle
-  bindsym $mod+F2 exec pactl set-sink-volume `pactl list sinks short | grep RUNNING | awk '{print $1}'` -2%
-  bindsym $mod+F3 exec pactl set-sink-volume `pactl list sinks short | grep RUNNING | awk '{print $1}'` +2%
+  bindsym $mod+F1 exec pactl set-sink-mute `pactl list sinks short | grep -E 'RUNNING|IDLE' | awk '{print $1}'` toggle
+  bindsym $mod+F2 exec pactl set-sink-volume `pactl list sinks short | grep -E 'RUNNING|IDLE' | awk '{print $1}'` -2%
+  bindsym $mod+F3 exec pactl set-sink-volume `pactl list sinks short | grep -E 'RUNNING|IDLE' | awk '{print $1}'` +2%
 
   # Media
   bindsym $mod+F4 exec playerctl previous
@@ -245,8 +256,8 @@ script: |-
   # Backlight
   # PLEASE NOTE: Light has a small issue with SUID, you should install the version
   # that allows the user to run it without SUID
-  bindsym $mod+F9 exec light -U 5
-  bindsym $mod+F10 exec light -A 5
+  bindsym $mod+F9 exec brightnessctl s +10%
+  bindsym $mod+F10 exec brightnessctl s 10%-
 
   # Screenshot
   # bindsym $mod+S exec grimshot save screen ~/Pictures/$(date '+%Y-%m-%d-%T')-screenshot.png
@@ -339,8 +350,8 @@ script: |-
   battery_status=$(upower --show-info $(upower --enumerate | grep 'BAT') | egrep "state" | awk '{print $2}')
 
   # Audio and multimedia
-  audio_volume=$(pamixer --sink `pactl list sinks short | grep RUNNING | awk '{print $1}'` --get-volume)
-  audio_is_muted=$(pamixer --sink `pactl list sinks short | grep RUNNING | awk '{print $1}'` --get-mute)
+  audio_volume=$(pamixer --sink `pactl list sinks short | grep -E 'RUNNING|IDLE' | awk '{print $1}'` --get-volume)
+  audio_is_muted=$(pamixer --sink `pactl list sinks short | grep -E 'RUNNING|IDLE' | awk '{print $1}'` --get-mute)
 
   # Network
   network=$(ip route get 1.1.1.1 | grep -Po '(?<=dev\s)\w+' | cut -f1 -d ' ')
@@ -397,7 +408,7 @@ script: |-
   red = 1.0
   green = 1.0
   blue = 1.0
-  opacity = 1.0
+  opacity = 0.5
 
   [promptErr]
   red = 1.0
@@ -409,5 +420,5 @@ script: |-
   red = 1.0
   green = 1.0
   blue = 1.0
-  opacity = 1.0
+  opacity = 0.0
   EOF

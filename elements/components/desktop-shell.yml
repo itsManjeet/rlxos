@@ -54,7 +54,7 @@ script: |-
     -b "Poweroff" "systemctl poweroff" \
     -b "Reboot" "systemctl reboot"
 
-  output * bg %{datadir}/backgrounds/default_blur.jpeg fill
+  output * bg %{datadir}/backgrounds/default_blur.jpg fill
   blur on
   blur_xray on
   blur_passes 2
@@ -68,8 +68,8 @@ script: |-
   include /etc/sway/config.d/*
   EOF
 
-  install -v -D -m 0644 /files/backgrounds/default.jpeg %{install-root}%{datadir}/backgrounds/default.jpeg
-  install -v -D -m 0644 /files/backgrounds/default_blur.jpeg %{install-root}%{datadir}/backgrounds/default_blur.jpeg
+  install -v -D -m 0644 /files/backgrounds/default.jpg %{install-root}%{datadir}/backgrounds/default.jpg
+  install -v -D -m 0644 /files/backgrounds/default_blur.jpg %{install-root}%{datadir}/backgrounds/default_blur.jpg
 
   install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/gtk-3.0/settings.ini << "EOF"
   [Settings]
@@ -100,8 +100,8 @@ script: |-
 
   set $menu bemenu-run --fn "IBM Plex Sans 12" -p "▶" --tf "#4477ff" --hf "#4477ff" --sf "#4477ff" --scf "#2f343f" -H 30 --nb "#2f343f" --bdr "#4477ff" -B 1 | xargs swaymsg exec
 
-  set $background %{datadir}/backgrounds/default.jpeg
-  set $background_blur %{datadir}/backgrounds/default_blur.jpeg
+  set $background %{datadir}/backgrounds/default.jpg
+  set $background_blur %{datadir}/backgrounds/default_blur.jpg
 
   set $lock swaylock -f -i $background_blur
 

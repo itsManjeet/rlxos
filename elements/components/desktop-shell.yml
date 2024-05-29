@@ -12,8 +12,14 @@ depends:
   - components/greetd.yml
   - components/wlgreet.yml
   
-  - components/wmenu.yml
+  - components/bemenu.yml
   - components/foot.yml
+  - components/brightnessctl.yml
+  - components/pipewire.yml
+  - components/pamixer.yml
+  - components/mako.yml
+  - components/playerctl.yml
+  - components/iio-sway.yml
 
   - components/fonts/ibm-plex.yml
   - components/fonts/noto.yml
@@ -83,14 +89,17 @@ script: |-
 
   set $term foot
 
-  set $menu dmenu_path | wmenu | xargs swaymsg exec --
+  set $menu bemenu-run --fn "IBM Plex Sans 11" -b -p "▶" --tf #18B218 --hf "#3DAEE9" --sf "#3DAEE9" --scf "#3DAEE9" | xargs swaymsg exec
+
+  set $background %{datadir}/backgrounds/default.jpeg
+  set $background_blur %{datadir}/backgrounds/default_blur.jpeg
 
   corner_radius 0
   titlebar_border_thickness 2
-  titlebar_padding 10
+  titlebar_padding 5
   title_align center
 
-  font pango: IBM Plex Sans Regular 12
+  font pango: IBM Plex Sans Regular 11
   client.focused #2f343f #2f343f #4477ff #4477ff #2f343f
   client.focused_inactive #2f343f #2f343f #d8dee8 #2f343f #2f343f
   client.unfocused #2f343f #2f343f #d8dee8 #2f343f #2f343f
@@ -103,7 +112,7 @@ script: |-
   blur_radius 5
 
   shadows on
-  shadows_on_csd off
+  shadows_on_csd on
   shadow_blur_radius 20
   shadow_color #0000007F
 
@@ -115,13 +124,16 @@ script: |-
   # Move minimized windows into Scratchpad (enable|disable)
   scratchpad_minimize enable
 
-  output * bg %{datadir}/backgrounds/default.jpeg fill
+  output * bg $background fill
   
-  exec swayidle -w \
-          timeout 300 'swaylock -f -c 000000' \
-          timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
-          before-sleep 'swaylock -f -c 000000'
+  bindswitch lid:on output * disable
+  bindswitch lid:off output * enable
 
+  exec swayidle -w \
+          timeout 300 'swaylock -f -i $background_blur' \
+          timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
+          before-sleep 'swaylock -f -i $background_blur'
+  exec iio-sway
   # Start a terminal
   bindsym $mod+Return exec $term
 
@@ -220,6 +232,33 @@ script: |-
   # Move focus to the parent container
   bindsym $mod+a focus parent
   
+  # Audio
+  bindsym $mod+F1 exec pactl set-sink-mute `pactl list sinks short | grep RUNNING | awk '{print $1}'` toggle
+  bindsym $mod+F2 exec pactl set-sink-volume `pactl list sinks short | grep RUNNING | awk '{print $1}'` -2%
+  bindsym $mod+F3 exec pactl set-sink-volume `pactl list sinks short | grep RUNNING | awk '{print $1}'` +2%
+
+  # Media
+  bindsym $mod+F4 exec playerctl previous
+  bindsym $mod+F5 exec playerctl play-pause
+  bindsym $mod+F6 exec playerctl next
+
+  # Backlight
+  # PLEASE NOTE: Light has a small issue with SUID, you should install the version
+  # that allows the user to run it without SUID
+  bindsym $mod+F9 exec light -U 5
+  bindsym $mod+F10 exec light -A 5
+
+  # Screenshot
+  # bindsym $mod+S exec grimshot save screen ~/Pictures/$(date '+%Y-%m-%d-%T')-screenshot.png
+  # bindsym $mod+Shift+S exec grimshot save area ~/Pictures/$(date '+%Y-%m-%d-%T')-screenshot.png
+
+  input "type:touchpad" {
+    dwt enabled
+    tap enabled
+    middle_emulation enabled
+    natural_scroll enabled
+  }
+
   #
   # Scratchpad:
   #
@@ -266,7 +305,7 @@ script: |-
 
       # When the status_command prints a new line to stdout, swaybar updates.
       # The default just shows the current date and time.
-      status_command while date +'%Y-%m-%d %X'; do sleep 1; done
+      status_command while %{bindir}/swaybar-status_command; do sleep 1; done
 
       colors {
           statusline #ffffff
@@ -276,6 +315,65 @@ script: |-
   }
 
   include %{sysconfdir}/sway/config.d/*
+  EOF
+
+  install -v -D -m 0755 /dev/stdin %{install-root}%{bindir}/swaybar-status_command << "EOF"
+  # Change this according to your device
+  ################
+  # Variables
+  ################
+
+  # Keyboard input name
+  keyboard_input_name="1:1:AT_Translated_Set_2_keyboard"
+
+  # Date and time
+  date_and_week=$(date "+%Y/%m/%d (w%-V)")
+  current_time=$(date "+%H:%M")
+
+  #############
+  # Commands
+  #############
+
+  # Battery or charger
+  battery_charge=$(upower --show-info $(upower --enumerate | grep 'BAT') | egrep "percentage" | awk '{print $2}')
+  battery_status=$(upower --show-info $(upower --enumerate | grep 'BAT') | egrep "state" | awk '{print $2}')
+
+  # Audio and multimedia
+  audio_volume=$(pamixer --sink `pactl list sinks short | grep RUNNING | awk '{print $1}'` --get-volume)
+  audio_is_muted=$(pamixer --sink `pactl list sinks short | grep RUNNING | awk '{print $1}'` --get-mute)
+
+  # Network
+  network=$(ip route get 1.1.1.1 | grep -Po '(?<=dev\s)\w+' | cut -f1 -d ' ')
+  # interface_easyname grabs the "old" interface name before systemd renamed it
+  interface_easyname=$(dmesg | grep $network | grep renamed | awk 'NF>1{print $NF}')
+  ping=$(ping -c 1 www.google.es | tail -1| awk '{print $4}' | cut -d '/' -f 2 | cut -d '.' -f 1)
+
+  # Others
+  language=$(swaymsg -r -t get_inputs | awk '/1:1:AT_Translated_Set_2_keyboard/;/xkb_active_layout_name/' | grep -A1 '\b1:1:AT_Translated_Set_2_keyboard\b' | grep "xkb_active_layout_name" | awk -F '"' '{print $4}')
+  loadavg_5min=$(cat /proc/loadavg | awk -F ' ' '{print $2}')
+
+  if [ $battery_status = "discharging" ];
+  then
+      battery_pluggedin='⚠'
+  else
+      battery_pluggedin='⚡'
+  fi
+
+  if ! [ $network ]
+  then
+     network_active="⛔"
+  else
+     network_active="⇆"
+  fi
+
+  if [ $audio_is_muted = "true" ]
+  then
+      audio_active='🔇'
+  else
+      audio_active='🔊'
+  fi
+
+  echo "  ⌨ $language | $network_active $interface_easyname ($ping ms) | 🏋 $loadavg_5min | $audio_active $audio_volume% | $battery_pluggedin $battery_charge | $date_and_week 🕘 $current_time  "
   EOF
 
   install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/greetd/wlgreet.toml << "EOF"

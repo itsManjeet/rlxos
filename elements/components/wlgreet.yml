@@ -1,5 +1,5 @@
 id: wlgreet
-version: 0.4.1
+version: 0.5.0
 about: Wayland greeter for greetd
 
 post-script: |-

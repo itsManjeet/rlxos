@@ -10,7 +10,7 @@ depends:
   - components/cage.yml
   
   - components/greetd.yml
-  - components/gtkgreet.yml
+  - components/wlgreet.yml
   
   - components/wmenu.yml
   - components/foot.yml
@@ -44,7 +44,7 @@ script: |-
   EOF
 
   install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/greetd/sway-config << "EOF"
-  exec "gtkgreet -l; swaymsg exit"
+  exec "wlgreet --command sway; swaymsg exit"
   bindsym Mod4+shift+e exec swaynag \
     -t warning \
     -m "What do you want to do?" \
@@ -63,7 +63,17 @@ script: |-
   gtk-font-name = IBM Plex Sans 12
   EOF
 
-  install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/sway/config << "EOF".
+  install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/swaynag/config << "EOF"
+  font=IBM Plex Sans 12
+  background=#2f343f
+  border=#4477ff00
+  text=#4477ff
+  button-background=#21242b
+  message-padding=15
+  button-padding=10
+  EOF
+
+  install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/sway/config << "EOF"
   set $mod Mod4
 
   set $left h
@@ -75,7 +85,17 @@ script: |-
 
   set $menu dmenu_path | wmenu | xargs swaymsg exec --
 
-  corner_radius 10
+  corner_radius 0
+  titlebar_border_thickness 2
+  titlebar_padding 10
+  title_align center
+
+  font pango: IBM Plex Sans Regular 12
+  client.focused #2f343f #2f343f #4477ff #4477ff #2f343f
+  client.focused_inactive #2f343f #2f343f #d8dee8 #2f343f #2f343f
+  client.unfocused #2f343f #2f343f #d8dee8 #2f343f #2f343f
+  client.urgent #2f343f #2f343f #d8dee8 #2f343f #2f343f
+  client.placeholder #2f343f #2f343f #d8dee8 #2f343f #2f343f
 
   blur on
   blur_xray on
@@ -89,11 +109,11 @@ script: |-
 
   # inactive window fade amount. 0.0 = no dimming, 1.0 = fully dimmed
   default_dim_inactive 0.0
-  dim_inactive_colors.unfocused #000000FF
-  dim_inactive_colors.urgent #900000FF
+  dim_inactive_colors.unfocused #000000AA
+  dim_inactive_colors.urgent #900000AA
 
   # Move minimized windows into Scratchpad (enable|disable)
-  scratchpad_minimize disable
+  scratchpad_minimize enable
 
   output * bg %{datadir}/backgrounds/default.jpeg fill
   
@@ -256,4 +276,40 @@ script: |-
   }
 
   include %{sysconfdir}/sway/config.d/*
+  EOF
+
+  install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/greetd/wlgreet.toml << "EOF"
+  command = "sway"
+  outputMode = "all"
+  scale = 1
+
+  [background]
+  red = 0
+  green = 0
+  blue = 0
+  opacity = 0.9
+
+  [headline]
+  red = 1.0
+  green = 1.0
+  blue = 1.0
+  opacity = 1.0
+
+  [prompt]
+  red = 1.0
+  green = 1.0
+  blue = 1.0
+  opacity = 1.0
+
+  [promptErr]
+  red = 1.0
+  green = 1.0
+  blue = 1.0
+  opacity = 1.0
+
+  [border]
+  red = 1.0
+  green = 1.0
+  blue = 1.0
+  opacity = 1.0
   EOF

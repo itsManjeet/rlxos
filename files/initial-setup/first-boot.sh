@@ -32,8 +32,6 @@ echo "root":"${ISE_PASSWORD}" | sudo chpasswd || {
 fi
 
 echo ":: Installing greetd configuration"
-if [[ ${ISE_AUTOLOGIN} -eq 1 ]] ; then
-echo ":: Enabling autologin for ${ISE_USERNAME}"
 sudo install -v -D -m 0644 /dev/stdin /etc/greetd/config.toml << EOF
 [terminal]
 vt = 1
@@ -44,17 +42,7 @@ command = "sway --config /etc/greetd/sway-config"
 [initial_session]
 command = "sway"
 user = "${ISE_USERNAME}"
-
 EOF
-else
-sudo install -v -D -m 0644 /dev/stdin /etc/greetd/config.toml << "EOF"
-[terminal]
-vt = 1
-
-[default_session]
-command = "sway --config /etc/greetd/sway-config"
-EOF
-fi
 
 #echo ":: setting up locale: ${ISE_LOCALE}"
 #sudo install -vDm644 /dev/stdin /etc/locale.conf << EOF

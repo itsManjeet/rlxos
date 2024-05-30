@@ -55,15 +55,6 @@ script: |-
     -b "Reboot" "systemctl reboot"
 
   output * bg %{datadir}/backgrounds/default_blur.jpeg fill
-  blur on
-  blur_xray on
-  blur_passes 2
-  blur_radius 5
-
-  shadows on
-  shadows_on_csd on
-  shadow_blur_radius 20
-  shadow_color #0000007F
 
   include /etc/sway/config.d/*
   EOF
@@ -140,10 +131,13 @@ script: |-
   bindswitch lid:on output eDPI-1 disable
   bindswitch lid:off output eDPI-1 enable
 
+  exec $lock
+
   exec swayidle -w \
           timeout 300 '$lock' \
           timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
           before-sleep '$lock'
+
   exec iio-sway
   # Start a terminal
   bindsym $mod+Return exec $term
@@ -165,7 +159,13 @@ script: |-
   bindsym $mod+Shift+c reload
 
   # Exit sway (logs you out of your Wayland session)
-  bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+  bindsym $mod+Shift+e exec swaynag \
+           -t warning \
+           -m 'System Menu' \
+           -b 'Lock' '$lock' \
+           -b 'Sleep' 'systemctl suspend' \
+           -b 'Shutdown' 'systemctl poweroff' \
+           -b 'Restart' 'systemctl reboot'
 
   # Move your focus around
   bindsym $mod+$left focus left
@@ -244,24 +244,22 @@ script: |-
   bindsym $mod+a focus parent
   
   # Audio
-  bindsym $mod+F1 exec pactl set-sink-mute `pactl list sinks short | grep -E 'RUNNING|IDLE' | awk '{print $1}'` toggle
-  bindsym $mod+F2 exec pactl set-sink-volume `pactl list sinks short | grep -E 'RUNNING|IDLE' | awk '{print $1}'` -2%
-  bindsym $mod+F3 exec pactl set-sink-volume `pactl list sinks short | grep -E 'RUNNING|IDLE' | awk '{print $1}'` +2%
+  bindsym XF86AudioMute pactl set-sink-mute `pactl list sinks short | grep -E 'RUNNING|IDLE' | awk '{print $1}'` toggle
+  bindsym XF86AudioRaiseVolume exec pamixer -ui 10 && pamixer --get-volume > $WOBSOCK
+  bindsym XF86AudioLowerVolume exec pamixer -ud 10 && pamixer --get-volume > $WOBSOCK
 
   # Media
-  bindsym $mod+F4 exec playerctl previous
-  bindsym $mod+F5 exec playerctl play-pause
-  bindsym $mod+F6 exec playerctl next
+  bindsym XF86AudioPrev exec playerctl previous
+  bindsym XF86AudioPlay exec playerctl play-pause
+  bindsym XF86AudioNext exec playerctl next
 
   # Backlight
-  # PLEASE NOTE: Light has a small issue with SUID, you should install the version
-  # that allows the user to run it without SUID
   bindsym $mod+F9 exec brightnessctl s +10%
   bindsym $mod+F10 exec brightnessctl s 10%-
 
   # Screenshot
-  # bindsym $mod+S exec grimshot save screen ~/Pictures/$(date '+%Y-%m-%d-%T')-screenshot.png
-  # bindsym $mod+Shift+S exec grimshot save area ~/Pictures/$(date '+%Y-%m-%d-%T')-screenshot.png
+  bindsym $mod+P exec grimshot save screen ~/Pictures/$(date '+%Y-%m-%d-%T')-screenshot.png
+  bindsym $mod+Shift+P exec grimshot save area ~/Pictures/$(date '+%Y-%m-%d-%T')-screenshot.png
 
   input "type:touchpad" {
     dwt enabled
@@ -328,6 +326,17 @@ script: |-
   include %{sysconfdir}/sway/config.d/*
   EOF
 
+  install -v -D -m 0755 /dev/stdin %{install-root}%{sysconfdir}/sway/config.d/gtk-themes << "EOF"
+  exec {
+    gsettings set org.gtk.Settings.FileChooser window-size '(1000, 500)'
+    gsettings set org.gnome.desktop.interface gtk-theme 'Orchis-Dark'
+    gsettings set org.gnome.desktop.interface.wm.preferences theme 'Orchis-Dark'
+    gsettings set org.gnome.desktop.interface icon-theme 'Tela-light'
+    gsettings set org.gnome.desktop.interface cursor-size '48'
+    gsettings set org.gnome.desktop.interface font-name 'IBM Plex Sans 11'
+  }
+  EOF
+
   install -v -D -m 0755 /dev/stdin %{install-root}%{bindir}/swaybar-status_command << "EOF"
   # Change this according to your device
   ################
@@ -365,7 +374,7 @@ script: |-
 
   if [ $battery_status = "discharging" ];
   then
-      battery_pluggedin='⚠'
+      battery_pluggedin='🔋'
   else
       battery_pluggedin='⚡'
   fi

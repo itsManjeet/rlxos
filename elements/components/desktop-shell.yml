@@ -32,6 +32,15 @@ depends:
   - components/themes/tela-icon-theme.yml
   - components/themes/orchis-gtk-theme.yml
 
+variables:
+  background_color: "#EEF1FF"
+  background_secondary_color: "#D2DAFF"
+  foreground_color: "#344C64"
+  foreground_secondary_color: "#577B8D"
+  border_color: "#AAC4FF"
+  highlight_color: "#B1B2FF"
+  font_theme: "IBM Plex 12"
+
 script: |-
   install -v -D -m 0755 /dev/stdin %{install-root}%{libdir}/systemd/systemd-preset << "EOF"
   enable greetd
@@ -66,17 +75,55 @@ script: |-
   [Settings]
   gtk-icon-theme-name = Tela-light
   gtk-theme-name = Orchis-Light
-  gtk-font-name = IBM Plex Sans 12
+  gtk-font-name = %{font_theme}
   EOF
 
   install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/swaynag/config << "EOF"
-  font=IBM Plex Sans 12
-  background=#2f343f
-  border=#4477ff00
-  text=#4477ff
-  button-background=#21242b
-  message-padding=15
+  font=%{font_theme}
+  dismiss-button=x
+
+  background=%{background_secondary_color}
+  border=%{border_color}
+  text=%{foreground_secondary_color}
+  button-background=%{background_color}
+
+  message-padding=10
   button-padding=10
+
+  button-border-size=1
+  details-border-size=1
+  border-bottom-size=1
+
+  [warning]
+  background=#EBEDD1
+  border=#F9E154
+  button-background=#EFEF8D
+  EOF
+
+  install -v -D -m 0755 /dev/stdin %{install-root}%{sysconfdir}/profile.d/bemenu.sh << "EOF"
+  export BEMENU_OPTS='--fn "IBM Plex Sans 13" \
+                 -l10 -c -W0.5 -B2 -R10 -H30 \
+                 --fixed-height \
+                 --scrollbar autohide \
+                 --ignorecase \
+                 --fn "$font" \
+                 --tb "$background" \
+                 --tf "$foreground" \
+                 --nb "$background" \
+                 --nf "$foreground" \
+                 --cb "$background" \
+                 --cf "$foreground" \
+                 --scb "$background_secondary" \
+                 --scf "$foreground_secondary_color" \
+                 --ab "$background" \
+                 --af "$foreground" \
+                 --sb "$background_secondary" \
+                 --sf "$foreground_secondary" \
+                 --hf "$foreground_secondary" \
+                 --hb "$background_secondary" \
+                 --bdr "$border"    \
+                 --fb "$background" \
+                 --ff "$foreground"'
   EOF
 
   install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/sway/config << "EOF"
@@ -89,24 +136,32 @@ script: |-
 
   set $term foot
 
-  set $menu bemenu-run --fn "IBM Plex Sans 12" -p "▶" --tf "#4477ff" --hf "#4477ff" --sf "#4477ff" --scf "#2f343f" -H 30 --nb "#2f343f" --bdr "#4477ff" -B 1 | xargs swaymsg exec
+  set $background %{background_color}
+  set $background_secondary %{background_secondary_color}
+  set $foreground %{foreground_color}
+  set $foreground_secondary %{foreground_secondary_color}
+  set $border %{border_color}
+  set $highlight %{highlight_color}
+  set $font "IBM Plex Sans 12"
 
-  set $background %{datadir}/backgrounds/default.jpg
-  set $background_blur %{datadir}/backgrounds/default_blur.jpg
+  set $menu bemenu-run -p "▶" | xargs swaymsg exec
 
-  set $lock swaylock -f -i $background_blur
+  set $background_image /usr/share/backgrounds/default.jpg
+  set $background_blur_image /usr/share/backgrounds/default_blur.jpg
 
-  corner_radius 0
+  set $lock swaylock -f -i $background_blur_image
+
   titlebar_border_thickness 2
   titlebar_padding 5
   title_align center
 
   font pango: IBM Plex Sans Regular 11
-  client.focused #2f343f #2f343f #4477ff #4477ff #2f343f
-  client.focused_inactive #2f343f #2f343f #d8dee8 #2f343f #2f343f
-  client.unfocused #2f343f #2f343f #d8dee8 #2f343f #2f343f
-  client.urgent #2f343f #2f343f #d8dee8 #2f343f #2f343f
-  client.placeholder #2f343f #2f343f #d8dee8 #2f343f #2f343f
+  # class                 border                 background             foreground               indicator  child_border
+  client.focused          $background            $background            $foreground             $highlight  $border
+  client.focused_inactive $background_secondary  $background_secondary  $foreground_secondary   $highlight  $background_secondary
+  client.unfocused        $background_secondary  $background_secondary  $foreground_secondary   $highlight  $background_secondary
+  client.urgent           $background_secondary  $background_secondary  $foreground_secondary   $highlight  $background_secondary
+  client.placeholder      $background_secondary  $background_secondary  $foreground_secondary   $highlight  $background_secondary
 
   blur on
   blur_xray on
@@ -126,7 +181,7 @@ script: |-
   # Move minimized windows into Scratchpad (enable|disable)
   scratchpad_minimize enable
 
-  output * bg $background fill
+  output * bg $background_image fill
   
   bindswitch lid:on output eDPI-1 disable
   bindswitch lid:off output eDPI-1 enable
@@ -163,6 +218,7 @@ script: |-
            -t warning \
            -m 'System Menu' \
            -b 'Lock' '$lock' \
+           -b 'Logout' 'swaymsg exit' \
            -b 'Sleep' 'systemctl suspend' \
            -b 'Shutdown' 'systemctl poweroff' \
            -b 'Restart' 'systemctl reboot'
@@ -254,12 +310,12 @@ script: |-
   bindsym XF86AudioNext exec playerctl next
 
   # Backlight
-  bindsym $mod+F9 exec brightnessctl s +10%
-  bindsym $mod+F10 exec brightnessctl s 10%-
+  bindsym XF86MonBrightnessUp exec brightnessctl s +5%
+  bindsym XF86MonBrightnessDown exec brightnessctl s 5%-
 
   # Screenshot
-  bindsym $mod+P exec grimshot save screen ~/Pictures/$(date '+%Y-%m-%d-%T')-screenshot.png
-  bindsym $mod+Shift+P exec grimshot save area ~/Pictures/$(date '+%Y-%m-%d-%T')-screenshot.png
+  bindsym Print exec grimshot save screen ~/Pictures/$(date '+%Y-%m-%d-%T')-screenshot.png
+  bindsym Shift+Print exec grimshot save area ~/Pictures/$(date '+%Y-%m-%d-%T')-screenshot.png
 
   input "type:touchpad" {
     dwt enabled
@@ -314,26 +370,27 @@ script: |-
 
       # When the status_command prints a new line to stdout, swaybar updates.
       # The default just shows the current date and time.
-      status_command while %{bindir}/swaybar-status_command; do sleep 1; done
+      status_command while /usr/bin/swaybar-status_command; do sleep 1; done
 
       colors {
-          statusline #ffffff
-          background #323232
-          inactive_workspace #32323200 #32323200 #5c5c5c
+          statusline $foreground
+          background $background
+          focused_workspace $background_secondary $background_secondary $foreground_secondary
+          active_workspace $background_secondary $background_secondary $foreground_secondary
+          inactive_workspace $background $background $foreground
       }
   }
 
-  include %{sysconfdir}/sway/config.d/*
+  include /etc/sway/config.d/*
   EOF
 
   install -v -D -m 0755 /dev/stdin %{install-root}%{sysconfdir}/sway/config.d/gtk-themes << "EOF"
   exec {
     gsettings set org.gtk.Settings.FileChooser window-size '(1000, 500)'
-    gsettings set org.gnome.desktop.interface gtk-theme 'Orchis-Dark'
-    gsettings set org.gnome.desktop.interface.wm.preferences theme 'Orchis-Dark'
+    gsettings set org.gnome.desktop.interface gtk-theme 'Orchis-Light'
+    gsettings set org.gnome.desktop.interface.wm.preferences theme 'Orchis-Light'
     gsettings set org.gnome.desktop.interface icon-theme 'Tela-light'
-    gsettings set org.gnome.desktop.interface cursor-size '48'
-    gsettings set org.gnome.desktop.interface font-name 'IBM Plex Sans 11'
+    gsettings set org.gnome.desktop.interface font-name '%{font_theme}'
   }
   EOF
 

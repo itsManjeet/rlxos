@@ -21,6 +21,8 @@ depends:
   - components/playerctl.yml
   - components/iio-sway.yml
   - components/wvkbd.yml
+  - components/wob.yml
+  - components/grim.yml
 
   - components/fonts/ibm-plex.yml
   - components/fonts/noto.yml
@@ -100,8 +102,25 @@ script: |-
   button-background=#EFEF8D
   EOF
 
-  install -v -D -m 0755 /dev/stdin %{install-root}%{sysconfdir}/profile.d/bemenu.sh << "EOF"
-  export BEMENU_OPTS='--fn "IBM Plex Sans 13" \
+  install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/sway/config << "EOF"
+  set $mod Mod4
+
+  set $left h
+  set $down j
+  set $up k
+  set $right l
+
+  set $term foot
+
+  set $background %{background_color}
+  set $background_secondary %{background_secondary_color}
+  set $foreground %{foreground_color}
+  set $foreground_secondary %{foreground_secondary_color}
+  set $border %{border_color}
+  set $highlight %{highlight_color}
+  set $font "IBM Plex Sans 12"
+
+  set $menu bemenu-run -p "▶" --fn "IBM Plex Sans 13" \
                  -l10 -c -W0.5 -B2 -R10 -H30 \
                  --fixed-height \
                  --scrollbar autohide \
@@ -123,28 +142,7 @@ script: |-
                  --hb "$background_secondary" \
                  --bdr "$border"    \
                  --fb "$background" \
-                 --ff "$foreground"'
-  EOF
-
-  install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/sway/config << "EOF"
-  set $mod Mod4
-
-  set $left h
-  set $down j
-  set $up k
-  set $right l
-
-  set $term foot
-
-  set $background %{background_color}
-  set $background_secondary %{background_secondary_color}
-  set $foreground %{foreground_color}
-  set $foreground_secondary %{foreground_secondary_color}
-  set $border %{border_color}
-  set $highlight %{highlight_color}
-  set $font "IBM Plex Sans 12"
-
-  set $menu bemenu-run -p "▶" | xargs swaymsg exec
+                 --ff "$foreground"' | xargs swaymsg exec
 
   set $background_image /usr/share/backgrounds/default.jpg
   set $background_blur_image /usr/share/backgrounds/default_blur.jpg
@@ -183,14 +181,17 @@ script: |-
 
   output * bg $background_image fill
   
-  bindswitch lid:on output eDPI-1 disable
-  bindswitch lid:off output eDPI-1 enable
+  bindswitch --reload lid:on output eDPI-1 disable
+  bindswitch --reload lid:off output eDPI-1 enable
 
   exec $lock
 
+  exec mkfifo $SWAYSOCK.wob && tail -f $SWAYSOCK.wob | wob
+
   exec swayidle -w \
           timeout 300 '$lock' \
-          timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
+          timeout 600 'swaymsg "output * dpms off"' \
+               resume 'swaymsg "output * dpms on"' \
           before-sleep '$lock'
 
   exec iio-sway
@@ -301,8 +302,8 @@ script: |-
   
   # Audio
   bindsym XF86AudioMute pactl set-sink-mute `pactl list sinks short | grep -E 'RUNNING|IDLE' | awk '{print $1}'` toggle
-  bindsym XF86AudioRaiseVolume exec pamixer -ui 10 && pamixer --get-volume > $WOBSOCK
-  bindsym XF86AudioLowerVolume exec pamixer -ud 10 && pamixer --get-volume > $WOBSOCK
+  bindsym XF86AudioRaiseVolume exec pamixer -ui 10 && pamixer --get-volume > $SWAYSOCK.wob
+  bindsym XF86AudioLowerVolume exec pamixer -ud 10 && pamixer --get-volume > $SWAYSOCK.wob
 
   # Media
   bindsym XF86AudioPrev exec playerctl previous
@@ -310,8 +311,8 @@ script: |-
   bindsym XF86AudioNext exec playerctl next
 
   # Backlight
-  bindsym XF86MonBrightnessUp exec brightnessctl s +5%
-  bindsym XF86MonBrightnessDown exec brightnessctl s 5%-
+  bindsym XF86MonBrightnessUp exec brightnessctl s +5% > $SWAYSOCK.wob
+  bindsym XF86MonBrightnessDown exec brightnessctl s 5%- > $SWAYSOCK.wob
 
   # Screenshot
   bindsym Print exec grimshot save screen ~/Pictures/$(date '+%Y-%m-%d-%T')-screenshot.png

@@ -22,7 +22,7 @@ depends:
   - components/iio-sway.yml
   - components/wvkbd.yml
   - components/wob.yml
-  - components/grim.yml
+  - components/grimshot.yml
 
   - components/fonts/ibm-plex.yml
   - components/fonts/noto.yml
@@ -120,29 +120,30 @@ script: |-
   set $highlight %{highlight_color}
   set $font "IBM Plex Sans 12"
 
-  set $menu bemenu-run -p "▶" --fn "IBM Plex Sans 13" \
-                 -l10 -c -W0.5 -B2 -R10 -H30 \
-                 --fixed-height \
-                 --scrollbar autohide \
-                 --ignorecase \
-                 --fn "$font" \
-                 --tb "$background" \
-                 --tf "$foreground" \
-                 --nb "$background" \
-                 --nf "$foreground" \
-                 --cb "$background" \
-                 --cf "$foreground" \
-                 --scb "$background_secondary" \
-                 --scf "$foreground_secondary_color" \
-                 --ab "$background" \
-                 --af "$foreground" \
-                 --sb "$background_secondary" \
-                 --sf "$foreground_secondary" \
-                 --hf "$foreground_secondary" \
-                 --hb "$background_secondary" \
-                 --bdr "$border"    \
-                 --fb "$background" \
-                 --ff "$foreground"' | xargs swaymsg exec
+  set $menu bemenu-run -p "▶" \
+             --fn "IBM Plex Sans 13" \
+             -l10 -c -W0.5 -B1 -H30 \
+             --fixed-height \
+             --scrollbar autohide \
+             --ignorecase \
+             --fn "$font" \
+             --tb "$background" \
+             --tf "$foreground" \
+             --nb "$background" \
+             --nf "$foreground" \
+             --cb "$background" \
+             --cf "$foreground" \
+             --scb "$background_secondary" \
+             --scf "$foreground_secondary_color" \
+             --ab "$background" \
+             --af "$foreground" \
+             --sb "$background_secondary" \
+             --sf "$foreground_secondary" \
+             --hf "$foreground_secondary" \
+             --hb "$background_secondary" \
+             --bdr "$border"    \
+             --fb "$background" \
+             --ff "$foreground" | xargs swaymsg exec
 
   set $background_image /usr/share/backgrounds/default.jpg
   set $background_blur_image /usr/share/backgrounds/default_blur.jpg

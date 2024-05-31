@@ -85,11 +85,7 @@ depends:
   - components/sof-firmware.yml
 
   - components/desktop-shell.yml
-
-  - components/network-manager-applet.yml
   - components/system-config-printer.yml
-
-  - components/networkmanager-openvpn.yml
 
   # Components
   - components/gvfs.yml

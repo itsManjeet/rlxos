@@ -94,6 +94,7 @@ depends:
   - components/flatpak.yml
   - components/power-profiles-daemon.yml
   - components/networkmanager.yml
+  - components/webkitgtk.yml
 
   - components/ntfs-3g.yml
 

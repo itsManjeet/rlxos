@@ -93,6 +93,7 @@ depends:
   - components/xdg-utils.yml
   - components/flatpak.yml
   - components/power-profiles-daemon.yml
+  - components/networkmanager.yml
 
   - components/ntfs-3g.yml
 

@@ -95,6 +95,7 @@ depends:
   - components/power-profiles-daemon.yml
   - components/networkmanager.yml
   - components/webkitgtk.yml
+  - components/enchant.yml
 
   - components/ntfs-3g.yml
 

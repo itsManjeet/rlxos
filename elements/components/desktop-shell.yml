@@ -57,6 +57,13 @@ script: |-
   user = "initial-setup"
   EOF
 
+  install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/wob/wob.ini << "EOF"
+  bar_color = B1B2FFDD
+  background_color = EEF1FF
+  border_color = AAC4FF
+  border_size = 1
+  EOF
+
   install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/greetd/sway-config << "EOF"
   exec "wlgreet --command sway; swaymsg exit"
   bindsym Mod4+shift+e exec swaynag \
@@ -187,7 +194,7 @@ script: |-
 
   exec $lock
 
-  exec mkfifo $SWAYSOCK.wob && tail -f $SWAYSOCK.wob | wob
+  set $WOBSOCK $XDG_RUNTIME_DIR/wob.sock
 
   exec swayidle -w \
           timeout 300 '$lock' \
@@ -303,8 +310,8 @@ script: |-
   
   # Audio
   bindsym XF86AudioMute pactl set-sink-mute `pactl list sinks short | grep -E 'RUNNING|IDLE' | awk '{print $1}'` toggle
-  bindsym XF86AudioRaiseVolume exec pamixer -ui 10 && pamixer --get-volume > $SWAYSOCK.wob
-  bindsym XF86AudioLowerVolume exec pamixer -ud 10 && pamixer --get-volume > $SWAYSOCK.wob
+  bindsym XF86AudioRaiseVolume exec pamixer -ui 10 && pamixer --get-volume > $WOBSOCK
+  bindsym XF86AudioLowerVolume exec pamixer -ud 10 && pamixer --get-volume > $WOBSOCK
 
   # Media
   bindsym XF86AudioPrev exec playerctl previous
@@ -312,8 +319,8 @@ script: |-
   bindsym XF86AudioNext exec playerctl next
 
   # Backlight
-  bindsym XF86MonBrightnessUp exec brightnessctl s +5% > $SWAYSOCK.wob
-  bindsym XF86MonBrightnessDown exec brightnessctl s 5%- > $SWAYSOCK.wob
+  bindsym XF86MonBrightnessUp exec brightnessctl s +5% > $WOBSOCK
+  bindsym XF86MonBrightnessDown exec brightnessctl s 5%- > $WOBSOCK
 
   # Screenshot
   bindsym Print exec grimshot save screen ~/Pictures/$(date '+%Y-%m-%d-%T')-screenshot.png

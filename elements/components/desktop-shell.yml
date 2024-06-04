@@ -78,7 +78,7 @@ script: |-
   install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/gtk-3.0/settings.ini << "EOF"
   [Settings]
   gtk-icon-theme-name = Qogir
-  gtk-theme-name = Qogir-light
+  gtk-theme-name = Qogir-Light
   gtk-font-name = %{font_theme}
   EOF
 
@@ -190,6 +190,8 @@ script: |-
   exec $lock
 
   set $WOBSOCK $XDG_RUNTIME_DIR/wob.sock
+
+  seat seat0 xcursor_theme Qogir-Light 24
 
   exec swayidle -w \
           timeout 300 '$lock' \
@@ -390,9 +392,10 @@ script: |-
   install -v -D -m 0755 /dev/stdin %{install-root}%{sysconfdir}/sway/config.d/gtk-themes << "EOF"
   exec {
     gsettings set org.gtk.Settings.FileChooser window-size '(1000, 500)'
-    gsettings set org.gnome.desktop.interface gtk-theme 'Orchis-Light'
-    gsettings set org.gnome.desktop.interface.wm.preferences theme 'Orchis-Light'
-    gsettings set org.gnome.desktop.interface icon-theme 'Tela-light'
+    gsettings set org.gnome.desktop.interface gtk-theme 'Qogir-Light'
+    gsettings set org.gnome.desktop.interface.wm.preferences theme 'Qogir-Light'
+    gsettings set org.gnome.desktop.interface icon-theme 'Qogir'
+    gsettings set org.gnome.desktop.interface cursor-theme 'Qogir-Light'
     gsettings set org.gnome.desktop.interface font-name '%{font_theme}'
   }
   EOF

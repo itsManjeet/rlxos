@@ -140,6 +140,7 @@ script: |
 
   EOF
 
+  ./parse-sass.sh
   mkdir -p %{install-root}/%{datadir}/themes/
   ./install.sh -d %{install-root}/%{datadir}/themes/ \
       --tweaks image square

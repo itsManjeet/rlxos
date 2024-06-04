@@ -2,6 +2,9 @@ id: desktop-shell
 version: 0.1.2
 about: Desktop shell for rlxos
 
+merge:
+  - elements/include/theme.inc
+
 depends:
   - components/swayfx.yml
   - components/swaybg.yml
@@ -31,17 +34,9 @@ depends:
   - components/fonts/adobe-source-code-pro-fonts.yml
 
   - components/themes/adwaita-icon-theme.yml
-  - components/themes/tela-icon-theme.yml
-  - components/themes/orchis-gtk-theme.yml
+  - components/themes/qogir-icon-theme.yml
+  - components/themes/qogir-gtk-theme.yml
 
-variables:
-  background_color: "#EEF1FF"
-  background_secondary_color: "#D2DAFF"
-  foreground_color: "#344C64"
-  foreground_secondary_color: "#577B8D"
-  border_color: "#AAC4FF"
-  highlight_color: "#B1B2FF"
-  font_theme: "IBM Plex 12"
 
 script: |-
   install -v -D -m 0755 /dev/stdin %{install-root}%{libdir}/systemd/systemd-preset << "EOF"
@@ -72,7 +67,7 @@ script: |-
     -b "Poweroff" "systemctl poweroff" \
     -b "Reboot" "systemctl reboot"
 
-  output * bg %{datadir}/backgrounds/default_blur.jpeg fill
+  output * bg %{datadir}/backgrounds/default_blur.jpg fill
 
   include /etc/sway/config.d/*
   EOF
@@ -82,8 +77,8 @@ script: |-
 
   install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/gtk-3.0/settings.ini << "EOF"
   [Settings]
-  gtk-icon-theme-name = Tela-light
-  gtk-theme-name = Orchis-Light
+  gtk-icon-theme-name = Qogir
+  gtk-theme-name = Qogir-light
   gtk-font-name = %{font_theme}
   EOF
 
@@ -155,7 +150,7 @@ script: |-
   set $background_image /usr/share/backgrounds/default.jpg
   set $background_blur_image /usr/share/backgrounds/default_blur.jpg
 
-  set $lock swaylock -f -i $background_blur_image
+  set $lock swaylock -f
 
   titlebar_border_thickness 2
   titlebar_padding 5
@@ -462,38 +457,67 @@ script: |-
   echo "  ⌨ $language | $network_active $interface_easyname ($ping ms) | 🏋 $loadavg_5min | $audio_active $audio_volume% | $battery_pluggedin $battery_charge | $date_and_week 🕘 $current_time  "
   EOF
 
+  install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/swaylock/config << "EOF"
+  image "%{datadir}/backgrounds/default_blur.jpg"
+  scaling fill
+
+  indicator-caps-lock
+  indicator-idle-visible
+  indicator-thickness 4
+  
+  inside-color %{background_color}
+  inside-clear-color %{background_color}
+  inside-caps-lock-color %{highlight_color}
+  inside-ver-color %{background_secondary_color}
+  
+  key-hl-color %{highlight_color}
+
+  layout-bg-color %{background_color}
+  layout-bg-color %{background_color}
+  layout-text-color %{foreground_color}
+
+  line-color %{background_color}
+  line-clear-color %{background_color}
+  line-ver-color %{background_secondary_color}
+
+  font %{font_theme}
+  font-size 14
+
+  line-color %{border_color}  
+  EOF
+
   install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/greetd/wlgreet.toml << "EOF"
   command = "sway"
   outputMode = "all"
   scale = 1
 
   [background]
-  red = 0
-  green = 0
-  blue = 0
+  red = 0.933
+  green = 0.945
+  blue = 1.0
   opacity = 0.9
 
   [headline]
-  red = 1.0
-  green = 1.0
-  blue = 1.0
+  red = 0.204
+  green = 0.298
+  blue = 0.392
   opacity = 1.0
 
   [prompt]
-  red = 1.0
-  green = 1.0
-  blue = 1.0
-  opacity = 0.5
+  red = 0.204
+  green = 0.298
+  blue = 0.392
+  opacity = 1.0
 
   [promptErr]
-  red = 1.0
-  green = 1.0
-  blue = 1.0
+  red = 0.988
+  green = 0.349
+  blue = 0.318
   opacity = 1.0
 
   [border]
-  red = 1.0
-  green = 1.0
+  red = 0.694
+  green = 0.698
   blue = 1.0
   opacity = 0.0
   EOF

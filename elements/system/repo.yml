@@ -25,6 +25,7 @@ initial-commands: |-
 
   # TODO: should be enabled via systemd user-preset
   systemctl enable --global appimaged.service
+  systemctl enable --global wob.socket
   
   # TODO: should be done in components/pam::integration
   chmod 4755 %{bindir}/unix_chkpwd -v

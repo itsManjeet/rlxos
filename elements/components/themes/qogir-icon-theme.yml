@@ -11,4 +11,5 @@ sources:
 script: |
   install -d %{install-root}%{datadir}/icons
 
-  ./install.sh -t default -d %{install-root}%{datadir}/icons
+  ./install.sh -t default \
+    -d %{install-root}%{datadir}/icons

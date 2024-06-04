@@ -122,7 +122,7 @@ script: |-
   set $highlight %{highlight_color}
   set $font "IBM Plex Sans 12"
 
-  set $menu bemenu-run -p "▶" \
+  set $menu bemenu-run -p "🔎" \
              --fn "IBM Plex Sans 13" \
              -l10 -c -W0.5 -B1 -H30 \
              --fixed-height \
@@ -221,7 +221,6 @@ script: |-
   bindsym $mod+Shift+e exec swaynag \
            -t warning \
            -m 'System Menu' \
-           -b 'Lock' '$lock' \
            -b 'Logout' 'swaymsg exit' \
            -b 'Sleep' 'systemctl suspend' \
            -b 'Shutdown' 'systemctl poweroff' \
@@ -458,32 +457,32 @@ script: |-
   EOF
 
   install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/swaylock/config << "EOF"
-  image "%{datadir}/backgrounds/default_blur.jpg"
-  scaling fill
+  image="%{datadir}/backgrounds/default_blur.jpg"
+  scaling=fill
 
   indicator-caps-lock
   indicator-idle-visible
-  indicator-thickness 4
+  indicator-thickness=4
   
-  inside-color %{background_color}
-  inside-clear-color %{background_color}
-  inside-caps-lock-color %{highlight_color}
-  inside-ver-color %{background_secondary_color}
+  inside-color=%{background_color}
+  inside-clear-color=%{background_color}
+  inside-caps-lock-color=%{highlight_color}
+  inside-ver-color=%{background_secondary_color}
   
-  key-hl-color %{highlight_color}
+  key-hl-color=%{highlight_color}
 
-  layout-bg-color %{background_color}
-  layout-bg-color %{background_color}
-  layout-text-color %{foreground_color}
+  layout-bg-color=%{background_color}
+  layout-bg-color=%{background_color}
+  layout-text-color=%{foreground_color}
 
-  line-color %{background_color}
-  line-clear-color %{background_color}
-  line-ver-color %{background_secondary_color}
+  line-color=%{background_color}
+  line-clear-color=%{background_color}
+  line-ver-color=%{background_secondary_color}
 
-  font %{font_theme}
-  font-size 14
+  font="%{font_theme}"
+  font-size=14
 
-  line-color %{border_color}  
+  line-color=%{border_color}  
   EOF
 
   install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/greetd/wlgreet.toml << "EOF"

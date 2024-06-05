@@ -15,7 +15,7 @@ sources:
 
 script: |
   
-  cat > src/_sass/_color.scss << "EOF"
+  cat > src/_sass/_colors.scss << "EOF"
   @import 'tweaks-temp';
 
   $base_color: %{background_color};

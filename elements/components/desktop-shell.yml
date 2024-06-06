@@ -306,8 +306,8 @@ script: |-
   
   # Audio
   bindsym XF86AudioMute pactl set-sink-mute `pactl list sinks short | grep -E 'RUNNING|IDLE' | awk '{print $1}'` toggle
-  bindsym XF86AudioRaiseVolume exec pamixer -ui 10 && pamixer --get-volume > $WOBSOCK
-  bindsym XF86AudioLowerVolume exec pamixer -ud 10 && pamixer --get-volume > $WOBSOCK
+  bindsym XF86AudioRaiseVolume exec pamixer -ui 5 && pamixer --get-volume > $WOBSOCK
+  bindsym XF86AudioLowerVolume exec pamixer -ud 5 && pamixer --get-volume > $WOBSOCK
 
   # Media
   bindsym XF86AudioPrev exec playerctl previous
@@ -315,8 +315,8 @@ script: |-
   bindsym XF86AudioNext exec playerctl next
 
   # Backlight
-  bindsym XF86MonBrightnessUp exec brightnessctl s +5% > $WOBSOCK
-  bindsym XF86MonBrightnessDown exec brightnessctl s 5%- > $WOBSOCK
+  bindsym XF86MonBrightnessUp exec brightnessctl s +5% | sed -En 's/.*\(([0-9]+)%\).*/\1/p' > $WOBSOCK
+  bindsym XF86MonBrightnessDown exec brightnessctl s 5%- | sed -En 's/.*\(([0-9]+)%\).*/\1/p' > $WOBSOCK
 
   # Screenshot
   bindsym Print exec grimshot save screen ~/Pictures/$(date '+%Y-%m-%d-%T')-screenshot.png

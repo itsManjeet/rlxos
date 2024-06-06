@@ -96,6 +96,7 @@ depends:
   - components/networkmanager.yml
   - components/webkitgtk.yml
   - components/enchant.yml
+  - components/quickjs.yml
 
   - components/ntfs-3g.yml
 

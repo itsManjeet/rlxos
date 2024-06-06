@@ -23,6 +23,7 @@ depends:
   - components/mako.yml
   - components/playerctl.yml
   - components/iio-sway.yml
+  - components/psmisc.yml
   - components/wvkbd.yml
   - components/wob.yml
   - components/grimshot.yml
@@ -185,8 +186,8 @@ script: |-
   default_border pixel 3
   output * bg $background_image fill
   
-  bindswitch --reload lid:on output eDPI-1 disable
-  bindswitch --reload lid:off output eDPI-1 enable
+  bindswitch --reload lid:on output eDP-1 disable
+  bindswitch --reload lid:off output eDP-1 enable
 
   exec $lock
 
@@ -201,6 +202,10 @@ script: |-
           before-sleep '$lock'
 
   exec iio-sway
+
+  bindswitch tablet:on exec %{bindir}/tablet-mode on
+  bindswitch tablet:off exec %{bindir}/tablet-mode off
+
   # Start a terminal
   bindsym $mod+Return exec $term
 
@@ -523,4 +528,50 @@ script: |-
   green = 0.698
   blue = 1.0
   opacity = 0.0
+  EOF
+
+  install -vDm0755 /dev/stdin %{install-root}%{bindir}/tablet-mode << "EOF"
+  #!/bin/sh
+  COMMAND=$1
+
+  if [ -z "$COMMAND" ] ; then
+    echo "Usage: $0 <on/off>"
+    echo "on or off tablet mode"
+    exit 0
+  fi
+
+  start_service() {
+    local _bin=$1
+    shift
+
+    local _pid=$(pidof $1)
+    if [ -z "$_pid" ] ; then
+      echo "Starting $1"
+      $1 $@ &
+    fi
+  }
+
+  stop_service() {
+    echo "Stopping $1"
+    killall $1
+  }
+
+  enable_tablet_mode() {
+    start_service iio-sway
+    start_service wvkbd-mobintl -alpha 70 -L 300 &
+  }
+
+  disable_tablet_mode() {
+    stop_service iio-sway
+    stop_service wvkbd-mobintl
+  }
+
+  case "$COMMAND" in
+    "on"|"ON")
+      enable_tablet_mode
+      ;;
+    "off"|"OFF")
+      disable_tablet_mode
+      ;;
+  esac
   EOF

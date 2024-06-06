@@ -530,6 +530,16 @@ script: |-
   opacity = 0.0
   EOF
 
+  install -vDm0644 /dev/stdin %{install-root}%{sysconfdir}/xdg/foot/foot.ini << "EOF"
+  font=Source Code Pro:size=12
+  pad=10x10
+
+  [colors]
+  alpha=0.9
+  background=EEF1FF
+  foreground=334C64
+  EOF
+
   install -vDm0755 /dev/stdin %{install-root}%{bindir}/tablet-mode << "EOF"
   #!/bin/sh
   COMMAND=$1

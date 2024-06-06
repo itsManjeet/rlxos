@@ -6,7 +6,6 @@ merge: [ elements/include/theme.inc ]
 variables:
   strip: false
 
-
 build-depends:
   - components/sassc.yml
 
@@ -33,8 +32,8 @@ script: |
   $alt_fg_color: darken($fg_color, 5%);
   $sec_fg_color: darken($fg_color, 10%);
 
-  $selected_fg_color: %{foreground_selected_color}
-  $selected_bg_color: %{background_selected_color}
+  $selected_fg_color: %{foreground_selected_color};
+  $selected_bg_color: %{background_selected_color};
   
   $alt_selected_bg_color: lighten($selected_bg_color, 5%);
   $sec_selected_bg_color: darken($selected_bg_color, 10%);
@@ -55,15 +54,15 @@ script: |
   $drop_target_color: $warning_color;
   $progress_color: $selected_bg_color;
 
-  $borders_color: %{border_color}
+  $borders_color: %{border_color};
   $alt_borders_color: darken($borders_color, 0.05);
-  $solid_borders_color: mix($borders_color, $base_color, 12%)
-  $highlight: %{highlight_color}
+  $solid_borders_color: mix($borders_color, $base_color, 12%);
+  $highlight: %{highlight_color};
   $alt_highlight_color: darken(%{highlight_color}, 0.2);
   $undershoot_shade_color: darken($borders_color, 0.05);
 
-  $link_color: darken($selected_bg_color, 10%)
-  $link_visited_color: darken($text_color, 5%)
+  $link_color: darken($selected_bg_color, 10%);
+  $link_visited_color: darken($text_color, 5%);
 
   //insensitive state derived colors
   $insensitive_fg_color: if($variant == 'light', transparentize($fg_color, 0.45), transparentize($fg_color, 0.55));
@@ -71,12 +70,14 @@ script: |
 
   $header_bg: %{background_color};
   $header_bg_backdrop: lighten($header_bg, 1.5%);
-  $header_border: ${border_color}
+  $header_border: %{border_color};
 
-  $header_fg: %{foreground_color}
+  $header_fg: %{foreground_color};
   $alt_header_fg: mix($header_fg, $header_bg, 75%);
 
   $dark_sidebar_bg: %{background_color};
+
+  $dark_sidebar_fg: %{foreground_secondary_color};
   $alt_dark_sidebar_fg: if($variant == 'light', darken($dark_sidebar_fg, 10%), lighten($dark_sidebar_fg, 10%));
 
   $dark_sidebar_icon_bg: %{background_secondary_color};
@@ -122,11 +123,11 @@ script: |
   $wm_borders: if($variant == 'light', darken($base_color, 35%), darken($base_color, 10%));
 
   // Close
-  $wm_button_close_bg: %{error_color}
+  $wm_button_close_bg: %{error_color};
   $wm_button_close_hover_bg: lighten($wm_button_close_bg, 2%);
   $wm_button_close_active_bg: darken($wm_button_close_bg, 2%);
 
-  $wm_icon_close_bg: $bg_color
+  $wm_icon_close_bg: $bg_color;
 
   // Minimize, Maximize
   $wm_button_hover_bg: $selected_bg_color;
@@ -141,6 +142,11 @@ script: |
   EOF
 
   ./parse-sass.sh
+  [ ! -f ./src/gtk/theme-3.0/gtk.css ] && {
+    echo "failed to generate theme"
+    exit 1
+  }
+
   mkdir -p %{install-root}/%{datadir}/themes/
   ./install.sh -d %{install-root}/%{datadir}/themes/ \
       --tweaks image square

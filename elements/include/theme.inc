@@ -5,7 +5,7 @@ variables:
   
   foreground_color: "#344C64"
   foreground_secondary_color: "#577B8D"
-  foreground_selected_color: "#D5DFE9"
+  foreground_selected_color: "#344C64"
 
   border_color: "#B1B2FF"
   border_color_alt: "#B2FFB1"

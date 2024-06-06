@@ -20,8 +20,8 @@ script: |
   $base_color: %{background_color};
   $text_color: %{foreground_color};
   
-  $bg_color: %{background_secondary_color};
-  $fg_color: %{foreground_secondary_color};
+  $bg_color: %{background_color};
+  $fg_color: %{foreground_color};
 
   $alt_base_color: darken($base_color, 5%);
   $sec_base_color: darken($base_color, 10%);

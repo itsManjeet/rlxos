@@ -182,6 +182,7 @@ script: |-
   # Move minimized windows into Scratchpad (enable|disable)
   scratchpad_minimize enable
 
+  default_border pixel 3
   output * bg $background_image fill
   
   bindswitch --reload lid:on output eDPI-1 disable

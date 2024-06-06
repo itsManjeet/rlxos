@@ -123,7 +123,7 @@ script: |-
   set $highlight %{highlight_color}
   set $font "IBM Plex Sans 12"
 
-  set $menu bemenu-run -p "🔎" \
+  set $menu bemenu-run -p "run" \
              --fn "IBM Plex Sans 13" \
              -l10 -c -W0.5 -B1 -H30 \
              --fixed-height \
@@ -145,6 +145,7 @@ script: |-
              --hf "$foreground_secondary" \
              --hb "$background_secondary" \
              --bdr "$border"    \
+             --scrollbar hide \
              --fb "$background" \
              --ff "$foreground" | xargs swaymsg exec
 
@@ -166,7 +167,7 @@ script: |-
   client.placeholder      $background_secondary  $background_secondary  $foreground_secondary   $highlight  $background_secondary
 
   blur on
-  blur_xray on
+  blur_xray off
   blur_passes 2
   blur_radius 5
 
@@ -193,15 +194,13 @@ script: |-
 
   set $WOBSOCK $XDG_RUNTIME_DIR/wob.sock
 
-  seat seat0 xcursor_theme Qogir-Light 24
+  seat seat0 xcursor_theme Qogir 24
 
   exec swayidle -w \
           timeout 300 '$lock' \
           timeout 600 'swaymsg "output * dpms off"' \
                resume 'swaymsg "output * dpms on"' \
           before-sleep '$lock'
-
-  exec iio-sway
 
   bindswitch tablet:on exec %{bindir}/tablet-mode on
   bindswitch tablet:off exec %{bindir}/tablet-mode off
@@ -395,14 +394,15 @@ script: |-
   include /etc/sway/config.d/*
   EOF
 
-  install -v -D -m 0755 /dev/stdin %{install-root}%{sysconfdir}/sway/config.d/gtk-themes << "EOF"
-  exec {
-    gsettings set org.gtk.Settings.FileChooser window-size '(1000, 500)'
-    gsettings set org.gnome.desktop.interface gtk-theme 'Qogir-Light'
-    gsettings set org.gnome.desktop.interface.wm.preferences theme 'Qogir-Light'
-    gsettings set org.gnome.desktop.interface icon-theme 'Qogir'
-    gsettings set org.gnome.desktop.interface cursor-theme 'Qogir-Light'
-    gsettings set org.gnome.desktop.interface font-name '%{font_theme}'
+  install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/sway/config.d/gtk-themes << "EOF"
+  set $schema org.gnome.desktop.interface
+  exec_always {
+    gsettings set org.gtk.Settings.FileChooser window-size "(1000, 500)"
+    gsettings set $schema gtk-theme "Qogir-Light"
+    gsettings set $schema.wm.preferences theme "Qogir-Light"
+    gsettings set $schema icon-theme "Qogir"
+    gsettings set $schema cursor-theme "Qogir"
+    gsettings set $schema font-name "%{font_theme}"
   }
   EOF
 
@@ -460,6 +460,36 @@ script: |-
       audio_active='🔇'
   else
       audio_active='🔊'
+  fi
+
+  POWER_CACHE="/tmp/power_notification"
+
+  update_power_cache() {
+    echo "$(date +%s) $battery_charge" > $POWER_CACHE
+  }
+
+  if [ $battery_status == "discharging" ] ; then
+    if [ ! -f $POWER_CACHE ] && [ $battery_charge -lt 10 ] ; then
+      notify-send "Low power" "System Power is running low ($battery_charge)" 2>/dev/null
+      update_power_cache
+
+    else
+
+      last_date="$(cat $POWER_CACHE | awk '{print $1}')"
+      last_charge="$(cat $POWER_CACHE | awk '{print $1}')"
+      cur_date="$(date +%s)"
+      delta_time=$((last_date - cur_date))
+
+      if [ $delta_time -gt 600000 ] ; then
+        if [ $last_charge -lt 5 ] ; then
+          notify-send "Critical battery level ($battery_charge)" "Shutting Down in 20sec" 2>/dev/null
+          sleep 20
+          systemctl suspend-then-hibernate
+        else
+          update_power_cache
+        fi
+      fi
+    fi
   fi
 
   echo "  ⌨ $language | $network_active $interface_easyname ($ping ms) | 🏋 $loadavg_5min | $audio_active $audio_volume% | $battery_pluggedin $battery_charge | $date_and_week 🕘 $current_time  "
@@ -554,10 +584,10 @@ script: |-
     local _bin=$1
     shift
 
-    local _pid=$(pidof $1)
+    local _pid=$(pidof $_bin)
     if [ -z "$_pid" ] ; then
-      echo "Starting $1"
-      $1 $@ &
+      echo "Starting $_bin"
+      $_bin $@ &
     fi
   }
 

@@ -149,4 +149,4 @@ script: |
 
   mkdir -p %{install-root}/%{datadir}/themes/
   ./install.sh -d %{install-root}/%{datadir}/themes/ \
-      --tweaks image square
+    --tweaks square

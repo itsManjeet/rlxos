@@ -80,6 +80,7 @@ depends:
   - components/gnome-keyring.yml
   - components/grub.yml
   - components/dracut.yml
+  - components/glfw.yml
 
   - components/firmware.yml
   - components/sof-firmware.yml

@@ -81,6 +81,7 @@ depends:
   - components/grub.yml
   - components/dracut.yml
   - components/glfw.yml
+  - components/glew.yml
 
   - components/firmware.yml
   - components/sof-firmware.yml

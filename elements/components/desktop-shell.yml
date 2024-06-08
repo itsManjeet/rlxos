@@ -616,7 +616,7 @@ script: |-
   esac
   EOF
 
-  install -vDm0644 /dev/stdin %{install-root}/%{datadir}/glib-2.0/schemas/rlxos-default-settings.gsettings-override << "EOF"
+  install -vDm0644 /dev/stdin %{install-root}/%{datadir}/glib-2.0/schemas/10_rlxos-default-settings.gschema.override << "EOF"
   [org.gnome.desktop.interface]
   gtk-theme="Qogir-Light"
   icon-theme="Qogir"

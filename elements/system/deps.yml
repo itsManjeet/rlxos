@@ -82,6 +82,8 @@ depends:
   - components/dracut.yml
   - components/glfw.yml
   - components/glew.yml
+  - components/htop.yml
+  - components/zsync.yml
 
   - components/firmware.yml
   - components/sof-firmware.yml

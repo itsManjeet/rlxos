@@ -503,20 +503,20 @@ script: |-
   indicator-idle-visible
   indicator-thickness=4
   
-  inside-color=%{background_color}
-  inside-clear-color=%{background_color}
-  inside-caps-lock-color=%{highlight_color}
-  inside-ver-color=%{background_secondary_color}
+  # inside-color=%{background_color}
+  # inside-clear-color=%{background_color}
+  # inside-caps-lock-color=%{highlight_color}
+  # inside-ver-color=%{background_secondary_color}
   
-  key-hl-color=%{highlight_color}
+  # key-hl-color=%{highlight_color}
 
-  layout-bg-color=%{background_color}
-  layout-bg-color=%{background_color}
-  layout-text-color=%{foreground_color}
+  # layout-bg-color=%{background_color}
+  # layout-bg-color=%{background_color}
+  # layout-text-color=%{foreground_color}
 
-  line-color=%{background_color}
-  line-clear-color=%{background_color}
-  line-ver-color=%{background_secondary_color}
+  # line-color=%{background_color}
+  # line-clear-color=%{background_color}
+  # line-ver-color=%{background_secondary_color}
 
   font="%{font_theme}"
   font-size=14
@@ -614,4 +614,14 @@ script: |-
       disable_tablet_mode
       ;;
   esac
+  EOF
+
+  install -vDm0644 /dev/stdin %{install-root}/%{datadir}/glib-2.0/schemas/rlxos-default-settings.gsettings-override << "EOF"
+  [org.gnome.desktop.interface]
+  gtk-theme="Qogir-Light"
+  icon-theme="Qogir"
+  cursor-theme="Qogir"
+  font-name="%{font_theme}"
+  monospace-font-name="Source Code Pro 12"
+  font-antialiasing = "rgba"
   EOF

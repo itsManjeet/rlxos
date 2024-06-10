@@ -101,6 +101,7 @@ depends:
   - components/webkitgtk.yml
   - components/enchant.yml
   - components/quickjs.yml
+  - components/gtk-layer-shell.yml
 
   - components/ntfs-3g.yml
 

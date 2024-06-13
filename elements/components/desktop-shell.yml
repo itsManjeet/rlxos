@@ -125,7 +125,7 @@ script: |-
 
   set $menu bemenu-run -p "run" \
              --fn "IBM Plex Sans 13" \
-             -l10 -c -W0.5 -B1 -H30 \
+             -l10 -c -W0.5 -B3 -H30 \
              --fixed-height \
              --scrollbar autohide \
              --ignorecase \
@@ -187,8 +187,8 @@ script: |-
   default_border pixel 3
   output * bg $background_image fill
   
-  bindswitch --reload lid:on output eDP-1 disable
-  bindswitch --reload lid:off output eDP-1 enable
+  bindswitch --reload --locked lid:on output * disable
+  bindswitch --reload --locked lid:off output * enable
 
   exec $lock
 
@@ -226,7 +226,6 @@ script: |-
 
   # Exit sway (logs you out of your Wayland session)
   bindsym $mod+Shift+e exec swaynag \
-           -t warning \
            -m 'System Menu' \
            -b 'Logout' 'swaymsg exit' \
            -b 'Sleep' 'systemctl suspend' \
@@ -464,13 +463,15 @@ script: |-
 
   POWER_CACHE="/tmp/power_notification"
 
+  charge_num=$(echo $battery_charge | sed 's#%##g')
+
   update_power_cache() {
-    echo "$(date +%s) $battery_charge" > $POWER_CACHE
+    echo "$(date +%s) $charge_num" > $POWER_CACHE
   }
 
   if [ $battery_status == "discharging" ] ; then
-    if [ ! -f $POWER_CACHE ] && [ $battery_charge -lt 10 ] ; then
-      notify-send "Low power" "System Power is running low ($battery_charge)" 2>/dev/null
+    if [ ! -f $POWER_CACHE ] && [ $charge_num -lt 10 ] ; then
+      notify-send "Low power" "System Power is running low ($charge_num)" 2>/dev/null
       update_power_cache
 
     else
@@ -482,7 +483,7 @@ script: |-
 
       if [ $delta_time -gt 600000 ] ; then
         if [ $last_charge -lt 5 ] ; then
-          notify-send "Critical battery level ($battery_charge)" "Shutting Down in 20sec" 2>/dev/null
+          notify-send "Critical battery level ($charge_num)" "Shutting Down in 20sec" 2>/dev/null
           sleep 20
           systemctl suspend-then-hibernate
         else
@@ -521,7 +522,7 @@ script: |-
   font="%{font_theme}"
   font-size=14
 
-  line-color=%{border_color}  
+  # line-color=%{border_color}  
   EOF
 
   install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/greetd/wlgreet.toml << "EOF"

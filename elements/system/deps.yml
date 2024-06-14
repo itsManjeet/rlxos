@@ -103,6 +103,7 @@ depends:
   - components/quickjs.yml
   - components/gtkmm.yml
   - components/gtk-layer-shell.yml
+  - components/gjs.yml
 
   - components/ntfs-3g.yml
   - components/bluez.yml

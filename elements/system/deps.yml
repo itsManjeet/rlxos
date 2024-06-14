@@ -105,6 +105,7 @@ depends:
   - components/gtk-layer-shell.yml
 
   - components/ntfs-3g.yml
+  - components/bluez.yml
 
   # AppImage
   - components/appimaged.yml

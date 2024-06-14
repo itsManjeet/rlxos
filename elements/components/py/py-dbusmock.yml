@@ -1,5 +1,5 @@
 id: py-dbusmock
-version: 0.29.1
+version: 0.31.1
 about: Mock D-Bus objects for tests
 
 depends:
@@ -8,4 +8,4 @@ depends:
 build-depends:
   - components/py/py-setuptools.yml
 sources:
-  - https://github.com/martinpitt/python-dbusmock/releases/download/%{version}/python-dbusmock-%{version}.tar.gz
+  - https://github.com/martinpitt/python-dbusmock/releases/download/%{version}/dist.python-dbusmock-%{version}.tar.gz

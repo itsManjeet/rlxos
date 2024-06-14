@@ -107,6 +107,7 @@ depends:
 
   - components/ntfs-3g.yml
   - components/bluez.yml
+  - components/meta-enlightenment.yml
 
   # AppImage
   - components/appimaged.yml

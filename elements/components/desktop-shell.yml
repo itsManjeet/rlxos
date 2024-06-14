@@ -15,7 +15,8 @@ depends:
   - components/greetd.yml
   - components/wlgreet.yml
   
-  - components/bemenu.yml
+  - components/i3blocks.yml
+  - components/rofi.yml
   - components/foot.yml
   - components/brightnessctl.yml
   - components/pipewire.yml
@@ -123,31 +124,7 @@ script: |-
   set $highlight %{highlight_color}
   set $font "IBM Plex Sans 12"
 
-  set $menu bemenu-run -p "run" \
-             --fn "IBM Plex Sans 13" \
-             -l10 -c -W0.5 -B3 -H30 \
-             --fixed-height \
-             --scrollbar autohide \
-             --ignorecase \
-             --fn "$font" \
-             --tb "$background" \
-             --tf "$foreground" \
-             --nb "$background" \
-             --nf "$foreground" \
-             --cb "$background" \
-             --cf "$foreground" \
-             --scb "$background_secondary" \
-             --scf "$foreground_secondary_color" \
-             --ab "$background" \
-             --af "$foreground" \
-             --sb "$background_secondary" \
-             --sf "$foreground_secondary" \
-             --hf "$foreground_secondary" \
-             --hb "$background_secondary" \
-             --bdr "$border"    \
-             --scrollbar hide \
-             --fb "$background" \
-             --ff "$foreground" | xargs swaymsg exec
+  set $menu 'rofi -modi run,drun,window -show drun'
 
   set $background_image /usr/share/backgrounds/default.jpg
   set $background_blur_image /usr/share/backgrounds/default_blur.jpg

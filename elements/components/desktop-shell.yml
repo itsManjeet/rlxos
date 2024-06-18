@@ -622,7 +622,7 @@ script: |-
     foreground-selected-color: %{foreground_selected_color};
 
     border-color: %{border_color};
-    highlight-color: %{highlight-color};
+    highlight-color: %{highlight_color};
 
     font: '%{font_theme}';
   }

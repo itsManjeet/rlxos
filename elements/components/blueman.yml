@@ -8,16 +8,16 @@ configure: >
   --disable-schemas-compile
   --with-dhcp-config='%{sysconfdir}/dhcpd.conf'
 
-build-depends:
+depends:
   - components/bluez.yml
   - components/gtk.yml
   - components/py/py-cairo.yml
   - components/py/py-gobject.yml
   - components/intltool.yml
   - components/iproute2.yml
+
+build-depends:
   - components/py/py-cython.yml
 
 sources:
   - https://github.com/blueman-project/blueman/releases/download/%{version}/blueman-%{version}.tar.xz
-
-merge: [elements/include/appimage.inc]

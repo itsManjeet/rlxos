@@ -12,6 +12,6 @@ build-depends:
   - components/intltool.yml
 
 sources:
-  - https://archive.xfce.org/src/xfce/thunar-volman/%{version:2}/thunar-volman-%{version}.tar.bz2
+  
 
 merge: [elements/include/appimage.inc]

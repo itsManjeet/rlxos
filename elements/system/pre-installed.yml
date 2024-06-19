@@ -4,10 +4,22 @@ about: Preinstall applications
 strip: false
 
 build-depends:
-  - apps/initial-setup.yml
   - apps/thunar.yml
   - apps/mousepad.yml
   - apps/firefox.yml
+  - apps/file-roller.yml
+  - apps/gufw.yml
+  - apps/peek.yml
+  - apps/parole.yml
+  - apps/lightdm-gtk-greeter-settings.yml
+  - apps/pinta.yml
+  - apps/welcome-tour.yml
+  - apps/xfce4-appfinder.yml
+  - apps/xfce4-panel-profiles.yml
+  - apps/xfce4-power-manager.yml
+  - apps/xfce4-screenshooter.yml
+  - apps/xfce4-taskmanager.yml
+  - apps/xfce4-terminal.yml
 
 script: |-
   install -vDm 0755 -t %{install-root}/Applications/ /*.app

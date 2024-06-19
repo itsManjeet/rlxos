@@ -38,6 +38,16 @@ build-depends:
   - components/libexif.yml
   - components/intltool.yml
   - components/taglib.yml
+  - components/freetype.yml
+  - components/curl.yml
+  - components/gdk-pixbuf.yml
+  - components/gst-plugins-base.yml
+  - components/libjpeg-turbo.yml
+  - components/libgsf.yml
+  - components/libpng.yml
+  - components/xfce4/libxfce4util.yml
+  - components/poppler.yml
+  - components/intltool.yml
 
 sources:
   - https://archive.xfce.org/src/xfce/thunar/%{version:2}/thunar-%{version}.tar.bz2

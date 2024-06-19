@@ -1,0 +1,21 @@
+id: meta-xfce4
+version: 4.18
+about: Xfce4 group
+
+depends:
+  - components/xfce4/xfce4-panel.yml
+  - components/xfce4/xfce4-notifyd.yml
+  - components/xfce4/xfce4-screensaver.yml
+  - components/xfce4/xfce4-session.yml
+  - components/xfce4/xfconf.yml
+  - components/xfce4/xfdesktop.yml
+  - components/xfce4/xfwm4.yml
+  - components/xfce4/xfce4-settings.yml
+  
+  - components/xfce4/panel-plugins/xfce4-whiskermenu-plugin.yml
+  - components/xfce4/panel-plugins/xfce4-docklike-plugin.yml
+  - components/xfce4/panel-plugins/xfce4-clipman-plugin.yml
+  - components/xfce4/panel-plugins/xfce4-pulseaudio-plugin.yml
+  - components/xfce4/panel-plugins/xfce4-xkb-plugin.yml
+
+merge: [elements/include/meta.inc]

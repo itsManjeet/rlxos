@@ -1,0 +1,36 @@
+id: tumbler
+version: 4.18.2
+about: D-Bus thumbnailing service based on the thumbnail management D-Bus Specification
+
+prepare-appimage: |-
+  install -vDm 0644 /dev/stdin %{install-root}%{datadir}/applications/tumbler.desktop << "EOF"
+  [Desktop Entry]
+  Name=Tumbler
+  Comment=Thumbnail service
+  Icon=org.xfce.tumbler
+  Exec=tumblerd
+  Terminal=false
+  Type=Application
+  Categories=System;
+  EOF
+
+  mkdir -p %{install-root}%{bindir}/
+  ln -sv ../lib/tumbler-1/tumblerd %{install-root}%{bindir}/tumblerd
+
+sources:
+  - https://archive.xfce.org/src/xfce/tumbler/%{version:2}/tumbler-%{version}.tar.bz2
+
+build-depends:
+  - components/glib.yml
+  - components/freetype.yml
+  - components/curl.yml
+  - components/gdk-pixbuf.yml
+  - components/gst-plugins-base.yml
+  - components/libjpeg-turbo.yml
+  - components/libgsf.yml
+  - components/libpng.yml
+  - components/xfce4/libxfce4util.yml
+  - components/poppler.yml
+  - components/intltool.yml
+
+merge: [elements/include/appimage.inc]

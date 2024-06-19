@@ -10,15 +10,37 @@ depends:
   - components/libgcrypt.yml
   - components/pam.yml
   - components/pcre.yml
+  - components/gtk.yml
   - components/x11/libxklavier.yml
   - components/accountsservice.yml
+
 build-depends:
   - components/itstool.yml
   - components/py/py-distutils-extra.yml
+
 sources:
   - https://github.com/CanonicalLtd/lightdm/releases/download/%{version}/lightdm-%{version}.tar.xz
-  - https://github.com/Xubuntu/lightdm-gtk-greeter/releases/download/lightdm-gtk-greeter-2.0.8/lightdm-gtk-greeter-2.0.8.tar.gz
+  - https://github.com/Xubuntu/lightdm-gtk-greeter/releases/download/lightdm-gtk-greeter-2.0.9/lightdm-gtk-greeter-2.0.9.tar.gz
+
 post-script: |-
+  make install
+
+  cd lightdm-gtk-greeter-2.0.9
+
+  ./configure --prefix=%{prefix} \
+    --libexecdir=%{libdir}/lightdm \
+    --sbindir=%{bindir} \
+    --sysconfdir=%{sysconfdir} \
+    --with-libxklavier \
+    --enable-kill-on-sigterm \
+    --disable-libido \
+    --disable-libindicator \
+    --disable-static \
+    --disable-maintainer-mode
+  make && make install DESTDIR=%{install-root}
+
+  cd ..
+
   install -v -D -m 755 tests/src/lightdm-session -t %{install-root}/usr/bin/
   sed -i "1 s/sh/bash --login/" %{install-root}/usr/bin/lightdm-session
   rm -rf %{install-root}%{sysconfdir}/init
@@ -68,6 +90,17 @@ post-script: |-
           }
       }
   });
+  EOF
+
+  install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/lightdm/lightdm-gtk-greeter.conf << "EOF"
+  [greeter]
+  background=%{datadir}/backgrounds/default.jpeg
+  theme-name=Orchis-Light
+  icon-theme-name=Tela-light
+  cursor-theme-name=Adwaita
+  font-name=IBM Plex Sans Regular 11
+  panel-position=top
+  indicators=~host;~spacer;~session;~a11y;~language;~clock;~power;
   EOF
 
 configure: >-

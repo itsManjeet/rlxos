@@ -68,16 +68,10 @@ depends:
   - components/libinput.yml
   - components/upower.yml
   - components/themes/adwaita-icon-theme.yml
-  - components/themes/orchis-gtk-theme.yml
-  - components/themes/tela-icon-theme.yml
-  - components/fonts/adobe-source-code-pro-fonts.yml
-  - components/fonts/noto.yml
-  - components/fonts/noto-cjk.yml
-  - components/fonts/noto-emoji.yml
-  - components/fonts/ibm-plex.yml
+  - components/x11/xf86-input-libinput.yml
+
 build-depends:
   - components/intltool.yml
-  - components/x11/xf86-input-libinput.yml
+  
 sources:
   - https://archive.xfce.org/src/xfce/xfce4-settings/%{version:2}/xfce4-settings-%{version}.tar.bz2
-

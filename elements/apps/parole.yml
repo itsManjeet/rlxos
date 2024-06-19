@@ -1,0 +1,19 @@
+id: parole
+version: 4.18.1
+about: Modern media player based on GStreamer framework
+
+build-depends:
+  - components/dbus-glib.yml
+  - components/gst-plugins-base.yml
+  - components/gst-plugins-good.yml
+  - components/libnotify.yml
+  - components/xfce4/libxfce4ui.yml
+  - components/gst-libav.yml
+  - components/gst-plugins-bad.yml
+  - components/intltool.yml
+  - components/python.yml
+
+sources:
+  - https://archive.xfce.org/src/apps/parole/%{version:2}/parole-%{version}.tar.bz2
+
+merge: [elements/include/appimage.inc]

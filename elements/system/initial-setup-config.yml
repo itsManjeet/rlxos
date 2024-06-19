@@ -1,0 +1,21 @@
+id: initial-setup-config
+version: 0.0.1
+about: Initial setup environment configuration
+
+script: |-
+  install -vDm 0644 /dev/stdin %{install-root}/etc/sudoers.d/initial-setup << "EOF"
+  initial-setup ALL=(ALL) NOPASSWD: ALL
+  EOF
+
+  install -v -D /dev/stdin %{install-root}/%{datadir}/polkit-1/rules.d/10-initial-setup.rules << "EOF"
+  polkit.addRule(function(action, subject) {
+    if ((action.id == "org.gnome.gparted") &&
+          subject.local && subject.active &&
+          subject.user == "initial-setup") {
+      return polkit.Result.YES;
+    }
+  });
+  EOF
+
+depends:
+  - components/bash.yml

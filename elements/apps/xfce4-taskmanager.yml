@@ -1,0 +1,14 @@
+id: xfce4-taskmanager
+version: 1.5.7
+about: Easy to use task manager
+
+build-depends:
+  - components/libwnck.yml
+  - components/xfce4/libxfce4util.yml
+  - components/xfce4/libxfce4ui.yml
+  - components/x11/libxmu.yml
+
+sources:
+  - https://archive.xfce.org/src/apps/xfce4-taskmanager/%{version:2}/xfce4-taskmanager-%{version}.tar.bz2
+
+merge: [elements/include/appimage.inc]

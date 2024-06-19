@@ -44,5 +44,3 @@ extra-commands: |-
   mkdir -p %{include-root}/%{prefix}/local/include
 
 merge: [elements/include/extension.inc]
-build-depends:
-  - system/deps.yml

@@ -1,0 +1,19 @@
+id: mousepad
+version: 0.6.2
+about: Simple text editor for xfce
+
+build-depends:
+  - components/gtksourceview4.yml
+  - components/hicolor-icon-theme.yml
+  - components/xfce4/libxfce4ui.yml
+  - components/gspell.yml
+  - components/desktop-file-utils.yml
+  - components/intltool.yml
+
+prepare-appimage: |-
+  cp %{install-root}/%{datadir}/applications/org.xfce.mousepad.desktop %{install-root}/
+
+sources:
+  - https://archive.xfce.org/src/apps/mousepad/%{version:2}/mousepad-%{version}.tar.bz2
+
+merge: [elements/include/appimage.inc]

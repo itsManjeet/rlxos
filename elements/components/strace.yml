@@ -1,9 +1,8 @@
 id: strace
-version: 6.7
+version: 6.9
 about: A diagnostic, debugging and instructional userspace tracer
 
 configure: >-
-  --enable-mpers=no
   --with-libunwind
 
 sources:

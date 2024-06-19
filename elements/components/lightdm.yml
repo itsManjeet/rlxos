@@ -92,7 +92,7 @@ post-script: |-
   });
   EOF
 
-  install -vm 0644 /files/default_blur.jpg %{install-root}%{datadir}/backgrounds/default_blur.jpg
+  install -vm 0644 /files/backgrounds/default_blur.jpg %{install-root}%{datadir}/backgrounds/default_blur.jpg
   install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/lightdm/lightdm-gtk-greeter.conf << "EOF"
   [greeter]
   background=%{datadir}/backgrounds/default_blur.jpg

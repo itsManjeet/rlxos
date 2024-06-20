@@ -3,10 +3,9 @@ OSTREE_BRANCH 		    			?= $(shell uname -m)/os/$(CHANNEL)
 OSTREE_REPO 						?= ostree-repo
 OSTREE_GPG 							?= ostree-gpg
 VERSION								?= 2.0
-PKGUPD								?= build/src/pkgupd/bin/pkgupd
+PKGUPD								?= build/src/pkgupd/src/pkgupd
 CACHE_PATH							?= build/
 DESTDIR								?= checkout/
-APPMARKET_PATH						?= appmarket/
 KEY_TYPES							:= PK KEK DB VENDOR linux-module-cert
 ALL_CERTS							 = $(foreach KEY,$(KEY_TYPES),files/sign-keys/$(KEY).crt)
 ALL_KEYS							 = $(foreach KEY,$(KEY_TYPES),files/sign-keys/$(KEY).key)
@@ -87,9 +86,8 @@ $(OSTREE_GPG)/key-config:
 files/rlxos.gpg: $(OSTREE_GPG)/key-config
 	gpg --homedir=$(OSTREE_GPG) --export --armor >"$@"
 
-update-app-market: $(PKGUPD) version.yml ostree-branch.yml  channel.yml
-	$(PKGUPD) ignite ignite.cache=$(CACHE_PATH) meta $(APPMARKET_PATH)/$(CHANNEL)
-	./scripts/extract-icons.sh $(APPMARKET_PATH)/$(CHANNEL)/apps/ $(APPMARKET_PATH)/$(CHANNEL)/icons/
+metadata: $(PKGUPD) version.yml channel.yml
+	$(PKGUPD) ignite ignite.cache=$(CACHE_PATH) meta $(CHANNEL)
 
 update-ostree: files/rlxos.gpg
 ifndef ELEMENT

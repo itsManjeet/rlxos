@@ -12,12 +12,9 @@ env:
   SERVER_REPO_PATH: ${{secrets.SERVER_REPO_PATH}}
   SERVER_REPO_URL: ${{secrets.SERVER_REPO_URL}}
   CACHE_PATH: ${{secrets.SERVER_REPO_PATH}}
-  OSTREE_REPO: ${{secrets.OSTREE_REPO}}
-  OSTREE_GPG: ${{secrets.OSTREE_GPG}}
   VERSION: ${{ github.run_number }}
   SOURCEFORGE_PREFIX: ${{secrets.SOURCEFORGE_PREFIX}}
   CHANNEL: ${{ endsWith(github.ref, 'stable') && 'stable' || (endsWith(github.ref, 'preview') && 'preview' || 'unstable') }}
-  OSTREE_BRANCH: "x86_64/os/${{ endsWith(github.ref, 'stable') && 'stable' || (endsWith(github.ref, 'preview') && 'preview' || 'unstable') }}"
   APPMARKET_PATH: ${{secrets.APPMARKET_PATH}}
   SIGN_KEYS_PATH: ${{secrets.SIGN_KEYS_PATH}}
 
@@ -41,33 +38,14 @@ jobs:
       - name: Write changelog
         run: echo "${{ github.event.head_commit.message }}" > ChangeLog
 
-      - name: Update Ostree
-        run: make ELEMENT=system/repo.yml update-ostree
-
-      - name: Update Extensions
-        run: |
-          for extension_path in elements/extensions/*.yml; do
-            extension_path="$(echo ${extension_path} | cut -d '/' -f2-)"
-            extension="$(basename ${extension_path})"
-            extension="${extension%.*}"
-            OSTREE_BRANCH="x86_64/extension/${extension}/${CHANNEL}" \
-            ELEMENT=${extension_path} make update-ostree
-          done
-
-      - name: Update Applications
-        run: |
-          for app_path in elements/apps/*.yml; do
-            app_path="$(echo ${app_path} | cut -d '/' -f2-)"
-            app="$(basename ${app_path})"
-            app="${app%.*}"
-            make ELEMENT=${app_path} || echo "failed to build ${app_path}"
-          done
+      - name: Generate metadata
+        run: make metadata
 
       - name: Build Installer ISO
         run: make ELEMENT=installer/image.yml
 
-  build-installer-iso:
-    name: Build Installer ISO
+  update-installer-iso:
+    name: Update Installer ISO
     runs-on: self-hosted
     timeout-minutes: 47000
     needs: [ build ]
@@ -78,32 +56,9 @@ jobs:
           token: ${{ secrets.CI_TOKEN }}
           submodules: true
       - name: Update installer ISO
-        run: |
+        run: |-
           make checkout ELEMENT=installer/image.yml DESTDIR=${SERVER_REPO_PATH}/releases/${CHANNEL}/
           (cd ${SERVER_REPO_PATH}/releases/${CHANNEL}/; zsyncmake -b 2048 -C -u ${SERVER_REPO_URL}/releases/${CHANNEL}/rlxos-${CHANNEL}-installer.iso rlxos-${CHANNEL}-installer.iso)
 
-  update-market:
-    name: Update Market
-    runs-on: self-hosted
-    needs: [ build ]
-    steps:
-      - uses: actions/checkout@v1
-        with:
-          token: ${{ secrets.CI_TOKEN }}
-          submodules: true
-      - name: Generate AppImages meta
-        run: make update-app-market
-
-  update-mirrors:
-    name: Update ISO on mirrors
-    runs-on: self-hosted
-    environment: deploy
-    needs: [build-installer-iso]
-    steps:
-      - uses: actions/checkout@v1
-        with:
-          token: ${{ secrets.CI_TOKEN }}
-          submodules: true
       - name: Upload to sourceforge
-        run: |
-          scp -pr ${SERVER_REPO_PATH}/releases/${CHANNEL}/ ${SOURCEFORGE_PREFIX}/
+        run: scp -pr ${SERVER_REPO_PATH}/releases/${CHANNEL}/ ${SOURCEFORGE_PREFIX}/

@@ -12,14 +12,6 @@ include-root: /sysroot
 include-parts: [ doc, devel ]
 
 installer-volume-id: RLXOS
-
-kargs: >-
-  --karg=root=live:LABEL=RLXOS
-  --karg=quiet
-  --karg=splash
-  --karg=rd.live=1
-  --karg=rd.live.overlay.overlayfs=1
-force-rebuild: true
 strip: false
 
 script: |-
@@ -27,20 +19,11 @@ script: |-
   for i in %{datadir}/pkgupd/manifest/*/integration ; do
     sh -e $i
   done
-  
-  rm -rf /install-root
-
-  mkdir -p /proc /sysroot
-  ln -sv /sysroot/ostree /ostree
 
   update-ca-certificates
 
   echo "root:root" | chpasswd
 
-  echo -e "\nGTK_CSD=1" >> %{sysconfdir}/environment
-
-  # TODO: should be enabled via systemd user-preset
-  systemctl enable --global appimaged.service
   systemctl enable --global wob.socket
   
   # TODO: should be done in components/pam::integration
@@ -51,10 +34,8 @@ script: |-
 
   kerver=$(ls -1 /lib/modules | head -n1)
   cp /lib/modules/${kerver}/bzImage /lib/modules/${kerver}/vmlinuz
-
   dracut --reproducible -v --no-machineid \
     --kver ${kerver} \
-    --add ostree  \
     --add plymouth  \
     --add dmsquash-live \
     --install grep  \
@@ -64,11 +45,18 @@ script: |-
     --install lsof  \
     --omit lvm  \
     --install 'fsck.ext4' \
-    %{libdir}/modules/${kerver}/initramfs
+      %{libdir}/modules/${kerver}/initramfs
 
-  mv %{sysconfdir} %{prefix}/
   EOT
   
   mkdir -p %{install-root}
   
-  mksquashfs
+  kerver=$(ls -1 %{include-root}/lib/modules | head -n1)
+
+  mksquashfs %{include-root} ISO/LiveOS/squashfs.img -noappend -noappend
+  cp %{include-root}%{libdir}/modules/$kerver/vmlinuz ISO/boot/
+  cp %{include-root}%{libdir}/modules/$kerver/initramfs ISO/boot/
+
+build-depends:
+  - components/bash.yml
+  - components/squashfs-tools.yml

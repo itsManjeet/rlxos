@@ -1,4 +1,4 @@
-force-rebuild: true
+kargs: ""
 
 pre-script: |-
     mkdir -p ISO/{boot/grub/{fonts,x86_64-efi},efi/boot,isolinux,LiveOS}
@@ -6,8 +6,8 @@ pre-script: |-
     install -vDm0644 /dev/stdin ISO/isolinux/isolinux.cfg << EOF
     DEFAULT RLXOS GNU/Linux
         LABEL RLXOS GNU/Linux
-        KERNEL __KERNEL__
-        APPEND initrd=__INITRD__ __KARGS__
+        KERNEL /boot/vmlinuz
+        APPEND initrd=/boot/initramfs root=live:LABEL=RLXOS quiet splash rd.live=1 rd.live.overlay.overlayfs=1 %{kargs}
     EOF
 
     install -vDm0644 /dev/stdin ISO/boot/grub/grub.cfg << EOF
@@ -27,8 +27,8 @@ pre-script: |-
     fi
 
     menuentry "RLXOS GNU/Linux" {
-        linux __KERNEL__ __KARGS__
-        initrd __INITRD__
+        linux /boot/vmlinuz root=live:LABEL=RLXOS quiet splash rd.live=1 rd.live.overlay.overlayfs=1 %{kargs}
+        initrd /boot/initramfs
     }
 
     EOF
@@ -49,11 +49,6 @@ post-script: |-
     mmd -i ISO/boot/efiboot.img ::/EFI
     mmd -i ISO/boot/efiboot.img ::/EFI/BOOT 
     mcopy -i ISO/boot/efiboot.img ISO/efi/boot/bootx64.efi ::/EFI/BOOT
-
-    # Dracut otherwise fail to detect OS!!
-    mkdir -p %{sysroot}/proc
-
-    mksquashfs %{sysroot} ISO/LiveOS/squashfs.img -noappend
 
     mkdir -p %{install-root}/
     xorriso -as mkisofs \

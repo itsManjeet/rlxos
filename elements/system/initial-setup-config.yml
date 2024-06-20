@@ -19,3 +19,4 @@ script: |-
 
 depends:
   - components/bash.yml
+  - components/initial-setup.yml 

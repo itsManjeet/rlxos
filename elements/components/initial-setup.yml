@@ -1,0 +1,19 @@
+id: initial-setup
+version: 0.2.6
+about: System Initial Setup
+merge:
+  - ostree-branch.yml
+  - elements/include/rlxos.inc
+
+post-script: |-
+  for script in first-boot installer ; do
+    install -Dm0755 -t "%{install-root}%{libdir}/%{id}/" /files/%{id}/${script}.sh
+    sed -i s'#@@OSTREE_BRANCH@@#%{ostree-branch}#g' %{install-root}%{libdir}/%{id}/${script}.sh
+  done
+
+depends:
+  - components/gtkmm.yml
+  - components/glib.yml
+  - components/parted.yml
+  - components/dosfstools.yml
+  - components/squashfs-tools.yml

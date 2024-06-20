@@ -50,7 +50,7 @@ script: |-
   vt = 1
 
   [default_session]
-  command = "cage -- /Applications/initial-setup.app"
+  command = "cage -- initial-setup"
   user = "initial-setup"
   EOF
 

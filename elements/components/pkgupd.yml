@@ -1,5 +1,5 @@
-id: sysroot
-version: 2.0.7
+id: pkgupd
+version: 0.0.1
 about: Package Management and Updater Daemon
 merge: [ elements/include/rlxos.inc ]
 
@@ -7,7 +7,6 @@ depends:
   - components/glibc.yml
   - components/libyaml-cpp.yml
   - components/curl.yml
-  - components/ostree.yml
 
 build-depends:
   - components/git.yml

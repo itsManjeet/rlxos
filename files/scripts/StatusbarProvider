@@ -1,0 +1,118 @@
+#!/bin/env python3
+
+import time
+import json
+import os
+import subprocess
+import dbus
+
+from datetime import datetime, timedelta
+
+class Clock:
+    FORMAT = '%Y/%m/%d %H:%M'
+    
+    def generate(self):
+        return {
+            'full_text': datetime.now().strftime(self.FORMAT),
+            'name': 'clock',
+            'instance': '0'
+        }
+        
+
+class PowerManager:
+    ADDRESS = 'org.freedesktop.UPower'
+    OBJECT_PATH = '/org/freedesktop/UPower'
+    PROPERTIES = 'org.freedesktop.DBus.Properties'
+    
+    def __init__(self):
+        self.bus = dbus.SystemBus()
+        self.proxy = self.bus.get_object(self.ADDRESS,
+                                          self.OBJECT_PATH)
+        self.interface = dbus.Interface(self.proxy, self.ADDRESS)
+    
+    def get_devices(self, types: list):
+        devices = []
+        for device in self.interface.EnumerateDevices():
+            ty = self.get_device_property(device, 'Type')
+            if types == None or ty in types:
+                devices.append(device)
+                
+        return devices
+    
+    
+    def get_device_property(self, device, property):
+        proxy = self.bus.get_object(self.ADDRESS, device)
+        interface = dbus.Interface(proxy, self.PROPERTIES)
+        return interface.Get(self.ADDRESS + '.Device', property)
+    
+    def get_battery_device(self):
+        for device in self.get_devices([2]):
+            return device
+    
+    def get_powersupply(self):
+        for device in self.get_devices([1]):
+            powerSupply = self.get_device_property(device, 'PowerSupply')
+            online = self.get_device_property(device, 'Online')
+            if powerSupply == 1 and online == 1:
+                return device
+        
+        return None
+    
+    def generate(self):
+        battery = self.get_battery_device()
+        if battery is None:
+            return None
+
+        percentage = self.get_device_property(battery, 'Percentage')
+        powerSupply = self.get_powersupply()
+        icon = '🔋'
+        fulltext = f'{percentage}%'
+        if powerSupply is not None:
+            icon = '⚡'
+            extra = self.get_device_property(battery, 'TimeToFull')
+        else:
+            extra = self.get_device_property(battery, 'TimeToEmpty')
+        
+        if extra > 0:
+            fulltext += f' ({timedelta(seconds=extra)})'
+            
+        
+        return {
+            'full_text': f'{icon} {fulltext}',
+            'name': 'Battery',
+            'instance': '0'
+        }
+
+class NetworkManager:
+    ADDRESS = 'org.freedesktop.NetworkManager'
+    OBJECT_PATH = '/org/freedesktop/NetworkManager'
+    PROPERTIES = 'org.freedesktop.DBus.Properties'
+    
+    def __init__(self):
+        self.bus = dbus.SystemBus()
+        self.proxy = self.bus.get_object(self.ADDRESS,
+                                          self.OBJECT_PATH)
+        self.interface = dbus.Interface(self.proxy, self.ADDRESS)         
+  
+class StatusGenertor:
+    def __init__(self, blocks: list):
+        self.blocks = blocks
+    
+    def generate(self):
+        blocks = []
+        for block in self.blocks:
+            block = block.generate()
+            if block is not None:
+                blocks.append(block)
+                
+        return json.dumps(blocks)
+    
+
+statusGenerator = StatusGenertor([PowerManager(), Clock()])
+
+print('{"version": 1, "click_events": true}')
+print('[')
+
+while True:
+    print(statusGenerator.generate()+',')
+    time.sleep(1)

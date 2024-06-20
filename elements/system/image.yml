@@ -1,6 +1,6 @@
-id: ostree-installer
-merge: [version.yml, elements/include/installer.inc]
-about: OSTree Installer ISO
+id: system-image
+merge: [ version.yml ]
+about: System Image
 
 include:
   - system/deps.yml
@@ -11,14 +11,13 @@ capabilities:
 include-root: /sysroot
 include-parts: [ doc, devel ]
 
-installer-volume-id: RLXOS
-
 kargs: >-
   --karg=root=live:LABEL=RLXOS
   --karg=quiet
   --karg=splash
   --karg=rd.live=1
   --karg=rd.live.overlay.overlayfs=1
+
 force-rebuild: true
 strip: false
 
@@ -30,8 +29,7 @@ script: |-
   
   rm -rf /install-root
 
-  mkdir -p /proc /sysroot
-  ln -sv /sysroot/ostree /ostree
+  mkdir -p /proc
 
   update-ca-certificates
 
@@ -52,23 +50,9 @@ script: |-
   kerver=$(ls -1 /lib/modules | head -n1)
   cp /lib/modules/${kerver}/bzImage /lib/modules/${kerver}/vmlinuz
 
-  dracut --reproducible -v --no-machineid \
-    --kver ${kerver} \
-    --add ostree  \
-    --add plymouth  \
-    --add dmsquash-live \
-    --install grep  \
-    --install head \
-    --install tail \
-    --install less  \
-    --install lsof  \
-    --omit lvm  \
-    --install 'fsck.ext4' \
-    %{libdir}/modules/${kerver}/initramfs
-
-  mv %{sysconfdir} %{prefix}/
   EOT
   
   mkdir -p %{install-root}
   
-  mksquashfs
+  mksquashfs %{sysroot} %{install-root}/system.img -noappend
+  cp %{include-root}%{libdir}/modules/*/vmlinuz %{install-root}/vmlinuz

@@ -8,3 +8,6 @@ script: |-
 
 sources:
   - https://github.com/dejavu-fonts/dejavu-fonts/releases/download/version_%{version:_}/dejavu-fonts-ttf-%{version}.tar.bz2
+
+build-depends:
+  - components/bash.yml

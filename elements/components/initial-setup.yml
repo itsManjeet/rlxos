@@ -110,7 +110,12 @@ post-script: |-
         <property name="hide-new-items" type="bool" value="false"/>
       </property>
       <property name="plugin-5" type="string" value="clock">
-        <property name="digital-layout" type="uint" value="1"/>
+        <property name="digital-date-font" type="string" value="IBM Plex Sans 12"/>
+        <property name="digital-time-font" type="string" value="IBM Plex Sans 12"/>
+        <property name="digital-layout" type="uint" value="2"/>
+        <property name="digital-date-format" type="string" value="%a %b %d, %H:%M"/>
+        <property name="digital-time-format" type="string" value="%H:%M"/>
+        <property name="tooltip-format" type="string" value="%A %d %B %Y"/>
       </property>
       <property name="plugin-6" type="string" value="actions">
         <property name="appearance" type="uint" value="0"/>

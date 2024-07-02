@@ -12,6 +12,11 @@ depends:
   - components/xfce4/xfwm4.yml
   - components/xfce4/xfce4-settings.yml
   - components/xfce4/tumbler.yml
+  - components/xfce4/xfce4-appfinder.yml
+  - components/xfce4/xfce4-power-manager.yml
+  - components/xfce4/xfce4-screenshooter.yml
+  - components/xfce4/xfce4-taskmanager.yml
+  - components/xfce4/xfce4-terminal.yml
   
   - components/xfce4/panel-plugins/xfce4-clipman-plugin.yml
   - components/xfce4/panel-plugins/xfce4-cpufreq-plugin.yml
@@ -37,6 +42,14 @@ depends:
   - components/xfce4/panel-plugins/xfce4-weather-plugin.yml
   - components/xfce4/panel-plugins/xfce4-whiskermenu-plugin.yml
   - components/xfce4/panel-plugins/xfce4-xkb-plugin.yml
+
+  - components/xfce4/xfce4-panel-profiles.yml
+
+  - components/xfce4/thunar.yml
+  - components/xfce4/thunar-volman.yml  
+  - components/xfce4/mousepad.yml
+  - components/xfce4/parole.yml
+  - components/xfce4/ristretto.yml
 
   - components/themes/qogir-gtk-theme.yml
   - components/themes/qogir-icon-theme.yml

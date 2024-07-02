@@ -40,11 +40,9 @@ script: |-
   Categories=Network;
   EOF
 
-build-depends:
+depends:
   - components/dbus-glib.yml
   - components/alsa-lib.yml
 
 sources:
   - http://ftp.mozilla.org/pub/firefox/releases/%{version}/linux-x86_64/en-US/firefox-%{version}.tar.bz2
-
-merge: [elements/include/appimage.inc]

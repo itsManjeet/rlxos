@@ -2,7 +2,7 @@ id: xfce4-screenshooter
 version: 1.10.4
 about: xfce screenshooter
 
-build-depends:
+depends:
   - components/libsoup3.yml
   - components/xfce4/libxfce4ui.yml
   - components/xfce4/libxfce4util.yml
@@ -10,5 +10,3 @@ build-depends:
 
 sources:
   - https://archive.xfce.org/src/apps/xfce4-screenshooter/%{version:2}/xfce4-screenshooter-%{version}.tar.bz2
-
-merge: [elements/include/appimage.inc]

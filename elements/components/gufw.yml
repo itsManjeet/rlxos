@@ -8,7 +8,7 @@ pre-script: |-
 
   sed -i 's/4.0/4.1/g' gufw/gufw/view/gufw.py
 
-build-depends:
+depends:
   - components/intltool.yml
   - components/py/py-setuptools.yml
   - components/py/py-distutils-extra.yml
@@ -20,7 +20,6 @@ build-depends:
   - components/ufw.yml
   - components/enchant.yml
   - components/webkitgtk.yml
+
 sources:
   - https://github.com/costales/gufw/archive/%{version}/gufw-%{version}.tar.gz
-
-merge: [elements/include/appimage.inc]

@@ -105,6 +105,11 @@ depends:
 
   # AppImage
   - components/appimaged.yml
+  - components/firefox.yml
+  - components/file-roller.yml
+  - components/gufw.yml
+  - components/welcome-tour.yml
+  - components/lightdm-gtk-greeter-settings.yml
 
   - kernel/linux.yml
 
@@ -113,4 +118,4 @@ depends:
   - system/etc-skel.yml
   - system/etc-sysctl.yml
   - system/etc-default-useradd.yml
-  - system/pre-installed.yml
+  - system/x11-config.yml

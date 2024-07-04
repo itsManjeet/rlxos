@@ -4,6 +4,7 @@ about: RLXOS Software Development Kit
 
 include:
   - system/deps.yml
+  - components/bc.yml
   - components/gcc.yml
   - components/kernel-headers.yml
   - components/binutils.yml

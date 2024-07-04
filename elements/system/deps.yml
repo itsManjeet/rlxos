@@ -110,6 +110,11 @@ depends:
   - components/gufw.yml
   - components/welcome-tour.yml
   - components/lightdm-gtk-greeter-settings.yml
+  - components/onboard.yml
+
+  - components/openjdk-jre.yml
+  - components/dotnet-runtime.yml
+  - components/neofetch.yml
 
   - kernel/linux.yml
 

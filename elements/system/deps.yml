@@ -115,6 +115,7 @@ depends:
   - components/openjdk-jre.yml
   - components/dotnet-runtime.yml
   - components/neofetch.yml
+  - components/distrobox.yml
 
   - kernel/linux.yml
 

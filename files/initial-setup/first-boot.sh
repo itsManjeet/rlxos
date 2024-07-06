@@ -44,6 +44,11 @@ command = "sway"
 user = "${ISE_USERNAME}"
 EOF
 
+if [ -f /etc/lightdm/lightdm.conf.d/*initial-setup*.conf ] ; then
+    echo ":: Removing Display manager configuration for inital setup"
+    sudo rm -f /etc/lightdm/lightdm.conf.d/*initial-setup*.conf
+fi
+
 #echo ":: setting up locale: ${ISE_LOCALE}"
 #sudo install -vDm644 /dev/stdin /etc/locale.conf << EOF
 #LANG=${OSI_LOCALE}

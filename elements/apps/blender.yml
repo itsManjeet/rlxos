@@ -1,11 +1,14 @@
 id: blender
-version: 4.1.0
+version: 4.1.1
 about: Blender is the free and open source 3D creation suite. It supports the entirety of the 3D pipeline—modeling, rigging, animation, simulation, rendering, compositing and motion tracking, and video editing
-merge: [elements/include/appimage.inc]
 
 sources:
-  - https://ftp.nluug.nl/pub/graphics/blender/release/Blender%{version:2}/blender-%{version}-linux-x64.tar.xz
+  - https://download.blender.org/release/Blender%{version:2}/blender-%{version}-linux-x64.tar.xz
 
-build-dir: "."
 script: |-
-  mv blender-%{version}-linux-x64 %{install-root}
+  mkdir -p %{install-root}/%{bindir}
+  cp * %{install-root}/ -rv
+
+  ln -sv ../../blender %{install-root}%{bindir}/blender
+
+merge: [elements/include/appimage.inc]

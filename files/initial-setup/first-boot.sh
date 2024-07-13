@@ -31,16 +31,22 @@ echo "root":"${ISE_PASSWORD}" | sudo chpasswd || {
 }
 fi
 
-sudo rm -f /etc/lightdm/lightdm.conf.d/*-initial-setup.conf
+echo ":: Installing greetd configuration"
+sudo install -v -D -m 0644 /dev/stdin /etc/greetd/config.toml << EOF
+[terminal]
+vt = 1
 
-if [[ ${ISE_AUTOLOGIN} -eq 1 ]] ; then
-echo ":: Enabling autologin for ${ISE_USERNAME}"
-sudo install -D -m644 /dev/stdin /etc/lightdm/lightdm.conf.d/autologin.conf << EOF
-[SeatDefaults]
-autologin-user=${ISE_USERNAME}
-autologin-user-timeout=0
-autologin-session=xfce
+[default_session]
+command = "sway --config /etc/greetd/sway-config"
+
+[initial_session]
+command = "sway"
+user = "${ISE_USERNAME}"
 EOF
+
+if [ -f /etc/lightdm/lightdm.conf.d/*initial-setup*.conf ] ; then
+    echo ":: Removing Display manager configuration for inital setup"
+    sudo rm -f /etc/lightdm/lightdm.conf.d/*initial-setup*.conf
 fi
 
 #echo ":: setting up locale: ${ISE_LOCALE}"

@@ -38,7 +38,7 @@ script: |
   --with-version-build="%{version:1}"          \
   --with-version-pre=""             \
   --with-version-opt=""             \
-  --with-cacerts-file=%{sysconfdir}/ssl/cert.pem
+  --with-cacerts-file=%{sysconfdir}/ssl/certs.pem 
 
   unset MAKEFLAGS
   make LOG=warn JOBS=$(nproc) images

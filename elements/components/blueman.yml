@@ -13,9 +13,10 @@ depends:
   - components/gtk.yml
   - components/py/py-cairo.yml
   - components/py/py-gobject.yml
-build-depends:
   - components/intltool.yml
   - components/iproute2.yml
+
+build-depends:
   - components/py/py-cython.yml
 
 sources:

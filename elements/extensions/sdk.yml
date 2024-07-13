@@ -4,6 +4,7 @@ about: RLXOS Software Development Kit
 
 include:
   - system/deps.yml
+  - components/bc.yml
   - components/gcc.yml
   - components/kernel-headers.yml
   - components/binutils.yml
@@ -32,6 +33,10 @@ include:
   - components/sysprof.yml
   - components/sassc.yml
   - components/xfce4/xfce4-dev-tools.yml
+  - components/gdb.yml
+  - components/openjdk.yml
+  - components/dotnet.yml
+  - components/patch.yml
 
 include-parts: 
   - devel
@@ -40,5 +45,3 @@ extra-commands: |-
   mkdir -p %{include-root}/%{prefix}/local/include
 
 merge: [elements/include/extension.inc]
-build-depends:
-  - system/deps.yml

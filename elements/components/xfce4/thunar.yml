@@ -17,6 +17,15 @@ post-script: |-
   </channel>
   EOF
 
+  # Install to root for plugin build
+  make -C %{build-dir} install
+
+  for i in thunar-*-plugin-* ; do
+    plugin_id=$(basename $i)
+    (cd $i; ./configure --prefix=%{prefix} --disable-static --sysconfdir=%{sysconfdir} --libexecdir=%{libdir}/xfce4 && make && make install DESTDIR=%{install-root})
+  done
+
+
 depends:
   - components/xfce4/exo.yml
   - components/hicolor-icon-theme.yml
@@ -25,8 +34,21 @@ depends:
   - components/gvfs.yml
   - components/pcre.yml
   - components/libexif.yml
-  - components/xfce4/tumbler.yml
-  - components/xfce4/xfce4-panel.yml
+  - components/intltool.yml
+  - components/taglib.yml
+  - components/freetype.yml
+  - components/curl.yml
+  - components/gdk-pixbuf.yml
+  - components/gst-plugins-base.yml
+  - components/libjpeg-turbo.yml
+  - components/libgsf.yml
+  - components/libpng.yml
+  - components/xfce4/libxfce4util.yml
+  - components/poppler.yml
+build-depends:
+  - components/intltool.yml
 
 sources:
   - https://archive.xfce.org/src/xfce/thunar/%{version:2}/thunar-%{version}.tar.bz2
+  - https://archive.xfce.org/src/thunar-plugins/thunar-archive-plugin/0.5/thunar-archive-plugin-0.5.2.tar.bz2
+  - https://archive.xfce.org/src/thunar-plugins/thunar-media-tags-plugin/0.4/thunar-media-tags-plugin-0.4.0.tar.bz2

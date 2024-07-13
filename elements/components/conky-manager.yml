@@ -15,6 +15,8 @@ depends:
   - components/json-glib.yml
   - components/libgee.yml
   - components/p7zip.yml
+  - components/rsync.yml
+  - components/psmisc.yml
 build-depends:
   - components/vala.yml
 sources:

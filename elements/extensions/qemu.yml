@@ -2,7 +2,7 @@ id: qemu
 version: 0.1.0
 about: RLXOS QEMU Virtualization Kit
 include:
-  - extensions/qemu/qemu.yml
-  - extensions/qemu/bridge-utils.yml
+  - components/qemu.yml
+  - components/bridge-utils.yml
 
 merge: [elements/include/extension.inc]

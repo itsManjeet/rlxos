@@ -4,6 +4,8 @@ about: xfce screenshooter
 
 depends:
   - components/libsoup3.yml
+  - components/xfce4/libxfce4ui.yml
+  - components/xfce4/libxfce4util.yml
   - components/xfce4/xfce4-panel.yml
 
 sources:

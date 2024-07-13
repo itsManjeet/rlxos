@@ -8,7 +8,6 @@ variables:
 depends:
   - components/libexif.yml
   - components/xfce4/libxfce4ui.yml
-  - components/xfce4/tumbler.yml
   - components/xfce4/xfconf.yml
 build-depends:
   - components/intltool.yml

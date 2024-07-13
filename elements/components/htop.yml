@@ -1,5 +1,5 @@
 id: htop
-version: 3.2.2
+version: 3.3.0
 about: Interactive process viewer
 
 pre-script: |-
@@ -17,6 +17,8 @@ build-depends:
   - components/libnl.yml
   - components/ncurses.yml
   - components/lm-sensors.yml
-  - components/appimagetool.yml
+  - components/lsof.yml
+  - components/strace.yml
+
 sources:
   - https://github.com/htop-dev/htop/releases/download/%{version}/htop-%{version}.tar.xz

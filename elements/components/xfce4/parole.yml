@@ -10,7 +10,6 @@ depends:
   - components/xfce4/libxfce4ui.yml
   - components/gst-libav.yml
   - components/gst-plugins-bad.yml
-
 build-depends:
   - components/intltool.yml
   - components/python.yml

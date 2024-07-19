@@ -34,6 +34,8 @@ pre-script: |
 
 post-script: |
   install -v -D -m 0644 /files/zsh/profile -t %{install-root}%{sysconfdir}/zsh
+  install -vDm0644 /dev/stdin %{install-root}/%{sysconfdir}/skel/.zshrc << "EOF"
+  EOF
 
 integration: |
   echo -e "\n/bin/zsh" >> %{sysconfdir}/shells

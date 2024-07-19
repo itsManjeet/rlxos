@@ -17,20 +17,11 @@ initial-commands: |-
   mkdir -p /proc /sysroot
   ln -sv /sysroot/ostree /ostree
 
-  update-ca-certificates
-
   echo "root:root" | chpasswd
 
   echo -e "\nGTK_CSD=1" >> %{sysconfdir}/environment
-
-  # TODO: should be enabled via systemd user-preset
-  systemctl enable --global appimaged.service
   
-  # TODO: should be done in components/pam::integration
-  chmod 4755 %{bindir}/unix_chkpwd -v
-
   ln -sfv %{datadir}/zoneinfo/UTC %{sysconfdir}/localtime
-  touch %{sysconfdir}/skel/.zshrc
 
   kerver=$(ls -1 /lib/modules | head -n1)
   cp /lib/modules/${kerver}/bzImage /lib/modules/${kerver}/vmlinuz

@@ -3,7 +3,7 @@ OSTREE_BRANCH 		    			?= $(shell uname -m)/os/$(CHANNEL)
 OSTREE_REPO 						?= ostree-repo
 OSTREE_GPG 							?= ostree-gpg
 VERSION								?= 2.0
-IGNITE								?= build/src/ignite/ignite
+PKGUPD								?= build/src/pkgupd/src/pkgupd
 CACHE_PATH							?= build/
 DESTDIR								?= checkout/
 APPMARKET_PATH						?= appmarket/
@@ -28,35 +28,35 @@ endef
 
 
 export OSTREE_GPG_CONFIG
-export IGNITE
+export PKGUPD
 export CACHE_PATH
 
 .PHONY: clean all docs version.yml channel.yml ostree-branch.yml apps
 
-all: $(IGNITE) version.yml ostree-branch.yml channel.yml
+all: $(PKGUPD) version.yml ostree-branch.yml channel.yml
 ifdef ELEMENT
-	$(IGNITE) cache-path=$(CACHE_PATH) build $(ELEMENT)
+	$(PKGUPD) ignite build ignite.cache=$(CACHE_PATH) $(ELEMENT)
 endif
 
-status: $(IGNITE) version.yml ostree-branch.yml channel.yml
+status: $(PKGUPD) version.yml ostree-branch.yml channel.yml
 ifdef ELEMENT
-	$(IGNITE) cache-path=$(CACHE_PATH) status $(ELEMENT)
+	$(PKGUPD) ignite status ignite.cache=$(CACHE_PATH) $(ELEMENT)
 else
 	@echo "no ELEMENT specified"
 	exit 1
 endif
 
-filepath: $(IGNITE) version.yml ostree-branch.yml  channel.yml
+filepath: $(PKGUPD) version.yml ostree-branch.yml  channel.yml
 ifdef ELEMENT
-	@PKGUPD_NO_MESSAGE=1 $(IGNITE) cache-path=$(CACHE_PATH) filepath $(ELEMENT)
+	@PKGUPD_NO_MESSAGE=1 $(PKGUPD) ignite filepath ignite.cache=$(CACHE_PATH) $(ELEMENT)
 else
 	@echo "no ELEMENT specified"
 	exit 1
 endif
 
-checkout: $(IGNITE) version.yml ostree-branch.yml  channel.yml
+checkout: $(PKGUPD) version.yml ostree-branch.yml  channel.yml
 ifdef ELEMENT
-	$(IGNITE) cache-path=$(CACHE_PATH) checkout $(ELEMENT) $(DESTDIR)
+	$(PKGUPD) ignite checkout ignite.cache=$(CACHE_PATH) $(ELEMENT) $(DESTDIR)
 else
 	@echo "no ELEMENT specified"
 	exit 1
@@ -66,8 +66,8 @@ endif
 build/build.ninja: CMakeLists.txt
 	cmake -B build
 
-$(IGNITE): build/build.ninja src/ignite/CMakeLists.txt
-	@cmake --build build --target ignite
+$(PKGUPD): build/build.ninja src/pkgupd/CMakeLists.txt
+	@cmake --build build --target pkgupd
 
 clean:
 	rm -rf $(DOCS_DIR)
@@ -87,8 +87,8 @@ $(OSTREE_GPG)/key-config:
 files/rlxos.gpg: $(OSTREE_GPG)/key-config
 	gpg --homedir=$(OSTREE_GPG) --export --armor >"$@"
 
-update-app-market: $(IGNITE) version.yml ostree-branch.yml  channel.yml
-	$(IGNITE) cache-path=$(CACHE_PATH) meta $(APPMARKET_PATH)/$(CHANNEL)
+update-app-market: $(PKGUPD) version.yml ostree-branch.yml  channel.yml
+	$(PKGUPD) ignite meta ignite.cache=$(CACHE_PATH) $(APPMARKET_PATH)/$(CHANNEL)
 	./scripts/extract-icons.sh $(APPMARKET_PATH)/$(CHANNEL)/apps/ $(APPMARKET_PATH)/$(CHANNEL)/icons/
 
 update-ostree: files/rlxos.gpg

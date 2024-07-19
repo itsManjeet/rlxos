@@ -12,5 +12,5 @@ sources:
 configure: >
   --enable-securedir=/usr/lib/security
 
-post-script: |
-  chmod +s "%{install-root}"/usr/bin/unix_chkpwd
+post-script: |-
+  chmod 4755 "%{install-root}"/usr/bin/unix_chkpwd

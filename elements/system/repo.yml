@@ -18,8 +18,6 @@ initial-commands: |-
   ln -sv /sysroot/ostree /ostree
 
   echo "root:root" | chpasswd
-
-  echo -e "\nGTK_CSD=1" >> %{sysconfdir}/environment
   
   ln -sfv %{datadir}/zoneinfo/UTC %{sysconfdir}/localtime
 

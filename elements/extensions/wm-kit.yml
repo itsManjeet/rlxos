@@ -2,9 +2,8 @@ id: wm-kit
 version: 0.1.0
 about: Essential tools for window managers
 include:
-  - components/dmenu.yml
-  - components/rofi.yml
-  - components/scrot.yml
-  - components/tint2.yml
-  - components/picom.yml
+  - components/bemenu.yml
+  - components/wmenu.yml
+  - components/sfwbar.yml
+
 merge: [elements/include/extension.inc]

@@ -16,8 +16,8 @@ env:
   OSTREE_GPG: ${{secrets.OSTREE_GPG}}
   VERSION: ${{ github.run_number }}
   SOURCEFORGE_PREFIX: ${{secrets.SOURCEFORGE_PREFIX}}
-  CHANNEL: ${{ endsWith(github.ref, 'stable') && 'stable' || (endsWith(github.ref, 'preview') && 'preview' || 'unstable') }}
-  OSTREE_BRANCH: "x86_64/os/${{ endsWith(github.ref, 'stable') && 'stable' || (endsWith(github.ref, 'preview') && 'preview' || 'unstable') }}"
+  CHANNEL: ${{ endsWith(github.ref, 'stable') && 'stable' || 'unstable' }}
+  OSTREE_BRANCH: "x86_64/os/${{ endsWith(github.ref, 'stable') && 'stable' || 'unstable' }}"
   APPMARKET_PATH: ${{secrets.APPMARKET_PATH}}
   SIGN_KEYS_PATH: ${{secrets.SIGN_KEYS_PATH}}
 

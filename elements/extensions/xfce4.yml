@@ -1,0 +1,7 @@
+id: xfce4
+version: 4.18
+about: xfce4 desktop environment
+include:
+  - components/meta-xfce4.yml
+
+merge: [elements/include/extension.inc]

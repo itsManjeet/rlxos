@@ -9,7 +9,7 @@ configure: >-
   --enable-exif
   --disable-debug
 
-post-script: |-
+prepare-appimage: |-
   install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/xdg/xfce4/xfconf/xfce-perchannel-xml/thunar.xml << "EOF"
   <?xml version="1.0" encoding="UTF-8"?>
   <channel name="thunar" version="1.0">
@@ -25,8 +25,13 @@ post-script: |-
     (cd $i; ./configure --prefix=%{prefix} --disable-static --sysconfdir=%{sysconfdir} --libexecdir=%{libdir}/xfce4 && make && make install DESTDIR=%{install-root})
   done
 
+  for bin in exo-desktop-item-edit exo-open ; do
+    cp %{bindir}/$bin %{install-root}%{bindir}/
+  done
+  cp %{install-root}%{datadir}/applications/thunar.desktop %{install-root}/
 
-depends:
+
+build-depends:
   - components/xfce4/exo.yml
   - components/hicolor-icon-theme.yml
   - components/libgudev.yml
@@ -45,10 +50,11 @@ depends:
   - components/libpng.yml
   - components/xfce4/libxfce4util.yml
   - components/poppler.yml
-build-depends:
   - components/intltool.yml
 
 sources:
   - https://archive.xfce.org/src/xfce/thunar/%{version:2}/thunar-%{version}.tar.bz2
   - https://archive.xfce.org/src/thunar-plugins/thunar-archive-plugin/0.5/thunar-archive-plugin-0.5.2.tar.bz2
   - https://archive.xfce.org/src/thunar-plugins/thunar-media-tags-plugin/0.4/thunar-media-tags-plugin-0.4.0.tar.bz2
+
+merge: [elements/include/appimage.inc]

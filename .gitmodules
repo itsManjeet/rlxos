@@ -5,3 +5,6 @@
 	path = src/srclang
 	url = git@github.com:itsmanjeet/srclang
 
+[submodule "src/pkgupd"]
+	path = src/pkgupd
+	url = git@github.com:itsmanjeet/pkgupd

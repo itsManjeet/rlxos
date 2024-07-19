@@ -1,5 +1,5 @@
 id: xz
-version: 5.4.6
+version: 5.6.2
 about: Compressing and Decompressing files
 
 build-type: autotools

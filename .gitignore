@@ -11,3 +11,4 @@
 *.ui~
 /files/sign-keys
 /channel.yml
+**__pycache__**

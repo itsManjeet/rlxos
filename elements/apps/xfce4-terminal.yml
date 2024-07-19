@@ -17,12 +17,13 @@ prepare-appimage: |-
 
   rm -f %{install-root}/%{datadir}/applications/xfce4-terminal-settings.desktop
 
-depends:
+build-depends:
   - components/hicolor-icon-theme.yml
   - components/xfce4/libxfce4ui.yml
   - components/vte.yml
-build-depends:
   - components/intltool.yml
 
 sources:
   - https://archive.xfce.org/src/apps/xfce4-terminal/%{version:2}/xfce4-terminal-%{version}.tar.bz2
+
+merge: [elements/include/appimage.inc]

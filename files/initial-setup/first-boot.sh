@@ -40,7 +40,7 @@ vt = 1
 command = "sway --config /etc/greetd/sway-config"
 
 [initial_session]
-command = "sway"
+command = "sway --config /etc/sway/config-locked"
 user = "${ISE_USERNAME}"
 EOF
 

@@ -32,6 +32,7 @@ configure: >-
   --disable-libstdcxx-pch
   --disable-werror
   --disable-multilib
+  --disable-boostrap
 
 compile: -O STAGE1_CFLAGS="-O2" BOOT_CFLAGS="${CFLAGS}" BOOT_LDFLAGS="${LDFLAGS}" LDFLAGS_FOR_TARGET="${LDFLAGS}" bootstrap
   

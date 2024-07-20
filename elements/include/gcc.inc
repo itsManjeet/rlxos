@@ -28,7 +28,6 @@ configure: >-
   --enable-shared
   --enable-threads=posix
   --enable-languages=c,c++,lto
-  --enable-bootstrap
   --disable-libssp
   --disable-libstdcxx-pch
   --disable-werror

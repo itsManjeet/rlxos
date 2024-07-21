@@ -105,8 +105,6 @@ depends:
 
   - components/firefox.yml
   - components/welcome-tour.yml
-
-  - components/appimaged.yml
   - components/neofetch.yml
   - components/distrobox.yml
 

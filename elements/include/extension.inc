@@ -1,6 +1,6 @@
 force-rebuild: true
 include-root: /sysroot
-include-upon: system/deps.yml
+include-upon: platform.yml
 strip: false
 type: extension
 extra-commands: ""

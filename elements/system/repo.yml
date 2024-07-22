@@ -19,7 +19,10 @@ initial-commands: |-
 
   echo "root:root" | chpasswd
   
-  ln -sfv %{datadir}/zoneinfo/UTC %{sysconfdir}/localtime
+  ln -sfv %{datadir}/zoneinfo/UTC %{sysconfdir}/
+  
+  # TODO: FIX components/pam.yml integration
+  chmod 4755 %{bindir}/unix_chkpwd
 
   kerver=$(ls -1 /lib/modules | head -n1)
   cp /lib/modules/${kerver}/bzImage /lib/modules/${kerver}/vmlinuz
@@ -42,7 +45,7 @@ initial-commands: |-
   EOT
 
 include:
-  - system/deps.yml
+  - platform.yml
   - system/ostree-config.yml
 
 include-parts:

@@ -106,11 +106,6 @@ depends:
   - components/firefox.yml
   - components/welcome-tour.yml
   - components/neofetch.yml
-  - components/distrobox.yml
-
-# Better integration with xfce4 apps
-  - components/xfce4/xfconf.yml
-  - components/xfce4/tumbler.yml
 
   - kernel/linux.yml
 

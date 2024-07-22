@@ -93,6 +93,9 @@ commit="$(ostree --repo="${checkout}" rev-parse "${ref}")"
 echo "GOT commit id ${commit}"
 
 echo "=> pulling from local repository"
+echo "   OSTREE_REPO = ${OSTREE_REPO}"
+echo "   CHECKOUT    = ${checkout}"
+echo "   COMMIT      = ${commit}"
 ostree pull-local --repo="${OSTREE_REPO}" "${checkout}" "${commit}"
 
 prev_commit="$(ostree rev-parse "${ref}" 2>/dev/null || true)"

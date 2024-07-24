@@ -1,4 +1,3 @@
-force-rebuild: true
 include-root: /sysroot
 include-upon: platform.yml
 strip: false

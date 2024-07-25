@@ -82,6 +82,8 @@ depends:
   - components/dracut.yml
   - components/zsync.yml
 
+  - components/webkitgtk.yml
+
   - components/firmware.yml
   - components/sof-firmware.yml
 

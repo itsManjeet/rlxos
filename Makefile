@@ -87,11 +87,11 @@ $(OSTREE_GPG)/key-config:
 files/rlxos.gpg: $(OSTREE_GPG)/key-config
 	gpg --homedir=$(OSTREE_GPG) --export --armor >"$@"
 
-update-app-market: $(PKGUPD) version.yml ostree-branch.yml  channel.yml
+update-app-market: $(PKGUPD) version.yml ostree-branch.yml channel.yml
 	$(PKGUPD) ignite meta ignite.cache=$(CACHE_PATH) $(APPMARKET_PATH)/$(CHANNEL)
 	./scripts/extract-icons.sh $(APPMARKET_PATH)/$(CHANNEL)/apps/ $(APPMARKET_PATH)/$(CHANNEL)/icons/
 
-update-ostree: files/rlxos.gpg
+update-ostree: $(PKGUPD) version.yml ostree-branch.yml channel.yml files/rlxos.gpg
 ifndef ELEMENT
 	@echo "no ELEMENT specified"
 	@exit 1

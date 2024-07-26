@@ -24,6 +24,8 @@ initial-commands: |-
   # TODO: FIX components/pam.yml integration
   chmod 4755 %{bindir}/unix_chkpwd
 
+  echo -e "\nGTK_CSD=1" >> %{sysconfdir}/environment
+
   kerver=$(ls -1 /lib/modules | head -n1)
   cp /lib/modules/${kerver}/bzImage /lib/modules/${kerver}/vmlinuz
 

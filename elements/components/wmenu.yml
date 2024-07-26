@@ -1,5 +1,5 @@
 id: wmenu
-version: 0.1.7
+version: 0.1.9
 about: Efficient dynamic menu for Wayland and wlroots based Wayland compositors
 
 depends:

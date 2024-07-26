@@ -116,6 +116,7 @@ depends:
   - components/neofetch.yml
 
   - kernel/linux.yml
+  - components/nvidia.yml
 
   - system/systemd-preset.yml
   - system/etc-shells.yml

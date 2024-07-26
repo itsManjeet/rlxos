@@ -1,4 +1,5 @@
 include-root: /sysroot
+force-rebuild: true
 include-upon: platform.yml
 strip: false
 type: extension

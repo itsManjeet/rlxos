@@ -5,4 +5,4 @@ bindsym Mod4+shift+e exec swaynag \
     -b "Poweroff" "systemctl poweroff" \
     -b "Reboot" "systemctl reboot"
 
-output * bg /usr/share/backgrounds/default_blur.jpg fill
+output * bg /usr/share/backgrounds/default-blur.jpg fill

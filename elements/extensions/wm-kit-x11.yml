@@ -6,6 +6,6 @@ include:
   - components/scrot.yml
   - components/tint2.yml
   - components/picom.yml
-  - components/dmenu.yml
+  - components/rofi.yml
 
 merge: [elements/include/extension.inc]

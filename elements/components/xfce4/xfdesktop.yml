@@ -1,6 +1,5 @@
 id: xfdesktop
 version: 4.18.1
-release: 4
 about: Xfce desktop manager
 
 pre-script: |-
@@ -8,6 +7,7 @@ pre-script: |-
 
 post-script: |-
   install -vm 0644 /files/backgrounds/default.jpg %{install-root}%{datadir}/backgrounds/default.jpg
+  install -vm 0644 /files/backgrounds/default-blur.jpg %{install-root}%{datadir}/backgrounds/default-blur.jpg
   install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml << "EOF"
   <?xml version="1.0" encoding="UTF-8"?>
   <channel name="xfce4-desktop" version="1.0">
@@ -27,6 +27,7 @@ depends:
   - components/libwnck.yml
   - components/libnotify.yml
   - components/startup-notification.yml
+  - components/xfce4/thunar.yml
   - components/xfce4/exo.yml
   - components/xfce4/garcon.yml
 sources:

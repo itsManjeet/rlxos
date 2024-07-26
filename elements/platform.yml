@@ -83,6 +83,7 @@ depends:
   - components/zsync.yml
 
   - components/webkitgtk.yml
+
   - components/openjdk-jre.yml
   - components/dotnet-runtime.yml
 
@@ -102,9 +103,10 @@ depends:
   - components/network-manager-applet.yml
   - components/blueman.yml
   - components/ntfs-3g.yml
-  - components/srclang.yml
+  - components/file-roller.yml
 
-  - components/desktop-shell.yml
+  - components/meta-xfce4.yml
+  - components/lightdm.yml
   - components/initial-setup.yml
 
   - components/firefox.yml
@@ -118,3 +120,4 @@ depends:
   - system/etc-skel.yml
   - system/etc-sysctl.yml
   - system/etc-default-useradd.yml
+  - system/x11-config.yml

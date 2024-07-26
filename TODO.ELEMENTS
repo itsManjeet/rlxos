@@ -1,3 +1,5 @@
+components/rustc: update to latest version for firefox
+
 components/gcr.yml: check and fix update url version
 components/gcr.yml: fix documentation
 components/qt.yml: fix configuration files

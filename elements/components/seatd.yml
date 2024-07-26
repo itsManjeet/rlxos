@@ -1,5 +1,6 @@
 id: seatd
 version: 0.7.0
+release: 2
 about: A minimal seat management daemon and universal seat management library
 sources:
   - https://git.sr.ht/~kennylevinsen/seatd/archive/%{version}.tar.gz

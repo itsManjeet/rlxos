@@ -1,5 +1,5 @@
 id: cbindgen
-version: 0.25.0
+version: 0.26.0
 about: Cbindgen can be used to generate C bindings for Rust code
 
 depends:

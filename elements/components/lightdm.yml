@@ -95,12 +95,11 @@ post-script: |-
   install -vDm 0644 /files/backgrounds/default_blur.jpg %{install-root}%{datadir}/backgrounds/default_blur.jpg
   install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/lightdm/lightdm-gtk-greeter.conf << "EOF"
   [greeter]
-  background=%{datadir}/backgrounds/default_blur.jpg
-  theme-name=Qogir-Light
-  icon-theme-name=Qogir
-  cursor-theme-name=Qogir
+  background=%{datadir}/backgrounds/default-blur.jpg
+  theme-name=Orchis-Dark
+  icon-theme-name=Tela
   font-name=IBM Plex Sans Regular 11
-  panel-position=top
+  panel-position=bottom
   indicators=~host;~spacer;~session;~a11y;~language;~clock;~power;
   EOF
 

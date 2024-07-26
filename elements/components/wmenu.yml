@@ -15,4 +15,4 @@ build-depends:
   - components/wayland-protocols.yml
 
 sources:
-  - wmenu-%{version}.tar.gz::https://git.sr.ht/~adnano/wmenu/archive/%{version}.tar.gz
+  - wmenu-%{version}.tar.gz::https://codeberg.org/adnano/wmenu/archive/%{version}.tar.gz

@@ -38,7 +38,6 @@ post-script: |-
           <value type="int" value="8"/>
           <value type="int" value="12"/>
           <value type="int" value="9"/>
-          <value type="int" value="13"/>
         </property>
         <property name="icon-size" type="uint" value="22"/>
         <property name="output-name" type="string" value="Primary"/>
@@ -51,12 +50,12 @@ post-script: |-
         <property name="view-mode" type="int" value="0"/>
         <property name="launcher-icon-size" type="int" value="4"/>
         <property name="category-icon-size" type="int" value="2"/>
-        <property name="menu-width" type="int" value="850"/>
+        <property name="menu-width" type="int" value="800"/>
         <property name="menu-height" type="int" value="750"/>
         <property name="position-search-alternate" type="bool" value="true"/>
-        <property name="position-commands-alternate" type="bool" value="false"/>
-        <property name="position-categories-horizontal" type="bool" value="true"/>
-        <property name="position-categories-alternate" type="bool" value="true"/>
+        <property name="position-commands-alternate" type="bool" value="true"/>
+        <property name="position-categories-horizontal" type="bool" value="false"/>
+        <property name="position-categories-alternate" type="bool" value="false"/>
         <property name="default-category" type="int" value="2"/>
         <property name="hover-switch-category" type="bool" value="true"/>
         <property name="button-icon" type="string" value="start-here"/>
@@ -98,23 +97,6 @@ post-script: |-
         <property name="tooltip-format" type="string" value="%A %d %B %Y"/>
         <property name="mode" type="uint" value="2"/>
         <property name="show-seconds" type="bool" value="true"/>
-      </property>
-      <property name="plugin-13" type="string" value="actions">
-        <property name="items" type="array">
-          <value type="string" value="-lock-screen"/>
-          <value type="string" value="-switch-user"/>
-          <value type="string" value="-separator"/>
-          <value type="string" value="-suspend"/>
-          <value type="string" value="-hibernate"/>
-          <value type="string" value="-hybrid-sleep"/>
-          <value type="string" value="-separator"/>
-          <value type="string" value="-shutdown"/>
-          <value type="string" value="-restart"/>
-          <value type="string" value="+separator"/>
-          <value type="string" value="+logout"/>
-          <value type="string" value="-logout-dialog"/>
-        </property>
-        <property name="appearance" type="uint" value="0"/>
       </property>
       <property name="plugin-3" type="string" value="separator">
         <property name="style" type="uint" value="2"/>

@@ -39,7 +39,7 @@ post-script: |-
 
 depends:
   - components/icu.yml
-  - components/libxml.yml
+  - components/libxml2.yml
   - components/libxslt.yml
   - components/libldap.yml
 

@@ -1,7 +1,0 @@
-id: x11
-version: 11
-about: x11 libraries and tools
-include:
-  - components/meta-x11.yml
-
-merge: [elements/include/extension.inc]

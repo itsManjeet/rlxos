@@ -74,7 +74,7 @@ depends:
   - components/fuse2.yml
 
   - components/xdg-desktop-portal-gtk.yml
-  - components/xdg-desktop-portal-xapp.yml
+  - components/xdg-desktop-portal-wlr.yml
   - components/xdg-dbus-proxy.yml
   - components/wireplumber.yml
   - components/gnome-keyring.yml
@@ -83,6 +83,8 @@ depends:
   - components/zsync.yml
 
   - components/webkitgtk.yml
+  - components/openjdk-jre.yml
+  - components/dotnet-runtime.yml
 
   - components/firmware.yml
   - components/sof-firmware.yml

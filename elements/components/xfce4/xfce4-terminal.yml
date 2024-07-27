@@ -2,7 +2,7 @@ id: xfce4-terminal
 version: 1.1.3
 about: A modern terminal emulator primarily for Xfce4
 
-prepare-appimage: |-
+post-script: |-
   install -v -D -m 0644 /dev/stdin %{install-root}/%{sysconfdir}/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-terminal.xml << "EOF"
   <?xml version="1.0" encoding="UTF-8"?>
   <channel name="xfce4-terminal" version="1.0">
@@ -15,15 +15,13 @@ prepare-appimage: |-
   </channel>
   EOF
 
-  rm -f %{install-root}/%{datadir}/applications/xfce4-terminal-settings.desktop
 
-build-depends:
+depends:
   - components/hicolor-icon-theme.yml
   - components/xfce4/libxfce4ui.yml
   - components/vte.yml
+build-depends:
   - components/intltool.yml
 
 sources:
   - https://archive.xfce.org/src/apps/xfce4-terminal/%{version:2}/xfce4-terminal-%{version}.tar.bz2
-
-merge: [elements/include/appimage.inc]

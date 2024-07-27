@@ -19,10 +19,10 @@ build-dir: llvm-%{version}.src
 
 build-type: cmake
 pre-script: |-
-  mv ../clang-%{version}.src tools/clang
-  mv ../compiler-rt-%{version}.src projects/compiler-rt
-  mv ../cmake-%{version}.src .
-  mv ../third-party-%{version}.src .
+  mv clang-%{version}.src tools/clang
+  mv compiler-rt-%{version}.src projects/compiler-rt
+  cp -ar cmake-%{version}.src/* .
+  cp -ar third-party-%{version}.src/* .
 
   sed "/LLVM_COMMON_CMAKE_UTILS/s@../cmake@cmake-%{version}.src@" -i CMakeLists.txt 
   sed "/LLVM_THIRD_PARTY_DIR/s@../third-party@third-party-%{version}.src@" -i cmake/modules/HandleLLVMOptions.cmake

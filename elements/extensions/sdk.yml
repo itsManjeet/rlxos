@@ -3,7 +3,7 @@ version: 2.0
 about: RLXOS Software Development Kit
 
 include:
-  - system/deps.yml
+  - platform.yml
   - components/bc.yml
   - components/gcc.yml
   - components/kernel-headers.yml
@@ -34,9 +34,8 @@ include:
   - components/sassc.yml
   - components/xfce4/xfce4-dev-tools.yml
   - components/gdb.yml
-  - components/openjdk.yml
-  - components/dotnet.yml
   - components/patch.yml
+  - components/xfce4/xfce4-dev-tools.yml
   - components/man-pages.yml
 
 include-parts: 

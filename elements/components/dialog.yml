@@ -9,6 +9,9 @@ configure: >
 
 install: install-full
 
+post-script: |-
+  install -vDm 0644 /files/dialogrc -t %{install-root}%{sysconfdir}/
+
 depends:
   - components/ncurses.yml
   - components/libtool.yml

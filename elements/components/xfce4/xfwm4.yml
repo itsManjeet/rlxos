@@ -10,7 +10,7 @@ post-script: |-
   <?xml version="1.0" encoding="UTF-8"?>
   <channel name="xfwm4" version="1.0">
     <property name="general" type="empty">
-      <property name="theme" type="string" value="Qogir-Light" />
+      <property name="theme" type="string" value="Orchis-Dark" />
       <property name="show_dock_shadow" type="bool" value="false"/>
       <property name="show_popup_shadow" type="bool" value="true"/>
       <property name="move_opacity" type="int" value="80"/>

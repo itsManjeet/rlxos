@@ -5,21 +5,6 @@ about: Tiling Wayland compositor and replacement for the i3 window manager
 pre-script: |-
   sed -i "s/branch \\\'@1@\\\'/rlxos/g" meson.build
 post-script: |-
-  install -v -D -m 0644 /dev/stdin %{install-root}%{sysconfdir}/sway/config.d/50-systemd-user.conf << "EOF"
-  exec systemctl --user set-environment XDG_CURRENT_DESKTOP=sway
-  exec systemctl --user import-environment DISPLAY \
-                                           SWAYSOCK \
-                                           WAYLAND_DISPLAY \
-                                           XDG_CURRENT_DESKTOP
-
-  exec hash dbus-update-activation-environment 2>/dev/null && \
-       dbus-update-activation-environment --systemd DISPLAY \
-                                                    SWAYSOCK \
-                                                    XDG_CURRENT_DESKTOP=sway \
-                                                    WAYLAND_DISPLAY
-
-  EOF
-
   install -v -D -m 0644 /dev/stdin %{install-root}%{datadir}/xdg-desktop-portal/sway-portals.conf << "EOF"
   [preferred]
   default=gtk
@@ -28,6 +13,9 @@ post-script: |-
   EOF
 
   install -v -D -m 0644 LICENSE -t %{install-root}%{datadir}/doc/%{id}/
+
+  rm -rf %{install-root}%{sysconfdir}/sway
+  cp -rf /files/sway %{install-root}%{sysconfdir}/
 
 configure: >-
   -D sd-bus-provider=libsystemd

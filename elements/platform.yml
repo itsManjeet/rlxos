@@ -1,7 +1,7 @@
-id: system-deps
+id: platform
 version: 2.0
 merge: [elements/include/meta.inc]
-about: System components
+about: RLXOS platform components
 
 depends:
   - components/busybox.yml
@@ -74,13 +74,18 @@ depends:
   - components/fuse2.yml
 
   - components/xdg-desktop-portal-gtk.yml
-  - components/xdg-desktop-portal-xapp.yml
+  - components/xdg-desktop-portal-wlr.yml
   - components/xdg-dbus-proxy.yml
   - components/wireplumber.yml
   - components/gnome-keyring.yml
   - components/grub.yml
   - components/dracut.yml
   - components/zsync.yml
+
+  - components/webkitgtk.yml
+
+  - components/openjdk-jre.yml
+  - components/dotnet-runtime.yml
 
   - components/firmware.yml
   - components/sof-firmware.yml
@@ -98,26 +103,24 @@ depends:
   - components/network-manager-applet.yml
   - components/blueman.yml
   - components/ntfs-3g.yml
-  - components/srclang.yml
+  - components/file-roller.yml
 
-  - components/desktop-shell.yml
+  - components/meta-xfce4.yml
+  - components/meta-x11.yml
+  - components/lightdm.yml
   - components/initial-setup.yml
+  - components/epdfview.yml
 
   - components/firefox.yml
   - components/welcome-tour.yml
-
-  - components/appimaged.yml
   - components/neofetch.yml
-  - components/distrobox.yml
-
-# Better integration with xfce4 apps
-  - components/xfce4/xfconf.yml
-  - components/xfce4/tumbler.yml
 
   - kernel/linux.yml
+  - components/nvidia.yml
 
   - system/systemd-preset.yml
   - system/etc-shells.yml
   - system/etc-skel.yml
   - system/etc-sysctl.yml
   - system/etc-default-useradd.yml
+  - system/x11-config.yml

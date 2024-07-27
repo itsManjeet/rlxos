@@ -36,7 +36,7 @@ jobs:
         run: rm -rf files/sign-keys && cp -r ${SIGN_KEYS_PATH} files/sign-keys
 
       - name: Build system packages
-        run: make ELEMENT=system/deps.yml
+        run: make ELEMENT=platform.yml
 
       - name: Write changelog
         run: echo "${{ github.event.head_commit.message }}" > ChangeLog

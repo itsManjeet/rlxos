@@ -12,6 +12,12 @@ depends:
   - components/xfce4/xfwm4.yml
   - components/xfce4/xfce4-settings.yml
   - components/xfce4/tumbler.yml
+  - components/xfce4/mousepad.yml
+  - components/xfce4/parole.yml
+  - components/xfce4/ristretto.yml
+  - components/xfce4/thunar.yml
+  - components/xfce4/xfce4-taskmanager.yml
+  - components/xfce4/xfce4-terminal.yml
   - components/xfce4/xfce4-appfinder.yml
   - components/xfce4/xfce4-power-manager.yml
   - components/xfce4/xfce4-screenshooter.yml
@@ -50,6 +56,8 @@ depends:
   - components/themes/adwaita-icon-theme.yml
   - components/themes/grey-bird-gtk-theme.yml
   - components/themes/elementary-xfce-icon.yml
+  - components/themes/orchis-gtk-theme.yml
+  - components/themes/tela-icon-theme.yml
 
   - components/fonts/adobe-source-code-pro-fonts.yml
   - components/fonts/fira-code.yml

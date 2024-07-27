@@ -15,7 +15,6 @@ script: |-
   
   install -Dm0644 -t "%{install-root}/%{libdir}/systemd/system/" "greetd.service"
 
-  install -Dm0644 -t "%{install-root}/%{sysconfdir}/greetd/" config.toml
   install -Dm0644 /dev/stdin "%{install-root}/etc/%{sysconfdir}/greetd" << "EOF"
   auth       required     pam_securetty.so
   auth       requisite    pam_nologin.so
@@ -29,6 +28,9 @@ script: |-
   m greeter video
   EOF
   make -C man DESTDIR="%{install-root}" PREFIX=/usr install
+
+  mkdir -p %{install-root}%{sysconfdir}
+  cp -rf /files/greetd %{install-root}%{sysconfdir}/
 
 
 depends:

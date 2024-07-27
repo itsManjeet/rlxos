@@ -16,7 +16,6 @@ depends:
   - components/spice-gtk.yml
 
 build-depends:
-  - components/apache.yml
   - components/py/py-setuptools.yml
 
 sources:

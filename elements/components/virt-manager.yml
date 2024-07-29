@@ -14,6 +14,8 @@ depends:
   - components/libvirt-glib.yml
   - components/py/py-cairo.yml
   - components/spice-gtk.yml
+  - components/libosinfo.yml
+  - components/libisoburn.yml
 
 build-depends:
   - components/py/py-setuptools.yml

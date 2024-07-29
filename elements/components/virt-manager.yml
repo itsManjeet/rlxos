@@ -4,6 +4,7 @@ about: Desktop user interface for managing virtual machines
 
 pre-script: |-
   pip install docutils
+  
   sed -i '80s/.*/            self.gsettings_dir = os.path.join(prefix, "share", "virt-manager", "schemas")/' virtinst/buildconfig.py
   sed -i '81d' virtinst/buildconfig.py
 

@@ -4,5 +4,6 @@ about: RLXOS QEMU Virtualization Kit
 include:
   - components/qemu.yml
   - components/bridge-utils.yml
+  - components/virt-manager.yml
 
 merge: [elements/include/extension.inc]

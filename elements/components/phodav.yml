@@ -3,7 +3,7 @@ version: 3.0
 about: WebDav server implementation using libsoup (RFC 4918)
 
 pre-script: |-
-  sed -i 's|%{sysconfdir}/sysconfig/spice-webdavd|%{sysconfdir}/conf.d/spice-webdavd| \
+  sed -i 's|%{sysconfdir}/sysconfig/spice-webdavd|%{sysconfdir}/conf.d/spice-webdavd|
           s|/usr/sbin/spice-webdavd|%{bindir}/spice-webdavd|' data/spice-webdavd.service
 post-script: |-
   install -dm755 "%{install-root}%{sysconfdir}/conf.d/"
@@ -11,7 +11,7 @@ post-script: |-
 
 depends:
   - components/avahi.yml
-  - components/libsoup.yml
+  - components/libsoup3.yml
   - components/systemd.yml
 build-depends:
   - components/gtk-doc.yml

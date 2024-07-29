@@ -38,11 +38,6 @@ configure: >-
   -Dstorage_zfs=enabled
   -Dstorage_rbd=disabled
 
-post-script: |-
-  chmod 600 %{install-root}%{sysconfdir}/libvirt/nwfilter/*.xml \
-    %{install-root}%{sysconfdir}/libvirt/qemu/networks/default.xml
-  chmod 700 %{install-root}%{sysconfdir}/libvirt/secrets
-
 depends:
   - components/fuse.yml
   - components/gnutls.yml
@@ -57,6 +52,8 @@ depends:
   - components/iptables.yml
   - components/gettext.yml
   - components/lvm2.yml
+  - components/rpcsvc-proto.yml
+
 build-depends:
   - components/iproute2.yml
   - components/libxslt.yml

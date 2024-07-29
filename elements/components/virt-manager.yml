@@ -1,0 +1,22 @@
+id: virt-manager
+version: 4.1.0
+about: Desktop user interface for managing virtual machines
+
+pre-script: |-
+  pip install docutils
+
+configure: >-
+  --default-hvs qemu,lxc
+
+depends:
+  - components/gtk-vnc.yml
+  - components/gtksourceview4.yml
+  - components/libvirt-glib.yml
+  - components/py/py-cairo.yml
+  - components/spice-gtk.yml
+
+build-depends:
+  - components/py/py-setuptools.yml
+
+sources:
+  - https://releases.pagure.org/virt-manager/virt-manager-%{version}.tar.gz

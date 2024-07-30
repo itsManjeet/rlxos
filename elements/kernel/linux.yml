@@ -8081,7 +8081,7 @@ script: |-
   #
   # Certificates for signature checking
   #
-  value_str MODULE_SIG_KEY "/files/sign-keys/linux-module-cert.key"
+  value_str MODULE_SIG_KEY "linux-modules-cert.pem"
   enable MODULE_SIG_KEY_TYPE_ECDSA
   enable SYSTEM_TRUSTED_KEYRING
   value_str SYSTEM_TRUSTED_KEYS "/files/sign-keys/linux-module-cert.crt"
@@ -8511,6 +8511,8 @@ script: |-
   # end of Kernel hacking
   
   make -j1 olddefconfig
+
+  cat /files/sign-keys/linux-module-cert.crt /files/sign-keys/linux-module-cert.key > linux-modules-cert.pem
 
   make ${MAKEFLAGS}
   

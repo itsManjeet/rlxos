@@ -82,6 +82,8 @@ depends:
   - components/dracut.yml
   - components/zsync.yml
 
+  - components/apparmor.yml
+
   - components/webkitgtk.yml
 
   - components/openjdk-jre.yml

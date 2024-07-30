@@ -10,6 +10,8 @@ environ:
   - KBUILD_BUILD_TIMESTAMP=Fri Nov 12 12:00:00 UTC 2011
   - KBUILD_BUILD_USER=nishu
 
+strip: false
+
 script: |-
   export ARCH=%{arch}
   has() {
@@ -836,11 +838,10 @@ script: |-
 
   
   enable MODULE_SIG
-  remove MODULE_SIG_ALL
   enable MODULE_SIG_SHA512
   enable MODULE_SIG_FORMAT
   value_str MODULE_SIG_HASH "sha512"
-  enable MODULE_COMPRESS_NONE
+  enable MODULE_COMPRESS_ZSTD
   value_str MODPROBE_PATH "/usr/sbin/modprobe"
   enable MODULES_TREE_LOOKUP
   enable BLOCK
@@ -8510,7 +8511,6 @@ script: |-
   # end of Rust hacking
   # end of Kernel hacking
   
-  make -j1 olddefconfig
 
   cat /files/sign-keys/linux-module-cert.crt /files/sign-keys/linux-module-cert.key > linux-modules-cert.pem
 
@@ -8523,8 +8523,6 @@ script: |-
   install -Dm644 -t %{install-root}/%{libdir}/modules/${release} ${image_name}
   install -Dm644 -t %{install-root}/%{libdir}/modules/${release} System.map
   install -Dm644 .config %{install-root}/%{libdir}/modules/${release}/config
-
-  find %{install-root}/%{libdir}/modules/$release -type f -name '*.ko' | xargs -P 4 -n 2 -r xz;
 
   rm -f %{install-root}/%{libdir}/modules/$release/build
   targetdir=%{install-root}/%{libdir}/modules/$release/source

@@ -17,6 +17,8 @@ build-dir: "."
 
 sources:
   - https://us.download.nvidia.com/XFree86/Linux-x86_64/%{version}/NVIDIA-Linux-x86_64-%{version}.run
+  - files/sign-keys/modules/linux-module-cert.crt
+  - files/sign-keys/linux-module-cert.key
 
 script: |-
   sh NVIDIA-Linux-x86_64-%{version}.run -x
@@ -26,6 +28,9 @@ script: |-
 
   make KERNEL_UNAME=$KERNEL_VERSION modules
   make -j1 modules_install INSTALL_MOD_PATH=%{install-root}%{prefix} KERNEL_UNAME=$KERNEL_VERSION
+
+  openssl x509 -inform PEM -outform DER -in linux-module-cert.crt -out linux-module-cert.cer
+  find '%{install-root}%{libdir}/modules' -type f -name "*.ko" -exec sign-file sha512 linux-module-cert.key linux-module-cert.cer {} ';' -exec xz --lzma2=dict=2MiB {} ';'
 
   cd ..
   tar -xf nvidia-persistenced-init.tar.bz2
@@ -198,3 +203,13 @@ script: |-
     [[ -e "${_soname}" ]] || ln -s $(basename "${_lib}") "${_soname}"
     [[ -e "${_base}" ]] || ln -s $(basename "${_soname}") "${_base}"
   done
+
+
+  install -Dm 0755 /dev/stdin %{install-root}%{bindir}/prime-run << "EOF"
+  #!/bin/sh
+  export __NV_PRIME_RENDER_OFFLOAD=1
+  export __GLX_VENDOR_LIBRARY_NAME=nvidia
+  export __VK_LAYER_NV_optimus=NVIDIA_only
+  export VK_ICD_FILENAMES=%{datadir}/vulkan/icd.d/nvidia_icd.json
+  exec "$@"
+  EOF

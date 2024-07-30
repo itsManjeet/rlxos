@@ -5,6 +5,8 @@ about: |
   Linux kernel, modules and headers
 sources:
   - https://www.kernel.org/pub/linux/kernel/v%{version:1}.x/linux-%{version}.tar.xz
+  - files/sign-keys/modules/linux-module-cert.crt
+  - files/sign-keys/linux-module-cert.key
 
 environ:
   - KBUILD_BUILD_TIMESTAMP=Fri Nov 12 12:00:00 UTC 2011
@@ -840,8 +842,16 @@ script: |-
   enable MODULE_SIG
   enable MODULE_SIG_SHA512
   enable MODULE_SIG_FORMAT
+
+  remove MODULE_SIG_SHA1
+  remove MODULE_SIG_SHA224
+  remove MODULE_SIG_SHA256
+  remove MODULE_SIG_SHA384
+
+  remove MODULE_SIG_ALL
+  remove MODULE_SIG_FORCE
+
   value_str MODULE_SIG_HASH "sha512"
-  enable MODULE_COMPRESS_ZSTD
   value_str MODPROBE_PATH "/usr/sbin/modprobe"
   enable MODULES_TREE_LOOKUP
   enable BLOCK
@@ -8082,7 +8092,7 @@ script: |-
   #
   # Certificates for signature checking
   #
-  value_str MODULE_SIG_KEY "linux-modules-cert.pem"
+  value_str MODULE_SIG_KEY ""
   enable MODULE_SIG_KEY_TYPE_ECDSA
   enable SYSTEM_TRUSTED_KEYRING
   value_str SYSTEM_TRUSTED_KEYS "/files/sign-keys/linux-module-cert.crt"
@@ -8512,13 +8522,14 @@ script: |-
   # end of Kernel hacking
   
 
-  cat /files/sign-keys/linux-module-cert.crt /files/sign-keys/linux-module-cert.key > linux-modules-cert.pem
-
   make ${MAKEFLAGS}
   
   make -j1 INSTALL_MOD_PATH='%{install-root}/%{prefix}' DEPMOD=/bin/true modules_install
   release=$(make -s kernelrelease)
   image_name=$(make -s image_name)
+
+  openssl x509 -inform PEM -outform DER -in linux-module-cert.crt -out linux-module-cert.cer
+  find '%{install-root}%{libdir}/modules' -type f -name "*.ko" -exec sign-file sha512 linux-module-cert.key linux-module-cert.cer {} ';' -exec xz --lzma2=dict=2MiB {} ';'
 
   install -Dm644 -t %{install-root}/%{libdir}/modules/${release} ${image_name}
   install -Dm644 -t %{install-root}/%{libdir}/modules/${release} System.map

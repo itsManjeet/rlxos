@@ -8522,6 +8522,8 @@ script: |-
   # end of Kernel hacking
   
 
+  make olddefconfig
+  
   make ${MAKEFLAGS}
   
   make -j1 INSTALL_MOD_PATH='%{install-root}/%{prefix}' DEPMOD=/bin/true modules_install
@@ -8529,7 +8531,7 @@ script: |-
   image_name=$(make -s image_name)
 
   openssl x509 -inform PEM -outform DER -in linux-module-cert.crt -out linux-module-cert.cer
-  find '%{install-root}%{libdir}/modules' -type f -name "*.ko" -exec sign-file sha512 linux-module-cert.key linux-module-cert.cer {} ';' -exec xz --lzma2=dict=2MiB {} ';'
+  find '%{install-root}%{libdir}/modules' -type f -name "*.ko" -exec ./scripts/sign-file sha512 linux-module-cert.key linux-module-cert.cer {} ';' -exec xz --lzma2=dict=2MiB {} ';'
 
   install -Dm644 -t %{install-root}/%{libdir}/modules/${release} ${image_name}
   install -Dm644 -t %{install-root}/%{libdir}/modules/${release} System.map

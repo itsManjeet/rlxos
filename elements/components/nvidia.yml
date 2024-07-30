@@ -29,8 +29,8 @@ script: |-
   make KERNEL_UNAME=$KERNEL_VERSION modules
   make -j1 modules_install INSTALL_MOD_PATH=%{install-root}%{prefix} KERNEL_UNAME=$KERNEL_VERSION
 
-  openssl x509 -inform PEM -outform DER -in linux-module-cert.crt -out linux-module-cert.cer
-  find '%{install-root}%{libdir}/modules' -type f -name "*.ko" -exec sign-file sha512 linux-module-cert.key linux-module-cert.cer {} ';' -exec xz --lzma2=dict=2MiB {} ';'
+  openssl x509 -inform PEM -outform DER -in %{build-root}/linux-module-cert.crt -out linux-module-cert.cer
+  find '%{install-root}%{libdir}/modules' -type f -name "*.ko" -exec %{libdir}/modules/${KERNEL_VERSION}/source/scripts/sign-file sha512 %{build-root}/linux-module-cert.key linux-module-cert.cer {} ';' -exec xz --lzma2=dict=2MiB {} ';'
 
   cd ..
   tar -xf nvidia-persistenced-init.tar.bz2

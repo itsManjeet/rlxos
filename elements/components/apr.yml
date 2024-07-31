@@ -13,4 +13,4 @@ depends:
   - components/gdbm.yml
   - components/sqlite.yml
 sources:
-  - http://www.apache.org/dist/apr/apr-%{version}.tar.bz2
+  - https://archive.apache.org/dist/apr/apr-%{version}.tar.bz2

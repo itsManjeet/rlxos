@@ -5,10 +5,14 @@ about: |
   Linux kernel, modules and headers
 sources:
   - https://www.kernel.org/pub/linux/kernel/v%{version:1}.x/linux-%{version}.tar.xz
+  - files/sign-keys/modules/linux-module-cert.crt
+  - files/sign-keys/linux-module-cert.key
 
 environ:
   - KBUILD_BUILD_TIMESTAMP=Fri Nov 12 12:00:00 UTC 2011
   - KBUILD_BUILD_USER=nishu
+
+strip: false
 
 script: |-
   export ARCH=%{arch}
@@ -834,12 +838,20 @@ script: |-
   enable MODULES
   enable MODULE_UNLOAD
 
-  enable MODULE_SIG_FORMAT
+  
   enable MODULE_SIG
-  remove MODULE_SIG_ALL
   enable MODULE_SIG_SHA512
+  enable MODULE_SIG_FORMAT
+
+  remove MODULE_SIG_SHA1
+  remove MODULE_SIG_SHA224
+  remove MODULE_SIG_SHA256
+  remove MODULE_SIG_SHA384
+
+  remove MODULE_SIG_ALL
+  remove MODULE_SIG_FORCE
+
   value_str MODULE_SIG_HASH "sha512"
-  enable MODULE_COMPRESS_NONE
   value_str MODPROBE_PATH "/usr/sbin/modprobe"
   enable MODULES_TREE_LOOKUP
   enable BLOCK
@@ -7788,6 +7800,8 @@ script: |-
   value SECURITY_SELINUX_SIDTAB_HASH_BITS 9
   value SECURITY_SELINUX_SID2STR_CACHE_SIZE 256
   enable SECURITY_YAMA
+  enable SECURITY_APPARMOR
+
   enable SECURITY_LOCKDOWN_LSM
   enable SECURITY_LOCKDOWN_LSM_EARLY
   enable LOCK_DOWN_KERNEL_FORCE_NONE
@@ -7819,7 +7833,7 @@ script: |-
   enable EVM
   enable EVM_ATTR_FSUUID
   enable DEFAULT_SECURITY_SELINUX
-  value_str LSM "lockdown,yama,integrity,selinux,bpf,landlock"
+  value_str LSM "lockdown,lockdown,yama,integrity,apparmor,bpf"
 
   #
   # Kernel hardening options
@@ -8079,6 +8093,7 @@ script: |-
   # Certificates for signature checking
   #
   value_str MODULE_SIG_KEY ""
+  enable MODULE_SIG_KEY_TYPE_ECDSA
   enable SYSTEM_TRUSTED_KEYRING
   value_str SYSTEM_TRUSTED_KEYS "/files/sign-keys/linux-module-cert.crt"
   enable SYSTEM_EXTRA_CERTIFICATE
@@ -8506,19 +8521,21 @@ script: |-
   # end of Rust hacking
   # end of Kernel hacking
   
-  make -j1 olddefconfig
 
+  make olddefconfig
+  
   make ${MAKEFLAGS}
   
   make -j1 INSTALL_MOD_PATH='%{install-root}/%{prefix}' DEPMOD=/bin/true modules_install
   release=$(make -s kernelrelease)
   image_name=$(make -s image_name)
 
+  openssl x509 -inform PEM -outform DER -in linux-module-cert.crt -out linux-module-cert.cer
+  find '%{install-root}%{libdir}/modules' -type f -name "*.ko" -exec ./scripts/sign-file sha512 linux-module-cert.key linux-module-cert.cer {} ';' -exec xz --lzma2=dict=2MiB {} ';'
+
   install -Dm644 -t %{install-root}/%{libdir}/modules/${release} ${image_name}
   install -Dm644 -t %{install-root}/%{libdir}/modules/${release} System.map
   install -Dm644 .config %{install-root}/%{libdir}/modules/${release}/config
-
-  find %{install-root}/%{libdir}/modules/$release -type f -name '*.ko' | xargs -P 4 -n 2 -r xz;
 
   rm -f %{install-root}/%{libdir}/modules/$release/build
   targetdir=%{install-root}/%{libdir}/modules/$release/source

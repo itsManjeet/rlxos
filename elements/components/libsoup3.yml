@@ -1,5 +1,5 @@
 id: libsoup
-version: 3.4.2
+version: 3.4.4
 about: A HTTP client/server library for GNOME
 
 configure: >-

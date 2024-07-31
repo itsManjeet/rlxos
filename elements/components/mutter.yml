@@ -1,5 +1,5 @@
 id: mutter
-version: 44.4
+version: 46.3.1
 about: The window manager for GNOME
 
 configure: >-

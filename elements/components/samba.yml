@@ -1,5 +1,5 @@
 id: samba
-version: 4.19.3
+version: 4.20.2
 about: Package provides file and print services to SMB/CIFS clients and Windows networking to Linux clients
 
 build-type: autotools

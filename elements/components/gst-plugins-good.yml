@@ -1,5 +1,5 @@
 id: gst-plugins-good
-version: 1.22.5
+version: 1.24.4
 about:
   A set of plug-ins considered by the GStreamer developers to have good quality
   code, correct functionality, and the preferred license (LGPL for the plug-in code,

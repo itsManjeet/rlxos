@@ -1,5 +1,5 @@
 id: libssh
-version: 0.10.5
+version: 1.11.0
 about: Library for accessing ssh client services through C libraries
 depends:
   - components/openssl.yml

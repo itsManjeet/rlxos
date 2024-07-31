@@ -1,5 +1,5 @@
 id: x265
-version: 20230215
+version: 20240216
 about: Package provides a library for encoding video streams into the H.265/HEVC format
 
 build-dir: x265-%{version}/source

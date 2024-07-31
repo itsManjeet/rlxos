@@ -1,5 +1,5 @@
 id: libcloudproviders
-version: 0.3.2
+version: 0.3.6
 about: Library which provides a DBus API that allows cloud storage sync clients to expose their services
 
 build-depends:

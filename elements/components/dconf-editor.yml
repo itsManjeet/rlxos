@@ -1,5 +1,5 @@
 id: dconf-editor
-version: 43.0
+version: 45.0.1
 about: A low-level configuration system editor
 
 depends:

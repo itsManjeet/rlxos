@@ -1,5 +1,5 @@
 id: libblockdev
-version: 3.0.3
+version: 3.1.1
 about: A C library supporting GObject Introspection for manipulation of block devices
 
 configure: >-

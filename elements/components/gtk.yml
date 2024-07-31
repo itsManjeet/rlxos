@@ -1,5 +1,5 @@
 id: gtk
-version: 3.24.38
+version: 3.24.43
 about: Libraries used for creating graphical user interfaces for applications
 
 configure: >

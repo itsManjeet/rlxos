@@ -1,5 +1,5 @@
 id: file-roller
-version: 43.0
+version: 44.3
 about: An archive manager for GNOME with support for tar, bzip2, gzip, zip, jar, compress, lzop, zstd, and many other archive formats
 
 configure: >-

@@ -1,5 +1,5 @@
 id: gstreamer
-version: 1.22.5
+version: 1.24.4
 about:
   A streaming media framework that enables applications to share a common set
   of plugins for tasks such as video encoding and decoding, audio encoding and decoding,

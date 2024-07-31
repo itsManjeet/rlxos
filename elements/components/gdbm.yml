@@ -1,5 +1,5 @@
 id: gdbm
-version: 1.23
+version: 1.24
 about: GNU Database Manager
 
 configure: >-

@@ -1,5 +1,5 @@
 id: traceroute
-version: 2.1.3
+version: 2.1.5
 about: Tracks the route taken by packets over an IP network
 
 depends:

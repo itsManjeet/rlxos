@@ -1,4 +1,4 @@
-version: 6.0.0
+version: 6.2.0
 
 configure: >-
   -DCMAKE_BUILD_TYPE=Release

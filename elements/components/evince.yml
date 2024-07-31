@@ -1,5 +1,5 @@
 id: evince
-version: 44.3
+version: 46.3.1
 about: Document viewer (PDF, PostScript, XPS, djvu, dvi, tiff, cbr, cbz, cb7, cbt)
 
 depends:

@@ -1,5 +1,5 @@
 id: krb5
-version: 1.21.2
+version: 1.21.3
 about: A free implementation of Kerberos 5
 
 build-dir: krb5-%{version}/src

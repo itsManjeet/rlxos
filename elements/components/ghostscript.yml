@@ -1,5 +1,5 @@
 id: ghostscript
-version: 10.03.0
+version: 10.03.1
 about: An interpreter for the PostScript language
 
 seperate-build-dir: false

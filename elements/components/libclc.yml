@@ -1,5 +1,5 @@
 id: libclc
-version: 16.0.6
+version: 18.1.7
 about: Library requirements of the OpenCL C programming language
 
 build-depends:

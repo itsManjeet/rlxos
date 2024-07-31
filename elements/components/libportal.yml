@@ -1,5 +1,5 @@
 id: libportal
-version: 0.6
+version: 0.7.1
 about: A library that contains GIO-style async APIs for most Flatpak portals
 
 configure: >-

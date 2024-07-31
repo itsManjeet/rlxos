@@ -1,5 +1,5 @@
 id: xdg-desktop-portal
-version: 1.17.2
+version: 1.18.2
 about: Desktop integration portals for sandboxed apps
 
 depends:

@@ -1,5 +1,5 @@
 id: appstream-glib
-version: 0_8_2
+version: 0_8_3
 about: Objects and methods for reading and writing AppStream metadata
 
 configure: >

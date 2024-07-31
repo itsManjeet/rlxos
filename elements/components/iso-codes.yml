@@ -1,6 +1,6 @@
 id: iso-codes
-version: 4.15.0
-about:
+version: 4.16.0
+about: |
   Package contains a list of country, language and currency names and it is used
   as a central database for accessing this data
 

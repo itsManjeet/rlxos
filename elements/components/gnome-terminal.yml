@@ -1,5 +1,5 @@
 id: gnome-terminal
-version: 3.48.2
+version: 3.52.2
 about: Package contains the terminal emulator for GNOME Desktop
 
 pre-script: |-

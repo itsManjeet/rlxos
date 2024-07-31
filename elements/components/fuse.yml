@@ -1,5 +1,5 @@
 id: fuse
-version: 3.16.1
+version: 3.16.2
 about: A simple interface for userspace programs to export a virtual filesystem to the Linux kernel
 
 pre-script: |-

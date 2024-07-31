@@ -1,5 +1,5 @@
 id: nautilus
-version: 44.2.1
+version: 46.2
 about: Package contains the GNOME file manager
 
 pre-script: |-

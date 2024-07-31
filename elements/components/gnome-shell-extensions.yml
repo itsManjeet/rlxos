@@ -1,5 +1,5 @@
 id: gnome-shell-extensions
-version: "40.4"
+version: 46.2
 about: Extensions for GNOME shell, including classic mode
 release: 0
 depends:

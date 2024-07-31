@@ -1,5 +1,5 @@
 id: libevdev
-version: 1.13.1
+version: 1.13.2
 about: Common functions for Xorg input drivers
 
 sources:

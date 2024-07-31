@@ -1,5 +1,5 @@
 id: gtkmm
-version: 3.24.8
+version: 3.24.9
 about: A C++ interface to GTK+ 3
 
 variables:

@@ -1,5 +1,5 @@
 id: bluez
-version: 5.69
+version: 5.77
 about: Bluetooth protocol stack
 
 configure: >

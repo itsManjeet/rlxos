@@ -1,5 +1,5 @@
 id: gnome-shell
-version: 44.4
+version: 46.3.1
 about: Core user interface for GNOME Desktop Environment
 
 depends:

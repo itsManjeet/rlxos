@@ -1,5 +1,5 @@
 id: pinentry
-version: 1.2.1
+version: 1.3.1
 about:
   A collection of simple PIN or pass-phrase entry dialogs which utilize the Assuan
   protocol as described by the Agypten project

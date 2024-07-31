@@ -1,5 +1,5 @@
 id: libgusb
-version: 0.4.6
+version: 0.4.9
 about: GObject wrappers for libusb-1.0
 
 configure: >-

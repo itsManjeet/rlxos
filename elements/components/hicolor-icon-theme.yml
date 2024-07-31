@@ -1,5 +1,5 @@
 id: hicolor-icon-theme
-version: 0.17
+version: 0.18
 about: Package contains a default fallback theme for implementations of the icon theme specification
 sources:
   - https://icon-theme.freedesktop.org/releases/hicolor-icon-theme-%{version}.tar.xz

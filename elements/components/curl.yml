@@ -1,5 +1,5 @@
 id: curl
-version: 8.2.1
+version: 8.9.0
 about: Utility and a library used for transferring files
 sources:
   - https://curl.haxx.se/download/curl-%{version}.tar.xz

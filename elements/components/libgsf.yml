@@ -1,5 +1,5 @@
 id: libgsf
-version: 1.14.50
+version: 1.14.52
 about:
   A library used for providing an extensible input/output abstraction layer for
   structured file formats

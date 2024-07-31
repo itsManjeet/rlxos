@@ -1,5 +1,5 @@
 id: util-macros
-version: 1.20.0
+version: 1.20.1
 about: X.Org Autotools macros
 sources:
   - https://www.x.org/pub/individual/util/util-macros-%{version}.tar.xz

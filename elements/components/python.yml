@@ -1,5 +1,5 @@
 id: python
-version: 3.12.2
+version: 3.12.4
 about: Python development environment
 
 build-dir: Python-%{version}

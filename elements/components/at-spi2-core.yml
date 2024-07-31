@@ -1,5 +1,5 @@
 id: at-spi2-core
-version: 2.48.4
+version: 2.52.0
 about: Service Provider Interface for the Assistive Technologies
 
 depends:

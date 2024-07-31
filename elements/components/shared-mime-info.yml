@@ -1,5 +1,5 @@
 id: shared-mime-info
-version: 2.2
+version: 2.4
 about: Package contains a MIME database
 
 depends:

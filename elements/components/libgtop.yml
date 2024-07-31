@@ -1,5 +1,5 @@
 id: libgtop
-version: 2.40.0
+version: 2.41.3
 about: A library for collecting system monitoring data
 
 variables:

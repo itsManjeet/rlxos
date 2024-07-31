@@ -1,5 +1,5 @@
 id: qemu
-version: 8.2.0
+version: 9.0.2
 about: A full virtualization solution for Linux on x86 hardware containing virtualization extensions
 
 build-type: autotools

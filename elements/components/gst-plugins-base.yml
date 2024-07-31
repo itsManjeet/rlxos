@@ -1,5 +1,5 @@
 id: gst-plugins-base
-version: 1.22.5
+version: 11.24.4
 about: A well-groomed and well-maintained collection of GStreamer plug-ins and elements, spanning the range of possible types of elements one would want to write for GStreamer
 
 pre-script: |-

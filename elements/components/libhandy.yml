@@ -1,5 +1,5 @@
 id: libhandy
-version: 1.8.2
+version: 1.8.3
 about: Provides additional GTK UI widgets for use in developing user interfaces
 
 configure: >-

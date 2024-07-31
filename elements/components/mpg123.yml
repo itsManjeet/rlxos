@@ -1,5 +1,5 @@
 id: mpg123
-version: 1.31.3
+version: 1.32.6
 about: Package contains a console-based MP3 player.
 
 depends:

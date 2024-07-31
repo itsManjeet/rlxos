@@ -1,5 +1,5 @@
 id: gdm
-version: 44.1
+version: 46.2
 about: A system service that is responsible for providing graphical logins and managing local and remote displays
 
 post-script: |-

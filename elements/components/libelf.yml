@@ -1,5 +1,5 @@
 id: libelf
-version: 0.190
+version: 0.191
 about: Executable and Linkable Format utilities
 
 configure: >-

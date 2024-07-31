@@ -1,5 +1,5 @@
 id: webp-pixbuf-loader
-version: 0.2.4
+version: 0.2.7
 about: WebM GDK Pixbuf loader library
 
 depends:

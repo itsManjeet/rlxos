@@ -1,5 +1,5 @@
 id: gnome-settings-daemon
-version: 44.1
+version: 46.0
 about: Daemon responsible for setting various parameters of a GNOME Session
 
 configure: >-

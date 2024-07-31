@@ -1,5 +1,5 @@
 id: libXvMC
-version: 1.0.13
+version: 1.0.14
 about: X11 Video Motion Compensation extension library
 
 build-type: autotools

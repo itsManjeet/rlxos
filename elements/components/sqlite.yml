@@ -1,5 +1,5 @@
 id: sqlite
-version: 3430000
+version: 3460000
 about: A software library that implements a self-contained, serverless, zero-configuration, transactional SQL database engine
 
 build-dir: sqlite-autoconf-%{version}

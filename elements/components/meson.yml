@@ -1,5 +1,5 @@
 id: meson
-version: 1.3.2
+version: 1.5.0
 about: Open source build system meant to be both extremely fast and as user friendly as possible
 
 depends:

@@ -1,5 +1,5 @@
 id: wget
-version: 1.21.4
+version: 1.24.5
 about: Network utility to retrieve files from the Web
 
 configure: >

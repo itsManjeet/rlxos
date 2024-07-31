@@ -1,5 +1,5 @@
 id: gnome-bluetooth
-version: 42.6
+version: 46.0
 about: Tools for managing and manipulating Bluetooth devices using the GNOME Desktop
 
 configure: >-

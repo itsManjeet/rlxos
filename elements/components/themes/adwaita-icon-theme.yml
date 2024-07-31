@@ -1,5 +1,5 @@
 id: adwaita-icon-theme
-version: 44.0
+version: 46.2
 about: Adwaita Icon Theme package contains an icon theme for Gtk+ 3 applications
 
 depends:

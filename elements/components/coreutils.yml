@@ -1,5 +1,5 @@
 id: coreutils
-version: 9.4
+version: 9.5
 about: Utilities for showing and setting the basic system characteristics
 
 build-dir: coreutils-%{version}

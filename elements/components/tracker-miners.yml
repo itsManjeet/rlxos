@@ -1,5 +1,5 @@
 id: tracker-miners
-version: 3.5.2
+version: 3.7.2
 about: Package contains a set of data extractors for Tracker
 
 configure: >-

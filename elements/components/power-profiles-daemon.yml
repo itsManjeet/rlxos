@@ -1,5 +1,5 @@
 id: power-profiles-daemon
-version: 0.13
+version: 0.21
 about: Makes power profiles handling available over D-Bus
 
 post-script: |-

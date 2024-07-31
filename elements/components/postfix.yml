@@ -1,5 +1,5 @@
 id: postfix
-version: 3.8.2
+version: 3.9.0
 about: Postfix package contains a Mail Transport Agent
 
 script: |-

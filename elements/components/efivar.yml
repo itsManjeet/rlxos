@@ -1,5 +1,5 @@
 id: efivar
-version: 38
+version: 39
 about: Package provides tools and libraries to manipulate EFI variables
 
 script: |-

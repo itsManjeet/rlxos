@@ -1,5 +1,5 @@
 id: linux
-version: 6.7.8
+merge: [elements/include/linux.inc]
 release: 2
 about: |
   Linux kernel, modules and headers

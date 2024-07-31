@@ -1,5 +1,5 @@
 id: keyutils
-version: 1.6.1
+version: 1.6.3
 about: Linux key management utilities
 
 pre-script: |-

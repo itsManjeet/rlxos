@@ -1,5 +1,5 @@
 id: mesa
-version: 23.1.7
+version: 24.1.4
 about: OpenGL compatible 3D graphics library
 sources:
   - https://mesa.freedesktop.org/archive/mesa-%{version}.tar.xz

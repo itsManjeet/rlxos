@@ -1,5 +1,5 @@
 id: gst-libav
-version: 1.22.5
+version: 1.24.4
 about: GStreamer plugins for Libav
 
 configure: >-

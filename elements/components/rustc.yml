@@ -4,8 +4,8 @@ about: Rust programming language is designed to be a safe, concurrent, practical
 
 variables:
   date: 2023-07-13
-  rust: 1.71.0
-  cargo: 1.71.0
+  rust: 1.80.0
+  cargo: 1.80.0
 
 depends:
   - components/curl.yml

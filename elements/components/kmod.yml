@@ -1,5 +1,5 @@
 id: kmod
-version: 31
+version: 32
 about: Libraries and utilities for loading kernel modules
 
 configure: >-

@@ -1,5 +1,5 @@
 id: cpio
-version: 2.14
+version: 2.15
 about: A tool to copy files into or out of a cpio or tar archive
 
 environ:

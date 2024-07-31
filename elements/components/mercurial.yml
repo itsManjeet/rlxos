@@ -1,5 +1,5 @@
 id: mercurial
-version: 6.5.1
+version: 6.8
 about: A scalable distributed SCM tools
 
 build-depends:

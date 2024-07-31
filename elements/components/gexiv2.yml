@@ -1,5 +1,5 @@
 id: gexiv2
-version: 0.14.2
+version: 0.14.3
 about: GObject-based wrapper around the Exiv2 library
 
 configure: >-

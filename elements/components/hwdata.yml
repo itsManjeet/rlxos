@@ -1,5 +1,5 @@
 id: hwdata
-version: 0.373
+version: 0.384
 about: hardware identification databases
 depends:
   - components/glibc.yml

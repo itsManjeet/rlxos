@@ -1,5 +1,5 @@
 id: pulseaudio
-version: 16.1
+version: 17.0
 about: A sound system for POSIX OSes
 
 configure: >-

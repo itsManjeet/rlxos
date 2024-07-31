@@ -1,5 +1,5 @@
 id: gnome-session
-version: 44.0
+version: 46.0
 about: Package contains the GNOME session manager
 
 pre-script: |-

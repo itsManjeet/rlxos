@@ -1,5 +1,5 @@
 id: gvfs
-version: 1.51.91
+version: 1.54.2
 about:
   A userspace virtual filesystem designed to work with the I/O abstractions of
   GLib's GIO library

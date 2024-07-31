@@ -1,5 +1,5 @@
 id: libpciaccess
-version: 0.17
+version: 0.18.1
 about: X11 PCI access library
 
 sources:

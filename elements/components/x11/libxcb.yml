@@ -1,5 +1,5 @@
 id: libxcb
-version: 1.15
+version: 1.17.0
 about: X11 client-side library
 
 pre-script: rm autogen.sh

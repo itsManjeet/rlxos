@@ -1,5 +1,5 @@
 id: polkit
-version: 123
+version: 124
 about: Toolkit for defining and handling authorizations
 
 build-type: meson

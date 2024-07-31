@@ -1,5 +1,5 @@
 id: poppler
-version: 23.09.0
+version: 24.07.0
 about: A PDF rendering library and command line tools used to manipulate PDF files
 
 depends:

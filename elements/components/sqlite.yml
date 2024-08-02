@@ -19,4 +19,4 @@ depends:
   - components/zlib.yml
 
 sources:
-  - https://sqlite.org/2023/sqlite-autoconf-%{version}.tar.gz
+  - https://sqlite.org/2024/sqlite-autoconf-%{version}.tar.gz

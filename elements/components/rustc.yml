@@ -26,11 +26,8 @@ sources:
   - 003::https://static.rust-lang.org/dist/%{date}/cargo-%{cargo}-%{target-triple}.tar.xz
 
 script: |
-  patch -d src/tools/cargo -Np1 -i /patches/rustc/0001-cargo-change-libexec-dir.patch
-  patch -Np1 -i /patches/rustc/0001-bootstrap-change-libexec-dir.patch
-  patch -Np1 -i /patches/rustc/0003-compiler-change-LLVM-targets.patch
   cat > config.toml << EOF
-  changelog-seen = 2
+  change-id = 125535
 
   [llvm]
   targets = "X86"

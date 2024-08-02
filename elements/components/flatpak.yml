@@ -1,11 +1,11 @@
 id: flatpak
-version: 1.15.4
+version: 1.15.9
 about: Linux application sandboxing and distribution framework
 
 build-type: autotools
 
 post-script: |
-  install -v -D /dev/stdin %{install-root}%{sysconfdir}/profile.d/ << EOF
+  install -v -Dm0755 /dev/stdin %{install-root}%{sysconfdir}/profile.d/flatpak.sh << EOF
   if [ -n "$XDG_DATA_HOME" ] && [ -d "$XDG_DATA_HOME/flatpak/exports/bin" ]; then
   append_path "$XDG_DATA_HOME/flatpak/exports/bin"
   elif [ -n "$HOME" ] && [ -d "$HOME/.local/share/flatpak/exports/bin" ]; then
@@ -16,6 +16,7 @@ post-script: |
     append_path /var/lib/flatpak/exports/bin
   fi
   EOF
+
   install -v -D -t %{install-root}%{sysconfdir}/flatpak/remotes.d flathub.flatpakrepo
 configure: >-
   --disable-static

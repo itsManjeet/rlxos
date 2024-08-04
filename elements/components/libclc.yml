@@ -1,6 +1,13 @@
 id: libclc
-version: 18.1.7
+version: 18.1.8
 about: Library requirements of the OpenCL C programming language
+
+script: |-
+  cmake -B build -G Ninja \
+    -DCMAKE_INSTALL_PREFIX=%{prefix} \
+    -DCMAKE_BUILD_TYPE=Release
+  ninja -C build
+  DESTDIR=%{install-root} ninja -C build install
 
 build-depends:
   - components/llvm.yml

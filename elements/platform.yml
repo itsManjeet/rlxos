@@ -84,8 +84,6 @@ depends:
 
   - components/apparmor.yml
 
-  - components/webkitgtk.yml
-
   - components/openjdk-jre.yml
   - components/dotnet-runtime.yml
 

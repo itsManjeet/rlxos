@@ -8,7 +8,7 @@ pre-script: |-
 configure: >-
   -D android-libbacktrace=disabled
   -D b_ndebug=true
-  -D gallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,i915,iris,crocus,d3d12
+  -D gallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,i915,iris,crocus,d3d12,zink
   -D gallium-extra-hud=true
   -D gallium-nine=true
   -D gallium-opencl=icd
@@ -38,6 +38,7 @@ depends:
   - components/libvdpau.yml
   - components/libglvnd.yml
   - components/libunwind.yml
+  - components/vulkan-loader.yml
   - components/x11/libx11.yml
   - components/x11/libxdamage.yml
   - components/x11/libxrandr.yml
@@ -57,6 +58,10 @@ build-depends:
   - components/libclc.yml
   - components/directx-headers.yml
   - components/rustc.yml
+  - components/rust-bindgen.yml
+  - components/cbindgen.yml
+  - components/valgrind.yml
+  - components/vulkan-headers.yml
 
 sources:
   - https://mesa.freedesktop.org/archive/mesa-%{version}.tar.xz

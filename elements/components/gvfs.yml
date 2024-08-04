@@ -20,6 +20,7 @@ depends:
   - components/libmtp.yml
   - components/libsoup3.yml
   - components/openssh.yml
+  - components/gcr-4.yml
 sources:
   - https://download.gnome.org/sources/gvfs/%{version:2}/gvfs-%{version}.tar.xz
 configure: >-

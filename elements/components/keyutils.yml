@@ -11,4 +11,4 @@ script: |-
 depends:
   - components/glibc.yml
 sources:
-  - https://people.redhat.com/~dhowells/keyutils/keyutils-%{version}.tar.bz2
+  - https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/keyutils.git/snapshot/keyutils-%{version}.tar.gz

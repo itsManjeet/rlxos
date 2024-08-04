@@ -19,7 +19,6 @@ depends:
   - components/pango.yml
   - components/wayland.yml
   - components/ffmpeg.yml
-  - components/gst-plugins-bad.yml
   - components/librsvg.yml
   - components/colord.yml
 build-depends:

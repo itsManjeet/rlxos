@@ -12,8 +12,8 @@ depends:
   - components/accountsservice.yml
   - components/clutter-gtk.yml
   - components/colord-gtk.yml
-  - components/gnome-online-accounts.yml
-  - components/gnome-settings-daemon.yml
+  - components/gnome/gnome-online-accounts.yml
+  - components/gnome/gnome-settings-daemon.yml
   - components/grilo.yml
   - components/gsound.yml
   - components/libgtop.yml

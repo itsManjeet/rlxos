@@ -7,7 +7,7 @@ configure: >
   -D examples=false
   -D demos=false
   -D colord=yes
-  -D tracker=true
+  -D tracker3=true
   -D cloudproviders=true
   -D broadway_backend=true
   -D wayland_backend=true

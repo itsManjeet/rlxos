@@ -4,12 +4,9 @@ about: Modern media player based on GStreamer framework
 
 depends:
   - components/dbus-glib.yml
-  - components/gst-plugins-base.yml
-  - components/gst-plugins-good.yml
   - components/libnotify.yml
   - components/xfce4/libxfce4ui.yml
-  - components/gst-libav.yml
-  - components/gst-plugins-bad.yml
+  - components/gstreamer.yml
 build-depends:
   - components/intltool.yml
   - components/python.yml

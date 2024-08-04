@@ -10,7 +10,6 @@ depends:
   - components/bluez.yml
   - components/ffmpeg.yml
   - components/gstreamer.yml
-  - components/gst-plugins-base.yml
   - components/libva.yml
   - components/pulseaudio.yml
   - components/sbc.yml

@@ -5,7 +5,6 @@ depends:
   - components/pango.yml
   - components/cairo.yml
   - components/fontconfig.yml
-  - components/gtk2.yml
   - components/libwebp.yml
   - components/poppler.yml
   - components/librsvg.yml

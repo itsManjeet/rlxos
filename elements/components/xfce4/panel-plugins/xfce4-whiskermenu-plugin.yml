@@ -11,7 +11,7 @@ configure: >-
 depends:
   - components/xfce4/garcon.yml
   - components/gtk.yml
-  - components/atk.yml
+  - components/at-spi2-core.yml
   - components/xfce4/libxfce4util.yml
   - components/xfce4/libxfce4ui.yml
   - components/xfce4/xfce4-panel.yml

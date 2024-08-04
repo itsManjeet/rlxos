@@ -17,4 +17,4 @@ build-depends:
   - components/xmlto.yml
   - components/lynx.yml
 sources:
-  - https://portland.freedesktop.org/download/xdg-utils-%{version}.tar.gz
+  - https://gitlab.freedesktop.org/xdg/xdg-utils/-/archive/v%{version}/xdg-utils-v%{version}.tar.gz

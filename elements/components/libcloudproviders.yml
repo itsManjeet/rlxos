@@ -5,6 +5,7 @@ about: Library which provides a DBus API that allows cloud storage sync clients 
 build-depends:
   - components/gobject-introspection.yml
   - components/vala.yml
+  - components/py/py-packaging.yml
 
 depends:
   - components/glib.yml

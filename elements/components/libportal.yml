@@ -4,7 +4,6 @@ about: A library that contains GIO-style async APIs for most Flatpak portals
 
 configure: >-
   -D docs=false
-  -D backends=gtk3,gtk4
 
 depends:
   - components/glib.yml

@@ -7,7 +7,10 @@ configure: >
   --with-dbpath=%{localstatedir}/lib/sasl/sasldb2
   --with-sphnix-build=no
   --with-saslauthd=%{localstatedir}/run/saslauthd
+  CFLAGS="$CFLAGS -Wno-implicit-function-declaration"
+
 compile: -j1
+
 post-script: |
   install -v -dm700 %{install-root}/%{localstatedir}/lib/sasl
 
@@ -15,5 +18,6 @@ depends:
   - components/berkeley-db.yml
   - components/pam.yml
   - components/krb5.yml
+
 sources:
   - https://github.com/cyrusimap/cyrus-sasl/releases/download/cyrus-sasl-%{version}/cyrus-sasl-%{version}.tar.gz

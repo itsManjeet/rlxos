@@ -6,12 +6,14 @@ depends:
   - components/glib.yml
   - components/snowball.yml
   - components/xz.yml
+
 build-depends:
   - components/gtk-doc.yml
   - components/gobject-introspection.yml
   - components/meson.yml
+
 sources:
-  - https://people.freedesktop.org/~hughsient/releases/%{id}-%{version}.tar.xz
+  - https://github.com/hughsie/libxmlb/releases/download/%{version}/libxmlb-%{version}.tar.xz
 
 post-script: |-
   rm -r %{install-root}/usr/{lib,share}/installed-tests

@@ -6,7 +6,6 @@ depends:
   - components/gcr.yml
   - components/json-glib.yml
   - components/rest.yml
-  - components/webkitgtk.yml
   - components/krb5.yml
 build-depends:
   - components/vala.yml

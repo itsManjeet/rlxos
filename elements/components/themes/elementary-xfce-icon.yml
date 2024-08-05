@@ -13,7 +13,6 @@ script: |-
 
 depends:
   - components/hicolor-icon-theme.yml
-  - components/themes/adwaita-icon-theme.yml
   - components/gtk.yml
   - components/librsvg.yml
 build-depends:

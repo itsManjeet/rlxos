@@ -16,4 +16,4 @@ post-script: |-
 
 
 depends:
-  - components/gtkmm.yml
+  - components/gtkmm4.yml

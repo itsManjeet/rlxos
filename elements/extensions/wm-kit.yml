@@ -5,6 +5,8 @@ include:
   - components/bemenu.yml
   - components/wmenu.yml
   - components/sfwbar.yml
+  - components/foot.yml
+  - components/i3blocks.yml
   - components/rofi.yml
 
 merge: [elements/include/extension.inc]

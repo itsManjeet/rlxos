@@ -4,6 +4,8 @@ about: Building blocks for modern adaptive GNOME applications
 
 depends:
   - components/gtk4.yml
+  - components/appstream.yml
+  - components/gcr-4.yml
 
 build-depends:
   - components/gobject-introspection.yml

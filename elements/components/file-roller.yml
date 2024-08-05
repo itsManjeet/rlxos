@@ -14,7 +14,7 @@ depends:
   - components/json-glib.yml
   - components/libarchive.yml
   - components/libnotify.yml
-  - components/libhandy.yml
+  - components/libadwaita.yml
 
 build-depends:
   - components/itstool.yml

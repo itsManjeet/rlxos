@@ -104,11 +104,9 @@ depends:
   - components/meta-xfce4.yml
   - components/meta-x11.yml
   - components/lightdm.yml
-  - components/initial-setup.yml
   - components/epdfview.yml
 
   - components/firefox.yml
-  - components/welcome-tour.yml
   - components/neofetch.yml
 
   - kernel/linux.yml

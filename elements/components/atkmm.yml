@@ -1,5 +1,5 @@
 id: atkmm
-version: 2.28.4
+version: 2.36.3
 about: C++ interface for the ATK accessibility toolkit library
 
 variables:

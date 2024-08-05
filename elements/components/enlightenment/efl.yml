@@ -48,9 +48,7 @@ depends:
   - components/util-linux.yml
   - components/zlib.yml
   - components/wayland.yml
-  - components/gst-libav.yml
-  - components/gst-plugins-base.yml
-  - components/gst-plugins-good.yml
+  - components/gstreamer.yml
   - components/libraw.yml
   - components/librsvg.yml
   - components/poppler.yml

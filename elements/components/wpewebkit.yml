@@ -19,8 +19,6 @@ depends:
   - components/fontconfig.yml
   - components/freetype.yml
   - components/glib.yml
-  - components/gst-plugins-base.yml
-  - components/gst-plugins-bad.yml
   - components/harfbuzz.yml
   - components/icu.yml
   - components/wpebackend-fdo.yml

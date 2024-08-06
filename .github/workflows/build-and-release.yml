@@ -98,7 +98,7 @@ jobs:
     name: Update ISO on mirrors
     runs-on: self-hosted
     environment: deploy
-    needs: [build-installer-iso]
+    needs: [update-installer-iso]
     steps:
       - uses: actions/checkout@v1
         with:

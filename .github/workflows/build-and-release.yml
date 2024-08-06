@@ -41,9 +41,6 @@ jobs:
       - name: Write changelog
         run: echo "${{ github.event.head_commit.message }}" > ChangeLog
 
-      - name: Build Installer ISO
-        run: make ELEMENT=installer/image.yml
-
       - name: Update Ostree
         run: make ELEMENT=system/repo.yml update-ostree
 
@@ -65,6 +62,10 @@ jobs:
             app="${app%.*}"
             make ELEMENT=${app_path} || echo "failed to build ${app_path}"
           done
+
+      - name: Build Installer ISO
+        run: make ELEMENT=installer/image.yml
+
 
   update-installer-iso:
     name: Update Installer ISO

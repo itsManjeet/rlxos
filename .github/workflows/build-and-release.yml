@@ -41,6 +41,9 @@ jobs:
       - name: Write changelog
         run: echo "${{ github.event.head_commit.message }}" > ChangeLog
 
+      - name: Build Installer ISO
+        run: make ELEMENT=installer/image.yml
+
       - name: Update Ostree
         run: make ELEMENT=system/repo.yml update-ostree
 
@@ -63,11 +66,8 @@ jobs:
             make ELEMENT=${app_path} || echo "failed to build ${app_path}"
           done
 
-      - name: Build Installer ISO
-        run: make ELEMENT=installer/image.yml
-
-  build-installer-iso:
-    name: Build Installer ISO
+  update-installer-iso:
+    name: Update Installer ISO
     runs-on: self-hosted
     timeout-minutes: 47000
     needs: [ build ]

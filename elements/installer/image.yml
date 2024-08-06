@@ -14,7 +14,6 @@ kargs: >-
   --karg=quiet
   --karg=splash
   --karg=rd.live=1
-  --karg=module.sig_enforce=1
   --karg=rd.live.overlay.overlayfs=1
 force-rebuild: true
 strip: false

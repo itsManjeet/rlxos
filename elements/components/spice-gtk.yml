@@ -3,8 +3,7 @@ version: 0.42
 about: GTK+ client library for SPICE
 
 depends:
-  - components/gst-plugins-base.yml
-  - components/gst-plugins-good.yml
+  - components/gstreamer.yml
   - components/libcacard.yml
   - components/gtk.yml
   - components/libjpeg-turbo.yml

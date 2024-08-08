@@ -21,9 +21,6 @@ build-depends:
 
 sources:
   - https://static.rust-lang.org/dist/rustc-%{version}-src.tar.xz
-  - 001::https://static.rust-lang.org/dist/%{date}/rust-std-%{rust}-%{target-triple}.tar.xz
-  - 002::https://static.rust-lang.org/dist/%{date}/rustc-%{rust}-%{target-triple}.tar.xz
-  - 003::https://static.rust-lang.org/dist/%{date}/cargo-%{cargo}-%{target-triple}.tar.xz
 
 script: |
   cat > config.toml << EOF
@@ -52,12 +49,6 @@ script: |
   [target.%{target-triple}]
   llvm-config = "%{bindir}/llvm-config"
   EOF
-
-  
-  mkdir -p build/cache/%{date}
-  cp %{build-root}/001 build/cache/%{date}/rust-std-%{rust}-%{target-triple}.tar.xz
-  cp %{build-root}/002 build/cache/%{date}/rustc-%{rust}-%{target-triple}.tar.xz
-  cp %{build-root}/003 build/cache/%{date}/cargo-%{cargo}-%{target-triple}.tar.xz
 
   export RUST_BACKTRACE=1
   export LIBSSH2_SYS_USE_PKG_CONFIG=1

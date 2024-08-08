@@ -117,7 +117,7 @@ ostree-branch.yml:
 	@echo "variables:" > $@
 	@echo "  channel: ${CHANNEL}" >> $@
 
-generate-keys: $(BOOT_KEYS) files/rlxos.gpg
+generate-keys: $(BOOT_KEYS) 
 
 files/sign-keys/extra-db/.keep files/sign-keys/extra-kek/.keep:
 	[ -d $(dir $@) ] || mkdir -p $(dir $@)

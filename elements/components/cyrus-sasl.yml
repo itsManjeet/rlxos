@@ -2,6 +2,10 @@ id: cyrus-sasl
 version: 2.1.28
 about: A Simple Authentication and Security Layer
 
+pre-script: |
+  sed '/saslint/a #include <time.h>' -i lib/saslutil.c
+  sed '/plugin_common/a #include <time.h>' -i plugins/cram.c
+
 configure: >
   --enable-auth-sasldb
   --with-dbpath=%{localstatedir}/lib/sasl/sasldb2
@@ -15,7 +19,7 @@ post-script: |
   install -v -dm700 %{install-root}/%{localstatedir}/lib/sasl
 
 depends:
-  - components/berkeley-db.yml
+  - components/mariadb.yml
   - components/pam.yml
   - components/krb5.yml
 

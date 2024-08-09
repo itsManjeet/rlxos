@@ -10,7 +10,6 @@ configure: >-
   -DGOBJECT_INTROSPECTION=true
 
 depends:
-  - components/berkeley-db.yml
   - components/glib.yml
   - components/icu.yml
   - components/libxml2.yml

@@ -1,11 +1,7 @@
 id: mariadb
-version: 11.2.1
-about:
-  A community-developed fork and a drop-in replacement for the MySQL relational
-  database management system
+version: 10.11.8
+about: A community-developed fork and a drop-in replacement for the MySQL relational database management system
 
-post-script: |-
-  # install -v -D -m 644 /files/default.cnf -t %{install-root}%{sysconfdir}/mysql
 configure: >-
   -DINSTALL_DOCDIR=share/doc/%{id}-%{version}
   -DCMAKE_BUILD_TYPE=Release
@@ -48,5 +44,4 @@ build-depends:
   - components/cmake.yml
   - components/boost.yml
 sources:
-  - https://rsync.osuosl.org/pub/mariadb/mariadb-%{version}/source/mariadb-%{version}.tar.gz
-# TODO: fix configuration file
+  - https://downloads.mariadb.org/interstitial/mariadb-%{version}/source/mariadb-%{version}.tar.gz

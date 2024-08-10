@@ -4,7 +4,7 @@ merge: [version.yml, ostree-branch.yml, elements/include/ostree.inc]
 
 capabilities:
   - CAP_SYS_CHROOT
-
+force-rebuild: false
 include-root: /sysroot
 initial-commands: |-
   chroot %{include-root} /bin/bash -e << "EOT"

@@ -10,7 +10,7 @@ script: |-
   disable systemd-networkd.socket
   disable systemd-networkd.service
   disable systemd-networkd-wait-online.service
-  disable mariadb
+  disable systemd-homed
 
   enable system-updates
   EOF

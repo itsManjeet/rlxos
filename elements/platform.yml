@@ -106,6 +106,9 @@ depends:
   - components/firefox.yml
   - components/neofetch.yml
 
+  - components/welcome-tour.yml
+  - components/initial-setup.yml
+
   - kernel/linux.yml
   - components/nvidia.yml
 

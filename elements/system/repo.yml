@@ -26,6 +26,9 @@ initial-commands: |-
 
   echo -e "\nGTK_CSD=1" >> %{sysconfdir}/environment
 
+  sed -i 's/disable systemd-homed.service//g' %{libdir}/systemd/system-preset/90-system.preset
+  sed -i 's/disable systemd-homed-activate.service//g' %{libdir}/systemd/system-preset/90-system.preset
+
   kerver=$(ls -1 /lib/modules | head -n1)
   cp /lib/modules/${kerver}/bzImage /lib/modules/${kerver}/vmlinuz
 

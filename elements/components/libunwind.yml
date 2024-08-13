@@ -1,5 +1,5 @@
 id: libunwind
-version: 1.7.2
+version: 1.6.2
 about: Determine and manipulate the call-chain of a program
 
 depends:

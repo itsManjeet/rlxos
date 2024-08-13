@@ -1,5 +1,5 @@
 id: gcr-4
-version: 4.1.0
+version: 4.3.0
 about: Libraries used for displaying certificates and accessing key stores
 
 configure: >-

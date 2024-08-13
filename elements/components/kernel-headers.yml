@@ -1,5 +1,5 @@
 id: kernel-headers
-version: 6.7
+merge: [elements/include/linux.inc]
 about: Linux kernel, modules and headers
 
 strip: false

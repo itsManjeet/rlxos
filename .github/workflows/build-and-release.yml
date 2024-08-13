@@ -66,8 +66,9 @@ jobs:
       - name: Build Installer ISO
         run: make ELEMENT=installer/image.yml
 
-  build-installer-iso:
-    name: Build Installer ISO
+
+  update-installer-iso:
+    name: Update Installer ISO
     runs-on: self-hosted
     timeout-minutes: 47000
     needs: [ build ]
@@ -98,7 +99,7 @@ jobs:
     name: Update ISO on mirrors
     runs-on: self-hosted
     environment: deploy
-    needs: [build-installer-iso]
+    needs: [update-installer-iso]
     steps:
       - uses: actions/checkout@v1
         with:

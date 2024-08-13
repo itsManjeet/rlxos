@@ -1,11 +1,13 @@
 id: spirv-tools
-version: 2023.2
+version: 2024.2
 about: API and commands for processing SPIR-V modules
 
 configure: >-
   -GNinja
-  -DCMAKE_BUILD_TYPE=Release
+  -DCMAKE_BUILD_TYPE=None
   -DSPIRV_WERROR=Off
+  -DBUILD_SHARED_LIBS=ON
+  -DSPIRV_TOOLS_BUILD_STATIC=OFF
   -DSPIRV-Headers_SOURCE_DIR=%{prefix}
 
 sources:

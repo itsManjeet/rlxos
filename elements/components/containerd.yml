@@ -1,9 +1,9 @@
 id: containerd
-version: 1.7.8
+version: 1.7.20
 about: An open and reliable container runtime
 
 variables:
-  commit: 8e4b0bde866788eec76735cc77c4720144248fb7
+  commit: 8fc6bcff51318944179630522a095cc9dbf9f353
 environ:
   - GO111MODULE=auto
 

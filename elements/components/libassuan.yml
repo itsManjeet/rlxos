@@ -1,8 +1,6 @@
 id: libassuan
-version: 2.5.6
-about:
-  An inter process communication library used by some of the other GnuPG related
-  packages
+version: 3.0.1
+about: An inter process communication library
 
 depends:
   - components/libgpg-error.yml

@@ -1,5 +1,5 @@
 id: lynx
-version: 2.8.9
+version: 2.9.2
 about: A text based web browser
 
 variables:
@@ -17,6 +17,6 @@ configure: >
 install: install-full
 
 sources:
-  - https://invisible-mirror.net/archives/lynx/tarballs/lynx%{version}rel.1.tar.bz2
+  - https://invisible-mirror.net/archives/lynx/tarballs/lynx%{version}.tar.bz2
 depends:
   - components/glibc.yml

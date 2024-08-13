@@ -80,7 +80,7 @@ depends:
   - components/shared-mime-info.yml
   - components/gtk.yml
   - components/glm.yml
-  - components/gst-plugins-base.yml
+  - components/gstreamer.yml
   - components/libwebp.yml
 
 build-depends:

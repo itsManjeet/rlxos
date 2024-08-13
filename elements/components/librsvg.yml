@@ -1,5 +1,5 @@
 id: librsvg
-version: 2.56.3
+version: 2.58.2
 about: A library and tools used to manipulate, convert and view Scalable Vector Graphic
 sources:
   - https://download.gnome.org/sources/librsvg/%{version:2}/librsvg-%{version}.tar.xz

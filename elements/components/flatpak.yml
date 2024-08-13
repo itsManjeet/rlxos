@@ -1,11 +1,9 @@
 id: flatpak
-version: 1.15.4
+version: 1.15.9
 about: Linux application sandboxing and distribution framework
 
-build-type: autotools
-
 post-script: |
-  install -v -D /dev/stdin %{install-root}%{sysconfdir}/profile.d/ << EOF
+  install -v -Dm0755 /dev/stdin %{install-root}%{sysconfdir}/profile.d/flatpak.sh << EOF
   if [ -n "$XDG_DATA_HOME" ] && [ -d "$XDG_DATA_HOME/flatpak/exports/bin" ]; then
   append_path "$XDG_DATA_HOME/flatpak/exports/bin"
   elif [ -n "$HOME" ] && [ -d "$HOME/.local/share/flatpak/exports/bin" ]; then
@@ -16,13 +14,15 @@ post-script: |
     append_path /var/lib/flatpak/exports/bin
   fi
   EOF
+
   install -v -D -t %{install-root}%{sysconfdir}/flatpak/remotes.d flathub.flatpakrepo
+
 configure: >-
-  --disable-static
-  --enable-gtk-doc
-  --with-system-bubblewrap
-  --with-system-dbus-proxy
-  --with-dbus-config-dir=%{datadir}/dbus-1/system.d
+  -D dbus_config_dir=%{datadir}/dbus-1/system.d
+  -D selinux_module=disabled
+  -D system_bubblewrap=bwrap
+  -D system_dbus_proxy=xdg-dbus-proxy
+  -D tests=false
 
 depends:
   - components/appstream.yml
@@ -40,10 +40,10 @@ depends:
   - components/py/py-parsing.yml
   - components/xdg-dbus-proxy.yml
   - components/libseccomp.yml
+
 build-depends:
   - components/gtk-doc.yml
+
 sources:
   - https://github.com/flatpak/flatpak/releases/download/%{version}/flatpak-%{version}.tar.xz
   - https://dl.flathub.org/repo/flathub.flatpakrepo
-
-# TODO: fix configurations

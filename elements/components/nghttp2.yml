@@ -1,5 +1,5 @@
 id: nghttp2
-version: 1.56.0
+version: 1.62.1
 about: An implementation of HTTP/2 and its header compression algorithm, HPACK
 
 build-type: autotools

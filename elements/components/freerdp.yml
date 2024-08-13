@@ -25,7 +25,7 @@ post-script: |-
 depends:
   - components/dbus-glib.yml
   - components/glibc.yml
-  - components/gst-plugins-base.yml
+  - components/gstreamer.yml
   - components/gstreamer.yml
   - components/alsa-lib.yml
   - components/ffmpeg.yml

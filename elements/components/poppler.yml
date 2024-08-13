@@ -1,5 +1,5 @@
 id: poppler
-version: 23.09.0
+version: 24.07.0
 about: A PDF rendering library and command line tools used to manipulate PDF files
 
 depends:
@@ -10,6 +10,7 @@ depends:
   - components/libpng.yml
   - components/nss.yml
   - components/libboost.yml
+  - components/gpgme.yml
   - components/openjpeg.yml
 build-depends:
   - components/boost.yml
@@ -18,3 +19,5 @@ sources:
 
 configure: >-
   -DENABLE_UNSTABLE_API_ABI_HEADERS=ON
+  -DENABLE_QT6=OFF
+  -DENABLE_QT5=OFF

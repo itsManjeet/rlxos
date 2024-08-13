@@ -1,5 +1,5 @@
 id: cairo
-version: 1.17.8
+version: 1.18.0
 about: A 2D graphics library with support for multiple output devices
 sources:
   - https://gitlab.freedesktop.org/cairo/cairo/-/archive/%{version}/cairo-%{version}.tar.gz

@@ -1,5 +1,5 @@
 id: ffmpeg
-version: 6.1.1
+version: 7.0.1
 about: A solution to record, convert and stream audio and video
 
 script: |-

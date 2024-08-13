@@ -1,5 +1,5 @@
 id: taglib
-version: 1.13.1
+version: 2.0.1
 about: A library used for reading, writing and manipulating audio file tags
 
 configure: >-
@@ -8,5 +8,7 @@ configure: >-
 
 build-depends:
   - components/cmake.yml
+  - components/utf8cpp.yml
+
 sources:
   - https://taglib.github.io/releases/taglib-%{version}.tar.gz

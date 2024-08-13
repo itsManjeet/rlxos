@@ -1,9 +1,9 @@
 id: util-linux
-version: 2.39.3
+version: 2.40.2
 about: Uilities for handling file systems, consoles, partitions, and messages
 
 sources:
-  - https://www.kernel.org/pub/linux/utils/util-linux/v2.39/util-linux-%{version}.tar.xz
+  - https://www.kernel.org/pub/linux/utils/util-linux/v%{version:2}/util-linux-%{version}.tar.xz
 
 pre-script: |-
   sed -i '/test_mkfds/s/^/#/' tests/helpers/Makemodule.am

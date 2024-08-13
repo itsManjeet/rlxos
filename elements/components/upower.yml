@@ -1,5 +1,5 @@
 id: upower
-version: 1.90.2
+version: 1.90.4
 about: Package provides an interface to enumerating power devices, listening to device events and querying history and statistics
 
 depends:
@@ -7,5 +7,9 @@ depends:
   - components/libusb.yml
   - components/polkit.yml
   - components/gobject-introspection.yml
+
+build-depends:
+  - components/py/py-packaging.yml
+
 sources:
   - https://gitlab.freedesktop.org/upower/upower/-/archive/v%{version}/upower-v%{version}.tar.gz

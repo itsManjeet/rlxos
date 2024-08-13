@@ -1,8 +1,19 @@
 id: gvfs
-version: 1.51.91
+version: 1.54.2
 about:
   A userspace virtual filesystem designed to work with the I/O abstractions of
   GLib's GIO library
+
+configure: >-
+  -D fuse=true
+  -D gphoto2=false
+  -D afc=false
+  -D bluray=false
+  -D nfs=false
+  -D mtp=true
+  -D smb=false
+  -D dnssd=false
+  -D onedrive=false
 
 depends:
   - components/dbus.yml
@@ -20,16 +31,8 @@ depends:
   - components/libmtp.yml
   - components/libsoup3.yml
   - components/openssh.yml
+  - components/gcr-4.yml
+  - components/libgdata.yml
+  - components/gnome/gnome-online-accounts.yml
 sources:
   - https://download.gnome.org/sources/gvfs/%{version:2}/gvfs-%{version}.tar.xz
-configure: >-
-  -D fuse=true
-  -D gphoto2=false
-  -D afc=false
-  -D bluray=false
-  -D nfs=false
-  -D mtp=true
-  -D smb=false
-  -D dnssd=false
-  -D goa=false
-  -D google=false

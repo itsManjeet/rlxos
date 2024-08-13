@@ -14,6 +14,7 @@ depends:
   - components/polkit.yml
 build-depends:
   - components/gobject-introspection.yml
+  - components/py/py-packaging.yml
 sources:
   - https://github.com/storaged-project/udisks/releases/download/udisks-%{version}/udisks-%{version}.tar.bz2
 # TODO: check update url

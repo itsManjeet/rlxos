@@ -1,6 +1,6 @@
 id: colord
-version: 1.4.6
-about:
+version: 1.4.7
+about: |
   A system service that makes it easy to manage, install, and generate color
   profiles
 

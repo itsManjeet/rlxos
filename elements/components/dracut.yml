@@ -1,10 +1,6 @@
 id: dracut
-version: 056
+version: 103
 about: An event driven initramfs infrastructure
-
-pre-script: |-
-  patch -Np1 -i dracut-systemd-255-systemd-executor.patch
-  patch -Np1 -i dracut-install-support-ZSTD-compressed-firmware.patch
 
 variables:
   seperate-build-dir: false
@@ -13,6 +9,7 @@ variables:
 configure: >-
   --disable-documentation
   --systemdsystemunitdir=%{libdir}/systemd/system
+  --enable-dracut-cpio
 
 depends:
   - components/bash.yml
@@ -30,8 +27,10 @@ depends:
   - components/util-linux.yml
   - components/xz.yml
   - components/zstd.yml
+  - components/lsof.yml
+
+build-depends:
+  - components/rustc.yml
 
 sources:
-  - dracut-%{version}.tar.gz::https://github.com/dracutdevs/dracut/archive/refs/tags/%{version}.tar.gz
-  - dracut-systemd-255-systemd-executor.patch::https://github.com/dracutdevs/dracut/pull/2535/commits/62fd8ebe4776dbb60ca04a865c2d160e45d65e91.patch
-  - patches/dracut/dracut-install-support-ZSTD-compressed-firmware.patch
+  - dracut-%{version}.tar.gz::https://github.com/dracut-ng/dracut-ng/archive/refs/tags/%{version}.tar.gz

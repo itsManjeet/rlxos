@@ -1,7 +1,6 @@
 id: pcre2
-version: 10.42
-about: |
-  Perl Compatible Regular Expression libraries
+version: 10.44
+about: Perl Compatible Regular Expression libraries
 
 build-type: autotools
 configure: >-

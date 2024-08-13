@@ -1,5 +1,5 @@
 id: freeglut
-version: 3.4.0
+version: 3.6.0
 about: Provides functionality for small OpenGL programs
 
 configure: >-

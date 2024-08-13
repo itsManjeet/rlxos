@@ -77,6 +77,6 @@ depends:
   - components/x11/xf86-video-amdgpu.yml
   - components/x11/xf86-video-ati.yml
   - components/x11/xf86-video-fbdev.yml
-  - components/x11/xf86-video-nouveau.yml
+  # - components/x11/xf86-video-nouveau.yml
   - components/x11/xf86-video-qxl.yml
   - components/x11/xf86-video-vmware.yml

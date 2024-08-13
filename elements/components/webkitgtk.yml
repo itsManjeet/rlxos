@@ -1,5 +1,5 @@
 id: webkitgtk
-version: 2.42.5
+version: 2.44.2
 about: A port of the portable web rendering engine WebKit
 
 environ:
@@ -27,8 +27,7 @@ configure: >-
 
 depends:
   - components/cairo.yml
-  - components/gst-plugins-base.yml
-  - components/gst-plugins-bad.yml
+  - components/gstreamer.yml
   - components/gtk.yml
   - components/harfbuzz.yml
   - components/libgudev.yml

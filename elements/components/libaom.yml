@@ -1,5 +1,5 @@
 id: libaom
-version: 3.7.0
+version: 3.9.1
 about: A reference version of the Alliance for Open Media video codec
 
 configure: >-

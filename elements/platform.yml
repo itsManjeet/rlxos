@@ -55,10 +55,6 @@ depends:
   - components/upower.yml
   - components/libnvme.yml
   - components/gstreamer.yml
-  - components/gst-plugins-good.yml
-  - components/gst-plugins-base.yml
-  - components/gst-plugins-bad.yml
-  - components/gst-libav.yml
   - components/e2fsprogs.yml
   - components/py/py-pip.yml
   - components/ufw.yml
@@ -74,7 +70,7 @@ depends:
   - components/fuse2.yml
 
   - components/xdg-desktop-portal-gtk.yml
-  - components/xdg-desktop-portal-wlr.yml
+  - components/xdg-desktop-portal-xapp.yml
   - components/xdg-dbus-proxy.yml
   - components/wireplumber.yml
   - components/gnome-keyring.yml
@@ -83,11 +79,6 @@ depends:
   - components/zsync.yml
 
   - components/apparmor.yml
-
-  - components/webkitgtk.yml
-
-  - components/openjdk-jre.yml
-  - components/dotnet-runtime.yml
 
   - components/firmware.yml
   - components/sof-firmware.yml
@@ -110,12 +101,13 @@ depends:
   - components/meta-xfce4.yml
   - components/meta-x11.yml
   - components/lightdm.yml
-  - components/initial-setup.yml
   - components/epdfview.yml
 
   - components/firefox.yml
-  - components/welcome-tour.yml
   - components/neofetch.yml
+
+  - components/welcome-tour.yml
+  - components/initial-setup.yml
 
   - kernel/linux.yml
   - components/nvidia.yml

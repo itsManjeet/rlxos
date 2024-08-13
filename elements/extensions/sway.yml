@@ -3,7 +3,7 @@ version: 0.1.0
 about: Meta sway compositor
 
 include:
-  - components/sway.yml
+  - components/swayfx.yml
   - components/swaybg.yml
   - components/swayidle.yml
   - components/swaylock.yml

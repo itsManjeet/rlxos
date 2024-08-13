@@ -24,6 +24,7 @@ build-depends:
   - components/pam_wrapper.yml
   - components/py/py-dbus.yml
   - components/py/py-dbusmock.yml
+  - components/py/py-packaging.yml
 
 sources:
   - https://gitlab.freedesktop.org/libfprint/fprintd/-/archive/v%{version}/fprintd-v%{version}.tar.gz

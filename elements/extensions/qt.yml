@@ -1,10 +1,8 @@
 id: qt
-version: 0.1.0
+version: 6
 about: Qt ui toolkit
 include:
   - components/qt.yml
-  - components/layer-shell-qt.yml
-  - components/qwlroots.yml
 
 merge: [elements/include/extension.inc]
 include-parts: 

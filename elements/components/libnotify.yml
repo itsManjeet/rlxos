@@ -1,5 +1,5 @@
 id: libnotify
-version: 0.8.2
+version: 0.8.3
 about: Library is used to send desktop notifications to a notification daemon
 
 configure: >-

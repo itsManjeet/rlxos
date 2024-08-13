@@ -1,11 +1,11 @@
 id: appstream
-version: 0.16.3
+version: 1.0.3
 about: Provides a standard for creating app stores across distributions
 
 build-dir: AppStream-%{version}
 configure: >
   -Dvapi=true
-  -Dcompose=true
+  -Dapidocs=false
 
 depends:
   - components/curl.yml

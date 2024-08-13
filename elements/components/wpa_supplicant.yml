@@ -1,5 +1,5 @@
 id: wpa_supplicant
-version: 2.10
+version: 2.11
 about: Wi-Fi Protected Access (WPA) client and IEEE 802.1X supplicant
 depends:
   - components/desktop-file-utils.yml

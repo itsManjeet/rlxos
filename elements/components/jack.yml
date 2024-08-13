@@ -15,7 +15,6 @@ script: |-
   waf build
 
 depends:
-  - components/berkeley-db.yml
   - components/libgcc.yml
   - components/glibc.yml
   - components/alsa-lib.yml

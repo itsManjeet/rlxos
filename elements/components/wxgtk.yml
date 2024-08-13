@@ -16,7 +16,7 @@ configure: >-
   --disable-precomp-headers
 
 depends:
-  - components/gst-plugins-base.yml
+  - components/gstreamer.yml
   - components/gtk.yml
   - components/libnotify.yml
   - components/x11/libsm.yml

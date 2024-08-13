@@ -11,7 +11,7 @@ script: |-
   patch -p1 -i /patches/syslinux/fix-build-with-glibc-2.36.patch
   patch -p1 -i /patches/syslinux/syslinux-sysmacros.patch
 
-  export CFLAGS="$CFLAGS -fcommon"
+  export CFLAGS="$CFLAGS -fcommon -Wno-implicit-function-declaration"
   make OPTFLAGS="$CFLAGS" installer
   make OPTFLAGS="$CFLAGS" INSTALLROOT=%{install-root} MANDIR=%{datadir}/man install
 

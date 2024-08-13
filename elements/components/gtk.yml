@@ -1,5 +1,5 @@
 id: gtk
-version: 3.24.38
+version: 3.24.43
 about: Libraries used for creating graphical user interfaces for applications
 
 configure: >
@@ -7,6 +7,8 @@ configure: >
   -D examples=false
   -D demos=false
   -D colord=yes
+  -D tracker3=true
+  -D cloudproviders=true
   -D broadway_backend=true
   -D wayland_backend=true
   -D x11_backend=true
@@ -17,19 +19,22 @@ integration: |-
 sources:
   - https://download.gnome.org/sources/gtk+/%{version:2}/gtk+-%{version}.tar.xz
 
-build-depends:
-  - components/gtk-doc.yml
-
 depends:
   - components/at-spi2-core.yml
   - components/gdk-pixbuf.yml
   - components/libepoxy.yml
   - components/pango.yml
   - components/colord.yml
+  - components/libcloudproviders.yml
+  - components/tracker.yml
   - components/desktop-file-utils.yml
   - components/x11/libxkbcommon.yml
   - components/x11/libxcomposite.yml
   - components/x11/libxinerama.yml
   - components/x11/libxcursor.yml
   - components/wayland-protocols.yml
-# TODO: fix update url
+
+build-depends:
+  - components/gtk-doc.yml
+  - components/py/py-pip.yml
+  - components/py/py-packaging.yml

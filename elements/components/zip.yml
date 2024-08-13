@@ -9,6 +9,7 @@ depends:
   - components/glibc.yml
 
 script: |-
+  sed -i '205 s/CC=gcc/CC="gcc -std=gnu89"/' unix/Makefile
   make -f unix/Makefile prefix=/usr generic_gcc
 
   make -f unix/Makefile prefix=%{install-root}/usr \

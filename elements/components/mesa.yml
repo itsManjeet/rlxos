@@ -1,9 +1,32 @@
 id: mesa
-version: 23.1.7
+version: 24.1.5
 about: OpenGL compatible 3D graphics library
-sources:
-  - https://mesa.freedesktop.org/archive/mesa-%{version}.tar.xz
-  - patches/mesa/mesa-add_xdemos-2.patch
+
+pre-script: |-
+  python3 -m pip install ply
+
+configure: >-
+  -D android-libbacktrace=disabled
+  -D b_ndebug=true
+  -D gallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,i915,iris,crocus,d3d12,zink
+  -D gallium-extra-hud=true
+  -D gallium-nine=true
+  -D gallium-opencl=icd
+  -D gallium-rusticl=true
+  -D gles1=disabled
+  -D glx=dri
+  -D intel-clc=enabled
+  -D intel-rt=enabled
+  -D libunwind=disabled
+  -D microsoft-clc=disabled
+  -D osmesa=true
+  -D platforms=x11,wayland
+  -D valgrind=enabled
+  -D video-codecs=all
+  -D vulkan-drivers=amd,intel,intel_hasvk,swrast,virtio,nouveau
+  -D vulkan-layers=device-select,intel-nullhw,overlay
+
+
 depends:
   - components/libelf.yml
   - components/libxml2.yml
@@ -15,50 +38,30 @@ depends:
   - components/libvdpau.yml
   - components/libglvnd.yml
   - components/libunwind.yml
+  - components/vulkan-loader.yml
   - components/x11/libx11.yml
   - components/x11/libxdamage.yml
   - components/x11/libxrandr.yml
   - components/x11/libxshmfence.yml
   - components/x11/libxxf86vm.yml
   - components/x11/libpciaccess.yml
+
 build-depends:
   - components/wayland-protocols.yml
   - components/py/py-mako.yml
+  - components/py/py-pip.yml
   - components/cmake.yml
   - components/flex.yml
   - components/bison.yml
   - components/glslang.yml
   - components/llvm.yml
+  - components/libclc.yml
   - components/directx-headers.yml
+  - components/rustc.yml
+  - components/rust-bindgen.yml
+  - components/cbindgen.yml
+  - components/valgrind.yml
+  - components/vulkan-headers.yml
 
-pre-script: |-
-  patch -Np1 -i mesa-add_xdemos-2.patch
-
-configure: >-
-  -D valgrind=disabled
-  -D glx=dri
-  -D egl=enabled 
-  -D osmesa=true 
-  -D platforms=x11,wayland 
-  -D llvm=enabled 
-  -D b_lto=true 
-  -D b_ndebug=true 
-  -D lmsensors=enabled
-  -D gallium-drivers=i915,iris,crocus,nouveau,r300,r600,radeonsi,svga,swrast,virgl,d3d12
-  -D gallium-extra-hud=true
-  -D gallium-nine=true
-  -D gallium-va=enabled
-  -D gallium-vdpau=enabled
-  -D gallium-xa=enabled
-  -D vulkan-drivers=amd,intel,intel_hasvk,swrast
-  -D vulkan-layers=device-select,intel-nullhw,overlay
-  -D gbm=enabled
-  -D gles1=disabled
-  -D gles2=enabled
-  -D glvnd=true
-  -D libunwind=enabled
-  -D rust_std=2021
-  -D shared-glapi=enabled
-  -D dri3=enabled
-  -D buildtype=release
-  -D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc
+sources:
+  - https://mesa.freedesktop.org/archive/mesa-%{version}.tar.xz

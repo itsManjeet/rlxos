@@ -1,5 +1,5 @@
 id: gtk4
-version: 4.12.1
+version: 4.14.4
 about: Libraries used for creating graphical user interfaces for applications
 
 configure: >-
@@ -8,6 +8,8 @@ configure: >-
   -D colord=enabled
   -D demos=false
   -D introspection=enabled
+  -D vulkan=enabled
+  -D tracker=enabled
 
 depends:
   - components/fribidi.yml
@@ -15,15 +17,20 @@ depends:
   - components/graphene.yml
   - components/iso-codes.yml
   - components/libepoxy.yml
-  - components/x11/libxkbcommon.yml
   - components/pango.yml
   - components/wayland.yml
   - components/ffmpeg.yml
-  - components/gst-plugins-bad.yml
   - components/librsvg.yml
   - components/colord.yml
+  - components/gstreamer.yml
+  - components/tracker.yml
+  - components/x11/libxkbcommon.yml
+  - components/x11/libxinerama.yml
+
 build-depends:
   - components/gobject-introspection.yml
+  - components/shaderc.yml
   - components/git.yml
+
 sources:
   - https://download.gnome.org/sources/gtk/%{version:2}/gtk-%{version}.tar.xz

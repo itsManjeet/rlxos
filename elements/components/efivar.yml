@@ -1,11 +1,8 @@
 id: efivar
-version: 38
+version: 39
 about: Package provides tools and libraries to manipulate EFI variables
 
 script: |-
-  # fix issues with linker scripts: https://github.com/rhboot/efivar/pull/201
-  patch -Np1 -i %{build-root}/efivar-%{version}.patch
-  
   # disable -Werror
   make ERRORS='' all
 
@@ -21,5 +18,4 @@ depends:
   - components/mandoc.yml
 
 sources:
-  - https://github.com/rhboot/efivar/releases/download/%{version}/efivar-%{version}.tar.bz2
-  - efivar-%{version}.patch::https://github.com/rhboot/efivar/pull/201/commits/197a0874ea4010061b98b4b55eff65b33b1cd741.patch
+  - efivar-%{version}.tar.gz::https://github.com/rhboot/efivar/archive/refs/tags/%{version}.tar.gz

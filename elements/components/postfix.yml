@@ -1,5 +1,5 @@
 id: postfix
-version: 3.8.2
+version: 3.9.0
 about: Postfix package contains a Mail Transport Agent
 
 script: |-
@@ -32,7 +32,6 @@ script: |-
   # install -vDm 644 /files/%{id}.tmpfiles "%{install-root}/usr/lib/tmpfiles.d/%{id}.conf"
 
 depends:
-  - components/berkeley-db.yml
   - components/cyrus-sasl.yml
   - components/icu.yml
   - components/pcre2.yml

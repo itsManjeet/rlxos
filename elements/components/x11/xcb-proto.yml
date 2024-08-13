@@ -1,5 +1,5 @@
 id: xcb-proto
-version: 1.15.2
+version: 1.17.0
 about: XML-XCB protocol descriptions that libxcb uses to generate the majority of its code and API
 
 pre-script: rm autogen.sh

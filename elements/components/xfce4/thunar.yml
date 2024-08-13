@@ -37,8 +37,8 @@ depends:
   - components/taglib.yml
   - components/freetype.yml
   - components/curl.yml
+  - components/gstreamer.yml
   - components/gdk-pixbuf.yml
-  - components/gst-plugins-base.yml
   - components/libjpeg-turbo.yml
   - components/libgsf.yml
   - components/libpng.yml

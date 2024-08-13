@@ -1,5 +1,5 @@
 id: pkg-config
-version: 2.1.1
+version: 2.2.0
 about: Tool for passing the include path and/or library paths to build tools during the configure and make phases of package installations
 
 configure: >-

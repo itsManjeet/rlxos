@@ -1,6 +1,9 @@
 id: power-profiles-daemon
-version: 0.13
+version: 0.21
 about: Makes power profiles handling available over D-Bus
+
+configure: >-
+  -D tests=false
 
 post-script: |-
   install -v -D -m 0644 /dev/stdin %{install-root}%{libdir}/systemd/system-preset/%{id}.preset << "EOF"

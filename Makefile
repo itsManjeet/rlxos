@@ -3,7 +3,7 @@ OSTREE_BRANCH 		    			?= $(shell uname -m)/os/$(CHANNEL)
 OSTREE_REPO 						?= ostree-repo
 OSTREE_GPG 							?= ostree-gpg
 VERSION								?= 2.0
-PKGUPD								?= build/src/pkgupd/src/pkgupd
+PKGUPD								?= build/src/pkgupd/bin/pkgupd
 CACHE_PATH							?= build/
 DESTDIR								?= checkout/
 APPMARKET_PATH						?= appmarket/
@@ -117,7 +117,7 @@ ostree-branch.yml:
 	@echo "variables:" > $@
 	@echo "  channel: ${CHANNEL}" >> $@
 
-generate-keys: $(BOOT_KEYS) files/rlxos.gpg
+generate-keys: $(BOOT_KEYS) 
 
 files/sign-keys/extra-db/.keep files/sign-keys/extra-kek/.keep:
 	[ -d $(dir $@) ] || mkdir -p $(dir $@)

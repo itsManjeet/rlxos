@@ -191,9 +191,15 @@ struct SysrootApp : Application {
                     std::cout << "  " << BOLD("ROLLING") << "      : "
                               << GREEN("TRUE") << std::endl;
                 }
+                size_t spacing = 10;
+                for (auto const& extension : deployment.extensions) {
+                    if (extension.first.size() > spacing) {
+                        spacing = extension.first.size() + 5;
+                    }
+                }
                 for (auto const& extension : deployment.extensions) {
                     std::cout << "   - " << BOLD(extension.first)
-                              << std::string(10 - extension.first.length(), ' ')
+                              << std::string(spacing - extension.first.length(), ' ')
                               << " : " << BOLD(truncate(extension.second))
                               << std::endl;
                 }

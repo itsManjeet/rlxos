@@ -17,13 +17,12 @@ configure: >-
   -DSYSCONF_INSTALL_DIR=%{sysconfdir}
 
 depends:
-  - components/berkeley-db.yml
   - components/gcr.yml
   - components/libical.yml
   - components/libsecret.yml
   - components/nss.yml
   - components/sqlite.yml
-  - components/gnome-online-accounts.yml
+  - components/gnome/gnome-online-accounts.yml
   - components/gobject-introspection.yml
   - components/gtk.yml
   - components/icu.yml

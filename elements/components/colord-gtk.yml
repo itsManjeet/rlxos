@@ -4,7 +4,6 @@ about: GTK+ bindings for Colord
 
 configure: >
   --buildtype=release
-  -D gtk2=true
   -D vapi=true
   -D docs=false
   -D man=false
@@ -12,7 +11,6 @@ configure: >
 depends:
   - components/colord.yml
   - components/gtk.yml
-  - components/gtk2.yml
   - components/gtk4.yml
 build-depends:
   - components/gobject-introspection.yml

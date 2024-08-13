@@ -9,8 +9,8 @@ depends:
   - components/kpeople.yml
   - components/kquickcharts.yml
   - components/ktexteditor.yml
-  - components/kwin.yml
-  - components/libkscreen.yml
+  - components/plasma/kwin.yml
+  - components/plasma/libkscreen.yml
   - components/krunner.yml
   - components/kitemmodels.yml
   - components/prison.yml
@@ -19,17 +19,17 @@ depends:
   - components/x11/xsetroot.yml
   - components/baloo.yml
   - components/kdesu.yml
-  - components/libksysguard.yml
+  - components/plasma/libksysguard.yml
   - components/libqalculate.yml
   - components/kholidays.yml
   - components/phonon.yml
   - components/kuserfeedback.yml
   - components/networkmanager-qt.yml
-  - components/kpipewire.yml
+  - components/plasma/kpipewire.yml
   - components/libkexiv2.yml
 build-depends:
   - components/extra-cmake-modules.yml
   - components/kdoctools.yml
   - components/kinit.yml
   - components/kunitconversion.yml
-  - components/plasma-wayland-protocols.yml
+  - components/plasma/plasma-wayland-protocols.yml

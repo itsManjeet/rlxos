@@ -32,7 +32,6 @@ script: |-
   # install -vDm 644 /files/%{id}.tmpfiles "%{install-root}/usr/lib/tmpfiles.d/%{id}.conf"
 
 depends:
-  - components/berkeley-db.yml
   - components/cyrus-sasl.yml
   - components/icu.yml
   - components/pcre2.yml

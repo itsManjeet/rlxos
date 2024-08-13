@@ -20,7 +20,7 @@ configure: >-
 depends:
   - components/openblas-lapack.yml
   - components/ffmpeg.yml
-  - components/gst-plugins-base.yml
+  - components/gstreamer.yml
   - components/libexif.yml
   - components/gtk.yml
   - components/jasper.yml

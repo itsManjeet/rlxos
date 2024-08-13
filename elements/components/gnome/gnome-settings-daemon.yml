@@ -13,7 +13,7 @@ depends:
   - components/gcr.yml
   - components/geoclue.yml
   - components/geocode-glib.yml
-  - components/gnome-desktop.yml
+  - components/gnome/gnome-desktop.yml
   - components/lcms.yml
   - components/ibus.yml
   - components/libcanberra.yml

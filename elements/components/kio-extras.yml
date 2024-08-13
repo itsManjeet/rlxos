@@ -10,7 +10,7 @@ configure: >-
   -Wno-dev
 
 depends:
-  - components/kf5.yml
+  - components/meta-kf5.yml
   - components/kdsoap.yml
   - components/libtirpc.yml
   - components/samba.yml

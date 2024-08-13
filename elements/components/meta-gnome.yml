@@ -1,4 +1,4 @@
-id: gnome
+id: meta-gnome
 version: 44
 about: Gnome Desktop Environment
 merge: [elements/include/meta.inc]
@@ -12,7 +12,6 @@ depends:
   - components/themes/gnome-icon-theme-extras.yml
   - components/themes/gnome-icon-theme-symbolic.yml
   - components/themes/adwaita-icon-theme.yml
-  - components/gnome/gnome-keyring.yml
   - components/gnome/gnome-menus.yml
   - components/gnome/gnome-power-manager.yml
   - components/gnome/gnome-shell.yml
@@ -21,6 +20,8 @@ depends:
   # Gnome Apps
   - components/gnome/gnome-terminal.yml
   - components/gnome/nautilus.yml
+
+  - components/gnome-keyring.yml
 
   # Required Fonts
   - components/fonts/cantarell.yml

@@ -7,7 +7,7 @@ configure: >-
   -D man=false
 
 depends:
-  - components/gst-plugins-base.yml
+  - components/gstreamer.yml
   - components/tracker.yml
   - components/exempi.yml
   - components/gexiv2.yml

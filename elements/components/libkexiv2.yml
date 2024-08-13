@@ -8,7 +8,7 @@ configure: >-
   -Wno-dev
 
 depends:
-  - components/kf5.yml
+  - components/meta-kf5.yml
   - components/exiv2.yml
 sources:
   - https://download.kde.org/stable/release-service/%{version}/src/libkexiv2-%{version}.tar.xz

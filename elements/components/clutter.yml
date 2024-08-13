@@ -11,7 +11,7 @@ configure: >
   --enable-wayland-compositor
 
 depends:
-  - components/atk.yml
+  - components/at-spi2-core.yml
   - components/cogl.yml
   - components/json-glib.yml
   - components/gtk.yml

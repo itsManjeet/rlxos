@@ -3,7 +3,6 @@ version: 6
 about: Qt ui toolkit
 include:
   - components/qt.yml
-  - components/layer-shell-qt.yml
 
 merge: [elements/include/extension.inc]
 include-parts: 

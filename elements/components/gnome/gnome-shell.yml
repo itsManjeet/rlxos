@@ -9,20 +9,20 @@ depends:
   - components/evolution-data-server.yml
   - components/startup-notification.yml
   - components/upower.yml
-  - components/gdm.yml
-  - components/gnome-bluetooth.yml
-  - components/gnome-desktop.yml
-  - components/gnome-settings-daemon.yml
+  - components/gnome/gdm.yml
+  - components/gnome/gnome-bluetooth.yml
+  - components/gnome/gnome-desktop.yml
+  - components/gnome/gnome-settings-daemon.yml
   - components/mutter.yml
   - components/themes/adwaita-icon-theme.yml
   - components/gcr-4.yml
   - components/gjs.yml
   - components/glib.yml
   - components/gobject-introspection.yml
-  - components/gst-plugins-base.yml
+  - components/gstreamer.yml
   - components/gtk4.yml
   - components/libsoup.yml
-  - components/gnome-autoar.yml
+  - components/gnome/gnome-autoar.yml
   - components/libgnomekbd.yml
   - components/libgweather.yml
   - components/geoclue.yml

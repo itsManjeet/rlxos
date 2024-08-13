@@ -8,7 +8,6 @@ configure: >
   --sysconfdir=%{sysconfdir}/bogofilter
 
 depends:
-  - components/berkeley-db.yml
   - components/gsl.yml
   - components/libxml2.yml
 sources:

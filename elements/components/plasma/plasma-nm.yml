@@ -4,7 +4,7 @@ about: Plasma plasma-nm
 
 depends:
   - components/networkmanager.yml
-  - components/plasma-workspace.yml
+  - components/plasma/plasma-workspace.yml
   - components/qca.yml
 build-depends:
   - components/extra-cmake-modules.yml

@@ -27,8 +27,7 @@ configure: >-
 
 depends:
   - components/cairo.yml
-  - components/gst-plugins-base.yml
-  - components/gst-plugins-bad.yml
+  - components/gstreamer.yml
   - components/gtk.yml
   - components/harfbuzz.yml
   - components/libgudev.yml

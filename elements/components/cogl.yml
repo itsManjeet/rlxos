@@ -19,7 +19,7 @@ depends:
   - components/mesa.yml
   - components/pango.yml
   - components/wayland.yml
-  - components/gst-plugins-base.yml
+  - components/gstreamer.yml
   - components/sdl.yml
   - components/sdl2.yml
   - components/x11/libxcomposite.yml

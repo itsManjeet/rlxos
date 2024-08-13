@@ -4,7 +4,7 @@ about: Plasma plasma-pa
 
 depends:
   - components/perl.yml
-  - components/plasma-workspace.yml
+  - components/plasma/plasma-workspace.yml
   - components/pulseaudio.yml
 build-depends:
   - components/extra-cmake-modules.yml

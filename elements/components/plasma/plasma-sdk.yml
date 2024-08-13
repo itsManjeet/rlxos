@@ -4,7 +4,7 @@ about: Plasma plasma-sdk
 
 depends:
   - components/perl.yml
-  - components/plasma-framework.yml
+  - components/plasma/plasma-framework.yml
 build-depends:
   - components/extra-cmake-modules.yml
   - components/kdoctools.yml

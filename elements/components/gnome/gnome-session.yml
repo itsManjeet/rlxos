@@ -9,7 +9,7 @@ configure: >-
 
 depends:
   - components/dbus-glib.yml
-  - components/gnome-desktop.yml
+  - components/gnome/gnome-desktop.yml
   - components/json-glib.yml
   - components/mesa.yml
   - components/systemd.yml

@@ -10,4 +10,4 @@ depends:
   - components/perl.yml
 build-depends:
   - components/extra-cmake-modules.yml
-  - components/breeze.yml
+  - components/plasma/breeze.yml

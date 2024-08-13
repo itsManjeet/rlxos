@@ -11,7 +11,7 @@ depends:
   - components/kdbusaddons.yml
   - components/kitemmodels.yml
   - components/knewstuff.yml
-  - components/libksysguard.yml
+  - components/plasma/libksysguard.yml
   - components/kirigami2.yml
 build-depends:
   - components/ki18n.yml

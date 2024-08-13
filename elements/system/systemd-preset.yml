@@ -12,6 +12,7 @@ script: |-
   disable systemd-networkd-wait-online.service
   disable systemd-homed.service
   disable systemd-homed-activate.service
+  disable systemd-homed-firstboot.service
 
   enable system-updates
   EOF

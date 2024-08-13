@@ -1,5 +1,5 @@
 id: pango
-version: 1.51.1
+version: 1.54.0
 about: Library for laying out and rendering text
 sources:
   - https://gitlab.gnome.org/GNOME/pango/-/archive/%{version}/pango-%{version}.tar.gz

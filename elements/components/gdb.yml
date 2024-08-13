@@ -1,5 +1,5 @@
 id: gdb
-version: 13.2
+version: 15.1
 about: GNU debugger
 
 configure: >-

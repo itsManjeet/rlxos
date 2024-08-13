@@ -1,5 +1,5 @@
 id: qemu
-version: 8.2.0
+version: 9.0.2
 about: A full virtualization solution for Linux on x86 hardware containing virtualization extensions
 
 build-type: autotools
@@ -43,7 +43,6 @@ depends:
   - components/libpng.yml
   - components/alsa-lib.yml
   - components/gtk.yml
-  - components/gtk2.yml
   - components/ncurses.yml
   - components/sdl2.yml
   - components/spice.yml
@@ -53,8 +52,11 @@ depends:
   - components/usbredir.yml
   - components/libcacard.yml
   - components/libslirp.yml
+  - components/dtc.yml
+
 build-depends:
   - components/pkg-config.yml
   - components/spice-protocol.yml
+
 sources:
   - https://download.qemu.org/qemu-%{version}.tar.xz

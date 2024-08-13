@@ -1,5 +1,5 @@
 id: lld
-version: 16.0.6
+version: 18.1.8
 about: Linker from LLVM project
 
 configure: >-

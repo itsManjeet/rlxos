@@ -1,11 +1,9 @@
-version: 13.2.0
+version: 14.1.0
 release: 1
 about: The GNU compiler collection, which includes the C and C++ compilers
 
 pre-script: |-
-  sed -i 's@\./fixinc\.sh@-c true@' gcc/Makefile.in
   sed -e '/m64=/s/lib64/lib/' -i.orig gcc/config/i386/t-linux64
-  patch -Np3 < fix-asan-allocator-aslr.patch -d libsanitizer/
 
 configure: >-
   --with-bugurl=https://github.com/itsmanjeet/rlxos/issues
@@ -34,8 +32,6 @@ configure: >-
   --disable-multilib
   --disable-boostrap
 
-compile: -O STAGE1_CFLAGS="-O2" BOOT_CFLAGS="${CFLAGS}" BOOT_LDFLAGS="${LDFLAGS}" LDFLAGS_FOR_TARGET="${LDFLAGS}" bootstrap
-  
 post-script: |
   ln -sv ../bin/cpp %{install-root}/%{libdir}/
 

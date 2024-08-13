@@ -4,9 +4,8 @@ about: An integration library for using GStreamer with Clutter
 
 depends:
   - components/clutter.yml
-  - components/gst-plugins-base.yml
+  - components/gstreamer.yml
   - components/libgudev.yml
-  - components/gst-plugins-bad.yml
 
 build-depends:
   - components/gobject-introspection.yml

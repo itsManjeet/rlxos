@@ -1,5 +1,5 @@
 id: networkmanager
-version: 1.44.0
+version: 1.48.6
 about: A set of co-operative tools that make networking simple and straightforward
 
 build-type: meson

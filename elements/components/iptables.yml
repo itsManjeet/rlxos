@@ -1,5 +1,5 @@
 id: iptables
-version: 1.8.9
+version: 1.8.10
 about: |
   Linux kernel packet control tool (using legacy interface)
 

@@ -1,5 +1,5 @@
 id: imlib2
-version: 1.12.0
+version: 1.12.3
 about: Library for image file manipulation
 sources:
   - https://downloads.sourceforge.net/enlightenment/imlib2-%{version}.tar.xz

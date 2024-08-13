@@ -1,5 +1,5 @@
 id: gtksourceview5
-version: 5.8.0
+version: 5.12.1
 about: Libraries used for extending the GTK+ text functions to include syntax highlighting
 
 depends:

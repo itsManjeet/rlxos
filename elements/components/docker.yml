@@ -1,5 +1,5 @@
 id: docker
-version: 25.0.2
+version: 27.1.1
 about: Pack, ship and run any application as a lightweight container
 
 tini-version: 0.19.0
@@ -20,7 +20,7 @@ script: |-
   mkdir -p src/github.com/docker
 
   pushd src/github.com/docker
-  ln -s %{build-root}/cli-%{version} cli
+  ln -s %{build-root}/moby-%{version}/cli-%{version} cli
   pushd cli
   make VERSION=%{version} GITCOMMIT=${DOCKER_GITCOMMIT} dynbinary
   popd
@@ -33,13 +33,15 @@ script: |-
   popd
   popd
 
+  cd %{build-root}/moby-%{version}
+
   install -D -m 0755 cli-%{version}/build/%{id} %{install-root}/%{bindir}/%{id}
-  install -D -m 0755 moby-%{version}/bundles/dynbinary-daemon/dockerd \
+  install -D -m 0755 bundles/dynbinary-daemon/dockerd \
       %{install-root}/%{bindir}/dockerd
-  install -D -m 0755 moby-%{version}/bundles/dynbinary-daemon/docker-proxy \
+  install -D -m 0755 bundles/dynbinary-daemon/docker-proxy \
       %{install-root}/%{bindir}/docker-proxy
 
-  install -Dm755 %{build-root}/tini-static-amd64 "%{install-root}/%{bindir}/docker-init"
+  install -Dm755 tini-static-amd64 "%{install-root}/%{bindir}/docker-init"
 
   ln -s containerd %{install-root}/%{bindir}/docker-containerd
   ln -s containerd-shim %{install-root}/%{bindir}/docker-containerd-shim
@@ -47,9 +49,9 @@ script: |-
   ln -s runc %{install-root}/%{bindir}/docker-runc
 
   mkdir -p %{install-root}/usr/lib/docker/cli-plugins
-  install -D -m 0755 moby-%{version}/contrib/check-config.sh %{install-root}%{datadir}/docker/check-config.sh
-  install -D -m 0755 moby-%{version}/contrib/init/systemd/docker.{service,socket} -t %{install-root}/usr/lib/systemd/system/
-  install -D -m 0644 moby-%{version}/contrib/udev/80-docker.rules %{install-root}/usr/lib/udev/rules.d/80-docker.rules
+  install -D -m 0755 contrib/check-config.sh %{install-root}%{datadir}/docker/check-config.sh
+  install -D -m 0755 contrib/init/systemd/docker.{service,socket} -t %{install-root}/usr/lib/systemd/system/
+  install -D -m 0644 contrib/udev/80-docker.rules %{install-root}/usr/lib/udev/rules.d/80-docker.rules
 
   install -D -m 0644 /dev/stdin %{install-root}%{libdir}/sysusers.d/docker.conf << "EOF"
   g docker 72

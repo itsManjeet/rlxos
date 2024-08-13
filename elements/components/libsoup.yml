@@ -15,6 +15,5 @@ depends:
 build-depends:
   - components/gobject-introspection.yml
   - components/vala.yml
-  - components/sysprof.yml
 sources:
   - https://download.gnome.org/sources/libsoup/%{version:2}/libsoup-%{version}.tar.xz

@@ -1,5 +1,5 @@
 id: inetutils
-version: 2.5
+version: 1.9.4
 about: Package contains programs for basic networking
 
 configure: >

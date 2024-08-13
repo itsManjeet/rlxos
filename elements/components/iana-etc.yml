@@ -1,5 +1,5 @@
 id: iana-etc
-version: 20230524
+version: 20240723
 about: Provides data for network services and protocols
 
 strip: false

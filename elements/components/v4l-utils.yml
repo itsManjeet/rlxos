@@ -1,5 +1,5 @@
 id: v4l-utils
-version: 1.24.1
+version: 1.28.1
 about: A series of utilities for media devices
 
 depends:
@@ -9,6 +9,6 @@ depends:
 build-depends:
   - components/llvm.yml
 sources:
-  - https://www.linuxtv.org/downloads/v4l-utils/v4l-utils-%{version}.tar.bz2
+  - https://www.linuxtv.org/downloads/v4l-utils/v4l-utils-%{version}.tar.xz
 
 install: -j1

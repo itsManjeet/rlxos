@@ -1,5 +1,5 @@
 id: btrfs-progs
-version: 6.5.1
+version: 6.9.2
 about: Package contains administration and debugging tools for the B-tree file system (btrfs)
 
 variables:

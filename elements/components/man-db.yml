@@ -1,5 +1,5 @@
 id: man-db
-version: 2.12.0
+version: 2.12.1
 about: Programs for finding and viewing man pages
 
 depends:

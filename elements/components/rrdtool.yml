@@ -7,6 +7,7 @@ configure: >-
   --enable-python
   --disable-libwrap
   --disable-docs
+  CFLAGS="$CFLAGS -Wno-incompatible-pointer-types"
 
 depends:
   - components/libxml2.yml

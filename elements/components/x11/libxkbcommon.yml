@@ -1,5 +1,5 @@
 id: libxkbcommon
-version: 1.5.0
+version: 1.7.0
 about: Keymap compiler and support library which processes a reduced subset of keymaps as defined by the XKB specification
 sources:
   - https://xkbcommon.org/download/libxkbcommon-%{version}.tar.xz

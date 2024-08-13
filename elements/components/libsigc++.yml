@@ -1,5 +1,5 @@
 id: libsigc++
-version: 2.12.0
+version: 3.6.0
 about: A typesafe callback system for standard C++
 
 variables:

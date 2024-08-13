@@ -1,10 +1,9 @@
 id: appstream-glib
-version: 0_8_2
+version: 0.8.3
 about: Objects and methods for reading and writing AppStream metadata
 
 configure: >
   -D rpm=false
-  -D stemmer=false
 
 depends:
   - components/gtk.yml
@@ -12,8 +11,7 @@ depends:
   - components/libyaml.yml
   - components/librsvg.yml
   - components/curl.yml
+  - components/snowball.yml
 
 sources:
-  - https://github.com/hughsie/appstream-glib/archive/refs/tags/appstream_glib_%{version}.tar.gz
-
-# TODO: check stemmer requirement
+  - http://people.freedesktop.org/~hughsient/appstream-glib/releases/appstream-glib-%{version}.tar.xz

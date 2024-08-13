@@ -1,8 +1,6 @@
 id: nspr
 version: 4.35
-about:
-  Netscape Portable Runtime (NSPR) provides a platform-neutral API for system
-  level and libc like functions
+about: Netscape Portable Runtime (NSPR)
 
 build-dir: nspr-%{version}/nspr
 pre-script: |-

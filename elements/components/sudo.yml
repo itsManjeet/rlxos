@@ -1,5 +1,5 @@
 id: sudo
-version: 1.9.14p3
+version: 1.9.15p5
 about:
   Allows a system administrator to give certain users (or groups of users) the
   ability to run some (or all) commands as root or another user while logging the

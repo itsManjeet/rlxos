@@ -10,7 +10,7 @@ depends:
   - components/gmime.yml
   - components/gom.yml
   - components/grilo.yml
-  - components/gst-plugins-bad.yml
+  - components/gstreamer.yml
   - components/libdmapsharing.yml
   - components/libgdata.yml
   - components/libmediaart.yml

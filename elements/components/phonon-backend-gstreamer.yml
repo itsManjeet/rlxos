@@ -9,9 +9,7 @@ depends:
   - components/gstreamer.yml
   - components/libxml2.yml
   - components/phonon.yml
-  - components/gst-plugins-base.yml
-  - components/gst-plugins-good.yml
-  - components/gst-plugins-bad.yml
+  - components/gstreamer.yml
 build-depends:
   - components/extra-cmake-modules.yml
 sources:

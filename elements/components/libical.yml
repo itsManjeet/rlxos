@@ -1,5 +1,5 @@
 id: libical
-version: 3.0.16
+version: 3.0.18
 about: Implementation of the iCalendar protocols and data formats
 
 configure: >-
@@ -10,7 +10,6 @@ configure: >-
   -DGOBJECT_INTROSPECTION=true
 
 depends:
-  - components/berkeley-db.yml
   - components/glib.yml
   - components/icu.yml
   - components/libxml2.yml

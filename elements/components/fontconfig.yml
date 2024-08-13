@@ -1,5 +1,5 @@
 id: fontconfig
-version: 2.14.2
+version: 2.15.0
 about: Library and support programs used for configuring and customizing font access
 
 build-type: autotools

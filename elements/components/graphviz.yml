@@ -1,11 +1,10 @@
 id: graphviz
-version: 8.1.0
+version: 12.0.0
 about: Graph visualization software
 depends:
   - components/pango.yml
   - components/cairo.yml
   - components/fontconfig.yml
-  - components/gtk2.yml
   - components/libwebp.yml
   - components/poppler.yml
   - components/librsvg.yml

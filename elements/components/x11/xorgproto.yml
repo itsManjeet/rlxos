@@ -1,5 +1,5 @@
 id: xorgproto
-version: 2023.2
+version: 2024.1
 about: combined X.Org X11 Protocol headers
 sources:
   - https://xorg.freedesktop.org/archive/individual/proto/xorgproto-%{version}.tar.xz

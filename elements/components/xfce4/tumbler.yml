@@ -10,8 +10,8 @@ depends:
   - components/freetype.yml
   - components/curl.yml
   - components/gdk-pixbuf.yml
-  - components/gst-plugins-base.yml
   - components/libjpeg-turbo.yml
+  - components/gstreamer.yml
   - components/libgsf.yml
   - components/libpng.yml
   - components/xfce4/libxfce4util.yml

@@ -1,5 +1,5 @@
 id: wireplumber
-version: 0.4.17
+version: 0.5.5
 about: A session and policy manager for Pipewire
 
 configure: >-

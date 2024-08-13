@@ -1,12 +1,12 @@
 id: mutter
-version: 44.4
+version: 46.3.1
 about: The window manager for GNOME
 
 configure: >-
   -Dtests=false
 
 depends:
-  - components/gnome-settings-daemon.yml
+  - components/gnome/gnome-settings-daemon.yml
   - components/graphene.yml
   - components/x11/libxkbcommon.yml
   - components/pipewire.yml

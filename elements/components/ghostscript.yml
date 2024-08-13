@@ -1,5 +1,5 @@
 id: ghostscript
-version: 10.03.0
+version: 10.03.1
 about: An interpreter for the PostScript language
 
 seperate-build-dir: false
@@ -10,6 +10,7 @@ post-script: |-
   make soinstall DESTDIR=%{install-root}
   install -vm644 base/*.h %{install-root}%{prefix}/include/ghostscript
   ln -sfvn ghostscript %{install-root}%{prefix}/include/ps
+
 depends:
   - components/cairo.yml
   - components/fontconfig.yml
@@ -24,4 +25,4 @@ depends:
   - components/mesa.yml
 
 sources:
-  - https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs10030/ghostscript-%{version}.tar.xz
+  - https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs10031/ghostscript-%{version}.tar.xz

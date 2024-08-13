@@ -6,5 +6,6 @@ depends:
   - components/xfce4/libxfce4util.yml
 build-depends:
   - components/vala.yml
+  - components/py/py-packaging.yml
 sources:
   - https://archive.xfce.org/src/xfce/xfconf/%{version:2}/xfconf-%{version}.tar.bz2

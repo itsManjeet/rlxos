@@ -1,5 +1,5 @@
 id: firefox
-version: 116.0
+version: 128.0esr
 about: Firefox is a stand-alone browser based on the Mozilla codebase
 
 script: |-
@@ -91,6 +91,7 @@ depends:
   - components/gdk-pixbuf.yml
   - components/gtk.yml
   - components/pulseaudio.yml
+  - components/libevent.yml
   - components/x11/libx11.yml
   - components/x11/libxcb.yml
   - components/x11/libxcomposite.yml

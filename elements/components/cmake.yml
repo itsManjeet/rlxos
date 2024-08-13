@@ -1,5 +1,5 @@
 id: cmake
-version: 3.26.4
+version: 3.30.1
 about: Modern toolset used for generating Makefiles
 sources:
   - https://cmake.org/files/v%{version:2}/cmake-%{version}.tar.gz
@@ -18,6 +18,7 @@ script: |
   --system-libs       \
   --no-system-jsoncpp   \
   --no-system-librhash  \
+  --no-system-cppdap \
   --docdir=/share/doc/%{id}
   make ${MAKEFLAGS}
   make install DESTDIR=%{install-root}

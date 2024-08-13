@@ -5,6 +5,7 @@ about: utilities for resuce and embedded system
 script: |
   make defconfig
   export KCONFIG_NOTIMESTAMP=1
+  sed -i 's/CONFIG_TC=y/CONFIG_TC=n/' .config
 
   make ${MAKEFLAGS}
 

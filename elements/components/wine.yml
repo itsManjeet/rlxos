@@ -16,9 +16,7 @@ depends:
   - components/libunwind.yml
   - components/alsa-lib.yml
   - components/cups.yml
-  - components/gst-plugins-base.yml
-  - components/gst-plugins-good.yml
-  - components/gst-plugins-bad.yml
+  - components/gstreamer.yml
   - components/pulseaudio.yml
   - components/sdl2.yml
   - components/x11/libxcursor.yml

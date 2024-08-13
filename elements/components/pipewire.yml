@@ -1,5 +1,5 @@
 id: pipewire
-version: 1.0.0
+version: 1.2.1
 about: A server and user-space API to handle multimedia pipelines
 
 configure: >-
@@ -10,7 +10,6 @@ depends:
   - components/bluez.yml
   - components/ffmpeg.yml
   - components/gstreamer.yml
-  - components/gst-plugins-base.yml
   - components/libva.yml
   - components/pulseaudio.yml
   - components/sbc.yml

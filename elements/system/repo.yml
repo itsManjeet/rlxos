@@ -4,7 +4,7 @@ merge: [version.yml, ostree-branch.yml, elements/include/ostree.inc]
 
 capabilities:
   - CAP_SYS_CHROOT
-
+force-rebuild: false
 include-root: /sysroot
 initial-commands: |-
   chroot %{include-root} /bin/bash -e << "EOT"
@@ -26,20 +26,22 @@ initial-commands: |-
 
   echo -e "\nGTK_CSD=1" >> %{sysconfdir}/environment
 
+  sed -i 's/enable systemd-homed.service//g' %{libdir}/systemd/system-preset/90-systemd.preset
+  sed -i 's/enable systemd-homed-activate.service//g' %{libdir}/systemd/system-preset/90-systemd.preset
+
   kerver=$(ls -1 /lib/modules | head -n1)
   cp /lib/modules/${kerver}/bzImage /lib/modules/${kerver}/vmlinuz
 
   dracut --reproducible -v --no-machineid \
     --kver ${kerver} \
+    --add dmsquash-live \
     --add ostree  \
     --add plymouth  \
-    --add dmsquash-live \
-    --install grep  \
+    --install grep \
     --install head \
     --install tail \
-    --install less  \
-    --install lsof  \
-    --omit lvm  \
+    --install less \
+    --install lsof \
     --install 'fsck.ext4' \
     %{libdir}/modules/${kerver}/initramfs
 

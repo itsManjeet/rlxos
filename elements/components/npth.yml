@@ -1,9 +1,6 @@
 id: npth
-version: 1.6
-about:
-  A very portable POSIX/ANSI-C based library for Unix platforms which provides
-  non-preemptive priority-based scheduling for multiple threads of execution (multithreading)
-  inside event-driven applications
+version: 1.7
+about: library for non-preemptive priority-based scheduling for multiple threads of execution
 
 depends:
 - components/glibc.yml

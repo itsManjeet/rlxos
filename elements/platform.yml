@@ -107,6 +107,7 @@ depends:
 
   - components/firefox.yml
   - components/neofetch.yml
+  - components/appcenter.yml
 
   - components/welcome-tour.yml
   - components/initial-setup.yml

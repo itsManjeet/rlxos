@@ -13,6 +13,11 @@ depends:
   - components/lz4.yml
   - components/tar.yml
   - components/zstd.yml
+  - components/lzip.yml
+  - components/p7zip.yml
+  - components/zip.yml
+  - components/unzip.yml
+  - components/binutils.yml # deb
   - components/xdg-utils.yml
 
 build-depends:

@@ -32,7 +32,6 @@ depends:
   - components/glib.yml
   - components/json-glib.yml
   - components/libarchive.yml
-  - components/libsoup.yml
   - components/ostree.yml
   - components/polkit.yml
   - components/python.yml

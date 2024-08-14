@@ -70,7 +70,6 @@ depends:
   - components/fuse2.yml
 
   - components/xdg-desktop-portal-gtk.yml
-  - components/xdg-desktop-portal-xapp.yml
   - components/xdg-dbus-proxy.yml
   - components/wireplumber.yml
   - components/gnome-keyring.yml

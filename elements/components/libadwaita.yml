@@ -1,6 +1,9 @@
 id: libadwaita
-version: 1.5.2
+version: 1.5.3
 about: Building blocks for modern adaptive GNOME applications
+
+configure: >-
+  --buildtype=release
 
 depends:
   - components/gtk4.yml
@@ -12,7 +15,6 @@ build-depends:
   - components/meson.yml
   - components/vala.yml
   - components/sassc.yml
-  - components/gtk-doc.yml
 
 sources:
   - https://gitlab.gnome.org/GNOME/libadwaita/-/archive/%{version}/libadwaita-%{version}.tar.gz

@@ -2,6 +2,8 @@ id: appcenter
 version: 8.0.0
 about: Browse and manage apps
 
+pre-script: |-
+  sed -i 's/.xml.gz/.xml/g' src/Core/FlatpakBackend.vala
 depends:
   - components/appstream.yml
   - components/flatpak.yml

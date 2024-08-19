@@ -1,5 +1,5 @@
 id: gnome-software
-version: 46.4
+version: 46.2
 about: GNOME Software Tools
 
 configure: >-
@@ -7,6 +7,9 @@ configure: >-
   -D tests=false
   -D malcontent=false
   -D fwupd=false
+  -D webapps=false
+  -D hardcoded_foss_webapps=false
+  -D hardcoded_proprietary_webapps=false
 
 depends:
   - components/appstream.yml

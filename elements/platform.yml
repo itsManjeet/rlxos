@@ -108,6 +108,7 @@ depends:
   - components/firefox.yml
   - components/neofetch.yml
   - components/gnome/gnome-software.yml
+  - components/compiz.yml
 
   - components/welcome-tour.yml
   - components/initial-setup.yml

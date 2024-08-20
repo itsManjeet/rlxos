@@ -1,5 +1,6 @@
 id: libadwaita
 version: 1.5.3
+release: 2
 about: Building blocks for modern adaptive GNOME applications
 
 pre-script: |-

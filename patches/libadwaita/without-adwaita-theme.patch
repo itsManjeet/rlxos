@@ -61,7 +61,7 @@ index d27ebda5..fbdef7f6 100644
 +    GSettingsSchema *schema = g_settings_schema_source_lookup(
 +      schema_source, "org.gnome.desktop.interface", true);
 +    GSettings *interface_settings = g_settings_new_full(schema, NULL, NULL);
-+
++    g_object_set(gtk_settings_get_for_display(self->display), "gtk-theme-name", "Orchis-Dark", "gtk-application-prefer-dark-theme", TRUE, NULL);
 +    adw_style_manager_theme_changed(interface_settings, "gtk-theme", self->display);
 +    g_signal_connect (interface_settings, "changed", G_CALLBACK (adw_style_manager_theme_changed), self->display);
 +  }

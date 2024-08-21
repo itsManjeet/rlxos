@@ -38,7 +38,7 @@ script: |-
 
   # read ostree config
   getconfig() {
-    cat /sysroot/boot/loader/entries/ostree-1-rlxos.conf | grep "$1" | cut -d ' ' -f2-
+    cat /sysroot/boot/loader/entries/ostree-1.conf | grep "$1" | cut -d ' ' -f2-
   }
 
   KERNEL=$(getconfig linux)

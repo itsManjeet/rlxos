@@ -102,13 +102,13 @@ depends:
   - components/meta-x11.yml
   - components/lightdm.yml
   - components/epdfview.yml
+  - components/picom.yml
 
   - components/capsule.yml
 
   - components/firefox.yml
   - components/neofetch.yml
   - components/gnome/gnome-software.yml
-  - components/compiz.yml
 
   - components/welcome-tour.yml
   - components/initial-setup.yml

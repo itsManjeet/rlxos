@@ -2,7 +2,12 @@ id: libreoffice
 version: 24.2.5.2
 about: LibreOffice is a full-featured office suite
 
+environ:
+  - TAR_OPTIONS=--no-same-owner
+
 pre-script: |-
+  patch -Np1 -i libreoffice-24.2.5.2-boost_fixes-2.patch
+
   sed -i '/icuuc \\/a zlib\\' writerperfect/Library_wpftdraw.mk
 
   sed -e "/gzip -f/d"   \
@@ -10,6 +15,15 @@ pre-script: |-
       -i bin/distro-install-desktop-integration
 
   sed -e "/distro-install-file-lists/d" -i Makefile.in
+
+  mkdir -p external/tarballs
+  for i in libreoffice-dictionaries-%{version} libreoffice-help-%{version} libreoffice-translations-%{version} ; do
+    mv $i external/tarballs/$i.tar.xz
+  done
+
+  ln -sv src/libreoffice-help-%{version}/helpcontent2/
+  ln -sv src/libreoffice-dictionaries-%{version}/dictionaries/
+  ln -sv src/libreoffice-translations-%{version}/translations/
 
   ./autogen.sh
   
@@ -45,9 +59,11 @@ pre-script: |-
       --with-system-poppler       \
       --with-system-libtiff       \
       --with-system-libwebp       \
-      --with-system-zlib
+      --with-system-zlib          \
+      CFLAGS="$CFLAGS -Wno-implicit-function-declaration -Wno-int-conversion -Wno-error "
   
-  make build
+  sed -i 's#bootstrap: check-if-root compilerplugins#bootstrap: compilerplugins#g' Makefile
+  make
 
   make distro-pack-install DESTDIR=%{install-root}
 
@@ -89,3 +105,7 @@ build-depends:
 
 sources:
   - https://download.documentfoundation.org/libreoffice/src/%{version:3}/libreoffice-%{version}.tar.xz
+  - libreoffice-dictionaries-%{version}::https://download.documentfoundation.org/libreoffice/src/%{version:3}/libreoffice-dictionaries-%{version}.tar.xz
+  - libreoffice-help-%{version}::https://download.documentfoundation.org/libreoffice/src/%{version:3}/libreoffice-help-%{version}.tar.xz
+  - libreoffice-translations-%{version}::https://download.documentfoundation.org/libreoffice/src/%{version:3}/libreoffice-translations-%{version}.tar.xz
+  - https://www.linuxfromscratch.org/patches/blfs/svn/libreoffice-%{version}-boost_fixes-2.patch

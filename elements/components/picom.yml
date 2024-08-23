@@ -5,7 +5,6 @@ sources:
   - picom-%{version}.tar.gz::https://github.com/yshui/picom/archive/refs/tags/v%{version}.tar.gz
 
 post-script: |-
-  rm %{install-root}%{sysconfdir}/xdg/autostart -r
   install -vDm 0644 /dev/stdin %{install-root}%{sysconfdir}/xdg/picom.conf << "EOF"
   shadow = true;
   shadow-radius = 7;
@@ -22,7 +21,7 @@ post-script: |-
 
   blur-kern = "3x3box";
   
-  backend = "xrender";
+  backend = "glx";
   
   vsync = true;
 

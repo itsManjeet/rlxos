@@ -113,6 +113,7 @@ depends:
 
   - components/welcome-tour.yml
   - components/initial-setup.yml
+  - components/distrobox.yml
 
   - kernel/linux.yml
   - components/nvidia.yml

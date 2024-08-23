@@ -19,7 +19,7 @@ post-script: |
   install -v -dm700 %{install-root}/%{localstatedir}/lib/sasl
 
 depends:
-  - components/mariadb.yml
+  - components/mariadb-runtime.yml
   - components/pam.yml
   - components/krb5.yml
 

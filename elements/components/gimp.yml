@@ -1,0 +1,34 @@
+id: gimp
+version: 2.10.38
+about: GNU Image Manipulation Program which is useful for photo retouching, image composition and image authoring
+
+depends:
+  - components/appstream-glib.yml
+  - components/gegl.yml
+  - components/gexiv2.yml
+  - components/glib-networking.yml
+  - components/gtk.yml
+  - components/harfbuzz.yml
+  - components/libmypaint.yml
+  - components/librsvg.yml
+  - components/libtiff.yml
+  - components/libxml2.yml
+  - components/lcms.yml
+  - components/mypaint-brushes.yml
+  - components/poppler.yml
+  - components/graphviz.yml
+  - components/iso-codes.yml
+  - components/libgudev.yml
+  - components/py/py-gobject.yml
+  - components/xdg-utils.yml
+  - components/libjxl.yml
+  - components/libmng.yml
+  - components/libunwind.yml
+  - components/libwebp.yml
+
+build-depends:
+  - components/ghostscript.yml
+  - components/gvfs.yml
+
+sources:
+  - https://download.gimp.org/gimp/v%{version:2}/gimp-%{version}.tar.bz2

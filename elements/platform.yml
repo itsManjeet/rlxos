@@ -78,8 +78,6 @@ depends:
   - components/dracut.yml
   - components/zsync.yml
 
-  - components/apparmor.yml
-
   - components/firmware.yml
   - components/sof-firmware.yml
 

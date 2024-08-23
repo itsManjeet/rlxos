@@ -26,7 +26,7 @@ pre-script: |-
   ln -sv src/libreoffice-translations-%{version}/translations/
 
   ./autogen.sh
-  
+
   ./configure --prefix=%{prefix}  \
       --sysconfdir=%{sysconfdir}  \
       --with-vendor=RLXOS         \
@@ -36,6 +36,11 @@ pre-script: |-
       --without-system-dicts      \
       --disable-dconf             \
       --disable-odk               \
+      --disable-kf5               \
+      --disable-gtk3-kde5         \
+      --disable-qt5               \
+      --disable-qt6               \
+      --disable-gtk4              \
       --enable-release-build=yes  \
       --enable-python=system      \
       --with-jdk-home=%{libdir}/openjdk \
@@ -54,14 +59,17 @@ pre-script: |-
       --with-system-libatomic_ops \
       --with-system-libpng        \
       --with-system-nss           \
+      --with-system-odbc          \
       --with-system-openldap      \
       --with-system-openssl       \
       --with-system-poppler       \
+      --with-system-postgresql    \
+      --with-system-redland       \
       --with-system-libtiff       \
       --with-system-libwebp       \
       --with-system-zlib          \
       CFLAGS="$CFLAGS -Wno-implicit-function-declaration -Wno-int-conversion -Wno-error "
-  
+
   sed -i 's#bootstrap: check-if-root compilerplugins#bootstrap: compilerplugins#g' Makefile
   make
 
@@ -98,6 +106,9 @@ depends:
   - components/glm.yml
   - components/gstreamer.yml
   - components/libwebp.yml
+  - components/postgresql.yml
+  - components/redland.yml
+  - components/odbc.yml
 
 build-depends:
   - components/apache-ant.yml

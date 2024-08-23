@@ -1,5 +1,5 @@
 id: postgresql
-version: 16.3
+version: 16.4
 about: PostgreSQL is an advanced object-relational database management system (ORDBMS), derived from the Berkeley Postgres database management system
 
 pre-script: |-
@@ -13,7 +13,6 @@ configure: >-
   --with-ldap
   --with-libxml
   --with-libxslt
-  --with-llvm
   --with-lz4
   --with-openssl
   --with-pam
@@ -22,7 +21,6 @@ configure: >-
   --with-readline
   --with-system-tzdata=%{datadir}/zoneinfo
   --with-systemd
-  --with-tcl
   --with-uuid=e2fs
   --with-zstd
 

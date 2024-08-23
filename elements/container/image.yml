@@ -26,6 +26,7 @@ include:
 
 include-parts:
   - devel
+
 build-depends:
   - components/squashfs-tools.yml
 

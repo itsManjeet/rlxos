@@ -108,7 +108,6 @@ depends:
 
   - components/firefox.yml
   - components/neofetch.yml
-  - components/libreoffice.yml
   - components/gnome/gnome-software.yml
 
   - components/welcome-tour.yml

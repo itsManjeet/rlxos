@@ -1,11 +1,12 @@
 id: libvirt
-version: 9.7.0
+version: 10.6.0
 about: API for controlling virtualization engines (openvz,kvm,qemu,virtualbox,xen,etc)
 
 pre-script: |-
   sed -i 's|/sysconfig/|/conf.d/|g' \
     src/remote/libvirtd.service.in \
-    tools/{libvirt-guests.service,libvirt-guests.sh,virt-pki-validate}.in \
+    tools/{libvirt-guests.service,libvirt-guests.sh}.in \
+    docs/manpages/libvirt-guests.rst \
     src/locking/virtlockd.service.in \
     src/logging/virtlogd.service.in
   sed -i 's|/usr/libexec/qemu-bridge-helper|/usr/lib/qemu/qemu-bridge-helper|g' \
@@ -38,6 +39,23 @@ configure: >-
   -Dstorage_zfs=enabled
   -Dstorage_rbd=disabled
 
+post-script: |-
+  install -vDm 0644 /dev/stdin %{install-root}%{libdir}/sysusers.d/libvirt.conf << "EOF"
+  g libvirt - -
+  u libvirt %{localstatedir}/libvirt "Libvirt QEMU user"
+  m libvirt libvirt
+  EOF
+
+  install -vDm 0644 /dev/stdin %{install-root}%{libdir}/tmpfiles.d/libvirt.conf << "EOF"
+  z %{localstatedir}/lib/libvirt/qemu 0751
+  EOF
+
+  chmod 0600 %{install-root}%{sysconfdir}/libvirt/nwfilter/*.xml \
+    %{install-root}%{sysconfdir}/libvirt/qemu/networks/default.xml
+  
+  chmod 700 %{install-root}%{sysconfdir}/libvirt/secrets
+  chmod 711 %{install-root}/var/lib/libvirt/swtpm
+
 depends:
   - components/fuse.yml
   - components/gnutls.yml
@@ -46,6 +64,7 @@ depends:
   - components/libxml2.yml
   - components/numactl.yml
   - components/parted.yml
+  - components/libnl.yml
   - components/polkit.yml
   - components/yajl.yml
   - components/dmidecode.yml
@@ -53,6 +72,7 @@ depends:
   - components/gettext.yml
   - components/lvm2.yml
   - components/rpcsvc-proto.yml
+  - components/qemu.yml
 
 build-depends:
   - components/iproute2.yml

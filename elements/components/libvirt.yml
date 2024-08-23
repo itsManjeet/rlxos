@@ -35,6 +35,8 @@ configure: >-
   -Dsecdriver_selinux=disabled
   -Dstorage_vstorage=disabled
   -Ddtrace=disabled
+  -Dlibssh=disabled
+  -Dlibssh2=enabled
   -Dnumad=disabled
   -Dstorage_zfs=enabled
   -Dstorage_rbd=disabled

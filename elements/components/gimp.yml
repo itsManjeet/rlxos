@@ -16,12 +16,15 @@ depends:
   - components/lcms.yml
   - components/mypaint-brushes.yml
   - components/poppler.yml
+  - components/poppler-data.yml
   - components/graphviz.yml
   - components/iso-codes.yml
   - components/libgudev.yml
   - components/py/py-gobject.yml
+  - components/x11/libx11.yml
+  - components/x11/libxmu.yml
   - components/xdg-utils.yml
-  - components/libjxl.yml
+  # - components/libjxl.yml
   - components/libmng.yml
   - components/libunwind.yml
   - components/libwebp.yml
@@ -31,4 +34,4 @@ build-depends:
   - components/gvfs.yml
 
 sources:
-  - https://download.gimp.org/gimp/v%{version:2}/gimp-%{version}.tar.bz2
+  - https://anduin.linuxfromscratch.org/BLFS/gimp/gimp3-20240711.tar.xz

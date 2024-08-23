@@ -107,6 +107,7 @@ depends:
   - components/firefox.yml
   - components/neofetch.yml
   - components/gnome/gnome-software.yml
+  - components/gimp.yml
 
   - components/welcome-tour.yml
   - components/initial-setup.yml

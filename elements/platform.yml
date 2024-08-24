@@ -67,7 +67,6 @@ depends:
   - components/dosfstools.yml
 
   - components/libconfuse.yml
-  - components/fuse2.yml
 
   - components/xdg-desktop-portal-gtk.yml
   - components/xdg-desktop-portal-xapp.yml
@@ -94,20 +93,16 @@ depends:
   - components/network-manager-applet.yml
   - components/blueman.yml
   - components/ntfs-3g.yml
-  - components/xarchiver.yml
+  - components/file-roller.yml
 
   - components/meta-xfce4.yml
   - components/meta-x11.yml
   - components/lightdm.yml
-  - components/epdfview.yml
   - components/picom.yml
 
   - components/capsule.yml
 
-  - components/firefox.yml
-  - components/neofetch.yml
   - components/gnome/gnome-software.yml
-  - components/gimp.yml
 
   - components/welcome-tour.yml
   - components/initial-setup.yml

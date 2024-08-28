@@ -5,7 +5,7 @@ script: |-
     %{extra-commands}
 
 post-script: |-
-    rm /go -rf
+    go clean -modcache
 
 build-depends:
     - components/go.yml

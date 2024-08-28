@@ -1,10 +1,7 @@
 id: welcome
 version: 2.0
 about: RLXOS welcome tour
-merge: [elements/include/app.inc]
+merge: [ elements/include/app.inc ]
 
-post-script: |-
+extra-commands: |-
   install -v -D -m 0755 -t %{install-root}/%{sysconfdir}/xdg/autostart/ /rlxos/apps/welcome/assets/welcome.desktop
-
-depends:
-  - components/gtk.yml

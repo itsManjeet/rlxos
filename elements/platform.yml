@@ -104,7 +104,7 @@ depends:
 
   - components/gnome/gnome-software.yml
 
-  - components/welcome-tour.yml
+  - components/welcome.yml
   - components/initial-setup.yml
   - components/distrobox.yml
 

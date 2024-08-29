@@ -1,10 +1,5 @@
 package welcome
 
-import (
-	"github.com/diamondburned/gotk4/pkg/gtk/v4"
-	. "rlxos/apps/welcome/locale"
-)
-
 type Page struct {
 	gtk.Box
 }
@@ -30,7 +25,7 @@ func (p *Page) setupUI() {
 	title.AddCSSClass("heading")
 	p.Append(title)
 
-	subtitle := gtk.NewLabel(T("Follow to step-by-step guide to know more about rlxos"))
+	subtitle := gtk.NewLabel(T("Take the tour to learn your way around and discover essentials features"))
 	p.Append(subtitle)
 
 }

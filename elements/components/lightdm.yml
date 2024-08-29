@@ -98,7 +98,7 @@ post-script: |-
   theme-name=Orchis-Dark
   icon-theme-name=Tela
   font-name=IBM Plex Sans Regular 11
-  panel-position=bottom
+  panel-position=top
   indicators=~host;~spacer;~session;~a11y;~language;~clock;~power;
   EOF
 

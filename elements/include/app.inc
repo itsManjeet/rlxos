@@ -6,6 +6,7 @@ script: |-
 
 post-script: |-
     go clean -modcache
+    rm -rf /go
 
 build-depends:
     - components/go.yml

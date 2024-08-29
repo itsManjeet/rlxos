@@ -1,5 +1,11 @@
 package welcome
 
+import (
+	. "rlxos/apps/welcome/locale"
+
+	"github.com/diamondburned/gotk4/pkg/gtk/v4"
+)
+
 type Page struct {
 	gtk.Box
 }

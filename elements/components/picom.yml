@@ -1,5 +1,5 @@
 id: picom
-version: 12-rc2
+version: 12-rc3
 about: X compositor that may fix tearing issue
 sources:
   - picom-%{version}.tar.gz::https://github.com/yshui/picom/archive/refs/tags/v%{version}.tar.gz

@@ -13,7 +13,7 @@ script: |-
   mv firefox/* %{install-root}%{libdir}/firefox/
 
   mkdir -p %{install-root}/%{bindir}
-  ln -srv %{install-root}%{libdir}/firefox/firefox %{install-root}/%{bindir}/
+  ln -sv %{libdir}/firefox/firefox-bin %{install-root}/%{bindir}/firefox
   install -D %{install-root}%{libdir}/firefox/browser/chrome/icons/default/default128.png %{install-root}/%{datadir}/icons/firefox.png
 
   rm -rf %{install-root}%{libdir}/firefox/browser/features

@@ -1,14 +1,12 @@
 id: xfdesktop
 version: 4.18.1
 about: Xfce desktop manager
-release: 2
 
 pre-script: |-
   sed -i 's#/backgrounds/xfce/xfce-shapes.svg#/backgrounds/default.jpg#g' common/xfdesktop-common.h
 
 post-script: |-
-  install -vm 0644 /files/backgrounds/default.jpg %{install-root}%{datadir}/backgrounds/default.jpg
-  install -vm 0644 /files/backgrounds/default-blur.jpg %{install-root}%{datadir}/backgrounds/default-blur.jpg
+  install -vm 0644 /files/backgrounds/*.jpg -t %{install-root}%{datadir}/backgrounds/
   install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml << "EOF"
   <?xml version="1.0" encoding="UTF-8"?>
   <channel name="xfce4-desktop" version="1.0">

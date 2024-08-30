@@ -1,5 +1,5 @@
 id: firefox
-version: 128.1.0esr
+version: 124.0.2
 about:
   Mozilla Firefox or simply Firefox is a free and open-source web browser developed
   by the Mozilla Foundation and its subsidiary, the Mozilla Corporation. Firefox uses
@@ -13,7 +13,7 @@ script: |-
   mv firefox/* %{install-root}%{libdir}/firefox/
 
   mkdir -p %{install-root}/%{bindir}
-  ln -sv %{libdir}/firefox/firefox-bin %{install-root}/%{bindir}/firefox
+  ln -srv %{install-root}%{libdir}/firefox/firefox %{install-root}/%{bindir}/
   install -D %{install-root}%{libdir}/firefox/browser/chrome/icons/default/default128.png %{install-root}/%{datadir}/icons/firefox.png
 
   rm -rf %{install-root}%{libdir}/firefox/browser/features

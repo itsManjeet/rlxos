@@ -37,6 +37,11 @@ post-script: |-
     opacity = 0.75;
     full-shadow = false;
     }, {
+    match = "window_type = 'dropdown_menu' || "
+            "window_type = 'popup_menu' || "
+            "window_type = 'utility'";
+      shadow = false;
+    }, {
       match = "window_type = 'dock'    || "
               "window_type = 'desktop' || "
               "_GTK_FRAME_EXTENTS@";

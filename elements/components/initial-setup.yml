@@ -139,7 +139,7 @@ post-script: |-
   </channel>
   EOF
   
-  install -vDm 0644 /dev/stdin %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/autostart/welcome-tour.desktop << "EOF"
+  install -vDm 0644 /dev/stdin %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/autostart/welcome.desktop << "EOF"
   [Desktop Entry]
   Hidden=true
   EOF
@@ -150,7 +150,7 @@ post-script: |-
   x-scheme-handler/https=firefox.desktop
   EOF
   
-  touch %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/.welcome-done
+  touch %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.welcome-done
 
   install -vDm 0644 /dev/stdin %{install-root}/%{datadir}/factory/%{localstatedir}/lib/initial-setup/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml << "EOF"
   <?xml version="1.0" encoding="UTF-8"?>

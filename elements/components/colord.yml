@@ -4,6 +4,9 @@ about: |
   A system service that makes it easy to manage, install, and generate color
   profiles
 
+pre-script: |-
+  patch -Np1 -i colord-1.4.7-upstream_fixes-1.patch
+
 configure: >
   --buildtype=release
   -D daemon_user=colord
@@ -12,7 +15,7 @@ configure: >
   -D libcolordcompat=true
   -D argyllcms_sensor=false
   -D bash_completion=false
-  -D docs=false
+  -D docs=true
   -D man=false
 
 post-script: |-
@@ -30,8 +33,9 @@ depends:
   - components/libgusb.yml
   - components/systemd.yml
 build-depends:
+  - components/gtk-doc.yml
   - components/gobject-introspection.yml
   - components/vala.yml
 sources:
   - https://www.freedesktop.org/software/colord/releases/colord-%{version}.tar.xz
-# TODO: enable bash_completion, docs and manuals
+  - patches/colord/colord-1.4.7-upstream_fixes-1.patch

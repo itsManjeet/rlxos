@@ -1,5 +1,5 @@
 id: welcome
-version: 2.1
+version: 2.2
 about: RLXOS welcome tour
 merge: [ elements/include/app.inc ]
 

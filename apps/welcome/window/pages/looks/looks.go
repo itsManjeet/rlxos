@@ -2,11 +2,12 @@ package looks
 
 import (
 	"fmt"
-	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 	"log"
 	"os/exec"
 	"rlxos/apps/welcome/config"
 	. "rlxos/apps/welcome/locale"
+
+	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
 type Page struct {
@@ -77,17 +78,29 @@ func (p *Page) UpdateScaling() {
 }
 
 func (p *Page) SwitchToDarkTheme() {
+	p.setGsettings("org.gnome.desktop.interface", "gtk-theme", config.GtkDarkTheme)
 	p.setConfig("xsettings", "/Net/ThemeName", config.GtkDarkTheme)
+
+	p.setGsettings("org.gnome.desktop.interface", "icon-theme", config.IconDarkTheme)
 	p.setConfig("xsettings", "/Net/IconThemeName", config.IconDarkTheme)
 }
 
 func (p *Page) SwitchToLightTheme() {
+	p.setGsettings("org.gnome.desktop.interface", "gtk-theme", config.GtkLightTheme)
 	p.setConfig("xsettings", "/Net/ThemeName", config.GtkLightTheme)
+
+	p.setGsettings("org.gnome.desktop.interface", "icon-theme", config.IconLightTheme)
 	p.setConfig("xsettings", "/Net/IconThemeName", config.IconLightTheme)
 }
 
 func (p *Page) setConfig(channel, property, value string) {
 	if output, err := exec.Command("xfconf-query", "-c", channel, "-p", property, "-s", value).CombinedOutput(); err != nil {
+		log.Printf("Failed to set config %s: %s %s", property, string(output), err)
+	}
+}
+
+func (p *Page) setGsettings(channel property, value string) {
+	if output, err := exec.Command("gsettings", "set", channel, property, value).CombinedOutput(); err != nil {
 		log.Printf("Failed to set config %s: %s %s", property, string(output), err)
 	}
 }

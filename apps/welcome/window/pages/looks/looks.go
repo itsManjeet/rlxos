@@ -99,7 +99,7 @@ func (p *Page) setConfig(channel, property, value string) {
 	}
 }
 
-func (p *Page) setGsettings(channel property, value string) {
+func (p *Page) setGsettings(channel, property, value string) {
 	if output, err := exec.Command("gsettings", "set", channel, property, value).CombinedOutput(); err != nil {
 		log.Printf("Failed to set config %s: %s %s", property, string(output), err)
 	}

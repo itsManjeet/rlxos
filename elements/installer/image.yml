@@ -24,6 +24,7 @@ script: |-
   ostree admin os-init --sysroot=%{sysroot} rlxos
 
   ostree config --repo=%{sysroot}/ostree/repo set sysroot.bootloader none
+  ostree config --repo=%{sysroot}/ostree/repo set sysroot.bootprefix true
 
   ostree pull-local --repo=%{sysroot}/ostree/repo %{include-root} %{ostree-branch}
 
@@ -46,8 +47,8 @@ script: |-
   KARGS=$(getconfig options)
 
   for f in ISO/boot/grub/grub.cfg ISO/isolinux/isolinux.cfg ; do
-    m4 -D"__KERNEL__=/boot/$KERNEL" \
-      -D"__INITRD__=/boot/$INITRD" \
+    m4 -D"__KERNEL__=$KERNEL" \
+      -D"__INITRD__=$INITRD" \
       -D"__KARGS__=$KARGS" $f > ${f}.tmp
     mv ${f}.tmp ${f}
   done

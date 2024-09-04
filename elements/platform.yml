@@ -79,6 +79,7 @@ depends:
 
   - components/firmware.yml
   - components/sof-firmware.yml
+  - components/intel-ucode.yml
 
   - components/system-config-printer.yml
 

@@ -152,6 +152,7 @@ if [ -d /sysroot/ostree/repo ] ; then
     }
 
     sudo ostree config --repo=${SYSROOT}/ostree/repo set sysroot.bootloader none
+    sudo ostree config --repo=${SYSROOT}/ostree/repo set sysroot.bootprefix true
 
     echo ":: Cloning OStree into the device (this might take a while)"
     sudo ostree --repo=${SYSROOT}/ostree/repo pull-local "/ostree/repo" @@OSTREE_BRANCH@@ || {

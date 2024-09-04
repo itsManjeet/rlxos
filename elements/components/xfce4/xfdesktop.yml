@@ -1,7 +1,7 @@
 id: xfdesktop
 version: 4.18.1
 about: Xfce desktop manager
-
+release: 8
 pre-script: |-
   sed -i 's#/backgrounds/xfce/xfce-shapes.svg#/backgrounds/default.jpg#g' common/xfdesktop-common.h
 

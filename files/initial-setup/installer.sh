@@ -152,7 +152,6 @@ if [ -d /sysroot/ostree/repo ] ; then
     }
 
     sudo ostree config --repo=${SYSROOT}/ostree/repo set sysroot.bootloader none
-    sudo ostree config --repo=${SYSROOT}/ostree/repo set sysroot.bootprefix true
 
     echo ":: Cloning OStree into the device (this might take a while)"
     sudo ostree --repo=${SYSROOT}/ostree/repo pull-local "/ostree/repo" @@OSTREE_BRANCH@@ || {
@@ -199,86 +198,11 @@ if [ -d /sysroot/ostree/repo ] ; then
     (cd ${SYSROOT}/boot/loader; sudo /lib/ostree/ostree-grub-generator . grub.cfg)
 
     sudo install -D -m 0644 /dev/stdin ${SYSROOT}/boot/grub/grub.cfg << "EOF"
-set timeout=5
-if [ -s $prefix/grubenv ] ; then
-    set have_grubenv=true
-    load_env
-fi
-
-if [ x"${feature_menuentry_id}" = xy ] ; then
-    menuentry_id_option="--id"
-else
-    menuentry_id_option=""
-fi
-
-export menuentry_id_option
-
-if [ "${prev_saved_entry}" ] ; then
-    set saved_entry="${prev_saved_entry}"
-    save_env saved_entry
-    set pre_saved_entry=
-    save_env prev_saved_entry
-    set boot_once=true
-fi
-
-function savedefault {
-    if [ -z "${boot_once}" ] ; then
-        saved_entry="${chosed}"
-        save_env saved_entry
-    fi
-}
-
-function load_video {
-    if [ x$feature_all_video_module = xy ] ; then
-        insmod all_video
-    else
-        insmod efi_gop
-        insmod efi_uga
-        insmod ieee1275_fb
-        insmod vbe
-        insmod vga
-        insmod video_bochs
-        insmod video_cirrus
-    fi
-}
-
-font=unicode
-
-if loadfont $font ; then
-    set gfxmode=auto
-    load_video
-    insmod gfxterm
-    set locale_dir=$prefix/locale
-    set lang=en_IN
-    insmod gettext
-fi
-
-terminal_output gfxterm
-if [ "${recordfail}" = 1 ] ; then
-    set timeout=30
-else
-    if [ x$feature_timeout_style = xy ] ; then
-        set timeout_style=menu
-        set timeout=5
-    else
-        set timeout=5
-    fi
-fi
-
-function gfxmode {
-    set gfxpayload="${1}"
-}
-
-set linux_gfx_mode=
-export linux_gfx_mode
-
-insmod part_gpt
-insmod ext2
-
 configfile /boot/loader/grub.cfg
 EOF
 
     sudo ostree config --repo=${SYSROOT}/ostree/repo set sysroot.bootloader grub2
+    sudo ostree config --repo=${SYSROOT}/ostree/repo set sysroot.bootprefix true
 else
     if [[ -n "$IS_EFI" ]] ; then
         sudo mkdir -p ${SYSROOT}/efi || {

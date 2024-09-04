@@ -282,6 +282,10 @@ std::optional<UpdateInfo> Sysroot::pull(const Deployment& deployment,
 
     ostree_sysroot_cleanup(backend, nullptr, nullptr);
 
+    if (WEXITSTATUS(system("grub-mkconfig -o /boot/grub/grub.cfg")) != 0) {
+        std::cerr << "ERROR: failed to update grub configuration" << std::endl;
+    }
+
     return updateInfo;
 }
 
@@ -311,7 +315,7 @@ std::tuple<bool, std::string, std::string> Sysroot::get_changelog(
 
     return {true, updated_revision,
             refspec + ":" + updated_revision + " " + std::to_string(timestamp) +
-                    " " + subject + " " + body};
+                    "\n" + subject + "\n" + body};
 }
 
 Deployment Sysroot::get_active() const {

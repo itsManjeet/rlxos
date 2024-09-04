@@ -201,8 +201,6 @@ if [ -d /sysroot/ostree/repo ] ; then
 configfile /boot/loader/grub.cfg
 EOF
 
-    sudo ostree config --repo=${SYSROOT}/ostree/repo set sysroot.bootloader grub2
-    sudo ostree config --repo=${SYSROOT}/ostree/repo set sysroot.bootprefix true
 else
     if [[ -n "$IS_EFI" ]] ; then
         sudo mkdir -p ${SYSROOT}/efi || {

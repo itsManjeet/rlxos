@@ -95,7 +95,7 @@ post-script: |-
   install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/lightdm/lightdm-gtk-greeter.conf << "EOF"
   [greeter]
   background=%{datadir}/backgrounds/default-blur.jpg
-  theme-name=Orchis-Dark
+  theme-name=Orchis-Light
   icon-theme-name=Tela
   font-name=IBM Plex Sans Regular 11
   panel-position=top

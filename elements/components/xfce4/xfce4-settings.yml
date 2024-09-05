@@ -11,8 +11,8 @@ post-script: |-
   <?xml version="1.0" encoding="UTF-8"?>
   <channel name="xsettings" version="1.0">
     <property name="Net" type="empty">
-      <property name="ThemeName" type="string" value="Orchis-Dark"/>
-      <property name="IconThemeName" type="string" value="Tela-dark"/>
+      <property name="ThemeName" type="string" value="Orchis-Light"/>
+      <property name="IconThemeName" type="string" value="Tela-light"/>
       <property name="DoubleClickTime" type="int" value="400"/>
       <property name="DoubleClickDistance" type="int" value="5"/>
       <property name="DndDragThreshold" type="int" value="8"/>

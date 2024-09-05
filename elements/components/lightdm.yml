@@ -96,7 +96,7 @@ post-script: |-
   [greeter]
   background=%{datadir}/backgrounds/default-blur.jpg
   theme-name=Orchis-Light
-  icon-theme-name=Tela
+  icon-theme-name=Tela-light
   font-name=IBM Plex Sans Regular 11
   panel-position=top
   indicators=~host;~spacer;~session;~a11y;~language;~clock;~power;

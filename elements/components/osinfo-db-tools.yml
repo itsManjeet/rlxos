@@ -8,7 +8,7 @@ pre-script: |-
 depends:
   - components/json-glib.yml
   - components/libarchive.yml
-  - components/libsoup.yml
+  - components/libsoup3.yml
   - components/libxslt.yml
 
 build-depends:

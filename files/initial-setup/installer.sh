@@ -197,6 +197,7 @@ if [ -d /sysroot/ostree/repo ] ; then
 
     # TODO: fix this hack
     (cd ${SYSROOT}/boot/loader; sudo /lib/ostree/ostree-grub-generator . grub.cfg)
+    sed -i 's#/boot/boot/#/boot/#g' ${SYSROOT}/boot/loader/grub.cfg
 
     sudo install -D -m 0644 /dev/stdin ${SYSROOT}/boot/grub/grub.cfg << "EOF"
 configfile /boot/loader/grub.cfg

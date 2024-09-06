@@ -12,6 +12,7 @@ post-script: |-
     <property name="font-use-system" type="bool" value="true"/>
     <property name="background-mode" type="string" value="TERMINAL_BACKGROUND_TRANSPARENT"/>
     <property name="background-darkness" type="double" value="0.9"/>
+    <property name="font-allow-bold" type="bool" value="false"/>
   </channel>
   EOF
 

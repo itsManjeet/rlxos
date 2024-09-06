@@ -2,8 +2,8 @@ id: ohmyzsh
 version: master
 
 variables:
-  commit: c8e600f39779c6d2ef75b40304b5391a541c41df
-  default-theme: lukerandall
+  commit: b8c69d265257fae88fe504ea43cbcf2728bc1308
+  default-theme: jonathan
 
 depends:
   - components/zsh.yml

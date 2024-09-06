@@ -33,6 +33,8 @@ initial-commands: |-
   cp /lib/modules/${kerver}/bzImage /lib/modules/${kerver}/vmlinuz
 
   dracut --reproducible -v --no-machineid \
+    --early-microcode \
+    --no-hostonly \
     --kver ${kerver} \
     --add dmsquash-live \
     --add ostree  \

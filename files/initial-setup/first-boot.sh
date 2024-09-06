@@ -31,6 +31,7 @@ echo "root":"${ISE_PASSWORD}" | sudo chpasswd || {
 }
 fi
 
+if [ -f /etc/greetd/config.toml ] ; then
 echo ":: Installing greetd configuration"
 sudo install -v -D -m 0644 /dev/stdin /etc/greetd/config.toml << EOF
 [terminal]
@@ -43,6 +44,7 @@ command = "sway --config /etc/greetd/sway-config"
 command = "sway --config /etc/sway/config-locked"
 user = "${ISE_USERNAME}"
 EOF
+fi
 
 if [ -f /etc/lightdm/lightdm.conf.d/*initial-setup*.conf ] ; then
     echo ":: Removing Display manager configuration for inital setup"
@@ -56,5 +58,8 @@ fi
 
 echo ":: setting up timezone: ${ISE_TIMEZONE}"
 sudo ln -sf /usr/share/zoneinfo/${ISE_TIMEZONE} /etc/localtime
+
+echo ":: updating bootloader configuration"
+sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 exit 0

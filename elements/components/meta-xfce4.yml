@@ -51,8 +51,6 @@ depends:
 
   - components/xfce4/thunar-volman.yml
 
-  - components/themes/qogir-gtk-theme.yml
-  - components/themes/qogir-icon-theme.yml
   - components/themes/grey-bird-gtk-theme.yml
   - components/themes/elementary-xfce-icon.yml
   - components/themes/orchis-gtk-theme.yml

@@ -9,9 +9,6 @@ pre-script: |-
   sed -i 's/4.0/4.1/g' gufw/gufw/view/gufw.py
 
 depends:
-  - components/intltool.yml
-  - components/py/py-setuptools.yml
-  - components/py/py-distutils-extra.yml
   - components/desktop-file-utils.yml
   - components/gtk.yml
   - components/polkit.yml
@@ -20,6 +17,11 @@ depends:
   - components/ufw.yml
   - components/enchant.yml
   - components/webkitgtk.yml
+
+build-depends:
+  - components/intltool.yml
+  - components/py/py-setuptools.yml
+  - components/py/py-distutils-extra.yml
 
 sources:
   - https://github.com/costales/gufw/archive/%{version}/gufw-%{version}.tar.gz

@@ -11,8 +11,8 @@ post-script: |-
   <?xml version="1.0" encoding="UTF-8"?>
   <channel name="xsettings" version="1.0">
     <property name="Net" type="empty">
-      <property name="ThemeName" type="string" value="Orchis-Dark"/>
-      <property name="IconThemeName" type="string" value="Tela-dark"/>
+      <property name="ThemeName" type="string" value="Orchis-Light"/>
+      <property name="IconThemeName" type="string" value="Tela-light"/>
       <property name="DoubleClickTime" type="int" value="400"/>
       <property name="DoubleClickDistance" type="int" value="5"/>
       <property name="DndDragThreshold" type="int" value="8"/>
@@ -33,8 +33,8 @@ post-script: |-
     <property name="Gtk" type="empty">
       <property name="CanChangeAccels" type="bool" value="false"/>
       <property name="ColorPalette" type="string" value="black:white:gray50:red:purple:blue:light blue:green:yellow:orange:lavender:brown:goldenrod4:dodger blue:pink:light green:gray10:gray30:gray75:gray90"/>
-      <property name="FontName" type="string" value="IBM Plex Sans Regular 11"/>
-      <property name="MonospaceFontName" type="string" value="Source Code Pro 11"/>
+      <property name="FontName" type="string" value="IBM Plex Sans Regular 10"/>
+      <property name="MonospaceFontName" type="string" value="Fira Code Regular 10"/>
       <property name="IconSizes" type="string" value=""/>
       <property name="KeyThemeName" type="string" value=""/>
       <property name="ToolbarStyle" type="string" value="icons"/>

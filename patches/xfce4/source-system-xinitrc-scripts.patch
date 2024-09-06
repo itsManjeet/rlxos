@@ -1,8 +1,9 @@
-diff -upr xfce4-session-4.14.0.orig/scripts/xinitrc.in.in xfce4-session-4.14.0/scripts/xinitrc.in.in
---- xfce4-session-4.14.0.orig/scripts/xinitrc.in.in	2019-08-11 23:11:06.000000000 +0300
-+++ xfce4-session-4.14.0/scripts/xinitrc.in.in	2019-08-12 03:28:44.464707715 +0300
-@@ -83,6 +83,13 @@ if command -v systemctl >/dev/null 2>&1
-   dbus-update-activation-environment --systemd XAUTHLOCALHOSTNAME=$XAUTHLOCALHOSTNAME
+diff --git a/scripts/xinitrc.in.in b/scripts/xinitrc.in.in
+index da82e079..c8875062 100755
+--- a/scripts/xinitrc.in.in
++++ b/scripts/xinitrc.in.in
+@@ -109,6 +109,14 @@ if command -v dbus-update-activation-environment >/dev/null 2>&1; then
+     XDG_STATE_HOME
  fi
  
 +# source system xinitrc scripts
@@ -12,6 +13,7 @@ diff -upr xfce4-session-4.14.0.orig/scripts/xinitrc.in.in xfce4-session-4.14.0/s
 +  done
 +  unset f
 +fi
- 
++
  # check if we start xfce4-session with ck-launch-session. this is only
  # required for starting from a console, not a login manager
+ if test "x$XFCE4_SESSION_WITH_CK" = "x1"; then

@@ -1,13 +1,14 @@
 id: zenity
-version: 3.44.2
+version: 4.0.2
 about: GNOME port of dialog which allows you to display GTK+ dialog boxes from the command line and shell scripts
 
+configure: >-
+  -D manpage=false
+
 depends:
-  - components/gtk.yml
-  - components/libnotify.yml
-  - components/libxslt.yml
-  - components/webkitgtk.yml
-  - components/enchant.yml
+  - components/gtk4.yml
+  - components/libadwaita.yml
+  - components/pango.yml
 build-depends:
   - components/itstool.yml
 sources:

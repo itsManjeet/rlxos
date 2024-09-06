@@ -67,7 +67,6 @@ depends:
   - components/dosfstools.yml
 
   - components/libconfuse.yml
-  - components/fuse2.yml
 
   - components/xdg-desktop-portal-gtk.yml
   - components/xdg-desktop-portal-xapp.yml
@@ -78,10 +77,9 @@ depends:
   - components/dracut.yml
   - components/zsync.yml
 
-  - components/apparmor.yml
-
   - components/firmware.yml
   - components/sof-firmware.yml
+  - components/intel-ucode.yml
 
   - components/system-config-printer.yml
 
@@ -96,17 +94,19 @@ depends:
   - components/network-manager-applet.yml
   - components/blueman.yml
   - components/ntfs-3g.yml
+  - components/firefox.yml
   - components/file-roller.yml
 
   - components/meta-xfce4.yml
   - components/meta-x11.yml
   - components/lightdm.yml
-  - components/epdfview.yml
+  - components/picom.yml
 
-  - components/firefox.yml
-  - components/neofetch.yml
+  - components/capsule.yml
 
-  - components/welcome-tour.yml
+  - components/gnome/gnome-software.yml
+
+  - components/welcome.yml
   - components/initial-setup.yml
   - components/distrobox.yml
 

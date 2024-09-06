@@ -31,7 +31,7 @@ export OSTREE_GPG_CONFIG
 export PKGUPD
 export CACHE_PATH
 
-.PHONY: clean all docs version.yml channel.yml ostree-branch.yml apps
+.PHONY: clean all docs version.yml channel.yml ostree-branch.yml apps TODO.ELEMENTS
 
 all: $(PKGUPD) version.yml ostree-branch.yml channel.yml
 ifdef ELEMENT

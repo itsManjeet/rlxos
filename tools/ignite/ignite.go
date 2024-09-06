@@ -1,0 +1,2188 @@
+package main
+
+import (
+	"bufio"
+	"crypto/sha256"
+	"encoding/hex"
+	"errors"
+	"fmt"
+	"io"
+	"io/fs"
+	"net/url"
+	"os"
+	"path/filepath"
+	"regexp"
+	"sort"
+	"strconv"
+	"strings"
+	"sync"
+
+	"gopkg.in/yaml.v3"
+)
+
+type Compiler struct {
+	file   string
+	script string
+}
+
+type State struct {
+	id     string
+	recipe Recipe
+	cached bool
+	reason string
+}
+
+type WorkspaceFinishOptions struct {
+	Message string
+	Push    bool
+}
+
+type ContainerType int
+
+const (
+	ContainerBuild ContainerType = iota
+	ContainerShell
+)
+
+type Ignite struct {
+	config        *Config
+	projectPath   string
+	cachePath     string
+	workspacePath string
+	arch          string
+	fetchJobs     int
+	pool          map[string]Recipe
+	compilers     map[string]Compiler
+	hashCache     map[string]string
+	hashMu        sync.Mutex
+	mirrors       map[string]string
+}
+
+func NewIgnite(config *Config, projectPath, cachePath, workspacePath, arch string) (*Ignite, error) {
+	file := filepath.Join(projectPath, "config-"+arch+".yml")
+	if _, err := os.Stat(file); err != nil {
+		return nil, fmt.Errorf("failed to load configuration file %q", file)
+	}
+	if err := config.UpdateFromFile(file); err != nil {
+		return nil, err
+	}
+	if workspacePath == "" {
+		workspacePath = filepath.Join(cachePath, "workspaces")
+	} else if !filepath.IsAbs(workspacePath) {
+		workspacePath = filepath.Join(projectPath, workspacePath)
+	}
+	i := &Ignite{
+		config: config, projectPath: projectPath, cachePath: cachePath, workspacePath: workspacePath, arch: arch,
+		pool: map[string]Recipe{}, compilers: map[string]Compiler{}, hashCache: map[string]string{},
+	}
+	if node := config.Node("compiler"); node != nil && node.Kind == yaml.MappingNode {
+		for idx := 0; idx+1 < len(node.Content); idx += 2 {
+			body := node.Content[idx+1]
+			i.compilers[node.Content[idx].Value] = Compiler{
+				file:   scalarString(mapValue(body, "file")),
+				script: scalarString(mapValue(body, "script")),
+			}
+		}
+	}
+	if node := config.Node("mirrors"); node != nil && node.Kind == yaml.MappingNode {
+		i.mirrors = map[string]string{}
+		for idx := 0; idx+1 < len(node.Content); idx += 2 {
+			i.mirrors[node.Content[idx].Value] = node.Content[idx+1].Value
+		}
+	}
+	return i, nil
+}
+
+func (i *Ignite) virtualMergeFiles() map[string][]byte {
+	version := configString(*i.config, "version", "9999")
+	channel := configString(*i.config, "channel", "")
+	if channel == "" {
+		channel = "testing"
+		if variables := i.config.ScalarMap("variables"); variables != nil {
+			if value := variables["channel"]; value != "" {
+				channel = value
+			}
+		}
+	}
+	return map[string][]byte{
+		"version.yml": []byte(fmt.Sprintf("version: %s\nvariables:\n  channel: %s\n", version, channel)),
+		"channel.yml": []byte(fmt.Sprintf("variables:\n  channel: %s\n", channel)),
+	}
+}
+
+func (i *Ignite) Load() error {
+	nextPool := map[string]Recipe{}
+	root := filepath.Join(i.projectPath, "external")
+	err := filepath.WalkDir(root, func(path string, entry fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if entry.IsDir() || filepath.Ext(path) != ".yml" {
+			return nil
+		}
+		id, ok := externalRecipeID(path, i.projectPath)
+		if !ok {
+			return nil
+		}
+		recipe, err := LoadRecipe(path, i.projectPath, i.virtualMergeFiles())
+		if err != nil {
+			return fmt.Errorf("failed to load %q because %w", id, err)
+		}
+		recipe.arch = i.arch
+		nextPool[id] = recipe
+		return nil
+	})
+	if err != nil {
+		return err
+	}
+	i.pool = nextPool
+	i.hashMu.Lock()
+	i.hashCache = map[string]string{}
+	i.hashMu.Unlock()
+	fmt.Printf("Ignite::load(): Loaded %d elements\n", len(i.pool))
+	return nil
+}
+
+func (i *Ignite) Resolve(ids []string, devel, includeDepends, includeExtra bool) ([]State, error) {
+	var output []State
+	visited := map[string]bool{}
+	var dfs func(string) error
+	dfs = func(id string) error {
+		id = canonicalRecipeReference(id)
+		visited[id] = true
+		recipe, ok := i.pool[id]
+		if !ok {
+			return fmt.Errorf("MISSING %s", id)
+		}
+		depends := append([]string{}, recipe.depends...)
+		if devel {
+			depends = append(depends, recipe.buildTimeDepends...)
+		}
+		if includeExtra {
+			depends = append(depends, recipe.config.StringSlice("include")...)
+		}
+		for idx, dep := range depends {
+			depends[idx] = canonicalRecipeReference(dep)
+		}
+		if includeDepends {
+			for _, dep := range depends {
+				if visited[dep] {
+					continue
+				}
+				if err := dfs(dep); err != nil {
+					return fmt.Errorf("%w\n\tTRACEBACK %s", err, id)
+				}
+			}
+		}
+		resolved := recipe
+		hash, err := i.Hash(resolved)
+		if err != nil {
+			return err
+		}
+		resolved.cache = hash
+		cacheState, err := i.PackageCacheState(resolved)
+		if err != nil {
+			return err
+		}
+		output = append(output, State{id: id, recipe: resolved, cached: cacheState.Cached, reason: cacheState.Reason})
+		return nil
+	}
+	for _, id := range ids {
+		if err := dfs(id); err != nil {
+			return nil, err
+		}
+	}
+	return output, nil
+}
+
+func (i *Ignite) Hash(recipe Recipe) (string, error) {
+	key := recipe.elementID
+	if key == "" {
+		key = recipe.id
+	}
+	i.hashMu.Lock()
+	if value, ok := i.hashCache[key]; ok {
+		i.hashMu.Unlock()
+		return value, nil
+	}
+	i.hashMu.Unlock()
+	data, err := yaml.Marshal(recipe.config.node)
+	if err != nil {
+		return "", err
+	}
+	sum := sha256Hex(append(data, []byte("\narch="+recipe.arch)...))
+	resolved := recipe
+	if err := resolved.ResolveSources(*i.config, nil); err != nil {
+		return "", err
+	}
+	for _, source := range resolved.sources {
+		spec, err := parseSourceSpec(source)
+		if err != nil {
+			return "", err
+		}
+		input := source
+		if !spec.IsGit() && !strings.HasPrefix(spec.url, "http://") && !strings.HasPrefix(spec.url, "https://") {
+			checksum, err := fileSHA256(filepath.Join(i.projectPath, spec.url))
+			if err != nil {
+				return "", err
+			}
+			input = spec.url + "=" + checksum
+		} else if checksum, found, err := i.LockedSourceChecksum(spec.filename); err != nil {
+			return "", err
+		} else if found {
+			input = spec.filename + "=" + checksum
+		}
+		sum = sha256Hex([]byte(sum + input))
+	}
+	i.hashMu.Lock()
+	i.hashCache[key] = sum
+	i.hashMu.Unlock()
+	return sum, nil
+}
+
+func (i *Ignite) CacheFile(recipe Recipe) string {
+	if i.WorkspaceAvailable(recipe) {
+		return i.WorkspaceCacheFile(recipe)
+	}
+	return filepath.Join(i.cachePath, "cache", recipe.PackageName(recipe.elementID))
+}
+
+func (i *Ignite) WorkspacePath(recipe Recipe) string {
+	return filepath.Join(i.workspacePath, workspaceComponentID(recipe))
+}
+
+func (i *Ignite) WorkspaceAvailable(recipe Recipe) bool {
+	return isDir(i.WorkspacePath(recipe)) && exists(filepath.Join(i.WorkspacePath(recipe), ".ignite-workspace", "metadata"))
+}
+
+func (i *Ignite) WorkspaceCacheFile(recipe Recipe) string {
+	return filepath.Join(i.cachePath, "cache", workspacePackageName(recipe))
+}
+
+func (i *Ignite) SetupContainer(recipe Recipe, typ ContainerType) (Container, error) {
+	env := []string{"NOCONFIGURE=1", "HOME=/", "SHELL=/bin/sh", "TERM=dumb", "USER=nishu", "LOGNAME=nishu", "LC_ALL=C", "TZ=UTC", "SOURCE_DATE_EPOCH=918239400", "PKGSYSTEM_ENABLE_FSYNC=0"}
+	env = append(env, i.config.StringSlice("environ")...)
+	env = append(env, recipe.config.StringSlice("environ")...)
+	ccache := i.config.Bool("ccache", true)
+	if recipe.config.Has("ccache") {
+		ccache = recipe.config.Bool("ccache", true)
+	}
+	hostRoot := filepath.Join(i.cachePath, "temp", recipe.PackageName(recipe.elementID))
+	if !removeTree(hostRoot) {
+		return Container{}, fmt.Errorf("failed to clean stale build root %q", hostRoot)
+	}
+	if err := os.MkdirAll(hostRoot, 0755); err != nil {
+		return Container{}, err
+	}
+	binds := [][2]string{
+		{"/sources", filepath.Join(i.cachePath, "sources")},
+		{"/cache", filepath.Join(i.cachePath, "cache")},
+		{"/external", filepath.Join(i.projectPath, "external")},
+		{"/rlxos", i.projectPath},
+	}
+	if ccache {
+		env = enableCCacheEnvironment(env)
+		binds = append(binds, [2]string{"/ccache", filepath.Join(i.cachePath, "ccache")})
+	}
+	c := Container{
+		environ:      env,
+		binds:        binds,
+		capabilities: recipe.config.StringSlice("capabilities"),
+		hostRoot:     hostRoot,
+		baseDir:      i.projectPath,
+		name:         recipe.PackageName(recipe.elementID),
+	}
+	fmt.Println("Ignite::setup(): container enabled for", elementName(recipe))
+	dirs := []string{"sources", "cache"}
+	if ccache {
+		dirs = append(dirs, "ccache")
+	}
+	for _, dir := range dirs {
+		_ = os.MkdirAll(filepath.Join(i.cachePath, dir), 0755)
+	}
+	i.config.SetString("dir.build", hostRoot)
+	_ = os.MkdirAll(filepath.Join(hostRoot, "usr", "local", "include"), 0755)
+	if ccache {
+		if err := i.IntegrateCachedTool(&c, "ccache"); err != nil {
+			return c, err
+		}
+	}
+
+	depends := append([]string{}, recipe.depends...)
+	if typ == ContainerBuild {
+		depends = append(depends, recipe.buildTimeDepends...)
+	}
+	states, err := i.Resolve(depends, true, true, false)
+	if err != nil {
+		return c, err
+	}
+	for _, state := range states {
+		if err := i.Integrate(&c, state.recipe, ""); err != nil {
+			return c, err
+		}
+	}
+	if typ == ContainerShell {
+		if err := i.Integrate(&c, recipe, ""); err != nil {
+			return c, err
+		}
+	}
+	includes := recipe.config.StringSlice("include")
+	if len(includes) > 0 {
+		resolved := make([]string, 0, len(includes))
+		for _, inc := range includes {
+			v, err := recipe.ResolveValue(inc, *i.config, nil)
+			if err != nil {
+				return c, err
+			}
+			resolved = append(resolved, v)
+		}
+		states, err = i.Resolve(resolved, false, recipe.config.Bool("include-depends", true), false)
+		if err != nil {
+			return c, err
+		}
+		if upon := scalarString(recipe.config.Node("include-upon")); upon != "" {
+			sub, err := i.Resolve([]string{upon}, false, true, false)
+			if err != nil {
+				return c, err
+			}
+			drop := map[string]bool{}
+			for _, s := range sub {
+				drop[s.id] = true
+			}
+			filtered := states[:0]
+			for _, s := range states {
+				if !drop[s.id] {
+					filtered = append(filtered, s)
+				}
+			}
+			states = filtered
+		}
+		for _, state := range states {
+			path := filepath.Join("install-root", recipe.PackageName(recipe.elementID))
+			if v, _ := recipe.config.String(recipe.Name()+"-include-path", ""); v != "" {
+				path = v
+			} else if v, _ := recipe.config.String("include-root", ""); v != "" {
+				path = v
+			}
+			if err := i.Integrate(&c, state.recipe, path); err != nil {
+				return c, err
+			}
+		}
+	}
+	return c, nil
+}
+
+func (i *Ignite) IntegrateCachedTool(container *Container, id string) error {
+	id = canonicalRecipeReference(id)
+	if _, ok := i.pool[id]; !ok {
+		return nil
+	}
+	states, err := i.Resolve([]string{id}, false, true, false)
+	if err != nil {
+		return err
+	}
+	for _, state := range states {
+		cached, err := i.PackageCached(state.recipe)
+		if err != nil {
+			return err
+		}
+		if !cached {
+			return nil
+		}
+	}
+	for _, state := range states {
+		if err := i.Integrate(container, state.recipe, ""); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (i *Ignite) Integrate(container *Container, recipe Recipe, root string) error {
+	containerRoot := filepath.Join(container.hostRoot, strings.TrimPrefix(root, "/"))
+	fmt.Printf("Ignite::integrate(%s)\n", recipe.PackageName())
+	if err := os.MkdirAll(containerRoot, 0755); err != nil {
+		return err
+	}
+	cacheFilePath := i.CacheFile(recipe)
+	ex := NewExecutor("/bin/tar").Arg("-xPhf").Arg(cacheFilePath).Arg("-C").Arg(containerRoot)
+	if root == "" {
+		for _, e := range []string{"./etc/hosts", "./etc/hostname", "./etc/resolv.conf", "./proc", "./run", "./sys", "./dev"} {
+			ex.Arg("--exclude=" + e)
+		}
+	}
+	if err := ex.Execute(); err != nil {
+		return fmt.Errorf("failed to integrate %s %w", recipe.PackageName(recipe.elementID), err)
+	}
+	if root == "" {
+		if recipe.integration != "" {
+			script, err := recipe.ResolveValue(recipe.integration, *i.config, nil)
+			if err != nil {
+				return err
+			}
+			return NewExecutor("/bin/sh").Arg("-ec").Arg(script).Container(container).Execute()
+		}
+		return nil
+	}
+	dataDir := filepath.Join(containerRoot, "usr", "share", "pkgupd", "manifest", recipe.PackageName())
+	if err := os.MkdirAll(dataDir, 0755); err != nil {
+		return err
+	}
+	fmt.Printf("Iginite::integrate::save_data(%s)@%s\n", recipe.PackageName(), recipe.PackageName())
+	if err := os.WriteFile(filepath.Join(dataDir, "info"), []byte(recipe.String()), 0644); err != nil {
+		return err
+	}
+	if recipe.integration != "" {
+		script, err := recipe.ResolveValue(recipe.integration, *i.config, nil)
+		if err != nil {
+			return err
+		}
+		if err := os.WriteFile(filepath.Join(dataDir, "integration"), []byte(script), 0644); err != nil {
+			return err
+		}
+	}
+	file, err := os.Create(filepath.Join(dataDir, "files"))
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	ex = NewExecutor("/bin/tar").Arg("-tf").Arg(cacheFilePath)
+	for _, e := range []string{"./etc/hosts", "./etc/hostname", "./etc/resolv.conf", "./proc", "./run", "./sys", "./dev"} {
+		ex.Arg("--exclude=" + e)
+	}
+	status, out := ex.Output()
+	_, _ = file.WriteString(out)
+	if out != "" && !strings.HasSuffix(out, "\n") {
+		_, _ = file.WriteString("\n")
+	}
+	if status != 0 {
+		return fmt.Errorf("failed to read tar files from %s", cacheFilePath)
+	}
+	return nil
+}
+
+func (i *Ignite) Build(recipe Recipe) error {
+	cached, err := i.PackageCached(recipe)
+	if err != nil {
+		return err
+	}
+	if cached {
+		return nil
+	}
+	previousRelease := recipe.release
+	recipe, err = i.bumpReleaseForRebuild(recipe)
+	if err != nil {
+		return err
+	}
+	if recipe.release != previousRelease {
+		fmt.Printf("Ignite::build(): bumped %s release %s -> %s\n", recipe.elementID, previousRelease, recipe.release)
+	}
+	container, err := i.SetupContainer(recipe, ContainerBuild)
+	if err != nil {
+		return err
+	}
+	defer removeTree(container.hostRoot)
+	_ = os.MkdirAll(filepath.Join(i.cachePath, "logs"), 0755)
+	log, err := os.Create(filepath.Join(i.cachePath, "logs", recipe.PackageName(recipe.elementID)+".log"))
+	if err != nil {
+		return err
+	}
+	defer log.Close()
+	container.logger = log
+	packagePath := i.CacheFile(recipe)
+	subdir := "."
+	if i.WorkspaceAvailable(recipe) {
+		fmt.Println("Ignite::build(): using workspace", i.WorkspacePath(recipe))
+		if _, err := i.PrepareWorkspaceSources(recipe, filepath.Join(container.hostRoot, "build-root")); err != nil {
+			return err
+		}
+	} else if s, err := i.PrepareSources(recipe, filepath.Join(i.cachePath, "sources"), filepath.Join(container.hostRoot, "build-root")); err != nil {
+		return err
+	} else if s != "" {
+		subdir = s
+	}
+	buildRoot := filepath.Join("build-root", configString(recipe.config, "build-dir", subdir))
+	buildRoot, err = recipe.ResolveValue(buildRoot, *i.config, nil)
+	if err != nil {
+		return err
+	}
+	if err := i.CompileSource(recipe, &container, buildRoot, "install-root"); err != nil {
+		fmt.Println("ERROR:", err)
+		_ = NewExecutor("/bin/sh").Container(&container).Interactive().Run()
+		return err
+	}
+	return i.Pack(recipe, &container, filepath.Join(container.hostRoot, "install-root"), packagePath)
+}
+
+func (i *Ignite) findMirror(url string) string {
+	for src, mirror := range i.mirrors {
+		if strings.HasPrefix(url, src) {
+			return strings.Replace(url, src, mirror, 1)
+		}
+	}
+	return url
+}
+
+func (i *Ignite) FetchGitSource(spec SourceSpec, sourceDir string, force bool, expected string) (string, error) {
+	remote, err := spec.GitRemote()
+	if err != nil {
+		return "", err
+	}
+	path := filepath.Join(sourceDir, spec.filename)
+	_ = os.MkdirAll(sourceDir, 0755)
+	if force {
+		_ = os.RemoveAll(path)
+	}
+	if !isDir(filepath.Join(path, ".git")) {
+		_ = os.RemoveAll(path)
+		if err := NewExecutor("/bin/git").Arg("clone").Arg(remote).Arg(path).Execute(); err != nil {
+			return "", err
+		}
+	} else if err := NewExecutor("/bin/git").Arg("remote").Arg("set-url").Arg("origin").Arg(remote).Path(path).Execute(); err != nil {
+		return "", err
+	}
+	if expected != "" {
+		if !gitCommitExists(path, expected) {
+			if err := NewExecutor("/bin/git").Arg("fetch").Arg("--tags").Arg("--force").Arg("origin").Path(path).Execute(); err != nil {
+				return "", err
+			}
+		}
+		if err := NewExecutor("/bin/git").Arg("checkout").Arg("--force").Arg("--detach").Arg(expected).Path(path).Execute(); err != nil {
+			return "", err
+		}
+		return gitHeadCommit(path)
+	}
+	if force {
+		if err := NewExecutor("/bin/git").Arg("fetch").Arg("--tags").Arg("--force").Arg("origin").Path(path).Execute(); err != nil {
+			return "", err
+		}
+	}
+	ref := spec.GitRef()
+	if ref != "" {
+		if err := NewExecutor("/bin/git").Arg("fetch").Arg("--tags").Arg("--force").Arg("origin").Arg(ref).Path(path).Execute(); err != nil {
+			return "", err
+		}
+		if err := NewExecutor("/bin/git").Arg("checkout").Arg("--force").Arg("FETCH_HEAD").Path(path).Execute(); err != nil {
+			return "", err
+		}
+	} else if force {
+		if status, out := NewExecutor("/bin/git").Arg("symbolic-ref").Arg("--quiet").Arg("--short").Arg("refs/remotes/origin/HEAD").Path(path).Output(); status == 0 && out != "" {
+			if err := NewExecutor("/bin/git").Arg("checkout").Arg("--force").Arg(out).Path(path).Execute(); err != nil {
+				return "", err
+			}
+		}
+	}
+	return gitHeadCommit(path)
+}
+
+func gitCommitExists(path, commit string) bool {
+	status, _ := NewExecutor("/bin/git").Arg("cat-file").Arg("-e").Arg(commit + "^{commit}").Path(path).Silent().Output()
+	return status == 0
+}
+
+func gitHeadCommit(path string) (string, error) {
+	status, out := NewExecutor("/bin/git").Arg("rev-parse").Arg("HEAD").Path(path).Output()
+	if status != 0 {
+		return "", fmt.Errorf("failed to read git HEAD in %q: %s", path, out)
+	}
+	return strings.TrimSpace(out), nil
+}
+
+func gitStatusPorcelain(path string) (string, error) {
+	status, out := NewExecutor("/bin/git").Arg("status").Arg("--porcelain").Path(path).Output()
+	if status != 0 {
+		return "", fmt.Errorf("failed to read git status in %q: %s", path, out)
+	}
+	return out, nil
+}
+
+func gitCurrentBranch(path string) string {
+	status, out := NewExecutor("/bin/git").Arg("branch").Arg("--show-current").Path(path).Output()
+	if status == 0 {
+		return strings.TrimSpace(out)
+	}
+	return ""
+}
+
+func gitWorkspaceBranch(recipe Recipe) string {
+	return "rlxos/" + workspaceComponentID(recipe)
+}
+
+func (i *Ignite) FetchSourceFile(source, sourceDir string, force bool) error {
+	spec, err := parseSourceSpec(source)
+	if err != nil {
+		return err
+	}
+	if spec.IsGit() {
+		_, err := i.FetchGitSource(spec, sourceDir, force, "")
+		return err
+	}
+	filePath := filepath.Join(sourceDir, spec.filename)
+	tmp := filePath + ".tmp"
+	_ = os.MkdirAll(sourceDir, 0755)
+	if force {
+		_ = os.RemoveAll(filePath)
+		_ = os.RemoveAll(tmp)
+	} else if exists(filePath) {
+		return nil
+	}
+	if strings.HasPrefix(spec.url, "http") {
+		url := i.findMirror(spec.url)
+		if err := NewExecutor("/bin/wget").Arg("-c").Arg("-U").Arg("rlxos/0.1 (+https://rlxos.org)").Arg(url).Arg("-O").Arg(tmp).Execute(); err != nil {
+			return err
+		}
+		return os.Rename(tmp, filePath)
+	}
+	return copyPath(filepath.Join(i.projectPath, spec.url), filePath)
+}
+
+func (i *Ignite) VerifySourceFile(path string) error {
+	lockFile := filepath.Join(i.projectPath, "checksum.lock")
+	if !exists(lockFile) {
+		return nil
+	}
+	checksums, err := readChecksumLock(lockFile)
+	if err != nil {
+		return err
+	}
+	filename := filepath.Base(path)
+	expected, ok := checksums[filename]
+	if !ok {
+		return fmt.Errorf("checksum.lock has no entry for source %q", filename)
+	}
+	actual, err := fileSHA256(path)
+	if err != nil {
+		return err
+	}
+	if actual != expected {
+		return fmt.Errorf("checksum mismatch for source %q: expected %s, got %s", filename, expected, actual)
+	}
+	return nil
+}
+
+func (i *Ignite) LockedSourceChecksum(filename string) (string, bool, error) {
+	lockFile := filepath.Join(i.projectPath, "checksum.lock")
+	if !exists(lockFile) {
+		return "", false, nil
+	}
+	checksums, err := readChecksumLock(lockFile)
+	if err != nil {
+		return "", false, err
+	}
+	value, ok := checksums[filename]
+	return value, ok, nil
+}
+
+type FetchFailure struct {
+	Recipe string
+	Source string
+	Err    error
+}
+
+type FetchError struct {
+	Failures []FetchFailure
+}
+
+func (e *FetchError) Error() string {
+	var out strings.Builder
+	fmt.Fprintf(&out, "fetch completed with %d failure(s):", len(e.Failures))
+	for _, failure := range e.Failures {
+		fmt.Fprintf(&out, "\n  %s: %s: %v", failure.Recipe, failure.Source, failure.Err)
+	}
+	return out.String()
+}
+
+type sourceFetchTask struct {
+	source  string
+	spec    SourceSpec
+	recipes []string
+}
+
+type sourceFetchResult struct {
+	task      *sourceFetchTask
+	checksum  string
+	useLocked bool
+	err       error
+}
+
+func (i *Ignite) FetchSources(ids []string, force bool) error {
+	var recipes []Recipe
+	if len(ids) == 0 {
+		recipeIDs := make([]string, 0, len(i.pool))
+		for id := range i.pool {
+			recipeIDs = append(recipeIDs, id)
+		}
+		sort.Strings(recipeIDs)
+		for _, id := range recipeIDs {
+			recipe := i.pool[id]
+			recipes = append(recipes, recipe)
+		}
+	} else {
+		states, err := i.Resolve(ids, true, true, true)
+		if err != nil {
+			return err
+		}
+		for _, state := range states {
+			recipes = append(recipes, state.recipe)
+		}
+	}
+	sourceDir := filepath.Join(i.cachePath, "sources")
+	lockFile := filepath.Join(i.projectPath, "checksum.lock")
+	checksums := map[string]string{}
+	if !force && exists(lockFile) {
+		var err error
+		checksums, err = readChecksumLock(lockFile)
+		if err != nil {
+			return err
+		}
+	}
+	failures := []FetchFailure{}
+	fail := func(recipe Recipe, source string, err error) {
+		failures = append(failures, FetchFailure{Recipe: recipe.elementID, Source: source, Err: err})
+	}
+	tasksByFilename := map[string]*sourceFetchTask{}
+	for _, recipe := range recipes {
+		if err := recipe.ResolveSources(*i.config, nil); err != nil {
+			fail(recipe, "recipe sources", err)
+			continue
+		}
+		for _, source := range recipe.sources {
+			spec, err := parseSourceSpec(source)
+			if err != nil {
+				fail(recipe, source, err)
+				continue
+			}
+			task, found := tasksByFilename[spec.filename]
+			if found && task.source != source {
+				fail(recipe, source, fmt.Errorf("source filename %q is already used by %q", spec.filename, task.source))
+				continue
+			}
+			if !found {
+				task = &sourceFetchTask{source: source, spec: spec}
+				tasksByFilename[spec.filename] = task
+			}
+			task.recipes = append(task.recipes, recipe.elementID)
+		}
+	}
+
+	tasks := make([]*sourceFetchTask, 0, len(tasksByFilename))
+	for _, task := range tasksByFilename {
+		tasks = append(tasks, task)
+	}
+	sort.Slice(tasks, func(a, b int) bool { return tasks[a].spec.filename < tasks[b].spec.filename })
+	lockedChecksums := make(map[string]string, len(checksums))
+	for filename, checksum := range checksums {
+		lockedChecksums[filename] = checksum
+	}
+	jobs := i.fetchJobs
+	if jobs < 1 {
+		jobs = 4
+	}
+	if jobs > len(tasks) && len(tasks) > 0 {
+		jobs = len(tasks)
+	}
+	results := make(chan sourceFetchResult, len(tasks))
+	work := make(chan *sourceFetchTask)
+	var workers sync.WaitGroup
+	for worker := 0; worker < jobs; worker++ {
+		workers.Add(1)
+		go func() {
+			defer workers.Done()
+			for task := range work {
+				results <- i.runFetchTask(task, sourceDir, force, lockedChecksums)
+			}
+		}()
+	}
+	for _, task := range tasks {
+		work <- task
+	}
+	close(work)
+	workers.Wait()
+	close(results)
+	for result := range results {
+		if result.err != nil {
+			for _, recipeID := range result.task.recipes {
+				failures = append(failures, FetchFailure{Recipe: recipeID, Source: result.task.source, Err: result.err})
+			}
+			continue
+		}
+		if result.task.spec.IsGit() {
+			if result.useLocked {
+				fmt.Println("Using locked git source:", result.task.spec.filename, result.checksum)
+			} else {
+				checksums[result.task.spec.filename] = result.checksum
+				fmt.Println("Fetched git source:", result.task.spec.filename, result.checksum)
+			}
+			continue
+		}
+		if result.useLocked {
+			fmt.Println("Using locked source:", result.task.spec.filename)
+		} else {
+			checksums[result.task.spec.filename] = result.checksum
+			fmt.Println("Fetched source:", result.task.spec.filename)
+		}
+	}
+	if err := writeChecksumLock(lockFile, checksums); err != nil {
+		failures = append(failures, FetchFailure{Recipe: "checksum.lock", Source: lockFile, Err: err})
+	} else {
+		fmt.Println("Wrote checksum lock:", lockFile)
+	}
+	if len(failures) > 0 {
+		return &FetchError{Failures: failures}
+	}
+	return nil
+}
+
+func (i *Ignite) runFetchTask(task *sourceFetchTask, sourceDir string, force bool, checksums map[string]string) sourceFetchResult {
+	result := sourceFetchResult{task: task}
+	expected := ""
+	if !force {
+		expected = checksums[task.spec.filename]
+	}
+	if task.spec.IsGit() {
+		commit, err := i.FetchGitSource(task.spec, sourceDir, force, expected)
+		if err != nil {
+			result.err = err
+			return result
+		}
+		result.checksum = commit
+		result.useLocked = expected != "" && !force
+		return result
+	}
+	if err := i.FetchSourceFile(task.source, sourceDir, force); err != nil {
+		result.err = err
+		return result
+	}
+	if expected != "" && !force {
+		result.useLocked = true
+		return result
+	}
+	sum, err := fileSHA256(filepath.Join(sourceDir, task.spec.filename))
+	if err != nil {
+		result.err = err
+		return result
+	}
+	result.checksum = sum
+	return result
+}
+
+func (i *Ignite) PrepareSources(recipe Recipe, sourceDir, buildRoot string) (string, error) {
+	return i.prepareSources(recipe, sourceDir, buildRoot, false)
+}
+
+func (i *Ignite) prepareSources(recipe Recipe, sourceDir, buildRoot string, preserveGit bool) (string, error) {
+	subdir := ""
+	if err := os.MkdirAll(buildRoot, 0755); err != nil {
+		return "", err
+	}
+	for _, source := range recipe.sources {
+		spec, err := parseSourceSpec(source)
+		if err != nil {
+			return "", err
+		}
+		path := filepath.Join(sourceDir, spec.filename)
+		if spec.IsGit() {
+			expected, locked, err := i.LockedSourceChecksum(spec.filename)
+			if err != nil {
+				return "", err
+			}
+			commit, err := i.FetchGitSource(spec, sourceDir, false, expected)
+			if err != nil {
+				return "", err
+			}
+			if locked && !gitCommitMatches(commit, expected) {
+				return "", fmt.Errorf("git checksum mismatch for source %q: expected %s, got %s", spec.filename, expected, commit)
+			}
+			targetRoot := buildRoot
+			if subdir == "" {
+				subdir = spec.filename
+				targetRoot = filepath.Join(buildRoot, subdir)
+			} else {
+				targetRoot = filepath.Join(buildRoot, subdir)
+			}
+			if err := os.RemoveAll(targetRoot); err != nil {
+				return "", err
+			}
+			if preserveGit {
+				if err := copyPath(path, targetRoot); err != nil {
+					return "", err
+				}
+			} else if err := copyWorkspaceTree(path, targetRoot); err != nil {
+				return "", err
+			}
+			continue
+		}
+		if err := i.FetchSourceFile(source, sourceDir, false); err != nil {
+			return "", err
+		}
+		if err := i.VerifySourceFile(path); err != nil {
+			return "", err
+		}
+		targetRoot := buildRoot
+		if subdir != "" {
+			targetRoot = filepath.Join(buildRoot, subdir)
+		}
+		if isPatchFile(spec.filename) {
+			if err := applyPatchFile(path, targetRoot); err != nil {
+				return "", fmt.Errorf("failed to apply source patch %q: %w", spec.filename, err)
+			}
+			continue
+		}
+		if isArchive(path) && !spec.noextract {
+			files, err := extract(path, targetRoot)
+			if err != nil {
+				return "", err
+			}
+			if subdir == "" && len(files) > 0 {
+				dir := files[0]
+				if idx := strings.IndexByte(dir, '/'); idx >= 0 {
+					dir = dir[:idx]
+				}
+				subdir = dir
+			}
+		} else {
+			if err := os.MkdirAll(targetRoot, 0755); err != nil {
+				return "", err
+			}
+			if err := copyFile(path, filepath.Join(targetRoot, spec.filename)); err != nil {
+				return "", err
+			}
+		}
+	}
+	return subdir, nil
+}
+
+func (i *Ignite) PrepareWorkspaceSources(recipe Recipe, buildRoot string) (string, error) {
+	if !i.WorkspaceAvailable(recipe) {
+		return "", fmt.Errorf("workspace is not available for %q", recipe.id)
+	}
+	if err := copyWorkspaceTree(i.WorkspacePath(recipe), buildRoot); err != nil {
+		return "", err
+	}
+	return ".", nil
+}
+
+func (i *Ignite) WorkspaceInit(recipe Recipe) error {
+	workspace := i.WorkspacePath(recipe)
+	if exists(workspace) {
+		return fmt.Errorf("workspace already exists at %q", workspace)
+	}
+	_ = os.MkdirAll(i.workspacePath, 0755)
+	_ = os.MkdirAll(filepath.Join(i.cachePath, "sources"), 0755)
+	tmp := workspace + ".tmp." + strconv.Itoa(os.Getpid())
+	for suffix := 0; exists(tmp); suffix++ {
+		tmp = workspace + ".tmp." + strconv.Itoa(os.Getpid()) + "." + strconv.Itoa(suffix)
+	}
+	defer func() {
+		if exists(tmp) {
+			_ = os.RemoveAll(tmp)
+		}
+	}()
+	gitSpec, pureGitSource, err := recipePureGitSource(recipe)
+	if err != nil {
+		return err
+	}
+	subdir, err := i.prepareSources(recipe, filepath.Join(i.cachePath, "sources"), tmp, true)
+	if err != nil {
+		return err
+	}
+	if subdir != "" && subdir != "." && isDir(filepath.Join(tmp, subdir)) {
+		if err := moveDirectoryContents(filepath.Join(tmp, subdir), tmp); err != nil {
+			return err
+		}
+		_ = os.Remove(filepath.Join(tmp, subdir))
+	}
+	meta := filepath.Join(tmp, ".ignite-workspace")
+	patches := filepath.Join(meta, "patches")
+	original := filepath.Join(meta, "original")
+	if err := os.MkdirAll(patches, 0755); err != nil {
+		return err
+	}
+	if err := copyWorkspaceTree(tmp, original); err != nil {
+		return err
+	}
+	var metadata strings.Builder
+	fmt.Fprintf(&metadata, "id: %s\nelement: %s\nversion: %s\n", recipe.id, recipe.elementID, recipe.version)
+	if pureGitSource && isDir(filepath.Join(tmp, ".git")) {
+		branch := gitWorkspaceBranch(recipe)
+		if err := NewExecutor("/bin/git").Arg("checkout").Arg("-B").Arg(branch).Path(tmp).Execute(); err != nil {
+			return err
+		}
+		fmt.Fprintf(&metadata, "git: true\ngit-source-name: %s\ngit-source-url: %s\ngit-branch: %s\n", gitSpec.filename, gitSpec.url, branch)
+	}
+	if err := os.WriteFile(filepath.Join(meta, "metadata"), []byte(metadata.String()), 0644); err != nil {
+		return err
+	}
+	if err := os.WriteFile(filepath.Join(meta, "env"), []byte("export QUILT_PATCHES=.ignite-workspace/patches\nexport QUILT_SERIES=series\nexport QUILT_PC=.pc\n"), 0644); err != nil {
+		return err
+	}
+	if err := os.WriteFile(filepath.Join(patches, "series"), nil, 0644); err != nil {
+		return err
+	}
+	if err := os.Rename(tmp, workspace); err != nil {
+		return err
+	}
+	fmt.Printf("Workspace initialized: %s\nUse quilt with: source .ignite-workspace/env\n", workspace)
+	return nil
+}
+
+func (i *Ignite) WorkspaceFinish(recipe Recipe, opts WorkspaceFinishOptions) error {
+	workspace := i.WorkspacePath(recipe)
+	if !i.WorkspaceAvailable(recipe) {
+		return fmt.Errorf("workspace is not available for %q", recipe.id)
+	}
+	meta := filepath.Join(workspace, ".ignite-workspace")
+	patchesDir := filepath.Join(meta, "patches")
+	patches, err := readQuiltSeries(filepath.Join(patchesDir, "series"))
+	if err != nil {
+		return err
+	}
+	if len(patches) == 0 && workspaceGitSourceName(meta) != "" && isDir(filepath.Join(workspace, ".git")) {
+		return i.WorkspaceFinishGit(recipe, workspace, meta, opts)
+	}
+	if len(patches) > 0 {
+		quilt, err := findBinary("quilt", "quilt not found; install quilt to finish workspaces")
+		if err != nil {
+			return err
+		}
+		status, out := NewExecutor(quilt).Arg("applied").Path(workspace).Environ(quiltEnvironment()...).Output()
+		if status == 0 && out != "" {
+			if err := NewExecutor(quilt).Arg("refresh").Path(workspace).Environ(quiltEnvironment()...).Execute(); err != nil {
+				return err
+			}
+		}
+	}
+	var exportedSources []string
+	outputDir := filepath.Join(i.projectPath, "external", recipe.id)
+	_ = os.MkdirAll(outputDir, 0755)
+	if len(patches) == 0 {
+		diffRoot := filepath.Join(i.cachePath, "temp", "workspace-diff-"+workspaceComponentID(recipe)+"-"+strconv.Itoa(os.Getpid()))
+		_ = os.RemoveAll(diffRoot)
+		_ = os.MkdirAll(diffRoot, 0755)
+		defer os.RemoveAll(diffRoot)
+		original := filepath.Join(meta, "original")
+		if isDir(original) {
+			if err := copyWorkspaceTree(original, filepath.Join(diffRoot, "a")); err != nil {
+				return err
+			}
+		} else {
+			subdir, err := i.PrepareSources(recipe, filepath.Join(i.cachePath, "sources"), filepath.Join(diffRoot, "a"))
+			if err != nil {
+				return err
+			}
+			if subdir != "" && subdir != "." && isDir(filepath.Join(diffRoot, "a", subdir)) {
+				if err := moveDirectoryContents(filepath.Join(diffRoot, "a", subdir), filepath.Join(diffRoot, "a")); err != nil {
+					return err
+				}
+				_ = os.Remove(filepath.Join(diffRoot, "a", subdir))
+			}
+		}
+		if err := copyWorkspaceTree(workspace, filepath.Join(diffRoot, "b")); err != nil {
+			return err
+		}
+		diffBin, err := findBinary("diff", "diff not found; install diffutils to finish workspaces")
+		if err != nil {
+			return err
+		}
+		status, diff := NewExecutor(diffBin).Arg("-Naur").Arg("a").Arg("b").Path(diffRoot).Output()
+		if status > 1 {
+			return fmt.Errorf("failed to generate workspace diff: %s", diff)
+		}
+		if diff == "" {
+			fmt.Println("Workspace has no source changes; no patches exported")
+			_ = os.RemoveAll(workspace)
+			fmt.Println("Workspace closed:", workspace)
+			return nil
+		}
+		out := nextPatchPath(outputDir, "0001-"+patchSafeName(recipe.id)+"-workspace.patch")
+		if !strings.HasSuffix(diff, "\n") {
+			diff += "\n"
+		}
+		if err := os.WriteFile(out, []byte(diff), 0644); err != nil {
+			return err
+		}
+		fmt.Println("Exported patch:", out)
+		exportedSources = append(exportedSources, workspacePatchSource(recipe, out))
+		if err := i.RecordWorkspacePatches(recipe, exportedSources); err != nil {
+			return err
+		}
+		_ = os.RemoveAll(workspace)
+		fmt.Println("Workspace closed:", workspace)
+		return nil
+	}
+	for _, patch := range patches {
+		source := filepath.Join(patchesDir, patch)
+		if !exists(source) {
+			return fmt.Errorf("quilt patch listed in series is missing: %s", source)
+		}
+		name := filepath.Base(source)
+		if filepath.Ext(name) != ".patch" {
+			name += ".patch"
+		}
+		out := nextPatchPath(outputDir, name)
+		if err := copyFile(source, out); err != nil {
+			return err
+		}
+		fmt.Println("Exported patch:", out)
+		exportedSources = append(exportedSources, workspacePatchSource(recipe, out))
+	}
+	if err := i.RecordWorkspacePatches(recipe, exportedSources); err != nil {
+		return err
+	}
+	_ = os.RemoveAll(workspace)
+	fmt.Println("Workspace closed:", workspace)
+	return nil
+}
+
+func recipePureGitSource(recipe Recipe) (SourceSpec, bool, error) {
+	if len(recipe.sources) != 1 {
+		return SourceSpec{}, false, nil
+	}
+	spec, err := parseSourceSpec(recipe.sources[0])
+	if err != nil {
+		return SourceSpec{}, false, err
+	}
+	if !spec.IsGit() {
+		return SourceSpec{}, false, nil
+	}
+	return spec, true, nil
+}
+
+func readWorkspaceMetadata(meta string) map[string]string {
+	path := filepath.Join(meta, "metadata")
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil
+	}
+	out := map[string]string{}
+	for _, line := range strings.Split(string(data), "\n") {
+		key, value, ok := strings.Cut(line, ":")
+		if !ok {
+			continue
+		}
+		out[strings.TrimSpace(key)] = strings.TrimSpace(value)
+	}
+	return out
+}
+
+func workspaceGitSourceName(meta string) string {
+	return readWorkspaceMetadata(meta)["git-source-name"]
+}
+
+func (i *Ignite) WorkspaceFinishGit(recipe Recipe, workspace, meta string, opts WorkspaceFinishOptions) error {
+	sourceName := workspaceGitSourceName(meta)
+	if sourceName == "" {
+		return fmt.Errorf("workspace metadata does not contain git-source-name")
+	}
+	status, err := gitStatusPorcelain(workspace)
+	if err != nil {
+		return err
+	}
+	if strings.TrimSpace(status) != "" {
+		if err := NewExecutor("/bin/git").Arg("add").Arg("-A").Path(workspace).Execute(); err != nil {
+			return err
+		}
+		message := opts.Message
+		if message == "" {
+			message = "rlxos: update " + recipe.id + " workspace"
+		}
+		if err := NewExecutor("/bin/git").Arg("commit").Arg("-m").Arg(message).Path(workspace).Execute(); err != nil {
+			return err
+		}
+	} else {
+		fmt.Println("Git workspace has no uncommitted source changes")
+	}
+	commit, err := gitHeadCommit(workspace)
+	if err != nil {
+		return err
+	}
+	if err := i.UpdateChecksumLockEntries(map[string]string{sourceName: commit}); err != nil {
+		return err
+	}
+	fmt.Printf("Updated git checksum lock: %s -> %s\n", sourceName, commit)
+	if opts.Push {
+		metadata := readWorkspaceMetadata(meta)
+		branch := metadata["git-branch"]
+		if branch == "" {
+			branch = gitCurrentBranch(workspace)
+		}
+		if branch == "" {
+			branch = gitWorkspaceBranch(recipe)
+		}
+		if err := NewExecutor("/bin/git").Arg("push").Arg("-u").Arg("origin").Arg("HEAD:refs/heads/" + branch).Path(workspace).Execute(); err != nil {
+			return err
+		}
+		fmt.Printf("Pushed git workspace: origin %s\n", branch)
+	} else {
+		fmt.Println("Git workspace was committed locally only; use WORKSPACE_PUSH=1 to push during workspace-finish")
+	}
+	_ = os.RemoveAll(workspace)
+	fmt.Println("Workspace closed:", workspace)
+	return nil
+}
+
+func workspacePatchSource(recipe Recipe, patchPath string) string {
+	return filepath.ToSlash(filepath.Join("external", recipe.id, filepath.Base(patchPath)))
+}
+
+func (i *Ignite) RecordWorkspacePatches(recipe Recipe, sources []string) error {
+	if len(sources) == 0 {
+		return nil
+	}
+	if recipe.file == "" {
+		return fmt.Errorf("cannot update sources for %q because recipe file is unknown", recipe.id)
+	}
+	if err := appendSourcesToRecipeFile(recipe.file, recipe.config.StringSlice("sources"), sources); err != nil {
+		return err
+	}
+	if err := i.UpdateChecksumLockForSources(sources); err != nil {
+		return err
+	}
+	fmt.Println("Updated recipe sources:", recipe.file)
+	fmt.Println("Updated checksum lock:", filepath.Join(i.projectPath, "checksum.lock"))
+	return nil
+}
+
+func (i *Ignite) UpdateChecksumLockForSources(sources []string) error {
+	updates := map[string]string{}
+	for _, source := range sources {
+		spec, err := parseSourceSpec(source)
+		if err != nil {
+			return err
+		}
+		if spec.IsGit() || strings.HasPrefix(spec.url, "http://") || strings.HasPrefix(spec.url, "https://") {
+			continue
+		}
+		path := filepath.Join(i.projectPath, spec.url)
+		sum, err := fileSHA256(path)
+		if err != nil {
+			return err
+		}
+		updates[spec.filename] = sum
+	}
+	return i.UpdateChecksumLockEntries(updates)
+}
+
+func (i *Ignite) UpdateChecksumLockEntries(updates map[string]string) error {
+	if len(updates) == 0 {
+		return nil
+	}
+	lockFile := filepath.Join(i.projectPath, "checksum.lock")
+	checksums := map[string]string{}
+	if exists(lockFile) {
+		var err error
+		checksums, err = readChecksumLock(lockFile)
+		if err != nil {
+			return err
+		}
+	}
+	for name, value := range updates {
+		checksums[name] = value
+	}
+	return writeChecksumLock(lockFile, checksums)
+}
+
+func appendSourcesToRecipeFile(path string, knownSources, sources []string) error {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return fmt.Errorf("failed to read recipe file %q: %w", path, err)
+	}
+	existing := map[string]bool{}
+	for _, source := range knownSources {
+		existing[normalizeSourceRef(source)] = true
+	}
+	for _, source := range scanRecipeSourceLines(string(data)) {
+		existing[normalizeSourceRef(source)] = true
+	}
+	var add []string
+	for _, source := range sources {
+		key := normalizeSourceRef(source)
+		if key == "" || existing[key] {
+			continue
+		}
+		add = append(add, source)
+		existing[key] = true
+	}
+	if len(add) == 0 {
+		return nil
+	}
+	updated := appendSourcesToRecipeText(string(data), add)
+	return os.WriteFile(path, []byte(updated), 0644)
+}
+
+func appendSourcesToRecipeText(text string, sources []string) string {
+	lines := strings.Split(text, "\n")
+	sourcesIdx := -1
+	for idx, line := range lines {
+		if isTopLevelKeyLine(line, "sources") {
+			sourcesIdx = idx
+			break
+		}
+	}
+	var insert []string
+	for _, source := range sources {
+		insert = append(insert, "  - "+source)
+	}
+	if sourcesIdx < 0 {
+		base := strings.TrimRight(text, "\n")
+		if base != "" {
+			base += "\n\n"
+		}
+		return base + "sources:\n" + strings.Join(insert, "\n") + "\n"
+	}
+	lines[sourcesIdx] = "sources:"
+	indent := "  "
+	insertAt := sourcesIdx + 1
+	blockEnd := len(lines)
+	for idx := sourcesIdx + 1; idx < len(lines); idx++ {
+		line := lines[idx]
+		if isTopLevelMappingLine(line) {
+			blockEnd = idx
+			break
+		}
+		trimmed := strings.TrimSpace(line)
+		if strings.HasPrefix(trimmed, "-") {
+			indent = line[:len(line)-len(strings.TrimLeft(line, " \t"))]
+			insertAt = idx + 1
+		}
+	}
+	for idx := range insert {
+		insert[idx] = indent + "- " + strings.TrimPrefix(insert[idx], "  - ")
+	}
+	if insertAt > blockEnd {
+		insertAt = blockEnd
+	}
+	out := append([]string{}, lines[:insertAt]...)
+	out = append(out, insert...)
+	out = append(out, lines[insertAt:]...)
+	result := strings.Join(out, "\n")
+	if !strings.HasSuffix(result, "\n") {
+		result += "\n"
+	}
+	return result
+}
+
+func scanRecipeSourceLines(text string) []string {
+	lines := strings.Split(text, "\n")
+	sourcesIdx := -1
+	for idx, line := range lines {
+		if isTopLevelKeyLine(line, "sources") {
+			sourcesIdx = idx
+			break
+		}
+	}
+	if sourcesIdx < 0 {
+		return nil
+	}
+	var out []string
+	for idx := sourcesIdx + 1; idx < len(lines); idx++ {
+		line := lines[idx]
+		if isTopLevelMappingLine(line) {
+			break
+		}
+		trimmed := strings.TrimSpace(line)
+		if !strings.HasPrefix(trimmed, "-") {
+			continue
+		}
+		value := strings.TrimSpace(strings.TrimPrefix(trimmed, "-"))
+		if comment := strings.IndexByte(value, '#'); comment >= 0 {
+			value = strings.TrimSpace(value[:comment])
+		}
+		value = strings.Trim(value, "'\"")
+		if value != "" {
+			out = append(out, value)
+		}
+	}
+	return out
+}
+
+func isTopLevelKeyLine(line, key string) bool {
+	if strings.HasPrefix(line, " ") || strings.HasPrefix(line, "\t") {
+		return false
+	}
+	trimmed := strings.TrimSpace(line)
+	return trimmed == key+":" || strings.HasPrefix(trimmed, key+": ") || strings.HasPrefix(trimmed, key+":#")
+}
+
+func isTopLevelMappingLine(line string) bool {
+	if strings.TrimSpace(line) == "" || strings.HasPrefix(line, " ") || strings.HasPrefix(line, "\t") || strings.HasPrefix(strings.TrimSpace(line), "#") {
+		return false
+	}
+	idx := strings.IndexByte(line, ':')
+	if idx <= 0 {
+		return false
+	}
+	key := line[:idx]
+	for _, r := range key {
+		if !((r >= 'a' && r <= 'z') || (r >= 'A' && r <= 'Z') || (r >= '0' && r <= '9') || r == '-' || r == '_') {
+			return false
+		}
+	}
+	return true
+}
+
+func normalizeSourceRef(source string) string {
+	source = strings.TrimSpace(source)
+	if source == "" {
+		return ""
+	}
+	spec, err := parseSourceSpec(source)
+	if err == nil {
+		source = spec.url
+	}
+	return filepath.ToSlash(filepath.Clean(source))
+}
+
+func (i *Ignite) CompileSource(recipe Recipe, container *Container, buildRoot, installRoot string) error {
+	env := append([]string{}, i.config.StringSlice("environ")...)
+	env = append(env, recipe.config.StringSlice("environ")...)
+	runtimeInstallRoot := filepath.ToSlash(filepath.Join("/", installRoot, recipe.PackageName()))
+	runtimeBuildRoot := filepath.ToSlash(filepath.Join("/", buildRoot))
+	resolvedInstallRoot := container.HostPath(runtimeInstallRoot)
+	resolvedBuildRoot := container.HostPath(runtimeBuildRoot)
+	extra := map[string]string{
+		"install-root": container.RuntimePath(runtimeInstallRoot),
+		"build-root":   container.RuntimePath(runtimeBuildRoot),
+	}
+	if script, _ := recipe.config.String("pre-script", ""); script != "" {
+		resolved, err := recipe.ResolveValue(script, *i.config, extra)
+		if err != nil {
+			return err
+		}
+		fmt.Println("Exec(pre-script)")
+		if err := NewExecutor("/bin/sh").Arg("-ec").Arg(resolved).Path(extra["build-root"]).Environ(env...).Container(container).Execute(); err != nil {
+			return err
+		}
+	}
+	if bt, _ := recipe.config.String("build-type", ""); bt == "import" {
+		source := filepath.Join(resolvedBuildRoot, configString(recipe.config, "source", ""))
+		target := filepath.Join(resolvedInstallRoot, configString(recipe.config, "target", ""))
+		if err := os.MkdirAll(target, 0755); err != nil {
+			return err
+		}
+		if err := NewExecutor("/bin/cp").Arg("-rap").Arg(source + string(os.PathSeparator) + ".").Arg("-t").Arg(target).Execute(); err != nil {
+			return err
+		}
+	} else {
+		script, _ := recipe.config.String("script", "")
+		if script == "" {
+			compiler, err := i.GetCompiler(recipe, resolvedBuildRoot)
+			if err != nil {
+				return err
+			}
+			script = compiler.script
+		}
+		resolved, err := recipe.ResolveValue(script, *i.config, extra)
+		if err != nil {
+			return err
+		}
+		fmt.Println("Exec(script)")
+		if len(resolved) > 500 {
+			scriptPath := filepath.Join(resolvedBuildRoot, "pkgupd_exec_script.sh")
+			if err := os.WriteFile(scriptPath, []byte(resolved), 0644); err != nil {
+				return err
+			}
+			if err := NewExecutor("/bin/sh").Arg("-e").Arg("pkgupd_exec_script.sh").Path(extra["build-root"]).Environ(env...).Container(container).Execute(); err != nil {
+				return err
+			}
+		} else if err := NewExecutor("/bin/sh").Arg("-ec").Arg(resolved).Path(extra["build-root"]).Environ(env...).Container(container).Execute(); err != nil {
+			return err
+		}
+	}
+	if script, _ := recipe.config.String("post-script", ""); script != "" {
+		resolved, err := recipe.ResolveValue(script, *i.config, extra)
+		if err != nil {
+			return err
+		}
+		fmt.Println("Exec(post-script)")
+		if err := NewExecutor("/bin/sh").Arg("-ec").Arg(resolved).Path(extra["build-root"]).Environ(env...).Container(container).Execute(); err != nil {
+			return err
+		}
+	}
+	if recipe.config.Bool("strip", true) {
+		return i.Strip(recipe, container, resolvedInstallRoot)
+	}
+	return nil
+}
+
+func (i *Ignite) Strip(recipe Recipe, container *Container, installRoot string) error {
+	mimes := append([]string{}, i.config.StringSlice("strip-mimetype")...)
+	mimes = append(mimes, recipe.config.StringSlice("strip-mimetype")...)
+	allowed := map[string]bool{}
+	for _, m := range mimes {
+		allowed[m] = true
+	}
+	return filepath.WalkDir(installRoot, func(path string, entry fs.DirEntry, err error) error {
+		if err != nil || entry.IsDir() {
+			return err
+		}
+		info, err := entry.Info()
+		if err != nil || !info.Mode().IsRegular() {
+			return err
+		}
+		name := filepath.Base(path)
+		ext := filepath.Ext(path)
+		if !((ext == ".so" || ext == ".a" || strings.Contains(name, ".so.")) || info.Mode()&0111 != 0) {
+			return nil
+		}
+		if info.Mode()&0200 == 0 {
+			return nil
+		}
+		runtimePath := container.RuntimePath(path)
+		status, mime := NewExecutor("/bin/file").Arg("-b").Arg("--mime-type").Arg(runtimePath).Container(container).Output()
+		if status != 0 {
+			fmt.Fprintln(os.Stderr, "failed to read MIME TYPE for "+path+": "+mime)
+			return nil
+		}
+		if !allowed[mime] {
+			return nil
+		}
+		dbg := path + ".dbg"
+		runtimeDbg := container.RuntimePath(dbg)
+		if err := NewExecutor("/bin/objcopy").Arg("--only-keep-debug").Arg(runtimePath).Arg(runtimeDbg).Silent().Container(container).Execute(); err != nil {
+			fmt.Fprintln(os.Stderr, "failed to strip", path, "with mimetype", mime, "because", err)
+			return nil
+		}
+		stripArg := "--strip-all"
+		if ext == ".a" {
+			stripArg = "--strip-debug"
+		} else if ext == ".so" || strings.Contains(name, ".so.") {
+			stripArg = "--strip-unneeded"
+		}
+		if err := NewExecutor("/bin/strip").Arg(stripArg).Arg(runtimePath).Silent().Container(container).Execute(); err != nil {
+			fmt.Fprintln(os.Stderr, "failed to strip", path, "with mimetype", mime, "because", err)
+			return nil
+		}
+		if err := NewExecutor("/bin/objcopy").Arg("--add-gnu-debuglink=" + filepath.Base(path) + ".dbg").Arg(runtimePath).Path(filepath.Dir(runtimePath)).Silent().Container(container).Execute(); err != nil {
+			fmt.Fprintln(os.Stderr, "failed to strip", path, "with mimetype", mime, "because", err)
+		}
+		return nil
+	})
+}
+
+func (i *Ignite) Pack(recipe Recipe, container *Container, installRoot, packagePath string) error {
+	installRootPackage := filepath.Join(installRoot, recipe.PackageName())
+	installRootDbg := filepath.Join(installRoot, recipe.PackageName()+".dbg")
+	if err := os.MkdirAll(installRootPackage, 0755); err != nil {
+		return err
+	}
+	_ = os.MkdirAll(installRootDbg, 0755)
+	keep := []*regexp.Regexp{}
+	for _, pattern := range recipe.config.StringSlice("keep-files") {
+		keep = append(keep, regexp.MustCompile(pattern))
+	}
+	keepFile := func(name string) bool {
+		for _, r := range keep {
+			if r.MatchString(name) {
+				return true
+			}
+		}
+		return false
+	}
+	moveFile := func(path, newRoot string) error {
+		rel, _ := filepath.Rel(installRootPackage, path)
+		target := filepath.Join(newRoot, rel)
+		if err := os.MkdirAll(filepath.Dir(target), 0755); err != nil {
+			return err
+		}
+		return os.Rename(path, target)
+	}
+	for _, d := range []string{"usr/src", "usr/lib/debug"} {
+		path := filepath.Join(installRootPackage, d)
+		if exists(path) {
+			if err := moveFile(path, installRootDbg); err != nil {
+				return err
+			}
+		}
+	}
+	var dirs, removeFiles, dbgFiles []string
+	cleanEmpty := recipe.config.Bool("clean-empty-dir", true)
+	if exists(installRootPackage) {
+		if err := filepath.WalkDir(installRootPackage, func(path string, entry fs.DirEntry, err error) error {
+			if err != nil {
+				return err
+			}
+			if entry.IsDir() {
+				if cleanEmpty {
+					dirs = append(dirs, path)
+				}
+				return nil
+			}
+			if len(keep) > 0 && keepFile(filepath.Base(path)) {
+				return nil
+			}
+			if filepath.Ext(path) == ".la" {
+				removeFiles = append(removeFiles, path)
+			} else if filepath.Ext(path) == ".dbg" {
+				dbgFiles = append(dbgFiles, path)
+			}
+			return nil
+		}); err != nil {
+			return err
+		}
+	}
+	for _, p := range removeFiles {
+		_ = os.Remove(p)
+	}
+	for _, p := range dbgFiles {
+		if err := moveFile(p, installRootDbg); err != nil {
+			return err
+		}
+	}
+	sort.Sort(sort.Reverse(sort.StringSlice(dirs)))
+	for _, dir := range dirs {
+		entries, err := os.ReadDir(dir)
+		if err == nil && len(entries) == 0 {
+			_ = os.Remove(dir)
+		}
+	}
+	info, err := i.packageInfo(recipe, installRootPackage)
+	if err != nil {
+		return err
+	}
+	if err := writePackageInfo(filepath.Join(installRootPackage, "INFO"), info); err != nil {
+		return err
+	}
+	fmt.Println("Compressing", recipe.Name())
+	userMap := filepath.Join(installRoot, "user-map")
+	groupMap := filepath.Join(installRoot, "group-map")
+	_ = os.WriteFile(userMap, []byte(fmt.Sprintf("+%d root:0\n%s\n%s\n", os.Getuid(), configString(*i.config, "user-map", ""), configString(recipe.config, "user-map", ""))), 0644)
+	_ = os.WriteFile(groupMap, []byte(fmt.Sprintf("+%d root:0\n%s\n%s\n", os.Getgid(), configString(*i.config, "group-map", ""), configString(recipe.config, "group-map", ""))), 0644)
+	compressor := configString(*i.config, "package-compressor", "zstd -T0 -1")
+	for suffix, root := range map[string]string{"": installRootPackage, ".dbg": installRootDbg} {
+		if err := NewExecutor("/bin/tar").Arg("--use-compress-program=" + compressor).Arg("--owner-map=" + userMap).Arg("--group-map=" + groupMap).Arg("-cPf").Arg(packagePath + suffix).Arg("-C").Arg(root).Arg(".").Execute(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (i *Ignite) GetCompiler(recipe Recipe, buildRoot string) (Compiler, error) {
+	buildType, _ := recipe.config.String("build-type", "")
+	if buildType == "" {
+		for _, name := range []string{"autotools", "meson", "cmake", "python", "pysetup", "go-pkg", "cargo", "perl"} {
+			if exists(filepath.Join(buildRoot, i.compilers[name].file)) {
+				buildType = name
+				break
+			}
+		}
+	}
+	compiler, ok := i.compilers[buildType]
+	if buildType == "" || !ok {
+		return Compiler{}, fmt.Errorf("unknown build-type or failed to detect build-type %q at %s", buildType, buildRoot)
+	}
+	return compiler, nil
+}
+
+type SourceSpec struct {
+	filename  string
+	url       string
+	noextract bool
+}
+
+func parseSourceSpec(source string) (SourceSpec, error) {
+	parts := strings.Split(source, "::")
+	var values []string
+	spec := SourceSpec{}
+	for _, part := range parts {
+		if part == "noextract" {
+			spec.noextract = true
+		} else {
+			values = append(values, part)
+		}
+	}
+	if len(values) == 0 {
+		return spec, fmt.Errorf("source has no url: %q", source)
+	}
+	spec.url = values[len(values)-1]
+	if len(values) > 1 {
+		spec.filename = values[0]
+	} else {
+		spec.filename = sourceFilename(spec.url)
+	}
+	if spec.IsGit() {
+		spec.filename = strings.TrimSuffix(spec.filename, ".git")
+	}
+	if spec.filename == "" || spec.filename == "." || spec.filename == "/" {
+		return spec, fmt.Errorf("failed to infer source filename for %q; use name::%s", source, spec.url)
+	}
+	return spec, nil
+}
+
+func sourceFilename(raw string) string {
+	if u, err := url.Parse(raw); err == nil && u.Path != "" {
+		return filepath.Base(strings.TrimSuffix(u.Path, "/"))
+	}
+	base := filepath.Base(strings.TrimSuffix(raw, "/"))
+	if idx := strings.IndexAny(base, "?#"); idx >= 0 {
+		base = base[:idx]
+	}
+	return base
+}
+
+func (s SourceSpec) IsGit() bool {
+	return strings.HasPrefix(s.url, "git+")
+}
+
+func (s SourceSpec) GitRemote() (string, error) {
+	if !s.IsGit() {
+		return "", fmt.Errorf("source %q is not a git source", s.url)
+	}
+	remote := strings.TrimPrefix(s.url, "git+")
+	u, err := url.Parse(remote)
+	if err == nil && u.Scheme != "" {
+		q := u.Query()
+		q.Del("ref")
+		q.Del("branch")
+		q.Del("commit")
+		u.RawQuery = q.Encode()
+		u.Fragment = ""
+		return u.String(), nil
+	}
+	if idx := strings.IndexAny(remote, "#?"); idx >= 0 {
+		remote = remote[:idx]
+	}
+	return remote, nil
+}
+
+func (s SourceSpec) GitRef() string {
+	if !s.IsGit() {
+		return ""
+	}
+	remote := strings.TrimPrefix(s.url, "git+")
+	u, err := url.Parse(remote)
+	if err == nil && u.Scheme != "" {
+		q := u.Query()
+		for _, key := range []string{"commit", "ref", "branch"} {
+			if value := q.Get(key); value != "" {
+				return value
+			}
+		}
+		return u.Fragment
+	}
+	if idx := strings.LastIndexByte(remote, '#'); idx >= 0 && idx+1 < len(remote) {
+		return remote[idx+1:]
+	}
+	return ""
+}
+
+func gitCommitMatches(actual, expected string) bool {
+	actual = strings.TrimSpace(actual)
+	expected = strings.TrimSpace(expected)
+	if actual == "" || expected == "" {
+		return actual == expected
+	}
+	return actual == expected || strings.HasPrefix(actual, expected)
+}
+
+func extract(path, outputPath string) ([]string, error) {
+	_ = os.MkdirAll(outputPath, 0755)
+	exe := "/bin/tar"
+	if filepath.Ext(path) == ".zip" {
+		exe = "/bin/bsdtar"
+	}
+	status, out := NewExecutor(exe).Arg("-xvf").Arg(path).Arg("-C").Arg(outputPath).Output()
+	var files []string
+	for _, line := range strings.Split(out, "\n") {
+		line = strings.TrimPrefix(line, "./")
+		line = strings.TrimPrefix(line, "x ")
+		if line != "" {
+			files = append(files, line)
+		}
+	}
+	if status != 0 {
+		return nil, fmt.Errorf("failed to extract %s :%s", path, out)
+	}
+	return files, nil
+}
+
+func isPatchFile(path string) bool {
+	switch strings.ToLower(filepath.Ext(path)) {
+	case ".patch", ".diff":
+		return true
+	default:
+		return false
+	}
+}
+
+func patchCandidateRoots(root string) []string {
+	roots := []string{root}
+	entries, err := os.ReadDir(root)
+	if err != nil {
+		return roots
+	}
+	for _, entry := range entries {
+		if entry.IsDir() {
+			roots = append(roots, filepath.Join(root, entry.Name()))
+		}
+	}
+	return roots
+}
+
+func applyPatchFile(patchPath, root string) error {
+	if !isDir(root) {
+		return fmt.Errorf("source root %q does not exist", root)
+	}
+	stripLevels := []int{1, 0, 2, 3, 4}
+	var attempts []string
+	for _, candidate := range patchCandidateRoots(root) {
+		for _, strip := range stripLevels {
+			stripArg := fmt.Sprintf("-p%d", strip)
+			if err := testPatchApply(patchPath, candidate, stripArg); err != nil {
+				attempts = append(attempts, fmt.Sprintf("%s %s: %s", candidate, stripArg, err))
+				continue
+			}
+			fmt.Printf("Applying source patch: %s in %s with %s\n", filepath.Base(patchPath), candidate, stripArg)
+			if err := runPatchApply(patchPath, candidate, stripArg); err != nil {
+				return err
+			}
+			return nil
+		}
+	}
+	if len(attempts) > 6 {
+		attempts = attempts[:6]
+	}
+	return fmt.Errorf("no matching source tree found under %q for %s; tried %s", root, filepath.Base(patchPath), strings.Join(attempts, "; "))
+}
+
+func testPatchApply(patchPath, candidate, stripArg string) error {
+	tmp, err := os.MkdirTemp("", "ignite-patch-check-*")
+	if err != nil {
+		return err
+	}
+	defer os.RemoveAll(tmp)
+
+	testRoot := filepath.Join(tmp, "source")
+	if err := copyPath(candidate, testRoot); err != nil {
+		return err
+	}
+	return runPatchApply(patchPath, testRoot, stripArg)
+}
+
+func runPatchApply(patchPath, root, stripArg string) error {
+	status, out := NewExecutor("/bin/patch").Arg("-f").Arg("-N").Arg(stripArg).Arg("-i").Arg(patchPath).Path(root).Output()
+	if status != 0 {
+		out = strings.TrimSpace(out)
+		if out == "" {
+			out = fmt.Sprintf("patch exited with status %d", status)
+		}
+		return errors.New(out)
+	}
+	return nil
+}
+
+func isArchive(path string) bool {
+	switch filepath.Ext(path) {
+	case ".tar", ".zip", ".gz", ".xz", ".bzip2", ".tgz", ".txz", ".bz2", ".zst", ".zstd", ".lz":
+		return true
+	default:
+		return false
+	}
+}
+
+func sha256Hex(data []byte) string {
+	sum := sha256.Sum256(data)
+	return hex.EncodeToString(sum[:])
+}
+
+func fileSHA256(path string) (string, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return "", fmt.Errorf("failed to read source %q for checksum", path)
+	}
+	defer file.Close()
+	info, err := file.Stat()
+	if err != nil || !info.Mode().IsRegular() {
+		return "", fmt.Errorf("cannot checksum non-regular source %q", path)
+	}
+	h := sha256.New()
+	if _, err := io.Copy(h, file); err != nil {
+		return "", err
+	}
+	return hex.EncodeToString(h.Sum(nil)), nil
+}
+
+func readChecksumLock(path string) (map[string]string, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read checksum lock %q", path)
+	}
+	defer file.Close()
+	out := map[string]string{}
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+		if idx := strings.IndexByte(line, '#'); idx >= 0 {
+			line = line[:idx]
+		}
+		fields := strings.Fields(line)
+		if len(fields) >= 2 {
+			out[fields[1]] = fields[0]
+		}
+	}
+	return out, scanner.Err()
+}
+
+func writeChecksumLock(path string, checksums map[string]string) error {
+	var keys []string
+	for key := range checksums {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+	var b strings.Builder
+	for _, key := range keys {
+		fmt.Fprintf(&b, "%s  %s\n", checksums[key], key)
+	}
+	return os.WriteFile(path, []byte(b.String()), 0644)
+}
+
+func readQuiltSeries(path string) ([]string, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read quilt series file %q", path)
+	}
+	defer file.Close()
+	var out []string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+		if idx := strings.IndexByte(line, '#'); idx >= 0 {
+			line = line[:idx]
+		}
+		fields := strings.Fields(line)
+		if len(fields) > 0 {
+			out = append(out, fields[0])
+		}
+	}
+	return out, scanner.Err()
+}
+
+func exists(path string) bool {
+	_, err := os.Lstat(path)
+	return err == nil
+}
+
+func isDir(path string) bool {
+	info, err := os.Stat(path)
+	return err == nil && info.IsDir()
+}
+
+func makeTreeRemovable(root string) {
+	if !exists(root) {
+		return
+	}
+	_ = filepath.WalkDir(root, func(path string, entry fs.DirEntry, err error) error {
+		if err == nil {
+			_ = os.Chmod(path, 0777)
+		}
+		return nil
+	})
+}
+
+func removeTree(root string) bool {
+	makeTreeRemovable(root)
+	_ = os.RemoveAll(root)
+	if exists(root) {
+		_ = NewExecutor("/bin/rm").Arg("-r").Arg("-f").Arg(root).Run()
+	}
+	return !exists(root)
+}
+
+func copyPath(src, dst string) error {
+	info, err := os.Lstat(src)
+	if err != nil {
+		return err
+	}
+	if info.IsDir() {
+		return filepath.WalkDir(src, func(path string, entry fs.DirEntry, err error) error {
+			if err != nil {
+				return err
+			}
+			rel, _ := filepath.Rel(src, path)
+			target := filepath.Join(dst, rel)
+			if entry.IsDir() {
+				return os.MkdirAll(target, 0755)
+			}
+			return copyFile(path, target)
+		})
+	}
+	return copyFile(src, dst)
+}
+
+func copyFile(src, dst string) error {
+	info, err := os.Lstat(src)
+	if err != nil {
+		return err
+	}
+	_ = os.MkdirAll(filepath.Dir(dst), 0755)
+	if info.Mode()&os.ModeSymlink != 0 {
+		target, err := os.Readlink(src)
+		if err != nil {
+			return err
+		}
+		_ = os.Remove(dst)
+		return os.Symlink(target, dst)
+	}
+	in, err := os.Open(src)
+	if err != nil {
+		return err
+	}
+	defer in.Close()
+	out, err := os.OpenFile(dst, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, info.Mode().Perm())
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+	if _, err := io.Copy(out, in); err != nil {
+		return err
+	}
+	return os.Chmod(dst, info.Mode().Perm())
+}
+
+func isWorkspaceMetadata(rel string) bool {
+	first := strings.Split(filepath.ToSlash(rel), "/")[0]
+	return first == ".ignite-workspace" || first == ".pc" || first == ".git"
+}
+
+func copyWorkspaceTree(src, dst string) error {
+	if err := os.MkdirAll(dst, 0755); err != nil {
+		return err
+	}
+	return filepath.WalkDir(src, func(path string, entry fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if path == src {
+			return nil
+		}
+		rel, _ := filepath.Rel(src, path)
+		if isWorkspaceMetadata(rel) {
+			if entry.IsDir() {
+				return filepath.SkipDir
+			}
+			return nil
+		}
+		target := filepath.Join(dst, rel)
+		if entry.IsDir() {
+			return os.MkdirAll(target, 0755)
+		}
+		return copyFile(path, target)
+	})
+}
+
+func moveDirectoryContents(src, dst string) error {
+	entries, err := os.ReadDir(src)
+	if err != nil {
+		return err
+	}
+	for _, entry := range entries {
+		target := filepath.Join(dst, entry.Name())
+		if exists(target) {
+			return fmt.Errorf("workspace source collision at %q", target)
+		}
+		if err := os.Rename(filepath.Join(src, entry.Name()), target); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func workspaceComponentID(recipe Recipe) string {
+	id := recipe.elementID
+	if id == "" {
+		id = recipe.id
+	}
+	return recipePathName(id)
+}
+
+func workspacePackageName(recipe Recipe) string {
+	name := recipe.PackageName(recipe.elementID)
+	name = strings.TrimSuffix(name, ".pkg")
+	return name + "-workspace.pkg"
+}
+
+func quiltEnvironment() []string {
+	return []string{"HOME=/", "PATH=/usr/bin:/bin:/usr/local/bin", "QUILT_PATCHES=.ignite-workspace/patches", "QUILT_SERIES=series", "QUILT_PC=.pc"}
+}
+
+func enableCCacheEnvironment(env []string) []string {
+	out := make([]string, 0, len(env)+3)
+	path := "/usr/bin:/bin:/usr/local/bin"
+	for _, item := range env {
+		key, value, ok := strings.Cut(item, "=")
+		if ok && key == "PATH" {
+			path = value
+			continue
+		}
+		if ok && (key == "CCACHE_DIR" || key == "CCACHE_BASEDIR") {
+			continue
+		}
+		out = append(out, item)
+	}
+	out = append(out, "PATH=/usr/lib/ccache/bin:"+path)
+	out = append(out, "CCACHE_DIR=/ccache")
+	out = append(out, "CCACHE_BASEDIR=/build-root")
+	return out
+}
+
+func findBinary(name, errMsg string) (string, error) {
+	for _, path := range []string{"/usr/bin/" + name, "/bin/" + name, "/usr/local/bin/" + name} {
+		if exists(path) {
+			return path, nil
+		}
+	}
+	return "", fmt.Errorf("%s", errMsg)
+}
+
+func patchSafeName(value string) string {
+	if value == "" {
+		value = "workspace"
+	}
+	var b strings.Builder
+	for _, r := range value {
+		if (r >= 'a' && r <= 'z') || (r >= 'A' && r <= 'Z') || (r >= '0' && r <= '9') || r == '-' || r == '_' || r == '.' {
+			b.WriteRune(r)
+		} else {
+			b.WriteByte('-')
+		}
+	}
+	return b.String()
+}
+
+var numberedPatch = regexp.MustCompile(`^([0-9]{4})-(.+)$`)
+
+func nextPatchPath(dir, preferred string) string {
+	path := filepath.Join(dir, preferred)
+	if !exists(path) {
+		return path
+	}
+	number := 1
+	tail := filepath.Base(preferred)
+	if m := numberedPatch.FindStringSubmatch(tail); m != nil {
+		number, _ = strconv.Atoi(m[1])
+		number++
+		tail = m[2]
+	}
+	for {
+		candidate := filepath.Join(dir, fmt.Sprintf("%04d-%s", number, tail))
+		if !exists(candidate) {
+			return candidate
+		}
+		number++
+	}
+}
+
+func configString(c Config, key, fallback string) string {
+	v, err := c.String(key, fallback)
+	if err != nil {
+		return fallback
+	}
+	return v
+}
+
+func elementName(recipe Recipe) string {
+	if recipe.elementID != "" {
+		return recipe.elementID
+	}
+	return recipe.id
+}

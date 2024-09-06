@@ -1,0 +1,11 @@
+id: branding
+version: 3.0
+release: 2
+about: avyos branding icons
+
+build-type: import
+target: "usr/share/icons/"
+
+sources:
+    - external/branding/logo.png
+    - external/branding/plymouth-avyos.png

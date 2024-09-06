@@ -1,0 +1,6 @@
+[terminal]
+vt = 1
+
+[default_session]
+command = "compositor"
+user = "initial-setup"

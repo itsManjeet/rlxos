@@ -71,6 +71,7 @@ struct Application {
             std::cout << sep << c;
             sep = "|";
         }
+        std::cout << " ";
         std::getline(std::cin, sep);
         return sep;
     }

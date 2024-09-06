@@ -1,95 +1,73 @@
-components/rustc: update to latest version for firefox
-
-components/gcr.yml: check and fix update url version
-components/gcr.yml: fix documentation
-components/qt.yml: fix configuration files
-components/qt.yml: check dependencies
-components/proot.yml: fix patch
-components/baloo.yml: check and update
-components/pcsclite.yml: fix update url
-components/colord-gtk.yml: enable documentation and manuals
-components/libkcddb.yml: fix update url
-components/lxd.yml: fix service file
-components/gcr-4.yml: check and fix update url version
-components/gcr-4.yml: fix documentation
-components/vaapi-driver.yml: fix update url
-components/bsdiff.yml: fix patch
-components/kbd.yml: check for patch
-components/cdparanoia.yml: check with inbuilt autotools
-components/spice.yml: enable gstreamer
-components/libsecret.yml: enable docs and manpages
-components/devel.yml: convert to layer
-components/folks.yml: check build configurations
-components/openssh.yml: build with builtin autotools
-components/dbus-c++.yml: fix patches
-components/dnsmasq.yml: fix service file
-components/mariadb.yml: fix configuration file
-components/colord.yml: enable bash_completion, docs and manuals
-components/lxcfs.yml: fix service file
-components/lxcfs.yml: enable docs
-components/cppgir.yml: fix update url
-components/opencv3.yml: fix update url
-components/fcron.yml: fix configurations
-components/xfce4-session.yml: fix update url
-components/exo.yml: fix update url
-components/glm.yml: fix configuration file
-components/nvidia-utils.yml: check update url
-components/nvidia-utils.yml: merge into nvidia layer
-components/cups.yml: fix pam configuration
-components/plymouth.yml: fix configurations
-components/xfce4-panel.yml: fix update url
-components/gtk-doc.yml: fix update url
+system/repo.yml:   FIX components/pam.yml integration
 components/icon-naming-utils.yml: fix update url
-components/nginx.yml: fix service file
-components/nginx.yml: fix configuration file
-components/dconf-editor.yml: check version
-components/dqlite.yml: run autoreconf
-components/python2.yml: check deprecated
-components/pciutils.yml: fix update script
-components/dotnet.yml: fix update url
-components/appstream-glib.yml: check stemmer requirement
-components/egl-wayland.yml: fix nvidia wayland configuration
-components/bluez.yml: enable manpages
-components/protobuf.yml: fix update url
-components/gnupg.yml: check version and update url
-components/tracker.yml: enable documentation
-components/audit.yml: Learn More about it
-components/audit.yml: check config path patch
-components/libgssglue.yml: fix configuration
-components/lxc.yml: fix service file
+components/system-config-printer.yml:   Why we need to do this manually??
+components/gnome/gnome-epub-thumbnailer.yml: fix update url
+components/gnome/gdm.yml: We need to setup and use our PAM configuration
 components/spice-vdagent.yml: fix configurations
-components/lm-sensors.yml: fix configuration
-components/fuse2.yml: fix update url
-components/gnome-epub-thumbnailer.yml: fix update url
-components/schroot.yml: fix patch file
-components/containerd.yml: build from source
-components/espeak-ng.yml: check patch
-components/espeak-ng.yml: build using builtin autotools
-components/berkeley-db.yml: Fix update url
-components/berkeley-db.yml: check direct source
-components/gc.yml: check patch
-components/openjdk.yml: fix update url
-components/nvidia-settings.yml: check patch
-components/udisks.yml: check update url
-components/openjdk-bin.yml: fix update url
-components/openldap.yml: fix post-script and configurations
-components/apr-util.yml: fix update url
-components/plasma-pam.yml: fix pam configuration
-components/xfce4-whiskermenu-plugin.yml: Enable GTK layer shell support
-components/debian-archive-keyring.yml: fix update url
-components/drkonqi.yml: fix update url
+components/baloo.yml: check and update
 components/postfix.yml: fix user creation
 components/postfix.yml: fix systemd service file
-components/gtk.yml: fix update url
-components/dconf.yml: enable bash_completion
-components/elementary-xfce-icons.yml: build using builtin autotools
-components/clutter.yml: check configure options
-components/libyaml-cpp.yml: fix update url
-components/pam_wrapper.yml: fix update url
-components/glew.yml: fix patch
-components/libblockdev.yml: enable nvme support
-components/flatpak.yml: fix configurations
-components/dpp.yml: fix update url
+components/bsdiff.yml: fix patch
+components/glibc-dbg.yml: merge this with glibc
+components/lxcfs.yml: fix service file
+components/lxcfs.yml: enable docs
+components/apr-util.yml: fix update url
 components/weston.yml: enable vaapi, pipewire, freerdp, xwayland, gstreamer
-apps/dia.yml:   check better way
-apps/eog.yml: build with portol support
+components/dbus-c++.yml: fix patches
+components/libgssglue.yml: fix configuration
+components/colord-gtk.yml: enable documentation and manuals
+components/debian-archive-keyring.yml: fix update url
+components/dnsmasq.yml: fix service file
+components/schroot.yml: fix patch file
+components/lm-sensors.yml: fix configuration
+components/kbd.yml: check for patch
+components/firefox-src.yml: libpng doesn't have APNG support
+components/firefox-src.yml: update rustc compiler
+components/firefox-src.yml: update nss
+components/gcr.yml: check and fix update url version
+components/gcr.yml: fix documentation
+components/audit.yml: Learn More about it
+components/audit.yml: check config path patch
+components/fcron.yml: fix configurations
+components/gtk-doc.yml: fix update url
+components/proot.yml: fix patch
+components/libsecret.yml: enable docs and manpages
+components/python2.yml: check deprecated
+components/dpp.yml: fix update url
+components/vaapi-driver.yml: fix update url
+components/colord.yml: enable bash_completion, docs and manuals
+components/tracker.yml: enable documentation
+components/lxd.yml: fix service file
+components/udisks.yml: check update url
+components/clutter.yml: check configure options
+components/pcsclite.yml: fix update url
+components/ca-certificates.yml:   better work around
+components/xfce4/exo.yml: fix update url
+components/xfce4/panel-plugins/xfce4-whiskermenu-plugin.yml: Enable GTK layer shell support
+components/xfce4/xfce4-panel.yml: fix update url
+components/protobuf.yml: fix update url
+components/dqlite.yml: run autoreconf
+components/cppgir.yml: fix update url
+components/lxc.yml: fix service file
+components/opencv3.yml: fix update url
+components/libblockdev.yml: enable nvme support
+components/libkcddb.yml: fix update url
+components/gnupg.yml: check version and update url
+components/egl-wayland.yml: fix nvidia wayland configuration
+components/dconf.yml: enable bash_completion
+components/pam_wrapper.yml: fix update url
+components/bluez.yml: enable manpages
+components/openssh.yml: build with builtin autotools
+components/plasma/plasma-pam.yml: fix pam configuration
+components/plasma/drkonqi.yml: fix update url
+components/gcr-4.yml: check and fix update url version
+components/gcr-4.yml: fix documentation
+components/nginx.yml: fix service file
+components/nginx.yml: fix configuration file
+components/folks.yml: check build configurations
+components/elementary-xfce-icons.yml: build using builtin autotools
+components/cdparanoia.yml: check with inbuilt autotools
+components/spice.yml: enable gstreamer
+components/glew.yml: fix patch
+components/openldap.yml: fix post-script and configurations
+components/dconf-editor.yml: check version

@@ -3,16 +3,11 @@ version: 1.15.9
 about: Linux application sandboxing and distribution framework
 
 post-script: |
-  install -v -Dm0755 /dev/stdin %{install-root}%{sysconfdir}/profile.d/flatpak.sh << EOF
-  if [ -n "$XDG_DATA_HOME" ] && [ -d "$XDG_DATA_HOME/flatpak/exports/bin" ]; then
+  install -v -Dm0755 /dev/stdin %{install-root}%{sysconfdir}/profile.d/flatpak.sh << "EOF"
   append_path "$XDG_DATA_HOME/flatpak/exports/bin"
-  elif [ -n "$HOME" ] && [ -d "$HOME/.local/share/flatpak/exports/bin" ]; then
-    append_path "$HOME/.local/share/flatpak/exports/bin"
-  fi
-
-  if [ -d /var/lib/flatpak/exports/bin ]; then
-    append_path /var/lib/flatpak/exports/bin
-  fi
+  append_path "$HOME/.local/share/flatpak/exports/bin"
+  append_path "/var/lib/flatpak/exports/bin"
+  XDG_DATA_DIRS="$XDG_DATA_DIRS:/var/lib/flatpak/exports/share:$HOME/.local/share/flatpak/exports/share"
   EOF
 
   install -v -D -t %{install-root}%{sysconfdir}/flatpak/remotes.d flathub.flatpakrepo
@@ -32,7 +27,6 @@ depends:
   - components/glib.yml
   - components/json-glib.yml
   - components/libarchive.yml
-  - components/libsoup.yml
   - components/ostree.yml
   - components/polkit.yml
   - components/python.yml

@@ -1,5 +1,5 @@
 id: libosinfo
-version: 1.10.0
+version: 1.11.0
 about:
   GObject based library API for managing information about operating systems,
   hypervisors and the (virtual) hardware devices they can support
@@ -11,7 +11,7 @@ configure: >-
 depends:
   - components/glib.yml
   - components/hwdata.yml
-  - components/libsoup.yml
+  - components/libsoup3.yml
   - components/libxslt.yml
   - components/osinfo-db.yml
 build-depends:

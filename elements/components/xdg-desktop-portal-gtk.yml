@@ -6,13 +6,11 @@ configure: >-
   -D wallpaper=disabled
 
 post-script: |-
-  install -v -D -m 0644 /dev/stdin %{install-root}%{datadir}/xdg-desktop-portal/portals.conf << "EOF"
+  install -v -D -m 0644 /dev/stdin %{install-root}%{datadir}/xdg-desktop-portal/gtk-portals.conf << "EOF"
   [preferred]
   default=gtk
   EOF
-
-  sed -i 's#=gnome#=gnome;XFCE#g' %{install-root}%{datadir}/xdg-desktop-portal/portals/gtk.portal
-
+  
 depends:
   - components/gtk.yml
   - components/xdg-desktop-portal.yml

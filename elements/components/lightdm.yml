@@ -95,11 +95,14 @@ post-script: |-
   install -vDm 0644 /dev/stdin %{install-root}/%{sysconfdir}/lightdm/lightdm-gtk-greeter.conf << "EOF"
   [greeter]
   background=%{datadir}/backgrounds/default-blur.jpg
-  theme-name=Orchis-Dark
-  icon-theme-name=Tela
+  theme-name=Orchis-Light
+  icon-theme-name=Tela-light
   font-name=IBM Plex Sans Regular 11
-  panel-position=bottom
+  panel-position=top
+  user-background=false
   indicators=~host;~spacer;~session;~a11y;~language;~clock;~power;
+  transition-duration=600
+  transition-type=ease-in-out
   EOF
 
 configure: >-

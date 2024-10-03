@@ -1,0 +1,6 @@
+kind: oneshot
+
+description: swap
+exec: swapon
+args:
+  - -a

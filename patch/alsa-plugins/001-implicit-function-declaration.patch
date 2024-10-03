@@ -1,0 +1,12 @@
+Index: alsa-plugins-1.2.7.1/arcam-av/arcam_av.c
+===================================================================
+--- alsa-plugins-1.2.7.1.orig/arcam-av/arcam_av.c
++++ alsa-plugins-1.2.7.1/arcam-av/arcam_av.c
+@@ -27,6 +27,7 @@
+ #include <signal.h>
+ #include <stddef.h>
+ #include <stdio.h>
++#include <string.h>
+ #include <termios.h>
+ #include <unistd.h>
+ 

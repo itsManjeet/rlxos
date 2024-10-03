@@ -1,14 +1,9 @@
-/build
+/_build/
+/cmake-build-*
+/config.mk
+/.cache
 /.idea
 /vendor
-/ignite
-/build
-/cache
-/version.yml
-/config.mk
-/ostree-branch.yml
-/.cache
-*.ui~
-/files/sign-keys
-/channel.yml
-**__pycache__**
+# Added by cargo
+
+/target

@@ -1,0 +1,10 @@
+description: D-Bus System Message Bus
+exec: dbus-daemon
+args:
+  - --system
+  - --nofork
+  - --nopidfile
+  - --syslog-only
+
+requires:
+  - hostname

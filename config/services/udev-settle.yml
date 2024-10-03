@@ -1,0 +1,9 @@
+kind: oneshot
+
+description: Wait for udev To Complete Device Initialization
+exec: udevadm
+args:
+  - settle
+
+requires:
+  - udevd

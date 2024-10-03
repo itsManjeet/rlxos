@@ -1,0 +1,44 @@
+Index: wlroots-0.16.2/backend/libinput/tablet_pad.c
+===================================================================
+--- wlroots-0.16.2.orig/backend/libinput/tablet_pad.c
++++ wlroots-0.16.2/backend/libinput/tablet_pad.c
+@@ -34,7 +34,7 @@ static void add_pad_group_from_libinput(
+ 			++group->ring_count;
+ 		}
+ 	}
+-	group->rings = calloc(sizeof(unsigned int), group->ring_count);
++	group->rings = calloc(group->ring_count, sizeof(unsigned int));
+ 	if (group->rings == NULL) {
+ 		goto group_fail;
+ 	}
+@@ -51,7 +51,7 @@ static void add_pad_group_from_libinput(
+ 			++group->strip_count;
+ 		}
+ 	}
+-	group->strips = calloc(sizeof(unsigned int), group->strip_count);
++	group->strips = calloc(group->strip_count, sizeof(unsigned int));
+ 	if (group->strips == NULL) {
+ 		goto group_fail;
+ 	}
+@@ -67,7 +67,7 @@ static void add_pad_group_from_libinput(
+ 			++group->button_count;
+ 		}
+ 	}
+-	group->buttons = calloc(sizeof(unsigned int), group->button_count);
++	group->buttons = calloc(group->button_count, sizeof(unsigned int));
+ 	if (group->buttons == NULL) {
+ 		goto group_fail;
+ 	}
+Index: wlroots-0.16.2/backend/wayland/output.c
+===================================================================
+--- wlroots-0.16.2.orig/backend/wayland/output.c
++++ wlroots-0.16.2/backend/wayland/output.c
+@@ -522,7 +522,7 @@ struct wlr_output *wlr_wl_output_create(
+ 	}
+ 
+ 	struct wlr_wl_output *output;
+-	if (!(output = calloc(sizeof(struct wlr_wl_output), 1))) {
++	if (!(output = calloc(1, sizeof(struct wlr_wl_output)))) {
+ 		wlr_log(WLR_ERROR, "Failed to allocate wlr_wl_output");
+ 		return NULL;
+ 	}

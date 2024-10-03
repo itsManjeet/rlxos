@@ -1,0 +1,15 @@
+description: Compositor
+
+exec: sway
+environ:
+  - XDG_RUNTIME_DIR=/tmp/
+
+restart: true
+
+tty: /dev/tty1
+
+user: rlxusr
+
+# untile stage support
+requires:
+  - hostname

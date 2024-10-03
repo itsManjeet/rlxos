@@ -1,0 +1,8 @@
+description: seat management daemon
+exec: seatd
+args:
+  - -g
+  - seat
+
+requires:
+  - hostname

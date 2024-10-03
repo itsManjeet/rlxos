@@ -1,0 +1,9 @@
+kind: oneshot
+
+description: hostname
+exec: hostname
+args:
+  - rlxos
+
+requires:
+  - network

@@ -1,0 +1,11 @@
+kind: oneshot
+description: loop back interface
+exec: sh
+args:
+  - -c
+  - |-
+    ip addr add 127.0.0.1/8 label lo dev lo
+    ip link set lo up
+
+requires:
+  - udev-trigger

@@ -1,0 +1,44 @@
+name: Build and Release
+on:
+  workflow_dispatch:
+  push:
+
+env:
+  CACHE_PATH: ${{ secrets.CACHE_PATH }}
+  VERSION: ${{ github.run_number }}
+  BRANCH: ${{ endsWith(github.ref, 'stable') && 'stable' || (endsWith(github.ref, 'preview') && 'preview' || 'unstable') }}
+
+jobs:
+  build:
+    name: Build Image
+    runs-on: self-hosted
+    timeout-minutes: 47000
+    strategy:
+      matrix:
+        include:
+          - device: x86_64
+            image: installer.iso
+#          - device: raspberrypi-0w
+#            image: sdcard.img
+
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          token: ${{ secrets.CI_TOKEN }}
+          submodules: true
+      
+      - run: go mod vendor
+
+      - name: Build System Image
+        run: |
+          ./scripts/clean-target.sh $CACHE_PATH/${{matrix.device}}
+          make CACHE_PATH=$CACHE_PATH DEVICE=${{matrix.device}}
+
+      - uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{env.CACHE_PATH}}/${{matrix.device}}/images/${{matrix.image}}
+          asset_name: rlxos-${{env.BRANCH}}-${{matrix.device}}-${{matrix.image}}
+          tag: ${{env.BRANCH}}-continuous
+          overwrite: true
+          body: ${{ github.event.head_commit.message }}

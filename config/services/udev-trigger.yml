@@ -1,0 +1,12 @@
+kind: oneshot
+
+description: Coldplug All udev Devices
+exec: udevadm
+args:
+  - trigger
+  - --type=all
+  - --action=add
+  - --prioritized-subsystem=module,block,tmprm,net,tty,input
+
+requires:
+  - udevd

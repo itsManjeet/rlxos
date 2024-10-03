@@ -1,0 +1,9 @@
+config BR2_DEVICE
+    string
+    option env="DEVICE"
+
+config BR2_PACKAGE_RLXOS
+    bool "rlxos"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+    help
+        Install RLXOS Components

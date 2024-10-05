@@ -34,6 +34,15 @@ Ignite::Ignite(Configuration& config, std::filesystem::path project_path,
                                  config_file.string() + "'");
     }
     config.update_from_file(config_file);
+
+    if (config.node["compiler"]) {
+        for (auto const& c : config.node["compiler"]) {
+            compilers[c.first.as<std::string>()] = Compiler{
+                    c.second["file"].as<std::string>(),
+                    c.second["script"].as<std::string>(),
+            };
+        }
+    }
 }
 
 void Ignite::load() {

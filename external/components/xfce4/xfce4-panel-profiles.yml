@@ -14,7 +14,7 @@ script: |-
   rm %{install-root}%{datadir}/xfce4-panel-profiles/layouts/*
 
   # Install rlxos provided layouts
-  cp /files/layouts/*.tar.bz2 %{install-root}%{datadir}/xfce4-panel-profiles/layouts/
+  cp /assets/layouts/*.tar.bz2 %{install-root}%{datadir}/xfce4-panel-profiles/layouts/
 
   # Why executable??
   chmod -x %{install-root}%{datadir}/icons/hicolor/*/apps/org.xfce.PanelProfiles.*

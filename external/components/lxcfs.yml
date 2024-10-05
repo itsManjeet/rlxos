@@ -21,7 +21,7 @@ pre-script: |
   patch -Np1 < ../lxcfs-fix-libdir.patch
 post-script: |-
   mkdir -p %{install-root}/var/lib/lxcfs
-  # install -v -D -m 0644 /files/lxcfs/lxcfs.service -t %{install-root}/usr/lib/systemd/system
+  # install -v -D -m 0644 /assets/lxcfs/lxcfs.service -t %{install-root}/usr/lib/systemd/system
 
 # TODO: fix service file
 # TODO: enable docs

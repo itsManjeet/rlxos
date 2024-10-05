@@ -3,7 +3,7 @@ version: 2.9.0
 about: C library for processing UTF-8 encoded Unicode strings
 
 pre-script: |-
-  sed "s#@VERSION@#%{version}#" /files/libutf8proc.pc.in > libutf8proc.pc
+  sed "s#@VERSION@#%{version}#" /assets/libutf8proc.pc.in > libutf8proc.pc
 configure: >-
   -DCMAKE_BUILD_TYPE=Release
   -DCMAKE_INSTALL_LIBDIR=lib

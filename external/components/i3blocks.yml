@@ -9,9 +9,9 @@ pre-script: |-
   patch -Np1 -i i3blocks-1.5-fix-Makefile-bash-completion-dependency.patch
 
 post-script: |-
-  install -vDm 0644 /files/i3blocks/i3blocks.conf -t %{install-root}%{sysconfdir}/
+  install -vDm 0644 /assets/i3blocks/i3blocks.conf -t %{install-root}%{sysconfdir}/
   for script in audio battery network ; do
-    install -vDm 0755 /files/i3blocks/${script}.sh -t %{install-root}%{libdir}/i3blocks/
+    install -vDm 0755 /assets/i3blocks/${script}.sh -t %{install-root}%{libdir}/i3blocks/
   done
 
 depends:

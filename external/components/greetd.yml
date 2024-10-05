@@ -30,7 +30,7 @@ script: |-
   make -C man DESTDIR="%{install-root}" PREFIX=/usr install
 
   mkdir -p %{install-root}%{sysconfdir}
-  cp -rf /files/greetd %{install-root}%{sysconfdir}/
+  cp -rf /assets/greetd %{install-root}%{sysconfdir}/
 
 
 depends:

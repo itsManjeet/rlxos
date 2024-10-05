@@ -31,7 +31,7 @@ build-depends:
   - components/squashfs-tools.yml
 
 pre-script: |-
-  cp /files/sdt{,-config}.h %{include-root}/%{prefix}/include/sys/
+  cp /assets/sdt{,-config}.h %{include-root}/%{prefix}/include/sys/
 
 initial-commands: |-
   systemd-sysusers

@@ -41,4 +41,4 @@ script: |-
   install -dm755 %{install-root}%{datadir}/grafana
   cp -r conf public %{install-root}%{datadir}/%{id}/
 
-  install -v -D -m 0644 /files/%{id}.service -t %{install-root}/usr/lib/systemd/system/
+  install -v -D -m 0644 /assets/%{id}.service -t %{install-root}/usr/lib/systemd/system/

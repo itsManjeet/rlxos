@@ -10,4 +10,4 @@ build-depends:
   - components/bash.yml
 
 sources:
-  - https://github.com/liberationfonts/liberation-fonts/files/7261482/liberation-fonts-ttf-%{version}.tar.gz
+  - https://github.com/liberationfonts/liberation-fonts/assets/7261482/liberation-fonts-ttf-%{version}.tar.gz

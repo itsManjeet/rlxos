@@ -6,11 +6,11 @@ pre-script: |-
   cat ../debian/patches/series | while read p; do
     patch -p1 -i ../debian/patches/$p
   done
-  patch -p1 -i /files/schroot-cppunit.patch
-  patch -p1 -i /files/schroot-gcc8-assert-fix.patch
+  patch -p1 -i /assets/schroot-cppunit.patch
+  patch -p1 -i /assets/schroot-gcc8-assert-fix.patch
   ./bootstrap
 post-script: |-
-  # patch -i /files/pam.d.schroot.patch %{install-root}%{sysconfdir}/pam.d/schroot
+  # patch -i /assets/pam.d.schroot.patch %{install-root}%{sysconfdir}/pam.d/schroot
 
 configure: >-
   --enable-dchroot

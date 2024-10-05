@@ -20,5 +20,5 @@ build-depends:
   - components/python.yml
   - components/py/py-setuptools.yml
 sources:
-  - https://miniupnp.tuxfamily.org/files/%{id}-%{version}.tar.gz
+  - https://miniupnp.tuxfamily.org/assets/%{id}-%{version}.tar.gz
   - https://github.com/miniupnp/miniupnp/commit/ed1dc4bb.patch

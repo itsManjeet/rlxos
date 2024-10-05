@@ -6,5 +6,5 @@ depends:
 - components/findutils.yml
 - components/grep.yml
 - components/gawk.yml
-script: install -vDm0755 /files/selftest.sh %{install-root}/usr/bin/selftest
+script: install -vDm0755 /assets/selftest.sh %{install-root}/usr/bin/selftest
 

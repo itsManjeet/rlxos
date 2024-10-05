@@ -14,8 +14,8 @@ script: |-
 
   cd %{install-root}%{datadir}/gnome-shell/extensions/nightthemeswitcher@romainvigier.fr
 
-  patch schemas/org.gnome.shell.extensions.nightthemeswitcher.gschema.xml < /files/%{id}/system-defaults.patch
-  patch schemas/org.gnome.shell.extensions.nightthemeswitcher.v0.gschema.xml < /files/%{id}/system-defaults-1.patch
+  patch schemas/org.gnome.shell.extensions.nightthemeswitcher.gschema.xml < /assets/%{id}/system-defaults.patch
+  patch schemas/org.gnome.shell.extensions.nightthemeswitcher.v0.gschema.xml < /assets/%{id}/system-defaults-1.patch
 
   glib-compile-schemas schemas
 

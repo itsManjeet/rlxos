@@ -6,4 +6,4 @@ depends:
   - components/glibc.yml
 
 sources:
-  - https://www.alsa-project.org/files/pub/lib/alsa-lib-%{version}.tar.bz2
+  - https://www.alsa-project.org/assets/pub/lib/alsa-lib-%{version}.tar.bz2

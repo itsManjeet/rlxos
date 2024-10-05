@@ -4,7 +4,7 @@ about: EFI preloader
 
 pre-script: |-
   sed -e 's/-Werror\b//g' -i Makefile Make.defaults
-  openssl x509 -inform PEM -outform DER -in "/files/sign-keys/VENDOR.crt" -out "VENDOR.cer"
+  openssl x509 -inform PEM -outform DER -in "/assets/sign-keys/VENDOR.crt" -out "VENDOR.cer"
 
 make-args: >-
   EFIDIR=rlxos

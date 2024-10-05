@@ -7,7 +7,6 @@ pre-script: |-
 
 configure: >-
   --with-bugurl=https://github.com/itsmanjeet/rlxos/issues
-  --with-build-config=bootstrap-lto
   --with-linker-hash-style=gnu
   --with-system-zlib
   --enable-__cax_atexit

@@ -64,7 +64,7 @@ endif
 
 
 build/build.ninja: CMakeLists.txt
-	cmake -B build -G Ninja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+	cmake -B build
 
 $(IGNITE): build/build.ninja
 	@cmake --build build --target ignite

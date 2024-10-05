@@ -51,8 +51,7 @@ int pull(Ignite* ignite, const std::vector<std::string>& args) {
         if (!cached) {
             recipe.resolve(ignite->config);
             auto hash = ignite->hash(recipe);
-            auto server_url = std::format(
-                    "{}/cache/{}", artifact_url, recipe.package_name());
+            auto server_url = artifact_url + "/cache/" + recipe.package_name();
             auto cache_file_path = ignite->cachefile(recipe);
             std::cout << "GET " << server_url << std::endl;
             int status = Executor("/bin/curl")

@@ -2,10 +2,6 @@ name: Build and Release
 on:
   workflow_dispatch:
   push:
-    paths-ignore:
-      - "docs/**"
-      - ".github/workflows/update-docs.yml"
-      - "mkdocs.yml"
 
 env:
   NO_PROGRESS: 1
@@ -33,7 +29,7 @@ jobs:
           token: ${{ secrets.CI_TOKEN }}
           submodules: true
       - name: Add sign keys
-        run: rm -rf files/sign-keys && cp -r ${SIGN_KEYS_PATH} files/sign-keys
+        run: rm -rf assets/sign-keys && cp -r ${SIGN_KEYS_PATH} assets/sign-keys
 
       - name: Build system packages
         run: make ELEMENT=platform.yml
@@ -43,25 +39,6 @@ jobs:
 
       - name: Update Ostree
         run: make ELEMENT=system/repo.yml update-ostree
-
-      - name: Update Extensions
-        run: |
-          for extension_path in elements/extensions/*.yml; do
-            extension_path="$(echo ${extension_path} | cut -d '/' -f2-)"
-            extension="$(basename ${extension_path})"
-            extension="${extension%.*}"
-            OSTREE_BRANCH="x86_64/extension/${extension}/${CHANNEL}" \
-            ELEMENT=${extension_path} make update-ostree
-          done
-
-      - name: Update Applications
-        run: |
-          for app_path in elements/apps/*.yml; do
-            app_path="$(echo ${app_path} | cut -d '/' -f2-)"
-            app="$(basename ${app_path})"
-            app="${app%.*}"
-            make ELEMENT=${app_path} || echo "failed to build ${app_path}"
-          done
 
       - name: Build Installer ISO
         run: make ELEMENT=installer/image.yml
@@ -99,7 +76,7 @@ jobs:
     name: Update ISO on mirrors
     runs-on: self-hosted
     environment: deploy
-    needs: [update-installer-iso]
+    needs: [ update-installer-iso ]
     steps:
       - uses: actions/checkout@v1
         with:

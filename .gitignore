@@ -1,14 +1,6 @@
 /build
-/.idea
-/vendor
-/ignite
-/build
-/cache
-/version.yml
-/config.mk
-/ostree-branch.yml
 /.cache
-*.ui~
-/files/sign-keys
+/ostree-branch.yml
+/version.yml
 /channel.yml
-**__pycache__**
+/.vscode

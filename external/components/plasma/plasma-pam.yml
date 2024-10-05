@@ -1,0 +1,8 @@
+id: plasma-pam
+merge: [external/include/plasma.inc]
+about: Plasma pam permissions
+script: |-
+  mkdir -p %{install-root}%{sysconfdir}/pam.d/
+  # cp /files/{kde,kde-np,kscreensaver} %{install-root}%{sysconfdir}/pam.d/
+
+# TODO: fix pam configuration

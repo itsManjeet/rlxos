@@ -3,7 +3,7 @@ OSTREE_BRANCH 		    			?= $(shell uname -m)/os/$(CHANNEL)
 OSTREE_REPO 						?= ostree-repo
 OSTREE_GPG 							?= ostree-gpg
 VERSION								?= 2.0
-PKGUPD								?= build/src/pkgupd/bin/pkgupd
+IGNITE								?= build/toolchain/ignite/ignite
 CACHE_PATH							?= build/
 DESTDIR								?= checkout/
 APPMARKET_PATH						?= appmarket/
@@ -28,35 +28,35 @@ endef
 
 
 export OSTREE_GPG_CONFIG
-export PKGUPD
+export IGNITE
 export CACHE_PATH
 
 .PHONY: clean all docs version.yml channel.yml ostree-branch.yml apps TODO.ELEMENTS
 
-all: $(PKGUPD) version.yml ostree-branch.yml channel.yml
+all: $(IGNITE) version.yml ostree-branch.yml channel.yml
 ifdef ELEMENT
-	$(PKGUPD) ignite build ignite.cache=$(CACHE_PATH) $(ELEMENT)
+	$(IGNITE) build -cache-path $(CACHE_PATH) $(ELEMENT)
 endif
 
-status: $(PKGUPD) version.yml ostree-branch.yml channel.yml
+status: $(IGNITE) version.yml ostree-branch.yml channel.yml
 ifdef ELEMENT
-	$(PKGUPD) ignite status ignite.cache=$(CACHE_PATH) $(ELEMENT)
+	$(IGNITE) status -cache-path $(CACHE_PATH) $(ELEMENT)
 else
 	@echo "no ELEMENT specified"
 	exit 1
 endif
 
-filepath: $(PKGUPD) version.yml ostree-branch.yml  channel.yml
+filepath: $(IGNITE) version.yml ostree-branch.yml  channel.yml
 ifdef ELEMENT
-	@PKGUPD_NO_MESSAGE=1 $(PKGUPD) ignite filepath ignite.cache=$(CACHE_PATH) $(ELEMENT)
+	@IGNITE_NO_MESSAGE=1 $(IGNITE) filepath -cache-path $(CACHE_PATH) $(ELEMENT)
 else
 	@echo "no ELEMENT specified"
 	exit 1
 endif
 
-checkout: $(PKGUPD) version.yml ostree-branch.yml  channel.yml
+checkout: $(IGNITE) version.yml ostree-branch.yml  channel.yml
 ifdef ELEMENT
-	$(PKGUPD) ignite checkout ignite.cache=$(CACHE_PATH) $(ELEMENT) $(DESTDIR)
+	$(IGNITE) checkout -cache-path $(CACHE_PATH) $(ELEMENT) $(DESTDIR)
 else
 	@echo "no ELEMENT specified"
 	exit 1
@@ -64,10 +64,10 @@ endif
 
 
 build/build.ninja: CMakeLists.txt
-	cmake -B build
+	cmake -B build -G Ninja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
-$(PKGUPD): build/build.ninja src/pkgupd/CMakeLists.txt
-	@cmake --build build --target pkgupd
+$(IGNITE): build/build.ninja
+	@cmake --build build --target ignite
 
 clean:
 	rm -rf $(DOCS_DIR)
@@ -87,11 +87,11 @@ $(OSTREE_GPG)/key-config:
 files/rlxos.gpg: $(OSTREE_GPG)/key-config
 	gpg --homedir=$(OSTREE_GPG) --export --armor >"$@"
 
-update-app-market: $(PKGUPD) version.yml ostree-branch.yml channel.yml
-	$(PKGUPD) ignite meta ignite.cache=$(CACHE_PATH) $(APPMARKET_PATH)/$(CHANNEL)
+update-app-market: $(IGNITE) version.yml ostree-branch.yml channel.yml
+	$(IGNITE) meta -cache-path $(CACHE_PATH) $(APPMARKET_PATH)/$(CHANNEL)
 	./scripts/extract-icons.sh $(APPMARKET_PATH)/$(CHANNEL)/apps/ $(APPMARKET_PATH)/$(CHANNEL)/icons/
 
-update-ostree: $(PKGUPD) version.yml ostree-branch.yml channel.yml files/rlxos.gpg
+update-ostree: $(IGNITE) version.yml ostree-branch.yml channel.yml files/rlxos.gpg
 ifndef ELEMENT
 	@echo "no ELEMENT specified"
 	@exit 1

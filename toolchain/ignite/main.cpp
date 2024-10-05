@@ -15,6 +15,7 @@
  *
  */
 
+#include "Executor.h"
 #include "Ignite.h"
 #include <cstring>
 #include <functional>
@@ -28,6 +29,8 @@ int help(Ignite* ignite, const std::vector<std::string>& args) {
     std::cout << R"(Usage: ignite <options> <command> <args...>
 Commands:
   build <recipes...>        Build artifact of specified recipes
+  status <recipe>           Print if artifact is cached or need to build
+  pull <recipe>             Pull artifact cache from artifact-url:
 
 Options:
   -project-path <path>      Specify project path
@@ -36,6 +39,36 @@ Options:
 )" << std::endl;
 
     return 1;
+}
+
+int pull(Ignite* ignite, const std::vector<std::string>& args) {
+    std::vector<Ignite::State> states;
+    ignite->resolve(args, states);
+    auto artifact_url = ignite->config.get<std::string>(
+            "artifact-url", "https://repo.rlxos.dev");
+
+    for (auto& [id, recipe, cached] : states) {
+        if (!cached) {
+            recipe.resolve(ignite->config);
+            auto hash = ignite->hash(recipe);
+            auto server_url = std::format(
+                    "{}/cache/{}", artifact_url, recipe.package_name());
+            auto cache_file_path = ignite->cachefile(recipe);
+            std::cout << "GET " << server_url << std::endl;
+            int status = Executor("/bin/curl")
+                                 .arg("-C")
+                                 .arg("-")
+                                 .arg(server_url)
+                                 .arg("-o")
+                                 .arg(cache_file_path)
+                                 .run();
+            if (status != 0) {
+                std::cerr << "Error: " << status << std::endl;
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 int build(Ignite* ignite, const std::vector<std::string>& args) {
@@ -85,6 +118,8 @@ int main(int argc, char** argv) {
                 function = help;
             } else if (std::strcmp(argv[i], "status") == 0) {
                 function = status;
+            } else if (std::strcmp(argv[i], "pull") == 0) {
+                function = pull;
             } else {
                 std::cerr << "Unknown option: " << argv[i] << std::endl;
                 return 1;

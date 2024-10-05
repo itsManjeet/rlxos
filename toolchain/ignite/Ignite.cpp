@@ -236,7 +236,7 @@ Container Ignite::setup_container(
                     {
                             {"/sources", cache_path / "sources"},
                             {"/cache", cache_path / "cache"},
-                            {"/files", project_path / "files"},
+                            {"/assets", project_path / "assets"},
                             {"/patches", project_path / "patches"},
                             {"/rlxos", project_path},
 

@@ -14,6 +14,8 @@ configure: >-
   -D smb=false
   -D dnssd=false
   -D onedrive=false
+  -D goa=false
+  -D cdda=false
 
 depends:
   - components/dbus.yml
@@ -23,7 +25,6 @@ depends:
   - components/libsoup.yml
   - components/gcr.yml
   - components/gtk.yml
-  - components/libcdio-paranoia.yml
   - components/libgudev.yml
   - components/systemd.yml
   - components/udisks.yml
@@ -32,7 +33,5 @@ depends:
   - components/libsoup3.yml
   - components/openssh.yml
   - components/gcr-4.yml
-  - components/libgdata.yml
-  - components/gnome/gnome-online-accounts.yml
 sources:
   - https://download.gnome.org/sources/gvfs/%{version:2}/gvfs-%{version}.tar.xz

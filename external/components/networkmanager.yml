@@ -7,7 +7,7 @@ build-type: meson
 configure: >-
   -Dlibaudit=no
   -Dlibpsl=false
-  -Dnmtui=true
+  -Dnmtui=false
   -Dovs=false
   -Dppp=false
   -Dselinux=false
@@ -69,7 +69,6 @@ depends:
   - components/curl.yml
   - components/gobject-introspection.yml
   - components/iptables.yml
-  - components/newt.yml
   - components/nss.yml
   - components/polkit.yml
   - components/py/py-gobject.yml

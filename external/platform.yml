@@ -69,10 +69,8 @@ depends:
   - components/libconfuse.yml
 
   - components/xdg-desktop-portal-gtk.yml
-  - components/xdg-desktop-portal-xapp.yml
+  - components/xdg-desktop-portal-wlr.yml
   - components/xdg-dbus-proxy.yml
-  - components/wireplumber.yml
-  - components/gnome-keyring.yml
   - components/grub.yml
   - components/dracut.yml
   - components/zsync.yml
@@ -81,41 +79,24 @@ depends:
   - components/sof-firmware.yml
   - components/intel-ucode.yml
 
-  - components/system-config-printer.yml
-
   # Components
   - components/gvfs.yml
   - components/xdg-user-dirs-gtk.yml
   - components/xdg-utils.yml
-  - components/flatpak.yml
   - components/power-profiles-daemon.yml
   - components/networkmanager.yml
-  - components/networkmanager-openvpn.yml
   - components/network-manager-applet.yml
-  - components/blueman.yml
   - components/ntfs-3g.yml
-  - components/firefox.yml
-  - components/file-roller.yml
 
-  - components/meta-xfce4.yml
-  - components/meta-x11.yml
-  - components/lightdm.yml
-  - components/picom.yml
-
-  - components/capsule.yml
-
-  - components/gnome/gnome-software.yml
-
-  - components/welcome.yml
-  - components/initial-setup.yml
-  - components/distrobox.yml
+  - components/labwc.yml
+  - components/sfwbar.yml
+  - components/gtkgreet.yml
+  - components/greetd.yml
 
   - kernel/linux.yml
-  - components/nvidia.yml
 
   - system/systemd-preset.yml
   - system/etc-shells.yml
   - system/etc-skel.yml
   - system/etc-sysctl.yml
   - system/etc-default-useradd.yml
-  - system/x11-config.yml

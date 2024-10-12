@@ -8,8 +8,8 @@ configure: >
   -D demos=false
   -D colord=yes
   -D tracker3=true
-  -D cloudproviders=true
-  -D broadway_backend=true
+  -D cloudproviders=false
+  -D broadway_backend=false
   -D wayland_backend=true
   -D x11_backend=true
 
@@ -25,7 +25,6 @@ depends:
   - components/libepoxy.yml
   - components/pango.yml
   - components/colord.yml
-  - components/libcloudproviders.yml
   - components/tracker.yml
   - components/desktop-file-utils.yml
   - components/x11/libxkbcommon.yml

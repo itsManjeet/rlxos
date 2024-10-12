@@ -32,6 +32,7 @@ Commands:
   status <recipe>           Print if artifact is cached or need to build
   pull <recipe>             Pull artifact cache from artifact-url:
   cache-path <recipe>       Print the cache path of recipe
+  checkout <recipe> <path>  Checkout artifact at <path>
 
 Options:
   -project-path <path>      Specify project path
@@ -86,6 +87,29 @@ int cachepath(Ignite* ignite, const std::vector<std::string>& args) {
     recipe->second.cache = ignite->hash(recipe->second);
     std::cout << ignite->cachefile(recipe->second) << std::endl;
     return 0;
+}
+
+int checkout(Ignite* ignite, const std::vector<std::string>& args) {
+    if (args.size() != 2) {
+        std::cerr << "require exactly one argument" << std::endl;
+        return 1;
+    }
+
+    auto recipe = ignite->get_pool().find(args[0]);
+    if (recipe == ignite->get_pool().end()) {
+        std::cerr << "no recipe found with id '" << args[0] << "'" << std::endl;
+        return 1;
+    }
+
+    recipe->second.cache = ignite->hash(recipe->second);
+    std::filesystem::create_directories(args[1]);
+
+    return Executor("/bin/tar")
+            .arg("-xf")
+            .arg(ignite->cachefile(recipe->second))
+            .arg("-C")
+            .arg(args[1])
+            .run();
 }
 
 int build(Ignite* ignite, const std::vector<std::string>& args) {
@@ -147,6 +171,8 @@ int main(int argc, char** argv) {
                 function = pull;
             } else if (std::strcmp(argv[i], "cache-path") == 0) {
                 function = cachepath;
+            } else if (std::strcmp(argv[i], "checkout") == 0) {
+                function = checkout;
             } else {
                 std::cerr << "Unknown option: " << argv[i] << std::endl;
                 return 1;

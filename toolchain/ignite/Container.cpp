@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Manjeet Singh <itsmanjeet1998@gmail.com>.
+ * Copyright (c) 2024 Manjeet Singh <itsmanjeet1998@gmail.com>.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,14 +17,28 @@
 
 #include "Container.h"
 
-
 std::vector<std::string> Container::args() const {
-    std::vector<std::string> a = {"/bin/bwrap", "--bind", host_root, "/",
-                                  "--proc", "/proc", "--dev", "/dev",
-                                  "--ro-bind", "/etc/resolv.conf",
-                                  "/etc/resolv.conf", "--unshare-all",
-                                  "--share-net", "--uid", "0",
-                                  "--gid", "0", "--die-with-parent"};
+    std::vector<std::string> a = {
+            "/bin/bwrap",
+            "--bind",
+            host_root,
+            "/",
+            "--proc",
+            "/proc",
+            "--dev",
+            "/dev",
+            "--ro-bind",
+            "/etc/resolv.conf",
+            "/etc/resolv.conf",
+            "--unshare-all",
+            "--share-net",
+            "--uid",
+            "0",
+            "--gid",
+            "0",
+            "--die-with-parent",
+    };
+
     for (auto const& [dest, source] : binds) {
         a.insert(a.end(), {"--bind", source, dest});
     }
@@ -32,7 +46,7 @@ std::vector<std::string> Container::args() const {
     for (auto const& c : capabilities) { a.insert(a.end(), {"--cap-add", c}); }
 
     for (auto const& e : environ) {
-        auto idx = e.find('=');
+        auto const idx = e.find('=');
         auto key = e.substr(0, idx);
         auto value = e.substr(idx + 1);
         a.insert(a.end(), {"--setenv", key, value});

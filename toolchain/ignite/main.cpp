@@ -44,7 +44,7 @@ Options:
 int pull(Ignite* ignite, const std::vector<std::string>& args) {
     std::vector<Ignite::State> states;
     ignite->resolve(args, states);
-    auto artifact_url = ignite->config.get<std::string>(
+    auto const artifact_url = ignite->config.get<std::string>(
             "artifact-url", "https://repo.rlxos.dev");
 
     for (auto& [id, recipe, cached] : states) {
@@ -86,10 +86,17 @@ int build(Ignite* ignite, const std::vector<std::string>& args) {
 int status(Ignite* ignite, const std::vector<std::string>& args) {
     std::vector<Ignite::State> states;
     ignite->resolve(args, states);
+    int total_cached = 0;
     for (auto const& [id, recipe, cached] : states) {
         std::cout << "  " << (cached ? "CACHED " : "WAITING") << "  " << id
                   << std::endl;
+        if (cached) ++total_cached;
     }
+
+    std::cout << '\n'
+              << "  TOTAL COMPONENTS : " << states.size() << '\n'
+              << "  TOTAL CACHED     : " << total_cached << '\n'
+              << "  NEED TO BUILD    : " << states.size() - total_cached << '\n';
     return 0;
 }
 

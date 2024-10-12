@@ -25,7 +25,7 @@
 #include <utility>
 
 Ignite::Ignite(Configuration& config, std::filesystem::path project_path,
-        std::filesystem::path cache_path, std::string arch)
+        std::filesystem::path cache_path, const std::string& arch)
         : config{config}, project_path(std::move(project_path)),
           cache_path(std::move(cache_path)) {
     auto config_file = this->project_path / ("config-" + arch + ".yml");

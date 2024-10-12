@@ -15,14 +15,13 @@
  *
  */
 
-
 #pragma once
 
-#include <vector>
-#include <string>
-#include <map>
-#include <filesystem>
 #include "Configuration.h"
+#include <filesystem>
+#include <map>
+#include <string>
+#include <vector>
 
 struct Recipe {
     std::string id, version, about;
@@ -36,6 +35,8 @@ struct Recipe {
 
     Recipe() = default;
 
+    virtual ~Recipe() = default;
+
     explicit Recipe(const std::string& filepath,
             const std::filesystem::path& search_path = {});
 
@@ -45,7 +46,8 @@ struct Recipe {
 
     [[nodiscard]] std::string name() const {
         auto name = this->id;
-        for (auto& c : name) if (c == '/') c = '-';
+        for (auto& c : name)
+            if (c == '/') c = '-';
         return name;
     }
 
@@ -54,14 +56,14 @@ struct Recipe {
         ss << "id: " << id << "\n";
 
         ss << "version: " << version << "\n"
-                << "about: " << about << "\n"
-                << "cache: " << cache << "\n";
+           << "about: " << about << "\n"
+           << "cache: " << cache << "\n";
 
         if (!depends.empty()) {
             ss << "depends:\n";
-            for (auto const& i :
-                 depends) ss << "- " << std::filesystem::path(i).
-                          replace_extension() << "\n";
+            for (auto const& i : depends)
+                ss << "- " << std::filesystem::path(i).replace_extension()
+                   << "\n";
         }
 
         if (!backup.empty()) {
@@ -82,7 +84,8 @@ struct Recipe {
 
     [[nodiscard]] std::string package_name(std::string eid = "") const {
         if (eid.empty()) eid = id;
-        for (auto& c : eid) if (c == '/') c = '-';
+        for (auto& c : eid)
+            if (c == '/') c = '-';
         return eid + "-" + version + "-" + cache + ".pkg";
     }
 

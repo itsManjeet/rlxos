@@ -15,14 +15,13 @@
  *
  */
 
-
 #include "Recipe.h"
 
 #include <fstream>
 #include <regex>
 
-Recipe::Recipe(const std::string& filepath,
-        const std::filesystem::path& search_path) {
+Recipe::Recipe(
+        const std::string& filepath, const std::filesystem::path& search_path) {
     config.search_path.push_back(search_path);
     config.node["cache"] = "none";
     update_from_file(filepath);
@@ -33,15 +32,14 @@ Recipe::Recipe(const std::string& filepath,
     }
     if (config.node["sources"]) {
         for (auto const& dep : config.node["sources"])
-            sources.emplace_back(
-                    dep.as<std::string>());
+            sources.emplace_back(dep.as<std::string>());
     }
     element_id = std::filesystem::relative(filepath, search_path / "elements")
-            .replace_extension();
+                         .replace_extension();
 }
 
-void Recipe::update_from_data(const std::string& data,
-        const std::string& filepath) {
+void Recipe::update_from_data(
+        const std::string& data, const std::string& filepath) {
     config.update_from(data, filepath);
 
     id = config.get<std::string>("id");
@@ -56,14 +54,12 @@ void Recipe::update_from_data(const std::string& data,
     }
     if (config.node["backup"]) {
         for (auto const& b : config.node["backup"])
-            backup.push_back(
-                    b.as<std::string>());
+            backup.push_back(b.as<std::string>());
     }
     if (config.node["integration"]) {
         integration = config.node["integration"].as<std::string>();
     }
 }
-
 
 std::vector<std::string> split(const std::string& str, char del) {
     std::stringstream ss(str);
@@ -73,7 +69,9 @@ std::vector<std::string> split(const std::string& str, char del) {
 }
 
 std::string replace(std::string v, char old, char n) {
-    for (auto& i : v) { if (i == old) i = n; }
+    for (auto& i : v) {
+        if (i == old) i = n;
+    }
     return v;
 }
 
@@ -156,10 +154,8 @@ std::string Recipe::resolve(const std::string& value,
 void Recipe::update_from_file(const std::string& filepath) {
     std::ifstream reader(filepath);
     if (!reader.good())
-        throw std::runtime_error(
-                "failed to read file '" + filepath + "'");
+        throw std::runtime_error("failed to read file '" + filepath + "'");
     update_from_data(std::string((std::istreambuf_iterator<char>(reader)),
-                    (std::istreambuf_iterator<char>())),
+                             (std::istreambuf_iterator<char>())),
             filepath);
 }
-

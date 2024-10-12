@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Manjeet Singh <itsmanjeet1998@gmail.com>.
+ * Copyright (c) 2024 Manjeet Singh <itsmanjeet1998@gmail.com>.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ public:
     using State = std::tuple<std::string, Recipe, bool>;
 
     explicit Ignite(Configuration& config, std::filesystem::path project_path,
-            std::filesystem::path cache_path, std::string argc);
+            std::filesystem::path cache_path, const std::string& arch);
 
     void load();
 

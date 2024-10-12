@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Manjeet Singh <itsmanjeet1998@gmail.com>.
+ * Copyright (c) 2024 Manjeet Singh <itsmanjeet1998@gmail.com>.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,8 @@
 #include "Executor.h"
 
 #include <cstring>
-#include <sstream>
 #include <iostream>
+#include <sstream>
 
 enum { READ = 0, WRITE = 1 };
 
@@ -40,8 +40,8 @@ Executor& Executor::start() {
         close(pipe_fd[WRITE]);
 
         if (path_)
-            if (chdir(path_->c_str()) == -1) throw std::runtime_error(
-                    "failed to switch path to " + *path_);
+            if (chdir(path_->c_str()) == -1)
+                throw std::runtime_error("failed to switch path to " + *path_);
         clearenv();
 
         std::vector<const char*> args;

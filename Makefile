@@ -8,9 +8,9 @@ CACHE_PATH							?= build/
 DESTDIR								?= checkout/
 APPMARKET_PATH						?= appmarket/
 KEY_TYPES							:= PK KEK DB VENDOR linux-module-cert
-ALL_CERTS							 = $(foreach KEY,$(KEY_TYPES),files/sign-keys/$(KEY).crt)
-ALL_KEYS							 = $(foreach KEY,$(KEY_TYPES),files/sign-keys/$(KEY).key)
-BOOT_KEYS							 = $(ALL_KEYS) $(ALL_CERTS) files/sign-keys/extra-db/.keep files/sign-keys/extra-kek/.keep files/sign-keys/modules/linux-module-cert.crt
+ALL_CERTS							 = $(foreach KEY,$(KEY_TYPES),assets/sign-keys/$(KEY).crt)
+ALL_KEYS							 = $(foreach KEY,$(KEY_TYPES),assets/sign-keys/$(KEY).key)
+BOOT_KEYS							 = $(ALL_KEYS) $(ALL_CERTS) assets/sign-keys/extra-db/.keep assets/sign-keys/extra-kek/.keep assets/sign-keys/modules/linux-module-cert.crt
 
 -include config.mk
 
@@ -84,14 +84,14 @@ $(OSTREE_GPG)/key-config:
 	gpg --homedir=ostree-gpg.tmp -k --with-colons | sed '/^fpr:/q;d' | cut -d: -f10 >ostree-gpg.tmp/default-id
 	mv ostree-gpg.tmp $(OSTREE_GPG)
 
-files/rlxos.gpg: $(OSTREE_GPG)/key-config
+assets/rlxos.gpg: $(OSTREE_GPG)/key-config
 	gpg --homedir=$(OSTREE_GPG) --export --armor >"$@"
 
 update-app-market: $(IGNITE) version.yml ostree-branch.yml channel.yml
 	$(IGNITE) meta -cache-path $(CACHE_PATH) $(APPMARKET_PATH)/$(CHANNEL)
 	./scripts/extract-icons.sh $(APPMARKET_PATH)/$(CHANNEL)/apps/ $(APPMARKET_PATH)/$(CHANNEL)/icons/
 
-update-ostree: $(IGNITE) version.yml ostree-branch.yml channel.yml files/rlxos.gpg
+update-ostree: $(IGNITE) version.yml ostree-branch.yml channel.yml assets/rlxos.gpg
 ifndef ELEMENT
 	@echo "no ELEMENT specified"
 	@exit 1
@@ -119,23 +119,23 @@ ostree-branch.yml:
 
 generate-keys: $(BOOT_KEYS) 
 
-files/sign-keys/extra-db/.keep files/sign-keys/extra-kek/.keep:
+assets/sign-keys/extra-db/.keep assets/sign-keys/extra-kek/.keep:
 	[ -d $(dir $@) ] || mkdir -p $(dir $@)
 	touch $@
 
-files/sign-keys/modules/linux-module-cert.crt: files/sign-keys/linux-module-cert.crt
-	mkdir -p files/sign-keys/modules
+assets/sign-keys/modules/linux-module-cert.crt: assets/sign-keys/linux-module-cert.crt
+	mkdir -p assets/sign-keys/modules
 	cp $< $@
 
-files/sign-keys/%.crt files/sign-keys/%.key:
-	[ -d files/sign-keys ] || mkdir -p files/sign-keys
+assets/sign-keys/%.crt assets/sign-keys/%.key:
+	[ -d assets/sign-keys ] || mkdir -p assets/sign-keys
 	openssl req -new -x509 -newkey rsa:2048 -subj "/CN=RLXOS $(basename $(notdir $@)) key/" -keyout "$(basename $@).key" -out "$(basename $@).crt" -days 3650 -nodes -sha256
 
-download-microsoft-keys: files/sign-keys/extra-db/.keep files/sign-keys/extra-kek/.keep
-	curl https://www.microsoft.com/pkiops/certs/MicCorUEFCA2011_2011-06-27.crt | openssl x509 -inform der -outform pem >files/sign-keys/extra-kek/mic-kek.crt
-	echo 77fa9abd-0359-4d32-bd60-28f4e78f784b >files/sign-keys/extra-kek/mic-kek.owner
-	curl https://www.microsoft.com/pkiops/certs/MicCorUEFCA2011_2011-06-27.crt | openssl x509 -inform der -outform pem >files/sign-keys/extra-db/mic-other.crt
-	echo 77fa9abd-0359-4d32-bd60-28f4e78f784b >files/sign-keys/extra-db/mic-other.owner
-	curl https://www.microsoft.com/pkiops/certs/MicWinProPCA2011_2011-10-19.crt | openssl x509 -inform der -outform pem >files/sign-keys/extra-db/mic-win.crt
-	echo 77fa9abd-0359-4d32-bd60-28f4e78f784b >files/sign-keys/extra-db/mic-win.owner
+download-microsoft-keys: assets/sign-keys/extra-db/.keep assets/sign-keys/extra-kek/.keep
+	curl https://www.microsoft.com/pkiops/certs/MicCorUEFCA2011_2011-06-27.crt | openssl x509 -inform der -outform pem >assets/sign-keys/extra-kek/mic-kek.crt
+	echo 77fa9abd-0359-4d32-bd60-28f4e78f784b >assets/sign-keys/extra-kek/mic-kek.owner
+	curl https://www.microsoft.com/pkiops/certs/MicCorUEFCA2011_2011-06-27.crt | openssl x509 -inform der -outform pem >assets/sign-keys/extra-db/mic-other.crt
+	echo 77fa9abd-0359-4d32-bd60-28f4e78f784b >assets/sign-keys/extra-db/mic-other.owner
+	curl https://www.microsoft.com/pkiops/certs/MicWinProPCA2011_2011-10-19.crt | openssl x509 -inform der -outform pem >assets/sign-keys/extra-db/mic-win.crt
+	echo 77fa9abd-0359-4d32-bd60-28f4e78f784b >assets/sign-keys/extra-db/mic-win.owner
 

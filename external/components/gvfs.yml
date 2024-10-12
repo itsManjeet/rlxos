@@ -15,6 +15,7 @@ configure: >-
   -D dnssd=false
   -D onedrive=false
   -D goa=false
+  -D google=false
   -D cdda=false
 
 depends:

@@ -34,7 +34,8 @@ Recipe::Recipe(
         for (auto const& dep : config.node["sources"])
             sources.emplace_back(dep.as<std::string>());
     }
-    element_id = std::filesystem::relative(filepath, search_path / "elements")
+    element_id = std::filesystem::path(
+            filepath.substr((search_path / "external").string().size() + 1))
                          .replace_extension();
 }
 

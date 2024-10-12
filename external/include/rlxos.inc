@@ -1,5 +1,5 @@
 script: |-
-    cmake -S /rlxos/src/%{id} -B %{build-dir}     \
+    cmake -S /rlxos -B %{build-dir}     \
         -DCMAKE_INSTALL_PREFIX=%{prefix}          \
         -DCMAKE_INSTALL_SYSCONFDIR=%{sysconfdir}  \
         -DCMAKE_INSTALL_BINDIR=%{bindir}          \
@@ -11,5 +11,5 @@ script: |-
         -DCMAKE_BUILD_TYPE=Release                \
         -DCMAKE_MODULE_PATH=/rlxos/cmake %{configure}
 
-    cmake --build %{build-dir} %{compile}
-    DESTDIR=%{install-root} cmake --install %{build-dir} %{install}
+    cmake --build %{build-dir} %{compile} --target %{id}
+    DESTDIR=%{install-root} cmake --install %{build-dir} %{install} --target %{id}

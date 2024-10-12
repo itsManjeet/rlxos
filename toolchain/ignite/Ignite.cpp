@@ -313,11 +313,6 @@ Container Ignite::setup_container(
                     states.end());
         }
 
-        auto include_parts = std::vector<std::string>();
-        for (auto const& i : recipe.config.node["include-parts"])
-            include_parts.push_back(i.as<std::string>());
-
-        auto include_core = recipe.config.get<bool>("include-core", true);
         for (auto const& [path, info, cached] : states) {
             auto installation_path = std::filesystem::path("install-root") /
                                      recipe.package_name();
@@ -325,8 +320,7 @@ Container Ignite::setup_container(
                     recipe.name() + "-include-path",
                     recipe.config.get<std::string>(
                             "include-root", installation_path.string()));
-            integrate(container, info, installation_path, include_parts,
-                    !include_core);
+            integrate(container, info, installation_path);
         }
     }
 
@@ -338,8 +332,7 @@ std::filesystem::path Ignite::cachefile(const Recipe& recipe) {
 }
 
 void Ignite::integrate(Container& container, const Recipe& recipe,
-        const std::filesystem::path& root, std::vector<std::string> extras,
-        bool skip_core) {
+        const std::filesystem::path& root) {
     auto container_root =
             container.host_root /
             (root.has_root_path()
@@ -349,53 +342,47 @@ void Ignite::integrate(Container& container, const Recipe& recipe,
     std::filesystem::create_directories(container_root);
 
     auto cache_file_path = cachefile(recipe);
-    for (auto& e : extras) e.insert(e.begin(), '.');
-    if (!skip_core) { extras.insert(extras.begin(), {""}); }
-    for (auto const& i : extras) {
-        auto sub_cache_file_path = cache_file_path.string() + i;
-        if (!std::filesystem::exists(sub_cache_file_path)) {
-            throw std::runtime_error(recipe.id + " not yet cached");
-        }
-        try {
-            auto extractor = Executor("/bin/tar")
-                                     .arg("-xPhf")
-                                     .arg(sub_cache_file_path)
-                                     .arg("-C")
-                                     .arg(container_root);
+    try {
+        auto extractor = Executor("/bin/tar")
+                                 .arg("-xPhf")
+                                 .arg(cache_file_path)
+                                 .arg("-C")
+                                 .arg(container_root);
 
-            if (root.empty()) {
-                extractor.arg("--exclude=./etc/hosts")
-                        .arg("--exclude=./etc/hostname")
-                        .arg("--exclude=./etc/resolve.conf")
-                        .arg("--exclude=./proc")
-                        .arg("--exclude=./run")
-                        .arg("--exclude=./sys")
-                        .arg("--exclude=./dev");
-            }
-
-            extractor.execute();
-        } catch (const std::exception& exception) {
-            throw std::runtime_error("failed to integrate " +
-                                     recipe.package_name(recipe.element_id) +
-                                     i + " " + exception.what());
+        if (root.empty()) {
+            extractor.arg("--exclude=./etc/hosts")
+                    .arg("--exclude=./etc/hostname")
+                    .arg("--exclude=./etc/resolve.conf")
+                    .arg("--exclude=./proc")
+                    .arg("--exclude=./run")
+                    .arg("--exclude=./sys")
+                    .arg("--exclude=./dev");
         }
+
+        extractor.execute();
+    } catch (const std::exception& exception) {
+        throw std::runtime_error("failed to integrate " +
+                                 recipe.package_name(recipe.element_id) + " " +
+                                 exception.what());
     }
 
-    if (root.empty() && !recipe.integration.empty()) {
-        auto integration_script = recipe.resolve(recipe.integration, config);
-        Executor("/bin/sh")
-                .arg("-ec")
-                .arg(integration_script)
-                .container(&container)
-                .execute();
+    if (root.empty()) {
+        if (!recipe.integration.empty()) {
+            auto integration_script =
+                    recipe.resolve(recipe.integration, config);
+            Executor("/bin/sh")
+                    .arg("-ec")
+                    .arg(integration_script)
+                    .container(&container)
+                    .execute();
+        }
     } else {
         auto meta_info = recipe;
-        meta_info.id = recipe.element_id;
-
         auto data_dir = container_root / "usr" / "share" / "pkgupd" /
-                        "manifest" / meta_info.name();
+                        "manifest" / meta_info.package_name();
         std::filesystem::create_directories(data_dir);
-
+        std::cout << "Iginite::integrate::save_data(" << recipe.package_name()
+                  << ")@" << meta_info.package_name() << "\n";
         {
             std::ofstream writer(data_dir / "info");
             writer << meta_info.str();
@@ -735,13 +722,9 @@ void Ignite::pack(const Recipe& build_info, Container* container,
         const std::filesystem::path& install_root,
         const std::filesystem::path& package) {
     auto install_root_package = install_root / build_info.package_name();
-    auto install_root_devel =
-            install_root / (build_info.package_name() + ".devel");
     auto install_root_dbg = install_root / (build_info.package_name() + ".dbg");
-    auto install_root_doc = install_root / (build_info.package_name() + ".doc");
 
-    for (auto const& i :
-            {install_root_dbg, install_root_devel, install_root_doc}) {
+    for (auto const& i : {install_root_dbg}) {
         std::filesystem::create_directories(i);
     }
 
@@ -775,25 +758,10 @@ void Ignite::pack(const Recipe& build_info, Container* container,
         std::filesystem::rename(filepath, replaced_path);
     };
 
-    for (auto const& devel :
-            {"usr/include", "usr/lib/cmake", "usr/lib/pkgconfig"}) {
-        if (auto path = install_root_package / devel;
-                std::filesystem::exists(path)) {
-            move_file(path, install_root_devel);
-        }
-    }
-
     for (auto const& dbg : {"usr/src", "usr/lib/debug"}) {
         if (auto path = install_root_package / dbg;
                 std::filesystem::exists(path)) {
             move_file(path, install_root_dbg);
-        }
-    }
-
-    for (auto const& dbg : {"usr/share/doc", "usr/share/man"}) {
-        if (auto path = install_root_package / dbg;
-                std::filesystem::exists(path)) {
-            move_file(path, install_root_doc);
         }
     }
 
@@ -808,8 +776,6 @@ void Ignite::pack(const Recipe& build_info, Container* container,
             continue;
         } else if (i.path().has_extension() && i.path().extension() == ".la") {
             std::filesystem::remove(i.path());
-        } else if (i.path().has_extension() && i.path().extension() == ".a") {
-            move_file(i.path(), install_root_devel);
         } else if (i.path().has_extension() && i.path().extension() == ".dbg") {
             move_file(i.path(), install_root_dbg);
         }
@@ -832,8 +798,6 @@ void Ignite::pack(const Recipe& build_info, Container* container,
     for (auto const& i : std::map<std::string, std::string>{
                  {"", install_root_package},
                  {".dbg", install_root_dbg},
-                 {".devel", install_root_devel},
-                 {".doc", install_root_doc},
          }) {
         Executor("/bin/tar")
                 .arg("--zstd")

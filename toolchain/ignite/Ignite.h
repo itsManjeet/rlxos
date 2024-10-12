@@ -59,6 +59,8 @@ public:
         return pool;
     }
 
+    [[nodiscard]] std::map<std::string, Recipe>& get_pool() { return pool; }
+
     void resolve(const std::vector<std::string>& id, std::vector<State>& output,
             bool devel = true, bool include_depends = true,
             bool include_extra = true);
@@ -72,9 +74,7 @@ public:
             ContainerType container_type = ContainerType::Shell);
 
     void integrate(Container& container, const Recipe& build_info,
-            const std::filesystem::path& root = {},
-            std::vector<std::string> extras = {"devel"},
-            bool skip_core = false);
+            const std::filesystem::path& root = {});
 
     void build(const Recipe& build_info);
 

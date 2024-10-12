@@ -46,9 +46,9 @@ else
 	exit 1
 endif
 
-filepath: $(IGNITE) version.yml ostree-branch.yml  channel.yml
+cache-path: $(IGNITE) version.yml ostree-branch.yml  channel.yml
 ifdef ELEMENT
-	@IGNITE_NO_MESSAGE=1 $(IGNITE) filepath -cache-path $(CACHE_PATH) $(ELEMENT)
+	@IGNITE_NO_MESSAGE=1 $(IGNITE) cache-path -cache-path $(CACHE_PATH) $(ELEMENT)
 else
 	@echo "no ELEMENT specified"
 	exit 1

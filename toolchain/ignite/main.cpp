@@ -31,6 +31,7 @@ Commands:
   build <recipes...>        Build artifact of specified recipes
   status <recipe>           Print if artifact is cached or need to build
   pull <recipe>             Pull artifact cache from artifact-url:
+  cache-path <recipe>       Print the cache path of recipe
 
 Options:
   -project-path <path>      Specify project path
@@ -70,6 +71,23 @@ int pull(Ignite* ignite, const std::vector<std::string>& args) {
     return 0;
 }
 
+int cachepath(Ignite* ignite, const std::vector<std::string>& args) {
+    if (args.size() != 1) {
+        std::cerr << "require exactly one argument" << std::endl;
+        return 1;
+    }
+
+    auto recipe = ignite->get_pool().find(args[0]);
+    if (recipe == ignite->get_pool().end()) {
+        std::cerr << "no recipe found with id '" << args[0] << "'" << std::endl;
+        return 1;
+    }
+
+    recipe->second.cache = ignite->hash(recipe->second);
+    std::cout << ignite->cachefile(recipe->second) << std::endl;
+    return 0;
+}
+
 int build(Ignite* ignite, const std::vector<std::string>& args) {
     std::vector<Ignite::State> states;
     ignite->resolve(args, states);
@@ -96,7 +114,8 @@ int status(Ignite* ignite, const std::vector<std::string>& args) {
     std::cout << '\n'
               << "  TOTAL COMPONENTS : " << states.size() << '\n'
               << "  TOTAL CACHED     : " << total_cached << '\n'
-              << "  NEED TO BUILD    : " << states.size() - total_cached << '\n';
+              << "  NEED TO BUILD    : " << states.size() - total_cached
+              << '\n';
     return 0;
 }
 
@@ -126,6 +145,8 @@ int main(int argc, char** argv) {
                 function = status;
             } else if (std::strcmp(argv[i], "pull") == 0) {
                 function = pull;
+            } else if (std::strcmp(argv[i], "cache-path") == 0) {
+                function = cachepath;
             } else {
                 std::cerr << "Unknown option: " << argv[i] << std::endl;
                 return 1;

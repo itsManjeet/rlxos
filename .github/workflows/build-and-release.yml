@@ -4,17 +4,12 @@ on:
   push:
 
 env:
-  NO_PROGRESS: 1
-  SERVER_REPO_PATH: ${{secrets.SERVER_REPO_PATH}}
-  SERVER_REPO_URL: ${{secrets.SERVER_REPO_URL}}
   CACHE_PATH: ${{secrets.SERVER_REPO_PATH}}
   OSTREE_REPO: ${{secrets.OSTREE_REPO}}
   OSTREE_GPG: ${{secrets.OSTREE_GPG}}
   VERSION: ${{ github.run_number }}
-  SOURCEFORGE_PREFIX: ${{secrets.SOURCEFORGE_PREFIX}}
   CHANNEL: ${{ endsWith(github.ref, 'stable') && 'stable' || 'unstable' }}
   OSTREE_BRANCH: "x86_64/os/${{ endsWith(github.ref, 'stable') && 'stable' || 'unstable' }}"
-  APPMARKET_PATH: ${{secrets.APPMARKET_PATH}}
   SIGN_KEYS_PATH: ${{secrets.SIGN_KEYS_PATH}}
 
 jobs:
@@ -31,9 +26,6 @@ jobs:
       - name: Add sign keys
         run: rm -rf assets/sign-keys && cp -r ${SIGN_KEYS_PATH} assets/sign-keys
 
-      - name: Build system packages
-        run: make ELEMENT=platform.yml
-
       - name: Write changelog
         run: echo "${{ github.event.head_commit.message }}" > ChangeLog
 
@@ -43,45 +35,14 @@ jobs:
       - name: Build Installer ISO
         run: make ELEMENT=installer/image.yml
 
+      - name: Checkout installer iso
+        run: make checkout ELEMENT=installer/image.yml
 
-  update-installer-iso:
-    name: Update Installer ISO
-    runs-on: self-hosted
-    timeout-minutes: 47000
-    needs: [ build ]
-
-    steps:
-      - uses: actions/checkout@v1
+      - uses: svenstaro/upload-release-action@v2
         with:
-          token: ${{ secrets.CI_TOKEN }}
-          submodules: true
-      - name: Update installer ISO
-        run: |
-          make checkout ELEMENT=installer/image.yml DESTDIR=${SERVER_REPO_PATH}/releases/${CHANNEL}/
-          (cd ${SERVER_REPO_PATH}/releases/${CHANNEL}/; zsyncmake -b 2048 -C -u ${SERVER_REPO_URL}/releases/${CHANNEL}/rlxos-${CHANNEL}-installer.iso rlxos-${CHANNEL}-installer.iso)
-
-  update-market:
-    name: Update Market
-    runs-on: self-hosted
-    needs: [ build ]
-    steps:
-      - uses: actions/checkout@v1
-        with:
-          token: ${{ secrets.CI_TOKEN }}
-          submodules: true
-      - name: Generate AppImages meta
-        run: make update-app-market
-
-  update-mirrors:
-    name: Update ISO on mirrors
-    runs-on: self-hosted
-    environment: deploy
-    needs: [ update-installer-iso ]
-    steps:
-      - uses: actions/checkout@v1
-        with:
-          token: ${{ secrets.CI_TOKEN }}
-          submodules: true
-      - name: Upload to sourceforge
-        run: |
-          scp -pr ${SERVER_REPO_PATH}/releases/${CHANNEL}/ ${SOURCEFORGE_PREFIX}/
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: checkout/rlxos-${{env.CHANNEL}}-installer.iso
+          asset_name: rlxos-${{env.CHANNEL}}-installer.iso
+          tag: ${{env.CHANNEL}}-${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || 'continuous' }}
+          overwrite: true
+          body: ${{ github.event.head_commit.message }}

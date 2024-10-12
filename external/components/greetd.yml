@@ -29,8 +29,14 @@ script: |-
   EOF
   make -C man DESTDIR="%{install-root}" PREFIX=/usr install
 
-  mkdir -p %{install-root}%{sysconfdir}
-  cp -rf /assets/greetd %{install-root}%{sysconfdir}/
+  install -vDm 0644 /dev/stdin %{install-root}%{sysconfdir}/config.toml << "EOF"
+  [terminal]
+  vt = 1
+
+  [default_session]
+  command = "compositor"
+  user = "initial-setup"
+  EOF
 
 
 depends:

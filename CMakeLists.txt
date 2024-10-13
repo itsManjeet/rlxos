@@ -9,8 +9,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 option(TOOLCHAIN "Build toolchain" ON)
 
-add_subdirectory(system)
-
 if (TOOLCHAIN)
         add_subdirectory(toolchain)
+else()
+        add_subdirectory(system)
 endif()

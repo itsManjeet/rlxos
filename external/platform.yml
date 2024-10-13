@@ -56,7 +56,7 @@ depends:
   - components/gstreamer.yml
   - components/e2fsprogs.yml
   - components/py/py-pip.yml
-  - components/ufw.yml
+
   - components/zram-generator.yml
   
   - components/plymouth.yml
@@ -74,8 +74,6 @@ depends:
   - components/dracut.yml
   - components/zsync.yml
 
-  - components/firmware.yml
-  - components/sof-firmware.yml
   - components/intel-ucode.yml
 
   # Components

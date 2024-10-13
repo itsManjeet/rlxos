@@ -2792,7 +2792,6 @@ script: |-
   enable FONT_SUN12x22
   enable FONT_TER16x32
 
-  value FRAME_WARN 1024
   enable MAGIC_SYSRQ
 
   enable DEBUG_FS

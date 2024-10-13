@@ -29,14 +29,14 @@ jobs:
       - name: Write changelog
         run: echo "${{ github.event.head_commit.message }}" > ChangeLog
 
-      - name: Update Ostree
-        run: make ELEMENT=system/repo.yml update-ostree
-
       - name: Build Installer ISO
         run: make ELEMENT=installer/image.yml
 
       - name: Checkout installer iso
         run: make checkout ELEMENT=installer/image.yml
+
+      - name: Update Ostree
+        run: make ELEMENT=system/repo.yml update-ostree
 
       - uses: svenstaro/upload-release-action@v2
         with:

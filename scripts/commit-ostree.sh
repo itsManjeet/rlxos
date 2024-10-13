@@ -76,8 +76,8 @@ on_exit() {
 }
 trap on_exit EXIT
 
-${PKGUPD} ignite build ignite.cache="${CACHE_PATH}" "${element}"
-${PKGUPD} ignite checkout ignite.cache="${CACHE_PATH}" "${element}" "${checkout}"
+${IGNITE} build -cache-path "${CACHE_PATH}" "${element}"
+${IGNITE} checkout -cache-path "${CACHE_PATH}" "${element}" "${checkout}"
 
 if ! [ -d "${OSTREE_REPO}" ]; then
     ostree init --repo="${OSTREE_REPO}" --mode=archive

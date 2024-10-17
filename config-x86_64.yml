@@ -9,7 +9,7 @@ variables:
   triplet: x86_64-linux-gnu
 
 merge:
-  - toolchain/compiler.yml
-  - toolchain/environ.yml
-  - toolchain/strip.yml
-  - toolchain/variables.yml
+  - tools/compiler.yml
+  - tools/environ.yml
+  - tools/strip.yml
+  - tools/variables.yml

@@ -3,7 +3,7 @@ OSTREE_BRANCH 		    			?= $(shell uname -m)/os/$(CHANNEL)
 OSTREE_REPO 						?= ostree-repo
 OSTREE_GPG 							?= ostree-gpg
 VERSION								?= 2.0
-IGNITE								?= build/tools/ignite/ignite
+IGNITE								?= build/ignite
 CACHE_PATH							?= build/
 DESTDIR								?= checkout/
 APPMARKET_PATH						?= appmarket/
@@ -64,7 +64,7 @@ endif
 
 
 build/build.ninja: CMakeLists.txt
-	cmake -B build
+	cmake -B build -S tools/ignite
 
 $(IGNITE): build/build.ninja
 	@cmake --build build --target ignite

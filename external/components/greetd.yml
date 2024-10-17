@@ -15,7 +15,7 @@ script: |-
   
   install -Dm0644 -t "%{install-root}/%{libdir}/systemd/system/" "greetd.service"
 
-  install -Dm0644 /dev/stdin "%{install-root}/etc/%{sysconfdir}/greetd" << "EOF"
+  install -Dm0644 /dev/stdin "%{install-root}/%{sysconfdir}/pam.d/greetd" << "EOF"
   auth       required     pam_securetty.so
   auth       requisite    pam_nologin.so
   auth       include      system-auth
@@ -29,7 +29,7 @@ script: |-
   EOF
   make -C man DESTDIR="%{install-root}" PREFIX=/usr install
 
-  install -vDm 0644 /dev/stdin %{install-root}%{sysconfdir}/config.toml << "EOF"
+  install -vDm 0644 /dev/stdin %{install-root}%{sysconfdir}/greetd/config.toml << "EOF"
   [terminal]
   vt = 1
 

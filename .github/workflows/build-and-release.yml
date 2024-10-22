@@ -7,7 +7,7 @@ env:
   CACHE_PATH: ${{secrets.SERVER_REPO_PATH}}
   OSTREE_REPO: ${{secrets.OSTREE_REPO}}
   OSTREE_GPG: ${{secrets.OSTREE_GPG}}
-  VERSION: ${{ github.run_number }}
+  VERSION: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || 'continuous' }}
   CHANNEL: ${{ endsWith(github.ref, 'stable') && 'stable' || 'unstable' }}
   OSTREE_BRANCH: "x86_64/os/${{ endsWith(github.ref, 'stable') && 'stable' || 'unstable' }}"
   SIGN_KEYS_PATH: ${{secrets.SIGN_KEYS_PATH}}
@@ -27,7 +27,7 @@ jobs:
         run: rm -rf assets/sign-keys && cp -r ${SIGN_KEYS_PATH} assets/sign-keys
 
       - name: Write changelog
-        run: echo "${{ github.event.head_commit.message }}" > ChangeLog
+        run: echo -e "${{ github.event.head_commit.message }}" > ChangeLog
 
       - name: Build Installer ISO
         run: make ELEMENT=installer/image.yml
@@ -43,6 +43,6 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: checkout/rlxos-${{env.CHANNEL}}-installer.iso
           asset_name: rlxos-${{env.CHANNEL}}-installer.iso
-          tag: ${{env.CHANNEL}}-${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || 'continuous' }}
+          tag: ${{env.CHANNEL}}-${{ env.VERSION }}
           overwrite: true
           body: ${{ github.event.head_commit.message }}

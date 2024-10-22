@@ -1,5 +1,5 @@
 add_executable(compositor
-    main.c)
+    main.cpp)
 
 find_package(PkgConfig REQUIRED)
 
@@ -45,6 +45,9 @@ add_wayland_local_protocol(compositor server-header   wlr-output-power-managemen
 
 target_compile_definitions(compositor PRIVATE 
     -DWLR_USE_UNSTABLE)
+
+target_compile_options(compositor PRIVATE
+    -fpermissive)
 
 target_link_libraries(compositor
     PkgConfig::WLROOTS

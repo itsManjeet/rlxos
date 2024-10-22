@@ -88,6 +88,9 @@ depends:
   - components/wlroots.yml
   - components/greetd.yml
 
+  - components/wmenu.yml
+  - components/foot.yml
+
   - kernel/linux.yml
 
   - system/systemd-preset.yml

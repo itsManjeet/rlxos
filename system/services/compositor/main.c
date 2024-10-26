@@ -11,11 +11,6 @@
 #include <unistd.h>
 #include <wayland-server-core.h>
 
-#define class class_
-#define namespace namespace_
-#define static
-
-extern "C" {
 #include <wlr/backend.h>
 #include <wlr/backend/libinput.h>
 #include <wlr/render/allocator.h>
@@ -68,10 +63,7 @@ extern "C" {
 #ifdef XWAYLAND
 #    include <wlr/xwayland.h>
 #endif
-}
 
-#undef class
-#undef namespace
 
 #include <xkbcommon/xkbcommon.h>
 #ifdef XWAYLAND

@@ -1,5 +1,5 @@
 add_executable(compositor
-    main.cpp)
+    main.c)
 
 find_package(PkgConfig REQUIRED)
 

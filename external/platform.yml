@@ -1,5 +1,6 @@
 id: platform
 version: 2.0
+force-rebuild: true
 about: RLXOS platform components
 
 depends:

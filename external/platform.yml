@@ -91,6 +91,10 @@ depends:
 
   - components/wmenu.yml
   - components/foot.yml
+  - components/fonts/ibm-plex.yml
+  - components/fonts/noto.yml
+  - components/fonts/noto-cjk.yml
+  - components/fonts/fira-code.yml
 
   - kernel/linux.yml
 

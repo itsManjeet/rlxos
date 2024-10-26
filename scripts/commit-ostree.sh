@@ -105,7 +105,6 @@ ostree commit ${gpg_opts[*]}    \
     --branch="${ref}"           \
     --tree=ref="${commit}"      \
     --skip-if-unchanged         \
-    --add-metadata=version="${version}" \
     --subject="${SUBJECT:-}"    \
     --body="${BODY:-}"
 

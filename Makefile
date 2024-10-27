@@ -69,7 +69,7 @@ define BUILD_EXTENSION
 endef
 
 extensions: $(IGNITE)
-	$(foreach ext,$(EXTENSIONS),$(BUILD_EXTENSION));
+	$(foreach ext,$(EXTENSIONS),$(BUILD_EXTENSION))
 
 build/build.ninja: CMakeLists.txt
 	cmake -B build -S tools/ignite

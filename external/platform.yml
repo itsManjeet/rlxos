@@ -1,6 +1,6 @@
 id: platform
 version: 2.0
-force-rebuild: true
+merge: [external/include/meta.inc]
 about: RLXOS platform components
 
 depends:
@@ -57,9 +57,9 @@ depends:
   - components/gstreamer.yml
   - components/e2fsprogs.yml
   - components/py/py-pip.yml
-
+  - components/ufw.yml
   - components/zram-generator.yml
-  
+
   - components/plymouth.yml
   - components/fuse2.yml
 
@@ -69,44 +69,50 @@ depends:
   - components/libconfuse.yml
 
   - components/xdg-desktop-portal-gtk.yml
-  - components/xdg-desktop-portal-wlr.yml
+  - components/xdg-desktop-portal-xapp.yml
   - components/xdg-dbus-proxy.yml
+  - components/wireplumber.yml
+  - components/gnome-keyring.yml
   - components/grub.yml
   - components/dracut.yml
   - components/zsync.yml
 
+  - components/firmware.yml
+  - components/sof-firmware.yml
   - components/intel-ucode.yml
+
+  - components/system-config-printer.yml
 
   # Components
   - components/gvfs.yml
   - components/xdg-user-dirs-gtk.yml
   - components/xdg-utils.yml
+  - components/flatpak.yml
   - components/power-profiles-daemon.yml
   - components/networkmanager.yml
+  - components/networkmanager-openvpn.yml
   - components/network-manager-applet.yml
+  - components/blueman.yml
   - components/ntfs-3g.yml
+  - components/firefox.yml
+  - components/file-roller.yml
 
-  - components/wlroots.yml
-  - components/greetd.yml
+  - components/meta-xfce4.yml
+  - components/meta-x11.yml
+  - components/lightdm.yml
+  - components/picom.yml
 
-  - components/wmenu.yml
-  - components/foot.yml
-  - components/fonts/ibm-plex.yml
-  - components/fonts/noto.yml
-  - components/fonts/noto-cjk.yml
-  - components/fonts/fira-code.yml
+  - components/initial-setup.yml
+  - components/distrobox.yml
+  - components/gnome/gnome-software.yml
+
 
   - kernel/linux.yml
+  - components/nvidia.yml
 
   - system/systemd-preset.yml
   - system/etc-shells.yml
   - system/etc-skel.yml
   - system/etc-sysctl.yml
   - system/etc-default-useradd.yml
-
-script: |-
-  cmake -B %{build-dir} -S /rlxos -DTOOLCHAIN=OFF \
-    -DCMAKE_INSTALL_PREFIX=%{prefix}
-  
-  cmake --build %{build-dir}
-  DESTDIR=%{install-root} cmake --install %{build-dir}
+  - system/x11-config.yml

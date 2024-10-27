@@ -11,6 +11,7 @@ KEY_TYPES							:= PK KEK DB VENDOR linux-module-cert
 ALL_CERTS							 = $(foreach KEY,$(KEY_TYPES),assets/sign-keys/$(KEY).crt)
 ALL_KEYS							 = $(foreach KEY,$(KEY_TYPES),assets/sign-keys/$(KEY).key)
 BOOT_KEYS							 = $(ALL_KEYS) $(ALL_CERTS) assets/sign-keys/extra-db/.keep assets/sign-keys/extra-kek/.keep assets/sign-keys/modules/linux-module-cert.crt
+EXTENSIONS							 = $(wildcard external/extensions/*.yml)
 
 -include config.mk
 
@@ -62,11 +63,18 @@ else
 	exit 1
 endif
 
+define BUILD_EXTENSION
+	OSTREE_BRANCH="x86_64/extension/$(shell basename $(ext:external/%.yml=%))/$(CHANNEL)" \
+		$(MAKE) update-ostree ELEMENT=$(ext:external/%=%) 
+endef
+
+extensions: $(IGNITE)
+	$(foreach ext,$(EXTENSIONS),$(BUILD_EXTENSION));
 
 build/build.ninja: CMakeLists.txt
 	cmake -B build -S tools/ignite
 
-$(IGNITE): build/build.ninja
+$(IGNITE): build/build.ninja version.yml ostree-branch.yml channel.yml
 	@cmake --build build --target ignite
 
 clean:

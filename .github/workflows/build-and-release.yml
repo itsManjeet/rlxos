@@ -38,11 +38,5 @@ jobs:
       - name: Update Ostree
         run: make ELEMENT=system/repo.yml update-ostree
 
-      - uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: checkout/rlxos-${{env.CHANNEL}}-installer.iso
-          asset_name: rlxos-${{env.CHANNEL}}-installer.iso
-          tag: ${{env.CHANNEL}}-${{ env.VERSION }}
-          overwrite: true
-          body: ${{ github.event.head_commit.message }}
+      - name: Update extensions
+        run: make extensions

@@ -1,0 +1,6 @@
+id: gcc-stage1
+merge:
+  - external/include/gcc.inc
+
+build-depends:
+  - components/bootstrap/binutils-stage1.yml

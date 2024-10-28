@@ -1,0 +1,8 @@
+id: plasma-workspace-wallpapers
+merge: [external/include/plasma.inc]
+about: Plasma plasma-workspace-wallpapers
+
+depends:
+  - components/qt.yml
+build-depends:
+  - components/extra-cmake-modules.yml

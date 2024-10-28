@@ -1,0 +1,9 @@
+id: attica
+about: KF5 attica
+
+depends:
+  - components/qt.yml
+build-depends:
+  - components/extra-cmake-modules.yml
+
+merge: [external/include/kf5.inc]

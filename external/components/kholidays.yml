@@ -1,0 +1,8 @@
+id: kholidays
+merge: [external/include/kf5.inc]
+about: KF5 kholidays
+
+depends:
+  - components/qt.yml
+build-depends:
+  - components/extra-cmake-modules.yml

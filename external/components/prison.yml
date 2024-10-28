@@ -1,0 +1,9 @@
+id: prison
+merge: [external/include/kf5.inc]
+about: KF5 prison
+
+depends:
+  - components/qt.yml
+  - components/qrencode.yml
+build-depends:
+  - components/extra-cmake-modules.yml

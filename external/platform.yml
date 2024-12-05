@@ -106,6 +106,13 @@ depends:
   - components/meta-x11.yml
   - components/lightdm.yml
 
+  - components/fonts/ibm-plex.yml
+  - components/fonts/ibm-plex-nerd-fonts.yml
+  - components/fonts/fira-code.yml
+  - components/fonts/noto.yml
+  - components/fonts/noto-cjk.yml
+  - components/fonts/noto-emoji.yml
+
   - components/initial-setup.yml
   - components/distrobox.yml
 

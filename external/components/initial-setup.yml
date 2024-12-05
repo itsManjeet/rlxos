@@ -19,7 +19,7 @@ post-script: |-
   [SeatDefaults]
   autologin-user=initial-setup
   autologin-user-timeout=0
-  autologin-session=xfce
+  autologin-session=awesome
   EOF
 
   install -v -D /dev/stdin %{install-root}/%{datadir}/polkit-1/rules.d/10-initial-setup.rules << "EOF"

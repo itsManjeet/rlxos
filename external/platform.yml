@@ -97,15 +97,17 @@ depends:
   - components/firefox.yml
   - components/file-roller.yml
 
-  - components/meta-xfce4.yml
+  - components/awesome.yml
+  - components/dmenu.yml
+  - components/scrot.yml
+  - components/tint2.yml
+  - components/picom.yml
+  - components/rofi.yml
   - components/meta-x11.yml
   - components/lightdm.yml
-  - components/picom.yml
 
   - components/initial-setup.yml
   - components/distrobox.yml
-  - components/gnome/gnome-software.yml
-
 
   - kernel/linux.yml
   - components/nvidia.yml

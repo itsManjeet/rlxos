@@ -33,7 +33,9 @@ jobs:
         run: make ELEMENT=installer/image.yml
 
       - name: Checkout installer iso
-        run: make checkout ELEMENT=installer/image.yml
+        run: |
+          make checkout ELEMENT=installer/image.yml DESTDIR=${CACHE_PATH}/releases/${CHANNEL}
+          (cd ${SERVER_REPO_PATH}/releases/${CHANNEL}/; zsyncmake -b 2048 -C -u ${SERVER_REPO_URL}/releases/${CHANNEL}/rlxos-${CHANNEL}-installer.iso rlxos-${CHANNEL}-installer.iso)
 
       - name: Update Ostree
         run: make ELEMENT=system/repo.yml update-ostree

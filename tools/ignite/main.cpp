@@ -48,6 +48,7 @@ int pull(Ignite* ignite, const std::vector<std::string>& args) {
     ignite->resolve(args, states);
     auto const artifact_url = ignite->config.get<std::string>(
             "artifact-url", "https://repo.rlxos.dev");
+    std::filesystem::create_directories(cache_path);
 
     for (auto& [id, recipe, cached] : states) {
         if (!cached) {
@@ -72,7 +73,7 @@ int pull(Ignite* ignite, const std::vector<std::string>& args) {
     return 0;
 }
 
-int cachepath(Ignite* ignite, const std::vector<std::string>& args) {
+int get_cache_path(Ignite* ignite, const std::vector<std::string>& args) {
     if (args.size() != 1) {
         std::cerr << "require exactly one argument" << std::endl;
         return 1;
@@ -170,7 +171,7 @@ int main(int argc, char** argv) {
             } else if (std::strcmp(argv[i], "pull") == 0) {
                 function = pull;
             } else if (std::strcmp(argv[i], "cache-path") == 0) {
-                function = cachepath;
+                function = get_cache_path;
             } else if (std::strcmp(argv[i], "checkout") == 0) {
                 function = checkout;
             } else {

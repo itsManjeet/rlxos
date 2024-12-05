@@ -3,7 +3,7 @@ OSTREE_BRANCH 		    			?= $(shell uname -m)/os/$(CHANNEL)
 OSTREE_REPO 						?= ostree-repo
 OSTREE_GPG 							?= ostree-gpg
 VERSION								?= 2.0
-IGNITE								?= build/ignite
+IGNITE								?= build/tools/ignite/ignite
 CACHE_PATH							?= build/
 DESTDIR								?= checkout/
 APPMARKET_PATH						?= appmarket/
@@ -34,12 +34,12 @@ export CACHE_PATH
 
 .PHONY: clean all docs version.yml channel.yml ostree-branch.yml apps TODO.ELEMENTS
 
-all: $(IGNITE) version.yml ostree-branch.yml channel.yml
+all: $(IGNITE)
 ifdef ELEMENT
 	$(IGNITE) build -cache-path $(CACHE_PATH) $(ELEMENT)
 endif
 
-status: $(IGNITE) version.yml ostree-branch.yml channel.yml
+status: $(IGNITE)
 ifdef ELEMENT
 	$(IGNITE) status -cache-path $(CACHE_PATH) $(ELEMENT)
 else
@@ -47,7 +47,7 @@ else
 	exit 1
 endif
 
-cache-path: $(IGNITE) version.yml ostree-branch.yml  channel.yml
+cache-path: $(IGNITE)
 ifdef ELEMENT
 	@IGNITE_NO_MESSAGE=1 $(IGNITE) cache-path -cache-path $(CACHE_PATH) $(ELEMENT)
 else
@@ -55,7 +55,15 @@ else
 	exit 1
 endif
 
-checkout: $(IGNITE) version.yml ostree-branch.yml  channel.yml
+pull: $(IGNITE)
+ifdef ELEMENT
+	@IGNITE_NO_MESSAGE=1 $(IGNITE) pull -cache-path $(CACHE_PATH) $(ELEMENT)
+else
+	@echo "no ELEMENT specified"
+	exit 1
+endif
+
+checkout: $(IGNITE)
 ifdef ELEMENT
 	$(IGNITE) checkout -cache-path $(CACHE_PATH) $(ELEMENT) $(DESTDIR)
 else
@@ -72,7 +80,7 @@ extensions: $(IGNITE)
 	$(foreach ext,$(EXTENSIONS),$(BUILD_EXTENSION))
 
 build/build.ninja: CMakeLists.txt
-	cmake -B build -S tools/ignite
+	cmake -B build
 
 $(IGNITE): build/build.ninja version.yml ostree-branch.yml channel.yml
 	@cmake --build build --target ignite
@@ -95,11 +103,11 @@ $(OSTREE_GPG)/key-config:
 assets/rlxos.gpg: $(OSTREE_GPG)/key-config
 	gpg --homedir=$(OSTREE_GPG) --export --armor >"$@"
 
-update-app-market: $(IGNITE) version.yml ostree-branch.yml channel.yml
+update-app-market: $(IGNITE)
 	$(IGNITE) meta -cache-path $(CACHE_PATH) $(APPMARKET_PATH)/$(CHANNEL)
 	./scripts/extract-icons.sh $(APPMARKET_PATH)/$(CHANNEL)/apps/ $(APPMARKET_PATH)/$(CHANNEL)/icons/
 
-update-ostree: $(IGNITE) version.yml ostree-branch.yml channel.yml assets/rlxos.gpg
+update-ostree: $(IGNITE) assets/rlxos.gpg
 ifndef ELEMENT
 	@echo "no ELEMENT specified"
 	@exit 1

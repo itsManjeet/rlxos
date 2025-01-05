@@ -8,8 +8,8 @@ env:
   OSTREE_REPO: ${{secrets.OSTREE_REPO}}
   OSTREE_GPG: ${{secrets.OSTREE_GPG}}
   VERSION: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || 'continuous' }}
-  CHANNEL: ${{ endsWith(github.ref, 'stable') && 'stable' || 'unstable' }}
-  OSTREE_BRANCH: "x86_64/os/${{ endsWith(github.ref, 'stable') && 'stable' || 'unstable' }}"
+  CHANNEL: ${{ endsWith(github.ref, 'stable') && 'stable' || (endsWith(github.ref, 'next') && 'next' || 'unstable')  }}
+  OSTREE_BRANCH: "x86_64/os/${{ endsWith(github.ref, 'stable') && 'stable' || (endsWith(github.ref, 'next') && 'next' || 'unstable')  }}"
   SIGN_KEYS_PATH: ${{secrets.SIGN_KEYS_PATH}}
 
 jobs:

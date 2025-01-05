@@ -1,5 +1,5 @@
 id: gtk-layer-shell
-version: 0.8.2
+version: 0.9.0
 about: Library to create Wayland desktop components using the Layer Shell protocol
 
 configure: >-

@@ -1,5 +1,5 @@
 id: xfce4-notifyd
-version: 0.9.4
+version: 0.9.6
 about: Notification daemon for Xfce
 
 variables:
@@ -29,6 +29,7 @@ depends:
   - components/libcanberra.yml
   - components/xfce4/xfconf.yml
   - components/sqlite.yml
+  - components/gtk-layer-shell.yml
   - components/xfce4/libxfce4ui.yml
   - components/xfce4/libxfce4util.yml
 build-depends:

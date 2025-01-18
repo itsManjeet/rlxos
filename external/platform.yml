@@ -97,14 +97,10 @@ depends:
   - components/firefox.yml
   - components/file-roller.yml
 
-  - components/awesome.yml
-  - components/dmenu.yml
-  - components/scrot.yml
-  - components/tint2.yml
-  - components/picom.yml
-  - components/rofi.yml
+  - components/meta-xfce4.yml
   - components/meta-x11.yml
   - components/lightdm.yml
+  - components/picom.yml
 
   - components/fonts/ibm-plex.yml
   - components/fonts/ibm-plex-nerd-fonts.yml
@@ -115,6 +111,8 @@ depends:
 
   - components/initial-setup.yml
   - components/distrobox.yml
+  - components/gnome/gnome-software.yml
+
 
   - kernel/linux.yml
   - components/nvidia.yml

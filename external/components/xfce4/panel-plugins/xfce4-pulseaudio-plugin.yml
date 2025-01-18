@@ -1,5 +1,5 @@
 id: xfce4-pulseaudio-plugin
-version: 0.4.8
+version: 0.4.9
 about: Pulse audio plugin for xfce4 panel
 
 depends:

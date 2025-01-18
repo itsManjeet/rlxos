@@ -32,6 +32,7 @@ Commands:
   status <recipe>           Print if artifact is cached or need to build
   pull <recipe>             Pull artifact cache from artifact-url:
   cache-path <recipe>       Print the cache path of recipe
+  update                    Check for package updates
   checkout <recipe> <path>  Checkout artifact at <path>
 
 Options:
@@ -158,6 +159,89 @@ int status(Ignite* ignite, const std::vector<std::string>& args) {
     return 0;
 }
 
+auto check_update(Recipe* recipe) -> std::tuple<bool, std::string> {
+    if (recipe->sources.empty()) return {false, ""};
+    auto url = recipe->sources[0];
+    url = url.substr(0, url.find_last_of('/'));
+
+    auto contains = [](const std::string& url,
+                            const std::vector<std::string>& s) -> bool {
+        for (auto const a : s) {
+            if (url.find(a) != std::string::npos) { return true; }
+        }
+        return false;
+    };
+
+    auto get_part = [](const std::string& url, int start,
+                            int end) -> std::string {
+        std::istringstream stream(url);
+        std::string part;
+        std::vector<std::string> tokens;
+
+        while (std::getline(stream, part, '/')) { tokens.push_back(part); }
+
+        if (start > 0 && end >= start &&
+                end <= static_cast<int>(tokens.size())) {
+            std::ostringstream result;
+            for (int i = start - 1; i < end; ++i) {
+                if (i > start - 1) { result << '/'; }
+                result << tokens[i];
+            }
+            return result.str();
+        }
+
+        return "";
+    };
+
+    if (contains(url, {"github.com"})) {
+        url = "https://github.com/" + get_part(url, 4, 5) + "/tags";
+    } else if (contains(url, {"gitlab.com"})) {
+        url = "https://gitlab.com/" + get_part(url, 4, 5) + "/tags";
+    } else if (contains(url, {"downloads.sourceforge.net"})) {
+        url = "https://sourceforge.net/projects/" + get_part(url, 4, 4) +
+              "/rss?limit=200";
+    } else if (contains(url, {"sourceforge.net"})) {
+        url = "https://sourceforge.net/projects/" + get_part(url, 5, 5) +
+              "/rss?limit=200";
+    } else if (contains(url, {"ftp.gnome.org", "download.gnome.org"})) {
+        
+    } else if (contains(url, {"archive.xfce.org"})) {
+        url = "https://archive.xfce.org/src/" + get_part(url, 5, 5) + "/" +
+              recipe->id + "/";
+    } else if (contains(url, {"python.org", "pypi.org", "pythonhosted.org",
+                                     "pypi.io"})) {
+        url = "https://pypi.org/simple/" + recipe->id;
+    } else if (contains(url, {"rubygems.org"})) {
+        url = "https://rubygems.org/gems/" + recipe->id;
+    } else if (contains(url, {"kde.org/stable"})) {
+    }
+
+    auto [status, output] =
+            Executor("curl").arg("-Lsk").arg(recipe->sources[0]).output();
+
+    return {false, ""};
+}
+
+int update(Ignite* ignite, const std::vector<std::string>& args) {
+    std::vector<Ignite::State> states;
+    ignite->resolve(args, states);
+    auto [statu, output] = Executor("curl")
+                                   .arg("https://archlinux.org/packages/search/"
+                                        "json/?q=cursor&repo=Core&repo=Extra")
+                                   .output();
+    if (status != 0) {
+        std::cerr << "failed to fetch arch api: " << output << std::endl;
+        return 1;
+    }
+
+    for (auto& [id, recipe, cached] : states) {
+        recipe.resolve(ignite->config);
+        auto const name = recipe.id;
+        auto const version = recipe.version;
+    }
+    return 0;
+}
+
 int main(int argc, char** argv) {
 
     std::function<int(Ignite*, std::vector<std::string>)> function;
@@ -188,6 +272,8 @@ int main(int argc, char** argv) {
                 function = get_cache_path;
             } else if (std::strcmp(argv[i], "checkout") == 0) {
                 function = checkout;
+            } else if (std::strcmp(argv[i], "update") == 0) {
+                function = update;
             } else {
                 std::cerr << "Unknown option: " << argv[i] << std::endl;
                 return 1;

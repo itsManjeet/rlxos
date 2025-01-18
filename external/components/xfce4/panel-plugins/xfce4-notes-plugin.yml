@@ -1,6 +1,9 @@
 id: xfce4-notes-plugin
-version: 1.10.0
+version: 1.11.1
 about: Notes plugin for the Xfce panel
+
+depends:
+  - components/gtksourceview4.yml
 
 configure: >-
   CFLAGS="$CFLAGS -Wno-incompatible-pointer-types"

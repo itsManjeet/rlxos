@@ -1,5 +1,5 @@
 id: xfce4-xkb-plugin
-version: 0.8.3
+version: 0.8.5
 about: Plugin to switch keyboard layouts for the Xfce4 panel
 
 configure: >-

@@ -1,5 +1,5 @@
 id: xfce4-panel
-version: 4.18.6
+version: 4.20.0
 about: xfce4 panel
 
 variables:
@@ -122,6 +122,8 @@ depends:
   - components/xfce4/garcon.yml
   - components/libwnck.yml
   - components/intltool.yml
+  - components/gtk-layer-shell.yml
+  - components/xfce4/libxfce4windowing.yml
 build-depends:
   - components/vala.yml
 sources:

@@ -1,5 +1,5 @@
 id: tumbler
-version: 4.18.2
+version: 4.20.0
 about: D-Bus thumbnailing service based on the thumbnail management D-Bus Specification
 
 sources:

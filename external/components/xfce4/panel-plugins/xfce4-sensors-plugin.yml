@@ -1,5 +1,5 @@
 id: xfce4-sensors-plugin
-version: 1.4.4
+version: 1.4.5
 about: Sensors plugin for the Xfce panel
 
 depends:

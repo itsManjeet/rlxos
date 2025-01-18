@@ -1,5 +1,5 @@
 id: xfce4-session
-version: 4.18.4
+version: 4.20.0
 about: A session manager for Xfce
 
 pre-script: |-
@@ -18,6 +18,7 @@ depends:
   - components/xfce4/xfdesktop.yml
   - components/x11/xinit.yml
   - components/x11/iceauth.yml
+  - components/gtk-layer-shell.yml
 sources:
   - https://archive.xfce.org/src/xfce/xfce4-session/%{version:2}/xfce4-session-%{version}.tar.bz2
   - patches/xfce4/source-system-xinitrc-scripts.patch

@@ -1,5 +1,5 @@
 id: xfconf
-version: 4.18.3
+version: 4.20.0
 about: Xfce configuration storage system
 
 depends:

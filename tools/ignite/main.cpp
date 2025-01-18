@@ -52,9 +52,17 @@ int pull(Ignite* ignite, const std::vector<std::string>& args) {
 
     for (auto& [id, recipe, cached] : states) {
         if (!cached) {
-            recipe.resolve(ignite->config);
+            try {
+                recipe.resolve(ignite->config);
+            } catch (const std::exception& exception) {
+                std::cerr << "ERROR: " << exception.what() << " " << id
+                          << std::endl;
+                return 1;
+            }
+
             auto hash = ignite->hash(recipe);
-            auto server_url = artifact_url + "/cache/" + recipe.package_name();
+            auto server_url = artifact_url + "/cache/" +
+                              recipe.package_name(recipe.element_id);
             auto cache_file_path = ignite->cachefile(recipe);
             std::cout << "GET " << server_url << std::endl;
             int status = Executor("/bin/curl")
@@ -118,9 +126,15 @@ int build(Ignite* ignite, const std::vector<std::string>& args) {
     ignite->resolve(args, states);
     for (auto& [id, recipe, cached] : states) {
         if (!cached) {
-            recipe.resolve(ignite->config);
-            std::cout << "building " << id << std::endl;
-            ignite->build(recipe);
+            try {
+                recipe.resolve(ignite->config);
+                std::cout << "building " << id << std::endl;
+                ignite->build(recipe);
+            } catch (const std::exception& exception) {
+                std::cerr << "ERROR: " << exception.what() << " " << id
+                          << std::endl;
+                return 1;
+            }
         }
     }
     return 0;

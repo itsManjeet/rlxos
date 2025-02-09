@@ -6,7 +6,7 @@ depends:
   - components/libdrm.yml
   - components/libglvnd.yml
   - components/pixman.yml
-  - components/wlroots.yml
+  - components/wlroots0.17.yml
 
 build-depends:
   - components/glslang.yml

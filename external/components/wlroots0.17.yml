@@ -1,5 +1,5 @@
-id: wlroots0.16
-version: 0.16.2
+id: wlroots0.17
+version: 0.17.4
 about: A modular wayland compositor library
 depends:
   - components/libdisplay-info.yml

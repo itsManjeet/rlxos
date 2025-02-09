@@ -96,6 +96,7 @@ depends:
   - components/ntfs-3g.yml
   - components/firefox.yml
   - components/file-roller.yml
+  - components/gparted.yml
 
   - components/meta-xfce4.yml
   - components/meta-x11.yml

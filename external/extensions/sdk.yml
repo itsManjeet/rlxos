@@ -34,7 +34,6 @@ include:
   - components/sassc.yml
   - components/xfce4/xfce4-dev-tools.yml
   - components/gdb.yml
-  - components/glibc-dbg.yml
   - components/patch.yml
   - components/xfce4/xfce4-dev-tools.yml
   - components/man-pages.yml

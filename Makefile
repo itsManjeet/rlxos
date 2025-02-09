@@ -73,7 +73,7 @@ endif
 
 define BUILD_EXTENSION
 	OSTREE_BRANCH="x86_64/extension/$(shell basename $(ext:external/%.yml=%))/$(CHANNEL)" \
-		$(MAKE) update-ostree ELEMENT=$(ext:external/%=%);
+		$(MAKE) update-ostree ELEMENT=$(ext:external/%=%) || exit 1;
 endef
 
 extensions: $(IGNITE)

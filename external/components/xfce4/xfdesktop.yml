@@ -2,8 +2,17 @@ id: xfdesktop
 version: 4.20.0
 about: Xfce desktop manager
 release: 8
-pre-script: |-
-  sed -i 's#/backgrounds/xfce/xfce-shapes.svg#/backgrounds/default.jpg#g' common/xfdesktop-common.h
+build-type: meson
+configure: >-
+  -D desktop-menu=enabled
+  -D thunarx=enabled
+  -D x11=enabled
+  -D wayland=enabled
+  -D desktop-icons=true
+  -D file-icons=true
+  -D tests=false
+  -D default-backdrop-filename="%{datadir}/backgrounds/default.jpg"
+
 
 post-script: |-
   install -vm 0644 /assets/backgrounds/*.jpg -t %{install-root}%{datadir}/backgrounds/

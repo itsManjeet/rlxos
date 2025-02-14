@@ -99,6 +99,7 @@ depends:
   - components/gparted.yml
 
   - components/meta-xfce4.yml
+  - components/labwc.yml
   - components/meta-x11.yml
   - components/lightdm.yml
   - components/picom.yml

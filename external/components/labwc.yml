@@ -12,7 +12,7 @@ depends:
   - components/pango.yml
   - components/seatd.yml
   - components/wayland.yml
-  - components/wlroots.yml
+  - components/wlroots0.17.yml
 
 build-depends:
   - components/meson.yml

@@ -1,10 +1,10 @@
 id: orchis-gtk-theme
-version: 2024-05-05
+version: 2024-11-03
 merge: [external/include/gtk-theme.inc]
 about: Orchis is a [Material Design](https://material.io) theme for GNOME/GTK based desktop environments.
-commit: da9be241a977301b76037bd1efb8855b9020cc0b
 
 script: |
+  patch -Np1 -i 0001-xfce-specific-patches.patch
   install -d %{install-root}%{datadir}/themes
   ./parse-sass.sh
   ./install.sh            \
@@ -16,5 +16,7 @@ script: |
 build-depends:
   - components/sassc.yml
   - components/librsvg.yml
+
 sources:
-  - orchis-gtk-theme-%{commit}.tar.gz::https://github.com/itsManjeet/Orchis-theme/archive/%{commit}.tar.gz
+  - orchis-gtk-theme-%{version}.tar.gz::https://github.com/vinceliuice/Orchis-theme/archive/refs/tags/%{version}.tar.gz
+  - patches/xfce4/0001-xfce-specific-patches.patch

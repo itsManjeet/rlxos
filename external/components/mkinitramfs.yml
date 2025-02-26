@@ -11,5 +11,5 @@ depends:
   - components/psmisc.yml
 
 script: |-
-  install -v -D -m 644 /assets/initramfs/init.in  %{install-root}/%{datadir}/initramfs/init.in
-  install -v -D -m 755 /assets/initramfs/mkinitramfs.sh.in  %{install-root}/%{bindir}/mkinitramfs
+  install -v -D -m 644 $RLXOS_FILES/initramfs/init.in  %{install-root}/%{datadir}/initramfs/init.in
+  install -v -D -m 755 $RLXOS_FILES/initramfs/mkinitramfs.sh.in  %{install-root}/%{bindir}/mkinitramfs

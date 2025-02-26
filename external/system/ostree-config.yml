@@ -6,7 +6,7 @@ build-depends:
   - components/bash.yml
 
 script: |-
-  install -D -m 0644 -t %{install-root}/%{sysconfdir}/pki/ostree/ /assets/rlxos.gpg
+  install -D -m 0644 -t %{install-root}/%{sysconfdir}/pki/ostree/ $RLXOS_FILES/rlxos.gpg
   install -D -m 0644 /dev/stdin %{install-root}/%{sysconfdir}/ostree/remotes.d/rlxos.conf << "EOF"
   [remote "rlxos"]
   url=https://ostree.rlxos.dev

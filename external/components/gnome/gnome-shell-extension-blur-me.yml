@@ -12,7 +12,7 @@ script:
   "mkdir -p %{install-root}%{datadir}/gnome-shell/extensions/blur-me@nunchucks
   \nunzip blur-me-v%{version} -d %{install-root}%{datadir}/gnome-shell/extensions/blur-me@nunchucks\n\ncd
   %{install-root}%{datadir}/gnome-shell/extensions/blur-me@nunchucks/\n\npatch schemas/org.gnome.shell.extensions.blur-me.gschema.xml
-  < /assets/%{id}/fixed-default-settings.patch\npatch schemas/org.gnome.shell.extensions.blur-me.gschema.xml
-  < /assets/%{id}/disable-panel-blur.patch\nrm schemas/org.gnome.shell.extensions.blur-my-shell.gschema.xml\n\nglib-compile-schemas
+  < $RLXOS_FILES/%{id}/fixed-default-settings.patch\npatch schemas/org.gnome.shell.extensions.blur-me.gschema.xml
+  < $RLXOS_FILES/%{id}/disable-panel-blur.patch\nrm schemas/org.gnome.shell.extensions.blur-my-shell.gschema.xml\n\nglib-compile-schemas
   schemas\n\nfor i in $(find . -type f) ; do\n  chmod 644 ${i}\ndone\n\nfor i in $(find
   . -type d) ; do\n  chmod 755 ${i}\ndone\n"

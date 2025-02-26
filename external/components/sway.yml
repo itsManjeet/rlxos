@@ -15,7 +15,7 @@ post-script: |-
   install -v -D -m 0644 LICENSE -t %{install-root}%{datadir}/doc/%{id}/
 
   rm -rf %{install-root}%{sysconfdir}/sway
-  cp -rf /assets/sway %{install-root}%{sysconfdir}/
+  cp -rf $RLXOS_FILES/sway %{install-root}%{sysconfdir}/
 
 configure: >-
   -D sd-bus-provider=libsystemd

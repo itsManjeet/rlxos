@@ -220,7 +220,7 @@ Container Ignite::setup_container(
         const Recipe& recipe, const ContainerType container_type) {
     auto env = std::vector<std::string>{"NOCONFIGURE=1", "HOME=/",
             "SHELL=/bin/sh", "TERM=dumb", "USER=nishu", "LOGNAME=nishu",
-            "LC_ALL=C", "TZ=UTC", "SOURCE_DATA_EPOCH=918239400"};
+            "LC_ALL=C", "TZ=UTC", "SOURCE_DATA_EPOCH=918239400", "RLXOS_FILES=/files"};
     if (auto n = config.node["environ"]; n) {
         for (auto const& i : n) env.push_back(i.as<std::string>());
     }
@@ -245,7 +245,7 @@ Container Ignite::setup_container(
                     {
                             {"/sources", cache_path / "sources"},
                             {"/cache", cache_path / "cache"},
-                            {"/assets", project_path / "assets"},
+                            {"/files", project_path / "files"},
                             {"/patches", project_path / "patches"},
                             {"/rlxos", project_path},
 

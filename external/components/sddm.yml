@@ -3,11 +3,11 @@ version: 0.21.0
 about: QML based X11 and Wayland display manager
 
 pre-script: |-
-  # patch -p1 < /assets/pam-faillock.patch
+  # patch -p1 < $RLXOS_FILES/pam-faillock.patch
   patch -p1 < ../sddm-fix-race-pre.patch
   patch -p1 < ../sddm-fix-race.patch
   patch -p1 < ../sddm-desktop-session.patch
-  # patch -p1 < /assets/build-fix.patch
+  # patch -p1 < $RLXOS_FILES/build-fix.patch
 
 post-script: |-
   install -d "%{install-root}"/%{libdir}/sddm/sddm.conf.d

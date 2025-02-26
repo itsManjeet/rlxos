@@ -3,7 +3,7 @@ version: 4.3
 about: bsdiff and bspatch are tools for building and applying patches to binary files
 
 script: |
-  # patch -p0 < /assets/bsdiff/Makefile.patch
+  # patch -p0 < $RLXOS_FILES/bsdiff/Makefile.patch
   # patch -p3 < ../bspatch.patch
 
   make

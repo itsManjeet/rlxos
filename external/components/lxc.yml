@@ -5,8 +5,8 @@ about: Linux containers
 post-script: |-
   install -d -m755 "%{install-root}/%{localstatedir}/lib/lxc"
   install -d -m755 "%{install-root}/%{libdir}/lxc/rootfs/dev"
-  #install -D -m644 /assets/lxc/lxc.service "%{install-root}"/%{libdir}/systemd/system/lxc@.service
-  #install -D -m644 /assets/lxc/lxc-auto.service "%{install-root}"/%{libdir}/systemd/system/lxc-auto.service
+  #install -D -m644 $RLXOS_FILES/lxc/lxc.service "%{install-root}"/%{libdir}/systemd/system/lxc@.service
+  #install -D -m644 $RLXOS_FILES/lxc/lxc-auto.service "%{install-root}"/%{libdir}/systemd/system/lxc-auto.service
 
 configure: >-
   --enable-seccomp

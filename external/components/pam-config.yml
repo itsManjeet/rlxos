@@ -6,4 +6,4 @@ build-depends:
   - components/bash.yml
 
 script: |
-  install -v -D -m 644 -t %{install-root}/etc/pam.d/ /assets/pam/*
+  install -v -D -m 644 -t %{install-root}/etc/pam.d/ $RLXOS_FILES/pam/*

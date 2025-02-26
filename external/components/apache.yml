@@ -23,7 +23,7 @@ post-script: |
   # chgrp 25 %{install-root}/usr/lib/httpd/suexec
   # chmod 4754 %{install-root}/usr/lib/httpd/suexec
   # install -v -d -m 0755 -o 25 -g 25 %{install-root}/srv/www
-  #install -v -D -m 0644 /assets/apache/service %{install-root}/usr/lib/systemd/system/httpd.service
+  #install -v -D -m 0644 $RLXOS_FILES/apache/service %{install-root}/usr/lib/systemd/system/httpd.service
 
 depends:
   - components/apr.yml

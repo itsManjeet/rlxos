@@ -16,7 +16,7 @@ build-depends:
 sources:
   - nvidia-settings-%{version}.tar.gz::https://github.com/NVIDIA/nvidia-settings/archive/%{version}.tar.gz
 script: |-
-  # patch -p0 < /assets/libxnvctrl_so.patch
+  # patch -p0 < $RLXOS_FILES/libxnvctrl_so.patch
   make PREFIX=%{prefix}
   make -C src/libXNVCtrl PREFIX=%{prefix}
   make DESTDIR=%{install-root} PREFIX=%{prefix} install

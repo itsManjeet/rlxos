@@ -29,7 +29,7 @@ script: |-
     install -v -p -D -m 0755 bin/${tool} %{install-root}/usr/bin/${tool}
   done
 
-  #install -v -D -m 0644 /assets/lxd/lxd.{service,socket} -t %{install-root}/usr/lib/systemd/system/
+  #install -v -D -m 0644 $RLXOS_FILES/lxd/lxd.{service,socket} -t %{install-root}/usr/lib/systemd/system/
   install -v -d -m 0700 %{install-root}/var/log/lxd
 
 # TODO: fix service file

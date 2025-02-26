@@ -20,8 +20,8 @@ post-script: |-
   install -d %{install-root}%{datadir}/nginx
   mv %{install-root}%{sysconfdir}/nginx/html/ %{install-root}%{datadir}/nginx
 
-  #install -Dm644 /assets/logrotate %{install-root}%{sysconfdir}/logrotate.d/nginx
-  #install -Dm644 /assets/nginx.service %{install-root}/usr/lib/systemd/system/nginx.service
+  #install -Dm644 $RLXOS_FILES/logrotate %{install-root}%{sysconfdir}/logrotate.d/nginx
+  #install -Dm644 $RLXOS_FILES/nginx.service %{install-root}/usr/lib/systemd/system/nginx.service
   install -Dm644 LICENSE %{install-root}%{datadir}/licenses/%{id}/LICENSE
 
   rmdir %{install-root}/run

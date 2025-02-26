@@ -3,7 +3,7 @@ version: 5.1.0
 about: chroot, mount --bind, and binfmt_misc without privilege/setup
 
 pre-script: |-
-  # patch -p1 -i /assets/0001-Fix-use-of-size.patch
+  # patch -p1 -i $RLXOS_FILES/0001-Fix-use-of-size.patch
 script: |-
   make -f GNUmakefile -C src
   install -v -D -m 0755 src/%{id} -t %{install-root}/%{bindir}

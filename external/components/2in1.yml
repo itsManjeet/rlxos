@@ -8,7 +8,7 @@ depends:
 
 script: |-
   mkdir -p %{install-root}/%{bindir}/
-  gcc -O2 /assets/2in1/2in1.c -o %{install-root}/%{bindir}/2in1
+  gcc -O2 $RLXOS_FILES/2in1/2in1.c -o %{install-root}/%{bindir}/2in1
 
   install -v -D -m 0644 /dev/stdin %{install-root}/%{libdir}/systemd/user/2in1.service << "EOF"
   [Unit]

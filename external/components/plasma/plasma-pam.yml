@@ -3,6 +3,6 @@ merge: [external/include/plasma.inc]
 about: Plasma pam permissions
 script: |-
   mkdir -p %{install-root}%{sysconfdir}/pam.d/
-  # cp /assets/{kde,kde-np,kscreensaver} %{install-root}%{sysconfdir}/pam.d/
+  # cp $RLXOS_FILES/{kde,kde-np,kscreensaver} %{install-root}%{sysconfdir}/pam.d/
 
 # TODO: fix pam configuration

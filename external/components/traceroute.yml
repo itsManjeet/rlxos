@@ -7,6 +7,6 @@ depends:
 sources:
   - https://downloads.sourceforge.net/%{id}/%{id}-%{version}.tar.gz
 script: |-
-  # patch -p1 < /assets/fix.patch
+  # patch -p1 < $RLXOS_FILES/fix.patch
   make CFLAGS="${CFLAGS:-}" CPPFLAGS="${CPPFLAGS:-}" LDFLAGS="${LDFLAGS:-}"
   make prefix=/usr DESTDIR=%{install-root} install

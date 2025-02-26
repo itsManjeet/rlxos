@@ -11,7 +11,7 @@ post-script: |-
   install -dm 755 %{install-root}%{sysconfdir}/conf.d/
   echo 'SPICE_VDAGENTD_EXTRA_ARGS=""' > "%{install-root}%{sysconfdir}/conf.d/spice-vdagentd"
 
-  # install -v -D -m 0755 -t %{install-root}%{sysconfdir}/modules-load.d/ /assets/10-uinput.conf
+  # install -v -D -m 0755 -t %{install-root}%{sysconfdir}/modules-load.d/ $RLXOS_FILES/10-uinput.conf
 configure: >-
   --with-session-info=systemd
   --with-init-script=systemd

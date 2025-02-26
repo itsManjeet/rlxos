@@ -3,6 +3,7 @@
 
 /build
 /checkout
+/files/sign-keys
 
 /ostree-branch.yml
 /version.yml

@@ -18,7 +18,7 @@ configure: >-
 post-script: |-
   # install -Dm644 files/fcron.pam %{install-root}%{sysconfdir}/pam.d/fcron
   # install -Dm644 files/fcrontab.pam %{install-root}%{sysconfdir}/pam.d/fcrontab
-  # install -v -D -m 755 /assets/run-parts.sh %{install-root}/usr/bin/run-parts
+  # install -v -D -m 755 $RLXOS_FILES/run-parts.sh %{install-root}/usr/bin/run-parts
   install -d -m755 "%{install-root}/%{sysconfdir}/cron.daily"
   install -d -m755 "%{install-root}/%{sysconfdir}/cron.hourly"
   install -d -m755 "%{install-root}/%{sysconfdir}/cron.monthly"

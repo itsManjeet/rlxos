@@ -7,10 +7,10 @@ seperate-build-dir: false
 
 post-script: |-
   mkdir -p %{install-root}%{datadir}/
-  cp -rf /assets/rofi %{install-root}%{datadir}/
+  cp -rf $RLXOS_FILES/rofi %{install-root}%{datadir}/
 
   for script in Powermenu TabletMode ; do
-    install -vDm 0755 /assets/scripts/$script -t %{install-root}%{bindir}/
+    install -vDm 0755 $RLXOS_FILES/scripts/$script -t %{install-root}%{bindir}/
   done
 
 depends:

@@ -3,7 +3,7 @@ version: 0.7.0
 about: A library designed to manipulate RSS and Atom feeds
 
 pre-script: |-
-  # patch -Np1 -i /assets/libgrss/libgrss-0.7.0-bugfixes-2.patch
+  # patch -Np1 -i $RLXOS_FILES/libgrss/libgrss-0.7.0-bugfixes-2.patch
   autoreconf -fv
 
 depends:

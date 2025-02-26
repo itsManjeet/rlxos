@@ -9,5 +9,5 @@ depends:
 sources:
   - https://download.gnome.org/sources/gnome-shell-extensions/40/gnome-shell-extensions-40.4.tar.xz
 pre-script: |
-  patch extensions/user-theme/org.gnome.shell.extensions.user-theme.gschema.xml < /assets/gnome-shell-extensions/default.patch
+  patch extensions/user-theme/org.gnome.shell.extensions.user-theme.gschema.xml < $RLXOS_FILES/gnome-shell-extensions/default.patch
 configure: -D extension_set=all -D classic_mode=false

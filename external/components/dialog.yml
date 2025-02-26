@@ -10,7 +10,7 @@ configure: >
 install: install-full
 
 post-script: |-
-  install -vDm 0644 /assets/dialogrc -t %{install-root}%{sysconfdir}/
+  install -vDm 0644 $RLXOS_FILES/dialogrc -t %{install-root}%{sysconfdir}/
 
 depends:
   - components/ncurses.yml

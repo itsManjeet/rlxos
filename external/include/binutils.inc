@@ -1,4 +1,4 @@
-version: 2.42
+version: 2.44
 about: A linker, an assembler, and other tools for handling object files
 
 pre-script: |-

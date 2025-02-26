@@ -1,4 +1,4 @@
-version: 14.1.0
+version: 14.2.0
 release: 1
 about: The GNU compiler collection, which includes the C and C++ compilers
 

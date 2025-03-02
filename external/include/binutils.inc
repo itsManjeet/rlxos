@@ -3,7 +3,6 @@ about: A linker, an assembler, and other tools for handling object files
 
 pre-script: |-
   sed -i '/^development=/s/true/false/' bfd/development.sh
-  patch -Np1 -i gold-warn-unsupported.patch
 
 configure: >
   --with-lib-path=/usr/lib
@@ -53,4 +52,3 @@ post-script: |-
 
 sources:
   - https://ftp.gnu.org/gnu/binutils/binutils-%{version}.tar.xz
-  - patches/binutils/gold-warn-unsupported.patch

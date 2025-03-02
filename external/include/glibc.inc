@@ -47,6 +47,6 @@ post-script: |
 
 sources:
   - https://ftp.gnu.org/gnu/glibc/glibc-%{version}.tar.xz
-  - assets/sdt.h
-  - assets/sdt-config.h
+  - files/sdt.h
+  - files/sdt-config.h
   

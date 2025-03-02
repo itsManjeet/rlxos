@@ -18,6 +18,6 @@ depends:
 
 sources:
   - https://ftp.gnu.org/gnu/bash/bash-%{version}.tar.gz
-  - assets/bash/bashrc
-  - assets/bash/user_bashrc
-  - assets/bash/user_bash_profile
+  - files/bash/bashrc
+  - files/bash/user_bashrc
+  - files/bash/user_bash_profile

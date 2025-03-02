@@ -25,9 +25,9 @@ build-depends:
 sources:
   - https://hg.mozilla.org/releases/mozilla-release/raw-file/default/security/nss/lib/ckfw/builtins/certdata.txt
   - https://hg.mozilla.org/releases/mozilla-release/raw-file/default/security/nss/lib/ckfw/builtins/nssckbi.h
-  - assets/ca-certificates/certdata2pem.c
-  - assets/ca-certificates/update-ca-certificates
-  - assets/ca-certificates/blacklist.txt
+  - files/ca-certificates/certdata2pem.c
+  - files/ca-certificates/update-ca-certificates
+  - files/ca-certificates/blacklist.txt
 
 integration: |-
   # TODO: better work around

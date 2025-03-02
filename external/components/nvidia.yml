@@ -17,8 +17,8 @@ build-dir: "."
 
 sources:
   - https://us.download.nvidia.com/XFree86/Linux-x86_64/%{version}/NVIDIA-Linux-x86_64-%{version}.run
-  - assets/sign-keys/modules/linux-module-cert.crt
-  - assets/sign-keys/linux-module-cert.key
+  - files/sign-keys/modules/linux-module-cert.crt
+  - files/sign-keys/linux-module-cert.key
 
 script: |-
   sh NVIDIA-Linux-x86_64-%{version}.run -x

@@ -6,4 +6,4 @@ build-type: import
 target: "usr/share/backgrounds/"
 
 sources:
-  - assets/backgrounds/default.jpeg
+  - files/backgrounds/default.jpeg

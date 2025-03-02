@@ -10,7 +10,7 @@ depends:
 
 sources:
   - https://github.com/docbook/xslt10-stylesheets/releases/download/release/%{version}/docbook-xsl-nons-%{version}.tar.bz2
-  - assets/core/docbook-xsl-nons/docbook-xsl-nons-%{version}-stack_fix-1.patch
+  - files/core/docbook-xsl-nons/docbook-xsl-nons-%{version}-stack_fix-1.patch
 
 
 pre-script: |

@@ -123,7 +123,7 @@ build-depends:
 
 sources:
   - https://archive.mozilla.org/pub/firefox/releases/%{version}/source/firefox-%{version}.source.tar.xz
-  - assets/firefox/firefox.desktop
+  - files/firefox/firefox.desktop
 
 # TODO: libpng doesn't have APNG support
 # TODO: update rustc compiler

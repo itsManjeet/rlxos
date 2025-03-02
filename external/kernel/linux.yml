@@ -5,8 +5,8 @@ about: |
   Linux kernel, modules and headers
 sources:
   - https://www.kernel.org/pub/linux/kernel/v%{version:1}.x/linux-%{version}.tar.xz
-  - assets/sign-keys/modules/linux-module-cert.crt
-  - assets/sign-keys/linux-module-cert.key
+  - files/sign-keys/modules/linux-module-cert.crt
+  - files/sign-keys/linux-module-cert.key
 
 environ:
   - KBUILD_BUILD_TIMESTAMP=Fri Nov 12 12:00:00 UTC 2011

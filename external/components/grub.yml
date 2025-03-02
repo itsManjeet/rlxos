@@ -50,7 +50,7 @@ build-depends:
 
 sources:
   - http://ftp.gnu.org/gnu/grub/grub-%{version}.tar.xz
-  - assets/grub/update-grub.sh
-  - assets/grub/unicode.pf2
-  - assets/grub/grub.default
+  - files/grub/update-grub.sh
+  - files/grub/unicode.pf2
+  - files/grub/grub.default
   - patches/grub/grub-2.06-upstream_fixes-1.patch

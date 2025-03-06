@@ -4,7 +4,7 @@ about: |
   Perl Compatible Regular Expression libraries
 
 sources:
-  - https://sourceforge.net/projects/pcre/assets/pcre/%{version}/pcre-%{version}.tar.bz2
+  - https://sourceforge.net/projects/pcre/files/pcre/%{version}/pcre-%{version}.tar.bz2
 
 build-type: autotools
 configure: >

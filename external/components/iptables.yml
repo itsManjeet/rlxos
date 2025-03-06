@@ -22,4 +22,4 @@ depends:
   - components/libtool.yml
 
 sources:
-  - http://www.netfilter.org/projects/iptables/assets/iptables-%{version}.tar.xz
+  - http://www.netfilter.org/projects/iptables/files/iptables-%{version}.tar.xz

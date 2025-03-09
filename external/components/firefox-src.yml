@@ -117,7 +117,7 @@ build-depends:
   - components/nodejs.yml
   - components/rustc.yml
   - components/python.yml
-  - components/unzip.yml
+  
   - components/which.yml
   - components/yasm.yml
 

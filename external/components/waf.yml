@@ -5,7 +5,7 @@ about: General-purpose build system modelled after Scons
 depends:
   - components/python.yml
 build-depends:
-  - components/unzip.yml
+  
 sources:
   - https://waf.io/waf-%{version}.tar.bz2
 script: |-

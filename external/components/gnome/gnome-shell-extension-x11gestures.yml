@@ -6,7 +6,7 @@ depends:
   - components/gnome/gnome-shell.yml
   - components/touchegg.yml
 build-depends:
-  - components/unzip.yml
+  
 sources:
   - https://github.com/JoseExposito/gnome-shell-extension-x11gestures/releases/download/%{version}/x11gestures@joseexposito.github.io.zip
 script: |-

@@ -7,7 +7,6 @@ configure: >-
   --enable-versioning=yes
   --disable-debug
   --with-tls=openssl
-  --with-cyrus-sasl
   --enable-dynamic
   --enable-crypt
   --enable-spasswd

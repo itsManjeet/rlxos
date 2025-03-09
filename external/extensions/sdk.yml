@@ -38,7 +38,7 @@ include:
   - components/xfce4/xfce4-dev-tools.yml
   - components/man-pages.yml
   - components/rsync.yml
-  - components/unzip.yml
+  
 
 include-parts: 
   - devel

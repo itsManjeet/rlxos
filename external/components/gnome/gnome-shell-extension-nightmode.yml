@@ -5,7 +5,7 @@ release: 0
 depends:
 - components/glib.yml
 build-depends:
-- components/unzip.yml
+
 sources:
 - nightmode-%{version}::https://extensions.gnome.org/extension-data/nightthemeswitcherromainvigier.fr.v%{version}.shell-extension.zip
 script: |-

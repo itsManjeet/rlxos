@@ -30,7 +30,7 @@ depends:
   - components/v4l-utils.yml
 build-depends:
   - components/cmake.yml
-  - components/unzip.yml
+  
 sources:
   - https://github.com/opencv/opencv/archive/%{version}/opencv-%{version}.tar.gz
   - https://github.com/opencv/opencv_contrib/archive/%{version}/opencv_contrib-%{version}.tar.gz

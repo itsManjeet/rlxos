@@ -11,7 +11,7 @@ depends:
   - components/zlib.yml
 build-depends:
   - components/py/py-setuptools.yml
-  - components/unzip.yml
+  
 sources:
   - https://github.com/protocolbuffers/protobuf/releases/download/v%{version}/protobuf-all-%{version}.tar.gz
 # TODO: fix update url

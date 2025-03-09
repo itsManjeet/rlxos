@@ -3,9 +3,10 @@ version: "2.004"
 about: Google Noto CJK fonts
 
 build-depends:
-  - components/unzip.yml
+  - components/libarchive.yml
+  
 sources:
   - fonts-%{version}::https://github.com/googlefonts/noto-cjk/releases/download/Sans%{version}/02_NotoSansCJK-TTF-VF.zip
 script: |
-  unzip fonts-%{version} || true
+  bsdtar -xf fonts-%{version} || true
   install -D -m 0644 Variable/TTF/*.ttf -t %{install-root}%{datadir}/fonts/noto-cjk

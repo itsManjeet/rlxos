@@ -6,7 +6,7 @@ depends:
   - components/alsa-lib.yml
   - components/cpio.yml
   - components/cups.yml
-  
+  - components/unzip.yml
   - components/which.yml
   - components/x11/libx11.yml
   - components/x11/libxext.yml

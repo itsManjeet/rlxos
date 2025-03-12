@@ -1,14 +1,10 @@
 id: unzip
-version: 6.0
+version: 0.1
 about: ZIP extraction utilities
 
 depends:
-  - components/glibc.yml
+  - components/busybox.yml
 
-sources:
-  - https://downloads.sourceforge.net/infozip/unzip60.tar.gz
-pre-script: |
-  sed -i "/MANDIR =/s#)/#)/share/#" unix/Makefile
-script: |
-  make -f unix/Makefile generic prefix=/usr
-  make -f unix/Makefile prefix=%{install-root}/usr install
+script: |-
+  mkdir -p %{install-root}/%{bindir}
+  ln %{bindir}/busybox %{install-root}%{bindir}/unzip

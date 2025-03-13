@@ -40,6 +40,7 @@ depends:
   - components/pam.yml
   - components/krb5.yml
   - components/pcre2.yml
+  - components/fmt.yml
 build-depends:
   - components/cmake.yml
   - components/boost.yml

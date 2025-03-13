@@ -39,9 +39,6 @@ jobs:
 
       - name: Update Ostree
         run: make ELEMENT=system/repo.yml update-ostree
-
-      - name: Update extensions
-        run: make extensions
       
       - name: Upload to sourceforge
         run: scp -pr ${CACHE_PATH}/releases/${CHANNEL}/ itsmanjeet@frs.sourceforge.net:/home/frs/p/rlxos/releases/

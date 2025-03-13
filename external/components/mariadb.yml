@@ -1,5 +1,5 @@
 id: mariadb
-version: 10.11.8
+version: 11.4.5
 about: A community-developed fork and a drop-in replacement for the MySQL relational database management system
 
 configure: >-
@@ -30,12 +30,16 @@ configure: >-
   -DPLUGIN_FEDERATED=NO
   -DPLUGIN_FEEDBACK=NO
   -DWITH_SSL=system
+  -DWITH_READLINE=ON
   -DWITH_SYSTEMD=yes
+  -DWITH_ZLIB=system
+  -DWITH_PCRE2=system
   -DWITH_UNIT_TESTS=OFF
 
 depends:
   - components/libevent.yml
   - components/libboost.yml
+  - components/readline.yml
   - components/libxml2.yml
   - components/pam.yml
   - components/krb5.yml

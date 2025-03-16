@@ -1,5 +1,5 @@
 id: ca-certificates
-version: 20230311
+version: 20240618
 about: Bundle of CA Root Certificates from Mozilla
 
 script: |-

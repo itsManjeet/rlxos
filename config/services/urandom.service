@@ -1,0 +1,7 @@
+{
+    "kind": "oneshot",
+    "stage": "pre-init",
+    "exec-start": "mount -t efivarfs none /sys/firmware/efi/efivars",
+    "exec-stop": "umount /sys/firmware/efi/efivars",
+    "if-path-exists": "/sys/firmware/efi/efivars"
+}

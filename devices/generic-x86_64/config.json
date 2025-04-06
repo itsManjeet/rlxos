@@ -1,0 +1,19 @@
+{
+  "id": "generic-x86_64",
+  "arch": "x86_64",
+  "goarch": "amd64",
+  "target-triple": "x86_64-rlxos-linux-musl",
+  "graphics": {
+    "enabled": true,
+    "backends": [
+      "x11",
+      "wayland"
+    ],
+    "drivers": [
+      "i915",
+      "iris",
+      "svga",
+      "virgl"
+    ]
+  }
+}

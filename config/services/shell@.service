@@ -1,0 +1,6 @@
+{
+    "exec-start": "shell",
+    "restart": true,
+    "tty": "/dev/%i",
+    "user": "system"
+}

@@ -1,0 +1,6 @@
+{
+    "kind": "oneshot",
+    "stage": "pre-init",
+    "exec-start": "hwclock -s -u",
+    "exec-stop": "hwclock -w -u"
+}

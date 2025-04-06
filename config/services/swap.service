@@ -1,0 +1,6 @@
+{
+    "kind": "oneshot",
+    "stage": "init",
+    "exec-start": "swapon -a",
+    "exec-stop": "swapoff -a"
+}

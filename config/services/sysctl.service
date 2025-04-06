@@ -1,0 +1,6 @@
+{
+    "kind": "oneshot",
+    "stage": "pre-init",
+    "exec-start": "sysctl -q -p",
+    "if-path-exists": "/etc/sysctl.conf"
+}

@@ -1,0 +1,45 @@
+name: Continuous release
+on:
+  workflow_dispatch:
+  push:
+
+env:
+  BRANCH: ${{ endsWith(github.ref, 'stable') && 'stable' || (endsWith(github.ref, 'preview') && 'preview' || 'unstable') }}
+
+jobs:
+  build:
+    name: build-image
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - device: generic-x86_64
+            image: installer.iso
+
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          token: ${{secrets.CI_TOKEN}}
+          submodules: true
+      
+      - name: install pre-requisties
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install build-essential golang-go curl wget squashfs-tools mtools xorriso libelf-dev
+      
+      - name: prepare vendor
+        run: go mod tidy && go mod vendor
+
+      - name: build-system-image
+        run: go run rlxos.dev/tools/ignite -device ${{matrix.device}} -clean
+
+      - uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: '${{ secrets.GITHUB_TOKEN }}'
+          file: '_cache/${{matrix.device}}/images/${{matrix.image}}'
+          asset_name: 'rlxos-${{env.BRANCH}}-${{matrix.device}}-${{matrix.image}}'
+          tag: ${{env.BRANCH}}-continuous
+          overwrite: true
+          body: ${{ github.event.head_commit.message }}
+
+

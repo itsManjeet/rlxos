@@ -1,0 +1,11 @@
+{
+    "exec-start": "display -user system",
+    "restart": true,
+    "depends": [
+        "seatd"
+    ],
+    "environ": [
+        "WLR_RENDERER_ALLOW_SOFTWARE=1"
+    ],
+    "tty": "/dev/%i"
+}

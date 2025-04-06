@@ -1,0 +1,5 @@
+{
+    "kind": "oneshot",
+    "stage": "pre-init",
+    "exec-start": "users"
+}

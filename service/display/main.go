@@ -19,92 +19,47 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"log"
+	"net"
 	"os"
-	"os/user"
-	"path/filepath"
-	"runtime"
-	"strconv"
-	"syscall"
+
+	"rlxos.dev/api/display"
+	"rlxos.dev/pkg/connect"
 )
 
 var (
-	userID string
-	groups = []string{
-		"input",
-		"video",
-		"audio",
-		"seat",
-	}
-	startup string
+	card string
 )
 
 func init() {
-	runtime.LockOSThread()
+	flag.StringVar(&card, "card", "/dev/dri/card0", "Graphics Card")
+	log.SetOutput(os.Stderr)
 
-	flag.StringVar(&userID, "user", "", "Run display as user")
-	flag.StringVar(&startup, "startup", "", "Starup command")
+	_ = os.Remove(display.SOCKET_PATH)
 }
 
 func main() {
 	flag.Parse()
-	if err := switchUser(); err != nil {
+
+	l, err := net.Listen("unix", display.SOCKET_PATH)
+	if err != nil {
 		log.Fatal(err)
 	}
+	defer l.Close()
 
-	startDisplayBackend()
-}
-
-func switchUser() error {
-	if userID == "" {
-		if os.Getenv("XDG_RUNTIME_DIR") == "" {
-			return fmt.Errorf("XDG_RUNTIME_DIR not set")
-		}
-		return nil
-	}
-	u, err := user.Lookup(userID)
+	d, err := OpenDisplay(card)
 	if err != nil {
-		return err
+		log.Fatal(err)
 	}
+	defer d.Close()
 
-	var gids []int
-
-	xdgRuntimeDir := filepath.Join("/run/user/", u.Uid)
-	uid, _ := strconv.Atoi(u.Uid)
-	gid, _ := strconv.Atoi(u.Gid)
-
-	if err := os.MkdirAll(xdgRuntimeDir, 0755); err != nil {
-		return fmt.Errorf("failed to prepare XDG_RUNTIME_DIR %v", err)
-	}
-
-	if err := os.Chown(xdgRuntimeDir, uid, gid); err != nil {
-		return fmt.Errorf("failed to chown XDG_RUNTIME_DIR %v", err)
-	}
-
-	for _, group := range groups {
-		g, err := user.LookupGroup(group)
+	for {
+		conn, err := l.Accept()
 		if err != nil {
-			return fmt.Errorf("missing required group %s %v", group, err)
+			continue
 		}
-		groupId, _ := strconv.Atoi(g.Gid)
-		gids = append(gids, groupId)
+
+		connect.NewConnection(conn, &Server{display: d})
 	}
 
-	if err := syscall.Setgroups(gids); err != nil {
-		return fmt.Errorf("failed to setgroups %v", err)
-	}
-
-	if err := syscall.Setgid(gid); err != nil {
-		return fmt.Errorf("failed to setgid %v", err)
-	}
-
-	if err := syscall.Setuid(uid); err != nil {
-		return fmt.Errorf("failed to setuid %v", err)
-	}
-
-	os.Setenv("XDG_RUNTIME_DIR", xdgRuntimeDir)
-	os.Setenv("HOME", u.HomeDir)
-
-	return nil
 }

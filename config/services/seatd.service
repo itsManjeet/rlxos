@@ -1,4 +1,0 @@
-{
-    "exec-start": "seatd -g seat",
-    "restart": true
-}

@@ -1,6 +1,6 @@
 {
     "stage": "pre-init",
     "kind": "oneshot",
-    "exec-start": "hostname -F /etc/hostname",
+    "exec-start": "busybox hostname -F /etc/hostname",
     "if-path-exists": "/etc/hostname"
 }

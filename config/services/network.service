@@ -1,6 +1,6 @@
 {
     "kind": "oneshot",
     "stage": "init",
-    "exec-start": "ip link set lo up",
-    "exec-stop": "ip link set lo down"
+    "exec-start": "busybox ip link set lo up",
+    "exec-stop": "busybox ip link set lo down"
 }

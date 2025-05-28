@@ -1,0 +1,4 @@
+{
+    "exec-start": "/service/udevd",
+    "restart": true
+}

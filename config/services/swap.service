@@ -1,6 +1,6 @@
 {
     "kind": "oneshot",
     "stage": "init",
-    "exec-start": "swapon -a",
-    "exec-stop": "swapoff -a"
+    "exec-start": "busybox swapon -a",
+    "exec-stop": "busybox swapoff -a"
 }

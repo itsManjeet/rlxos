@@ -19,30 +19,35 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"os"
+	"os/exec"
 	"os/signal"
-	"slices"
 	"syscall"
 
-	"rlxos.dev/tools/ignite/ensure"
+	"rlxos.dev/pkg/ensure"
 )
 
 func main() {
-	if isInsideInitrd() {
-		ensure.Success(switchToRealRoot())
-	}
+	ensure.Output(os.Getpid(), 1, "INIT must run as PID 1")
+	ensureRealRootfs()
 
-	ensure.Success(os.Setenv("PATH", "/cmd:/service:/usr/bin:/usr/sbin"))
-	ensure.Success(os.Setenv("XDG_CONFIG_DIRS", "/config:/etc/xdg"))
-	ensure.Success(os.Setenv("XDG_DATA_DIRS", "/data:/usr/share"))
-
+	os.Setenv("PATH", "/cmd")
 	ctxt, cancel := context.WithCancel(context.Background())
+
+	serviceManager, err := startServiceManager(ctxt)
+	if err != nil {
+		log.Printf("failed to start service manager: %v", err)
+	}
 
 	go func() {
 		defer cancel()
-
-		startup()
+		if serviceManager != nil {
+			if _, err := serviceManager.Wait(); err != nil {
+				log.Printf("service manager finished with %v", err)
+			}
+		}
 	}()
 
 	_ = syscall.Reboot(syscall.LINUX_REBOOT_CMD_CAD_OFF)
@@ -52,8 +57,8 @@ func main() {
 		syscall.SIGUSR1,
 		syscall.SIGUSR2,
 		syscall.SIGCHLD,
-		syscall.SIGINT,
-		syscall.SIGTERM)
+		syscall.SIGINT)
+
 	var rebootCommand int
 	for rebootCommand == 0 {
 		select {
@@ -70,49 +75,49 @@ func main() {
 
 			case syscall.SIGCHLD:
 				waitForChildProcesses(syscall.WNOHANG)
-
 			}
 		case <-ctxt.Done():
 			rebootCommand = syscall.LINUX_REBOOT_CMD_POWER_OFF
 		}
-
 	}
 
-	manager.ShuttingDown = true
-
-	manager.Foreach(stopService(func(s *Service) bool {
-		return s.Stage == "service"
-	}))
-
-	reverseStages := slices.Clone(stages)
-	slices.Reverse(reverseStages)
-
-	for _, stage := range reverseStages {
-		manager.Foreach(stopService(func(s *Service) bool {
-			return s.Stage == stage
-		}))
+	if serviceManager != nil {
+		_ = serviceManager.Signal(syscall.SIGINT)
 	}
-
-	manager.TriggerStage("shutdown")
 
 	_ = syscall.Reboot(syscall.LINUX_REBOOT_CMD_CAD_ON)
-	syscall.Sync()
 
+	waitForChildProcesses(syscall.WNOHANG)
+	<-ctxt.Done()
+
+	syscall.Sync()
 	if rebootCommand == 0 {
 		rebootCommand = syscall.LINUX_REBOOT_CMD_POWER_OFF
 	}
 
-	log.Println("syscall::reboot():", rebootCommand)
-	ensure.Success(syscall.Reboot(rebootCommand))
+	if err := syscall.Reboot(rebootCommand); err != nil {
+		log.Fatal(err)
+	}
 }
 
-func stopService(cond func(s *Service) bool) func(s *Service) {
-	return func(s *Service) {
-		if cond(s) {
-			log.Println("Stopping", s.Name)
-			if err := s.Stop(manager.Journal); err != nil {
-				log.Println("failed to stop", s.Name, err)
-			}
+func startServiceManager(ctxt context.Context) (*os.Process, error) {
+	cmd := exec.CommandContext(ctxt, "service", "startup")
+
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	cmd.Stdin = os.Stdin
+
+	if err := cmd.Start(); err != nil {
+		return nil, fmt.Errorf("failed to start service manager: %v", err)
+	}
+
+	return cmd.Process, nil
+}
+
+func waitForChildProcesses(options int) {
+	for {
+		if pid, _ := syscall.Wait4(-1, nil, options, nil); pid <= 0 {
+			break
 		}
 	}
 }

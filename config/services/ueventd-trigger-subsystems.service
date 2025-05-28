@@ -1,8 +1,0 @@
-{
-    "stage": "init",
-    "kind": "oneshot",
-    "exec-start": "udevadm trigger --action=add --type=devices",
-    "depends": [
-        "ueventd"
-    ]
-}

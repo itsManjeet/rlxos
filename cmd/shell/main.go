@@ -18,65 +18,48 @@
 package main
 
 import (
-	"fmt"
-	"io"
+	"flag"
 	"log"
-	"os"
-	"os/exec"
-	"path/filepath"
-	"strings"
+	"net"
 
-	"github.com/chzyer/readline"
+	"rlxos.dev/api/shell"
+	"rlxos.dev/pkg/connect"
 )
 
+var (
+	commands = map[string]func([]string) error{
+		"add-window":    addWindow,
+		"remove-window": removeWindow,
+	}
+
+	conn *connect.Connection
+)
+
+func init() {
+
+}
+
 func main() {
-	_ = os.Setenv("SHELL", os.Args[0])
-	reader, err := readline.NewEx(&readline.Config{
-		Prompt:            "» ",
-		HistoryFile:       filepath.Join(os.Getenv("HOME"), ".shell_history"),
-		InterruptPrompt:   "^C",
-		AutoComplete:      completer,
-		EOFPrompt:         "exit",
-		HistorySearchFold: true,
-	})
+	flag.Parse()
+	if flag.NArg() == 0 {
+		flag.Usage()
+		return
+	}
+
+	cmd, ok := commands[flag.Arg(0)]
+	if !ok {
+		log.Fatal("invalid command: ", flag.Arg(0))
+	}
+
+	c, err := net.Dial("unix", shell.SOCKET_PATH)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer reader.Close()
+	defer c.Close()
 
-	reader.CaptureExitSignal()
-	for {
-		line, err := reader.Readline()
-		if err == readline.ErrInterrupt {
-			if len(line) == 0 {
-				break
-			} else {
-				continue
-			}
-		} else if err == io.EOF {
-			break
-		}
-		line = os.ExpandEnv(line)
-		args := strings.Fields(line)
-		if len(args) == 0 {
-			continue
-		}
+	conn = connect.NewConnection(c, nil)
 
-		b, ok := builtins[args[0]]
-		if ok {
-			if err := b(args[1:]); err != nil {
-				fmt.Print("ERROR", err)
-			}
-			_ = os.Setenv("?", "1")
-		} else {
-			cmd := exec.Command(args[0], args[1:]...)
-			cmd.Stdout = os.Stdout
-			cmd.Stderr = os.Stderr
-			cmd.Stdin = os.Stdin
-			if err := cmd.Run(); err != nil {
-				fmt.Println("ERROR", err)
-			}
-			_ = os.Setenv("?", fmt.Sprint(cmd.ProcessState.ExitCode()))
-		}
+	if err := cmd(flag.Args()[1:]); err != nil {
+		log.Fatal(err)
 	}
 }

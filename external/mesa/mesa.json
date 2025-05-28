@@ -1,0 +1,10 @@
+{
+    "kind": "meson",
+    "sources": [
+        "https://archive.mesa3d.org/mesa-23.3.6.tar.xz"
+    ],
+    "configure": [
+        "-Dgallium-drivers=svga",
+        "-Dgles1=disabled"
+    ]
+}

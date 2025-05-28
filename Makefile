@@ -2,6 +2,8 @@ GO ?= go
 GOFLAGS ?=
 CACHE_PATH ?= $(CURDIR)/_cache
 
+export CGO_ENABLED := 0
+
 -include config.mk
 
 ifndef DEVICE

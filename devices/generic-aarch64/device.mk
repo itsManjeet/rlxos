@@ -3,8 +3,9 @@ export GOOS 		:= linux
 
 TOOLCHAIN_ARCH := aarch64
 TOOLCHAIN_TARGET_TRIPLE	:= $(TOOLCHAIN_ARCH)-linux-musl
+KERNEL_ARCH := arm64
 
-KERNEL_IMAGE := $(KERNEL_PATH)/arch/arm64/boot/bzImage
+KERNEL_IMAGE := $(KERNEL_PATH)/arch/$(KERNEL_ARCH)/boot/bzImage
 KERNEL_CONFIG_FRAGMENTS += \
 	$(DEVICE_PATH)/kernel.config
 

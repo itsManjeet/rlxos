@@ -64,8 +64,7 @@ func main() {
 			log.Fatal(err)
 		}
 
-		sourcePath := filepath.Join(cachePath, id)
-		if err := build(config, sourcePath); err != nil {
+		if err := build(config, id); err != nil {
 			log.Fatal(err)
 		}
 	}
@@ -79,18 +78,24 @@ func build(c Config, p string) error {
 		return fmt.Errorf("no builder found with id %v", c.Kind)
 	}
 
+	sourcesPath := filepath.Join(cachePath, "sources")
+	buildPath := filepath.Join(cachePath, "build", p)
+
+	_ = os.MkdirAll(sourcesPath, 0755)
+	_ = os.MkdirAll(buildPath, 0755)
+
 	for _, url := range c.Sources {
 		log.Println("Downloading ", url)
-		if err := exec.Command("wget", "-nc", url, "-P", cachePath).Run(); err != nil {
+		if err := exec.Command("wget", "-nc", url, "-P", sourcesPath).Run(); err != nil {
 			return fmt.Errorf("failed to download %v: %v", url, err)
 		}
 
-		if err := exec.Command("tar", "-xf", filepath.Join(cachePath, filepath.Base(url)), "-C", p, "--strip-components=1").Run(); err != nil {
+		if err := exec.Command("tar", "-xf", filepath.Join(sourcesPath, filepath.Base(url)), "-C", buildPath, "--strip-components=1").Run(); err != nil {
 			return fmt.Errorf("failed to extract %v: %v", url, err)
 		}
 	}
 
-	if err := builder.Build(c, p); err != nil {
+	if err := builder.Build(c, buildPath); err != nil {
 		return fmt.Errorf("failed to build %v: %v", filepath.Base(p), err)
 	}
 

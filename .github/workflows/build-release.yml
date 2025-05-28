@@ -12,8 +12,7 @@ jobs:
     runs-on: self-hosted
     strategy:
       matrix:
-        include:
-          - device: generic-amd64
+        device: [generic-amd64, generic-aarch64]
 
     steps:
       - uses: actions/checkout@v1

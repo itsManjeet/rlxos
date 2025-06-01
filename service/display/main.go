@@ -19,12 +19,14 @@ package main
 
 import (
 	"flag"
+	"image"
+	"image/draw"
 	"log"
-	"net"
 	"os"
+	"time"
 
-	"rlxos.dev/api/display"
-	"rlxos.dev/pkg/connect"
+	"rlxos.dev/pkg/graphics"
+	"rlxos.dev/pkg/kernel/input"
 )
 
 var (
@@ -34,18 +36,10 @@ var (
 func init() {
 	flag.StringVar(&card, "card", "/dev/dri/card0", "Graphics Card")
 	log.SetOutput(os.Stderr)
-
-	_ = os.Remove(display.SOCKET_PATH)
 }
 
 func main() {
 	flag.Parse()
-
-	l, err := net.Listen("unix", display.SOCKET_PATH)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer l.Close()
 
 	d, err := OpenDisplay(card)
 	if err != nil {
@@ -53,13 +47,58 @@ func main() {
 	}
 	defer d.Close()
 
+	ip, err := input.NewManager()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer ip.Close()
+
+	if err := ip.RegisterAll("/dev/input/event*"); err != nil {
+		log.Fatal(err)
+	}
+
+	var cursor image.Point
+	keys := map[int]bool{}
+
+	var canvas draw.Image
+
 	for {
-		conn, err := l.Accept()
-		if err != nil {
-			continue
+		clear(keys)
+
+		events, err := ip.PollEvents()
+		if err == nil {
+			for _, ev := range events {
+				switch ev := ev.(type) {
+				case input.CursorEvent:
+					log.Println("CURSOR EVENT:", ev)
+					if ev.Absolute {
+						if ev.X != 0 {
+							cursor.X = ev.X
+						}
+						if ev.Y != 0 {
+							cursor.Y = ev.Y
+						}
+					} else {
+						cursor.X += ev.X
+						cursor.Y += ev.Y
+					}
+
+				case input.KeyEvent:
+					keys[ev.Code] = ev.Pressed
+				}
+			}
 		}
 
-		connect.NewConnection(conn, &Server{display: d})
+		canvas = d.Canvas()
+
+		graphics.Clear(canvas, graphics.Black)
+		graphics.Text(canvas, canvas.Bounds(), "Welcome To RLXOS", 12, graphics.White)
+
+		graphics.Dot(canvas, cursor, graphics.White, 4)
+
+		time.Sleep(time.Millisecond * 16)
+
+		d.Sync()
 	}
 
 }

@@ -18,8 +18,6 @@
 package main
 
 import (
-	"image"
-	"image/draw"
 	"sync"
 
 	"rlxos.dev/api/display"
@@ -41,8 +39,8 @@ func (s *Server) Upload(args display.UploadArgs) (display.UploadReply, error) {
 	}
 	defer source.Detach()
 
-	dst := s.display.Image()
-	draw.Draw(dst, args.Bounds, source, image.Point{}, draw.Over)
+	canvas := s.display.Canvas()
+	graphics.Image(canvas, args.Bounds, source)
 
 	return display.UploadReply{}, nil
 }
@@ -51,8 +49,8 @@ func (s *Server) Clear(args display.ClearArgs) (display.ClearReply, error) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
-	dst := s.display.Image()
-	graphics.Clear(dst, args.Color)
+	canvas := s.display.Canvas()
+	graphics.Clear(canvas, args.Color)
 
 	return display.ClearReply{}, nil
 }

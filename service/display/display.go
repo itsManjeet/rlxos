@@ -126,7 +126,7 @@ func (d *Display) initialize() error {
 	return nil
 }
 
-func (d *Display) Image() *argb.Image {
+func (d *Display) Canvas() *argb.Image {
 	return argb.NewImageWithBuffer(
 		image.Rect(0, 0, int(d.mode.Hdisplay), int(d.mode.Vdisplay)),
 		d.buffers[d.next].buffer,

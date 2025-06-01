@@ -15,30 +15,13 @@
  *
  */
 
-package main
+package graphics
 
 import (
-	"rlxos.dev/pkg/graphics"
-	"rlxos.dev/pkg/graphics/argb"
-	"rlxos.dev/pkg/kernel/shm"
+	"image"
+	"image/draw"
 )
 
-type Panel struct {
-	img *shm.Image
-}
-
-func NewPanel(width, height int) (*Panel, error) {
-	img, err := shm.NewImage(width, 48)
-	if err != nil {
-		return nil, err
-	}
-
-	p := &Panel{
-		img: img,
-	}
-	return p, nil
-}
-
-func (p *Panel) Update() {
-	graphics.Clear(p.img, argb.NewColor(255, 255, 255, 255))
+func Image(dst draw.Image, bounds image.Rectangle, source image.Image) {
+	draw.Draw(dst, bounds, source, image.Point{}, draw.Src)
 }

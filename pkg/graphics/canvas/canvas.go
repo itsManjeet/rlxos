@@ -15,13 +15,16 @@
  *
  */
 
-package graphics
+package canvas
 
 import (
 	"image"
-	"image/draw"
+	"image/color"
 )
 
-func Image(dst draw.Image, bounds image.Rectangle, source image.Image) {
-	draw.Draw(dst, bounds, source, image.Point{}, draw.Src)
+type Canvas interface {
+	Bounds() image.Rectangle
+	Set(x, y int, c color.Color)
+	At(x, y int) color.Color
+	ColorModel() color.Model
 }

@@ -18,34 +18,23 @@
 package main
 
 import (
-	"image"
-	"image/png"
-	"log"
-	"os"
+	"time"
 
 	"rlxos.dev/pkg/graphics"
-	"rlxos.dev/pkg/graphics/argb"
+	"rlxos.dev/pkg/kernel/input"
 )
 
-func main() {
-	screen := argb.NewImage(image.Rect(0, 0, 800, 600))
-	btn := graphics.Button{
-		Child: &graphics.Label{
-			Text: "Click Me",
-			Size: 12,
-		},
-	}
+type Clock struct {
+	graphics.Label
+}
 
-	btn.SetBounds(screen.Bounds())
-	btn.Draw(screen)
+func (c *Clock) String() string {
+	return "[CLOCK(" + c.Text + ")]"
+}
 
-	file, err := os.OpenFile("screen.png", os.O_WRONLY|os.O_CREATE, 0644)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer file.Close()
-
-	if err := png.Encode(file, screen); err != nil {
-		log.Fatal(err)
+func (c *Clock) Update(event input.Event) {
+	if now, ok := event.(time.Time); ok {
+		c.SetDirty(true)
+		c.Text = now.Format("03:04 PM 02/01")
 	}
 }

@@ -15,42 +15,27 @@
  *
  */
 
-package graphics
+package main
 
 import (
-	"image"
-	"image/color"
-	"image/draw"
-	"math"
+	"fmt"
+	"time"
+
+	"rlxos.dev/pkg/graphics"
+	"rlxos.dev/pkg/kernel/input"
 )
 
-func Line(dst draw.Image, start, end image.Point, clr color.Color, thickness int) {
-	dx := int(math.Abs(float64(end.X - start.X)))
-	dy := int(math.Abs(float64(end.Y - start.Y)))
-	sx := 1
-	if start.X > end.X {
-		sx = -1
-	}
-	sy := 1
-	if start.Y > end.Y {
-		sy = -1
-	}
-	err := dx - dy
+type Status struct {
+	graphics.Label
+}
 
-	for {
-		Dot(dst, start, clr, thickness)
+func (s *Status) String() string {
+	return "[STATUS(" + s.Text + ")]"
+}
 
-		if start.X == end.X && start.Y == end.Y {
-			break
-		}
-		e2 := 2 * err
-		if e2 > -dy {
-			err -= dy
-			start.X += sx
-		}
-		if e2 < dx {
-			err += dx
-			start.Y += sy
-		}
+func (s *Status) Update(event input.Event) {
+	if _, ok := event.(time.Time); !ok {
+		s.SetDirty(true)
+		s.Label.Text = fmt.Sprintf("Got Event: %v", event)
 	}
 }

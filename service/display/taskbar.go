@@ -15,14 +15,31 @@
  *
  */
 
-package graphics
+package main
 
 import (
 	"image"
-	"image/color"
 	"image/draw"
+
+	"rlxos.dev/pkg/graphics"
+	"rlxos.dev/pkg/graphics/canvas"
 )
 
-func Dot(dst draw.Image, pos image.Point, clr color.Color, thickness int) {
-	FillArc(dst, pos, thickness, 0, 360, clr)
+type Taskbar struct {
+	graphics.Box
+
+	Switcher Switcher
+	Clock    Clock
+	Status   Status
+
+	Height int
+}
+
+func (t *Taskbar) Draw(canvas canvas.Canvas) {
+	if t.SelfDirty() {
+		draw.Draw(canvas, t.Bounds(), image.NewUniform(BackgroundColor), image.Point{}, draw.Over)
+		t.SetSelfDirty(false)
+	}
+
+	t.Box.Draw(canvas)
 }

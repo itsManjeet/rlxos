@@ -20,7 +20,6 @@ package input
 import (
 	"bytes"
 	"encoding/binary"
-	"image"
 	"log"
 	"path/filepath"
 	"syscall"
@@ -101,6 +100,9 @@ func (m *Manager) PollEvents() ([]Event, error) {
 	var ev sysEvent
 	buf := make([]byte, unsafe.Sizeof(ev))
 
+	cursorEvent := CursorEvent{}
+	hasCursorEvent := false
+
 	for i := 0; i < n; i++ {
 		r, err := syscall.Read(m.devices[i].FD(), buf)
 		if err != nil || r != int(unsafe.Sizeof(ev)) {
@@ -115,7 +117,7 @@ func (m *Manager) PollEvents() ([]Event, error) {
 		case 0x01:
 			if ev.Code >= 272 && ev.Code <= 279 {
 				events = append(events, ButtonEvent{
-					Button:  int(ev.Code),
+					Button:  int(ev.Code - 272),
 					Pressed: ev.Value == 1,
 				})
 			} else {
@@ -127,36 +129,24 @@ func (m *Manager) PollEvents() ([]Event, error) {
 		case 0x02:
 			switch ev.Code {
 			case 0:
-				events = append(events, CursorEvent{
-					Point: image.Point{
-						X: int(ev.Value),
-					},
-					Absolute: false,
-				})
+				cursorEvent.X += int(ev.Value)
+				cursorEvent.Absolute = false
+				hasCursorEvent = true
 			case 1:
-				events = append(events, CursorEvent{
-					Point: image.Point{
-						Y: int(ev.Value),
-					},
-					Absolute: false,
-				})
+				cursorEvent.Y += int(ev.Value)
+				cursorEvent.Absolute = false
+				hasCursorEvent = true
 			}
 		case 0x03:
 			switch ev.Code {
 			case 0:
-				events = append(events, CursorEvent{
-					Point: image.Point{
-						X: int(ev.Value),
-					},
-					Absolute: true,
-				})
+				cursorEvent.X = int(ev.Value)
+				cursorEvent.Absolute = true
+				hasCursorEvent = true
 			case 1:
-				events = append(events, CursorEvent{
-					Point: image.Point{
-						Y: int(ev.Value),
-					},
-					Absolute: true,
-				})
+				cursorEvent.Y = int(ev.Value)
+				cursorEvent.Absolute = true
+				hasCursorEvent = true
 			}
 		case 0x04:
 			if ev.Code == 0x04 {
@@ -165,9 +155,11 @@ func (m *Manager) PollEvents() ([]Event, error) {
 					Pressed: ev.Value == 1,
 				})
 			}
-		default:
-			events = append(events, ev)
 		}
+	}
+
+	if hasCursorEvent {
+		events = append(events, cursorEvent)
 	}
 
 	return events, nil

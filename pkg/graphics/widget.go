@@ -18,25 +18,44 @@
 package graphics
 
 import (
-	"image/color"
+	"image"
 
-	"rlxos.dev/pkg/graphics/argb"
+	"rlxos.dev/pkg/graphics/canvas"
+	"rlxos.dev/pkg/kernel/input"
 )
 
-var (
-	Background   color.Color
-	OnBackground color.Color
-	Surface      color.Color
-	OnSurface    color.Color
+type Widget interface {
+	Draw(canvas canvas.Canvas)
+	Bounds() image.Rectangle
+	SetBounds(rect image.Rectangle)
+	Dirty() bool
+	SetDirty(d bool)
+}
 
-	Black = argb.NewColor(0x00, 0x00, 0x00, 0xff)
-	White = argb.NewColor(0xff, 0xff, 0xff, 0xff)
-)
+type Updatable interface {
+	Update(event input.Event)
+}
 
-func init() {
-	Background = argb.NewColor(0x22, 0x22, 0x22, 0xff)
-	OnBackground = argb.NewColor(0xff, 0xff, 0xff, 0xff)
+type BaseWidget struct {
+	rect  image.Rectangle
+	dirty bool
+}
 
-	Surface = argb.NewColor(0x88, 0x88, 0x88, 0xff)
-	OnSurface = argb.NewColor(0x11, 0x11, 0x11, 0xff)
+func (b *BaseWidget) Bounds() image.Rectangle {
+	return b.rect
+}
+
+func (b *BaseWidget) SetBounds(rect image.Rectangle) {
+	if !b.rect.Eq(rect) {
+		b.SetDirty(true)
+	}
+	b.rect = rect
+}
+
+func (b *BaseWidget) Dirty() bool {
+	return b.dirty
+}
+
+func (b *BaseWidget) SetDirty(d bool) {
+	b.dirty = d
 }

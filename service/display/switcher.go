@@ -15,18 +15,16 @@
  *
  */
 
-package graphics
+package main
 
 import (
-	"image"
-	"image/color"
-	"image/draw"
+	"rlxos.dev/pkg/graphics"
 )
 
-func Fill(dst draw.Image, rect image.Rectangle, c color.Color) {
-	draw.Draw(dst, rect, image.NewUniform(c), image.Point{}, draw.Over)
+type Switcher struct {
+	graphics.Label
 }
 
-func Clear(dst draw.Image, c color.Color) {
-	draw.Draw(dst, dst.Bounds(), image.NewUniform(c), image.Point{}, draw.Src)
+func (c *Switcher) String() string {
+	return "[SWITCHER(" + c.Text + ")]"
 }

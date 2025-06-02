@@ -20,85 +20,96 @@ package main
 import (
 	"flag"
 	"image"
-	"image/draw"
+	"image/png"
 	"log"
 	"os"
 	"time"
 
 	"rlxos.dev/pkg/graphics"
-	"rlxos.dev/pkg/kernel/input"
+	"rlxos.dev/pkg/graphics/argb"
 )
 
 var (
-	card string
+	snapshot string
 )
 
 func init() {
-	flag.StringVar(&card, "card", "/dev/dri/card0", "Graphics Card")
-	log.SetOutput(os.Stderr)
+	flag.StringVar(&snapshot, "snapshot", "", "Capture snapshot")
 }
 
 func main() {
 	flag.Parse()
 
-	d, err := OpenDisplay(card)
+	d := &Display{
+		Taskbar: Taskbar{
+			Switcher: Switcher{
+				Label: graphics.Label{
+					BackgroundColor:     BackgroundColor,
+					ForegroundColor:     graphics.ColorWhite,
+					HorizontalAlignment: graphics.StartAlignment,
+					Text:                "1  2  3",
+				},
+			},
+			Clock: Clock{
+				Label: graphics.Label{
+					BackgroundColor:     BackgroundColor,
+					ForegroundColor:     graphics.ColorWhite,
+					HorizontalAlignment: graphics.MiddleAlignment,
+				},
+			},
+			Status: Status{
+				Label: graphics.Label{
+					BackgroundColor:     BackgroundColor,
+					ForegroundColor:     graphics.ColorWhite,
+					HorizontalAlignment: graphics.EndAlignment,
+				},
+			},
+
+			Box: graphics.Box{
+				Orientation: graphics.Horizontal,
+			},
+			Height: 32,
+		},
+		Workspace: Workspace{
+			BackgroundColor: BackgroundColor,
+			MasterRatio:     0.6,
+			MasterCount:     1,
+		},
+	}
+
+	d.Taskbar.Append(&d.Taskbar.Switcher)
+	d.Taskbar.Append(&d.Taskbar.Clock)
+	d.Taskbar.Append(&d.Taskbar.Status)
+
+	var err error
+	if snapshot == "" {
+		err = graphics.Run(d)
+	} else {
+		err = captureSnapshot(snapshot, d)
+	}
+
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer d.Close()
+}
 
-	ip, err := input.NewManager()
+func captureSnapshot(p string, w graphics.Widget) error {
+	screen := argb.NewImage(image.Rect(0, 0, 800, 600))
+
+	w.SetBounds(screen.Bounds())
+	w.SetDirty(true)
+
+	if u, ok := w.(graphics.Updatable); ok {
+		u.Update(time.Now())
+	}
+
+	w.Draw(screen)
+
+	file, err := os.OpenFile(p, os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
-	defer ip.Close()
+	defer file.Close()
 
-	if err := ip.RegisterAll("/dev/input/event*"); err != nil {
-		log.Fatal(err)
-	}
-
-	var cursor image.Point
-	keys := map[int]bool{}
-
-	var canvas draw.Image
-
-	for {
-		clear(keys)
-
-		events, err := ip.PollEvents()
-		if err == nil {
-			for _, ev := range events {
-				switch ev := ev.(type) {
-				case input.CursorEvent:
-					log.Println("CURSOR EVENT:", ev)
-					if ev.Absolute {
-						if ev.X != 0 {
-							cursor.X = ev.X
-						}
-						if ev.Y != 0 {
-							cursor.Y = ev.Y
-						}
-					} else {
-						cursor.X += ev.X
-						cursor.Y += ev.Y
-					}
-
-				case input.KeyEvent:
-					keys[ev.Code] = ev.Pressed
-				}
-			}
-		}
-
-		canvas = d.Canvas()
-
-		graphics.Clear(canvas, graphics.Black)
-		graphics.Text(canvas, canvas.Bounds(), "Welcome To RLXOS", 12, graphics.White)
-
-		graphics.Dot(canvas, cursor, graphics.White, 4)
-
-		time.Sleep(time.Millisecond * 16)
-
-		d.Sync()
-	}
-
+	return png.Encode(file, screen)
 }

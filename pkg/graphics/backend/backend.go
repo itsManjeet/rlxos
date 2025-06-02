@@ -15,37 +15,18 @@
  *
  */
 
-package main
+package backend
 
 import (
-	"image"
-	"image/png"
-	"log"
-	"os"
-
-	"rlxos.dev/pkg/graphics"
-	"rlxos.dev/pkg/graphics/argb"
+	"rlxos.dev/pkg/graphics/canvas"
+	"rlxos.dev/pkg/kernel/input"
 )
 
-func main() {
-	screen := argb.NewImage(image.Rect(0, 0, 800, 600))
-	btn := graphics.Button{
-		Child: &graphics.Label{
-			Text: "Click Me",
-			Size: 12,
-		},
-	}
+type Backend interface {
+	Init() error
+	Terminate()
 
-	btn.SetBounds(screen.Bounds())
-	btn.Draw(screen)
-
-	file, err := os.OpenFile("screen.png", os.O_WRONLY|os.O_CREATE, 0644)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer file.Close()
-
-	if err := png.Encode(file, screen); err != nil {
-		log.Fatal(err)
-	}
+	PollEvents() []input.Event
+	Canvas() canvas.Canvas
+	Update()
 }

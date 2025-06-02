@@ -18,127 +18,108 @@
 package main
 
 import (
-	"fmt"
 	"image"
-	"log"
-	"syscall"
+	"image/draw"
+	"math/rand"
 
-	"rlxos.dev/pkg/graphics/argb"
-	"rlxos.dev/pkg/kernel/drm"
+	"rlxos.dev/pkg/graphics"
+	"rlxos.dev/pkg/graphics/canvas"
+	"rlxos.dev/pkg/kernel/input"
 )
 
-type Framebuffer struct {
-	id      uint32
-	backend *drm.Framebuffer
-	buffer  []byte
-}
-
 type Display struct {
-	card      *drm.Card
-	buffers   []Framebuffer
-	next      int
-	crtc      *drm.Crtc
-	mode      drm.ModeInfo
-	connector *drm.Connector
+	graphics.BaseWidget
+
+	Taskbar   Taskbar
+	Workspace Workspace
+	cursor    image.Point
 }
 
-func OpenDisplay(path string) (*Display, error) {
-	card, err := drm.OpenCard(path)
-	if err != nil {
-		return nil, err
-	}
-	d := &Display{card: card}
+func (d *Display) Update(event input.Event) {
+	switch event := event.(type) {
+	case input.CursorEvent:
+		if event.Absolute {
+			if event.X != 0 {
+				d.cursor.X = event.X
+			}
 
-	if err := d.initialize(); err != nil {
-		_ = card.Close()
-		return nil, err
+			if event.Y != 0 {
+				d.cursor.Y = event.Y
+			}
+		} else {
+			d.cursor.X += event.X
+			d.cursor.Y += event.Y
+		}
+		d.SetDirty(true)
+	case input.KeyEvent:
+		if event.Code == input.KEY_P && event.Pressed {
+			win := &Window{
+				BackgroundColor: BackgroundColor,
+				Content: graphics.Label{
+					BackgroundColor: BackgroundColor,
+					ForegroundColor: graphics.ColorWhite,
+				},
+			}
+			win.SetBounds(d.pos(600, 400))
+			win.isActive = true
+			d.Workspace.Append(win)
+
+			d.Workspace.Children()[d.Workspace.activeIndex].(*Window).isActive = false
+			d.Workspace.Children()[d.Workspace.activeIndex].(*Window).SetDirty(true)
+
+			d.Workspace.activeIndex = len(d.Workspace.Children()) - 1
+			d.Workspace.SetDirty(true)
+
+		} else if event.Code == input.KEY_R && event.Pressed {
+			d.cursor.X = d.Bounds().Dx() / 2
+			d.cursor.Y = d.Bounds().Dy() / 2
+			d.BaseWidget.SetDirty(true)
+		}
 	}
 
-	return d, nil
+	d.Workspace.Update(event)
+	d.Taskbar.Update(event)
 }
 
-func (d *Display) Close() error {
-	return d.card.Close()
+func (d *Display) Draw(canvas canvas.Canvas) {
+	if d.Taskbar.Dirty() {
+		d.Taskbar.Draw(canvas)
+		d.Taskbar.SetDirty(false)
+	}
+
+	if d.Workspace.Dirty() {
+		d.Workspace.Draw(canvas)
+		d.Workspace.SetDirty(false)
+	}
+
+	draw.Draw(canvas, image.Rect(d.cursor.X, d.cursor.Y, d.cursor.X+2, d.cursor.Y+2), image.NewUniform(graphics.ColorWhite), image.Point{}, draw.Src)
 }
 
-func (d *Display) initialize() error {
-	if !d.card.Support(drm.CapDumbBuffer) {
-		return fmt.Errorf("card doesn't support dumb buffer")
-	}
+func (d *Display) SetBounds(rect image.Rectangle) {
+	d.BaseWidget.SetBounds(rect)
 
-	resources, err := d.card.GetResources()
-	if err != nil {
-		return fmt.Errorf("failed to get DRM resources: %v", err)
-	}
-
-	found := false
-	for _, connID := range resources.Connectors {
-		conn, err := d.card.GetConnector(connID)
-		if err != nil {
-			continue
-		}
-		if conn.Connection == drm.Connected && len(conn.Modes) > 0 {
-			d.connector = conn
-			found = true
-			break
-		}
-	}
-
-	if !found {
-		return fmt.Errorf("no connected connector with valid modes found")
-	}
-
-	d.crtc, err = d.card.GetCrtc(resources.Crtcs[0])
-	if err != nil {
-		return fmt.Errorf("failed to get CRTC: %v", err)
-	}
-
-	d.mode = d.connector.Modes[0]
-
-	d.buffers = make([]Framebuffer, 2)
-	for i := 0; i < 2; i++ {
-		dumb, err := d.card.CreateDumb(d.mode.Hdisplay, d.mode.Vdisplay, 32)
-		if err != nil {
-			return fmt.Errorf("failed to create dumb buffer: %v", err)
-		}
-		fbID, err := d.card.AddFramebuffer(d.mode.Hdisplay, d.mode.Vdisplay, 24, 32, dumb.Pitch, dumb.Handle)
-		if err != nil {
-			return fmt.Errorf("failed to add framebuffer: %v", err)
-		}
-		offset, err := d.card.MapDumb(dumb.Handle)
-		if err != nil {
-			return fmt.Errorf("failed to map dumb buffer: %v", err)
-		}
-
-		buffer, err := syscall.Mmap(d.card.Fd(), int64(offset), int(dumb.Size), syscall.PROT_WRITE|syscall.PROT_READ, syscall.MAP_SHARED)
-		if err != nil {
-			return fmt.Errorf("failed to map dumb buffer: %v", err)
-		}
-		d.buffers[i] = Framebuffer{id: fbID, backend: dumb, buffer: buffer}
-	}
-
-	connectors := []uint32{d.connector.ID}
-
-	if err := d.card.SetCrtc(d.crtc.ID, d.buffers[0].id, 0, 0, &connectors[0], 1, &d.mode); err != nil {
-		return fmt.Errorf("failed to set CRTC: %v", err)
-	}
-
-	return nil
+	d.Taskbar.SetBounds(image.Rect(rect.Min.X, rect.Min.Y, rect.Max.X, rect.Min.Y+d.Taskbar.Height))
+	d.Workspace.SetBounds(image.Rect(rect.Min.X, rect.Min.Y+d.Taskbar.Height, rect.Max.X, rect.Max.Y))
 }
 
-func (d *Display) Canvas() *argb.Image {
-	return argb.NewImageWithBuffer(
-		image.Rect(0, 0, int(d.mode.Hdisplay), int(d.mode.Vdisplay)),
-		d.buffers[d.next].buffer,
-		int(d.buffers[d.next].backend.Pitch),
-	)
+func (d *Display) SetDirty(b bool) {
+	d.BaseWidget.SetDirty(b)
+
+	d.Taskbar.SetDirty(b)
+	d.Workspace.SetDirty(b)
 }
 
-func (d *Display) Sync() {
-	connectors := []uint32{d.connector.ID}
-	if err := d.card.SetCrtc(d.crtc.ID, d.buffers[d.next].id, 0, 0, &connectors[0], 1, &d.mode); err != nil {
-		log.Printf("failed to flip: %v", err)
-	} else {
-		d.next ^= 1
+func (d *Display) Dirty() bool {
+	return d.Taskbar.Dirty() || d.Workspace.Dirty() || d.BaseWidget.Dirty()
+}
+
+func (d *Display) pos(w, h int) image.Rectangle {
+	maxX := d.Bounds().Max.X - w
+	maxY := d.Bounds().Max.Y - h
+	if maxX < 0 || maxY < 0 {
+		return image.Rect(0, 0, 0, 0)
 	}
+	x := rand.Intn(maxX + 1)
+	y := rand.Intn(maxY + 1)
+	return image.Rect(x, y, x+w, y+h)
 }

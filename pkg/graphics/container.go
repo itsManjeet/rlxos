@@ -15,46 +15,46 @@
  *
  */
 
-package input
+package graphics
 
-import (
-	"fmt"
-	"image"
-)
-
-type sysEvent struct {
-	Time  [2]uint64
-	Type  uint16
-	Code  uint16
-	Value int32
+type Container interface {
+	Children() []Widget
+	Append(child Widget)
 }
 
-type Event interface{}
-
-type KeyEvent struct {
-	Code    int
-	Pressed bool
+type BaseContainer struct {
+	BaseWidget
+	children []Widget
 }
 
-func (e KeyEvent) String() string {
-	return fmt.Sprintf("Key(%v,%v)", e.Code, e.Pressed)
+func (b *BaseContainer) Children() []Widget {
+	return b.children
 }
 
-type ButtonEvent struct {
-	Button  int
-	Pressed bool
+func (b *BaseContainer) Append(child Widget) {
+	b.children = append(b.children, child)
 }
 
-func (e ButtonEvent) String() string {
-	return fmt.Sprintf("Button(%v,%v)", e.Button, e.Pressed)
+func (b *BaseContainer) SelfDirty() bool {
+	return b.dirty
 }
 
-type CursorEvent struct {
-	image.Point
-
-	Absolute bool
+func (b *BaseContainer) SetSelfDirty(d bool) {
+	b.dirty = d
 }
 
-func (e CursorEvent) String() string {
-	return fmt.Sprintf("Cursor(%vx%v,%v)", e.X, e.Y, e.Absolute)
+func (b *BaseContainer) Dirty() bool {
+	for _, child := range b.children {
+		if child.Dirty() {
+			return true
+		}
+	}
+	return b.dirty
+}
+
+func (b *BaseContainer) SetDirty(d bool) {
+	b.dirty = d
+	for _, child := range b.children {
+		child.SetDirty(d)
+	}
 }

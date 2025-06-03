@@ -71,16 +71,18 @@ git clone https://github.com/itsmanjeet/rlxos.git
 cd rlxos
 ```
 
-2. Build the OS:
+Select a device from devices/
+
+1. Build the OS:
 
 ```sh
-make
+make DEVICE=<DEVICE>
 ```
 
 3. Run it using QEMU:
 
 ```sh
-make run
+make DEVICE=<DEVICE> run
 ```
 
 4. Start the debug shell:

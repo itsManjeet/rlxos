@@ -124,7 +124,7 @@ func (d *Backend) Init() error {
 	}
 	// defer inputs.Close()
 
-	if err := inputs.RegisterAll("/dev/input/event*"); err != nil {
+	if err := inputs.RegisterAll("/dev/input/*"); err != nil {
 		return fmt.Errorf("failed to register input devices %v", err)
 	}
 

@@ -17,6 +17,8 @@
 
 package graphics
 
+import "slices"
+
 type Container interface {
 	Children() []Widget
 	Append(child Widget)
@@ -33,6 +35,10 @@ func (b *BaseContainer) Children() []Widget {
 
 func (b *BaseContainer) Append(child Widget) {
 	b.children = append(b.children, child)
+}
+
+func (b *BaseContainer) Remove(idx int) {
+	b.children = slices.Delete(b.children, idx, idx+1)
 }
 
 func (b *BaseContainer) SelfDirty() bool {

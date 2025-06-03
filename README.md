@@ -95,7 +95,14 @@ go run rlxos.dev/tools/debug shell
 
 ## Usage
 
-Currently, after booting, you'll see a welcome message displaying the current FPS. It may look simple, but a lot is happening behind the scenes.
+You will prompt with a minimal desktop environment with a top status bar and workspace.
+
+| Shortcuts | Description                  |
+| --------- | ---------------------------- |
+| Alt+Enter | Open new Window              |
+| Alt+Tab   | Switch focus between windows |
+| Alt+s     | Switch between workspaces    |
+| Alt+r     | Reset cursor                 |
 
 ---
 

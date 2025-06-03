@@ -24,6 +24,6 @@ const (
 )
 
 var (
-	BackgroundColor = argb.NewColor(34, 34, 34, 255)
-	BorderColor     = argb.NewColor(68, 68, 68, 255)
+	BackgroundColor = argb.NewColor(255, 255, 255, 255)
+	BorderColor     = argb.NewColor(0, 150, 150, 255)
 )

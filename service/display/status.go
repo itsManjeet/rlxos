@@ -18,9 +18,6 @@
 package main
 
 import (
-	"fmt"
-	"time"
-
 	"rlxos.dev/pkg/graphics"
 	"rlxos.dev/pkg/kernel/input"
 )
@@ -34,8 +31,10 @@ func (s *Status) String() string {
 }
 
 func (s *Status) Update(event input.Event) {
-	if _, ok := event.(time.Time); !ok {
-		s.SetDirty(true)
-		s.Label.Text = fmt.Sprintf("Got Event: %v", event)
-	}
+
+}
+
+func (s *Status) Send(msg string) {
+	s.Label.Text = msg
+	s.Label.SetDirty(true)
 }

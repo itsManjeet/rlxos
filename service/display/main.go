@@ -20,6 +20,8 @@ package main
 import (
 	"flag"
 	"image"
+	"image/color"
+	"image/jpeg"
 	"image/png"
 	"log"
 	"os"
@@ -30,38 +32,40 @@ import (
 )
 
 var (
-	snapshot string
+	snapshot   string
+	background string
 )
 
 func init() {
 	flag.StringVar(&snapshot, "snapshot", "", "Capture snapshot")
+	flag.StringVar(&background, "background", "/data/backgrounds/default.jpg", "Background")
 }
 
 func main() {
 	flag.Parse()
+	backgroundImage := LoadBackgroundOrColor(background, BackgroundColor)
 
 	d := &Display{
 		Taskbar: Taskbar{
 			Switcher: Switcher{
 				Label: graphics.Label{
 					BackgroundColor:     BackgroundColor,
-					ForegroundColor:     graphics.ColorWhite,
 					HorizontalAlignment: graphics.StartAlignment,
-					Text:                "1  2  3",
+					VerticalAlignment:   graphics.MiddleAlignment,
 				},
 			},
 			Clock: Clock{
 				Label: graphics.Label{
 					BackgroundColor:     BackgroundColor,
-					ForegroundColor:     graphics.ColorWhite,
 					HorizontalAlignment: graphics.MiddleAlignment,
+					VerticalAlignment:   graphics.MiddleAlignment,
 				},
 			},
 			Status: Status{
 				Label: graphics.Label{
 					BackgroundColor:     BackgroundColor,
-					ForegroundColor:     graphics.ColorWhite,
 					HorizontalAlignment: graphics.EndAlignment,
+					VerticalAlignment:   graphics.MiddleAlignment,
 				},
 			},
 
@@ -70,12 +74,31 @@ func main() {
 			},
 			Height: 32,
 		},
-		Workspace: Workspace{
-			BackgroundColor: BackgroundColor,
-			MasterRatio:     0.6,
-			MasterCount:     1,
+		Workspaces: []Workspace{
+			{
+				BackgroundImage: backgroundImage,
+				MasterRatio:     0.6,
+				MasterCount:     1,
+			},
+			{
+				BackgroundImage: backgroundImage,
+				MasterRatio:     0.6,
+				MasterCount:     1,
+			},
+			{
+				BackgroundImage: backgroundImage,
+				MasterRatio:     0.6,
+				MasterCount:     1,
+			},
+			{
+				BackgroundImage: backgroundImage,
+				MasterRatio:     0.6,
+				MasterCount:     1,
+			},
 		},
 	}
+	d.Taskbar.Switcher.ActiveWorkspace = d.activeWorkspace
+	d.Taskbar.Switcher.TotalWorkspaces = len(d.Workspaces)
 
 	d.Taskbar.Append(&d.Taskbar.Switcher)
 	d.Taskbar.Append(&d.Taskbar.Clock)
@@ -112,4 +135,21 @@ func captureSnapshot(p string, w graphics.Widget) error {
 	defer file.Close()
 
 	return png.Encode(file, screen)
+}
+
+func LoadBackground(path string) (image.Image, error) {
+	file, err := os.OpenFile(path, os.O_RDONLY, 0)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	return jpeg.Decode(file)
+}
+
+func LoadBackgroundOrColor(path string, clr color.Color) image.Image {
+	if img, err := LoadBackground(path); err == nil {
+		return img
+	}
+	return image.NewUniform(clr)
 }

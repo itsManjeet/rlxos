@@ -69,7 +69,10 @@ func (w *Window) Update(event input.Event) {
 				w.Content.Text += string(key)
 				w.SetDirty(true)
 			} else if event.Code == input.KEY_BACKSPACE {
-				if len(w.Content.Text) > 1 {
+				if len(w.Content.Text) == 1 {
+					w.Content.Text = ""
+					w.SetDirty(true)
+				} else if len(w.Content.Text) > 1 {
 					w.Content.Text = w.Content.Text[:len(w.Content.Text)-1]
 					w.SetDirty(true)
 				}

@@ -19,9 +19,9 @@ package main
 
 import (
 	"image"
-	"image/color"
 	"image/draw"
 
+	"github.com/nfnt/resize"
 	"rlxos.dev/pkg/graphics"
 	"rlxos.dev/pkg/graphics/canvas"
 	"rlxos.dev/pkg/kernel/input"
@@ -30,50 +30,73 @@ import (
 type Workspace struct {
 	graphics.BaseContainer
 
-	BackgroundColor color.Color
+	BackgroundImage image.Image
 	MasterRatio     float64
 	MasterCount     int
-	activeIndex     int
+	activeWindow    *Window
 }
 
 func (w *Workspace) Draw(canvas canvas.Canvas) {
 	if w.SelfDirty() {
-		draw.Draw(canvas, w.Bounds(), image.NewUniform(BackgroundColor), image.Point{}, draw.Src)
+		if !w.Bounds().Eq(w.BackgroundImage.Bounds()) {
+			w.BackgroundImage = resize.Resize(uint(w.Bounds().Dx()), uint(w.Bounds().Dy()), w.BackgroundImage, resize.Bilinear)
+		}
+		draw.Draw(canvas, w.Bounds(), w.BackgroundImage, image.Point{}, draw.Src)
 		w.SetSelfDirty(false)
 	}
 
 	for _, child := range w.Children() {
 		if child.Dirty() {
 			child.Draw(canvas)
-			child.SetDirty(false)
+			child.SetDirty(true)
 		}
 	}
 }
 
 func (w *Workspace) Update(event input.Event) {
-	if len(w.Children()) == 0 {
-		return
+	if w.activeWindow != nil {
+		w.activeWindow.Update(event)
 	}
-	switch event := event.(type) {
-	case input.KeyEvent:
-		if event.Code == input.KEY_TAB && event.Pressed {
-			win, _ := w.Children()[w.activeIndex].(*Window)
-			win.isActive = false
-			win.SetDirty(true)
+}
 
-			w.activeIndex = (w.activeIndex + 1) % len(w.Children())
+func (w *Workspace) addWindow(_ string) {
+	if w.activeWindow != nil {
+		w.activeWindow.isActive = false
+		w.SetDirty(true)
+	}
 
-			win, _ = w.Children()[w.activeIndex].(*Window)
-			win.isActive = true
-			win.SetDirty(true)
-		} else {
-			if u, ok := w.Children()[w.activeIndex].(graphics.Updatable); ok {
-				u.Update(event)
-			}
-		}
-	default:
-		if u, ok := w.Children()[w.activeIndex].(graphics.Updatable); ok {
-			u.Update(event)
+	w.activeWindow = &Window{
+		BackgroundColor: BackgroundColor,
+		isActive:        true,
+		Content: graphics.Label{
+			HorizontalAlignment: graphics.StartAlignment,
+			VerticalAlignment:   graphics.StartAlignment,
+			BackgroundColor:     BackgroundColor,
+			Size:                8,
+		},
+	}
+	w.activeWindow.SetDirty(true)
+	w.activeWindow.SetBounds(pos(600, 400, w.Bounds()))
+	w.Append(w.activeWindow)
+}
+
+func (w *Workspace) at(pos image.Point) *Window {
+	children := w.Children()
+	for i := len(children) - 1; i >= 0; i-- {
+		if pos.In(children[i].Bounds()) {
+			return children[i].(*Window)
 		}
 	}
+	return nil
+}
+
+func (w *Workspace) Raise(win *Window) {
+	w.activeWindow.isActive = false
+	w.activeWindow.SetDirty(true)
+
+	w.activeWindow = win
+	w.activeWindow.isActive = true
+	w.activeWindow.SetDirty(true)
+
+	w.Append(win)
 }

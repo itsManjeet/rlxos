@@ -30,12 +30,17 @@ import (
 type Display struct {
 	graphics.BaseWidget
 
-	Taskbar   Taskbar
-	Workspace Workspace
-	cursor    image.Point
+	Taskbar         Taskbar
+	Workspaces      []Workspace
+	activeWorkspace int
+	cursor          image.Point
+	keys            map[int]bool
 }
 
 func (d *Display) Update(event input.Event) {
+	if d.keys == nil {
+		d.keys = map[int]bool{}
+	}
 	switch event := event.(type) {
 	case input.CursorEvent:
 		if event.Absolute {
@@ -52,32 +57,87 @@ func (d *Display) Update(event input.Event) {
 		}
 		d.SetDirty(true)
 	case input.KeyEvent:
-		if event.Code == input.KEY_P && event.Pressed {
-			win := &Window{
-				BackgroundColor: BackgroundColor,
-				Content: graphics.Label{
-					BackgroundColor: BackgroundColor,
-					ForegroundColor: graphics.ColorWhite,
-				},
+		if d.isKeySet(input.KEY_LEFTALT) && event.Pressed {
+			switch event.Code {
+			case input.KEY_ENTER:
+				d.Workspaces[d.activeWorkspace].addWindow("Window")
+				return
+
+			case input.KEY_TAB:
+				if len(d.Workspaces[d.activeWorkspace].Children()) > 1 {
+					win := d.Workspaces[d.activeWorkspace].Children()[0].(*Window)
+					d.Workspaces[d.activeWorkspace].Remove(0)
+					d.Workspaces[d.activeWorkspace].Raise(win)
+				}
+				return
+
+			case input.KEY_R:
+				d.cursor.X = d.Bounds().Dx() / 2
+				d.cursor.Y = d.Bounds().Dy() / 2
+				d.Taskbar.Status.Send("Reseting cursor")
+				d.BaseWidget.SetDirty(true)
+				return
+
+			case input.KEY_S:
+				d.activeWorkspace = (d.activeWorkspace + 1) % len(d.Workspaces)
+				d.Taskbar.Switcher.ActiveWorkspace = d.activeWorkspace
+				d.Taskbar.Switcher.SetDirty(true)
+				d.Workspaces[d.activeWorkspace].SetDirty(true)
+				return
+
+			case input.KEY_UP:
+				if d.Workspaces[d.activeWorkspace].activeWindow != nil {
+					rect := d.Workspaces[d.activeWorkspace].activeWindow.Bounds()
+					if d.isKeySet(input.KEY_LEFTSHIFT) {
+						rect.Max.Y -= 10
+						d.Workspaces[d.activeWorkspace].activeWindow.SetBounds(rect)
+					} else {
+						d.Workspaces[d.activeWorkspace].activeWindow.SetBounds(rect.Add(image.Pt(0, -10)))
+					}
+				}
+				return
+
+			case input.KEY_DOWN:
+				if d.Workspaces[d.activeWorkspace].activeWindow != nil {
+					rect := d.Workspaces[d.activeWorkspace].activeWindow.Bounds()
+					if d.isKeySet(input.KEY_LEFTSHIFT) {
+						rect.Max.Y += 10
+						d.Workspaces[d.activeWorkspace].activeWindow.SetBounds(rect)
+					} else {
+						d.Workspaces[d.activeWorkspace].activeWindow.SetBounds(rect.Add(image.Pt(0, 10)))
+					}
+				}
+				return
+
+			case input.KEY_LEFT:
+				if d.Workspaces[d.activeWorkspace].activeWindow != nil {
+					rect := d.Workspaces[d.activeWorkspace].activeWindow.Bounds()
+					if d.isKeySet(input.KEY_LEFTSHIFT) {
+						rect.Max.X -= 10
+						d.Workspaces[d.activeWorkspace].activeWindow.SetBounds(rect)
+					} else {
+						d.Workspaces[d.activeWorkspace].activeWindow.SetBounds(rect.Add(image.Pt(-10, 0)))
+					}
+				}
+				return
+
+			case input.KEY_RIGHT:
+				if d.Workspaces[d.activeWorkspace].activeWindow != nil {
+					rect := d.Workspaces[d.activeWorkspace].activeWindow.Bounds()
+					if d.isKeySet(input.KEY_LEFTSHIFT) {
+						rect.Max.X += 10
+						d.Workspaces[d.activeWorkspace].activeWindow.SetBounds(rect)
+					} else {
+						d.Workspaces[d.activeWorkspace].activeWindow.SetBounds(rect.Add(image.Pt(10, 0)))
+					}
+				}
+				return
 			}
-			win.SetBounds(d.pos(600, 400))
-			win.isActive = true
-			d.Workspace.Append(win)
-
-			d.Workspace.Children()[d.Workspace.activeIndex].(*Window).isActive = false
-			d.Workspace.Children()[d.Workspace.activeIndex].(*Window).SetDirty(true)
-
-			d.Workspace.activeIndex = len(d.Workspace.Children()) - 1
-			d.Workspace.SetDirty(true)
-
-		} else if event.Code == input.KEY_R && event.Pressed {
-			d.cursor.X = d.Bounds().Dx() / 2
-			d.cursor.Y = d.Bounds().Dy() / 2
-			d.BaseWidget.SetDirty(true)
 		}
+		d.keys[event.Code] = event.Pressed
 	}
 
-	d.Workspace.Update(event)
+	d.Workspaces[d.activeWorkspace].Update(event)
 	d.Taskbar.Update(event)
 }
 
@@ -87,39 +147,48 @@ func (d *Display) Draw(canvas canvas.Canvas) {
 		d.Taskbar.SetDirty(false)
 	}
 
-	if d.Workspace.Dirty() {
-		d.Workspace.Draw(canvas)
-		d.Workspace.SetDirty(false)
+	if d.Workspaces[d.activeWorkspace].Dirty() {
+		d.Workspaces[d.activeWorkspace].Draw(canvas)
+		d.Workspaces[d.activeWorkspace].SetDirty(false)
 	}
 
-	draw.Draw(canvas, image.Rect(d.cursor.X, d.cursor.Y, d.cursor.X+2, d.cursor.Y+2), image.NewUniform(graphics.ColorWhite), image.Point{}, draw.Src)
+	draw.Draw(canvas, image.Rect(d.cursor.X, d.cursor.Y, d.cursor.X+2, d.cursor.Y+2), image.NewUniform(graphics.ColorBlack), image.Point{}, draw.Src)
 }
 
 func (d *Display) SetBounds(rect image.Rectangle) {
 	d.BaseWidget.SetBounds(rect)
 
 	d.Taskbar.SetBounds(image.Rect(rect.Min.X, rect.Min.Y, rect.Max.X, rect.Min.Y+d.Taskbar.Height))
-	d.Workspace.SetBounds(image.Rect(rect.Min.X, rect.Min.Y+d.Taskbar.Height, rect.Max.X, rect.Max.Y))
+	d.Workspaces[d.activeWorkspace].SetBounds(image.Rect(rect.Min.X, rect.Min.Y+d.Taskbar.Height, rect.Max.X, rect.Max.Y))
 }
 
 func (d *Display) SetDirty(b bool) {
 	d.BaseWidget.SetDirty(b)
 
 	d.Taskbar.SetDirty(b)
-	d.Workspace.SetDirty(b)
+	d.Workspaces[d.activeWorkspace].SetDirty(b)
 }
 
 func (d *Display) Dirty() bool {
-	return d.Taskbar.Dirty() || d.Workspace.Dirty() || d.BaseWidget.Dirty()
+	return d.Taskbar.Dirty() || d.Workspaces[d.activeWorkspace].Dirty() || d.BaseWidget.Dirty()
 }
 
-func (d *Display) pos(w, h int) image.Rectangle {
-	maxX := d.Bounds().Max.X - w
-	maxY := d.Bounds().Max.Y - h
+func pos(w, h int, rect image.Rectangle) image.Rectangle {
+	maxX := rect.Max.X - w
+	maxY := rect.Max.Y - h
 	if maxX < 0 || maxY < 0 {
 		return image.Rect(0, 0, 0, 0)
 	}
-	x := rand.Intn(maxX + 1)
-	y := rand.Intn(maxY + 1)
+	x := rand.Intn(maxX+1-rect.Min.X) + rect.Min.X
+	y := rand.Intn(maxY+1-rect.Min.Y) + rect.Min.Y
 	return image.Rect(x, y, x+w, y+h)
+}
+
+func (d *Display) isKeySet(key int) bool {
+	if d.keys != nil {
+		if status, ok := d.keys[key]; ok {
+			return status
+		}
+	}
+	return false
 }

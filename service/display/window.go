@@ -40,18 +40,18 @@ func (w *Window) Draw(canvas canvas.Canvas) {
 
 	var borderColor color.Color = BorderColor
 	if w.isActive {
-		borderColor = graphics.Lighten(borderColor, 0.4)
+		borderColor = ActiveBorderColor
 	}
-	draw.Draw(canvas, image.Rect(w.Bounds().Min.X, w.Bounds().Min.Y, w.Bounds().Max.X, w.Bounds().Min.Y+BorderWidth),
+	draw.Draw(canvas, image.Rect(w.Bounds().Min.X-BorderWidth, w.Bounds().Min.Y-TitlebarHeight, w.Bounds().Max.X+BorderWidth, w.Bounds().Min.Y),
 		image.NewUniform(borderColor), image.Point{}, draw.Src)
 
-	draw.Draw(canvas, image.Rect(w.Bounds().Min.X, w.Bounds().Max.Y-BorderWidth, w.Bounds().Max.X, w.Bounds().Max.Y),
+	draw.Draw(canvas, image.Rect(w.Bounds().Min.X, w.Bounds().Max.Y, w.Bounds().Max.X, w.Bounds().Max.Y+BorderWidth),
 		image.NewUniform(borderColor), image.Point{}, draw.Src)
 
-	draw.Draw(canvas, image.Rect(w.Bounds().Min.X, w.Bounds().Min.Y, w.Bounds().Min.X+BorderWidth, w.Bounds().Max.Y),
+	draw.Draw(canvas, image.Rect(w.Bounds().Min.X-BorderWidth, w.Bounds().Min.Y, w.Bounds().Min.X, w.Bounds().Max.Y),
 		image.NewUniform(borderColor), image.Point{}, draw.Src)
 
-	draw.Draw(canvas, image.Rect(w.Bounds().Max.X-BorderWidth, w.Bounds().Min.Y, w.Bounds().Max.X, w.Bounds().Max.Y),
+	draw.Draw(canvas, image.Rect(w.Bounds().Max.X, w.Bounds().Min.Y, w.Bounds().Max.X+BorderWidth, w.Bounds().Max.Y),
 		image.NewUniform(borderColor), image.Point{}, draw.Src)
 
 }

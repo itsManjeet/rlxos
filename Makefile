@@ -63,6 +63,12 @@ INITRAMFS_TARGETS := $(addprefix $(INITRAMFS_PATH)/,$(INITRAMFS_TARGETS))
 docs:
 	$(GO) tool golang.org/x/tools/cmd/godoc -http=:6060 .
 
+lint:
+	golangci-lint run ./...
+
+format:
+	golangci-lint fmt
+
 clean:
 	rm -f $(SYSTEM_IMAGE) $(INITRAMFS_IMAGE)
 	rm -rf $(SYSTEM_PATH) $(INITRAMFS_PATH)

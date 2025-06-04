@@ -1,0 +1,66 @@
+name: Publish API Reference
+
+on:
+  # Publish documentation when a new release is tagged.
+  push:
+    tags: ['v*']
+
+  # Allow manually publishing documentation from a specific hash.
+  workflow_dispatch:
+    inputs:
+      head:
+        description: "Git commit to publish documentation for."
+        required: true
+        type: string
+
+# If two concurrent runs are started,
+# prefer the latest one.
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+
+  build:
+    name: Build website
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          # Check out head specified by workflow_dispatch,
+          # or the tag if this fired from the push event.
+          ref: ${{ inputs.head || github.ref }}
+      - name: Setup Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: stable
+          cache: true
+      - name: Install doc2go
+        run: go install go.abhg.dev/doc2go@latest
+      - name: Generate API reference
+        run: doc2go ./...
+      - name: Upload pages
+        uses: actions/upload-pages-artifact@v1
+
+  publish:
+    name: Publish website
+    # Don't run until the build has finished running.
+    needs: build
+
+    # Grants the GITHUB_TOKEN used by this job
+    # permissions needed to publish the website.
+    permissions:
+      pages: write
+      id-token: write
+
+    # Deploy to the github-pages environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1

@@ -1,0 +1,21 @@
+name: "CI"
+on: [ "push", "pull_request" ]
+
+jobs:
+  ci:
+    name: "Run CI"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-go@v5
+
+      - run: go test ./...
+      - run: go vet ./...
+
+      - uses: dominikh/staticcheck-action@v1
+        with:
+          install-go: 'false'
+          version: 'latest'

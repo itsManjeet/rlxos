@@ -18,23 +18,15 @@
 package main
 
 import (
-	"time"
+	"log"
 
 	"rlxos.dev/pkg/graphics"
-	"rlxos.dev/pkg/kernel/input"
 )
 
-type Clock struct {
-	graphics.Label
-}
-
-func (c *Clock) String() string {
-	return "[CLOCK(" + c.Text + ")]"
-}
-
-func (c *Clock) Update(event input.Event) {
-	if now, ok := event.(time.Time); ok {
-		c.SetDirty(true)
-		c.Text = now.Format("03:04 PM 02/01")
+func main() {
+	if err := graphics.Run(&graphics.Window{
+		Child: &graphics.Entry{},
+	}); err != nil {
+		log.Fatal(err)
 	}
 }

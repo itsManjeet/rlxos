@@ -61,9 +61,6 @@ type Label struct {
 }
 
 func (l *Label) Draw(canvas canvas.Canvas) {
-	if l.BackgroundColor == nil {
-		l.BackgroundColor = Background
-	}
 	if l.ForegroundColor == nil {
 		l.ForegroundColor = OnBackground
 	}
@@ -108,6 +105,10 @@ func (l *Label) Draw(canvas canvas.Canvas) {
 		Face: face,
 		Dot:  fixed.P(x, y),
 	}
-	draw.Draw(canvas, l.Bounds(), image.NewUniform(l.BackgroundColor), image.Point{}, draw.Src)
+
+	if l.BackgroundColor != nil {
+		draw.Draw(canvas, l.Bounds(), image.NewUniform(l.BackgroundColor), image.Point{}, draw.Src)
+	}
+
 	d.DrawString(l.Text)
 }

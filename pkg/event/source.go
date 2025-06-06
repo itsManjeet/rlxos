@@ -15,14 +15,9 @@
  *
  */
 
-package connect
+package event
 
-import "encoding/json"
-
-type Message struct {
-	ID         int64           `json:"id,omitempty"`
-	Method     string          `json:"method,omitempty"`
-	Parameters json.RawMessage `json:"parameters,omitempty"`
-	Result     json.RawMessage `json:"result,omitempty"`
-	Error      *string         `json:"error,omitempty"`
+type Source interface {
+	Fd() int
+	Read() (Event, error)
 }

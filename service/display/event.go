@@ -15,21 +15,21 @@
  *
  */
 
-package graphics
+package main
 
 import (
-	"os"
-
-	"rlxos.dev/pkg/connect"
-	"rlxos.dev/pkg/graphics/backend/display"
-	"rlxos.dev/pkg/graphics/backend/drmkms"
+	"image"
 )
 
-func init() {
-	_, socketPath := connect.AddrOf("display")
-	if _, err := os.Stat(socketPath); err == nil {
-		bk = &display.Backend{}
-	} else {
-		bk = &drmkms.Backend{}
-	}
+type AddWindow struct {
+	rect       image.Rectangle
+	connection *Connection
 }
+
+func (e AddWindow) Event() {}
+
+type Damage struct {
+	rect image.Rectangle
+}
+
+func (e Damage) Event() {}

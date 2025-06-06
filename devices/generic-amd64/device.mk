@@ -20,4 +20,5 @@ run: $(SYSTEM_IMAGE) $(KERNEL_IMAGE) $(INITRAMFS_IMAGE)
 		-kernel $(KERNEL_IMAGE) -initrd $(INITRAMFS_IMAGE) \
 		-append '-rootfs=/dev/sda console=ttyS0' \
 		-drive file=$(SYSTEM_IMAGE),format=raw \
+		-serial tcp::5555,server,nowait \
 		-vga qxl

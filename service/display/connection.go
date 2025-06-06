@@ -15,21 +15,45 @@
  *
  */
 
-package graphics
+package main
 
 import (
-	"os"
+	"encoding/json"
+	"image"
 
 	"rlxos.dev/pkg/connect"
-	"rlxos.dev/pkg/graphics/backend/display"
-	"rlxos.dev/pkg/graphics/backend/drmkms"
+	"rlxos.dev/pkg/event"
 )
 
-func init() {
-	_, socketPath := connect.AddrOf("display")
-	if _, err := os.Stat(socketPath); err == nil {
-		bk = &display.Backend{}
-	} else {
-		bk = &drmkms.Backend{}
+type Connection struct {
+	*connect.Connection
+}
+
+func (c *Connection) Read() (event.Event, error) {
+	cmd, buf, err := c.Receive()
+	if err != nil {
+		return nil, err
 	}
+
+	switch cmd {
+	case "add-window":
+		var rect image.Rectangle
+		if err := json.Unmarshal(buf, &rect); err != nil {
+			return nil, err
+		}
+		return AddWindow{
+			rect:       rect,
+			connection: c,
+		}, nil
+
+	case "damage":
+		var rect image.Rectangle
+		if err := json.Unmarshal(buf, &rect); err != nil {
+			return nil, err
+		}
+		return Damage{
+			rect: rect,
+		}, nil
+	}
+	return nil, nil
 }

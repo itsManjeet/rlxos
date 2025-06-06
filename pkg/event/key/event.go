@@ -15,21 +15,20 @@
  *
  */
 
-package graphics
+package key
 
-import (
-	"os"
+type State int
 
-	"rlxos.dev/pkg/connect"
-	"rlxos.dev/pkg/graphics/backend/display"
-	"rlxos.dev/pkg/graphics/backend/drmkms"
+const (
+	Release State = iota
+	Pressed
 )
 
-func init() {
-	_, socketPath := connect.AddrOf("display")
-	if _, err := os.Stat(socketPath); err == nil {
-		bk = &display.Backend{}
-	} else {
-		bk = &drmkms.Backend{}
-	}
+type Event struct {
+	Key   int
+	State State
+}
+
+func (e Event) Event() {
+
 }

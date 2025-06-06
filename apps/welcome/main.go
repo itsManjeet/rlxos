@@ -18,34 +18,48 @@
 package main
 
 import (
+	"fmt"
 	"image"
-	"image/png"
+	"image/color"
+	"image/draw"
 	"log"
-	"os"
 
+	"rlxos.dev/pkg/event"
 	"rlxos.dev/pkg/graphics"
 	"rlxos.dev/pkg/graphics/argb"
+	"rlxos.dev/pkg/graphics/canvas"
 )
 
+type Welcome struct {
+	graphics.Box
+	Label graphics.Label
+	color color.Color
+}
+
+func (w *Welcome) Init(rect image.Rectangle) error {
+	w.color = argb.NewColor(255, 0, 0, 255)
+	w.Append(&w.Label)
+	w.Label = graphics.Label{
+		Text:                "Welcome to rlxos",
+		HorizontalAlignment: graphics.MiddleAlignment,
+		VerticalAlignment:   graphics.MiddleAlignment,
+		BackgroundColor:     nil,
+	}
+	return nil
+}
+
+func (w *Welcome) Draw(cv canvas.Canvas) {
+	draw.Draw(cv, w.Bounds(), image.NewUniform(w.color), image.Point{}, draw.Over)
+	w.Box.Draw(cv)
+}
+
+func (w *Welcome) Update(ev event.Event) {
+	w.Label.Text = "Key Event: " + fmt.Sprint(ev)
+	w.SetDirty(true)
+}
+
 func main() {
-	screen := argb.NewImage(image.Rect(0, 0, 800, 600))
-	btn := graphics.Button{
-		Child: &graphics.Label{
-			Text: "Click Me",
-			Size: 12,
-		},
-	}
-
-	btn.SetBounds(screen.Bounds())
-	btn.Draw(screen)
-
-	file, err := os.OpenFile("screen.png", os.O_WRONLY|os.O_CREATE, 0644)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer file.Close()
-
-	if err := png.Encode(file, screen); err != nil {
+	if err := graphics.Run(&Welcome{}); err != nil {
 		log.Fatal(err)
 	}
 }

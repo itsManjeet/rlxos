@@ -1,0 +1,107 @@
+/*
+ * Copyright (c) 2025 Manjeet Singh <itsmanjeet1998@gmail.com>.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 3.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+package display
+
+import (
+	"fmt"
+	"image"
+	"log"
+
+	"rlxos.dev/pkg/connect"
+	"rlxos.dev/pkg/event"
+	"rlxos.dev/pkg/event/resize"
+	"rlxos.dev/pkg/graphics/canvas"
+	"rlxos.dev/pkg/kernel/poll"
+	"rlxos.dev/pkg/kernel/shm"
+)
+
+type Backend struct {
+	poll *poll.Listener
+	conn *connect.Connection
+	img  *shm.Image
+}
+
+func (b *Backend) Init() (err error) {
+	b.poll, err = poll.NewListener(-1)
+	if err != nil {
+		return fmt.Errorf("failed to setup poll: %v", err)
+	}
+
+	b.conn, err = connect.Connect("display")
+	if err != nil {
+		return fmt.Errorf("failed to connect to display: %v", err)
+	}
+
+	if err := b.poll.Add(&Connection{b.conn}); err != nil {
+		return fmt.Errorf("failed to add connection to display: %v", err)
+	}
+
+	var k int
+	rect := image.Rect(0, 0, 800, 600)
+
+	if err := b.conn.Send("add-window", rect, &k); err != nil {
+		_ = b.conn.Close()
+		return err
+	}
+	b.img, err = shm.NewImageForKey(k, rect.Dx(), rect.Dy())
+	if err != nil {
+		_ = b.conn.Close()
+		return err
+	}
+	return nil
+}
+
+func (b *Backend) Terminate() {
+	_ = b.conn.Close()
+}
+
+func (b *Backend) PollEvents() ([]event.Event, error) {
+	events, err := b.poll.Poll()
+	if err != nil {
+		return nil, err
+	}
+	for _, ev := range events {
+		switch ev := ev.(type) {
+		case resize.Event:
+			_ = b.img.Detach()
+			b.img, err = ev.SharedImage()
+			if err != nil {
+				log.Printf("failed to attach image: %v", err)
+				return nil, err
+			}
+		}
+	}
+	return b.poll.Poll()
+}
+
+func (b *Backend) Canvas() canvas.Canvas {
+	return b.img
+}
+
+func (b *Backend) Update() {
+	_ = b.img.Lock()
+	defer b.img.Unlock()
+
+	if err := b.conn.Send("damage", b.img.Bounds(), nil); err != nil {
+		log.Println("failed send damage call", err)
+	}
+}
+
+func (b *Backend) Listen(source event.Source) error {
+	return b.poll.Add(source)
+}

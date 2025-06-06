@@ -47,8 +47,7 @@ var (
 	ColorTeal      = argb.NewColor(0, 128, 128, 255)
 	ColorOlive     = argb.NewColor(128, 128, 0, 255)
 
-	// Transparent
-	ColorTransparent = argb.NewColor(0, 0, 0, 0)
+	Transparent = argb.NewColor(0, 0, 0, 0)
 
 	// Primary brand colors
 	Primary   = argb.NewColor(98, 0, 238, 255)    // Deep Purple
@@ -115,4 +114,9 @@ func Darken(c color.Color, amount float64) color.Color {
 	gf := float64(g) * (1 - amount)
 	bf := float64(b) * (1 - amount)
 	return argb.NewColor(clamp(rf), clamp(gf), clamp(bf), clamp(a))
+}
+
+func Alpha(c color.Color, a uint8) color.Color {
+	r, g, b, _ := c.RGBA()
+	return argb.NewColor(uint8(r), uint8(g), uint8(b), a)
 }

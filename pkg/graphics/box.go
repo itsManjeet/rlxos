@@ -20,8 +20,8 @@ package graphics
 import (
 	"image"
 
+	"rlxos.dev/pkg/event"
 	"rlxos.dev/pkg/graphics/canvas"
-	"rlxos.dev/pkg/kernel/input"
 )
 
 type Orientation int
@@ -43,10 +43,10 @@ func (b *Box) Foreach(f func(w Widget)) {
 	}
 }
 
-func (b *Box) Update(event input.Event) {
+func (b *Box) Update(ev event.Event) {
 	b.Foreach(func(c Widget) {
 		if u, ok := c.(Updatable); ok {
-			u.Update(event)
+			u.Update(ev)
 		}
 	})
 }

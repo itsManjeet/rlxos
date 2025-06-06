@@ -20,8 +20,8 @@ package graphics
 import (
 	"image"
 
+	"rlxos.dev/pkg/event"
 	"rlxos.dev/pkg/graphics/canvas"
-	"rlxos.dev/pkg/kernel/input"
 )
 
 type Widget interface {
@@ -33,7 +33,7 @@ type Widget interface {
 }
 
 type Updatable interface {
-	Update(event input.Event)
+	Update(event event.Event)
 }
 
 type BaseWidget struct {

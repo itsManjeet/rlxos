@@ -22,12 +22,16 @@ import (
 	"image"
 	"image/draw"
 	"log"
+	"path/filepath"
+	"sync"
 	"syscall"
 
+	"rlxos.dev/pkg/event"
 	"rlxos.dev/pkg/graphics/argb"
 	"rlxos.dev/pkg/graphics/canvas"
 	"rlxos.dev/pkg/kernel/drm"
 	"rlxos.dev/pkg/kernel/input"
+	"rlxos.dev/pkg/kernel/poll"
 )
 
 type Framebuffer struct {
@@ -37,8 +41,9 @@ type Framebuffer struct {
 }
 
 type Backend struct {
+	mutex     sync.Mutex
 	card      *drm.Card
-	inputs    *input.Manager
+	listener  *poll.Listener
 	buffers   []Framebuffer
 	next      int
 	crtc      *drm.Crtc
@@ -50,86 +55,28 @@ func (d *Backend) Terminate() {
 	_ = d.card.Close()
 }
 
-func (d *Backend) Init() error {
-	card, err := drm.OpenCard("/dev/dri/card0")
+func (d *Backend) Init() (err error) {
+	d.card, err = drm.OpenCard("/dev/dri/card0")
 	if err != nil {
 		return err
 	}
-	// defer card.Close()
 
-	if !card.Support(drm.CapDumbBuffer) {
-		return fmt.Errorf("card doesn't support dumb buffer")
+	if err := d.setupCard(); err != nil {
+		_ = d.card.Close()
+		return err
 	}
 
-	resources, err := card.GetResources()
-	if err != nil {
-		return fmt.Errorf("failed to get DRM resources: %v", err)
+	if d.listener, err = poll.NewListener(-1); err != nil {
+		_ = d.card.Close()
+		return err
 	}
 
-	found := false
-	for _, connID := range resources.Connectors {
-		conn, err := card.GetConnector(connID)
-		if err != nil {
-			continue
-		}
-		if conn.Connection == drm.Connected && len(conn.Modes) > 0 {
-			d.connector = conn
-			found = true
-			break
-		}
+	if err := d.listenInputDevices(); err != nil {
+		_ = d.card.Close()
+		_ = d.listener.Close()
+		return err
 	}
 
-	if !found {
-		return fmt.Errorf("no connected connector with valid modes found")
-	}
-
-	d.crtc, err = card.GetCrtc(resources.Crtcs[0])
-	if err != nil {
-		return fmt.Errorf("failed to get CRTC: %v", err)
-	}
-
-	d.mode = d.connector.Modes[0]
-
-	d.buffers = make([]Framebuffer, 2)
-	for i := 0; i < 2; i++ {
-		dumb, err := card.CreateDumb(d.mode.Hdisplay, d.mode.Vdisplay, 32)
-		if err != nil {
-			return fmt.Errorf("failed to create dumb buffer: %v", err)
-		}
-		fbID, err := card.AddFramebuffer(d.mode.Hdisplay, d.mode.Vdisplay, 24, 32, dumb.Pitch, dumb.Handle)
-		if err != nil {
-			return fmt.Errorf("failed to add framebuffer: %v", err)
-		}
-		offset, err := card.MapDumb(dumb.Handle)
-		if err != nil {
-			return fmt.Errorf("failed to map dumb buffer: %v", err)
-		}
-
-		buffer, err := syscall.Mmap(card.Fd(), int64(offset), int(dumb.Size), syscall.PROT_WRITE|syscall.PROT_READ, syscall.MAP_SHARED)
-		if err != nil {
-			return fmt.Errorf("failed to map dumb buffer: %v", err)
-		}
-		d.buffers[i] = Framebuffer{id: fbID, backend: dumb, buffer: buffer}
-	}
-
-	connectors := []uint32{d.connector.ID}
-
-	if err := card.SetCrtc(d.crtc.ID, d.buffers[0].id, 0, 0, &connectors[0], 1, &d.mode); err != nil {
-		return fmt.Errorf("failed to set CRTC: %v", err)
-	}
-
-	inputs, err := input.NewManager()
-	if err != nil {
-		return fmt.Errorf("failed to initialize input manager %v", err)
-	}
-	// defer inputs.Close()
-
-	if err := inputs.RegisterAll("/dev/input/*"); err != nil {
-		return fmt.Errorf("failed to register input devices %v", err)
-	}
-
-	d.card, card = card, nil
-	d.inputs, inputs = inputs, nil
 	return nil
 }
 
@@ -151,9 +98,8 @@ func (d *Backend) Update() {
 	}
 }
 
-func (d *Backend) PollEvents() []input.Event {
-	events, _ := d.inputs.PollEvents()
-	return events
+func (d *Backend) PollEvents() ([]event.Event, error) {
+	return d.listener.Poll()
 }
 
 func (d *Backend) prepareBackBuffer() {
@@ -168,4 +114,94 @@ func (d *Backend) prepareBackBuffer() {
 		int(d.buffers[d.next^1].backend.Pitch),
 	)
 	draw.Draw(dst, dst.Bounds(), src, image.Point{}, draw.Src)
+}
+
+func (d *Backend) setupCard() error {
+	if !d.card.Support(drm.CapDumbBuffer) {
+		return fmt.Errorf("card doesn't support dumb buffer")
+	}
+
+	resources, err := d.card.GetResources()
+	if err != nil {
+		return fmt.Errorf("failed to get DRM resources: %v", err)
+	}
+
+	found := false
+	for _, connID := range resources.Connectors {
+		conn, err := d.card.GetConnector(connID)
+		if err != nil {
+			continue
+		}
+		if conn.Connection == drm.Connected && len(conn.Modes) > 0 {
+			d.connector = conn
+			found = true
+			break
+		}
+	}
+
+	if !found {
+		return fmt.Errorf("no connected connector with valid modes found")
+	}
+
+	d.crtc, err = d.card.GetCrtc(resources.Crtcs[0])
+	if err != nil {
+		return fmt.Errorf("failed to get CRTC: %v", err)
+	}
+
+	d.mode = d.connector.Modes[0]
+
+	d.buffers = make([]Framebuffer, 2)
+	for i := 0; i < 2; i++ {
+		dumb, err := d.card.CreateDumb(d.mode.Hdisplay, d.mode.Vdisplay, 32)
+		if err != nil {
+			return fmt.Errorf("failed to create dumb buffer: %v", err)
+		}
+		fbID, err := d.card.AddFramebuffer(d.mode.Hdisplay, d.mode.Vdisplay, 24, 32, dumb.Pitch, dumb.Handle)
+		if err != nil {
+			return fmt.Errorf("failed to add framebuffer: %v", err)
+		}
+		offset, err := d.card.MapDumb(dumb.Handle)
+		if err != nil {
+			return fmt.Errorf("failed to map dumb buffer: %v", err)
+		}
+
+		buffer, err := syscall.Mmap(d.card.Fd(), int64(offset), int(dumb.Size), syscall.PROT_WRITE|syscall.PROT_READ, syscall.MAP_SHARED)
+		if err != nil {
+			return fmt.Errorf("failed to map dumb buffer: %v", err)
+		}
+		d.buffers[i] = Framebuffer{id: fbID, backend: dumb, buffer: buffer}
+	}
+
+	connectors := []uint32{d.connector.ID}
+
+	if err := d.card.SetCrtc(d.crtc.ID, d.buffers[0].id, 0, 0, &connectors[0], 1, &d.mode); err != nil {
+		return fmt.Errorf("failed to set CRTC: %v", err)
+	}
+	return nil
+}
+
+func (d *Backend) listenInputDevices() error {
+	matches, err := filepath.Glob("/dev/input/event*")
+	if err != nil {
+		return err
+	}
+
+	for _, match := range matches {
+		src, err := input.OpenDevice(match)
+		if err != nil {
+			continue
+		}
+		if err := d.Listen(src); err != nil {
+			_ = src.Close()
+			continue
+		}
+	}
+	return nil
+}
+
+func (d *Backend) Listen(source event.Source) error {
+	d.mutex.Lock()
+	defer d.mutex.Unlock()
+
+	return d.listener.Add(source)
 }

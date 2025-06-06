@@ -17,49 +17,28 @@
 
 package main
 
-var keymap = map[int]rune{
-	2:  '1',
-	3:  '2',
-	4:  '3',
-	5:  '4',
-	6:  '5',
-	7:  '6',
-	8:  '7',
-	9:  '8',
-	10: '9',
-	11: '0',
-	12: '-',
-	13: '=',
-	16: 'q',
-	17: 'w',
-	18: 'e',
-	19: 'r',
-	20: 't',
-	21: 'y',
-	22: 'u',
-	23: 'i',
-	24: 'o',
-	25: 'p',
-	26: '[',
-	27: ']',
-	30: 'a',
-	31: 's',
-	32: 'd',
-	33: 'f',
-	34: 'g',
-	35: 'h',
-	36: 'j',
-	37: 'k',
-	38: 'l',
-	39: ';',
-	40: '\'',
-	41: '`',
-	43: '\\',
-	44: 'z',
-	45: 'x',
-	46: 'c',
-	47: 'v',
-	48: 'b',
-	49: 'n',
-	50: 'm',
+import (
+	"log"
+	"sync"
+
+	"rlxos.dev/pkg/connect"
+	"rlxos.dev/pkg/graphics"
+)
+
+var (
+	mutex sync.Mutex
+)
+
+type Server struct {
+}
+
+func (s *Server) Handle(conn *connect.Connection) {
+	mutex.Lock()
+	defer mutex.Unlock()
+
+	fd := conn.Fd()
+	log.Println("new connection from", fd)
+	if err := graphics.Backend().Listen(&Connection{conn}); err != nil {
+		log.Printf("failed to listen: %v", err)
+	}
 }

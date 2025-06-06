@@ -18,43 +18,31 @@
 package input
 
 import (
+	"bytes"
+	"encoding/binary"
 	"fmt"
-	"image"
+	"syscall"
+	"unsafe"
 )
 
-type sysEvent struct {
+type Event struct {
 	Time  [2]uint64
 	Type  uint16
 	Code  uint16
 	Value int32
 }
 
-type Event interface{}
+func Read(fd int) (Event, error) {
+	var ev Event
+	buf := make([]byte, unsafe.Sizeof(ev))
 
-type KeyEvent struct {
-	Code    int
-	Pressed bool
-}
+	r, err := syscall.Read(fd, buf)
+	if err != nil || r != int(unsafe.Sizeof(ev)) {
+		return Event{}, fmt.Errorf("failed to read event: %w", err)
+	}
 
-func (e KeyEvent) String() string {
-	return fmt.Sprintf("Key(%v,%v)", e.Code, e.Pressed)
-}
-
-type ButtonEvent struct {
-	Button  int
-	Pressed bool
-}
-
-func (e ButtonEvent) String() string {
-	return fmt.Sprintf("Button(%v,%v)", e.Button, e.Pressed)
-}
-
-type CursorEvent struct {
-	image.Point
-
-	Absolute bool
-}
-
-func (e CursorEvent) String() string {
-	return fmt.Sprintf("Cursor(%vx%v,%v)", e.X, e.Y, e.Absolute)
+	if err := binary.Read(bytes.NewReader(buf), binary.NativeEndian, &ev); err != nil {
+		return Event{}, fmt.Errorf("failed to read event: %w", err)
+	}
+	return ev, nil
 }

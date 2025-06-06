@@ -15,21 +15,40 @@
  *
  */
 
-package graphics
+package connect
 
 import (
+	"fmt"
+	"log"
+	"net"
 	"os"
-
-	"rlxos.dev/pkg/connect"
-	"rlxos.dev/pkg/graphics/backend/display"
-	"rlxos.dev/pkg/graphics/backend/drmkms"
+	"path/filepath"
 )
 
-func init() {
-	_, socketPath := connect.AddrOf("display")
-	if _, err := os.Stat(socketPath); err == nil {
-		bk = &display.Backend{}
-	} else {
-		bk = &drmkms.Backend{}
+func AddrOf(id string) (string, string) {
+	return "unix", filepath.Join("/cache/services", id)
+}
+
+type Server interface {
+	Handle(client *Connection)
+}
+
+func Listen(id string, s Server) error {
+	network, addr := AddrOf(id)
+	_ = os.RemoveAll(addr)
+
+	l, err := net.Listen(network, addr)
+	if err != nil {
+		return fmt.Errorf("failed to listen: %v", err)
+	}
+
+	for {
+		conn, err := l.Accept()
+		if err != nil {
+			log.Printf("failed to accept connection: %v", err)
+			continue
+		}
+
+		s.Handle(&Connection{conn: conn})
 	}
 }

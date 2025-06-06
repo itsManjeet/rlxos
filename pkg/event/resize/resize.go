@@ -15,21 +15,17 @@
  *
  */
 
-package graphics
+package resize
 
-import (
-	"os"
+import "rlxos.dev/pkg/kernel/shm"
 
-	"rlxos.dev/pkg/connect"
-	"rlxos.dev/pkg/graphics/backend/display"
-	"rlxos.dev/pkg/graphics/backend/drmkms"
-)
+type Event struct {
+	Key           int
+	Width, Height int
+}
 
-func init() {
-	_, socketPath := connect.AddrOf("display")
-	if _, err := os.Stat(socketPath); err == nil {
-		bk = &display.Backend{}
-	} else {
-		bk = &drmkms.Backend{}
-	}
+func (e Event) Event() {}
+
+func (e Event) SharedImage() (*shm.Image, error) {
+	return shm.NewImageForKey(e.Key, e.Width, e.Width)
 }

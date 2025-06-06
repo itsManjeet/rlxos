@@ -18,54 +18,79 @@
 package graphics
 
 import (
+	"fmt"
+	"image"
+	"log"
 	"time"
 
 	"rlxos.dev/pkg/graphics/backend"
 )
 
-func Run(w Widget, bs ...backend.Backend) error {
-	if bs == nil {
-		bs = defaultBackends
+var (
+	bk backend.Backend
+)
+
+func SetBackend(b backend.Backend) {
+	bk = b
+}
+
+func Backend() backend.Backend {
+	return bk
+}
+
+type Init interface {
+	Init(rect image.Rectangle) error
+}
+
+func Run(w Widget) error {
+	if bk == nil {
+		return fmt.Errorf("no supported backend found")
 	}
 
-	var sb backend.Backend
-	for _, b := range bs {
-		if err := b.Init(); err == nil {
-			sb = b
-			break
+	if err := bk.Init(); err != nil {
+		return err
+	}
+	defer bk.Terminate()
+
+	{
+		// Initial draw
+		canvas := bk.Canvas()
+		if i, ok := w.(Init); ok {
+			if err := i.Init(canvas.Bounds()); err != nil {
+				return err
+			}
 		}
+		w.SetDirty(true)
+		w.SetBounds(canvas.Bounds())
+		w.Draw(canvas)
+		bk.Update()
 	}
-	defer sb.Terminate()
 
-	w.SetDirty(true)
-
-	tick := time.Now()
-
-	for {
-		for _, event := range sb.PollEvents() {
-			switch event := event.(type) {
-			default:
-				if u, ok := w.(Updatable); ok {
+	if u, ok := w.(Updatable); ok {
+		for {
+			events, err := bk.PollEvents()
+			if err == nil {
+				log.Println("events:", events)
+				for _, event := range events {
 					u.Update(event)
 				}
 			}
-		}
 
-		if elapsed := time.Since(tick); elapsed.Milliseconds() >= 16 {
-			tick = time.Now()
-			if u, ok := w.(Updatable); ok {
-				u.Update(tick)
+			canvas := bk.Canvas()
+			w.SetBounds(canvas.Bounds())
+
+			if w.Dirty() {
+				w.Draw(canvas)
+				w.SetDirty(false)
+			} else {
+				time.Sleep(16 * time.Millisecond)
 			}
+
+			bk.Update()
 		}
-
-		canvas := sb.Canvas()
-		w.SetBounds(canvas.Bounds())
-
-		if w.Dirty() {
-			w.Draw(canvas)
-			w.SetDirty(false)
+	} else {
+		for {
+			time.Sleep(time.Hour * 9999)
 		}
-		sb.Update()
-
 	}
 }

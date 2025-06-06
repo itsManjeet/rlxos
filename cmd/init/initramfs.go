@@ -56,6 +56,9 @@ func ensureRealRootfs() {
 	safeCall("mkdir(tmpfs)", syscall.Mkdir("/run", 0755))
 	safeCall("mount(tmpfs)", syscall.Mount("tmpfs", "/run", "tmpfs", 0, ""))
 
+	safeCall("mkdir(devpts)", syscall.Mkdir("/dev/pts", 0755))
+	safeCall("mount(devpts)", syscall.Mount("devpts", "/dev/pts", "devpts", 0, ""))
+
 	ensureStage("kernel pseudo filesystem mount")
 
 	safeCall("parse(/proc/cmdline)", parseKernelFlags())

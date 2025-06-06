@@ -22,8 +22,10 @@ import (
 	"image/color"
 	"image/draw"
 
+	"rlxos.dev/pkg/event"
+	"rlxos.dev/pkg/event/button"
+	"rlxos.dev/pkg/event/cursor"
 	"rlxos.dev/pkg/graphics/canvas"
-	"rlxos.dev/pkg/kernel/input"
 )
 
 type Button struct {
@@ -35,17 +37,17 @@ type Button struct {
 	isActive bool
 }
 
-func (b *Button) Update(event input.Event) {
-	switch event := event.(type) {
-	case input.CursorEvent:
-		isActive := event.In(b.Bounds())
+func (b *Button) Update(ev event.Event) {
+	switch ev := ev.(type) {
+	case cursor.Event:
+		isActive := ev.Pos.In(b.Bounds())
 		if b.isActive != isActive {
 			b.SetDirty(true)
 			b.isActive = isActive
 		}
 
-	case input.ButtonEvent:
-		if event.Pressed && b.isActive && b.OnClick != nil {
+	case button.Event:
+		if ev.State == button.Pressed && b.isActive && b.OnClick != nil {
 			b.OnClick()
 		}
 	}

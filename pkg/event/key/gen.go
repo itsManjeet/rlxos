@@ -15,26 +15,6 @@
  *
  */
 
-package main
+package key
 
-import (
-	"rlxos.dev/pkg/graphics"
-	"rlxos.dev/pkg/kernel/input"
-)
-
-type Status struct {
-	graphics.Label
-}
-
-func (s *Status) String() string {
-	return "[STATUS(" + s.Text + ")]"
-}
-
-func (s *Status) Update(event input.Event) {
-
-}
-
-func (s *Status) Send(msg string) {
-	s.Label.Text = msg
-	s.Label.SetDirty(true)
-}
+//go:generate go run rlxos.dev/tools/genkeycodes -package input /usr/include/linux/input-event-codes.h keys.go

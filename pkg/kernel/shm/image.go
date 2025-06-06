@@ -20,6 +20,7 @@ package shm
 import (
 	"image"
 	"math/rand"
+	"syscall"
 
 	"rlxos.dev/pkg/graphics/argb"
 )
@@ -71,4 +72,12 @@ func (i *Image) Key() int {
 
 func (i *Image) Size() int {
 	return len(i.Buffer())
+}
+
+func (i *Image) Lock() error {
+	return syscall.Mlock(i.Buffer())
+}
+
+func (i *Image) Unlock() error {
+	return syscall.Munlock(i.Buffer())
 }

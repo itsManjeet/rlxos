@@ -15,33 +15,26 @@
  *
  */
 
-package main
+package button
 
-import (
-	"fmt"
+type Button int
 
-	"rlxos.dev/pkg/graphics"
-	"rlxos.dev/pkg/graphics/canvas"
+const (
+	LeftButton Button = iota
+	MiddleButton
+	RightButton
 )
 
-type Switcher struct {
-	graphics.Label
-	TotalWorkspaces int
-	ActiveWorkspace int
+type State int
+
+const (
+	Released State = iota
+	Pressed
+)
+
+type Event struct {
+	Button Button
+	State  State
 }
 
-func (c *Switcher) String() string {
-	return "[SWITCHER(" + c.Text + ")]"
-}
-
-func (c *Switcher) Draw(canvas canvas.Canvas) {
-	c.Label.Text = ""
-	for i := range c.TotalWorkspaces {
-		s := "   "
-		if i == c.ActiveWorkspace {
-			s = "  •"
-		}
-		c.Label.Text += fmt.Sprintf("%s%v", s, i+1)
-	}
-	c.Label.Draw(canvas)
-}
+func (e Event) Event() {}

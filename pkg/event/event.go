@@ -15,17 +15,8 @@
  *
  */
 
-package main
+package event
 
-import "rlxos.dev/pkg/graphics/argb"
-
-const (
-	BorderWidth    = 1
-	TitlebarHeight = 20
-)
-
-var (
-	BackgroundColor   = argb.NewColor(255, 255, 255, 255)
-	BorderColor       = argb.NewColor(67+70, 54+70, 92+70, 255)
-	ActiveBorderColor = argb.NewColor(67, 54, 92, 255)
-)
+type Event interface {
+	Event()
+}

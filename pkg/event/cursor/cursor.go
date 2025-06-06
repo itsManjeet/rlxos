@@ -15,31 +15,13 @@
  *
  */
 
-package main
+package cursor
 
-import (
-	"image"
-	"image/draw"
+import "image"
 
-	"rlxos.dev/pkg/graphics"
-	"rlxos.dev/pkg/graphics/canvas"
-)
-
-type Taskbar struct {
-	graphics.Box
-
-	Switcher Switcher
-	Clock    Clock
-	Status   Status
-
-	Height int
+type Event struct {
+	Pos image.Point
+	Abs bool
 }
 
-func (t *Taskbar) Draw(canvas canvas.Canvas) {
-	if t.SelfDirty() {
-		draw.Draw(canvas, t.Bounds(), image.NewUniform(BackgroundColor), image.Point{}, draw.Over)
-		t.SetSelfDirty(false)
-	}
-
-	t.Box.Draw(canvas)
-}
+func (e Event) Event() {}

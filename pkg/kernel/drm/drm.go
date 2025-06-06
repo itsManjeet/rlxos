@@ -187,7 +187,7 @@ type (
 		ID       uint32
 		BufferID uint32 // FB id to connect to 0 = disconnect
 
-		X, Y          uint32 // Position on the framebuffer
+		X, Y          uint32 // Pos on the framebuffer
 		Width, Height uint32
 		ModeValid     int
 		ModeInfo      ModeInfo

@@ -23,7 +23,8 @@ SYSTEM_TARGETS := cmd/init \
 				cmd/busybox \
 				service/udevd \
 				service/display \
-				apps/welcome
+				apps/welcome \
+				apps/console
 
 ASSETS_TARGETS := $(shell find $(CURDIR)/config -type f) $(shell find $(CURDIR)/data -type f)
 

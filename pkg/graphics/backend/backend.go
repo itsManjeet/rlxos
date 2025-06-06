@@ -18,15 +18,16 @@
 package backend
 
 import (
+	"rlxos.dev/pkg/event"
 	"rlxos.dev/pkg/graphics/canvas"
-	"rlxos.dev/pkg/kernel/input"
 )
 
 type Backend interface {
 	Init() error
 	Terminate()
 
-	PollEvents() []input.Event
+	PollEvents() ([]event.Event, error)
+	Listen(source event.Source) error
 	Canvas() canvas.Canvas
 	Update()
 }

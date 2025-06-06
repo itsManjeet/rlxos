@@ -1,5 +1,5 @@
 GO ?= go
-GOFLAGS ?=
+GOFLAGS :=
 CACHE_PATH ?= $(CURDIR)/_cache
 
 export CGO_ENABLED := 0

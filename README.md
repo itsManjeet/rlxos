@@ -62,7 +62,7 @@ Make sure you have the following installed:
 Install required packages:
 
 ```sh
-sudo apt install qemu-system-x86 gcc make systemd-boot ovmf genimage dosfstools mtools qemu-system-x86 libelf-dev flex bison bc libssl-dev rsync
+sudo apt install qemu-system-x86 gcc make systemd-boot ovmf genimage dosfstools mtools libelf-dev flex bison bc libssl-dev rsync
 ```
 
 ### Installation

@@ -82,11 +82,10 @@ func Run(w Widget) error {
 			if w.Dirty() {
 				w.Draw(canvas)
 				w.SetDirty(false)
+				bk.Update()
 			} else {
 				time.Sleep(16 * time.Millisecond)
 			}
-
-			bk.Update()
 		}
 	} else {
 		for {

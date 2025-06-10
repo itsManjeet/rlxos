@@ -36,11 +36,7 @@ KERNEL_VERSION ?= 6.14.6
 KERNEL_PATH := $(DEVICE_CACHE_PATH)/kernel
 KERNEL_CONFIG_FRAGMENTS := $(CURDIR)/devices/common/kernel.config
 
-BUSYBOX_VERSION ?= 1.36.1
-BUSYBOX_PATH := $(DEVICE_CACHE_PATH)/busybox
-BUSYBOX_IMAGE := $(BUSYBOX_PATH)/busybox
-BUSYBOX_CONFIG := $(CURDIR)/devices/common/busybox.config
-
+include $(DEVICE_PATH)/config
 include $(DEVICE_PATH)/device.mk
 
 TOOLCHAIN_PATH := $(DEVICE_CACHE_PATH)/toolchain
@@ -52,7 +48,7 @@ SYSTEM_TARGETS += \
 
 include tools/toolchain.mk
 
-include $(wildcard external/*/*.mk)
+include $(wildcard external/*/Makefile)
 
 ifndef KERNEL_IMAGE
 $(error KERNEL_IMAGE not set)
@@ -74,8 +70,6 @@ clean-busybox-image:
 test:
 	go test ./...
 
-$(SYSTEM_PATH)/cmd/busybox: $(BUSYBOX_IMAGE)
-	cp -rap $< $@
 
 $(SYSTEM_PATH)/lib/libc.so: $(SYSROOT_PATH)/lib/libc.so
 	mkdir -p $(shell dirname $@)
@@ -118,16 +112,6 @@ $(KERNEL_IMAGE): $(TOOLCHAIN_PATH)/bin/$(TOOLCHAIN_TARGET_TRIPLE)-gcc $(KERNEL_P
 	$(MAKE) -C $(KERNEL_PATH) ARCH=$(KERNEL_ARCH) CROSS_COMPILE=$(TOOLCHAIN_TARGET_TRIPLE)- olddefconfig
 	$(MAKE) -C $(KERNEL_PATH) ARCH=$(KERNEL_ARCH) CROSS_COMPILE=$(TOOLCHAIN_TARGET_TRIPLE)- -j$(shell nproc)
 
-$(CACHE_PATH)/busybox-$(BUSYBOX_VERSION).tar.bz2:
-	wget -nc https://www.busybox.net/downloads/busybox-$(BUSYBOX_VERSION).tar.bz2 -P $(shell dirname $@)
-
-$(BUSYBOX_PATH)/Makefile: $(CACHE_PATH)/busybox-$(BUSYBOX_VERSION).tar.bz2
-	mkdir -p $(shell dirname $@)
-	tar -xmf $< -C $(shell dirname $@) --strip-components=1
-
-$(BUSYBOX_IMAGE): $(TOOLCHAIN_PATH)/bin/$(TOOLCHAIN_TARGET_TRIPLE)-gcc $(BUSYBOX_PATH)/Makefile $(BUSYBOX_CONFIG)
-	cp $(BUSYBOX_CONFIG) $(BUSYBOX_PATH)/.config
-	$(MAKE) -C $(BUSYBOX_PATH) ARCH=$(KERNEL_ARCH) CROSS_COMPILE=$(TOOLCHAIN_TARGET_TRIPLE)-
 
 $(CACHE_PATH)/$(TOOLCHAIN_TARGET_TRIPLE)-cross.tgz:
 	wget -nc https://musl.cc/$(TOOLCHAIN_TARGET_TRIPLE)-cross.tgz -P $(CACHE_PATH)

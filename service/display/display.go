@@ -153,8 +153,6 @@ func (d *Display) propagate(c string, payload any) {
 	if d.activeSurface != nil {
 		if err := d.activeSurface.conn.Send(c, payload, nil); err != nil {
 			log.Println("failed to propagate command:", c, payload, err)
-		} else {
-			d.activeSurface.SetDirty(true)
 		}
 	}
 }

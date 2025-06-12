@@ -17,7 +17,10 @@
 
 package cursor
 
-import "image"
+import (
+	"fmt"
+	"image"
+)
 
 type Event struct {
 	Pos image.Point
@@ -25,3 +28,14 @@ type Event struct {
 }
 
 func (e Event) Event() {}
+
+func (e Event) String() string {
+	var kind string
+	if e.Abs {
+		kind = "Absolute"
+	} else {
+		kind = "Relative"
+	}
+
+	return fmt.Sprintf("[Cursor(%vx%v:%s)]", e.Pos.X, e.Pos.Y, kind)
+}

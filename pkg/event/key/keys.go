@@ -355,7 +355,6 @@ const (
 	KEY_NOTIFICATION_CENTER      = 0x1bc
 	KEY_PICKUP_PHONE             = 0x1bd
 	KEY_HANGUP_PHONE             = 0x1be
-	KEY_LINK_PHONE               = 0x1bf
 	KEY_DEL_EOL                  = 0x1c0
 	KEY_DEL_EOS                  = 0x1c1
 	KEY_INS_LINE                 = 0x1c2
@@ -437,6 +436,11 @@ const (
 	KEY_KBD_LAYOUT_NEXT          = 0x248
 	KEY_EMOJI_PICKER             = 0x249
 	KEY_DICTATE                  = 0x24a
+	KEY_CAMERA_ACCESS_ENABLE     = 0x24b
+	KEY_CAMERA_ACCESS_DISABLE    = 0x24c
+	KEY_CAMERA_ACCESS_TOGGLE     = 0x24d
+	KEY_ACCESSIBILITY            = 0x24e
+	KEY_DO_NOT_DISTURB           = 0x24f
 	KEY_BRIGHTNESS_MIN           = 0x250
 	KEY_BRIGHTNESS_MAX           = 0x251
 	KEY_KBDINPUTASSIST_PREV      = 0x260

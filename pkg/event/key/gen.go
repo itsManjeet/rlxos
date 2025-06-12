@@ -17,4 +17,4 @@
 
 package key
 
-//go:generate go run rlxos.dev/tools/genkeycodes -package input /usr/include/linux/input-event-codes.h keys.go
+//go:generate go run rlxos.dev/tools/genkeycodes -package key /usr/include/linux/input-event-codes.h keys.go

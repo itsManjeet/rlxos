@@ -66,10 +66,12 @@ func (m Memory) Attach(addr uintptr, flags int) ([]byte, error) {
 		return nil, err
 	}
 
+	ptr := toPointer(addr)
+
 	if mInfo, err := m.Control(2); err != nil {
 		return nil, err
 	} else {
-		return unsafe.Slice((*byte)(unsafe.Pointer(addr)), mInfo.SegmentSize), nil
+		return unsafe.Slice((*byte)(ptr), mInfo.SegmentSize), nil
 	}
 }
 

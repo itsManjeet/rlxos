@@ -33,7 +33,7 @@ type Listener struct {
 }
 
 var (
-	SkipAllEvents = errors.New("skip all events")
+	ErrSkipAllEvents = errors.New("skip all events")
 )
 
 func NewListener(timeout int) (*Listener, error) {

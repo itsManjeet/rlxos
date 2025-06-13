@@ -33,15 +33,6 @@ func startsWith(list []Capsule, s Symbol) bool {
 	return false
 }
 
-func foreach(list Pallete, fun func(i, c Capsule) error) error {
-	for i, cap := range list {
-		if err := fun(i, cap); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 func quasiQuoteLoop(pallete Pallete) Capsule {
 	var p Pallete
 	for i := len(pallete) - 1; 0 <= i; i -= 1 {

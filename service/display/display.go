@@ -108,9 +108,6 @@ func (d *Display) Update(ev event.Event) {
 		}
 		if d.activeSurface != nil {
 			if d.cursor.In(d.activeSurface.Bounds()) {
-				d.mutex.Lock()
-
-				d.mutex.Unlock()
 				d.propagate("cursor-event", d.cursor)
 			}
 		}

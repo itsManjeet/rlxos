@@ -19,12 +19,14 @@ package display
 
 import (
 	"encoding/json"
+	"log"
 
 	"rlxos.dev/pkg/connect"
 	"rlxos.dev/pkg/event"
 	"rlxos.dev/pkg/event/button"
 	"rlxos.dev/pkg/event/cursor"
 	"rlxos.dev/pkg/event/key"
+	"rlxos.dev/pkg/event/resize"
 )
 
 type Connection struct {
@@ -55,6 +57,13 @@ func (c *Connection) Read() (event.Event, error) {
 		if err := json.Unmarshal(buf, &k); err != nil {
 			return nil, err
 		}
+		return k, nil
+	case "resize":
+		var k resize.Event
+		if err := json.Unmarshal(buf, &k); err != nil {
+			return nil, err
+		}
+		log.Printf("got resize event: %v", k)
 		return k, nil
 	}
 	return nil, nil

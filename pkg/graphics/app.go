@@ -20,7 +20,6 @@ package graphics
 import (
 	"fmt"
 	"image"
-	"log"
 	"time"
 
 	"rlxos.dev/pkg/graphics/backend"
@@ -70,7 +69,6 @@ func Run(w Widget) error {
 		for {
 			events, err := bk.PollEvents()
 			if err == nil {
-				log.Println("events:", events)
 				for _, event := range events {
 					u.Update(event)
 				}

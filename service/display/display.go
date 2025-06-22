@@ -22,7 +22,6 @@ import (
 	"image/draw"
 	"image/jpeg"
 	"log"
-	"math/rand"
 	"os"
 	"os/exec"
 	"slices"
@@ -34,12 +33,13 @@ import (
 	"rlxos.dev/pkg/event/key"
 	"rlxos.dev/pkg/graphics"
 	"rlxos.dev/pkg/graphics/canvas"
+	"rlxos.dev/service/display/surface"
 )
 
 type Display struct {
 	graphics.BaseWidget
-	surfaces      []*Surface
-	activeSurface *Surface
+	surfaces      []*surface.Surface
+	activeSurface *surface.Surface
 	background    image.Image
 	damage        []image.Rectangle
 	spacing       int
@@ -75,13 +75,10 @@ func (d *Display) Draw(canvas canvas.Canvas) {
 		draw.Draw(canvas, d.Bounds(), d.background, image.Point{}, draw.Src)
 	}
 
-	for _, surface := range surfaces {
-		if surface.Dirty() {
-			draw.Draw(canvas, image.Rectangle{
-				Min: surface.pos,
-				Max: image.Pt(surface.pos.X+surface.Bounds().Dx(), surface.pos.Y+surface.Bounds().Dy()),
-			}, surface, image.Point{}, draw.Over)
-			surface.SetDirty(false)
+	for _, s := range surfaces {
+		if s.Dirty() {
+			s.Draw(canvas)
+			s.SetDirty(false)
 		}
 	}
 }
@@ -119,24 +116,19 @@ func (d *Display) Update(ev event.Event) {
 		}
 
 	case AddWindow:
-		surface, err := NewSurface(ev.rect, ev.connection)
+		s, err := surface.NewSurface(ev.rect, ev.connection.Connection)
 		if err != nil {
 			log.Printf("failed to create surface: %v", err)
 		}
 
-		surface.pos = image.Point{
-			X: rand.Intn(d.Bounds().Dx()-surface.Image.Bounds().Dx()+1) + d.Bounds().Min.X,
-			Y: rand.Intn(d.Bounds().Dy()-surface.Image.Bounds().Dy()+1) + d.Bounds().Min.Y,
-		}
-
 		d.mutex.Lock()
-		d.surfaces = append(d.surfaces, surface)
+		d.surfaces = append(d.surfaces, s)
 		d.mutex.Unlock()
 
-		if err := ev.connection.Send("add-window", surface.Key(), nil); err != nil {
+		if err := ev.connection.Send("add-window", s.Image.Key(), nil); err != nil {
 			log.Printf("failed to send add-window: %v", err)
 		}
-		surface.SetDirty(true)
+		s.SetDirty(true)
 
 	case Damage:
 		d.mutex.Lock()
@@ -148,7 +140,7 @@ func (d *Display) Update(ev event.Event) {
 
 func (d *Display) propagate(c string, payload any) {
 	if d.activeSurface != nil {
-		if err := d.activeSurface.conn.Send(c, payload, nil); err != nil {
+		if err := d.activeSurface.Conn.Send(c, payload, nil); err != nil {
 			log.Println("failed to propagate command:", c, payload, err)
 		}
 	}
@@ -213,12 +205,51 @@ func (d *Display) handleBindings(ev key.Event) bool {
 
 				d.SetDirty(true)
 			}
+
+		case key.KEY_UP:
+			if d.activeSurface != nil {
+				if d.isKeySet(key.KEY_LEFTSHIFT) {
+					d.Move(-10, 0)
+				} else {
+					d.Resize(-10, 0)
+				}
+			}
+
+		case key.KEY_DOWN:
+			if d.activeSurface != nil {
+				if d.isKeySet(key.KEY_LEFTSHIFT) {
+					d.Move(10, 0)
+				} else {
+					d.Resize(10, 0)
+				}
+			}
+
+		case key.KEY_LEFT:
+			if d.activeSurface != nil {
+				if d.isKeySet(key.KEY_LEFTSHIFT) {
+					d.Move(0, -10)
+				} else {
+					d.Resize(0, -10)
+				}
+			}
+
+		case key.KEY_RIGHT:
+			if d.activeSurface != nil {
+				if d.isKeySet(key.KEY_LEFTSHIFT) {
+					d.Move(0, 10)
+				} else {
+					d.Resize(0, 10)
+				}
+			}
+		default:
+			return false
 		}
+		return true
 	}
 	return false
 }
 
-func (d *Display) Raise(s *Surface) {
+func (d *Display) Raise(s *surface.Surface) {
 	d.mutex.Lock()
 	defer d.mutex.Unlock()
 
@@ -229,4 +260,32 @@ func (d *Display) Raise(s *Surface) {
 
 	d.surfaces = append(d.surfaces, s)
 	d.activeSurface = s
+}
+
+func (d *Display) Move(top, left int) {
+	if d.activeSurface != nil {
+		log.Println("Moving surface", top, left)
+		rect := d.activeSurface.Bounds()
+		d.activeSurface.SetBounds(image.Rect(
+			rect.Min.X+left,
+			rect.Min.Y+top,
+			rect.Max.X+left,
+			rect.Max.Y+top,
+		))
+		d.activeSurface.SetDirty(true)
+	}
+}
+
+func (d *Display) Resize(top, left int) {
+	if d.activeSurface != nil {
+		log.Println("Resizing surface", top, left)
+		rect := d.activeSurface.Bounds()
+		d.activeSurface.SetBounds(image.Rect(
+			rect.Min.X,
+			rect.Min.Y,
+			rect.Max.X+left,
+			rect.Max.Y+top,
+		))
+		d.activeSurface.SetDirty(true)
+	}
 }

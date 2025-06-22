@@ -78,12 +78,13 @@ func (b *Backend) PollEvents() ([]event.Event, error) {
 	for _, ev := range events {
 		switch ev := ev.(type) {
 		case resize.Event:
-			_ = b.img.Detach()
+			log.Printf("Got resize event %v", ev)
 			b.img, err = ev.SharedImage()
 			if err != nil {
 				log.Printf("failed to attach image: %v", err)
 				return nil, err
 			}
+			log.Printf("resizing surface: %v", b.img.Bounds())
 		}
 	}
 	return b.poll.Poll()

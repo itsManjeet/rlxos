@@ -27,5 +27,5 @@ type Event struct {
 func (e Event) Event() {}
 
 func (e Event) SharedImage() (*shm.Image, error) {
-	return shm.NewImageForKey(e.Key, e.Width, e.Width)
+	return shm.NewImageForKey(e.Key, e.Width, e.Height)
 }

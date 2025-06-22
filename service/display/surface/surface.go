@@ -86,6 +86,3 @@ func (s *Surface) SetBounds(rect image.Rectangle) {
 func (s *Surface) Draw(cv canvas.Canvas) {
 	draw.Draw(cv, s.Bounds(), s.Image, image.Point{}, draw.Src)
 }
-
-// {6988747420454315845 810 610}
-// {6988747420454315845 810 610}

@@ -15,7 +15,7 @@
  *
  */
 
-package graphics
+package app
 
 import (
 	"fmt"
@@ -23,6 +23,7 @@ import (
 	"time"
 
 	"rlxos.dev/pkg/event/resize"
+	"rlxos.dev/pkg/graphics"
 	"rlxos.dev/pkg/graphics/backend"
 )
 
@@ -42,7 +43,7 @@ type Init interface {
 	Init(rect image.Rectangle) error
 }
 
-func Run(w Widget) error {
+func Run(w graphics.Widget) error {
 	if bk == nil {
 		return fmt.Errorf("no supported backend found")
 	}
@@ -66,7 +67,7 @@ func Run(w Widget) error {
 		bk.Update()
 	}
 
-	if u, ok := w.(Updatable); ok {
+	if u, ok := w.(graphics.Updatable); ok {
 		for {
 			events, err := bk.PollEvents()
 			if err == nil {

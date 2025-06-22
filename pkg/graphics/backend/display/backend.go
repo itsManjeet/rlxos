@@ -28,6 +28,7 @@ import (
 	"rlxos.dev/pkg/graphics/canvas"
 	"rlxos.dev/pkg/kernel/poll"
 	"rlxos.dev/pkg/kernel/shm"
+	"rlxos.dev/service/display/surface"
 )
 
 type Backend struct {
@@ -98,7 +99,12 @@ func (b *Backend) Update() {
 	_ = b.img.Lock()
 	defer b.img.Unlock()
 
-	if err := b.conn.Send("damage", b.img.Bounds(), nil); err != nil {
+	d := surface.Damage{
+		Id:   b.img.Key(),
+		Rect: b.img.Bounds(),
+	}
+
+	if err := b.conn.Send("damage", d, nil); err != nil {
 		log.Println("failed send damage call", err)
 	}
 }

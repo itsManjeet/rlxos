@@ -21,10 +21,11 @@ import (
 	"log"
 
 	"rlxos.dev/pkg/graphics"
+	"rlxos.dev/pkg/graphics/app"
 )
 
 func main() {
-	if err := graphics.Run(&graphics.Window{
+	if err := app.Run(&graphics.Window{
 		Child: &graphics.Entry{},
 	}); err != nil {
 		log.Fatal(err)

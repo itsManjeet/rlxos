@@ -15,44 +15,21 @@
  *
  */
 
-package main
+package app
 
 import (
-	"encoding/json"
-	"image"
+	"os"
 
 	"rlxos.dev/pkg/connect"
-	"rlxos.dev/pkg/event"
-	"rlxos.dev/service/display/surface"
+	"rlxos.dev/pkg/graphics/backend/display"
+	"rlxos.dev/pkg/graphics/backend/drmkms"
 )
 
-type Connection struct {
-	*connect.Connection
-}
-
-func (c *Connection) Read() (event.Event, error) {
-	cmd, buf, err := c.Receive()
-	if err != nil {
-		return nil, err
+func init() {
+	_, socketPath := connect.AddrOf("display")
+	if _, err := os.Stat(socketPath); err == nil {
+		bk = &display.Backend{}
+	} else {
+		bk = &drmkms.Backend{}
 	}
-
-	switch cmd {
-	case "add-window":
-		var rect image.Rectangle
-		if err := json.Unmarshal(buf, &rect); err != nil {
-			return nil, err
-		}
-		return AddWindow{
-			rect:       rect,
-			connection: c,
-		}, nil
-
-	case "damage":
-		var d surface.Damage
-		if err := json.Unmarshal(buf, &d); err != nil {
-			return nil, err
-		}
-		return d, nil
-	}
-	return nil, nil
 }

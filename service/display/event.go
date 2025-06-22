@@ -27,9 +27,3 @@ type AddWindow struct {
 }
 
 func (e AddWindow) Event() {}
-
-type Damage struct {
-	rect image.Rectangle
-}
-
-func (e Damage) Event() {}

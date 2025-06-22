@@ -21,18 +21,18 @@ import (
 	"log"
 
 	"rlxos.dev/pkg/connect"
-	"rlxos.dev/pkg/graphics"
+	"rlxos.dev/pkg/graphics/app"
 )
 
 func main() {
-	
+
 	go func() {
 		if err := connect.Listen("display", &Server{}); err == nil {
 			log.Fatalf("failed to start server %v", err)
 		}
 	}()
 
-	if err := graphics.Run(&Display{}); err != nil {
+	if err := app.Run(&Display{}); err != nil {
 		log.Fatal(err)
 	}
 }

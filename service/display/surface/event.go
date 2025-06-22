@@ -15,21 +15,15 @@
  *
  */
 
-package graphics
+package surface
 
-import (
-	"os"
+import "image"
 
-	"rlxos.dev/pkg/connect"
-	"rlxos.dev/pkg/graphics/backend/display"
-	"rlxos.dev/pkg/graphics/backend/drmkms"
-)
+type Damage struct {
+	Id   int
+	Rect image.Rectangle
+}
 
-func init() {
-	_, socketPath := connect.AddrOf("display")
-	if _, err := os.Stat(socketPath); err == nil {
-		bk = &display.Backend{}
-	} else {
-		bk = &drmkms.Backend{}
-	}
+func (e Damage) Event() {
+
 }

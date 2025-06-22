@@ -131,11 +131,12 @@ func (d *Display) Update(ev event.Event) {
 
 		d.Layout()
 
-	case Damage:
+	case surface.Damage:
 		d.mutex.Lock()
-		d.damage = append(d.damage, ev.rect)
+		if s, ok := d.surfaceFromId(ev.Id); ok {
+			s.SetDirty(true)
+		}
 		d.mutex.Unlock()
-		d.SetDirty(true)
 	}
 }
 
@@ -289,4 +290,14 @@ func (d *Display) Resize(top, left int) {
 		))
 		d.activeSurface.SetDirty(true)
 	}
+}
+
+func (d *Display) surfaceFromId(id int) (*surface.Surface, bool) {
+	idx := slices.IndexFunc(d.surfaces, func(s *surface.Surface) bool {
+		return s.Image.Key() == id
+	})
+	if idx == -1 {
+		return nil, false
+	}
+	return d.surfaces[idx], true
 }

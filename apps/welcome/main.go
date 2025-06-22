@@ -26,6 +26,7 @@ import (
 
 	"rlxos.dev/pkg/event"
 	"rlxos.dev/pkg/graphics"
+	"rlxos.dev/pkg/graphics/app"
 	"rlxos.dev/pkg/graphics/argb"
 	"rlxos.dev/pkg/graphics/canvas"
 )
@@ -59,7 +60,7 @@ func (w *Welcome) Update(ev event.Event) {
 }
 
 func main() {
-	if err := graphics.Run(&Welcome{}); err != nil {
+	if err := app.Run(&Welcome{}); err != nil {
 		log.Fatal(err)
 	}
 }

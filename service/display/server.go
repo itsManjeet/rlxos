@@ -22,7 +22,7 @@ import (
 	"sync"
 
 	"rlxos.dev/pkg/connect"
-	"rlxos.dev/pkg/graphics"
+	"rlxos.dev/pkg/graphics/app"
 )
 
 var (
@@ -38,7 +38,7 @@ func (s *Server) Handle(conn *connect.Connection) {
 
 	fd := conn.Fd()
 	log.Println("new connection from", fd)
-	if err := graphics.Backend().Listen(&Connection{conn}); err != nil {
+	if err := app.Backend().Listen(&Connection{conn}); err != nil {
 		log.Printf("failed to listen: %v", err)
 	}
 }

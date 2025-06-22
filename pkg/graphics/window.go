@@ -26,8 +26,7 @@ import (
 )
 
 const (
-	TitlebarHeight = 28
-	BorderWidth    = 2
+	BorderWidth = 2
 )
 
 type Window struct {
@@ -46,7 +45,7 @@ func (w *Window) Draw(cv canvas.Canvas) {
 	}
 
 	borderColor := ColorDarkGray
-	draw.Draw(cv, image.Rect(w.Bounds().Min.X+BorderWidth, w.Bounds().Min.Y+TitlebarHeight, w.Bounds().Max.X-BorderWidth, w.Bounds().Min.Y),
+	draw.Draw(cv, image.Rect(w.Bounds().Min.X+BorderWidth, w.Bounds().Min.Y+BorderWidth, w.Bounds().Max.X-BorderWidth, w.Bounds().Min.Y),
 		image.NewUniform(borderColor), image.Point{}, draw.Src)
 
 	draw.Draw(cv, image.Rect(w.Bounds().Min.X, w.Bounds().Max.Y, w.Bounds().Max.X, w.Bounds().Max.Y-BorderWidth),
@@ -70,7 +69,7 @@ func (w *Window) SetBounds(rect image.Rectangle) {
 	w.BaseWidget.SetBounds(rect)
 	w.Child.SetBounds(image.Rect(
 		rect.Min.X+BorderWidth,
-		rect.Min.Y+TitlebarHeight,
+		rect.Min.Y+BorderWidth,
 		rect.Max.X-BorderWidth,
 		rect.Max.Y-BorderWidth,
 	))

@@ -128,7 +128,8 @@ func (d *Display) Update(ev event.Event) {
 		if err := ev.connection.Send("add-window", s.Image.Key(), nil); err != nil {
 			log.Printf("failed to send add-window: %v", err)
 		}
-		s.SetDirty(true)
+
+		d.Layout()
 
 	case Damage:
 		d.mutex.Lock()

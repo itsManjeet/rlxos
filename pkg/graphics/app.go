@@ -22,6 +22,7 @@ import (
 	"image"
 	"time"
 
+	"rlxos.dev/pkg/event/resize"
 	"rlxos.dev/pkg/graphics/backend"
 )
 
@@ -70,6 +71,9 @@ func Run(w Widget) error {
 			events, err := bk.PollEvents()
 			if err == nil {
 				for _, event := range events {
+					if _, ok := event.(resize.Event); ok {
+						w.SetDirty(true)
+					}
 					u.Update(event)
 				}
 			}

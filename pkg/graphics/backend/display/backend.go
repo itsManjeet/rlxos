@@ -87,7 +87,7 @@ func (b *Backend) PollEvents() ([]event.Event, error) {
 			log.Printf("resizing surface: %v", b.img.Bounds())
 		}
 	}
-	return b.poll.Poll()
+	return events, nil
 }
 
 func (b *Backend) Canvas() canvas.Canvas {

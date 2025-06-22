@@ -59,6 +59,7 @@ func (s *Surface) SetBounds(rect image.Rectangle) {
 	if s.Image.Bounds().Dx() == rect.Dx() && s.Image.Bounds().Dy() == rect.Dy() {
 		return
 	}
+	s.SetDirty(true)
 
 	newImage, err := shm.NewImage(rect.Dx(), rect.Dy())
 	if err != nil {
@@ -83,7 +84,7 @@ func (s *Surface) SetBounds(rect image.Rectangle) {
 }
 
 func (s *Surface) Draw(cv canvas.Canvas) {
-	draw.Draw(cv, s.Bounds(), s.Image, image.Point{}, draw.Over)
+	draw.Draw(cv, s.Bounds(), s.Image, image.Point{}, draw.Src)
 }
 
 // {6988747420454315845 810 610}

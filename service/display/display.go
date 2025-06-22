@@ -41,7 +41,6 @@ type Display struct {
 	surfaces      []*surface.Surface
 	activeSurface *surface.Surface
 	background    image.Image
-	damage        []image.Rectangle
 	spacing       int
 	mutex         sync.Mutex
 	cursor        image.Point
@@ -134,7 +133,9 @@ func (d *Display) Update(ev event.Event) {
 				log.Printf("failed to send surface.Created: %v", err)
 			}
 
+			d.mutex.Lock()
 			d.Layout()
+			d.mutex.Unlock()
 
 		case surface.Damage:
 			d.mutex.Lock()
@@ -205,50 +206,18 @@ func (d *Display) handleBindings(ev key.Event) bool {
 				idx := slices.Index(d.surfaces, d.activeSurface)
 				if idx != -1 {
 					d.surfaces = slices.Delete(d.surfaces, idx, idx+1)
+					d.SetDirty(true)
 				}
 				if len(d.surfaces) > 0 {
 					d.activeSurface = d.surfaces[len(d.surfaces)-1]
 				}
+				d.Layout()
 				d.mutex.Unlock()
-
-				d.SetDirty(true)
 			}
 
-		case key.KEY_UP:
-			if d.activeSurface != nil {
-				if d.isKeySet(key.KEY_LEFTSHIFT) {
-					d.Move(-10, 0)
-				} else {
-					d.Resize(-10, 0)
-				}
-			}
+		case key.KEY_R:
+			d.SetDirty(true)
 
-		case key.KEY_DOWN:
-			if d.activeSurface != nil {
-				if d.isKeySet(key.KEY_LEFTSHIFT) {
-					d.Move(10, 0)
-				} else {
-					d.Resize(10, 0)
-				}
-			}
-
-		case key.KEY_LEFT:
-			if d.activeSurface != nil {
-				if d.isKeySet(key.KEY_LEFTSHIFT) {
-					d.Move(0, -10)
-				} else {
-					d.Resize(0, -10)
-				}
-			}
-
-		case key.KEY_RIGHT:
-			if d.activeSurface != nil {
-				if d.isKeySet(key.KEY_LEFTSHIFT) {
-					d.Move(0, 10)
-				} else {
-					d.Resize(0, 10)
-				}
-			}
 		default:
 			return false
 		}

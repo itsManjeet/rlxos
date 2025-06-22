@@ -26,7 +26,7 @@ import (
 	"rlxos.dev/pkg/event/button"
 	"rlxos.dev/pkg/event/cursor"
 	"rlxos.dev/pkg/event/key"
-	"rlxos.dev/pkg/event/resize"
+	"rlxos.dev/service/display/surface"
 )
 
 type Connection struct {
@@ -58,8 +58,8 @@ func (c *Connection) Read() (event.Event, error) {
 			return nil, err
 		}
 		return k, nil
-	case "resize":
-		var k resize.Event
+	case "surface.Resize":
+		var k surface.Resize
 		if err := json.Unmarshal(buf, &k); err != nil {
 			return nil, err
 		}

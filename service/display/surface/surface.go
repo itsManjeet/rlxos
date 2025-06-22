@@ -23,7 +23,6 @@ import (
 	"log"
 
 	"rlxos.dev/pkg/connect"
-	"rlxos.dev/pkg/event/resize"
 	"rlxos.dev/pkg/graphics"
 	"rlxos.dev/pkg/graphics/canvas"
 	"rlxos.dev/pkg/kernel/shm"
@@ -70,13 +69,12 @@ func (s *Surface) SetBounds(rect image.Rectangle) {
 	oldImage := s.Image
 	s.Image = newImage
 
-	ev := resize.Event{
-		Key:    s.Image.Key(),
-		Width:  s.Image.Bounds().Dx(),
-		Height: s.Image.Bounds().Dy(),
+	ev := Resize{
+		Id:   s.Image.Key(),
+		Rect: s.Image.Bounds(),
 	}
 	log.Println("Resizing", ev)
-	if err := s.Conn.Send("resize", ev, nil); err != nil {
+	if err := s.Conn.Send("surface.Resize", ev, nil); err != nil {
 		log.Printf("failed to send resize event %v", err)
 	}
 

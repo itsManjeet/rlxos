@@ -31,6 +31,7 @@ func (d *Display) Layout() {
 
 	if count == 1 {
 		d.surfaces[0].SetBounds(bounds)
+		d.SetDirty(true)
 		return
 	}
 

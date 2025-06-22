@@ -17,13 +17,43 @@
 
 package surface
 
-import "image"
+import (
+	"image"
+
+	"rlxos.dev/pkg/kernel/shm"
+)
+
+type Create struct {
+	Rect image.Rectangle
+}
+
+func (e Create) Event() {}
+
+type Created struct {
+	Id   int
+	Rect image.Rectangle
+}
+
+func (e Created) Event() {}
+
+func (e Created) Image() (*shm.Image, error) {
+	return shm.NewImageForKey(e.Id, e.Rect.Dx(), e.Rect.Dy())
+}
 
 type Damage struct {
 	Id   int
 	Rect image.Rectangle
 }
 
-func (e Damage) Event() {
+func (e Damage) Event() {}
 
+type Resize struct {
+	Id   int
+	Rect image.Rectangle
+}
+
+func (e Resize) Event() {}
+
+func (e Resize) Image() (*shm.Image, error) {
+	return shm.NewImageForKey(e.Id, e.Rect.Dx(), e.Rect.Dy())
 }

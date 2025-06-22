@@ -19,7 +19,6 @@ package main
 
 import (
 	"encoding/json"
-	"image"
 
 	"rlxos.dev/pkg/connect"
 	"rlxos.dev/pkg/event"
@@ -37,22 +36,25 @@ func (c *Connection) Read() (event.Event, error) {
 	}
 
 	switch cmd {
-	case "add-window":
-		var rect image.Rectangle
-		if err := json.Unmarshal(buf, &rect); err != nil {
+	case "surface.Create":
+		var e surface.Create
+		if err := json.Unmarshal(buf, &e); err != nil {
 			return nil, err
 		}
-		return AddWindow{
-			rect:       rect,
-			connection: c,
+		return SurfaceEvent{
+			conn:  c.Connection,
+			event: e,
 		}, nil
 
-	case "damage":
+	case "surface.Damage":
 		var d surface.Damage
 		if err := json.Unmarshal(buf, &d); err != nil {
 			return nil, err
 		}
-		return d, nil
+		return SurfaceEvent{
+			conn:  c.Connection,
+			event: d,
+		}, nil
 	}
 	return nil, nil
 }

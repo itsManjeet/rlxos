@@ -115,28 +115,34 @@ func (d *Display) Update(ev event.Event) {
 			d.propagate("key-event", ev)
 		}
 
-	case AddWindow:
-		s, err := surface.NewSurface(ev.rect, ev.connection.Connection)
-		if err != nil {
-			log.Printf("failed to create surface: %v", err)
+	case SurfaceEvent:
+		switch sev := ev.event.(type) {
+		case surface.Create:
+			s, err := surface.NewSurface(sev.Rect, ev.conn)
+			if err != nil {
+				log.Printf("failed to create surface: %v", err)
+			}
+
+			d.mutex.Lock()
+			d.surfaces = append(d.surfaces, s)
+			d.mutex.Unlock()
+
+			if err := ev.conn.Send("surface.Created", surface.Created{
+				Id:   s.Image.Key(),
+				Rect: s.Bounds(),
+			}, nil); err != nil {
+				log.Printf("failed to send surface.Created: %v", err)
+			}
+
+			d.Layout()
+
+		case surface.Damage:
+			d.mutex.Lock()
+			if s, ok := d.surfaceFromId(sev.Id); ok {
+				s.SetDirty(true)
+			}
+			d.mutex.Unlock()
 		}
-
-		d.mutex.Lock()
-		d.surfaces = append(d.surfaces, s)
-		d.mutex.Unlock()
-
-		if err := ev.connection.Send("add-window", s.Image.Key(), nil); err != nil {
-			log.Printf("failed to send add-window: %v", err)
-		}
-
-		d.Layout()
-
-	case surface.Damage:
-		d.mutex.Lock()
-		if s, ok := d.surfaceFromId(ev.Id); ok {
-			s.SetDirty(true)
-		}
-		d.mutex.Unlock()
 	}
 }
 

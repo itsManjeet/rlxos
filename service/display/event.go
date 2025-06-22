@@ -18,12 +18,13 @@
 package main
 
 import (
-	"image"
+	"rlxos.dev/pkg/connect"
+	"rlxos.dev/pkg/event"
 )
 
-type AddWindow struct {
-	rect       image.Rectangle
-	connection *Connection
+type SurfaceEvent struct {
+	conn  *connect.Connection
+	event event.Event
 }
 
-func (e AddWindow) Event() {}
+func (e SurfaceEvent) Event() {}

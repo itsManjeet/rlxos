@@ -24,7 +24,6 @@ import (
 
 	"rlxos.dev/pkg/connect"
 	"rlxos.dev/pkg/event"
-	"rlxos.dev/pkg/event/resize"
 	"rlxos.dev/pkg/graphics/canvas"
 	"rlxos.dev/pkg/kernel/poll"
 	"rlxos.dev/pkg/kernel/shm"
@@ -52,14 +51,17 @@ func (b *Backend) Init() (err error) {
 		return fmt.Errorf("failed to add connection to display: %v", err)
 	}
 
-	var k int
-	rect := image.Rect(0, 0, 800, 600)
+	ev := surface.Create{
+		Rect: image.Rect(0, 0, 800, 600),
+	}
 
-	if err := b.conn.Send("add-window", rect, &k); err != nil {
+	var r surface.Created
+	if err := b.conn.Send("surface.Create", ev, &r); err != nil {
 		_ = b.conn.Close()
 		return err
 	}
-	b.img, err = shm.NewImageForKey(k, rect.Dx(), rect.Dy())
+
+	b.img, err = r.Image()
 	if err != nil {
 		_ = b.conn.Close()
 		return err
@@ -78,9 +80,9 @@ func (b *Backend) PollEvents() ([]event.Event, error) {
 	}
 	for _, ev := range events {
 		switch ev := ev.(type) {
-		case resize.Event:
+		case surface.Resize:
 			log.Printf("Got resize event %v", ev)
-			b.img, err = ev.SharedImage()
+			b.img, err = ev.Image()
 			if err != nil {
 				log.Printf("failed to attach image: %v", err)
 				return nil, err
@@ -104,7 +106,7 @@ func (b *Backend) Update() {
 		Rect: b.img.Bounds(),
 	}
 
-	if err := b.conn.Send("damage", d, nil); err != nil {
+	if err := b.conn.Send("surface.Damage", d, nil); err != nil {
 		log.Println("failed send damage call", err)
 	}
 }

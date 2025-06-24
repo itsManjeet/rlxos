@@ -20,7 +20,6 @@ SYSTEM_IMAGE := $(IMAGES_PATH)/system.img
 SYSTEM_TARGETS := cmd/init \
 				cmd/service \
 				cmd/capsule \
-				cmd/busybox \
 				service/udevd \
 				service/display \
 				apps/welcome \
@@ -42,13 +41,7 @@ include $(DEVICE_PATH)/device.mk
 TOOLCHAIN_PATH := $(DEVICE_CACHE_PATH)/toolchain
 SYSROOT_PATH := $(TOOLCHAIN_PATH)/$(TOOLCHAIN_TARGET_TRIPLE)
 
-SYSTEM_TARGETS += \
-	lib/libc.so \
-	lib/ld-musl-$(TOOLCHAIN_ARCH).so.1 \
-
 include tools/toolchain.mk
-
-include $(wildcard external/*/Makefile)
 
 ifndef KERNEL_IMAGE
 $(error KERNEL_IMAGE not set)
@@ -60,31 +53,15 @@ INITRAMFS_TARGETS := $(addprefix $(INITRAMFS_PATH)/,$(INITRAMFS_TARGETS))
 clean:
 	rm -f $(SYSTEM_IMAGE) $(INITRAMFS_IMAGE)
 	rm -rf $(SYSTEM_PATH) $(INITRAMFS_PATH)
-
-clean-kernel-image:
 	rm -f $(KERNEL_IMAGE)
-
-clean-busybox-image:
-	rm -f $(BUSYBOX_IMAGE)
 
 test:
 	go test ./...
 
-
-$(SYSTEM_PATH)/lib/libc.so: $(SYSROOT_PATH)/lib/libc.so
-	mkdir -p $(shell dirname $@)
-	cp -rap $< $@
-
-$(SYSTEM_PATH)/lib/ld-musl-$(TOOLCHAIN_ARCH).so.1: $(SYSTEM_PATH)/lib/libc.so
-	ln -sfv libc.so $@
-
-$(SYSTEM_PATH)/cmd/ldd: $(SYSTEM_PATH)/lib/libc.so
-	ln -sfv libc.so $@
-
 $(SYSTEM_PATH)/%: %/*.go
 	$(GO) $(GOFLAGS) build -o $@ rlxos.dev/$(shell dirname $<)
 
-$(SYSTEM_IMAGE): $(SYSTEM_PATH)/lib/libc.so $(SYSTEM_TARGETS) $(ASSETS_TARGETS)
+$(SYSTEM_IMAGE): $(SYSTEM_TARGETS) $(ASSETS_TARGETS)
 	rsync -au --delete $(CURDIR)/config/ $(SYSTEM_PATH)/config/
 	rsync -au --delete $(CURDIR)/data/ $(SYSTEM_PATH)/data/
 	@mkdir -p $(shell dirname $@)
@@ -119,5 +96,3 @@ $(CACHE_PATH)/$(TOOLCHAIN_TARGET_TRIPLE)-cross.tgz:
 $(TOOLCHAIN_PATH)/bin/$(TOOLCHAIN_TARGET_TRIPLE)-gcc: $(CACHE_PATH)/$(TOOLCHAIN_TARGET_TRIPLE)-cross.tgz
 	mkdir -p $(TOOLCHAIN_PATH)
 	tar -xmf $< -C $(TOOLCHAIN_PATH) --strip-components=1
-
-$(SYSROOT_PATH)/lib/libc.so: $(TOOLCHAIN_PATH)/bin/$(TOOLCHAIN_TARGET_TRIPLE)-gcc

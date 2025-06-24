@@ -20,6 +20,7 @@ package capsule
 import (
 	"fmt"
 	"os"
+	"os/exec"
 	"reflect"
 	"strings"
 	"syscall"
@@ -155,6 +156,47 @@ func builtinEval(pallete Pallete) (Capsule, error) {
 	return Eval(pallete[0].(string))
 }
 
+func builtinExec(pallete Pallete) (Capsule, error) {
+	if err := checkPallete("EXEC", pallete, []checker{
+		hasAtleast(1),
+		ofKinds(stringKind),
+	}); err != nil {
+		return nil, err
+	}
+
+	args := make([]string, 0, len(pallete))
+	for _, p := range pallete {
+		args = append(args, p.(string))
+	}
+
+	cmd := exec.Command(args[0], args[1:]...)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	cmd.Stdin = os.Stdin
+
+	if err := cmd.Run(); err != nil {
+		return nil, err
+	}
+	return cmd.ProcessState.ExitCode(), nil
+}
+
+func builtinEnviron(pallete Pallete) (Capsule, error) {
+	if err := checkPallete("ENVIRON", pallete, []checker{
+		hasAtleast(1),
+		ofKinds(stringKind),
+	}); err != nil {
+		return nil, err
+	}
+
+	switch len(pallete) {
+	case 1:
+		return os.Getenv(pallete[0].(string)), nil
+	default:
+		err := os.Setenv(pallete[0].(string), pallete[1].(string))
+		return nil, err
+	}
+}
+
 func builtinWrite(pallete Pallete) (Capsule, error) {
 	if err := checkPallete("WRITE", pallete, []checker{
 		hasExactCount(2),
@@ -263,6 +305,8 @@ func registerBuiltins(scope *Scope) {
 		"#T":      true,
 		"#F":      false,
 		"#N":      nil,
+		"exec":    builtinExec,
+		"environ": builtinEnviron,
 	} {
 		scope.Set(Symbol(strings.ToUpper(key)), value)
 	}

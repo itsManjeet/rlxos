@@ -38,7 +38,6 @@ var completer = readline.NewPrefixCompleter()
 
 func init() {
 	flag.StringVar(&source, "source", "", "Inline source")
-	registerBuiltins()
 }
 
 func main() {

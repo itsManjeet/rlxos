@@ -15,26 +15,9 @@
  *
  */
 
-package key
+package life
 
-type State int
-
-const (
-	Release State = iota
-	Pressed
-)
-
-type Event struct {
-	Key   int
-	State State
+type End struct {
 }
 
-func (e Event) Event() {
-
-}
-
-type Keys map[int]bool
-
-func (e Keys) Event() {
-
-}
+func (e End) Event() {}

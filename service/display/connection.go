@@ -41,20 +41,16 @@ func (c *Connection) Read() (event.Event, error) {
 		if err := json.Unmarshal(buf, &e); err != nil {
 			return nil, err
 		}
-		return SurfaceEvent{
-			conn:  c.Connection,
-			event: e,
-		}, nil
+		e.Conn = c.Connection
+		return e, nil
 
 	case "surface.Damage":
 		var d surface.Damage
 		if err := json.Unmarshal(buf, &d); err != nil {
 			return nil, err
 		}
-		return SurfaceEvent{
-			conn:  c.Connection,
-			event: d,
-		}, nil
+		d.Conn = c.Connection
+		return d, nil
 	}
 	return nil, nil
 }

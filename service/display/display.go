@@ -19,77 +19,42 @@ package main
 
 import (
 	"image"
-	"image/draw"
-	"image/jpeg"
-	"log"
-	"os"
-	"os/exec"
-	"slices"
-	"sync"
 
-	"github.com/nfnt/resize"
 	"rlxos.dev/pkg/event"
 	"rlxos.dev/pkg/event/cursor"
 	"rlxos.dev/pkg/event/key"
 	"rlxos.dev/pkg/graphics"
+	"rlxos.dev/pkg/graphics/app"
 	"rlxos.dev/pkg/graphics/canvas"
-	"rlxos.dev/service/display/surface"
+	"rlxos.dev/service/display/screen"
+	"rlxos.dev/service/display/screen/desktop"
 )
 
 type Display struct {
 	graphics.BaseWidget
-	surfaces      []*surface.Surface
-	activeSurface *surface.Surface
-	background    image.Image
-	damage        []image.Rectangle
-	spacing       int
-	mutex         sync.Mutex
-	cursor        image.Point
-	keys          map[int]bool
+
+	screen screen.Screen
+	cursor image.Point
+	keys   key.Keys
 }
 
 func (d *Display) Init(rect image.Rectangle) error {
-	d.spacing = 10
-	file, err := os.OpenFile("/data/backgrounds/default.jpg", os.O_RDONLY, 0)
-	if err == nil {
-		defer file.Close()
-
-		if background, err := jpeg.Decode(file); err == nil {
-			d.background = resize.Resize(uint(rect.Dx()), uint(rect.Dy()), background, resize.Lanczos3)
-		}
-	}
-
-	if d.background == nil {
-		d.background = image.NewUniform(graphics.Background)
-	}
-	d.keys = map[int]bool{}
+	d.cursor.X, d.cursor.Y = rect.Dx()/2, rect.Dy()/2
+	d.keys = key.Keys{}
+	d.SetScreen(&desktop.Desktop{Display: d})
 	return nil
 }
 
-func (d *Display) Draw(canvas canvas.Canvas) {
-	d.mutex.Lock()
-	surfaces := d.surfaces
-	d.mutex.Unlock()
+func (d *Display) SetBounds(rect image.Rectangle) {
+	d.BaseWidget.SetBounds(rect)
+	d.screen.SetBounds(rect)
+}
 
-	if d.BaseWidget.Dirty() {
-		draw.Draw(canvas, d.Bounds(), d.background, image.Point{}, draw.Src)
-	}
-
-	for _, s := range surfaces {
-		if s.Dirty() {
-			s.Draw(canvas)
-			s.SetDirty(false)
-		}
-	}
+func (d *Display) Draw(cv canvas.Canvas) {
+	d.screen.Draw(cv)
 }
 
 func (d *Display) Update(ev event.Event) {
-	d.mutex.Lock()
-	if len(d.surfaces) > 0 {
-		d.activeSurface = d.surfaces[len(d.surfaces)-1]
-	}
-	d.mutex.Unlock()
-
 	switch ev := ev.(type) {
 	case cursor.Event:
 		if ev.Abs {
@@ -103,207 +68,31 @@ func (d *Display) Update(ev event.Event) {
 			d.cursor.X += ev.Pos.X
 			d.cursor.Y += ev.Pos.Y
 		}
-		if d.activeSurface != nil {
-			if d.cursor.In(d.activeSurface.Bounds()) {
-				d.propagate("cursor-event", d.cursor)
-			}
-		}
 
 	case key.Event:
 		d.keys[ev.Key] = ev.State == key.Pressed
-		if !d.handleBindings(ev) {
-			d.propagate("key-event", ev)
+		if u, ok := d.screen.(graphics.Updatable); ok {
+			u.Update(d.keys)
 		}
+	}
 
-	case SurfaceEvent:
-		switch sev := ev.event.(type) {
-		case surface.Create:
-			s, err := surface.NewSurface(sev.Rect, ev.conn)
-			if err != nil {
-				log.Printf("failed to create surface: %v", err)
-			}
-
-			d.mutex.Lock()
-			d.surfaces = append(d.surfaces, s)
-			d.mutex.Unlock()
-
-			if err := ev.conn.Send("surface.Created", surface.Created{
-				Id:   s.Image.Key(),
-				Rect: s.Bounds(),
-			}, nil); err != nil {
-				log.Printf("failed to send surface.Created: %v", err)
-			}
-
-			d.Layout()
-
-		case surface.Damage:
-			d.mutex.Lock()
-			if s, ok := d.surfaceFromId(sev.Id); ok {
-				s.SetDirty(true)
-			}
-			d.mutex.Unlock()
-		}
+	if u, ok := d.screen.(graphics.Updatable); ok {
+		u.Update(ev)
 	}
 }
 
-func (d *Display) propagate(c string, payload any) {
-	if d.activeSurface != nil {
-		if err := d.activeSurface.Conn.Send(c, payload, nil); err != nil {
-			log.Println("failed to propagate command:", c, payload, err)
-		}
+func (d *Display) SetScreen(s screen.Screen) {
+	d.screen = s
+	if i, ok := s.(app.Init); ok {
+		_ = i.Init(d.Bounds())
 	}
 }
 
 func (d *Display) Dirty() bool {
-	if d.BaseWidget.Dirty() {
-		return true
-	}
-	for _, s := range d.surfaces {
-		if s.Dirty() {
-			return true
-		}
-	}
-	return false
+	return d.screen.Dirty() || d.BaseWidget.Dirty()
 }
 
 func (d *Display) SetDirty(b bool) {
 	d.BaseWidget.SetDirty(b)
-	for _, s := range d.surfaces {
-		s.SetDirty(b)
-	}
-}
-
-func (d *Display) isKeySet(key int) bool {
-	if s, ok := d.keys[key]; ok {
-		return s
-	}
-	return false
-}
-
-func (d *Display) exec(bin string, args ...string) {
-	cmd := exec.Command(bin, args...)
-	if err := cmd.Start(); err != nil {
-		log.Printf("failed to start command: %v", err)
-	}
-}
-
-func (d *Display) handleBindings(ev key.Event) bool {
-	if d.isKeySet(key.KEY_LEFTALT) && ev.State == key.Pressed {
-		switch ev.Key {
-		case key.KEY_ENTER:
-			d.exec("/apps/console")
-			return true
-		case key.KEY_S:
-			if len(d.surfaces) > 0 {
-				d.Raise(d.surfaces[0])
-				d.SetDirty(true)
-			}
-
-		case key.KEY_Q:
-			if d.activeSurface != nil {
-				d.mutex.Lock()
-				idx := slices.Index(d.surfaces, d.activeSurface)
-				if idx != -1 {
-					d.surfaces = slices.Delete(d.surfaces, idx, idx+1)
-				}
-				if len(d.surfaces) > 0 {
-					d.activeSurface = d.surfaces[len(d.surfaces)-1]
-				}
-				d.mutex.Unlock()
-
-				d.SetDirty(true)
-			}
-
-		case key.KEY_UP:
-			if d.activeSurface != nil {
-				if d.isKeySet(key.KEY_LEFTSHIFT) {
-					d.Move(-10, 0)
-				} else {
-					d.Resize(-10, 0)
-				}
-			}
-
-		case key.KEY_DOWN:
-			if d.activeSurface != nil {
-				if d.isKeySet(key.KEY_LEFTSHIFT) {
-					d.Move(10, 0)
-				} else {
-					d.Resize(10, 0)
-				}
-			}
-
-		case key.KEY_LEFT:
-			if d.activeSurface != nil {
-				if d.isKeySet(key.KEY_LEFTSHIFT) {
-					d.Move(0, -10)
-				} else {
-					d.Resize(0, -10)
-				}
-			}
-
-		case key.KEY_RIGHT:
-			if d.activeSurface != nil {
-				if d.isKeySet(key.KEY_LEFTSHIFT) {
-					d.Move(0, 10)
-				} else {
-					d.Resize(0, 10)
-				}
-			}
-		default:
-			return false
-		}
-		return true
-	}
-	return false
-}
-
-func (d *Display) Raise(s *surface.Surface) {
-	d.mutex.Lock()
-	defer d.mutex.Unlock()
-
-	idx := slices.Index(d.surfaces, s)
-	if idx != -1 {
-		d.surfaces = slices.Delete(d.surfaces, idx, idx+1)
-	}
-
-	d.surfaces = append(d.surfaces, s)
-	d.activeSurface = s
-}
-
-func (d *Display) Move(top, left int) {
-	if d.activeSurface != nil {
-		log.Println("Moving surface", top, left)
-		rect := d.activeSurface.Bounds()
-		d.activeSurface.SetBounds(image.Rect(
-			rect.Min.X+left,
-			rect.Min.Y+top,
-			rect.Max.X+left,
-			rect.Max.Y+top,
-		))
-		d.activeSurface.SetDirty(true)
-	}
-}
-
-func (d *Display) Resize(top, left int) {
-	if d.activeSurface != nil {
-		log.Println("Resizing surface", top, left)
-		rect := d.activeSurface.Bounds()
-		d.activeSurface.SetBounds(image.Rect(
-			rect.Min.X,
-			rect.Min.Y,
-			rect.Max.X+left,
-			rect.Max.Y+top,
-		))
-		d.activeSurface.SetDirty(true)
-	}
-}
-
-func (d *Display) surfaceFromId(id int) (*surface.Surface, bool) {
-	idx := slices.IndexFunc(d.surfaces, func(s *surface.Surface) bool {
-		return s.Image.Key() == id
-	})
-	if idx == -1 {
-		return nil, false
-	}
-	return d.surfaces[idx], true
+	d.screen.SetDirty(b)
 }

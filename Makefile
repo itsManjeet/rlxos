@@ -19,7 +19,7 @@ SYSTEM_PATH := $(DEVICE_CACHE_PATH)/system
 SYSTEM_IMAGE := $(IMAGES_PATH)/system.img
 SYSTEM_TARGETS := cmd/init \
 				cmd/service \
-				cmd/capsule \
+				cmd/shell \
 				service/udevd \
 				service/display \
 				apps/welcome \
@@ -53,7 +53,7 @@ INITRAMFS_TARGETS := $(addprefix $(INITRAMFS_PATH)/,$(INITRAMFS_TARGETS))
 clean:
 	rm -f $(SYSTEM_IMAGE) $(INITRAMFS_IMAGE)
 	rm -rf $(SYSTEM_PATH) $(INITRAMFS_PATH)
-	rm -f $(KERNEL_IMAGE)
+	# rm -f $(KERNEL_IMAGE)
 
 test:
 	go test ./...

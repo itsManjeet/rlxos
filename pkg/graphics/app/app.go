@@ -22,6 +22,7 @@ import (
 	"image"
 	"time"
 
+	"rlxos.dev/pkg/event/life"
 	"rlxos.dev/pkg/event/resize"
 	"rlxos.dev/pkg/graphics"
 	"rlxos.dev/pkg/graphics/backend"
@@ -72,8 +73,12 @@ func Run(w graphics.Widget) error {
 			events, err := bk.PollEvents()
 			if err == nil {
 				for _, event := range events {
-					if _, ok := event.(resize.Event); ok {
+					switch event.(type) {
+					case resize.Event:
 						w.SetDirty(true)
+					case life.End:
+						// TODO: widget destroy
+						return nil
 					}
 					u.Update(event)
 				}

@@ -15,26 +15,37 @@
  *
  */
 
-package key
+package main
 
-type State int
+import (
+	"errors"
+	"io"
 
-const (
-	Release State = iota
-	Pressed
+	"rlxos.dev/pkg/event"
+	"rlxos.dev/pkg/event/life"
+	"rlxos.dev/pkg/kernel/vt"
 )
 
-type Event struct {
-	Key   int
-	State State
+type EventProvider struct {
+	vt *vt.VT
 }
 
-func (e Event) Event() {
-
+func (ep *EventProvider) Fd() int {
+	return ep.vt.Fd()
 }
 
-type Keys map[int]bool
-
-func (e Keys) Event() {
-
+func (ep *EventProvider) Read() (event.Event, error) {
+	buf := make([]byte, 1024)
+	n, err := ep.vt.Read(buf)
+	if err != nil {
+		if errors.Is(err, io.EOF) {
+			return life.End{}, nil
+		}
+		return nil, err
+	}
+	return VTEvent(buf[:n]), nil
 }
+
+type VTEvent []byte
+
+func (e VTEvent) Event() {}

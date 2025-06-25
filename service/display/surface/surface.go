@@ -82,5 +82,5 @@ func (s *Surface) SetBounds(rect image.Rectangle) {
 }
 
 func (s *Surface) Draw(cv canvas.Canvas) {
-	draw.Draw(cv, s.Bounds(), s.Image, image.Point{}, draw.Src)
+	draw.Draw(cv, s.Bounds(), s.Image, image.Point{}, draw.Over)
 }

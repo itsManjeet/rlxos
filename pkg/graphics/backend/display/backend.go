@@ -98,9 +98,6 @@ func (b *Backend) Canvas() canvas.Canvas {
 }
 
 func (b *Backend) Update() {
-	_ = b.img.Lock()
-	defer b.img.Unlock()
-
 	d := surface.Damage{
 		Id:   b.img.Key(),
 		Rect: b.img.Bounds(),

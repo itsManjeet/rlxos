@@ -23,6 +23,7 @@ import (
 	"image/color"
 	"image/draw"
 	"log"
+	"strings"
 
 	"golang.org/x/image/font"
 	"golang.org/x/image/font/opentype"
@@ -76,39 +77,97 @@ func (l *Label) Draw(canvas canvas.Canvas) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer face.Close()
 
-	textWidth := font.MeasureString(face, l.Text).Round()
-	textHeight := face.Metrics().Height.Round()
-
-	var x, y int
-	switch l.HorizontalAlignment {
-	case StartAlignment:
-		x = l.Bounds().Min.X + 4
-	case EndAlignment:
-		x = l.Bounds().Max.X - textWidth - 4
-	default:
-		x = l.Bounds().Min.X + (l.Bounds().Dx()-textWidth)/2
+	labelBounds := l.Bounds()
+	clippedCanvas := image.NewRGBA(labelBounds)
+	if l.BackgroundColor != nil {
+		draw.Draw(clippedCanvas, labelBounds, image.NewUniform(l.BackgroundColor), image.Point{}, draw.Src)
 	}
 
+	lineHeight := face.Metrics().Height.Ceil()
+	padding := 4
+	maxWidth := labelBounds.Dx() - padding*2
+	maxHeight := labelBounds.Dy() - padding*2
+	maxLines := maxHeight / lineHeight
+
+	// Split input text by lines (preserving \n)
+	rawLines := strings.Split(l.Text, "\n")
+	var lines []string
+
+	for _, rawLine := range rawLines {
+		words := strings.Fields(rawLine)
+		var line string
+		for _, word := range words {
+			testLine := line
+			if testLine != "" {
+				testLine += " "
+			}
+			testLine += word
+			if font.MeasureString(face, testLine).Ceil() <= maxWidth {
+				line = testLine
+			} else {
+				lines = append(lines, line)
+				line = word
+				if len(lines) >= maxLines {
+					break
+				}
+			}
+		}
+		if line != "" && len(lines) < maxLines {
+			lines = append(lines, line)
+		}
+		if len(lines) >= maxLines {
+			break
+		}
+	}
+
+	// Vertical alignment
+	var startY int
+	contentHeight := len(lines) * lineHeight
 	switch l.VerticalAlignment {
 	case StartAlignment:
-		y = l.Bounds().Min.Y + 4 + face.Metrics().Ascent.Round()
+		startY = labelBounds.Min.Y + padding + face.Metrics().Ascent.Ceil()
 	case EndAlignment:
-		y = l.Bounds().Max.Y - textHeight - 4 + face.Metrics().Ascent.Round()
+		startY = labelBounds.Max.Y - contentHeight - padding + face.Metrics().Ascent.Ceil()
 	default:
-		y = l.Bounds().Min.Y + (l.Bounds().Dy()-textHeight)/2 + face.Metrics().Ascent.Round()
+		startY = labelBounds.Min.Y + (labelBounds.Dy()-contentHeight)/2 + face.Metrics().Ascent.Ceil()
 	}
 
-	d := &font.Drawer{
-		Dst:  canvas,
-		Src:  image.NewUniform(l.ForegroundColor),
-		Face: face,
-		Dot:  fixed.P(x, y),
+	// Draw each line
+	for i, textLine := range lines {
+		textWidth := font.MeasureString(face, textLine).Ceil()
+		var x int
+		switch l.HorizontalAlignment {
+		case StartAlignment:
+			x = labelBounds.Min.X + padding
+		case EndAlignment:
+			x = labelBounds.Max.X - textWidth - padding
+		default:
+			x = labelBounds.Min.X + (labelBounds.Dx()-textWidth)/2
+		}
+
+		y := startY + i*lineHeight
+		d := &font.Drawer{
+			Dst:  clippedCanvas,
+			Src:  image.NewUniform(l.ForegroundColor),
+			Face: face,
+			Dot:  fixed.P(x, y),
+		}
+		d.DrawString(textLine)
 	}
 
-	if l.BackgroundColor != nil {
-		draw.Draw(canvas, l.Bounds(), image.NewUniform(l.BackgroundColor), image.Point{}, draw.Src)
-	}
+	// Blit the clipped canvas onto the main canvas
+	draw.Draw(canvas, labelBounds, clippedCanvas, labelBounds.Min, draw.Src)
+}
 
-	d.DrawString(l.Text)
+func FontSize(size int) (int, int) {
+	face, _ := opentype.NewFace(fonts, &opentype.FaceOptions{
+		Size:    float64(size),
+		DPI:     100,
+		Hinting: font.HintingFull,
+	})
+	defer face.Close()
+
+	return int(font.MeasureString(face, "h").Ceil()), face.Metrics().Height.Ceil()
 }

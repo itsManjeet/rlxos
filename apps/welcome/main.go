@@ -18,45 +18,38 @@
 package main
 
 import (
-	"fmt"
 	"image"
-	"image/color"
-	"image/draw"
 	"log"
 
-	"rlxos.dev/pkg/event"
 	"rlxos.dev/pkg/graphics"
 	"rlxos.dev/pkg/graphics/app"
-	"rlxos.dev/pkg/graphics/argb"
-	"rlxos.dev/pkg/graphics/canvas"
 )
+
+const welcomeMessage = `Welcome to RLXOS scratch
+A Linux based operating system written from scratch in pure golang.
+It's an experimental project and only for Proof of concept for now and a very few features are working right now.
+**Please don't use to on real hardware (if it boot!).**
+
+Here are few things you can try
+- Left Alt + Enter -- To Launch console
+- Left Alt + S     -- To Switch windows
+- Left Alt + Q     -- To Kill active window
+`
 
 type Welcome struct {
 	graphics.Box
 	Label graphics.Label
-	color color.Color
 }
 
 func (w *Welcome) Init(rect image.Rectangle) error {
-	w.color = argb.NewColor(255, 0, 0, 255)
 	w.Append(&w.Label)
 	w.Label = graphics.Label{
-		Text:                "Welcome to rlxos",
+		Text:                welcomeMessage,
 		HorizontalAlignment: graphics.MiddleAlignment,
 		VerticalAlignment:   graphics.MiddleAlignment,
-		BackgroundColor:     nil,
+		ForegroundColor:     graphics.ColorWhite,
 	}
 	return nil
-}
-
-func (w *Welcome) Draw(cv canvas.Canvas) {
-	draw.Draw(cv, w.Bounds(), image.NewUniform(w.color), image.Point{}, draw.Over)
-	w.Box.Draw(cv)
-}
-
-func (w *Welcome) Update(ev event.Event) {
-	w.Label.Text = "Key Event: " + fmt.Sprint(ev)
-	w.SetDirty(true)
 }
 
 func main() {

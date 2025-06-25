@@ -15,42 +15,19 @@
  *
  */
 
-package capsule
+package main
 
 import (
 	"fmt"
-	"reflect"
-	"testing"
-
-	"github.com/go-test/deep"
+	"os"
 )
 
-func TestReaderInteger(t *testing.T) {
-	actual := 10
-	expected, err := readToken(&reader{
-		tokens: []string{fmt.Sprint(actual)},
-		pos:    0,
-	})
-	if err != nil {
-		t.Fatal(err)
+func cd(args []string) error {
+	switch len(args) {
+	case 0:
+		return os.Chdir(os.Getenv("HOME"))
+	case 1:
+		return os.Chdir(args[0])
 	}
-
-	if !reflect.DeepEqual(actual, expected) {
-		t.Fatalf("'%v:%T' != '%v:%T'", actual, actual, expected, expected)
-	}
-}
-
-func TestReadCall(t *testing.T) {
-	actual := []Capsule{Symbol("EVAL"), 10}
-	expected, err := read(&reader{
-		tokens: []string{"(", "EVAL", "10", ")"},
-		pos:    0,
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if diff := deep.Equal(actual, expected); diff != nil {
-		t.Fatal(diff)
-	}
+	return fmt.Errorf("cd: expect only one directory")
 }

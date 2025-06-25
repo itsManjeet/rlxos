@@ -18,13 +18,24 @@
 package main
 
 import (
-	"rlxos.dev/pkg/connect"
-	"rlxos.dev/pkg/event"
+	"fmt"
+	"io"
+	"os"
 )
 
-type SurfaceEvent struct {
-	conn  *connect.Connection
-	event event.Event
-}
+func cat(args []string) error {
+	if len(args) == 0 {
+		_, err := io.Copy(os.Stdout, os.Stdin)
+		return err
+	}
 
-func (e SurfaceEvent) Event() {}
+	for _, f := range args {
+		data, err := os.ReadFile(f)
+		if err != nil {
+			return err
+		}
+
+		fmt.Print(string(data))
+	}
+	return nil
+}

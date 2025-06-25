@@ -15,15 +15,17 @@
  *
  */
 
-package main
+package desktop
 
 import "image"
 
-func (d *Display) Layout() {
+func (d *Desktop) Layout() {
 	count := len(d.surfaces)
 	if count == 0 {
+		d.SetDirty(true)
 		return
 	}
+	d.activeSurface = d.surfaces[len(d.surfaces)-1]
 
 	bounds := d.Bounds()
 	screenWidth, screenHeight := bounds.Dx(), bounds.Dy()

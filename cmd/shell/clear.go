@@ -17,22 +17,9 @@
 
 package main
 
-import (
-	"os"
-	"path/filepath"
+import "fmt"
 
-	"rlxos.dev/pkg/capsule"
-)
-
-func loadConfig() {
-	for _, path := range []string{
-		filepath.Join(os.Getenv("HOME"), ".local.cap"),
-		"/config/global.cap",
-	} {
-		source, err := os.ReadFile(path)
-		if err == nil {
-			_, _ = capsule.Eval(string(source))
-			return
-		}
-	}
+func clear(_ []string) error {
+	fmt.Print("\033[H\033[J")
+	return nil
 }

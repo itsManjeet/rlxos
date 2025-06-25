@@ -15,47 +15,48 @@
  *
  */
 
-package capsule
+package main
 
 import (
+	"flag"
 	"fmt"
+	"os"
 	"strings"
 )
 
-func ToString(c Capsule) string {
-	switch c := c.(type) {
-	case nil:
-		return "#N"
-	case bool:
-		if c {
-			return "#T"
-		}
-		return "#F"
-	case Pallete:
-		var sb strings.Builder
-		sb.WriteRune('(')
-		sep := ""
-		for _, v := range c {
-			sb.WriteString(sep + ToString(v))
-			sep = " "
-		}
-		sb.WriteRune(')')
-		return sb.String()
-	case Map:
-		var sb strings.Builder
-		sb.WriteRune('{')
-		sep := ""
-		for key, value := range c {
-			sb.WriteString(sep + key + ":" + ToString(value))
-			sep = " "
-		}
-		sb.WriteRune('}')
-		return sb.String()
-	case Process:
-		return fmt.Sprintf("#PROCESS:%v", c)
-	case Lambda:
-		return "#LAMBDA"
-	default:
-		return fmt.Sprint(c)
+func ls(args []string) error {
+	f := flag.NewFlagSet("ls", flag.ContinueOnError)
+
+	showHidden := f.Bool("a", false, "show all hidden files")
+
+	if err := f.Parse(args); err != nil {
+		return err
 	}
+
+	args = f.Args()
+	if len(args) == 0 {
+		cwd, _ := os.Getwd()
+		args = append(args, cwd)
+	}
+
+	for _, path := range args {
+		dir, err := os.ReadDir(path)
+		if err != nil {
+			return err
+		}
+		s := ""
+		for _, p := range dir {
+			if strings.HasPrefix(p.Name(), ".") && !*showHidden {
+				continue
+			}
+			v := s + p.Name()
+			if p.IsDir() {
+				v += "/"
+			}
+			fmt.Print(v)
+			s = " "
+		}
+		fmt.Printf("\n")
+	}
+	return nil
 }

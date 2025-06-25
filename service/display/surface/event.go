@@ -20,11 +20,13 @@ package surface
 import (
 	"image"
 
+	"rlxos.dev/pkg/connect"
 	"rlxos.dev/pkg/kernel/shm"
 )
 
 type Create struct {
 	Rect image.Rectangle
+	Conn *connect.Connection
 }
 
 func (e Create) Event() {}
@@ -43,6 +45,7 @@ func (e Created) Image() (*shm.Image, error) {
 type Damage struct {
 	Id   int
 	Rect image.Rectangle
+	Conn *connect.Connection
 }
 
 func (e Damage) Event() {}

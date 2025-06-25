@@ -15,32 +15,23 @@
  *
  */
 
-package capsule
+package main
 
 import (
-	"testing"
-
-	"github.com/go-test/deep"
+	"fmt"
+	"os"
+	"strings"
 )
 
-func check(t *testing.T, source string, expected Capsule) {
-	capsule, err := Read(source)
-	if err != nil {
-		t.Fatal(err)
+func export(args []string) error {
+	for _, a := range args {
+		idx := strings.Index(a, "=")
+		if idx == -1 {
+			return fmt.Errorf("failed to export %v, no value specified", a)
+		}
+		if err := os.Setenv(a[:idx], a[idx+1:]); err != nil {
+			return err
+		}
 	}
-
-	nestedScope, _ := createNestedScope(Global, nil, nil)
-	actual, err := EvalCapsuleInScope(capsule, nestedScope)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if diff := deep.Equal(expected, actual); diff != nil {
-		t.Fatalf("%s %v", source, diff)
-	}
-}
-
-func TestEvalQuote(t *testing.T) {
-	check(t, "(quote (1 2 3))", Pallete{1, 2, 3})
-	check(t, "'(+ 1 2)", Pallete{Symbol("+"), 1, 2})
+	return nil
 }

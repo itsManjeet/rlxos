@@ -15,26 +15,19 @@
  *
  */
 
-package key
+package main
 
-type State int
-
-const (
-	Release State = iota
-	Pressed
+import (
+	"flag"
+	"fmt"
+	"strings"
 )
 
-type Event struct {
-	Key   int
-	State State
-}
-
-func (e Event) Event() {
-
-}
-
-type Keys map[int]bool
-
-func (e Keys) Event() {
-
+func echo(args []string) error {
+	f := flag.NewFlagSet("echo", flag.ContinueOnError)
+	if err := f.Parse(args); err != nil {
+		return err
+	}
+	fmt.Println(strings.Join(args, " "))
+	return nil
 }

@@ -15,26 +15,14 @@
  *
  */
 
-package key
+package screen
 
-type State int
+import "rlxos.dev/pkg/graphics"
 
-const (
-	Release State = iota
-	Pressed
-)
-
-type Event struct {
-	Key   int
-	State State
+type Display interface {
+	SetScreen(s Screen)
 }
 
-func (e Event) Event() {
-
-}
-
-type Keys map[int]bool
-
-func (e Keys) Event() {
-
+type Screen interface {
+	graphics.Widget
 }

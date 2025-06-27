@@ -53,7 +53,7 @@ type Desktop struct {
 
 func (d *Desktop) Init(rect image.Rectangle) error {
 	d.background = image.NewUniform(argb.NewColor(26, 26, 26, 255))
-	d.activeBorderColor = argb.NewColor(100, 100, 100, 255)
+	d.activeBorderColor = argb.NewColor(150, 150, 150, 255)
 	d.inactiveBorderColor = argb.NewColor(50, 50, 50, 255)
 	d.exec("/apps/welcome")
 	return nil
@@ -130,9 +130,10 @@ func (d *Desktop) Update(ev event.Event) {
 		d.mutex.Lock()
 		if s, ok := d.surfaceFromConn(ev.Conn); ok {
 			s.SetDirty(true)
+		} else {
+			d.SetDirty(true)
 		}
 		d.mutex.Unlock()
-		// d.SetDirty(true)
 
 	case key.Keys:
 		d.keys = ev

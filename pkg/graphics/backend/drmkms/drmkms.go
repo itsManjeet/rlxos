@@ -66,7 +66,7 @@ func (d *Backend) Init() (err error) {
 		return err
 	}
 
-	if d.listener, err = poll.NewListener(-1); err != nil {
+	if d.listener, err = poll.NewListener(0); err != nil {
 		_ = d.card.Close()
 		return err
 	}

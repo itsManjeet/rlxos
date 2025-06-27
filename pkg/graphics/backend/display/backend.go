@@ -37,7 +37,7 @@ type Backend struct {
 }
 
 func (b *Backend) Init() (err error) {
-	b.poll, err = poll.NewListener(-1)
+	b.poll, err = poll.NewListener(0)
 	if err != nil {
 		return fmt.Errorf("failed to setup poll: %v", err)
 	}

@@ -2,6 +2,8 @@ id: libsodium
 version: 1.0.18
 about: P(ortable|ackageable) NaCI-based crypto library
 
+run-autogen: false
+
 depends:
   - components/glibc.yml
 

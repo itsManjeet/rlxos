@@ -1,5 +1,5 @@
 id: firmware
-version: 20240220
+version: 20250627
 about: Firmware files for Linux
 
 environ:

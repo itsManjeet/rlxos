@@ -1,7 +1,0 @@
-{
-    "kind": "oneshot",
-    "stage": "pre-init",
-    "exec-start": "busybox mount -t efivarfs none /sys/firmware/efi/efivars",
-    "exec-stop": "busybox umount /sys/firmware/efi/efivars",
-    "if-path-exists": "/sys/firmware/efi/efivars"
-}

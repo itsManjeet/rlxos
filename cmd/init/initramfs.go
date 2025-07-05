@@ -45,19 +45,22 @@ func ensureRealRootfs() {
 		return
 	}
 
-	safeCall("mount(devtmpfs)", syscall.Mount("devtmpfs", "/dev", "devtmpfs", 0, ""))
+	safeCall("mount(devtmpfs)", syscall.Mount("devtmpfs", "/dev", "devtmpfs", syscall.MS_NOSUID, "mode=0755"))
 
 	safeCall("mkdir(proc)", syscall.Mkdir("/proc", 0755))
-	safeCall("mount(proc)", syscall.Mount("proc", "/proc", "proc", 0, ""))
+	safeCall("mount(proc)", syscall.Mount("proc", "/proc", "proc", syscall.MS_NOSUID|syscall.MS_NOEXEC|syscall.MS_NODEV, ""))
 
 	safeCall("mkdir(sysfs)", syscall.Mkdir("/sys", 0755))
-	safeCall("mount(sysfs)", syscall.Mount("sysfs", "/sys", "sysfs", 0, ""))
+	safeCall("mount(sysfs)", syscall.Mount("sysfs", "/sys", "sysfs", syscall.MS_NOSUID|syscall.MS_NOEXEC|syscall.MS_NODEV, ""))
 
-	safeCall("mkdir(tmpfs)", syscall.Mkdir("/run", 0755))
-	safeCall("mount(tmpfs)", syscall.Mount("tmpfs", "/run", "tmpfs", 0, ""))
+	safeCall("mkdir(tmpfs)", syscall.Mkdir("/cache/temp", 0755))
+	safeCall("mount(tmpfs)", syscall.Mount("tmpfs", "/cache/temp", "tmpfs", syscall.MS_NOSUID|syscall.MS_NODEV, "mode=0755"))
 
 	safeCall("mkdir(devpts)", syscall.Mkdir("/dev/pts", 0755))
-	safeCall("mount(devpts)", syscall.Mount("devpts", "/dev/pts", "devpts", 0, ""))
+	safeCall("mount(devpts)", syscall.Mount("devpts", "/dev/pts", "devpts", syscall.MS_NOSUID|syscall.MS_NOEXEC, "mode=0620,gid=5"))
+
+	safeCall("mkdir(shm)", syscall.Mkdir("/dev/shm", 0755))
+	safeCall("mount(shm)", syscall.Mount("tmpfs", "/dev/shm", "tmpfs", syscall.MS_NOSUID|syscall.MS_NODEV, "mode=1777"))
 
 	ensureStage("kernel pseudo filesystem mount")
 
@@ -74,14 +77,14 @@ func ensureRealRootfs() {
 		}
 		log.Fatal("no root device present ", rootfs)
 	}
-	for _, dir := range []string{"/run/overlay", "/run/overlay/ro", "/run/overlay/rw", "/run/overlay/work", "/rootfs"} {
+	for _, dir := range []string{"/cache/temp/overlay", "/cache/temp/overlay/ro", "/cache/temp/overlay/rw", "/cache/temp/overlay/work", "/rootfs"} {
 		safeCall("mkdir("+dir+")", syscall.Mkdir(dir, 0755))
 	}
-	safeCall("mount(rootfs)", syscall.Mount(rootfs, "/run/overlay/ro", "squashfs", syscall.MS_RDONLY, ""))
-	safeCall("mount(overlay)", syscall.Mount("overlay", "/rootfs", "overlay", 0, "lowerdir=/run/overlay/ro,upperdir=/run/overlay/rw,workdir=/run/overlay/work"))
+	safeCall("mount(rootfs)", syscall.Mount(rootfs, "/cache/temp/overlay/ro", "squashfs", syscall.MS_RDONLY, ""))
+	safeCall("mount(overlay)", syscall.Mount("overlay", "/rootfs", "overlay", 0, "lowerdir=/cache/temp/overlay/ro,upperdir=/cache/temp/overlay/rw,workdir=/cache/temp/overlay/work"))
 	ensureStage("prepare real rootfs")
 
-	for _, fs := range []string{"proc", "sys", "dev", "run"} {
+	for _, fs := range []string{"proc", "sys", "dev", "cache/temp"} {
 		safeCall("mkdir("+fs+")", syscall.Mkdir("/rootfs/"+fs, 0755))
 		safeCall("mount("+fs+")", syscall.Mount("/"+fs, "/rootfs/"+fs, "", syscall.MS_MOVE, ""))
 	}

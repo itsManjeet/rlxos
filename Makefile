@@ -1,98 +1,130 @@
 GO ?= go
-GOFLAGS :=
+GOFLAGS ?=
+
 CACHE_PATH ?= $(CURDIR)/_cache
 
-export CGO_ENABLED := 0
-
 -include config.mk
-
 ifndef DEVICE
-$(error DEVICE not specified)
+$(error DEVICE is not set)
 endif
 
-DEVICE_PATH := $(CURDIR)/devices/$(DEVICE)
-DEVICE_CACHE_PATH := $(CACHE_PATH)/$(DEVICE)
+DEVICE_PATH = $(CURDIR)/devices/$(DEVICE)
+DEVICE_CACHE_PATH = $(CACHE_PATH)/$(DEVICE)
+include $(DEVICE_PATH)/config.mk
 
-IMAGES_PATH := $(DEVICE_CACHE_PATH)/images/
+TOOLCHAIN_PATH = $(DEVICE_CACHE_PATH)/toolchain
+SYSROOT_PATH = $(TOOLCHAIN_PATH)/$(TARGET_TRIPLE)/sysroot
 
-SYSTEM_PATH := $(DEVICE_CACHE_PATH)/system
-SYSTEM_IMAGE := $(IMAGES_PATH)/system.img
-SYSTEM_TARGETS := cmd/init \
-				cmd/service \
-				cmd/shell \
-				service/udevd \
-				service/display \
-				apps/welcome \
-				apps/console
+SOURCES_PATH = $(CACHE_PATH)/sources
+IMAGES_PATH = $(DEVICE_CACHE_PATH)/images
 
-ASSETS_TARGETS := $(shell find $(CURDIR)/config -type f) $(shell find $(CURDIR)/data -type f)
+SYSTEM_PATH = $(DEVICE_CACHE_PATH)/system
+SYSTEM_IMAGE = $(IMAGES_PATH)/system.img
+SYSTEM_TARGETS += cmd/init cmd/service cmd/shell
 
-INITRAMFS_PATH := $(DEVICE_CACHE_PATH)/initramfs
-INITRAMFS_IMAGE := $(IMAGES_PATH)/initramfs.img
-INITRAMFS_TARGETS := cmd/init
+INITRAMFS_IMAGE = $(IMAGES_PATH)/initramfs.img
+INITRAMFS_PATH = $(DEVICE_CACHE_PATH)/initramfs
+INITRAMFS_TARGETS += init
 
-KERNEL_VERSION ?= 6.14.6
-KERNEL_PATH := $(DEVICE_CACHE_PATH)/kernel
-KERNEL_CONFIG_FRAGMENTS := $(CURDIR)/devices/common/kernel.config
+KERNEL_VERSION ?= 6.15.4
+KERNEL_PATH = $(DEVICE_CACHE_PATH)/kernel
+KERNEL_IMAGE = $(IMAGES_PATH)/kernel.img
 
-include $(DEVICE_PATH)/config
-include $(DEVICE_PATH)/device.mk
+DISK_IMAGE = $(IMAGES_PATH)/disk.img
 
-TOOLCHAIN_PATH := $(DEVICE_CACHE_PATH)/toolchain
-SYSROOT_PATH := $(TOOLCHAIN_PATH)/$(TOOLCHAIN_TARGET_TRIPLE)
+export PATH := $(TOOLCHAIN_PATH)/bin:$(PATH)
 
-include tools/toolchain.mk
+export CC 		= $(TARGET_TRIPLE)-gcc
+export CXX 		= $(TARGET_TRIPLE)-g++
+export LD 		= $(TARGET_TRIPLE)-ld
+export AR 		= $(TARGET_TRIPLE)-ar
+export AS 		= $(TARGET_TRIPLE)-as
+export RANLIB 	= $(TARGET_TRIPLE)-ranlib
+export STRIP 	= $(TARGET_TRIPLE)-strip
 
-ifndef KERNEL_IMAGE
-$(error KERNEL_IMAGE not set)
-endif
+export CGO_ENABLED = 0
 
-SYSTEM_TARGETS := $(addprefix $(SYSTEM_PATH)/,$(SYSTEM_TARGETS))
-INITRAMFS_TARGETS := $(addprefix $(INITRAMFS_PATH)/,$(INITRAMFS_TARGETS))
+.PHONY: all clean dist-clean
+
+all: $(DISK_IMAGE)
 
 clean:
-	rm -f $(SYSTEM_IMAGE) $(INITRAMFS_IMAGE)
+	rm -rf $(SYSTEM_IMAGE) $(INITRAMFS_IMAGE) $(DISK_IMAGE)
 	rm -rf $(SYSTEM_PATH) $(INITRAMFS_PATH)
-	# rm -f $(KERNEL_IMAGE)
 
-test:
-	go test ./...
+run: $(DISK_IMAGE)
+ifndef QEMU
+$(error QEMU command is not defined)
+endif
+	$(QEMU) $(QEMU_ARGS) \
+		-cdrom $(DISK_IMAGE) \
+		-smp 2 -m 1024
+
+debug-shell:
+	go run rlxos.dev/tools/debug shell
 
 $(SYSTEM_PATH)/%: %/*.go
-	$(GO) $(GOFLAGS) build -o $@ rlxos.dev/$(shell dirname $<)
-
-$(SYSTEM_IMAGE): $(SYSTEM_TARGETS) $(ASSETS_TARGETS)
-	rsync -au --delete $(CURDIR)/config/ $(SYSTEM_PATH)/config/
-	rsync -au --delete $(CURDIR)/data/ $(SYSTEM_PATH)/data/
-	@mkdir -p $(shell dirname $@)
-	mksquashfs $(SYSTEM_PATH) $@ -noappend -all-root
+	GOOS=$(GOOS) GOARCH=$(GOARCH) $(GO) $(GOFLAGS) build -o $@ rlxos.dev/$(shell dirname $<)
 
 $(INITRAMFS_PATH)/%: $(SYSTEM_PATH)/%
 	mkdir -p $(INITRAMFS_PATH)/$(shell dirname $(<:$(SYSTEM_PATH)/%=%))
 	cp -rap $< $@
 
-$(INITRAMFS_IMAGE): $(INITRAMFS_TARGETS)
-	ln -sfv cmd/init $(INITRAMFS_PATH)/init
+$(SOURCES_PATH)/$(TARGET_TRIPLE)-cross.tgz:
+	mkdir -p $(shell dirname $@)
+	wget -nc https://musl.cc/$(TARGET_TRIPLE)-cross.tgz -P $(shell dirname $@)
+
+
+$(TOOLCHAIN_PATH)/bin/$(TARGET_TRIPLE)-gcc: $(SOURCES_PATH)/$(TARGET_TRIPLE)-cross.tgz
+	mkdir -p $(TOOLCHAIN_PATH)
+	tar -xmf $< -C $(TOOLCHAIN_PATH) --strip-components=1
+
+$(SYSTEM_IMAGE): $(addprefix $(SYSTEM_PATH)/,$(SYSTEM_TARGETS))
+	mkdir -p $(shell dirname $@)
+	rsync -a --delete $(CURDIR)/config/ $(SYSTEM_PATH)/config/
+	rsync -a --delete $(CURDIR)/data/ $(SYSTEM_PATH)/data/
+	mksquashfs $(SYSTEM_PATH) $@ -noappend -all-root
+
+$(INITRAMFS_PATH)/init: $(SYSTEM_PATH)/cmd/init
+	mkdir -p $(shell dirname $@)
+	cp -rap $< $@
+
+$(INITRAMFS_IMAGE): $(addprefix $(INITRAMFS_PATH)/,$(INITRAMFS_TARGETS))
 	@mkdir -p $(shell dirname $@)
 	(cd $(INITRAMFS_PATH) && find . -print0 | cpio --null -ov --format=newc --quiet) 2>/dev/null > $@
 
-$(CACHE_PATH)/linux-$(KERNEL_VERSION).tar.xz:
+$(SOURCES_PATH)/linux-$(KERNEL_VERSION).tar.xz:
+	mkdir -p $(shell dirname $@)
 	wget -nc https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-$(KERNEL_VERSION).tar.xz -P $(shell dirname $@)
 
-$(KERNEL_PATH)/Makefile: $(CACHE_PATH)/linux-$(KERNEL_VERSION).tar.xz
+$(KERNEL_PATH)/Makefile: $(SOURCES_PATH)/linux-$(KERNEL_VERSION).tar.xz
 	mkdir -p $(shell dirname $@)
 	tar -xmf $< -C $(shell dirname $@) --strip-components=1
 
-$(KERNEL_IMAGE): $(TOOLCHAIN_PATH)/bin/$(TOOLCHAIN_TARGET_TRIPLE)-gcc $(KERNEL_PATH)/Makefile $(KERNEL_CONFIG_FRAGMENTS)
-	$(MAKE) -C $(KERNEL_PATH) ARCH=$(KERNEL_ARCH) CROSS_COMPILE=$(TOOLCHAIN_TARGET_TRIPLE)- defconfig
+$(KERNEL_PATH)/.config: $(KERNEL_PATH)/Makefile $(KERNEL_CONFIG_FRAGMENTS) $(TOOLCHAIN_PATH)/bin/$(TARGET_TRIPLE)-gcc
+	$(MAKE) -C $(KERNEL_PATH) CROSS_COMPILE=$(TARGET_TRIPLE)- defconfig
 	KCONFIG_CONFIG=$(KERNEL_PATH)/.config $(KERNEL_PATH)/scripts/kconfig/merge_config.sh -m $(KERNEL_PATH)/.config $(KERNEL_CONFIG_FRAGMENTS)
-	$(MAKE) -C $(KERNEL_PATH) ARCH=$(KERNEL_ARCH) CROSS_COMPILE=$(TOOLCHAIN_TARGET_TRIPLE)- olddefconfig
-	$(MAKE) -C $(KERNEL_PATH) ARCH=$(KERNEL_ARCH) CROSS_COMPILE=$(TOOLCHAIN_TARGET_TRIPLE)- -j$(shell nproc)
+	$(MAKE) -C $(KERNEL_PATH) CROSS_COMPILE=$(TARGET_TRIPLE)- olddefconfig
 
+$(KERNEL_IMAGE): $(KERNEL_PATH)/.config $(TOOLCHAIN_PATH)/bin/$(TARGET_TRIPLE)-gcc
+	$(MAKE) -C $(KERNEL_PATH) CROSS_COMPILE=$(TARGET_TRIPLE)- -j$(shell nproc)
+	cp  $(KERNEL_PATH)/$(shell $(MAKE) -C $(KERNEL_PATH) CROSS_COMPILE=$(TARGET_TRIPLE)- -s image_name) $@
 
-$(CACHE_PATH)/$(TOOLCHAIN_TARGET_TRIPLE)-cross.tgz:
-	wget -nc https://musl.cc/$(TOOLCHAIN_TARGET_TRIPLE)-cross.tgz -P $(CACHE_PATH)
+$(IMAGES_PATH)/EFI/BOOT/BOOTX64.EFI: $(KERNEL_IMAGE) $(DEVICE_PATH)/cmdline.txt $(INITRAMFS_IMAGE)
+	mkdir -p $(shell dirname $@)
+	$(TARGET_TRIPLE)-objcopy \
+		--add-section .osrel=/dev/null --change-section-vma .osrel=0x20000 \
+		--add-section .cmdline=$(DEVICE_PATH)/cmdline.txt --change-section-vma .cmdline=0x30000 \
+		--add-section .initrd=$(INITRAMFS_IMAGE) --change-section-vma .initrd=0x4000000 \
+		$(KERNEL_IMAGE) $@
 
-$(TOOLCHAIN_PATH)/bin/$(TOOLCHAIN_TARGET_TRIPLE)-gcc: $(CACHE_PATH)/$(TOOLCHAIN_TARGET_TRIPLE)-cross.tgz
-	mkdir -p $(TOOLCHAIN_PATH)
-	tar -xmf $< -C $(TOOLCHAIN_PATH) --strip-components=1
+$(DISK_IMAGE): $(SYSTEM_IMAGE) $(IMAGES_PATH)/EFI/BOOT/BOOTX64.EFI $(DEVICE_PATH)/genimage.cfg
+	mkdir -p $(DEVICE_CACHE_PATH)/.root
+	genimage \
+		--config $(DEVICE_PATH)/genimage.cfg \
+		--rootpath $(DEVICE_CACHE_PATH)/.root \
+		--inputpath $(IMAGES_PATH) \
+		--outputpath $(DEVICE_CACHE_PATH)/images \
+		--tmppath $(DEVICE_CACHE_PATH)/.temp
+	
+include $(shell find . -type f -name "*rlxos.inc")

@@ -1,17 +1,13 @@
 id: gnupg
-version: 2.4.5
+version: 2.4.8
 about: GNU's tool for secure communication and data storage
 
-pre-script: |-
-  sed -e "/noinst_SCRIPTS = gpg-zip/c sbin_SCRIPTS += gpg-zip" \
-      -i tools/Makefile.in
-
 depends:
-  - components/libassuan.yml
-  - components/libgcrypt.yml
-  - components/libksba.yml
-  - components/npth.yml
-  - components/pinentry.yml
+    - components/libassuan.yml
+    - components/libgcrypt.yml
+    - components/libksba.yml
+    - components/npth.yml
+    - components/pinentry.yml
+
 sources:
-  - https://www.gnupg.org/ftp/gcrypt/gnupg/gnupg-%{version}.tar.bz2
-# TODO: check version and update url
+    - https://www.gnupg.org/ftp/gcrypt/gnupg/gnupg-%{version}.tar.bz2

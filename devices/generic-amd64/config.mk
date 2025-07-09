@@ -5,7 +5,7 @@ export CXXFLAGS		+= -march=x86-64
 
 
 TARGET_TRIPLE := x86_64-linux-musl
-
+KERNEL_ARCH := x86_64
 
 
 QEMU := qemu-system-x86_64

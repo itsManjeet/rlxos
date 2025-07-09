@@ -1,177 +1,117 @@
-<a id="readme-top"></a>
+# 🐧 rlxos
 
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
+**rlxos** is an experimental Linux distribution built **purely in Go**, without relying on the traditional **GNU/Linux stack**. It uses **direct syscalls** with CGO disabled (`CGO_ENABLED=0`).
 
-<br />
-<div align="center">
-  <a href="https://github.com/itsmanjeet/rlxos">
-    <img src="assets/icons/rlxos-logo.svg" alt="RLXOS Logo" width="80" height="80">
-  </a>
-
-<h3 align="center">RLXOS</h3>
-
-  <p align="center">
-    A minimal Linux-based operating system with a pure Go userland.
-    <br />
-    <a href="https://github.com/itsmanjeet/rlxos"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/itsmanjeet/rlxos">View Demo</a>
-    ·
-    <a href="https://github.com/itsmanjeet/rlxos/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
-    ·
-    <a href="https://github.com/itsmanjeet/rlxos/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
-  </p>
-</div>
+> ⚠️ **Warning: Highly Experimental**
+> This project is in a very early **proof-of-concept (POC)** stage. The codebase is **inefficient**, and there are **known memory and resource leaks**. Do **not** use this for anything other than **learning** or **experimentation**.
 
 ---
 
-## About The Project
+## 🚀 Motivation
 
-![Screenshot][product-screenshot]
+The goal of `rlxos` is simple but ambitious:
 
-**RLXOS** is an experimental operating system built from scratch with a userland entirely written in Go, using
-`CGO_ENABLED=0`. This means all user space components are statically compiled and do not rely on the C runtime.
-
-### Why Go instead of C/C++?
-
-* **Simplicity:** Go is known for its simplicity and clean, unbloated syntax.
-* **Self-contained:** Go produces statically linked binaries that don’t rely on external C libraries like `libc`.
-* **Productivity:** Go makes development fast and efficient with excellent package management, a rich standard library,
-  and cross-compilation support.
-* **Low-level control:** While not as granular as C/C++, Go offers enough control for low-level operations required
-  here.
-* **Fun:** No one has done this quite like this—so why not?
+* **Explore a new system stack** for Linux-based operating systems.
+* **Understand how things work** by building a minimal OS environment using just Go and raw syscalls.
+* Challenge conventional toolchains and eliminate dependency on C libraries and the GNU ecosystem.
 
 ---
 
-## Getting Started
+## 📦 Requirements
 
-### Prerequisites
+To build and run `rlxos`, you'll need the following:
 
-Make sure you have the following installed:
+* [Go](https://go.dev) 1.24+
 
-* Go 1.22+
-* QEMU
-* GCC
-* Make
+Install supporting packages:
 
-Install required packages:
-
-```sh
-sudo apt install qemu-system-x86 gcc make systemd-boot ovmf genimage dosfstools mtools libelf-dev flex bison bc libssl-dev rsync
+```bash
+sudo apt install build-essential rsync wget squashfs-tools flex bison bc qemu-system-x86 libssl-dev libelf-dev
 ```
 
-### Installation
+---
 
-1. Clone the repository:
+## 🛠️ Getting Started
 
-```sh
+### 1. Clone the Repository
+
+```bash
 git clone https://github.com/itsmanjeet/rlxos.git
 cd rlxos
 ```
 
-Select a device from devices/
+### 2. Run Pre-check Script
 
-1. Build the OS:
-
-```sh
-make DEVICE=<DEVICE>
+```bash
+./tools/checkup.sh
 ```
 
-3. Run it using QEMU:
+### 3. Build the OS Image
 
-```sh
-make DEVICE=<DEVICE> run
+```bash
+make DEVICE=generic-amd64
 ```
 
-4. Start the debug shell:
+### 4. Run in QEMU
 
-```sh
-go run rlxos.dev/tools/debug shell
+```bash
+make DEVICE=generic-amd64 run
 ```
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+---
+
+## 🧩 Adding New Commands
+
+To add a new command in `rlxos`:
+
+1. Create your command under the `./cmd/<Command-Name>` directory.
+2. Register it by adding to one of the following:
+
+   * **Global**: Add `cmd/<COMMAND-NAME>` to the `SYSTEM_TARGETS +=` line in the main `Makefile` or `./config.mk`.
+   * **Device-specific**: Add it to the `SYSTEM_TARGETS +=` section in `./devices/<DEVICE>/config.mk`.
+
+This helps keep builds modular and flexible.
 
 ---
 
-## Usage
+## 📈 Current Progress & Roadmap
 
-You will prompt with a minimal desktop environment with a top status bar and workspace.
+| Component             | Status       | Notes                                              |
+| --------------------- | ------------ | -------------------------------------------------- |
+| Init System           | ✅ Done       | Basic init process in place                        |
+| Service Manager       | ✅ Done       | Simple supervision and service handling            |
+| Shell                 | ⚙️ Basic      | Early prototype shell with minimal command support |
+| Display Server        | ⚙️ Basic      | IPC support, shared memory for buffer exchange     |
+| Graphic Framework     | ⚠️ Incomplete | Early scaffolding; work in progress                |
+| Audio Framework       | ❌ Not Done   | No audio stack yet                                 |
+| Networking Support    | ❌ Not Done   | No networking capabilities yet                     |
+| DOOM Support          | ❌ Not Yet    | For fun—planned, but not started                   |
+| Hardware Acceleration | ❌ Not Yet    | No GPU support; planned for future                 |
 
-| Shortcuts | Description                  |
-|-----------|------------------------------|
-| Alt+Enter | Open new Window              |
-| Alt+s     | Switch focus between windows |
-| Alt+q     | Close active Window          |
-
----
-
-## Boot Process
-
-* `/cmd/init` starts as PID 1 from the initramfs and prepares the actual root filesystem, then re-invokes itself from
-  the real root as `/cmd/init`.
-* `/cmd/init` launches `/cmd/service`, which is the service manager.
-* The service manager starts `/services/display` and `/services/udevd` for display and uevent listening.
-* `/cmd/capsule` listens to the QEMU serial port via `/dev/ttyS0`.
+Stay tuned for more updates as development progresses.
 
 ---
 
-## Roadmap
+## 💡 Notes
 
-* [x] PID 1 `init` and `service` manager
-* [ ] `cmd/capsule`: A Lisp-inspired interactive shell
-* [ ] `service/udevd`: Linux kernel uevent listener
-* [ ] `service/display`: `kmsdrm`-based display service with Wayland protocol support
-* [ ] `service/audio`: ALSA-based audio support
-* [ ] `service/network`: Network interface service
-* [ ] `service/auth`: Authentication service
-
-See the [open issues](https://github.com/itsmanjeet/rlxos/issues) for more.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+* All code is written in Go with `CGO_ENABLED=0`.
+* No C dependencies or GNU toolchain components are used in the build.
+* Expect bugs, crashes, and unexpected behavior—it’s all part of the learning journey.
 
 ---
 
-## Contributing
+## 📬 Get Involved
 
-Contributions make open-source amazing! Fork the repo and open a pull request.
+Have questions? Found a bug? Want to help?
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes
-4. Push to your branch
-5. Open a pull request
+* Open an issue
+* Submit a pull request
+* Start a discussion
 
-<a href="https://github.com/itsmanjeet/rlxos/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=itsmanjeet/rlxos" />
-</a>
+This project is an educational journey. You're welcome to join in and contribute.
 
 ---
 
-## License
+## 📜 License
 
-Distributed under the **GPL-3.0**. See the `LICENSE` file for more details.
-
----
-
-[contributors-shield]: https://img.shields.io/github/contributors/itsmanjeet/rlxos.svg?style=for-the-badge
-
-[contributors-url]: https://github.com/itsmanjeet/rlxos/graphs/contributors
-
-[forks-shield]: https://img.shields.io/github/forks/itsmanjeet/rlxos.svg?style=for-the-badge
-
-[forks-url]: https://github.com/itsmanjeet/rlxos/network/members
-
-[stars-shield]: https://img.shields.io/github/stars/itsmanjeet/rlxos.svg?style=for-the-badge
-
-[stars-url]: https://github.com/itsmanjeet/rlxos/stargazers
-
-[issues-shield]: https://img.shields.io/github/issues/itsmanjeet/rlxos.svg?style=for-the-badge
-
-[issues-url]: https://github.com/itsmanjeet/rlxos/issues
-
-[product-screenshot]: assets/screenshots/screenshot.png
+This project is licensed under an GPLv3 license. See [LICENSE](./LICENSE) for details.

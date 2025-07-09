@@ -53,7 +53,7 @@ func ensureRealRootfs() {
 	safeCall("mkdir(sysfs)", syscall.Mkdir("/sys", 0755))
 	safeCall("mount(sysfs)", syscall.Mount("sysfs", "/sys", "sysfs", syscall.MS_NOSUID|syscall.MS_NOEXEC|syscall.MS_NODEV, ""))
 
-	safeCall("mkdir(tmpfs)", syscall.Mkdir("/cache/temp", 0755))
+	safeCall("mkdir(tmpfs)", os.MkdirAll("/cache/temp", 0755))
 	safeCall("mount(tmpfs)", syscall.Mount("tmpfs", "/cache/temp", "tmpfs", syscall.MS_NOSUID|syscall.MS_NODEV, "mode=0755"))
 
 	safeCall("mkdir(devpts)", syscall.Mkdir("/dev/pts", 0755))
@@ -85,7 +85,7 @@ func ensureRealRootfs() {
 	ensureStage("prepare real rootfs")
 
 	for _, fs := range []string{"proc", "sys", "dev", "cache/temp"} {
-		safeCall("mkdir("+fs+")", syscall.Mkdir("/rootfs/"+fs, 0755))
+		safeCall("mkdir("+fs+")", os.MkdirAll("/rootfs/"+fs, 0755))
 		safeCall("mount("+fs+")", syscall.Mount("/"+fs, "/rootfs/"+fs, "", syscall.MS_MOVE, ""))
 	}
 

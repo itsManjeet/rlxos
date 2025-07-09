@@ -30,8 +30,6 @@ KERNEL_VERSION ?= 6.15.4
 KERNEL_PATH = $(DEVICE_CACHE_PATH)/kernel
 KERNEL_IMAGE = $(IMAGES_PATH)/kernel.img
 
-DISK_IMAGE = $(IMAGES_PATH)/disk.img
-
 export PATH := $(TOOLCHAIN_PATH)/bin:$(PATH)
 
 export CC 		= $(TARGET_TRIPLE)-gcc
@@ -46,19 +44,23 @@ export CGO_ENABLED = 0
 
 .PHONY: all clean dist-clean
 
-all: $(DISK_IMAGE)
+all: $(SYSTEM_IMAGE) $(INITRAMFS_IMAGE) $(KERNEL_IMAGE)
 
 clean:
-	rm -rf $(SYSTEM_IMAGE) $(INITRAMFS_IMAGE) $(DISK_IMAGE)
+	rm -rf $(SYSTEM_IMAGE) $(INITRAMFS_IMAGE) $(KERNEL_IMAGE)
 	rm -rf $(SYSTEM_PATH) $(INITRAMFS_PATH)
 
-run: $(DISK_IMAGE)
+run: $(SYSTEM_IMAGE) $(INITRAMFS_IMAGE) $(KERNEL_IMAGE)
 ifndef QEMU
 $(error QEMU command is not defined)
 endif
 	$(QEMU) $(QEMU_ARGS) \
-		-cdrom $(DISK_IMAGE) \
-		-smp 2 -m 1024
+		-kernel $(KERNEL_IMAGE) \
+		-initrd $(INITRAMFS_IMAGE) \
+		-append '$(shell cat $(DEVICE_PATH)/cmdline.txt)' \
+		-drive file=$(SYSTEM_IMAGE),format=raw \
+		-serial tcp::5555,server,nowait \
+		-smp 2 -m 512M
 
 debug-shell:
 	go run rlxos.dev/tools/debug shell
@@ -110,21 +112,5 @@ $(KERNEL_IMAGE): $(KERNEL_PATH)/.config $(TOOLCHAIN_PATH)/bin/$(TARGET_TRIPLE)-g
 	$(MAKE) -C $(KERNEL_PATH) CROSS_COMPILE=$(TARGET_TRIPLE)- -j$(shell nproc)
 	cp  $(KERNEL_PATH)/$(shell $(MAKE) -C $(KERNEL_PATH) CROSS_COMPILE=$(TARGET_TRIPLE)- -s image_name) $@
 
-$(IMAGES_PATH)/EFI/BOOT/BOOTX64.EFI: $(KERNEL_IMAGE) $(DEVICE_PATH)/cmdline.txt $(INITRAMFS_IMAGE)
-	mkdir -p $(shell dirname $@)
-	$(TARGET_TRIPLE)-objcopy \
-		--add-section .osrel=/dev/null --change-section-vma .osrel=0x20000 \
-		--add-section .cmdline=$(DEVICE_PATH)/cmdline.txt --change-section-vma .cmdline=0x30000 \
-		--add-section .initrd=$(INITRAMFS_IMAGE) --change-section-vma .initrd=0x4000000 \
-		$(KERNEL_IMAGE) $@
-
-$(DISK_IMAGE): $(SYSTEM_IMAGE) $(IMAGES_PATH)/EFI/BOOT/BOOTX64.EFI $(DEVICE_PATH)/genimage.cfg
-	mkdir -p $(DEVICE_CACHE_PATH)/.root
-	genimage \
-		--config $(DEVICE_PATH)/genimage.cfg \
-		--rootpath $(DEVICE_CACHE_PATH)/.root \
-		--inputpath $(IMAGES_PATH) \
-		--outputpath $(DEVICE_CACHE_PATH)/images \
-		--tmppath $(DEVICE_CACHE_PATH)/.temp
 	
 include $(shell find . -type f -name "*rlxos.inc")

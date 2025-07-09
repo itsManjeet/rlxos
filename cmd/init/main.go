@@ -106,6 +106,9 @@ func startServiceManager(ctxt context.Context) (*os.Process, error) {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	cmd.Stdin = os.Stdin
+	cmd.SysProcAttr = &syscall.SysProcAttr{
+		Setsid: true,
+	}
 
 	if err := cmd.Start(); err != nil {
 		return nil, fmt.Errorf("failed to start service manager: %v", err)

@@ -46,15 +46,23 @@ type Desktop struct {
 	background          image.Image
 	activeBorderColor   color.Color
 	inactiveBorderColor color.Color
+	surfaceBackground   color.Color
+	surfaceBorderRadius int
 	keys                key.Keys
+
+	spacing int
 
 	mutex sync.Mutex
 }
 
 func (d *Desktop) Init(rect image.Rectangle) error {
 	d.background = image.NewUniform(argb.NewColor(26, 26, 26, 255))
+
 	d.activeBorderColor = argb.NewColor(150, 150, 150, 255)
 	d.inactiveBorderColor = argb.NewColor(50, 50, 50, 255)
+	d.surfaceBackground = argb.NewColor(40, 40, 40, 255)
+	d.surfaceBorderRadius = 4
+	d.spacing = 10
 	d.exec("/apps/welcome")
 	return nil
 }
@@ -70,12 +78,12 @@ func (d *Desktop) Draw(cv canvas.Canvas) {
 
 	for _, s := range surfaces {
 		if s.Dirty() {
-			draw.Draw(cv, s.Bounds(), d.background, s.Bounds().Min, draw.Src)
 			borderColor := d.inactiveBorderColor
 			if s == d.activeSurface {
 				borderColor = d.activeBorderColor
 			}
-			graphics.Rect(cv, s.Bounds(), 0, borderColor)
+			graphics.FillRect(cv, s.Bounds(), d.surfaceBorderRadius, d.surfaceBackground)
+			graphics.Rect(cv, s.Bounds(), d.surfaceBorderRadius, borderColor)
 			s.Draw(cv)
 			s.SetDirty(false)
 		}
@@ -270,16 +278,6 @@ func (d *Desktop) Resize(top, left int) {
 		))
 		d.activeSurface.SetDirty(true)
 	}
-}
-
-func (d *Desktop) surfaceFromId(id int) (*surface.Surface, bool) {
-	idx := slices.IndexFunc(d.surfaces, func(s *surface.Surface) bool {
-		return s.Image.Key() == id
-	})
-	if idx == -1 {
-		return nil, false
-	}
-	return d.surfaces[idx], true
 }
 
 func (d *Desktop) surfaceFromConn(conn *connect.Connection) (*surface.Surface, bool) {

@@ -13,10 +13,11 @@ DEVICE_CACHE_PATH = $(CACHE_PATH)/$(DEVICE)
 include $(DEVICE_PATH)/config.mk
 
 TOOLCHAIN_PATH = $(DEVICE_CACHE_PATH)/toolchain
-SYSROOT_PATH = $(TOOLCHAIN_PATH)/$(TARGET_TRIPLE)/sysroot
+SYSROOT_PATH = $(TOOLCHAIN_PATH)/$(TARGET_TRIPLE)
 
 SOURCES_PATH = $(CACHE_PATH)/sources
 IMAGES_PATH = $(DEVICE_CACHE_PATH)/images
+BUILD_PATH = $(DEVICE_CACHE_PATH)/build
 
 SYSTEM_PATH = $(DEVICE_CACHE_PATH)/system
 SYSTEM_IMAGE = $(IMAGES_PATH)/system.img
@@ -122,4 +123,4 @@ $(KERNEL_IMAGE): $(KERNEL_PATH)/.config $(TOOLCHAIN_PATH)/bin/$(TARGET_TRIPLE)-g
 	cp  $(KERNEL_PATH)/$(shell $(MAKE) -C $(KERNEL_PATH) CROSS_COMPILE=$(TARGET_TRIPLE)- -s image_name) $@
 
 	
-include $(shell find . -type f -name "*rlxos.inc")
+include $(shell find . -type f -name "rlxos.mk")

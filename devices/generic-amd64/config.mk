@@ -14,3 +14,9 @@ QEMU_ARGS += \
 KERNEL_CONFIG_FRAGMENTS += \
 	$(CURDIR)/devices/common/kernel.config \
 	$(DEVICE_PATH)/kernel.config
+
+ifdef INCLUDE_UNIX_COMPONENTS
+SYSTEM_TARGETS += cmd/busybox \
+				lib/libc.so \
+				lib/ld-linux-x86_64.so.1
+endif

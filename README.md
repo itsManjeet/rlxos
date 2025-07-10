@@ -5,7 +5,8 @@
 > ⚠️ **Warning: Highly Experimental**
 > This project is in a very early **proof-of-concept (POC)** stage. The codebase is **inefficient**, and there are **known memory and resource leaks**. Do **not** use this for anything other than **learning** or **experimentation**.
 
-![Screenshot](assets/screenshots/screenshot.png)
+<br>
+<img width="auto" height="500" src="assets/screenshots/screenshot.png">
 
 ---
 

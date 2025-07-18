@@ -17,8 +17,6 @@
 
 package shm
 
-import "unsafe"
-
 type Permission struct {
 	Key        int32
 	UID, GID   uint32
@@ -38,5 +36,3 @@ type Info struct {
 	TotalAttached uint64
 	padding       [2]uint64
 }
-
-func toPointer(addr uintptr) unsafe.Pointer

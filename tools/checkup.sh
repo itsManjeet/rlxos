@@ -1,6 +1,7 @@
 #!/bin/sh
 
-for bin in go rsync wget mksquashfs flex bison bc qemu-system-x86_64; do
+for bin in go rsync wget mksquashfs flex bison bc \
+    cpio make; do
     if ! which $bin >/dev/null ; then
         echo "ERROR: $bin not found"
     fi

@@ -33,6 +33,8 @@ INITRAMFS_IMAGE = $(IMAGES_PATH)/initramfs.img
 INITRAMFS_PATH = $(DEVICE_CACHE_PATH)/initramfs
 INITRAMFS_TARGETS += init
 
+KERNEL_IMAGE = $(IMAGES_PATH)/kernel.img
+
 export PATH := $(TOOLCHAIN_PATH)/bin:$(PATH)
 
 export CC 		= $(TARGET_TRIPLE)-gcc
@@ -54,7 +56,7 @@ clean:
 	rm -rf $(SYSTEM_PATH) $(INITRAMFS_PATH)
 
 debug-shell:
-	go run rlxos.dev/tools/debug shell
+	GOOS=linux GOARCH=amd64 go run rlxos.dev/tools/debug shell
 
 $(SYSTEM_PATH)/%: %/*.go
 	GOOS=$(GOOS) GOARCH=$(GOARCH) $(GO) $(GOFLAGS) build -o $@ rlxos.dev/$(shell dirname $<)

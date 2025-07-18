@@ -1,6 +1,5 @@
 KERNEL_VERSION ?= 6.15.4
 KERNEL_PATH = $(DEVICE_CACHE_PATH)/kernel
-KERNEL_IMAGE = $(IMAGES_PATH)/kernel.img
 
 $(SOURCES_PATH)/linux-$(KERNEL_VERSION).tar.xz:
 	mkdir -p $(shell dirname $@)
@@ -20,4 +19,4 @@ endif
 
 $(KERNEL_IMAGE): $(KERNEL_PATH)/.config $(TOOLCHAIN_PATH)/bin/$(TARGET_TRIPLE)-gcc
 	$(MAKE) -C $(KERNEL_PATH) ARCH=$(KERNEL_ARCH) CROSS_COMPILE=$(TARGET_TRIPLE)- -j$(shell nproc)
-	cp  $(KERNEL_PATH)/$(shell $(MAKE) -C $(KERNEL_PATH) CROSS_COMPILE=$(TARGET_TRIPLE)- -s image_name) $@
+	cp  $(KERNEL_PATH)/$(shell $(MAKE) -C $(KERNEL_PATH) CROSS_COMPILE=$(TARGET_TRIPLE)- ARCH=$(KERNEL_ARCH) -s image_name) $@

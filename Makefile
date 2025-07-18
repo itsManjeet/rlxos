@@ -33,10 +33,6 @@ INITRAMFS_IMAGE = $(IMAGES_PATH)/initramfs.img
 INITRAMFS_PATH = $(DEVICE_CACHE_PATH)/initramfs
 INITRAMFS_TARGETS += init
 
-KERNEL_VERSION ?= 6.15.4
-KERNEL_PATH = $(DEVICE_CACHE_PATH)/kernel
-KERNEL_IMAGE = $(IMAGES_PATH)/kernel.img
-
 export PATH := $(TOOLCHAIN_PATH)/bin:$(PATH)
 
 export CC 		= $(TARGET_TRIPLE)-gcc
@@ -56,18 +52,6 @@ all: $(SYSTEM_IMAGE) $(INITRAMFS_IMAGE) $(KERNEL_IMAGE)
 clean:
 	rm -rf $(SYSTEM_IMAGE) $(INITRAMFS_IMAGE) $(KERNEL_IMAGE)
 	rm -rf $(SYSTEM_PATH) $(INITRAMFS_PATH)
-
-run: $(SYSTEM_IMAGE) $(INITRAMFS_IMAGE) $(KERNEL_IMAGE)
-ifndef QEMU
-$(error QEMU command is not defined)
-endif
-	$(QEMU) $(QEMU_ARGS) \
-		-kernel $(KERNEL_IMAGE) \
-		-initrd $(INITRAMFS_IMAGE) \
-		-append '$(shell cat $(DEVICE_PATH)/cmdline.txt)' \
-		-drive file=$(SYSTEM_IMAGE),format=raw \
-		-serial tcp::5555,server,nowait \
-		-smp 2 -m 512M
 
 debug-shell:
 	go run rlxos.dev/tools/debug shell
@@ -101,26 +85,6 @@ $(INITRAMFS_PATH)/init: $(SYSTEM_PATH)/cmd/init
 $(INITRAMFS_IMAGE): $(addprefix $(INITRAMFS_PATH)/,$(INITRAMFS_TARGETS))
 	@mkdir -p $(shell dirname $@)
 	(cd $(INITRAMFS_PATH) && find . -print0 | cpio --null -ov --format=newc --quiet) 2>/dev/null > $@
-
-$(SOURCES_PATH)/linux-$(KERNEL_VERSION).tar.xz:
-	mkdir -p $(shell dirname $@)
-	wget -nc https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-$(KERNEL_VERSION).tar.xz -P $(shell dirname $@)
-
-$(KERNEL_PATH)/Makefile: $(SOURCES_PATH)/linux-$(KERNEL_VERSION).tar.xz
-	mkdir -p $(shell dirname $@)
-	tar -xmf $< -C $(shell dirname $@) --strip-components=1
-
-$(KERNEL_PATH)/.config: $(KERNEL_PATH)/Makefile $(KERNEL_CONFIG_FRAGMENTS) $(TOOLCHAIN_PATH)/bin/$(TARGET_TRIPLE)-gcc
-ifndef KERNEL_ARCH
-$(error KERNEL_ARCH is not defined)
-endif
-	$(MAKE) -C $(KERNEL_PATH) ARCH=$(KERNEL_ARCH) CROSS_COMPILE=$(TARGET_TRIPLE)- defconfig
-	KCONFIG_CONFIG=$(KERNEL_PATH)/.config $(KERNEL_PATH)/scripts/kconfig/merge_config.sh -m $(KERNEL_PATH)/.config $(KERNEL_CONFIG_FRAGMENTS)
-	$(MAKE) -C $(KERNEL_PATH) ARCH=$(KERNEL_ARCH) CROSS_COMPILE=$(TARGET_TRIPLE)- olddefconfig
-
-$(KERNEL_IMAGE): $(KERNEL_PATH)/.config $(TOOLCHAIN_PATH)/bin/$(TARGET_TRIPLE)-gcc
-	$(MAKE) -C $(KERNEL_PATH) ARCH=$(KERNEL_ARCH) CROSS_COMPILE=$(TARGET_TRIPLE)- -j$(shell nproc)
-	cp  $(KERNEL_PATH)/$(shell $(MAKE) -C $(KERNEL_PATH) CROSS_COMPILE=$(TARGET_TRIPLE)- -s image_name) $@
-
 	
-include $(shell find . -type f -name "rlxos.mk")
+include $(shell find $(CURDIR)/ -type f -name "Makefile" -not -path "$(CURDIR)/Makefile" -not -path "$(CURDIR)/devices/*")
+-include $(DEVICE_PATH)/Makefile

@@ -1,4 +1,6 @@
 {
-    "exec-start": "/service/udevd",
+    "stage": "pre-init",
+    "exec-start": "udevd",
+    "exec-stop": "udevadm control --exit",
     "restart": true
 }

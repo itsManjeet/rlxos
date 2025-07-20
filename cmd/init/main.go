@@ -31,9 +31,18 @@ import (
 
 func main() {
 	ensure.Output(os.Getpid(), 1, "INIT must run as PID 1")
+	for k, v := range map[string]string{
+		"PATH":            "/cmd",
+		"USER":            "root",
+		"HOME":            "/",
+		"XDG_CONFIG_DIRS": "/config",
+		"XDG_DATA_DIRS":   "/data",
+	} {
+		os.Setenv(k, v)
+	}
+
 	ensureRealRootfs()
 
-	os.Setenv("PATH", "/cmd")
 	ctxt, cancel := context.WithCancel(context.Background())
 
 	serviceManager, err := startServiceManager(ctxt)

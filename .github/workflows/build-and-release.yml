@@ -1,0 +1,39 @@
+name: Continuous release
+on:
+  workflow_dispatch:
+  push:
+
+env:
+  BRANCH: ${{ endsWith(github.ref, 'stable') && 'stable' || (endsWith(github.ref, 'preview') && 'preview' || 'unstable') }}
+
+jobs:
+  build:
+    name: build-image
+    runs-on: self-hosted
+    strategy:
+      matrix:
+        include:
+          - device: generic-amd64
+            image: installer.iso
+
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          token: ${{secrets.CI_TOKEN}}
+          submodules: true
+      
+      - name: prepare vendor
+        run: go mod tidy && go mod vendor
+
+      - name: build-system-image
+        run: make CACHE_PATH=${{secrets.CACHE_PATH}} DEVICE=${{matrix.device}}
+
+      - uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: '${{ secrets.GITHUB_TOKEN }}'
+          file: '${{secrets.CACHE_PATH}}/${{matrix.device}}/images/${{matrix.image}}'
+          asset_name: 'rlxos-${{env.BRANCH}}-${{matrix.device}}-${{matrix.image}}'
+          tag: ${{env.BRANCH}}-continuous
+          overwrite: true
+          body: ${{ github.event.head_commit.message }}
+

@@ -1,6 +1,0 @@
-{
-    "exec-start": "/service/display",
-    "restart": true,
-    "tty": "/dev/tty1",
-    "ctty": true
-}

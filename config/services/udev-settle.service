@@ -1,0 +1,8 @@
+{
+    "stage": "init",
+    "kind": "oneshot",
+    "exec-start": "udevadm settle",
+    "depends": [
+        "udev-trigger"
+    ]
+}

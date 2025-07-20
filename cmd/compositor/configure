@@ -1,0 +1,3 @@
+#!/bin/sh
+
+wayland-scanner server-header $SYSROOT_DIR/usr/share/wayland-protocols/stable/xdg-shell/xdg-shell.xml xdg-shell-protocol.h

@@ -18,10 +18,11 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"log"
 	"os"
+	"os/exec"
+	"path/filepath"
 	"strings"
 	"syscall"
 
@@ -29,10 +30,10 @@ import (
 )
 
 var (
-	errors []string
-	rootfs string
-
-	kernelFlags = flag.NewFlagSet("kernel", flag.ContinueOnError)
+	errors     []string
+	rootfs     string
+	rootfsType string
+	live       bool
 )
 
 func isInsideInitramfs() bool {
@@ -47,25 +48,29 @@ func ensureRealRootfs() {
 
 	safeCall("mount(devtmpfs)", syscall.Mount("devtmpfs", "/dev", "devtmpfs", syscall.MS_NOSUID, "mode=0755"))
 
-	safeCall("mkdir(proc)", syscall.Mkdir("/proc", 0755))
+	safeCall("mkdir(proc)", os.MkdirAll("/proc", 0755))
 	safeCall("mount(proc)", syscall.Mount("proc", "/proc", "proc", syscall.MS_NOSUID|syscall.MS_NOEXEC|syscall.MS_NODEV, ""))
 
-	safeCall("mkdir(sysfs)", syscall.Mkdir("/sys", 0755))
+	safeCall("mkdir(sysfs)", os.MkdirAll("/sys", 0755))
 	safeCall("mount(sysfs)", syscall.Mount("sysfs", "/sys", "sysfs", syscall.MS_NOSUID|syscall.MS_NOEXEC|syscall.MS_NODEV, ""))
 
-	safeCall("mkdir(tmpfs)", os.MkdirAll("/cache/temp", 0755))
-	safeCall("mount(tmpfs)", syscall.Mount("tmpfs", "/cache/temp", "tmpfs", syscall.MS_NOSUID|syscall.MS_NODEV, "mode=0755"))
+	safeCall("mkdir(tmpfs)", os.MkdirAll("/run", 0755))
+	safeCall("mount(tmpfs)", syscall.Mount("tmpfs", "/run", "tmpfs", syscall.MS_NOSUID|syscall.MS_NODEV, "mode=0755"))
 
-	safeCall("mkdir(devpts)", syscall.Mkdir("/dev/pts", 0755))
+	safeCall("mkdir(devpts)", os.MkdirAll("/dev/pts", 0755))
 	safeCall("mount(devpts)", syscall.Mount("devpts", "/dev/pts", "devpts", syscall.MS_NOSUID|syscall.MS_NOEXEC, "mode=0620,gid=5"))
 
-	safeCall("mkdir(shm)", syscall.Mkdir("/dev/shm", 0755))
+	safeCall("mkdir(shm)", os.MkdirAll("/dev/shm", 0755))
 	safeCall("mount(shm)", syscall.Mount("tmpfs", "/dev/shm", "tmpfs", syscall.MS_NOSUID|syscall.MS_NODEV, "mode=1777"))
 
 	ensureStage("kernel pseudo filesystem mount")
 
 	safeCall("parse(/proc/cmdline)", parseKernelFlags())
 	ensureStage("parsing kernel args")
+
+	if rootfs == "" {
+		log.Fatal("no root device specified")
+	}
 
 	if _, err := os.Stat(rootfs); err != nil {
 		blocks, err := os.ReadDir("/sys/block")
@@ -77,14 +82,27 @@ func ensureRealRootfs() {
 		}
 		log.Fatal("no root device present ", rootfs)
 	}
-	for _, dir := range []string{"/cache/temp/overlay", "/cache/temp/overlay/ro", "/cache/temp/overlay/rw", "/cache/temp/overlay/work", "/rootfs"} {
-		safeCall("mkdir("+dir+")", syscall.Mkdir(dir, 0755))
+	for _, dir := range []string{"/run/overlay", "/run/overlay/ro", "/run/overlay/rw", "/run/overlay/work", "/rootfs"} {
+		safeCall("mkdir("+dir+")", os.MkdirAll(dir, 0755))
 	}
-	safeCall("mount(rootfs)", syscall.Mount(rootfs, "/cache/temp/overlay/ro", "squashfs", syscall.MS_RDONLY, ""))
-	safeCall("mount(overlay)", syscall.Mount("overlay", "/rootfs", "overlay", 0, "lowerdir=/cache/temp/overlay/ro,upperdir=/cache/temp/overlay/rw,workdir=/cache/temp/overlay/work"))
+
+	var rootPath string
+	if live {
+		rootPath = "/run/iso"
+		safeCall("mkdir("+rootPath+")", os.MkdirAll(rootPath, 0755))
+	} else {
+		rootPath = "/run/overlay/ro"
+	}
+
+	safeCall("mount(rootfs)", syscall.Mount(rootfs, rootPath, rootfsType, syscall.MS_RDONLY, ""))
+	if live {
+		safeCall("mount(squashfs)", exec.Command("busybox", "mount", filepath.Join(rootPath, "system.img"), "/run/overlay/ro").Run())
+	}
+
+	safeCall("mount(overlay)", syscall.Mount("overlay", "/rootfs", "overlay", 0, "lowerdir=/run/overlay/ro,upperdir=/run/overlay/rw,workdir=/run/overlay/work"))
 	ensureStage("prepare real rootfs")
 
-	for _, fs := range []string{"proc", "sys", "dev", "cache/temp"} {
+	for _, fs := range []string{"proc", "sys", "dev", "run"} {
 		safeCall("mkdir("+fs+")", os.MkdirAll("/rootfs/"+fs, 0755))
 		safeCall("mount("+fs+")", syscall.Mount("/"+fs, "/rootfs/"+fs, "", syscall.MS_MOVE, ""))
 	}
@@ -121,13 +139,21 @@ func parseKernelFlags() error {
 		return fmt.Errorf("failed to read kernel cmdline flags %v", err)
 	}
 
-	kernelFlags.StringVar(&rootfs, "rootfs", "", "Specify rootfs")
-	if err := kernelFlags.Parse(strings.Fields(string(data))); err != nil {
-		return err
-	}
+	for _, a := range strings.Fields(string(data)) {
+		k, v := a, ""
+		if i := strings.Index(k, "="); i != -1 {
+			v = k[i+1:]
+			k = k[:i]
+		}
 
-	if rootfs == "" {
-		return fmt.Errorf("no -rootfs specified")
+		switch k {
+		case "root":
+			rootfs = v
+		case "rootfs-type":
+			rootfsType = v
+		case "live":
+			live = true
+		}
 	}
 
 	return nil

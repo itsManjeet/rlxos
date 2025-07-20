@@ -1,0 +1,8 @@
+{
+    "exec-start": "compositor -user system",
+    "restart": true,
+    "depends": [
+        "seatd",
+        "udev-settle"
+    ]
+}

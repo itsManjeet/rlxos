@@ -1,11 +1,12 @@
-export GOARCH 		:= amd64
-export GOOS 		:= linux
-export CFLAGS 		+= -march=x86-64
-export CXXFLAGS		+= -march=x86-64
+export GOARCH = amd64
+export GOOS   = linux
 
-TARGET_TRIPLE := x86_64-linux-musl
-KERNEL_ARCH := x86_64
+TARGET_TRIPLE = x86_64-rlxos-linux-musl
+KERNEL_BZIMAGE = arch/x86/boot/bzImage
+KERNEL_CONFIG_FRAGMENTS += $(DEVICE_PATH)/kernel.config
 
-KERNEL_CONFIG_FRAGMENTS += \
-	$(CURDIR)/devices/common/kernel.config \
-	$(DEVICE_PATH)/kernel.config
+QEMU = qemu-system-x86_64
+QEMU_ARGS += 
+
+CFLAGS 		+= -march=x86_64
+CXXFLAGS 	+= -march=x86_64

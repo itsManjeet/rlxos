@@ -1,6 +1,9 @@
 {
     "exec-start": "compositor -user system",
     "restart": true,
+    "environ": [
+        "WLR_NO_HARDWARE_CURSORS=1"
+    ],
     "depends": [
         "seatd",
         "udev-settle"

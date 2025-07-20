@@ -25,7 +25,7 @@ IMAGES_PATH = $(DEVICE_CACHE_PATH)/images
 SYSTEM_PATH = $(DEVICE_CACHE_PATH)/system
 SYSTEM_IMAGE = $(IMAGES_PATH)/system.img
 SYSTEM_TARGETS += cmd/service cmd/init cmd/shell \
-				cmd/compositor
+				cmd/compositor cmd/sysctl
 
 INITRAMFS_IMAGE = $(IMAGES_PATH)/initramfs.img
 
@@ -113,7 +113,7 @@ endef
 $(BUILDROOT_CACHE_PATH)/.config: $(BUILDROOT_PATH)/Makefile $(DEVICE_PATH)/toolchain.config
 	$(call run-buildroot,defconfig)
 
-$(BUILDROOT_CACHE_PATH)/target/usr/bin/sway: $(BUILDROOT_CACHE_PATH)/.config
+$(SYSROOT_PATH)/%: $(BUILDROOT_CACHE_PATH)/.config
 	$(call run-buildroot)
 
 $(BUILDROOT_CACHE_PATH)/host/bin/go: $(BUILDROOT_CACHE_PATH)/.config

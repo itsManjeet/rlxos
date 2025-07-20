@@ -179,6 +179,7 @@ func (s *Server) Init() error {
 	s.cursor = C.wlr_cursor_create()
 	C.wlr_cursor_attach_output_layout(s.cursor, s.outputLayout)
 	s.cursorManager = C.wlr_xcursor_manager_create(nil, 24)
+	os.Setenv("XCURSOR_SIZE", "24")
 
 	s.cursorMode = CursorModePassThrough
 	s.cursorMotion.notify = (*[0]byte)(C.display_cursor_motion)
@@ -217,6 +218,8 @@ func (s *Server) Run() error {
 
 	os.Setenv("WAYLAND_DISPLAY", socket)
 	log.Printf("running wayland compositor on WAYLAND_DISPLAY=%s", socket)
+
+	C.wlr_cursor_set_xcursor(s.cursor, s.cursorManager, C.CString("default"))
 
 	C.wl_display_run(s.display)
 
@@ -566,16 +569,17 @@ func (s *Server) processCursorResize(time C.uint32_t) {
 }
 
 func (s *Server) processCursorMotion(time C.uint32_t) {
-	if s.cursorMode == CursorModeMove {
+	switch s.cursorMode {
+	case CursorModeMove:
 		s.processCursorMove(time)
 		return
-	} else if s.cursorMode == CursorModeResize {
+	case CursorModeResize:
 		s.processCursorResize(time)
 		return
 	}
 
 	toplevel, surface, sx, sy := s.desktopToplevelAt(s.cursor.x, s.cursor.y)
-	if toplevel != nil {
+	if toplevel == nil {
 		C.wlr_cursor_set_xcursor(s.cursor, s.cursorManager, C.CString("default"))
 	}
 

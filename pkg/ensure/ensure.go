@@ -16,3 +16,9 @@ func Foreach[T any](l []T, f func(l T) error) error {
 	}
 	return nil
 }
+
+func Success(err error) {
+	if err != nil {
+		panic(err)
+	}
+}

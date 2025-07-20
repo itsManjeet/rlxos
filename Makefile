@@ -119,7 +119,7 @@ $(SYSROOT_PATH)/%: $(BUILDROOT_CACHE_PATH)/.config
 $(BUILDROOT_CACHE_PATH)/host/bin/go: $(BUILDROOT_CACHE_PATH)/.config
 	$(call run-buildroot,host-go)
 
-$(SYSTEM_IMAGE): $(addprefix $(SYSTEM_PATH)/,$(SYSTEM_TARGETS)) $(BUILDROOT_CACHE_PATH)/target/usr/bin/sway $(SYSTEM_PATH)/lib/modules/$(KERNEL_VERSION)
+$(SYSTEM_IMAGE): $(addprefix $(SYSTEM_PATH)/,$(SYSTEM_TARGETS)) $(SYSTEM_PATH)/lib/modules/$(KERNEL_VERSION)
 	mkdir -p $(shell dirname $@)
 	rsync -a --delete $(CURDIR)/config/ $(SYSTEM_PATH)/config/
 	rsync -a --delete $(CURDIR)/data/ $(SYSTEM_PATH)/data/

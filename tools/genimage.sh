@@ -2,8 +2,6 @@
 
 set -e
 
-export PATH=/usr/bin:/usr/sbin:/bin:/sbin
-
 mkdir -p "$IMAGES_PATH"/iso/boot/grub/x86_64-efi
 mkdir -p "$IMAGES_PATH"/iso/boot/grub/fonts
 mkdir -p "$IMAGES_PATH"/iso/efi/boot

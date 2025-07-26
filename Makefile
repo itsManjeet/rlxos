@@ -35,7 +35,7 @@ KERNEL_IMAGE = $(IMAGES_PATH)/kernel.img
 
 INSTALLER_IMAGE = $(IMAGES_PATH)/installer.iso
 
-export PATH := $(TOOLCHAIN_PATH)/bin:$(PATH)
+export PATH := $(TOOLCHAIN_PATH)/bin:$(PATH):/usr/sbin:/sbin
 
 export CC 		= $(TARGET_TRIPLE)-gcc
 export CXX 		= $(TARGET_TRIPLE)-g++

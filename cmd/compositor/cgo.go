@@ -565,7 +565,7 @@ func (s *Server) processCursorResize(time C.uint32_t) {
 			newLeft = newRight - 1
 		}
 	} else if s.resizeEdges&C.WLR_EDGE_RIGHT != 0 {
-		newRight = C.int(borderY)
+		newRight = C.int(borderX)
 		if newRight <= newLeft {
 			newRight = newLeft + 1
 		}

@@ -20,6 +20,7 @@ package main
 #include <wlr/types/wlr_subcompositor.h>
 #include <wlr/types/wlr_xcursor_manager.h>
 #include <wlr/types/wlr_xdg_shell.h>
+#include <wlr/types/wlr_layer_shell_v1.h>
 #include <wlr/util/log.h>
 #include <xkbcommon/xkbcommon.h>
 
@@ -50,7 +51,8 @@ extern void display_xdg_toplevel_request_maximize(struct wl_listener *listener, 
 extern void display_xdg_toplevel_request_fullscreen(struct wl_listener *listener, void* data);
 extern void display_xdg_popup_commit(struct wl_listener *listener, void* data);
 extern void display_xdg_popup_destroy(struct wl_listener *listener, void* data);
-
+extern void display_new_layer_surface(struct wl_listener *listener, void *data);
+extern void display_layer_surface_destroy(struct wl_listener *listener, void *data);
 */
 import "C"
 import (
@@ -76,6 +78,11 @@ type Server struct {
 	newXdgTopLevel C.struct_wl_listener
 	newXdgPopup    C.struct_wl_listener
 	topLevels      []*Toplevel
+
+	layerShell      *C.struct_wlr_layer_shell_v1
+	newLayerSurface C.struct_wl_listener
+
+	background *C.struct_wlr_scene_rect
 
 	cursor          *C.struct_wlr_cursor
 	cursorManager   *C.struct_wlr_xcursor_manager
@@ -176,6 +183,13 @@ func (s *Server) Init() error {
 	s.newXdgPopup.notify = (*[0]byte)(C.display_new_xdg_popup)
 	C.wl_signal_add(&s.xdgShell.events.new_popup, &s.newXdgPopup)
 
+	s.layerShell = C.wlr_layer_shell_v1_create(s.display, 1)
+	s.newLayerSurface.notify = (*[0]byte)(C.display_new_layer_surface)
+	C.wl_signal_add(&s.layerShell.events.new_surface, &s.newLayerSurface)
+
+	color := [4]C.float{0.1, 0.1, 0.1, 1.0}
+	s.background = C.wlr_scene_rect_create(&s.scene.tree, 0, 0, &color[0])
+
 	s.cursor = C.wlr_cursor_create()
 	C.wlr_cursor_attach_output_layout(s.cursor, s.outputLayout)
 	s.cursorManager = C.wlr_xcursor_manager_create(nil, 24)
@@ -236,7 +250,6 @@ func (s *Server) Destroy() {
 	C.wlr_backend_destroy(s.backend)
 	C.wl_display_destroy(s.display)
 }
-
 func (s *Server) desktopToplevelAt(lx, ly C.double) (*Toplevel, *C.struct_wlr_surface, C.double, C.double) {
 	var sx, sy C.double
 	var surface *C.struct_wlr_surface
@@ -412,7 +425,7 @@ func display_new_output(listener *C.struct_wl_listener, data unsafe.Pointer) {
 	if mode != nil {
 		C.wlr_output_state_set_mode(&state, mode)
 	}
-
+	C.wlr_scene_rect_set_size(s.background, mode.width, mode.height)
 	C.wlr_output_commit_state(wlr_output, &state)
 	C.wlr_output_state_finish(&state)
 
@@ -502,7 +515,8 @@ func display_new_xdg_popup(listener *C.struct_wl_listener, data unsafe.Pointer) 
 
 	parent := C.wlr_xdg_surface_try_from_wlr_surface(xdg_popup.parent)
 	if parent == nil {
-		log.Fatalf("pop %v has no parent", xdg_popup)
+		log.Printf("pop %v has no parent", xdg_popup)
+		return
 	}
 
 	parent_tree := (*C.struct_wlr_scene_tree)(parent.data)
@@ -534,7 +548,7 @@ func (s *Server) processCursorResize(time C.uint32_t) {
 	newBottom := s.grabGeo.y + s.grabGeo.height
 
 	if s.resizeEdges&C.WLR_EDGE_TOP != 0 {
-		newTop = C.int(borderX)
+		newTop = C.int(borderY)
 		if newTop >= newBottom {
 			newTop = newBottom - 1
 		}
@@ -824,4 +838,31 @@ func display_xdg_popup_destroy(listener *C.struct_wl_listener, data unsafe.Point
 	p := containerOf[Popup](listener, unsafe.Offsetof(Popup{}.destroy))
 	C.wl_list_remove(&p.commit.link)
 	C.wl_list_remove(&p.destroy.link)
+}
+
+//export display_layer_surface_destroy
+func display_layer_surface_destroy(listener *C.struct_wl_listener, data unsafe.Pointer) {
+	C.wl_list_remove(&listener.link)
+}
+
+//export display_new_layer_surface
+func display_new_layer_surface(listener *C.struct_wl_listener, data unsafe.Pointer) {
+	s := containerOf[Server](listener, unsafe.Offsetof(Server{}.newLayerSurface))
+	layerSurface := (*C.struct_wlr_layer_surface_v1)(data)
+
+	sceneTree := C.wlr_scene_layer_surface_v1_create(&s.scene.tree, layerSurface)
+	if sceneTree == nil {
+		log.Printf("failed to create scene node for layer surface")
+		return
+	}
+
+	if layerSurface.surface != nil && layerSurface.initial_commit {
+		C.wlr_layer_surface_v1_configure(layerSurface,
+			layerSurface.pending.desired_width,
+			layerSurface.pending.desired_height)
+	}
+
+	var destroy C.struct_wl_listener
+	destroy.notify = (*[0]byte)(C.display_layer_surface_destroy)
+	C.wl_signal_add(&layerSurface.events.destroy, &destroy)
 }

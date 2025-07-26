@@ -1,7 +1,7 @@
 #!/bin/sh
 
 for bin in go rsync wget mksquashfs flex bison bc \
-    cpio make; do
+    cpio make g++ unzip bzip2; do
     if ! which $bin >/dev/null ; then
         echo "ERROR: $bin not found"
     fi

@@ -18,24 +18,26 @@
 package main
 
 import (
-	"fmt"
 	"io"
 	"os"
 )
 
 func cat(args []string) error {
+	var in *os.File
 	if len(args) == 0 {
-		_, err := io.Copy(os.Stdout, os.Stdin)
-		return err
-	}
-
-	for _, f := range args {
-		data, err := os.ReadFile(f)
+		in = os.Stdin
+	} else {
+		var err error
+		in, err = os.OpenFile(args[0], os.O_RDONLY, 0)
 		if err != nil {
 			return err
 		}
+	}
 
-		fmt.Print(string(data))
+	io.Copy(os.Stdout, in)
+
+	if in != os.Stdin {
+		in.Close()
 	}
 	return nil
 }

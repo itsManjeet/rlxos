@@ -27,8 +27,6 @@ import (
 	"strconv"
 	"strings"
 	"syscall"
-
-	"golang.org/x/sys/unix"
 )
 
 type Kind string
@@ -179,12 +177,6 @@ func (s *Service) Start(journal *os.File) error {
 	if err := cmd.Start(); err != nil {
 		s.State = Failed
 		return err
-	}
-
-	if s.CTTY {
-		if err := unix.IoctlSetPointerInt(int(s.tty.Fd()), unix.TIOCSPGRP, cmd.Process.Pid); err != nil {
-			fmt.Printf("Error setting foreground process group: %v\n", err)
-		}
 	}
 
 	s.State = Running

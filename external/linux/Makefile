@@ -20,3 +20,12 @@ endif
 $(KERNEL_IMAGE): $(KERNEL_PATH)/.config $(TOOLCHAIN_PATH)/bin/$(TARGET_TRIPLE)-gcc
 	$(MAKE) -C $(KERNEL_PATH) ARCH=$(KERNEL_ARCH) CROSS_COMPILE=$(TARGET_TRIPLE)- -j$(shell nproc)
 	cp  $(KERNEL_PATH)/$(shell $(MAKE) -C $(KERNEL_PATH) CROSS_COMPILE=$(TARGET_TRIPLE)- ARCH=$(KERNEL_ARCH) -s image_name) $@
+
+$(SYSTEM_PATH)/lib/modules: $(KERNEL_IMAGE)
+	$(MAKE) -C $(KERNEL_PATH) ARCH=$(KERNEL_ARCH) CROSS_COMPILE=$(TARGET_TRIPLE)- \
+		INSTALL_MOD_PATH=$(SYSTEM_PATH) INSTALL_MOD_STRIP=1 modules_install
+
+	GOOS=linux GOARCH=amd64 $(GO) run rlxos.dev/cmd/module \
+		-root $(SYSTEM_PATH) \
+		-kernel $(KERNEL_VERSION) \
+		cache

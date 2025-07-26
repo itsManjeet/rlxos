@@ -33,7 +33,14 @@ func main() {
 	ensure.Output(os.Getpid(), 1, "INIT must run as PID 1")
 	ensureRealRootfs()
 
-	os.Setenv("PATH", "/cmd")
+	for k, v := range map[string]string{
+		"PATH": "/cmd",
+		"USER": "root",
+		"HOME": "/",
+		"TERM": "linux",
+	} {
+		os.Setenv(k, v)
+	}
 	ctxt, cancel := context.WithCancel(context.Background())
 
 	serviceManager, err := startServiceManager(ctxt)

@@ -24,10 +24,16 @@ SYSTEM_IMAGE = $(IMAGES_PATH)/system.img
 SYSTEM_TARGETS += cmd/init \
 				cmd/service \
 				cmd/shell \
+				cmd/sysctl \
+				cmd/module \
+				cmd/busybox \
 				service/display \
 				service/udevd \
 				apps/welcome \
-				apps/console
+				apps/console \
+				lib/modules \
+				lib/libc.so \
+				lib/ld-musl-x86_64.so.1
 
 INITRAMFS_IMAGE = $(IMAGES_PATH)/initramfs.img
 INITRAMFS_PATH = $(DEVICE_CACHE_PATH)/initramfs

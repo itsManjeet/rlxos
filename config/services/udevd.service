@@ -1,4 +1,4 @@
 {
-    "exec-start": "/service/udevd",
+    "exec-start": "/service/udevd -trigger",
     "restart": true
 }

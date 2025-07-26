@@ -18,7 +18,6 @@
 package pool
 
 import (
-	"log"
 	"sync"
 
 	"rlxos.dev/pkg/pool/job"
@@ -50,7 +49,6 @@ func (p *Pool) work(i int) {
 	for {
 		select {
 		case job := <-p.jobQueue:
-			log.Printf("[WORKER %d] Processing job %v\n", i, job.Id())
 			job.Do()
 			p.wg.Done()
 		case <-p.stop:

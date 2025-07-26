@@ -156,3 +156,4 @@ $(INSTALLER_IMAGE): $(SYSTEM_IMAGE) $(INITRAMFS_IMAGE) $(KERNEL_IMAGE) $(CURDIR)
 		HOST_PATH=$(BUILDROOT_CACHE_PATH)/host $(CURDIR)/tools/genimage.sh
 
 include $(shell find $(CURDIR) -type f -name "Makefile" -not -path "$(CURDIR)/Makefile" -not -path "$(CURDIR)/devices/*")
+-include $(DEVICE_PATH)/Makefile

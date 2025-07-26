@@ -28,6 +28,7 @@ import (
 
 const (
 	BUFFER_SIZE = 2048
+	SEARCH_PATH = "/lib/modules"
 )
 
 var (

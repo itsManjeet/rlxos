@@ -19,7 +19,6 @@ package main
 
 import (
 	"log"
-	"os/exec"
 	"strings"
 )
 
@@ -69,7 +68,7 @@ func (e Event) Id() string {
 
 func (e Event) Do() {
 	if modalias, ok := e.Properties["MODALIAS"]; ok {
-		_ = exec.Command("busybox", "modprobe", "-b", "-a", modalias).Run()
+		_ = LoadKernelModule(modalias)
 	} else {
 		log.Println("Kernel Event", e)
 	}

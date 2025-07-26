@@ -34,6 +34,7 @@ func main() {
 	for k, v := range map[string]string{
 		"PATH":            "/cmd",
 		"USER":            "root",
+		"SHELL":           "/cmd/shell",
 		"HOME":            "/",
 		"XDG_CONFIG_DIRS": "/config",
 		"XDG_DATA_DIRS":   "/data",

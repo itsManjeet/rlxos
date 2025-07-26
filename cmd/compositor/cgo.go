@@ -280,7 +280,7 @@ func (s *Server) handleKeyBinding(sym C.xkb_keysym_t) bool {
 	case C.XKB_KEY_Escape:
 		C.wl_display_terminate(s.display)
 	case C.XKB_KEY_Return:
-		s.run("foot", "/cmd/sh")
+		s.run("foot")
 		return true
 	}
 	return false

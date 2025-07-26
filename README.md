@@ -1,6 +1,8 @@
-# 🐧 rlxos
+# rlxos
 
-**rlxos** is an experimental Linux distribution built **purely in Go**, without relying on the traditional **GNU/Linux stack**. It uses **direct syscalls** with CGO disabled (`CGO_ENABLED=0`).
+**rlxos** is an experimental Linux distribution that aims to use **pure GoLang userland**, without relying on the traditional **GNU/Linux stack**. It uses **direct syscalls** with CGO disabled (`CGO_ENABLED=0`).
+
+> Please note that main branch of rlxos uses GNU toolchain and userland tools for usable operating system. You can check [scratch](https://github.com/itsManjeet/rlxos/tree/scratch) branch for pure golang userland.
 
 > ⚠️ **Warning: Highly Experimental**
 > This project is in a very early **proof-of-concept (POC)** stage. The codebase is **inefficient**, and there are **known memory and resource leaks**. Do **not** use this for anything other than **learning** or **experimentation**.
@@ -10,7 +12,7 @@
 
 ---
 
-## 🚀 Motivation
+## Motivation
 
 The goal of `rlxos` is simple but ambitious:
 
@@ -20,7 +22,7 @@ The goal of `rlxos` is simple but ambitious:
 
 ---
 
-## 📦 Requirements
+## Requirements
 
 To build and run `rlxos`, you'll need the following:
 
@@ -34,7 +36,7 @@ sudo apt install build-essential rsync wget squashfs-tools flex bison bc qemu-sy
 
 ---
 
-## 🛠️ Getting Started
+## Getting Started
 
 ### 1. Clone the Repository
 
@@ -63,7 +65,7 @@ make DEVICE=generic-amd64 run
 
 ---
 
-## 🧩 Adding New Commands
+## Adding New Commands
 
 To add a new command in `rlxos`:
 
@@ -77,7 +79,7 @@ This helps keep builds modular and flexible.
 
 ---
 
-## 📈 Current Progress & Roadmap
+## Current Progress & Roadmap
 
 | Component             | Status       | Notes                                              |
 | --------------------- | ------------ | -------------------------------------------------- |
@@ -95,7 +97,7 @@ Stay tuned for more updates as development progresses.
 
 ---
 
-## 💡 Notes
+## Notes
 
 * All code is written in Go with `CGO_ENABLED=0`.
 * No C dependencies or GNU toolchain components are used in the build.
@@ -103,7 +105,7 @@ Stay tuned for more updates as development progresses.
 
 ---
 
-## 📬 Get Involved
+## Get Involved
 
 Have questions? Found a bug? Want to help?
 
@@ -115,6 +117,6 @@ This project is an educational journey. You're welcome to join in and contribute
 
 ---
 
-## 📜 License
+## License
 
 This project is licensed under an GPLv3 license. See [LICENSE](./LICENSE) for details.

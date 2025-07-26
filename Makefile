@@ -73,6 +73,7 @@ $(error QEMU command is not defined)
 endif
 	$(QEMU) $(QEMU_ARGS) \
 		-cdrom $(INSTALLER_IMAGE) \
+		-serial tcp::5555,server,nowait \
 		-smp 2 -m 1024
 
 debug-shell:
@@ -116,7 +117,7 @@ $(BUILDROOT_CACHE_PATH)/.config: $(BUILDROOT_PATH)/Makefile $(DEVICE_PATH)/toolc
 $(SYSROOT_PATH)/%: $(BUILDROOT_CACHE_PATH)/.config
 	$(call run-buildroot)
 
-$(BUILDROOT_CACHE_PATH)/host/bin/go: $(BUILDROOT_CACHE_PATH)/.config
+$(TOOLCHAIN_PATH)/bin/go: $(BUILDROOT_CACHE_PATH)/.config
 	$(call run-buildroot,host-go)
 
 $(SYSTEM_IMAGE): $(addprefix $(SYSTEM_PATH)/,$(SYSTEM_TARGETS)) $(SYSTEM_PATH)/lib/modules/$(KERNEL_VERSION)

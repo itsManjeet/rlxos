@@ -51,10 +51,9 @@ depends:
 
   - components/xfce4/thunar-volman.yml
 
-  - components/themes/grey-bird-gtk-theme.yml
-  - components/themes/elementary-xfce-icon.yml
-  - components/themes/orchis-gtk-theme.yml
-  - components/themes/tela-icon-theme.yml
+  - components/themes/fluent-gtk-theme.yml
+  - components/themes/fluent-icon-theme.yml
+  - components/themes/fluent-wallpaper.yml
 
   - components/fonts/adobe-source-code-pro-fonts.yml
   - components/fonts/fira-code.yml

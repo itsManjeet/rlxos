@@ -83,6 +83,7 @@ depends:
     - components/intel-ucode.yml
 
     - components/system-config-printer.yml
+    - components/webkitgtk.yml
 
     # Components
     - components/gvfs.yml
@@ -120,6 +121,7 @@ depends:
     - components/nvidia.yml
 
     - system/systemd-preset.yml
+    - system/default-background.yml
     - system/etc-shells.yml
     - system/etc-skel.yml
     - system/etc-sysctl.yml

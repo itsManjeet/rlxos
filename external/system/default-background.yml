@@ -2,8 +2,11 @@ id: default-background
 version: 0.0.1
 about: Default background
 
-build-type: import
-target: "usr/share/backgrounds/"
+depends:
+  - components/themes/fluent-wallpaper.yml
 
-sources:
-  - assets/backgrounds/default.jpeg
+script: |-
+  mkdir -p %{install-root}%{datadir}/backgrounds
+  cd %{install-root}%{datadir}/backgrounds
+
+  ln -sv Fluent-mountain-day.png default.png

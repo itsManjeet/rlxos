@@ -1,5 +1,5 @@
 id: parole
-version: 4.18.2
+version: 4.20.0
 about: Modern media player based on GStreamer framework
 
 depends:
@@ -12,4 +12,4 @@ build-depends:
   - components/python.yml
 
 sources:
-  - https://archive.xfce.org/src/apps/parole/%{version:2}/parole-%{version}.tar.bz2
+  - https://archive.xfce.org/src/apps/parole/%{version:2}/parole-%{version}.tar.xz

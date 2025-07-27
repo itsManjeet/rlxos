@@ -1,5 +1,5 @@
 id: fluent-gtk-theme
-version: 2023-06-20
+version: 2025-04-17
 about: A Fluent design theme for GNOME/GTK based desktop environment
 depends:
   - components/librsvg.yml
@@ -9,10 +9,8 @@ sources:
   - fluent-gtk-theme-%{version}.tar.gz::https://github.com/vinceliuice/Fluent-gtk-theme/archive/refs/tags/%{version}.tar.gz
 script: |
   install -d %{install-root}%{datadir}/themes
-  ./install.sh -i simple \
-    --tweaks float \
-    --tweaks noborder \
+  ./install.sh -i simple -s standard \
     --tweaks round \
+    --tweaks square \
     --name Fluent \
-    --icon simple \
     -d %{install-root}%{datadir}/themes

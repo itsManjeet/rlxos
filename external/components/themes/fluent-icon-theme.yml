@@ -1,11 +1,11 @@
 id: fluent-icon-theme
-version: 2024-02-25
+version: 2025-02-26
 about: A Fluent design icon theme
 merge: [external/include/update-icon-cache.inc]
 
 script: |-
   install -d %{install-root}%{datadir}/icons
-  ./install.sh -d "%{install-root}%{datadir}/icons/" -r
+  ./install.sh -d "%{install-root}%{datadir}/icons/"
 
 depends:
   - components/librsvg.yml

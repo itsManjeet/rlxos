@@ -1,5 +1,5 @@
 id: libxfce4util
-version: 4.20.0
+version: 4.20.1
 about: Xfce4 basic utility library
 
 depends:

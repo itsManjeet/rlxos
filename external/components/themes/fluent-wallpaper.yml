@@ -1,9 +1,10 @@
 id: fluent-wallpaper
-version: 2023-06-20
+version: 2025-04-17
+commit: 0820eab36e572da233ba99b31d37cd0d74ceb1d2
 about: Fluent wallpapers collection
 
 sources:
-- fluent-wallpaper-%{version}.tar.gz::https://github.com/vinceliuice/Fluent-gtk-theme/archive/refs/heads/Wallpaper.tar.gz
+- fluent-wallpaper-%{commit}.tar.gz::https://github.com/vinceliuice/Fluent-gtk-theme/archive/0820eab36e572da233ba99b31d37cd0d74ceb1d2.tar.gz
 
 build-depends:
 - components/bash.yml

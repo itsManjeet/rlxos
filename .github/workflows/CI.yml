@@ -1,21 +1,27 @@
-name: "CI"
-on: [ "push", "pull_request" ]
+name: CI
+on:
+  workflow_dispatch:
+  push:
 
 jobs:
-  ci:
-    name: "Run CI"
-    runs-on: ubuntu-latest
+  build:
+    name: build-image
+    runs-on: self-hosted
+    strategy:
+      matrix:
+        include:
+          - device: generic-amd64
+            image: installer.iso
+
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v1
         with:
-          fetch-depth: 1
+          token: ${{secrets.CI_TOKEN}}
+          submodules: true
+      
+      - name: prepare vendor
+        run: go mod tidy && go mod vendor
 
-      - uses: actions/setup-go@v5
+      - name: build-system-image
+        run: go run rlxos.dev/tools/ignite -device ${{matrix.device}} -cache-path ${{secrets.CACHE_PATH}}
 
-      - run: go test ./...
-      - run: go vet ./...
-
-      - uses: dominikh/staticcheck-action@v1
-        with:
-          install-go: 'false'
-          version: 'latest'

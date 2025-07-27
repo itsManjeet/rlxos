@@ -1,0 +1,8 @@
+{
+    "provides": "${SYSTEM_PATH}/lib/ld-musl-${CARCH}.so.1",
+    "script": [
+        "mkdir -p ${SYSTEM_PATH}/lib",
+        "cp -rap ${SYSROOT_PATH}/lib/libc.so ${SYSTEM_PATH}/lib/libc.so",
+        "ln -sv libc.so ${SYSTEM_PATH}/lib/ld-musl-${CARCH}.so.1"
+    ]
+}

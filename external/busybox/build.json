@@ -1,0 +1,11 @@
+{
+    "provides": "${SYSTEM_PATH}/cmd/busybox",
+    "sources": [
+        "https://busybox.net/downloads/busybox-1.37.0.tar.bz2"
+    ],
+    "script": [
+        "make CROSS_COMPILE=${TARGET_TRIPLE}- defconfig",
+        "make CROSS_COMPILE=${TARGET_TRIPLE}-",
+        "cp -rap busybox ${SYSTEM_PATH}/cmd/busybox"
+    ]
+}

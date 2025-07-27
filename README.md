@@ -43,22 +43,41 @@ git clone https://github.com/itsmanjeet/rlxos.git
 cd rlxos
 ```
 
-### 2. Run Pre-check Script
+### 2. Ingite the build
 
 ```bash
-./tools/checkup.sh
+go run rlxos.dev/tools/ignite -device generic-amd64
 ```
 
-### 3. Build the OS Image
-
+### 3. Test your build with Qemu emulator
 ```bash
-make DEVICE=generic-amd64
+go run rlxos.dev/tools/ignite -device generic-amd64 -test
 ```
 
-### 4. Run in QEMU
+### Configure build and test process with available options
 
 ```bash
-make DEVICE=generic-amd64 run
+Usage of rlxos.dev/tools/ignite:
+  -cache-path string
+        Cache path
+  -clean
+        Clean build targets
+  -cpu int
+        number of CPU for enumlation (default 1)
+  -debug
+        Wait for debugger to connect
+  -device string
+        Device path
+  -kernel string
+        Specify kernel version (default "6.15.4")
+  -memory int
+        memory allocated for emulation (in MBs) (default 512)
+  -project-path string
+        Project path (default "/home/itsmanjeet/rlxos")
+  -test
+        run test
+  -vnc int
+        VNC port (default -1)
 ```
 
 ---

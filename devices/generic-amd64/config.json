@@ -1,0 +1,12 @@
+{
+    "name": "generic-amd64",
+    "description": "generic system image for amd64 processor",
+    "arch": "amd64",
+    "environ": {
+        "CFLAGS": "-march=x86-64",
+        "LDFLAGS": "-march=x86-64"
+    },
+    "emulation": [
+        "-vga", "qxl"
+    ]
+}

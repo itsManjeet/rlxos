@@ -1,0 +1,14 @@
+{
+    "provides": "${IMAGES_PATH}/kernel.img",
+    "sources": [
+        "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.15.4.tar.xz"
+    ],
+    "script": [
+        "make ARCH=${CARCH} CROSS_COMPILE=${TARGET_TRIPLE}- defconfig",
+        "KCONFIG_CONFIG=.config ./scripts/kconfig/merge_config.sh -m .config ${DEVICE_PATH}/kernel.config",
+        "make ARCH=${CARCH} CROSS_COMPILE=${TARGET_TRIPLE}- olddefconfig",
+        "make ARCH=${CARCH} CROSS_COMPILE=${TARGET_TRIPLE}- -j$(nproc)",
+        "cp $(make ARCH=${CARCH} CROSS_COMPILE=${TARGET_TRIPLE}- -s image_name) ${IMAGES_PATH}/kernel.img",
+        "make ARCH=${CARCH} CROSS_COMPILE=${TARGET_TRIPLE}- -j$(nproc) INSTALL_MOD_PATH=${SYSTEM_PATH} INSTALL_MOD_STRIP=1 modules_install"
+    ]
+}

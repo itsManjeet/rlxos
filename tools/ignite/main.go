@@ -122,6 +122,8 @@ func main() {
 		return nil
 	}(), "failed to sort components")
 
+	var systemImageDependencies []string
+
 	for _, c := range components {
 		ensure.Success(
 			ensure.Target(c.Provides, c.Build, c.Depends...),
@@ -141,14 +143,23 @@ func main() {
 			} else {
 				os.Setenv("CGO_ENABLED", "0")
 			}
+
+			depends := listFilesRecursive(filepath.Join(projectPath, dir, pkg.Name()))
 			ensure.Success(
 				ensure.Target(target,
-					ensure.Cmd("go", "build", "-o", target, fmt.Sprintf("rlxos.dev/%s/%s", dir, pkg.Name()))),
+					ensure.Cmd("go", "build", "-o", target, fmt.Sprintf("rlxos.dev/%s/%s", dir, pkg.Name())),
+					depends...,
+				),
 				"failed to build rlxos.dev/%s/%s", dir, pkg.Name())
+
+			systemImageDependencies = append(systemImageDependencies, target)
 		}
 	}
 
 	systemImage := filepath.Join(imagesPath, "system.img")
+	for _, dir := range []string{"config", "data"} {
+		systemImageDependencies = append(systemImageDependencies, listFilesRecursive(filepath.Join(projectPath, dir))...)
+	}
 	ensure.Success(
 		ensure.Target(systemImage,
 			func() error {
@@ -160,7 +171,9 @@ func main() {
 				}
 				ensure.Cmd("go", "run", "rlxos.dev/cmd/module", "-root", systemPath, "-kernel", kernelVersion, "cache")()
 				return ensure.Cmd("mksquashfs", systemPath, systemImage, "-noappend", "-all-root")()
-			}),
+			},
+			systemImageDependencies...,
+		),
 		"failed to build system image")
 
 	initramfsImage := filepath.Join(imagesPath, "initramfs.img")
@@ -170,7 +183,8 @@ func main() {
 				ensure.Cmd("install", "-v", "-D", "-m0755", filepath.Join(systemPath, "cmd", "init"), filepath.Join(initramfsPath, "init"))()
 				return ensure.Cmd(
 					"sh", "-e", "-c", "cd "+initramfsPath+" && find . -print0 | cpio --null -ov --format=newc --quiet 2>/dev/null >"+initramfsImage)()
-			}),
+			},
+			systemImage),
 		"failed to build initramfs image")
 
 	if runTest {
@@ -196,7 +210,9 @@ func main() {
 			args = append(args, "-vnc", fmt.Sprintf(":%d", vnc))
 		}
 
-		ensure.Cmd("qemu-system-"+device.ArchAlias(), args...)()
+		ensure.Success(ensure.Cmd("qemu-system-"+device.ArchAlias(), args...)(),
+			"failed to run qemu")
+
 	}
 }
 
@@ -271,4 +287,16 @@ func checkup() error {
 		return fmt.Errorf("missing %v", missing)
 	}
 	return nil
+}
+
+func listFilesRecursive(s string) []string {
+	var files []string
+	filepath.Walk(s, func(path string, info fs.FileInfo, err error) error {
+		if err != nil || info.IsDir() {
+			return err
+		}
+		files = append(files, path)
+		return nil
+	})
+	return files
 }

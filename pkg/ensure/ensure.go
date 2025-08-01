@@ -1,6 +1,7 @@
 package ensure
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/exec"
@@ -29,11 +30,21 @@ func Success(err error, format string, args ...interface{}) {
 }
 
 func Target(t string, f func() error, depends ...string) error {
-	if _, err := os.Stat(t); err == nil {
-		// TODO: check for timestamp of depends if newer that t target
+	if tInfo, err := os.Stat(t); err == nil {
+		for _, dep := range depends {
+			depInfo, err := os.Stat(dep)
+			if err != nil {
+				return fmt.Errorf("could not stat dependency %q: %w", dep, err)
+			}
+			if depInfo.ModTime().After(tInfo.ModTime()) {
+				log.Printf("Dependency %q is newer than target %q\n", dep, t)
+				goto BUILD
+			}
+		}
 		return nil
 	}
 
+BUILD:
 	log.Println("TARGET:", t)
 	return f()
 }

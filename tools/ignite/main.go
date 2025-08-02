@@ -116,7 +116,6 @@ func main() {
 	ensure.Success(func() error {
 		ext, err := Sort(components, []string{
 			kernelImage,
-			"directfb",
 		})
 		if err != nil {
 			return err

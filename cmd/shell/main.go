@@ -23,6 +23,7 @@ import (
 	"os"
 	"os/exec"
 	"os/signal"
+	"os/user"
 	"strconv"
 	"strings"
 	"syscall"
@@ -47,7 +48,7 @@ func main() {
 	rl := bufio.NewReader(os.Stdin)
 
 	for {
-		fmt.Print("> ")
+		fmt.Print(getPrompt())
 		input, err := rl.ReadString('\n')
 		if err != nil {
 			_, _ = fmt.Fprintln(os.Stderr, err)
@@ -99,4 +100,20 @@ func exit(args []string) (err error) {
 	}
 	os.Exit(code)
 	return fmt.Errorf("failed to exit to process")
+}
+
+func getPrompt() string {
+	var username string
+	uid := os.Getuid()
+	user, err := user.LookupId(fmt.Sprint(uid))
+	if err == nil {
+		username = user.Name
+	} else {
+		username = "unknown"
+	}
+
+	hostname, _ := os.Hostname()
+	curdir, _ := os.Getwd()
+
+	return fmt.Sprintf("%s@%s:%s$ ", username, hostname, curdir)
 }

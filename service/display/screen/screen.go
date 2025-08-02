@@ -17,12 +17,12 @@
 
 package screen
 
-import "rlxos.dev/pkg/graphics"
+import "rlxos.dev/pkg/graphics/widget"
 
 type Display interface {
 	SetScreen(s Screen)
 }
 
 type Screen interface {
-	graphics.Widget
+	widget.Widget
 }

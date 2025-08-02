@@ -23,13 +23,13 @@ import (
 	"log"
 
 	"rlxos.dev/pkg/connect"
-	"rlxos.dev/pkg/graphics"
 	"rlxos.dev/pkg/graphics/canvas"
+	"rlxos.dev/pkg/graphics/widget"
 	"rlxos.dev/pkg/kernel/shm"
 )
 
 type Surface struct {
-	graphics.BaseWidget
+	widget.Base
 
 	Image *shm.Image
 	Conn  *connect.Connection
@@ -54,7 +54,7 @@ func (s *Surface) Destroy() error {
 }
 
 func (s *Surface) SetBounds(rect image.Rectangle) {
-	s.BaseWidget.SetBounds(rect)
+	s.Base.SetBounds(rect)
 	if s.Image.Bounds().Dx() == rect.Dx() && s.Image.Bounds().Dy() == rect.Dy() {
 		return
 	}

@@ -32,12 +32,13 @@ import (
 	"rlxos.dev/pkg/graphics"
 	"rlxos.dev/pkg/graphics/argb"
 	"rlxos.dev/pkg/graphics/canvas"
+	"rlxos.dev/pkg/graphics/widget"
 	"rlxos.dev/service/display/screen"
 	"rlxos.dev/service/display/surface"
 )
 
 type Desktop struct {
-	graphics.BaseWidget
+	widget.Base
 
 	Display screen.Display
 
@@ -55,7 +56,7 @@ type Desktop struct {
 	mutex sync.Mutex
 }
 
-func (d *Desktop) Init(rect image.Rectangle) error {
+func (d *Desktop) Construct() {
 	d.background = image.NewUniform(argb.NewColor(26, 26, 26, 255))
 
 	d.activeBorderColor = argb.NewColor(150, 150, 150, 255)
@@ -64,7 +65,6 @@ func (d *Desktop) Init(rect image.Rectangle) error {
 	d.surfaceBorderRadius = 4
 	d.spacing = 10
 	d.exec("/apps/welcome")
-	return nil
 }
 
 func (d *Desktop) Draw(cv canvas.Canvas) {
@@ -72,7 +72,7 @@ func (d *Desktop) Draw(cv canvas.Canvas) {
 	surfaces := d.surfaces
 	d.mutex.Unlock()
 
-	if d.BaseWidget.Dirty() {
+	if d.Base.Dirty() {
 		draw.Draw(cv, d.Bounds(), d.background, image.Point{}, draw.Src)
 	}
 
@@ -96,17 +96,17 @@ func (d *Desktop) Dirty() bool {
 			return true
 		}
 	}
-	return d.BaseWidget.Dirty()
+	return d.Base.Dirty()
 }
 
 func (d *Desktop) SetDirty(b bool) {
 	for _, s := range d.surfaces {
 		s.SetDirty(b)
 	}
-	d.BaseWidget.SetDirty(b)
+	d.Base.SetDirty(b)
 }
 
-func (d *Desktop) Update(ev event.Event) {
+func (d *Desktop) Update(ev event.Event) bool {
 	d.mutex.Lock()
 	if len(d.surfaces) > 0 {
 		d.activeSurface = d.surfaces[len(d.surfaces)-1]
@@ -151,6 +151,7 @@ func (d *Desktop) Update(ev event.Event) {
 			d.propagate("key-event", ev)
 		}
 	}
+	return true
 }
 
 func (d *Desktop) propagate(c string, payload any) {

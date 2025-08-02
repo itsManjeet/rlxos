@@ -18,11 +18,11 @@
 package main
 
 import (
-	"image"
 	"log"
 
-	"rlxos.dev/pkg/graphics"
 	"rlxos.dev/pkg/graphics/app"
+	"rlxos.dev/pkg/graphics/layout"
+	"rlxos.dev/pkg/graphics/widget"
 )
 
 const welcomeMessage = `Welcome to RLXOS scratch
@@ -36,24 +36,15 @@ Here are few things you can try
 - Left Alt + Q     -- To Kill active window
 `
 
-type Welcome struct {
-	graphics.Box
-	Label graphics.Label
-}
-
-func (w *Welcome) Init(rect image.Rectangle) error {
-	w.Append(&w.Label)
-	w.Label = graphics.Label{
-		Text:                welcomeMessage,
-		HorizontalAlignment: graphics.MiddleAlignment,
-		VerticalAlignment:   graphics.MiddleAlignment,
-		ForegroundColor:     graphics.ColorWhite,
-	}
-	return nil
-}
-
 func main() {
-	if err := app.Run(&Welcome{}); err != nil {
+	if err := app.Run(&widget.Base{
+		Layout: layout.Vertical,
+		Children: []widget.Widget{
+			&widget.Label{
+				Text: welcomeMessage,
+			},
+		},
+	}); err != nil {
 		log.Fatal(err)
 	}
 }

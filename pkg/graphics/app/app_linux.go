@@ -18,9 +18,18 @@
 package app
 
 import (
+	"os"
+
+	"rlxos.dev/pkg/connect"
+	"rlxos.dev/pkg/graphics/backend/display"
 	"rlxos.dev/pkg/graphics/backend/drmkms"
 )
 
 func init() {
-	bk = &drmkms.Backend{}
+	_, socketPath := connect.AddrOf("display")
+	if _, err := os.Stat(socketPath); err == nil {
+		bk = &display.Backend{}
+	} else {
+		bk = &drmkms.Backend{}
+	}
 }

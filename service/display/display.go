@@ -23,30 +23,29 @@ import (
 	"rlxos.dev/pkg/event"
 	"rlxos.dev/pkg/event/cursor"
 	"rlxos.dev/pkg/event/key"
-	"rlxos.dev/pkg/graphics"
-	"rlxos.dev/pkg/graphics/app"
 	"rlxos.dev/pkg/graphics/canvas"
+	"rlxos.dev/pkg/graphics/widget"
 	"rlxos.dev/service/display/screen"
 	"rlxos.dev/service/display/screen/desktop"
 )
 
 type Display struct {
-	graphics.BaseWidget
+	widget.Base
 
 	screen screen.Screen
 	cursor image.Point
 	keys   key.Keys
 }
 
-func (d *Display) Init(rect image.Rectangle) error {
-	d.cursor.X, d.cursor.Y = rect.Dx()/2, rect.Dy()/2
+func (d *Display) Construct() {
 	d.keys = key.Keys{}
 	d.SetScreen(&desktop.Desktop{Display: d})
-	return nil
+
+	d.Base.Construct()
 }
 
 func (d *Display) SetBounds(rect image.Rectangle) {
-	d.BaseWidget.SetBounds(rect)
+	d.Base.SetBounds(rect)
 	d.screen.SetBounds(rect)
 }
 
@@ -54,7 +53,7 @@ func (d *Display) Draw(cv canvas.Canvas) {
 	d.screen.Draw(cv)
 }
 
-func (d *Display) Update(ev event.Event) {
+func (d *Display) Update(ev event.Event) bool {
 	switch ev := ev.(type) {
 	case cursor.Event:
 		if ev.Abs {
@@ -71,28 +70,22 @@ func (d *Display) Update(ev event.Event) {
 
 	case key.Event:
 		d.keys[ev.Key] = ev.State == key.Pressed
-		if u, ok := d.screen.(graphics.Updatable); ok {
-			u.Update(d.keys)
-		}
+		d.screen.Update(d.keys)
 	}
 
-	if u, ok := d.screen.(graphics.Updatable); ok {
-		u.Update(ev)
-	}
+	return d.screen.Update(ev)
 }
 
 func (d *Display) SetScreen(s screen.Screen) {
 	d.screen = s
-	if i, ok := s.(app.Init); ok {
-		_ = i.Init(d.Bounds())
-	}
+	d.screen.Construct()
 }
 
 func (d *Display) Dirty() bool {
-	return d.screen.Dirty() || d.BaseWidget.Dirty()
+	return d.screen.Dirty() || d.Base.Dirty()
 }
 
 func (d *Display) SetDirty(b bool) {
-	d.BaseWidget.SetDirty(b)
+	d.Base.SetDirty(b)
 	d.screen.SetDirty(b)
 }

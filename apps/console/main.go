@@ -18,70 +18,61 @@
 package main
 
 import (
-	"fmt"
 	"image"
 	"log"
 	"os/exec"
 
 	"rlxos.dev/pkg/event"
 	"rlxos.dev/pkg/event/key"
-	"rlxos.dev/pkg/graphics"
 	"rlxos.dev/pkg/graphics/app"
-	"rlxos.dev/pkg/graphics/argb"
+	"rlxos.dev/pkg/graphics/widget"
 	"rlxos.dev/pkg/kernel/vt"
 )
 
 type Console struct {
-	graphics.Label
+	widget.Base
 
+	fontSize   int
 	vt         *vt.VT
 	rows, cols int
 }
 
-func (c *Console) Init(rect image.Rectangle) error {
+func (c *Console) Construct() {
 	var err error
 
 	c.vt, err = vt.Open()
 	if err != nil {
-		return err
+		log.Fatalf("ERROR: %v", err)
 	}
 	if err = c.vt.Start(exec.Command("shell")); err != nil {
-		return fmt.Errorf("failed to start shell %v", err)
+		log.Fatalf("failed to start shell %v", err)
 	}
 
 	_ = app.Backend().Listen(&EventProvider{
 		vt: c.vt,
 	})
 
-	c.Label = graphics.Label{
-		HorizontalAlignment: graphics.StartAlignment,
-		VerticalAlignment:   graphics.StartAlignment,
-		ForegroundColor:     argb.NewColor(255, 255, 255, 255),
-		Size:                8,
-	}
-	c.SetBounds(rect)
-	return nil
+	c.fontSize = 8
 }
 
 func (c *Console) SetBounds(rect image.Rectangle) {
 	if rect.Dx() == c.Bounds().Dx() && rect.Dy() == c.Bounds().Dy() {
-		c.BaseWidget.SetBounds(rect)
+		c.Base.SetBounds(rect)
 		return
 	}
-	c.BaseWidget.SetBounds(rect)
+	c.Base.SetBounds(rect)
 
-	chWidth, chHeight := graphics.FontSize(c.Label.Size)
+	chWidth, chHeight := 8, 8
 	c.cols = rect.Dx() / chWidth
 	c.rows = rect.Dy() / chHeight
 	log.Println("Setting size:", c.cols, c.rows)
 	_ = c.vt.Resize(uint16(c.cols), uint16(c.rows))
 }
 
-func (c *Console) Update(ev event.Event) {
+func (c *Console) Update(ev event.Event) bool {
 	switch ev := ev.(type) {
 	case VTEvent:
 		log.Println("Got pty event:", string(ev))
-		c.Text += string(ev)
 		c.SetDirty(true)
 
 	case key.Event:
@@ -103,8 +94,8 @@ func (c *Console) Update(ev event.Event) {
 				}
 			}
 		}
-
 	}
+	return true
 }
 
 func main() {

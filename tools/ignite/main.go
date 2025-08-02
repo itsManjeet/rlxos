@@ -8,6 +8,8 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"slices"
+	"strings"
 
 	"rlxos.dev/pkg/ensure"
 )
@@ -114,6 +116,7 @@ func main() {
 	ensure.Success(func() error {
 		ext, err := Sort(components, []string{
 			kernelImage,
+			"directfb",
 		})
 		if err != nil {
 			return err
@@ -137,14 +140,16 @@ func main() {
 		}
 
 		for _, pkg := range pkgs {
+			depends := getComponentDepends(filepath.Join(dir, pkg.Name()))
+
+			os.Setenv("CGO_ENABLED", "0")
 			target := filepath.Join(systemPath, dir, pkg.Name())
-			if _, err := os.Stat(filepath.Join(projectPath, dir, "cgo.go")); err == nil {
+			if idx := slices.IndexFunc(depends, func(f string) bool {
+				return filepath.Base(f) == "cgo.go"
+			}); idx != -1 {
 				os.Setenv("CGO_ENABLED", "1")
-			} else {
-				os.Setenv("CGO_ENABLED", "0")
 			}
 
-			depends := listFilesRecursive(filepath.Join(projectPath, dir, pkg.Name()))
 			ensure.Success(
 				ensure.Target(target,
 					ensure.Cmd("go", "build", "-o", target, fmt.Sprintf("rlxos.dev/%s/%s", dir, pkg.Name())),
@@ -299,4 +304,32 @@ func listFilesRecursive(s string) []string {
 		return nil
 	})
 	return files
+}
+
+func getComponentDepends(id string) []string {
+	out, err := exec.Command("go", "list", "-deps", "rlxos.dev/"+id).CombinedOutput()
+	if err != nil {
+		return nil
+	}
+
+	var depends []string
+	for _, l := range strings.Split(string(out), "\n") {
+		l = strings.TrimSpace(l)
+		if l == "" {
+			continue
+		}
+		if strings.HasPrefix(l, "rlxos.dev/") {
+			path := filepath.Join(projectPath, strings.TrimPrefix(l, "rlxos.dev/"))
+			files, err := os.ReadDir(path)
+			if err == nil {
+				for _, file := range files {
+					if !file.IsDir() {
+						depends = append(depends, filepath.Join(path, file.Name()))
+					}
+				}
+			}
+		}
+	}
+
+	return depends
 }

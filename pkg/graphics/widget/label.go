@@ -15,75 +15,44 @@
  *
  */
 
-package graphics
+package widget
 
 import (
 	_ "embed"
 	"image"
 	"image/color"
 	"image/draw"
-	"log"
 	"strings"
 
 	"golang.org/x/image/font"
-	"golang.org/x/image/font/opentype"
-	"golang.org/x/image/math/fixed"
+	"rlxos.dev/pkg/graphics"
+	"rlxos.dev/pkg/graphics/alignment"
 	"rlxos.dev/pkg/graphics/canvas"
-)
-
-//go:embed font.ttf
-var fontBytes []byte
-
-var (
-	fonts *opentype.Font
-)
-
-func init() {
-	fonts, _ = opentype.Parse(fontBytes)
-}
-
-type Alignment int
-
-const (
-	StartAlignment Alignment = iota
-	MiddleAlignment
-	EndAlignment
+	"rlxos.dev/pkg/graphics/style"
 )
 
 type Label struct {
-	BaseWidget
+	Base
 
 	Text                string
-	HorizontalAlignment Alignment
-	VerticalAlignment   Alignment
-	BackgroundColor     color.Color
-	ForegroundColor     color.Color
-	Size                int
+	HorizontalAlignment alignment.Alignment
+	VerticalAlignment   alignment.Alignment
+
+	Color color.Color
+
+	Size int
+}
+
+func (l *Label) OnStyleChange(s style.Style) {
+	l.Color = s.OnPrimary
+	l.Size = s.Paragraph
 }
 
 func (l *Label) Draw(canvas canvas.Canvas) {
-	if l.ForegroundColor == nil {
-		l.ForegroundColor = OnBackground
-	}
-	if l.Size == 0 {
-		l.Size = 8
-	}
-
-	face, err := opentype.NewFace(fonts, &opentype.FaceOptions{
-		Size:    float64(l.Size),
-		DPI:     100,
-		Hinting: font.HintingFull,
-	})
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer face.Close()
-
 	labelBounds := l.Bounds()
 	clippedCanvas := image.NewRGBA(labelBounds)
-	if l.BackgroundColor != nil {
-		draw.Draw(clippedCanvas, labelBounds, image.NewUniform(l.BackgroundColor), image.Point{}, draw.Src)
-	}
+
+	face := graphics.Face(l.Size)
 
 	lineHeight := face.Metrics().Height.Ceil()
 	padding := 4
@@ -126,9 +95,9 @@ func (l *Label) Draw(canvas canvas.Canvas) {
 	var startY int
 	contentHeight := len(lines) * lineHeight
 	switch l.VerticalAlignment {
-	case StartAlignment:
+	case alignment.Start:
 		startY = labelBounds.Min.Y + padding + face.Metrics().Ascent.Ceil()
-	case EndAlignment:
+	case alignment.End:
 		startY = labelBounds.Max.Y - contentHeight - padding + face.Metrics().Ascent.Ceil()
 	default:
 		startY = labelBounds.Min.Y + (labelBounds.Dy()-contentHeight)/2 + face.Metrics().Ascent.Ceil()
@@ -139,35 +108,17 @@ func (l *Label) Draw(canvas canvas.Canvas) {
 		textWidth := font.MeasureString(face, textLine).Ceil()
 		var x int
 		switch l.HorizontalAlignment {
-		case StartAlignment:
+		case alignment.Start:
 			x = labelBounds.Min.X + padding
-		case EndAlignment:
+		case alignment.End:
 			x = labelBounds.Max.X - textWidth - padding
 		default:
 			x = labelBounds.Min.X + (labelBounds.Dx()-textWidth)/2
 		}
 
 		y := startY + i*lineHeight
-		d := &font.Drawer{
-			Dst:  clippedCanvas,
-			Src:  image.NewUniform(l.ForegroundColor),
-			Face: face,
-			Dot:  fixed.P(x, y),
-		}
-		d.DrawString(textLine)
+		graphics.Text(clippedCanvas, image.Pt(x, y), textLine, l.Size, l.Color)
 	}
 
-	// Blit the clipped canvas onto the main canvas
 	draw.Draw(canvas, labelBounds, clippedCanvas, labelBounds.Min, draw.Src)
-}
-
-func FontSize(size int) (int, int) {
-	face, _ := opentype.NewFace(fonts, &opentype.FaceOptions{
-		Size:    float64(size),
-		DPI:     100,
-		Hinting: font.HintingFull,
-	})
-	defer face.Close()
-
-	return int(font.MeasureString(face, "h").Ceil()), face.Metrics().Height.Ceil()
 }

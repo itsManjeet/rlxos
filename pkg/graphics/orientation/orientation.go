@@ -15,37 +15,11 @@
  *
  */
 
-package graphics
+package orientation
 
-import (
-	"rlxos.dev/pkg/event"
-	"rlxos.dev/pkg/event/key"
+type Orientation int
+
+const (
+	Horizontal Orientation = iota
+	Vertical
 )
-
-type Entry struct {
-	Label
-}
-
-func (e *Entry) Update(ev event.Event) {
-	switch ev := ev.(type) {
-	case key.Event:
-		if ev.State == key.Pressed {
-			switch ev.Key {
-			case key.KEY_ENTER:
-			case key.KEY_BACKSPACE:
-				if len(e.Text) > 0 {
-					e.Text = e.Text[:len(e.Text)-1]
-					e.SetDirty(true)
-				}
-			case key.KEY_SPACE:
-				e.Text += " "
-				e.SetDirty(true)
-			default:
-				if k, ok := key.ToAscii[ev.Key]; ok {
-					e.Text += string(k)
-					e.SetDirty(true)
-				}
-			}
-		}
-	}
-}

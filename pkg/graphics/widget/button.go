@@ -15,29 +15,50 @@
  *
  */
 
-package graphics
+package widget
 
 import (
-	"image"
 	"image/color"
-	"image/draw"
 
 	"rlxos.dev/pkg/event"
 	"rlxos.dev/pkg/event/button"
 	"rlxos.dev/pkg/event/cursor"
+	"rlxos.dev/pkg/graphics"
 	"rlxos.dev/pkg/graphics/canvas"
+	"rlxos.dev/pkg/graphics/style"
 )
 
 type Button struct {
-	BaseWidget
+	Base
 
-	Child   Widget
 	OnClick func()
+
+	BackgroundColor color.Color
+	BorderColor     color.Color
+
+	ActiveBackgroundColor color.Color
+	ActiveBorderColor     color.Color
+
+	BorderRadius int
+	BorderWidth  int
 
 	isActive bool
 }
 
-func (b *Button) Update(ev event.Event) {
+func (b *Button) OnStyleChange(s style.Style) {
+	b.BackgroundColor = s.Primary
+	b.BorderColor = style.Lighten(b.BackgroundColor, 0.2)
+
+	b.ActiveBackgroundColor = style.Lighten(b.BackgroundColor, 0.4)
+	b.ActiveBorderColor = style.Lighten(b.ActiveBackgroundColor, 0.1)
+
+	b.BorderRadius = s.OutlineRadius
+	b.BorderWidth = s.Outline
+
+	b.Base.OnStyleChange(s)
+}
+
+func (b *Button) Update(ev event.Event) bool {
 	switch ev := ev.(type) {
 	case cursor.Event:
 		isActive := ev.Pos.In(b.Bounds())
@@ -49,26 +70,22 @@ func (b *Button) Update(ev event.Event) {
 	case button.Event:
 		if ev.State == button.Pressed && b.isActive && b.OnClick != nil {
 			b.OnClick()
+			return true
 		}
 	}
+	return false
 }
 
-func (b *Button) Draw(canvas canvas.Canvas) {
-	var backgroundColor color.Color
-
+func (b *Button) Draw(cv canvas.Canvas) {
+	borderColor := b.BorderColor
+	backgroundColor := b.BackgroundColor
 	if b.isActive {
-		backgroundColor = Lighten(Primary, 0.3)
-	} else {
-		backgroundColor = Primary
+		borderColor = b.ActiveBorderColor
+		backgroundColor = b.ActiveBackgroundColor
 	}
 
-	draw.Draw(canvas, b.Bounds(), image.NewUniform(backgroundColor), image.Point{}, draw.Src)
-	if b.Child.Dirty() {
-		b.Child.Draw(canvas)
-	}
-}
+	graphics.FillRect(cv, b.Bounds(), b.BorderRadius, borderColor)
+	graphics.Rect(cv, b.Bounds(), b.BorderRadius, backgroundColor)
 
-func (b *Button) SetBounds(rect image.Rectangle) {
-	b.BaseWidget.SetBounds(rect)
-	b.Child.SetBounds(rect)
+	b.Base.Draw(cv)
 }

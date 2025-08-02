@@ -19,13 +19,13 @@ package app
 
 import (
 	"fmt"
-	"image"
 	"time"
 
 	"rlxos.dev/pkg/event/life"
 	"rlxos.dev/pkg/event/resize"
-	"rlxos.dev/pkg/graphics"
 	"rlxos.dev/pkg/graphics/backend"
+	"rlxos.dev/pkg/graphics/style"
+	"rlxos.dev/pkg/graphics/widget"
 )
 
 var (
@@ -40,11 +40,7 @@ func Backend() backend.Backend {
 	return bk
 }
 
-type Init interface {
-	Init(rect image.Rectangle) error
-}
-
-func Run(w graphics.Widget) error {
+func Run(w widget.Widget) error {
 	if bk == nil {
 		return fmt.Errorf("no supported backend found")
 	}
@@ -54,50 +50,44 @@ func Run(w graphics.Widget) error {
 	}
 	defer bk.Terminate()
 
+	w.Construct()
+	w.OnStyleChange(style.Default)
+
 	{
 		// Initial draw
 		canvas := bk.Canvas()
-		if i, ok := w.(Init); ok {
-			if err := i.Init(canvas.Bounds()); err != nil {
-				return err
-			}
-		}
 		w.SetDirty(true)
+
 		w.SetBounds(canvas.Bounds())
+
 		w.Draw(canvas)
 		bk.Update()
 	}
 
-	if u, ok := w.(graphics.Updatable); ok {
-		for {
-			events, err := bk.PollEvents()
-			if err == nil {
-				for _, event := range events {
-					switch event.(type) {
-					case resize.Event:
-						w.SetDirty(true)
-					case life.End:
-						// TODO: widget destroy
-						return nil
-					}
-					u.Update(event)
+	for {
+		events, err := bk.PollEvents()
+		if err == nil {
+			for _, event := range events {
+				switch event.(type) {
+				case resize.Event:
+					w.SetDirty(true)
+				case life.End:
+					w.Destroy()
+					return nil
 				}
-			}
-
-			canvas := bk.Canvas()
-			w.SetBounds(canvas.Bounds())
-
-			if w.Dirty() {
-				w.Draw(canvas)
-				w.SetDirty(false)
-				bk.Update()
-			} else {
-				time.Sleep(16 * time.Millisecond)
+				w.Update(event)
 			}
 		}
-	} else {
-		for {
-			time.Sleep(time.Hour * 9999)
+
+		canvas := bk.Canvas()
+		w.SetBounds(canvas.Bounds())
+
+		if w.Dirty() {
+			w.Draw(canvas)
+			w.SetDirty(false)
+			bk.Update()
+		} else {
+			time.Sleep(16 * time.Millisecond)
 		}
 	}
 }

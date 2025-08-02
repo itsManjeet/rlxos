@@ -19,10 +19,13 @@ package app
 
 import (
 	"fmt"
+	"os"
+	"runtime/debug"
 	"time"
 
 	"rlxos.dev/pkg/event/life"
 	"rlxos.dev/pkg/event/resize"
+	"rlxos.dev/pkg/graphics/argb"
 	"rlxos.dev/pkg/graphics/backend"
 	"rlxos.dev/pkg/graphics/style"
 	"rlxos.dev/pkg/graphics/widget"
@@ -49,6 +52,23 @@ func Run(w widget.Widget) error {
 		return err
 	}
 	defer bk.Terminate()
+
+	defer func() {
+		if r := recover(); r != nil {
+			canvas := bk.Canvas()
+			l := widget.Label{
+				Text:  fmt.Sprintf("ERROR: %v\n%s", r, debug.Stack()),
+				Size:  8,
+				Color: argb.NewColor(255, 0, 0, 255),
+			}
+			l.SetBounds(canvas.Bounds())
+			l.Draw(canvas)
+			bk.Update()
+
+			time.Sleep(time.Second * 5)
+			os.Exit(1)
+		}
+	}()
 
 	w.Construct()
 	w.OnStyleChange(style.Default)
@@ -90,4 +110,5 @@ func Run(w widget.Widget) error {
 			time.Sleep(16 * time.Millisecond)
 		}
 	}
+
 }

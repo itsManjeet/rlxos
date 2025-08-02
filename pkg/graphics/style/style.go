@@ -29,36 +29,14 @@ type Style struct {
 }
 
 var (
-	Default Style = Light
-
-	Light = Style{
-		Background:   color.RGBA{R: 250, G: 250, B: 250, A: 255},
-		OnBackground: color.RGBA{R: 28, G: 27, B: 31, A: 255},
-
-		Surface:   color.RGBA{R: 255, G: 255, B: 255, A: 255},
-		OnSurface: color.RGBA{R: 28, G: 27, B: 31, A: 255},
-
-		Primary:   color.RGBA{R: 103, G: 80, B: 164, A: 255},
-		OnPrimary: color.RGBA{R: 255, G: 255, B: 255, A: 255},
-
-		Secondary:   color.RGBA{R: 98, G: 91, B: 113, A: 255},
-		OnSecondary: color.RGBA{R: 255, G: 255, B: 255, A: 255},
-
-		Outline:       1,
-		OutlineRadius: 8,
-
-		Title:      16,
-		Heading:    12,
-		SubHeading: 10,
-		Paragraph:  8,
-	}
+	Default Style = Dark
 
 	Dark = Style{
-		Background:   color.RGBA{R: 20, G: 19, B: 24, A: 255},
-		OnBackground: color.RGBA{R: 230, G: 225, B: 229, A: 255},
+		Background:   color.RGBA{R: 40, G: 40, B: 40, A: 255},
+		OnBackground: color.RGBA{R: 255, G: 225, B: 255, A: 255},
 
-		Surface:   color.RGBA{R: 28, G: 27, B: 31, A: 255},
-		OnSurface: color.RGBA{R: 230, G: 225, B: 229, A: 255},
+		Surface:   color.RGBA{R: 50, G: 50, B: 50, A: 255},
+		OnSurface: color.RGBA{R: 255, G: 225, B: 255, A: 255},
 
 		Primary:   color.RGBA{R: 208, G: 188, B: 255, A: 255},
 		OnPrimary: color.RGBA{R: 55, G: 30, B: 115, A: 255},

@@ -56,8 +56,10 @@ func Run(w widget.Widget) error {
 	defer func() {
 		if r := recover(); r != nil {
 			canvas := bk.Canvas()
+			recoveryDelay := 10
+
 			l := widget.Label{
-				Text:  fmt.Sprintf("ERROR: %v\n%s", r, debug.Stack()),
+				Text:  fmt.Sprintf("ERROR: %v\n%s\n\nRebooting in %v", r, debug.Stack(), recoveryDelay),
 				Size:  8,
 				Color: argb.NewColor(255, 0, 0, 255),
 			}
@@ -65,7 +67,7 @@ func Run(w widget.Widget) error {
 			l.Draw(canvas)
 			bk.Update()
 
-			time.Sleep(time.Second * 5)
+			time.Sleep(time.Second * time.Duration(recoveryDelay))
 			os.Exit(1)
 		}
 	}()

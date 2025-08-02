@@ -48,9 +48,8 @@ func NewSurface(rect image.Rectangle, conn *connect.Connection) (*Surface, error
 	return s, nil
 }
 
-func (s *Surface) Destroy() error {
+func (s *Surface) Destroy() {
 	_ = s.Image.Destroy()
-	return nil
 }
 
 func (s *Surface) SetBounds(rect image.Rectangle) {

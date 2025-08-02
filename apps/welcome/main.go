@@ -20,6 +20,7 @@ package main
 import (
 	"log"
 
+	"rlxos.dev/pkg/graphics/alignment"
 	"rlxos.dev/pkg/graphics/app"
 	"rlxos.dev/pkg/graphics/layout"
 	"rlxos.dev/pkg/graphics/widget"
@@ -41,7 +42,9 @@ func main() {
 		Layout: layout.Vertical,
 		Children: []widget.Widget{
 			&widget.Label{
-				Text: welcomeMessage,
+				Text:                welcomeMessage,
+				HorizontalAlignment: alignment.Middle,
+				VerticalAlignment:   alignment.Middle,
 			},
 		},
 	}); err != nil {

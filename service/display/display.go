@@ -19,11 +19,14 @@ package main
 
 import (
 	"image"
+	"image/color"
 
 	"rlxos.dev/pkg/event"
 	"rlxos.dev/pkg/event/cursor"
 	"rlxos.dev/pkg/event/key"
+	"rlxos.dev/pkg/graphics"
 	"rlxos.dev/pkg/graphics/canvas"
+	"rlxos.dev/pkg/graphics/style"
 	"rlxos.dev/pkg/graphics/widget"
 	"rlxos.dev/service/display/screen"
 	"rlxos.dev/service/display/screen/desktop"
@@ -32,9 +35,10 @@ import (
 type Display struct {
 	widget.Base
 
-	screen screen.Screen
-	cursor image.Point
-	keys   key.Keys
+	background color.Color
+	screen     screen.Screen
+	cursor     image.Point
+	keys       key.Keys
 }
 
 func (d *Display) Construct() {
@@ -44,12 +48,19 @@ func (d *Display) Construct() {
 	d.Base.Construct()
 }
 
+func (d *Display) OnStyleChange(s style.Style) {
+	d.background = s.Background
+	d.screen.OnStyleChange(s)
+	d.Base.OnStyleChange(s)
+}
+
 func (d *Display) SetBounds(rect image.Rectangle) {
 	d.Base.SetBounds(rect)
 	d.screen.SetBounds(rect)
 }
 
 func (d *Display) Draw(cv canvas.Canvas) {
+	graphics.FillRect(cv, d.Bounds(), 0, d.background)
 	d.screen.Draw(cv)
 }
 

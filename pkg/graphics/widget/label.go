@@ -21,7 +21,6 @@ import (
 	_ "embed"
 	"image"
 	"image/color"
-	"image/draw"
 	"strings"
 
 	"golang.org/x/image/font"
@@ -38,20 +37,21 @@ type Label struct {
 	HorizontalAlignment alignment.Alignment
 	VerticalAlignment   alignment.Alignment
 
-	Color color.Color
+	Color      color.Color
+	Background color.Color
 
 	Size int
 }
 
 func (l *Label) OnStyleChange(s style.Style) {
-	l.Color = s.OnPrimary
+	l.Background = s.Surface
+	l.Color = s.OnSurface
 	l.Size = s.Paragraph
 }
 
 func (l *Label) Draw(canvas canvas.Canvas) {
+	graphics.FillRect(canvas, l.Bounds(), 0, l.Background)
 	labelBounds := l.Bounds()
-	clippedCanvas := image.NewRGBA(labelBounds)
-
 	face := graphics.Face(l.Size)
 
 	lineHeight := face.Metrics().Height.Ceil()
@@ -117,8 +117,7 @@ func (l *Label) Draw(canvas canvas.Canvas) {
 		}
 
 		y := startY + i*lineHeight
-		graphics.Text(clippedCanvas, image.Pt(x, y), textLine, l.Size, l.Color)
+		graphics.Text(canvas, image.Pt(x, y), textLine, l.Size, l.Color)
 	}
 
-	draw.Draw(canvas, labelBounds, clippedCanvas, labelBounds.Min, draw.Src)
 }

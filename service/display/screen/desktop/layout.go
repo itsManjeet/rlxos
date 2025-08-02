@@ -17,61 +17,54 @@
 
 package desktop
 
-import "image"
+import (
+	"image"
 
-func (d *Desktop) Layout() {
-	count := len(d.surfaces)
+	"rlxos.dev/pkg/graphics/widget"
+)
 
+func Tile(s widget.Widget, children []widget.Widget) bool {
+	count := len(children)
 	if count == 0 {
-		d.SetDirty(true)
-		return
+		return false
 	}
 
-	d.activeSurface = d.surfaces[len(d.surfaces)-1]
-
-	bounds := d.Bounds()
+	bounds := s.Bounds()
 	screenWidth, screenHeight := bounds.Dx(), bounds.Dy()
 
 	masterRatio := 0.6
-	padding := 10
 
 	if count == 1 {
-		d.surfaces[0].SetBounds(image.Rect(
-			bounds.Min.X+padding,
-			bounds.Min.Y+padding,
-			bounds.Max.X-padding,
-			bounds.Max.Y-padding,
-		))
-		d.SetDirty(true)
-		return
+		children[0].SetBounds(bounds)
+		return true
 	}
 
-	masterWidth := int(float64(screenWidth)*masterRatio) - padding
+	masterWidth := int(float64(screenWidth) * masterRatio)
 	stackCount := count - 1
-	stackHeight := (screenHeight - padding*(stackCount+1)) / stackCount
+	stackHeight := (screenHeight - (stackCount + 1)) / stackCount
 
-	d.surfaces[0].SetBounds(image.Rect(
-		bounds.Min.X+padding,
-		bounds.Min.Y+padding,
-		bounds.Min.X+padding+masterWidth,
-		bounds.Max.Y-padding,
+	children[0].SetBounds(image.Rect(
+		bounds.Min.X,
+		bounds.Min.Y,
+		bounds.Min.X+masterWidth,
+		bounds.Max.Y,
 	))
 
 	for i := 0; i < stackCount; i++ {
-		top := bounds.Min.Y + padding + i*(stackHeight+padding)
+		top := bounds.Min.Y + i*stackHeight
 		bottom := top + stackHeight
 
 		if i == stackCount-1 {
-			bottom = bounds.Max.Y - padding
+			bottom = bounds.Max.Y
 		}
 
-		d.surfaces[i+1].SetBounds(image.Rect(
-			bounds.Min.X+padding+masterWidth+padding,
+		children[i+1].SetBounds(image.Rect(
+			bounds.Min.X+masterWidth,
 			top,
-			bounds.Max.X-padding,
+			bounds.Max.X,
 			bottom,
 		))
 	}
 
-	d.SetDirty(true)
+	return true
 }

@@ -19,6 +19,7 @@ package main
 
 import (
 	"image"
+	"image/color"
 	"log"
 	"os/exec"
 	"slices"
@@ -31,12 +32,15 @@ import (
 	"rlxos.dev/pkg/graphics/app"
 	"rlxos.dev/pkg/graphics/argb"
 	"rlxos.dev/pkg/graphics/canvas"
+	"rlxos.dev/pkg/graphics/style"
 	"rlxos.dev/pkg/graphics/widget"
 	"rlxos.dev/pkg/kernel/vt"
 )
 
 type Console struct {
 	widget.Base
+
+	BackgroundColor color.Color
 
 	fontSize   int
 	cellSize   image.Point
@@ -69,6 +73,11 @@ func (c *Console) Construct() {
 	}
 }
 
+func (c *Console) OnStyleChange(s style.Style) {
+	c.BackgroundColor = s.Background
+	c.Base.OnStyleChange(s)
+}
+
 func (c *Console) SetBounds(rect image.Rectangle) {
 	if rect.Dx() == c.Bounds().Dx() && rect.Dy() == c.Bounds().Dy() {
 		c.Base.SetBounds(rect)
@@ -88,7 +97,7 @@ func (c *Console) SetBounds(rect image.Rectangle) {
 }
 
 func (c *Console) Draw(cv canvas.Canvas) {
-	graphics.FillRect(cv, c.Bounds(), 0, argb.NewColor(0, 0, 0, 255))
+	graphics.FillRect(cv, c.Bounds(), 0, c.BackgroundColor)
 	for y, row := range c.buffer {
 		for x, ch := range row {
 			pos := image.Point{

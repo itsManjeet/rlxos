@@ -18,277 +18,125 @@
 package desktop
 
 import (
+	"fmt"
 	"image"
-	"image/color"
-	"image/draw"
-	"log"
+	"os"
 	"os/exec"
-	"slices"
-	"sync"
+	"syscall"
 
-	"rlxos.dev/pkg/connect"
 	"rlxos.dev/pkg/event"
 	"rlxos.dev/pkg/event/key"
-	"rlxos.dev/pkg/graphics"
-	"rlxos.dev/pkg/graphics/argb"
-	"rlxos.dev/pkg/graphics/canvas"
 	"rlxos.dev/pkg/graphics/widget"
 	"rlxos.dev/service/display/screen"
 	"rlxos.dev/service/display/surface"
 )
 
+const (
+	DEFAULT_TERMINAL_EMULATOR = "/apps/console"
+	DEFAULT_WELCOME_APP       = "/apps/welcome"
+)
+
 type Desktop struct {
 	widget.Base
 
-	Display screen.Display
+	Display   screen.Display
+	workspace Workspace
+	status    Status
 
-	surfaces            []*surface.Surface
-	activeSurface       *surface.Surface
-	background          image.Image
-	activeBorderColor   color.Color
-	inactiveBorderColor color.Color
-	surfaceBackground   color.Color
-	surfaceBorderRadius int
-	keys                key.Keys
-
-	spacing int
-
-	mutex sync.Mutex
+	keys key.Keys
 }
 
 func (d *Desktop) Construct() {
-	d.background = image.NewUniform(argb.NewColor(26, 26, 26, 255))
+	d.AddChild(&d.status)
+	d.AddChild(&d.workspace)
 
-	d.activeBorderColor = argb.NewColor(150, 150, 150, 255)
-	d.inactiveBorderColor = argb.NewColor(50, 50, 50, 255)
-	d.surfaceBackground = argb.NewColor(40, 40, 40, 255)
-	d.surfaceBorderRadius = 4
-	d.spacing = 10
-	d.exec("/apps/welcome")
+	d.exec(DEFAULT_TERMINAL_EMULATOR)
+
+	d.Base.Construct()
 }
 
-func (d *Desktop) Draw(cv canvas.Canvas) {
-	d.mutex.Lock()
-	surfaces := d.surfaces
-	d.mutex.Unlock()
+func (d *Desktop) SetBounds(rect image.Rectangle) {
+	d.Base.SetBounds(rect)
 
-	if d.Base.Dirty() {
-		draw.Draw(cv, d.Bounds(), d.background, image.Point{}, draw.Src)
-	}
+	d.status.SetBounds(image.Rect(
+		d.Bounds().Min.X, d.Bounds().Min.Y,
+		d.Bounds().Max.X, d.Bounds().Min.Y+48,
+	))
 
-	for _, s := range surfaces {
-		if s.Dirty() {
-			borderColor := d.inactiveBorderColor
-			if s == d.activeSurface {
-				borderColor = d.activeBorderColor
-			}
-			graphics.FillRect(cv, s.Bounds(), d.surfaceBorderRadius, d.surfaceBackground)
-			graphics.Rect(cv, s.Bounds(), d.surfaceBorderRadius, borderColor)
-			s.Draw(cv)
-			s.SetDirty(false)
-		}
-	}
-}
-
-func (d *Desktop) Dirty() bool {
-	for _, s := range d.surfaces {
-		if s.Dirty() {
-			return true
-		}
-	}
-	return d.Base.Dirty()
-}
-
-func (d *Desktop) SetDirty(b bool) {
-	for _, s := range d.surfaces {
-		s.SetDirty(b)
-	}
-	d.Base.SetDirty(b)
+	d.workspace.SetBounds(image.Rect(
+		d.status.Bounds().Min.X, d.status.Bounds().Max.Y,
+		d.Bounds().Max.X, d.Bounds().Max.Y,
+	))
 }
 
 func (d *Desktop) Update(ev event.Event) bool {
-	d.mutex.Lock()
-	if len(d.surfaces) > 0 {
-		d.activeSurface = d.surfaces[len(d.surfaces)-1]
-	}
-	d.mutex.Unlock()
-
 	switch ev := ev.(type) {
 	case surface.Create:
 		s, err := surface.NewSurface(ev.Rect, ev.Conn)
 		if err != nil {
-			log.Printf("failed to create surface: %v", err)
+			d.setStatus("failed to create surface: %v", err)
+			return true
 		}
 
-		d.mutex.Lock()
-		d.surfaces = append(d.surfaces, s)
-		s.SetDirty(true)
-		d.mutex.Unlock()
-
+		d.workspace.AddChild(s)
 		if err := ev.Conn.Send("surface.Created", surface.Created{
 			Id:   s.Image.Key(),
 			Rect: s.Bounds(),
 		}, nil); err != nil {
-			log.Printf("failed to send surface.Created: %v", err)
+			d.setStatus("failed to send surface.Created: %v", err)
+			return true
 		}
-
-		d.Layout()
 
 	case surface.Damage:
-		d.mutex.Lock()
-		if s, ok := d.surfaceFromConn(ev.Conn); ok {
+		if s, ok := d.workspace.surfaceFromConn(ev.Conn); ok {
 			s.SetDirty(true)
 		} else {
+			d.setStatus("no surface found for damage, damaging all")
 			d.SetDirty(true)
 		}
-		d.mutex.Unlock()
 
 	case key.Keys:
 		d.keys = ev
 
 	case key.Event:
 		if !d.handleBindings(ev) {
-			d.propagate("key-event", ev)
+			if err := d.workspace.propagate("key-event", ev); err != nil {
+				d.setStatus("failed to propogate key event: %v", err)
+			}
 		}
 	}
 	return true
-}
-
-func (d *Desktop) propagate(c string, payload any) {
-	if d.activeSurface != nil {
-		if err := d.activeSurface.Conn.Send(c, payload, nil); err != nil {
-			log.Println("failed to propagate command:", c, payload, err)
-		}
-	}
 }
 
 func (d *Desktop) handleBindings(ev key.Event) bool {
 	if d.isKeySet(key.KEY_LEFTALT) && ev.State == key.Pressed {
 		switch ev.Key {
 		case key.KEY_ENTER:
-			d.exec("/apps/console")
+			term := os.Getenv("TERMINAL")
+			if term == "" {
+				term = DEFAULT_TERMINAL_EMULATOR
+			}
+			d.exec(term)
 			return true
 		case key.KEY_S:
-			if len(d.surfaces) > 0 {
-				d.Raise(d.surfaces[0])
-				d.SetDirty(true)
-			}
-
+			idx := (d.workspace.activeIndex() + 1) % len(d.workspace.Children)
+			d.setStatus("Window %v", idx)
+			d.workspace.Raise(idx)
 		case key.KEY_Q:
-			if d.activeSurface != nil {
-				d.mutex.Lock()
-				idx := slices.Index(d.surfaces, d.activeSurface)
-				if idx != -1 {
-					_ = d.surfaces[idx].Destroy()
-					d.surfaces = slices.Delete(d.surfaces, idx, idx+1)
-				}
-				if len(d.surfaces) > 0 {
-					d.activeSurface = d.surfaces[len(d.surfaces)-1]
-				}
-				d.mutex.Unlock()
-			}
+			d.workspace.RemoveChild(d.workspace.activeSurface)
+			d.workspace.SetDirty(true)
 
-			d.mutex.Lock()
-			d.Layout()
-			d.mutex.Unlock()
+		case key.KEY_R:
+			d.workspace.SetDirty(true)
+			d.SetDirty(true)
+			d.Display.SetDirty(true)
 
-		case key.KEY_UP:
-			if d.activeSurface != nil {
-				if d.isKeySet(key.KEY_LEFTSHIFT) {
-					d.Move(-10, 0)
-				} else {
-					d.Resize(-10, 0)
-				}
-			}
-
-		case key.KEY_DOWN:
-			if d.activeSurface != nil {
-				if d.isKeySet(key.KEY_LEFTSHIFT) {
-					d.Move(10, 0)
-				} else {
-					d.Resize(10, 0)
-				}
-			}
-
-		case key.KEY_LEFT:
-			if d.activeSurface != nil {
-				if d.isKeySet(key.KEY_LEFTSHIFT) {
-					d.Move(0, -10)
-				} else {
-					d.Resize(0, -10)
-				}
-			}
-
-		case key.KEY_RIGHT:
-			if d.activeSurface != nil {
-				if d.isKeySet(key.KEY_LEFTSHIFT) {
-					d.Move(0, 10)
-				} else {
-					d.Resize(0, 10)
-				}
-			}
 		default:
 			return false
 		}
 		return true
 	}
 	return false
-}
-
-func (d *Desktop) Raise(s *surface.Surface) {
-	d.mutex.Lock()
-	defer d.mutex.Unlock()
-
-	if d.activeSurface != nil {
-		d.activeSurface.SetDirty(true)
-	}
-
-	idx := slices.Index(d.surfaces, s)
-	if idx != -1 {
-		d.surfaces = slices.Delete(d.surfaces, idx, idx+1)
-	}
-
-	d.surfaces = append(d.surfaces, s)
-	d.activeSurface = s
-	d.activeSurface.SetDirty(true)
-}
-
-func (d *Desktop) Move(top, left int) {
-	if d.activeSurface != nil {
-		log.Println("Moving surface", top, left)
-		rect := d.activeSurface.Bounds()
-		d.activeSurface.SetBounds(image.Rect(
-			rect.Min.X+left,
-			rect.Min.Y+top,
-			rect.Max.X+left,
-			rect.Max.Y+top,
-		))
-		d.activeSurface.SetDirty(true)
-	}
-}
-
-func (d *Desktop) Resize(top, left int) {
-	if d.activeSurface != nil {
-		log.Println("Resizing surface", top, left)
-		rect := d.activeSurface.Bounds()
-		d.activeSurface.SetBounds(image.Rect(
-			rect.Min.X,
-			rect.Min.Y,
-			rect.Max.X+left,
-			rect.Max.Y+top,
-		))
-		d.activeSurface.SetDirty(true)
-	}
-}
-
-func (d *Desktop) surfaceFromConn(conn *connect.Connection) (*surface.Surface, bool) {
-	idx := slices.IndexFunc(d.surfaces, func(s *surface.Surface) bool {
-		return s.Conn == conn
-	})
-	if idx == -1 {
-		return nil, false
-	}
-	return d.surfaces[idx], true
 }
 
 func (d *Desktop) isKeySet(key int) bool {
@@ -304,7 +152,15 @@ func (d *Desktop) isKeySet(key int) bool {
 
 func (d *Desktop) exec(bin string, args ...string) {
 	cmd := exec.Command(bin, args...)
-	if err := cmd.Start(); err != nil {
-		log.Printf("failed to start command: %v", err)
+	cmd.SysProcAttr = &syscall.SysProcAttr{
+		Setsid: true,
 	}
+
+	if err := cmd.Start(); err != nil {
+		d.setStatus("failed to start command: %v", err)
+	}
+}
+
+func (d *Desktop) setStatus(format string, args ...interface{}) {
+	d.status.pushNotification(fmt.Sprintf(format, args...))
 }

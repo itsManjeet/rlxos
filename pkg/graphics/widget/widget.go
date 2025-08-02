@@ -74,14 +74,21 @@ func (b *Base) SetBounds(rect image.Rectangle) {
 	b.rect = rect
 
 	if b.Layout != nil {
-		b.SetDirty(b.Layout(b, b.Children))
+		changed := b.Layout(b, b.Children)
+		if changed {
+			b.SetDirty(true)
+		}
 	}
 }
 
 func (b *Base) Draw(cv canvas.Canvas) {
 	for _, ch := range b.Children {
+		// if ch.Dirty() {
 		ch.Draw(cv)
+		// 	ch.SetDirty(false)
+		// }
 	}
+	b.dirty = false
 }
 
 func (b *Base) Update(ev event.Event) bool {
@@ -103,10 +110,12 @@ func (b *Base) Dirty() bool {
 }
 
 func (b *Base) SetDirty(d bool) {
-	for _, child := range b.Children {
-		child.SetDirty(d)
-	}
 	b.dirty = d
+	if d {
+		for _, child := range b.Children {
+			child.SetDirty(d)
+		}
+	}
 }
 
 func (b *Base) OnStyleChange(s style.Style) {

@@ -20,6 +20,7 @@ package screen
 import "rlxos.dev/pkg/graphics/widget"
 
 type Display interface {
+	widget.Widget
 	SetScreen(s Screen)
 }
 

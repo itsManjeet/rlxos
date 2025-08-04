@@ -29,7 +29,6 @@ post-script: |-
           <value type="int" value="3"/>
           <value type="int" value="4"/>
           <value type="int" value="11"/>
-          <value type="int" value="15"/>
           <value type="int" value="14"/>
           <value type="int" value="5"/>
           <value type="int" value="6"/>
@@ -58,10 +57,10 @@ post-script: |-
         <property name="position-categories-alternate" type="bool" value="false"/>
         <property name="default-category" type="int" value="2"/>
         <property name="hover-switch-category" type="bool" value="true"/>
-        <property name="button-icon" type="string" value="start-here"/>
+        <property name="button-icon" type="string" value="application-menu"/>
         <property name="launcher-show-description" type="bool" value="false"/>
         <property name="profile-shape" type="int" value="2"/>
-        <property name="menu-opacity" type="int" value="0"/>
+        <property name="menu-opacity" type="int" value="90"/>
         <property name="position-profile-alternate" type="bool" value="false"/>
       </property>
       <property name="plugin-2" type="string" value="pager">
@@ -104,7 +103,6 @@ post-script: |-
       <property name="plugin-4" type="string" value="docklike"/>
       <property name="plugin-14" type="string" value="weather">
       </property>
-      <property name="plugin-15" type="string" value="xfce4-verve-plugin"/>
     </property>
   </channel>
 

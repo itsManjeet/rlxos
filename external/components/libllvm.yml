@@ -1,5 +1,5 @@
 id: libllvm
-version: 16.0.6
+version: 20.1.8
 about: LLVM runtime libraries
 
 include-root: /sysroot
@@ -13,5 +13,5 @@ script: |-
     cp -rap /$lib %{install-root}/$lib
   done
 
-depends:
-  - components/libgcc.yml
+build-depends:
+- components/bash.yml

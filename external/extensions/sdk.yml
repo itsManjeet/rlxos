@@ -1,11 +1,12 @@
 id: sdk
-version: 2.0
+version: 2.1
 about: RLXOS Software Development Kit
 
 include:
     - platform.yml
     - components/bc.yml
     - components/gcc.yml
+    - components/llvm.yml
     - components/kernel-headers.yml
     - components/binutils.yml
     - components/git.yml

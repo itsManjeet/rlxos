@@ -1,0 +1,9 @@
+id: runtime-client
+version: 2f10e535c6504a011ea970a129a9d88ff9870a45
+about: Webapp runtime client
+
+depends:
+    - components/webkitgtk.yml
+
+sources:
+    - https://github.com/itsManjeet/runtime-client/archive/%{version}.tar.gz

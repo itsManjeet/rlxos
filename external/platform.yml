@@ -116,6 +116,7 @@ depends:
     - components/initial-setup.yml
     - components/distrobox.yml
     - components/gnome/gnome-software.yml
+    - components/runtime-client.yml
 
     - kernel/linux.yml
     - components/nvidia.yml

@@ -1,5 +1,5 @@
 id: runtime-client
-version: 2f10e535c6504a011ea970a129a9d88ff9870a45
+version: 70064ec214da2e77bb54c5ab40e865fbba2a5ce2
 about: Webapp runtime client
 
 depends:

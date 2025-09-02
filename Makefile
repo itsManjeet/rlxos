@@ -80,7 +80,7 @@ extensions: $(IGNITE)
 	$(foreach ext,$(EXTENSIONS),$(BUILD_EXTENSION))
 
 build/build.ninja: CMakeLists.txt
-	cmake -B build -G Ninja
+	cmake -B build -G Ninja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
 $(IGNITE): build/build.ninja version.yml ostree-branch.yml channel.yml
 	@cmake --build build --target ignite
@@ -133,7 +133,7 @@ ostree-branch.yml:
 	@echo "variables:" > $@
 	@echo "  channel: ${CHANNEL}" >> $@
 
-generate-keys: $(BOOT_KEYS) 
+generate-keys: $(BOOT_KEYS)
 
 files/sign-keys/extra-db/.keep files/sign-keys/extra-kek/.keep:
 	[ -d $(dir $@) ] || mkdir -p $(dir $@)
@@ -154,4 +154,3 @@ download-microsoft-keys: files/sign-keys/extra-db/.keep files/sign-keys/extra-ke
 	echo 77fa9abd-0359-4d32-bd60-28f4e78f784b >files/sign-keys/extra-db/mic-other.owner
 	curl https://www.microsoft.com/pkiops/certs/MicWinProPCA2011_2011-10-19.crt | openssl x509 -inform der -outform pem >files/sign-keys/extra-db/mic-win.crt
 	echo 77fa9abd-0359-4d32-bd60-28f4e78f784b >files/sign-keys/extra-db/mic-win.owner
-

@@ -14,11 +14,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
+module;
 
-#include "Container.h"
+#include <filesystem>
+#include <string>
+#include <vector>
 
-std::vector<std::string> Container::args() const {
-    std::vector<std::string> a = {
+export module ignite:Container;
+
+export struct Container
+{
+    const std::string runtime{"/bin/bwrap"};
+    std::string image{};
+    std::vector<std::string> environ;
+    std::vector<std::pair<std::string, std::string>> binds;
+    std::vector<std::string> capabilities;
+
+    std::filesystem::path host_root;
+    std::filesystem::path base_dir;
+    std::string name;
+    std::ostream* logger;
+
+    [[nodiscard]] std::vector<std::string> args() const
+    {
+        std::vector<std::string> a = {
             "/bin/bwrap",
             "--bind",
             host_root,
@@ -37,20 +56,26 @@ std::vector<std::string> Container::args() const {
             "--gid",
             "0",
             "--die-with-parent",
-    };
+        };
 
-    for (auto const& [dest, source] : binds) {
-        a.insert(a.end(), {"--bind", source, dest});
+        for (const auto& [dest, source] : binds)
+        {
+            a.insert(a.end(), {"--bind", source, dest});
+        }
+
+        for (const auto& c : capabilities)
+        {
+            a.insert(a.end(), {"--cap-add", c});
+        }
+
+        for (const auto& e : environ)
+        {
+            const auto idx = e.find('=');
+            auto key = e.substr(0, idx);
+            auto value = e.substr(idx + 1);
+            a.insert(a.end(), {"--setenv", key, value});
+        }
+
+        return a;
     }
-
-    for (auto const& c : capabilities) { a.insert(a.end(), {"--cap-add", c}); }
-
-    for (auto const& e : environ) {
-        auto const idx = e.find('=');
-        auto key = e.substr(0, idx);
-        auto value = e.substr(idx + 1);
-        a.insert(a.end(), {"--setenv", key, value});
-    }
-
-    return a;
-}
+};

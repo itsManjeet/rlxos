@@ -1,20 +1,12 @@
-cmake_minimum_required(VERSION 3.20)
+add_executable(ignite
+        main.cxx)
 
-project(ignite
-        VERSION "1.0"
-        DESCRIPTION "Build tool for rlxos"
-        LANGUAGES C CXX)
+target_sources(ignite PRIVATE
+    FILE_SET CXX_MODULES
+    FILES Configuration.ixx
+    Container.ixx
+    Executor.ixx
+    Recipe.ixx Ignite.ixx)
 
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-add_executable(${PROJECT_NAME}
-        main.cpp
-        Ignite.cpp Ignite.h
-        Container.cpp Container.h
-        Configuration.cpp Configuration.h
-        Recipe.cpp Recipe.h
-        Executor.cpp Executor.h)
-
-target_link_libraries(${PROJECT_NAME} PRIVATE
+target_link_libraries(ignite PRIVATE
         yaml-cpp)

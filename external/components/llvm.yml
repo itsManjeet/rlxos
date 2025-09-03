@@ -1,46 +1,62 @@
 id: llvm
-version: 18.1.7
+version: 20.1.8
 about: |
-  A collection of modular and reusable compiler and toolchain technologies
+    A collection of modular and reusable compiler and toolchain technologies
 
 depends:
-  - components/glibc.yml
+    - components/glibc.yml
 build-depends:
-  - components/cmake.yml
+    - components/cmake.yml
 
 sources:
-  - https://github.com/llvm/llvm-project/releases/download/llvmorg-%{version}/llvm-%{version}.src.tar.xz
-  - https://github.com/llvm/llvm-project/releases/download/llvmorg-%{version}/cmake-%{version}.src.tar.xz
-  - https://github.com/llvm/llvm-project/releases/download/llvmorg-%{version}/clang-%{version}.src.tar.xz
-  - https://github.com/llvm/llvm-project/releases/download/llvmorg-%{version}/compiler-rt-%{version}.src.tar.xz
-  - https://github.com/llvm/llvm-project/releases/download/llvmorg-%{version}/third-party-%{version}.src.tar.xz
+    - https://github.com/llvm/llvm-project/releases/download/llvmorg-%{version}/llvm-project-%{version}.src.tar.xz
 
-build-dir: llvm-%{version}.src
+build-dir: llvm-%{version}.src/llvm
 
 build-type: cmake
-pre-script: |-
-  mv clang-%{version}.src tools/clang
-  mv compiler-rt-%{version}.src projects/compiler-rt
-  cp -ar cmake-%{version}.src/* .
-  cp -ar third-party-%{version}.src/* .
-
-  sed "/LLVM_COMMON_CMAKE_UTILS/s@../cmake@cmake-%{version}.src@" -i CMakeLists.txt 
-  sed "/LLVM_THIRD_PARTY_DIR/s@../third-party@third-party-%{version}.src@" -i cmake/modules/HandleLLVMOptions.cmake
-
-environ:
-  - CC=gcc
-  - CXX=g++
 
 configure: >-
-  -DLLVM_ENABLE_FFI=ON
-  -DCMAKE_BUILD_TYPE=Release
-  -DLLVM_BUILD_LLVM_DYLIB=ON
-  -DLLVM_LINK_LLVM_DYLIB=ON
-  -DLLVM_ENABLE_RTTI=ON
-  -DLLVM_TARGETS_TO_BUILD="host;AMDGPU;BPF"
-  -DLLVM_BINUTILS_INCDIR=/usr/include
-  -DLLVM_INCLUDE_BENCHMARKS=OFF
-  -DCLANG_DEFAULT_PIE_ON_LINUX=ON
+    -DLLVM_BUILD_LLVM_DYLIB=ON
+    -DLLVM_LINK_LLVM_DYLIB=ON
+    -DLLVM_TARGETS_TO_BUILD='host;AMDGPU'
+    -DLLVM_HOST_TRIPLE=%{triplet}
+    -DLLVM_INCLUDE_BENCHMARKS=OFF
+    -DLLVM_INCLUDE_EXAMPLES=OFF
+    -DLLVM_INCLUDE_DOCS=OFF
+    -DLLVM_INCLUDE_TESTS=OFF
+    -DLLVM_ENABLE_RUNTIMES='compiler-rt;libunwind;libcxx;libcxxabi'
+    -DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;lld'
+    -DLLVM_ENABLE_RTTI=ON
+    -DLLVM_ENABLE_EH=ON
+    -DLLVM_ENABLE_LIBXML2=OFF
+    -DLLVM_ENABLE_LIBCXX=ON
+    -DLLVM_ENABLE_RTTI=ON
+    -DLLVM_ENABLE_LLD=ON
+    -DLLVM_INSTALL_BINUTILS_SYMLINKS=ON
+    -DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=ON
+    -DCLANG_BUILD_EXAMPLES=OFF
+    -DCLANG_INCLUDE_DOCS=OFF
+    -DCLANG_INCLUDE_TESTS=OFF
+    -DLIBCLANG_BUILD_STATIC=ON
+    -DCLANG_DEFAULT_RTLIB=compiler-rt
+    -DCLANG_DEFAULT_UNWINDLIB=libunwind
+    -DCLANG_DEFAULT_CXX_STDLIB=libc++
+    -DCLANG_CONFIG_FILE_SYSTEM_DIR=/etc/clang
+    -DCLANG_LINK_CLANG_DYLIB=Yes
+    -DLIBCXX_CXX_ABI=libcxxabi
+    -DLIBCXX_USE_COMPILER_RT=ON
+    -DLIBCXX_HAS_ATOMIC_LIB=No
+    -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=OFF
+    -DLIBCXXABI_USE_LLVM_UNWINDER=ON
+    -DLIBCXXABI_USE_COMPILER_RT=ON
+    -DLIBCXXABI_ENABLE_STATIC_UNWINDER=OFF
+    -DCOMPILER_RT_USE_BUILTINS_LIBRARY=ON
+    -DCOMPILER_RT_INCLUDE_TESTS=OFF
+    -DCOMPILER_RT_BUILD_SANITIZERS=ON
+    -DCOMPILER_RT_BUILD_GWP_ASAN=OFF
+    -DLIBUNWIND_HAS_NODEFAULTLIBS_FLAG=OFF
+    -DLIBUNWIND_USE_COMPILER_RT=ON
+    -DLIBUNWIND_ENABLE_ASSERTIONS=OFF
 
 post-script: |-
-  cp %{build-dir}/bin/FileCheck %{install-root}/%{bindir}
+    cp %{build-dir}/bin/FileCheck %{install-root}/%{bindir}

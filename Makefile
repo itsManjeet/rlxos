@@ -80,7 +80,9 @@ extensions: $(IGNITE)
 	$(foreach ext,$(EXTENSIONS),$(BUILD_EXTENSION))
 
 build/build.ninja: CMakeLists.txt
-	cmake -B build -G Ninja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+	cmake -B build -G Ninja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+		-DCMAKE_C_COMPILER=clang \
+		-DCMAKE_CXX_COMPILER=clang++
 
 $(IGNITE): build/build.ninja version.yml ostree-branch.yml channel.yml
 	@cmake --build build --target ignite

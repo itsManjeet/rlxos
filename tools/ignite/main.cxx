@@ -15,12 +15,23 @@
  *
  */
 
+#include "json.hpp"
+
+#include <yaml-cpp/node/parse.h>
+
+#include <algorithm>
 #include <cstring>
+#include <expected>
 #include <filesystem>
 #include <functional>
 #include <iostream>
+#include <print>
+#include <regex>
+#include <vector>
 
 import ignite;
+
+using json = nlohmann::json;
 
 std::filesystem::path project_path = std::filesystem::current_path();
 std::filesystem::path cache_path;
@@ -183,12 +194,15 @@ int status(Ignite* ignite, const std::vector<std::string>& args)
     return 0;
 }
 
-auto check_update(Recipe* recipe) -> std::tuple<bool, std::string>
+auto check_update(Recipe* recipe)
+    -> std::expected<std::vector<std::string>, std::string>
 {
     if (recipe->sources.empty())
-        return {false, ""};
+        return std::unexpected("source file is empty");
+
     auto url = recipe->sources[0];
     url = url.substr(0, url.find_last_of('/'));
+    auto name = recipe->id;
 
     auto contains =
         [](const std::string& url, const std::vector<std::string>& s) -> bool {
@@ -200,6 +214,40 @@ auto check_update(Recipe* recipe) -> std::tuple<bool, std::string>
             }
         }
         return false;
+    };
+
+    auto update_config = YAML::LoadFile("updates.yml");
+    if (const auto aliases = update_config["aliases"])
+    {
+        if (aliases[name])
+        {
+            name = aliases[name].as<std::string>();
+        }
+    }
+
+    std::function<std::vector<std::string>(const std::string& content,
+                                           const std::string& filename)>
+        filter = [](const std::string& content,
+                    const std::string& filename) -> std::vector<std::string> {
+        std::vector<std::string> versions;
+        std::regex re(filename + "[-_][0-9a-z.]+\\.tar\\.[bgx]z2?");
+        for (auto i = std::sregex_iterator(content.begin(), content.end(), re);
+             i != std::sregex_iterator(); i++)
+        {
+            const auto match = i->str();
+            auto version = std::regex_replace(
+                match, std::regex("^" + filename + "[-_]"), "");
+
+            version =
+                std::regex_replace(version, std::regex("\\.tar\\..*$"), "");
+
+            if (std::find(versions.begin(), versions.end(), version) ==
+                versions.end())
+            {
+                versions.push_back(version);
+            }
+        }
+        return versions;
     };
 
     auto get_part =
@@ -230,68 +278,114 @@ auto check_update(Recipe* recipe) -> std::tuple<bool, std::string>
         return "";
     };
 
-    if (contains(url, {"github.com"}))
+    if (update_config["url"] && update_config["url"][name])
     {
-        url = "https://github.com/" + get_part(url, 4, 5) + "/tags";
+        url = update_config["url"][name].as<std::string>();
     }
-    else if (contains(url, {"gitlab.com"}))
+    else
     {
-        url = "https://gitlab.com/" + get_part(url, 4, 5) + "/tags";
+        if (contains(url, {"github.com"}))
+        {
+            url = "https://github.com/" + get_part(url, 4, 5) + "/tags";
+        }
+        else if (contains(url, {"gitlab.com"}))
+        {
+            url = "https://gitlab.com/" + get_part(url, 4, 5) + "/tags";
+        }
+        else if (contains(url, {"downloads.sourceforge.net"}))
+        {
+            url = "https://sourceforge.net/projects/" + get_part(url, 4, 4) +
+                  "/rss?limit=200";
+        }
+        else if (contains(url, {"sourceforge.net"}))
+        {
+            url = "https://sourceforge.net/projects/" + get_part(url, 5, 5) +
+                  "/rss?limit=200";
+        }
+        else if (contains(url, {"ftp.gnome.org", "download.gnome.org"}))
+        {
+            url = "https://download.gnome.org/sources/" + get_part(url, 5, 5) +
+                  "/cache.json";
+            filter =
+                [](const std::string& content,
+                   const std::string& filename) -> std::vector<std::string> {
+                std::vector<std::string> versions;
+                auto doc = json::parse(content);
+                for (const auto& [key, value] : doc[1][filename].items())
+                {
+                    versions.emplace_back(key);
+                }
+                return versions;
+            };
+        }
+        else if (contains(url, {"archive.xfce.org"}))
+        {
+            url = "https://archive.xfce.org/src/" + get_part(url, 5, 5) + "/" +
+                  recipe->id + "/";
+        }
+        else if (contains(url, {"python.org", "pypi.org", "pythonhosted.org",
+                                "pypi.io"}))
+        {
+            url = "https://pypi.org/simple/" + name;
+        }
+        else if (contains(url, {"rubygems.org"}))
+        {
+            url = "https://rubygems.org/gems/" + name;
+        }
+        else if (contains(url, {"kde.org/stable"}))
+        {}
     }
-    else if (contains(url, {"downloads.sourceforge.net"}))
-    {
-        url = "https://sourceforge.net/projects/" + get_part(url, 4, 4) +
-              "/rss?limit=200";
-    }
-    else if (contains(url, {"sourceforge.net"}))
-    {
-        url = "https://sourceforge.net/projects/" + get_part(url, 5, 5) +
-              "/rss?limit=200";
-    }
-    else if (contains(url, {"ftp.gnome.org", "download.gnome.org"}))
-    {}
-    else if (contains(url, {"archive.xfce.org"}))
-    {
-        url = "https://archive.xfce.org/src/" + get_part(url, 5, 5) + "/" +
-              recipe->id + "/";
-    }
-    else if (contains(url, {"python.org", "pypi.org", "pythonhosted.org",
-                            "pypi.io"}))
-    {
-        url = "https://pypi.org/simple/" + recipe->id;
-    }
-    else if (contains(url, {"rubygems.org"}))
-    {
-        url = "https://rubygems.org/gems/" + recipe->id;
-    }
-    else if (contains(url, {"kde.org/stable"}))
-    {}
 
-    auto [status, output] =
-        Executor("curl").arg("-Lsk").arg(recipe->sources[0]).output();
+    std::println("checking url {}", url);
+    auto [status, output] = Executor("curl").arg("-Lsk").arg(url).output();
+    if (status != 0)
+    {
+        return std::unexpected(output);
+    }
 
-    return {false, ""};
+    auto versions = filter(output, name);
+
+    return versions;
 }
 
 int update(Ignite* ignite, const std::vector<std::string>& args)
 {
     std::vector<Ignite::State> states;
     ignite->resolve(args, states);
-    auto [statu, output] = Executor("curl")
-                               .arg("https://archlinux.org/packages/search/"
-                                    "json/?q=cursor&repo=Core&repo=Extra")
-                               .output();
-    if (status != 0)
+
+    auto update_config = YAML::LoadFile("updates.yml");
+    auto aliases = update_config["aliases"];
+    auto skip = update_config["skip"];
+
+    auto recipe = std::get<1>(states[states.size() - 1]);
+
+    recipe.resolve(ignite->config);
+    auto name = recipe.id;
+    const auto version = recipe.version;
+
+    if (aliases && aliases[name])
     {
-        std::cerr << "failed to fetch arch api: " << output << std::endl;
-        return 1;
+        name = aliases[name].as<std::string>();
     }
 
-    for (auto& [id, recipe, cached] : states)
+    if (skip && skip[name])
     {
-        recipe.resolve(ignite->config);
-        const auto name = recipe.id;
-        const auto version = recipe.version;
+        std::println("skipping {}", name);
+    }
+
+    auto result = check_update(&recipe);
+    if (!result)
+    {
+        std::println("failed to check updates for {}: {}", name,
+                     result.error());
+        return 0;
+    }
+
+    std::println("{} available versions for {}", result.value().size(), name);
+    for (const auto& version : *result)
+    {
+        std::println("- {}{}", version,
+                     version == recipe.version ? " <- in use" : "");
     }
     return 0;
 }

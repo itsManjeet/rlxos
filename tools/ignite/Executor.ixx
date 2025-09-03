@@ -19,11 +19,14 @@ module;
 
 #include <sys/wait.h>
 
+#include <cstdlib>
 #include <cstring>
+#include <filesystem>
 #include <iostream>
 #include <optional>
 #include <ostream>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -37,6 +40,22 @@ enum
     WRITE = 1
 };
 
+export auto lookup_exec(const std::string& bin)
+    -> std::optional<std::filesystem::path>
+{
+    auto PATH = getenv("PATH") ? getenv("PATH") : "/bin:/sbin";
+    std::stringstream ss(PATH);
+    for (std::string path; std::getline(ss, path, ':');)
+    {
+        auto bin_path = std::filesystem::path(path) / bin;
+        if (std::filesystem::exists(bin_path))
+        {
+            return bin_path;
+        }
+    }
+    return std::nullopt;
+}
+
 export class Executor
 {
     std::vector<std::string> args_;
@@ -48,7 +67,7 @@ export class Executor
     bool silent_{false};
 
   public:
-    explicit Executor(const std::string& binary)
+    explicit Executor(std::string binary)
     {
         args_.push_back(binary);
     }
@@ -99,6 +118,14 @@ export class Executor
 
     Executor& start()
     {
+        auto binary = lookup_exec(args_[0]);
+        if (!binary)
+        {
+            throw std::runtime_error(
+                std::format("binary not found {}", args_[0]));
+        }
+
+        args_[0] = binary.value();
         if (pipe(pipe_fd) == -1)
         {
             throw std::runtime_error("pipe creating failed");

@@ -2,63 +2,84 @@ id: rustc
 merge: [external/include/rust.inc]
 about: Rust programming language is designed to be a safe, concurrent, practical language
 
-variables:
-  date: 2023-07-13
-  rust: 1.80.0
-  cargo: 1.80.0
-
 depends:
-  - components/curl.yml
-  - components/libllvm.yml
-  - components/llvm.yml
-  - components/libssh.yml
+    - components/curl.yml
+    - components/libllvm.yml
+    - components/llvm.yml
+    - components/libssh.yml
 
 build-depends:
-  - components/cmake.yml
-  - components/gdb.yml
-  - components/ninja.yml
-  - components/rust-stage1.yml
+    - components/cmake.yml
+    - components/gdb.yml
+    - components/ninja.yml
+
+triplet: x86_64-unknown-linux-gnu
 
 sources:
-  - https://static.rust-lang.org/dist/rustc-%{version}-src.tar.xz
+    - https://static.rust-lang.org/dist/rustc-%{version}-src.tar.xz
+    - rust-std-%{bootstrap-version}-%{triplet}.tar.xz.noextract::https://static.rust-lang.org/dist/%{release-date}/rust-std-%{bootstrap-version}-%{triplet}.tar.xz
+    - rustc-%{bootstrap-version}-%{triplet}.tar.xz.noextract::https://static.rust-lang.org/dist/%{release-date}/rustc-%{bootstrap-version}-%{triplet}.tar.xz
+    - cargo-%{bootstrap-version}-%{triplet}.tar.xz.noextract::https://static.rust-lang.org/dist/%{release-date}/cargo-%{bootstrap-version}-%{triplet}.tar.xz
 
-script: |
-  cat > config.toml << EOF
-  change-id = 125535
+script: |-
+    mkdir -p build/cache/%{release-date}
 
-  [llvm]
-  targets = "X86"
-  link-shared = true
+    cp rust-std-%{bootstrap-version}-%{triplet}.tar.xz.noextract \
+      build/cache/%{release-date}/rust-std-%{bootstrap-version}-%{triplet}.tar.xz
 
-  [build]
-  docs = false
-  extended = true
-  locked-deps = true
-  tools = ["cargo", "clippy", "rustdoc", "rustfmt"]
-  vendor = true
-  cargo = "%{bindir}/cargo"
-  rustc = "%{bindir}/rustc"
+    cp rustc-%{bootstrap-version}-%{triplet}.tar.xz.noextract \
+      build/cache/%{release-date}/rustc-%{bootstrap-version}-%{triplet}.tar.xz
 
-  [install]
-  prefix = "%{prefix}"
+    cp cargo-%{bootstrap-version}-%{triplet}.tar.xz.noextract \
+      build/cache/%{release-date}/cargo-%{bootstrap-version}-%{triplet}.tar.xz
 
-  [rust]
-  channel = "stable"
-  description = "rlxos GNU/Linux"
+    sed -i 's/\("files":{\)[^}]*/\1/' vendor/curl-sys-0.4.79+curl-8.12.0/.cargo-checksum.json
+    sed -i 's/\("files":{\)[^}]*/\1/' vendor/curl-sys-0.4.80+curl-8.12.1/.cargo-checksum.json
+    sed -i 's/\("files":{\)[^}]*/\1/' vendor/curl-sys-0.4.82+curl-8.14.1/.cargo-checksum.json
+    sed -i 's/\("files":{\)[^}]*/\1/' vendor/openssl-sys-0.9.104/.cargo-checksum.json
+    sed -i 's/\("files":{\)[^}]*/\1/' vendor/openssl-sys-0.9.107/.cargo-checksum.json
+    sed -i 's/\("files":{\)[^}]*/\1/' vendor/openssl-sys-0.9.92/.cargo-checksum.json
 
-  [target.%{target-triple}]
-  llvm-config = "%{bindir}/llvm-config"
-  EOF
+    cat > config.toml << EOF
+    change-id = 142379
 
-  export RUST_BACKTRACE=1
-  export LIBSSH2_SYS_USE_PKG_CONFIG=1
+    [llvm]
+    targets = "X86"
+    link-shared = true
+    download-ci-llvm = false
+    static-libstdcpp = false
+    use-libcxx = true
 
-  python3 ./x.py build --exclude src/tools/miri
-  DESTDIR=%{install-root} python3 ./x.py install
+    [build]
+    description = "rlxos GNU/Linux"
+    docs = false
+    locked-deps = true
+    tools = ["cargo", "clippy", "rustdoc", "rustfmt"]
+    vendor = true
 
-  chown -R root:root %{install-root}
+    [install]
+    prefix = "%{prefix}"
 
-  rm -rf %{install-root}/%{libdir}/rustlib/components
-  rm -rf %{install-root}/%{libdir}/rustlib/manifest-rustc
-  rm -rf %{install-root}/%{libdir}/rustlib/rust-installer-version
-  rm -rf %{install-root}/%{sysconfdir}
+    [rust]
+    channel = "stable"
+    lld = false
+    lto = "thin"
+    codegen-units = 1
+    llvm-bitcode-linker = false
+
+    [target.%{triplet}]
+    llvm-config = "%{bindir}/llvm-config"
+    EOF
+
+    export RUST_BACKTRACE=1
+    export LIBSSH2_SYS_USE_PKG_CONFIG=1
+
+    ./x.py build
+    DESTDIR=%{install-root} python3 ./x.py install
+
+    chown -R root:root %{install-root}
+
+    rm -rf %{install-root}/%{libdir}/rustlib/components
+    rm -rf %{install-root}/%{libdir}/rustlib/manifest-rustc
+    rm -rf %{install-root}/%{libdir}/rustlib/rust-installer-version
+    rm -rf %{install-root}/%{sysconfdir}

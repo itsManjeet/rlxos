@@ -3,17 +3,14 @@ version: 20.1.8
 about: |
     A collection of modular and reusable compiler and toolchain technologies
 
-depends:
-    - components/glibc.yml
-build-depends:
-    - components/cmake.yml
-
-sources:
-    - https://github.com/llvm/llvm-project/releases/download/llvmorg-%{version}/llvm-project-%{version}.src.tar.xz
-
-build-dir: llvm-%{version}.src/llvm
-
+build-dir: llvm-project-%{version}.src/llvm
 build-type: cmake
+
+pre-script: |-
+    cd ../
+    patch -Np1 -i 0012-libc-libc-abi-libunwind-disable-multiarch-locations.patch
+    patch -Np1 -i 0017-clang-use-as-needed-by-default.patch
+    patch -Np1 -i 0024-clang-link-libcxxabi-on-linux-when-using-libc.patch
 
 configure: >-
     -DLLVM_BUILD_LLVM_DYLIB=ON
@@ -29,9 +26,7 @@ configure: >-
     -DLLVM_ENABLE_RTTI=ON
     -DLLVM_ENABLE_EH=ON
     -DLLVM_ENABLE_LIBXML2=OFF
-    -DLLVM_ENABLE_LIBCXX=ON
     -DLLVM_ENABLE_RTTI=ON
-    -DLLVM_ENABLE_LLD=ON
     -DLLVM_INSTALL_BINUTILS_SYMLINKS=ON
     -DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=ON
     -DCLANG_BUILD_EXAMPLES=OFF
@@ -39,11 +34,8 @@ configure: >-
     -DCLANG_INCLUDE_TESTS=OFF
     -DLIBCLANG_BUILD_STATIC=ON
     -DCLANG_DEFAULT_RTLIB=compiler-rt
-    -DCLANG_DEFAULT_UNWINDLIB=libunwind
-    -DCLANG_DEFAULT_CXX_STDLIB=libc++
     -DCLANG_CONFIG_FILE_SYSTEM_DIR=/etc/clang
     -DCLANG_LINK_CLANG_DYLIB=Yes
-    -DLIBCXX_CXX_ABI=libcxxabi
     -DLIBCXX_USE_COMPILER_RT=ON
     -DLIBCXX_HAS_ATOMIC_LIB=No
     -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=OFF
@@ -60,3 +52,14 @@ configure: >-
 
 post-script: |-
     cp %{build-dir}/bin/FileCheck %{install-root}/%{bindir}
+
+depends:
+    - components/glibc.yml
+build-depends:
+    - components/cmake.yml
+
+sources:
+    - https://github.com/llvm/llvm-project/releases/download/llvmorg-%{version}/llvm-project-%{version}.src.tar.xz
+    - patches/llvm/0012-libc-libc-abi-libunwind-disable-multiarch-locations.patch
+    - patches/llvm/0017-clang-use-as-needed-by-default.patch
+    - patches/llvm/0024-clang-link-libcxxabi-on-linux-when-using-libc.patch

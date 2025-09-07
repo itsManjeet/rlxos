@@ -3,21 +3,21 @@ version: 3.0.20
 about: Implementation of the iCalendar protocols and data formats
 
 configure: >-
-  -DCMAKE_LIBEXECDIR=%{libdir}
-  -DSHARED_ONLY=yes
-  -DICAL_GLIB_VAPI=true
-  -DICAL_BUILD_DOCS=yes
-  -DGOBJECT_INTROSPECTION=true
+    -DCMAKE_BUILD_TYPE=None
+    -DCMAKE_LIBEXECDIR=%{libdir}
+    -DSHARED_ONLY=yes
+    -DICAL_GLIB_VAPI=false
+    -DICAL_BUILD_DOCS=no
+    -DGOBJECT_INTROSPECTION=true
 
 depends:
-  - components/glib.yml
-  - components/icu.yml
-  - components/libxml2.yml
+    - components/glib.yml
+    - components/icu.yml
+    - components/libxml2.yml
 build-depends:
-  - components/cmake.yml
-  - components/gtk-doc.yml
-  - components/vala.yml
-  - components/py/py-gobject.yml
-  - components/gobject-introspection.yml
+    - components/cmake.yml
+    - components/gtk-doc.yml
+    - components/py/py-gobject.yml
+    - components/gobject-introspection.yml
 sources:
-  - https://github.com/libical/libical/releases/download/v%{version}/libical-%{version}.tar.gz
+    - https://github.com/libical/libical/releases/download/v%{version}/libical-%{version}.tar.gz

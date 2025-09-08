@@ -105,6 +105,8 @@ depends:
     - components/lightdm.yml
     - components/picom.yml
 
+    - components/spice-vdagent.yml
+
     - components/fonts/ibm-plex.yml
     - components/fonts/ibm-plex-nerd-fonts.yml
     - components/fonts/fira-code.yml

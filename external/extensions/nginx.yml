@@ -1,0 +1,7 @@
+id: nginx
+version: 1.28.0
+about: NGINX server
+merge: [external/include/extension.inc]
+
+include:
+    - components/nginx.yml

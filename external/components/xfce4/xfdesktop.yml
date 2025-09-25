@@ -1,7 +1,7 @@
 id: xfdesktop
-version: 4.20.0
+version: 4.20.1
 about: Xfce desktop manager
-release: 8
+
 build-type: meson
 configure: >-
   -D desktop-menu=enabled

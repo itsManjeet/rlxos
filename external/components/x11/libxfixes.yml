@@ -1,5 +1,5 @@
 id: libxfixes
-version: 6.0.1
+version: 6.0.2
 about: xorg library libXfixes
 sources:
   - https://www.x.org/pub/individual/lib/libXfixes-%{version}.tar.xz

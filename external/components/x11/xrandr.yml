@@ -1,5 +1,5 @@
 id: xrandr
-version: 1.5.2
+version: 1.5.3
 about: Primitive commandline interface to RandR extensions
 
 depends:

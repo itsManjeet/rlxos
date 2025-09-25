@@ -1,5 +1,5 @@
 id: libXft
-version: 2.3.8
+version: 2.3.9
 about: Freetyp based font drawing library for X
 
 depends:

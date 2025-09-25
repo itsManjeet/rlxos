@@ -1,5 +1,5 @@
 id: xfce4-session
-version: 4.20.2
+version: 4.20.3
 about: A session manager for Xfce
 
 pre-script: |-

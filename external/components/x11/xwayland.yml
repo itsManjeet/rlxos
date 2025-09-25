@@ -1,5 +1,5 @@
 id: xwayland
-version: 24.1.1
+version: 24.1.8
 about: Xorg server running on top of the wayland server
 
 pre-script: |-

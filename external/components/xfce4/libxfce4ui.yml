@@ -1,5 +1,5 @@
 id: libxfce4ui
-version: 4.20.1
+version: 4.20.2
 about: GTK widgets library for Xfce
 
 configure: >-

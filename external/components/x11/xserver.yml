@@ -1,9 +1,8 @@
 id: xserver
-version: 21.1.13
+version: 21.1.18
 about: Core of the X Window system
 sources:
   - https://xorg.freedesktop.org/releases/individual/xserver/xorg-server-%{version}.tar.xz
-  - patches/x11/xorg-server-%{version}-tearfree_backport-2.patch
 
 build-type: meson
 depends:
@@ -39,9 +38,6 @@ depends:
 build-depends:
   - components/x11/util-macros.yml
   - components/x11/xorgproto.yml
-
-pre-script: |
-  patch -Np1 -i xorg-server-%{version}-tearfree_backport-2.patch
 
 configure: >
   -D xorg=true

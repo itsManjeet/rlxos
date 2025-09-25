@@ -1,5 +1,5 @@
 id: libdrm
-version: 2.4.122
+version: 2.4.125
 about: Library for accessing the DRM
 sources:
   - https://dri.freedesktop.org/libdrm/libdrm-%{version}.tar.xz

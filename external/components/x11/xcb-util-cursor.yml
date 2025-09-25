@@ -1,5 +1,5 @@
 id: xcb-util-cursor
-version: 0.1.4
+version: 0.1.5
 about: Additional extensions to the XCB library
 sources:
   - https://xcb.freedesktop.org/dist/xcb-util-cursor-%{version}.tar.xz

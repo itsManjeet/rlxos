@@ -1,5 +1,5 @@
 id: xfce4-terminal
-version: 1.1.4
+version: 1.1.5
 about: A modern terminal emulator primarily for Xfce4
 
 post-script: |-
@@ -26,4 +26,4 @@ build-depends:
   - components/intltool.yml
 
 sources:
-  - https://archive.xfce.org/src/apps/xfce4-terminal/%{version:2}/xfce4-terminal-%{version}.tar.bz2
+  - https://archive.xfce.org/src/apps/xfce4-terminal/%{version:2}/xfce4-terminal-%{version}.tar.xz

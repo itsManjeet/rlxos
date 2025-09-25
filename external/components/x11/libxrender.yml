@@ -1,5 +1,5 @@
 id: libxrender
-version: 0.9.11
+version: 0.9.12
 about: xorg library libXrender
 sources:
   - https://www.x.org/pub/individual/lib/libXrender-%{version}.tar.xz

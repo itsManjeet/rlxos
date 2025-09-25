@@ -1,5 +1,5 @@
 id: libxau
-version: 1.0.11
+version: 1.0.12
 about: X11 authorisation library
 sources:
   - https://www.x.org/pub/individual/lib/libXau-%{version}.tar.xz

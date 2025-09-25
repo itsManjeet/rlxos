@@ -1,5 +1,5 @@
 id: xfce4-pulseaudio-plugin
-version: 0.4.9
+version: 0.5.1
 about: Pulse audio plugin for xfce4 panel
 
 depends:
@@ -12,4 +12,4 @@ build-depends:
   - components/intltool.yml
   - components/cmake.yml
 sources:
-  - https://archive.xfce.org/src/panel-plugins/xfce4-pulseaudio-plugin/%{version:2}/xfce4-pulseaudio-plugin-%{version}.tar.bz2
+  - https://archive.xfce.org/src/panel-plugins/xfce4-pulseaudio-plugin/%{version:2}/xfce4-pulseaudio-plugin-%{version}.tar.xz

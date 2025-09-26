@@ -33,6 +33,7 @@ depends:
     - components/libva-nomesa.yml
     - components/libvdpau.yml
     - components/libglvnd.yml
+    - components/spirv-tools.yml
     - components/libunwind.yml
     - components/vulkan-loader.yml
     - components/x11/libx11.yml

@@ -8,7 +8,7 @@ depends:
   - components/json-c.yml
   - components/lvm2.yml
   - components/popt.yml
-  - components/libssh.yml
 
 configure: >
+  --disable-ssh-token
   --disable-asciidoc

@@ -1,11 +1,8 @@
 id: libgsf
-version: 1.14.52
+version: 1.14.53
 about:
   A library used for providing an extensible input/output abstraction layer for
   structured file formats
-
-pre-script: |-
-  patch -Np1 -i libgsf-1.14.52-upstream_fixes-1.patch
 
 depends:
   - components/pcre2.yml

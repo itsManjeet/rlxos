@@ -91,7 +91,7 @@ depends:
     - components/flatpak.yml
     - components/power-profiles-daemon.yml
     - components/networkmanager.yml
-    - components/networkmanager-openvpn.yml
+#    - components/networkmanager-openvpn.yml
     - components/network-manager-applet.yml
     - components/blueman.yml
     - components/ntfs-3g.yml

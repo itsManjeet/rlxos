@@ -1,5 +1,5 @@
 id: gstreamer
-version: 1.24.6
+version: 1.26.8
 about: Multimedia graph framework
 
 environ:

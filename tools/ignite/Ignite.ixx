@@ -60,10 +60,10 @@ void extract(const std::filesystem::path& filepath,
         }
     }
 
-    auto exe = "/bin/tar";
+    auto exe = "tar";
     if (filepath.has_extension() && filepath.extension() == ".zip")
     {
-        exe = "/bin/bsdtar";
+        exe = "bsdtar";
     }
 
     int status = Executor(exe)
@@ -475,7 +475,7 @@ export class Ignite
         auto cache_file_path = cachefile(recipe);
         try
         {
-            auto extractor = Executor("/bin/tar")
+            auto extractor = Executor("tar")
                                  .arg("-xPhf")
                                  .arg(cache_file_path)
                                  .arg("-C")
@@ -507,7 +507,7 @@ export class Ignite
             {
                 auto integration_script =
                     recipe.resolve(recipe.integration, config);
-                Executor("/bin/sh")
+                Executor("sh")
                     .arg("-ec")
                     .arg(integration_script)
                     .container(&container)
@@ -539,7 +539,7 @@ export class Ignite
 
             std::ofstream writer(data_dir / "files");
             int status =
-                Executor("/bin/tar")
+                Executor("tar")
                     .arg("-tf")
                     .arg(cache_file_path)
                     .arg("--exclude=./etc/hosts")
@@ -581,7 +581,7 @@ export class Ignite
             std::filesystem::remove_all(container.host_root);
             // TODO: std:filesystem failed to clean container host_root
             // completely????
-            Executor("/bin/rm")
+            Executor("rm")
                 .arg("-r")
                 .arg("-f")
                 .arg(container.host_root)
@@ -611,7 +611,7 @@ export class Ignite
         catch (const std::exception& exception)
         {
             std::cout << "ERROR: " << exception.what() << std::endl;
-            Executor("/bin/sh").container(&container).execute();
+            Executor("sh").container(&container).execute();
             throw;
         }
     }
@@ -639,7 +639,7 @@ export class Ignite
             {
                 if (url.starts_with("http"))
                 {
-                    Executor("/bin/wget")
+                    Executor("wget")
                         .arg(url)
                         .arg("-O")
                         .arg(filepath.string() + ".tmp")
@@ -757,7 +757,7 @@ export class Ignite
                 build_info.resolve(pre_script, config, extra_variables);
             std::cout << "Exec(pre-script)" << std::endl;
 
-            Executor("/bin/sh")
+            Executor("sh")
                 .arg("-ec")
                 .arg(pre_script)
                 .path(extra_variables["build-root"])
@@ -773,7 +773,7 @@ export class Ignite
             auto target = resolved_install_root /
                           build_info.config.get<std::string>("target", "");
             std::filesystem::create_directories(target);
-            Executor("/bin/cp")
+            Executor("cp")
                 .arg("-rap")
                 .arg(source / ".")
                 .arg("-t")
@@ -804,7 +804,7 @@ export class Ignite
                     script_writer << script;
                 }
 
-                Executor("/bin/sh")
+                Executor("sh")
                     .arg("-e")
                     .arg("pkgupd_exec_script.sh")
                     .path(extra_variables["build-root"])
@@ -814,7 +814,7 @@ export class Ignite
             }
             else
             {
-                Executor("/bin/sh")
+                Executor("sh")
                     .arg("-ec")
                     .arg(script)
                     .path(extra_variables["build-root"])
@@ -832,7 +832,7 @@ export class Ignite
                 build_info.resolve(post_script, config, extra_variables);
             std::cout << "Exec(post-script)" << std::endl;
 
-            Executor("/bin/sh")
+            Executor("sh")
                 .arg("-ec")
                 .arg(post_script)
                 .path(extra_variables["build-root"])
@@ -951,7 +951,7 @@ export class Ignite
                  {".dbg", install_root_dbg},
              })
         {
-            Executor("/bin/tar")
+            Executor("tar")
                 .arg("--zstd")
                 .arg("--owner-map=" + (install_root / "user-map").string())
                 .arg("--group-map=" + (install_root / "group-map").string())
@@ -982,7 +982,7 @@ export class Ignite
                 access(iter.path().c_str(), W_OK) == 0)
             {
                 auto [status, mime_type] =
-                    Executor("/bin/file")
+                    Executor("file")
                         .arg("-b")
                         .arg("--mime-type")
                         .arg(iter.path())
@@ -1023,7 +1023,7 @@ export class Ignite
                 {
                     auto dbg_file_path = iter.path().string() + ".dbg";
                     // Copy debugging symbols to dbg directory
-                    Executor("/bin/objcopy")
+                    Executor("objcopy")
                         .arg("--only-keep-debug")
                         .arg(iter.path())
                         .arg(dbg_file_path)
@@ -1044,14 +1044,14 @@ export class Ignite
                     }
 
                     // Strip out the debugging symbols
-                    Executor("/bin/strip")
+                    Executor("strip")
                         .arg(strip_args)
                         .arg(iter.path())
                         .silent()
                         .execute();
 
                     // Link to the extracted debugging symbols
-                    Executor("/bin/objcopy")
+                    Executor("objcopy")
                         .arg("--add-gnu-debuglink=" +
                              iter.path().filename().string() + ".dbg")
                         .arg(iter.path())

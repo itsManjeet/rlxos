@@ -6,7 +6,7 @@ pre-script: |-
     install -vDm0644 /dev/stdin ISO/isolinux/isolinux.cfg << EOF
     DEFAULT RLXOS GNU/Linux
         LABEL RLXOS GNU/Linux
-        KERNEL __KERNEL__
+        LINUX __KERNEL__
         APPEND initrd=__INITRD__ __KARGS__
     EOF
 

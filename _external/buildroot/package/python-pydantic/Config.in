@@ -1,0 +1,11 @@
+config BR2_PACKAGE_PYTHON_PYDANTIC
+	bool "python-pydantic"
+	depends on BR2_PACKAGE_HOST_RUSTC_TARGET_ARCH_SUPPORTS # python-pydantic-core
+	select BR2_PACKAGE_PYTHON_ANNOTATED_TYPES # runtime
+	select BR2_PACKAGE_PYTHON_PYDANTIC_CORE # runtime
+	select BR2_PACKAGE_PYTHON_TYPING_EXTENSIONS # runtime
+	select BR2_PACKAGE_PYTHON_TYPING_INSPECTION # runtime
+	help
+	  Data validation using Python type hints.
+
+	  https://github.com/pydantic/pydantic

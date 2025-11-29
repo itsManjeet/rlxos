@@ -1,0 +1,78 @@
+config BR2_PACKAGE_OPTEE_EXAMPLES
+	bool "optee-examples"
+	depends on BR2_TARGET_OPTEE_OS
+	depends on BR2_TOOLCHAIN_HAS_THREADS # optee-client
+	depends on !BR2_STATIC_LIBS # optee-client
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_3 # optee-client
+	depends on BR2_USE_MMU # optee-client
+	select BR2_PACKAGE_OPTEE_CLIENT
+	select BR2_TARGET_OPTEE_OS_SDK
+	help
+	  Enable the OP-TEE examples package that brings examples of
+	  implementation of OP-TEE non-secure client applications and
+	  secure trusted applications. OP-TEE examples is a
+	  component delivered by the OP-TEE project.
+
+	  Trusted application binary files are installed in the target
+	  directory /lib/optee_armtz as other trusted applications.
+	  At runtime OP-TEE OS can load trusted applications from this
+	  non-secure filesystem/directory into the secure world for
+	  execution.
+
+	  https://github.com/linaro-swg/optee_examples
+
+comment "optee-examples needs a toolchain w/ threads, dynamic library, headers >= 4.3"
+	depends on BR2_TARGET_OPTEE_OS
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS || \
+		!BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_3
+
+if BR2_PACKAGE_OPTEE_EXAMPLES
+
+choice
+	prompt "optee-examples version"
+	default BR2_PACKAGE_OPTEE_EXAMPLES_AS_OS \
+				if BR2_TARGET_OPTEE_OS_CUSTOM_VERSION
+	default BR2_PACKAGE_OPTEE_EXAMPLES_LATEST
+	help
+	  Select the version of optee-examples you want to use
+
+config BR2_PACKAGE_OPTEE_EXAMPLES_AS_OS
+	bool "Same as optee-os being built"
+	depends on BR2_TARGET_OPTEE_OS_CUSTOM_VERSION
+
+config BR2_PACKAGE_OPTEE_EXAMPLES_LATEST
+	bool "4.6.0"
+	help
+	  Use the latest release tag from the optee-examples official
+	  Git repository.
+
+config BR2_PACKAGE_OPTEE_EXAMPLES_CUSTOM_TARBALL
+	bool "Custom tarball"
+	help
+	  This option allows to specify a URL pointing to an
+	  optee-examples source tarball. This URL can use any protocol
+	  recognized by Buildroot, like http://, ftp://, file:// or
+	  scp://.
+
+	  When pointing to a local tarball using file://, you may want
+	  to use a make variable like $(TOPDIR) to reference the root of
+	  the Buildroot tree.
+
+endchoice
+
+if BR2_PACKAGE_OPTEE_EXAMPLES_CUSTOM_TARBALL
+
+config BR2_PACKAGE_OPTEE_EXAMPLES_CUSTOM_TARBALL_LOCATION
+	string "URL of custom optee-examples tarball"
+
+endif
+
+config BR2_PACKAGE_OPTEE_EXAMPLES_VERSION
+	string
+	default BR2_TARGET_OPTEE_OS_CUSTOM_VERSION_VALUE \
+				if BR2_PACKAGE_OPTEE_EXAMPLES_AS_OS
+	default "4.6.0"		if BR2_PACKAGE_OPTEE_EXAMPLES_LATEST
+	default "custom"	if BR2_PACKAGE_OPTEE_EXAMPLES_CUSTOM_TARBALL
+
+endif # BR2_PACKAGE_OPTEE_EXAMPLES

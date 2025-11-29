@@ -1,0 +1,4 @@
+# sha256 from https://github.com/NetworkConfiguration/dhcpcd/releases/tag/v10.2.4
+sha256  6721e606609226dbf4d864a78802a9e96beec0ee034a1bd84138b3e037bba7d9  dhcpcd-10.2.4.tar.xz
+# Locally calculated
+sha256  3aeab006b01c1573b42d4440d7edad0adfe61ad05848ca82e02e745424a2b4fa  LICENSE

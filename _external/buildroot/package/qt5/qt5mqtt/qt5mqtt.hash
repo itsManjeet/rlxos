@@ -1,0 +1,6 @@
+# Hash locally calculated
+sha256  cd92439c4d9597b8fd614e3c894b88860b5b9102d344b4b1195d14ae02c9275a  qt5mqtt-5.15.2-git4.tar.gz
+
+# Hashes for license files:
+sha256  8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903  LICENSE.GPL3
+sha256  0dbe024961f6ab5c52689cbd036c977975d0d0f6a67ff97762d96cb819dd5652  LICENSE.GPL3-EXCEPT

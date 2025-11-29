@@ -1,0 +1,93 @@
+From bb0a1cc656b2df4184a0794fb67ae74c634c1ecd Mon Sep 17 00:00:00 2001
+From: Maxime Ripard <maxime.ripard@free-electrons.com>
+Date: Mon, 13 Dec 2021 22:07:17 +0100
+Subject: [PATCH] Modify the default lighttpd configuration file to have one a
+ starting conf
+
+  * Changed the log path to /var/log and logs filenames
+  * Disable IPv6 (Dropped since 1.4.68)
+  * Do not setuid to a user that doesn't exist on the system
+  * Change the network backend to writev since linux-sendfile fails on buildroot
+
+Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
+Signed-off-by: Simon Dawson <spdawson@gmail.com>
+[Gustavo: update for 1.4.37]
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+[Thomas: update for 1.4.69 - drop server.use-ipv6]
+Signed-off-by: Thomas Devoogdt <thomas.devoogdt@barco.com>
+[Thomas: update for 1.4.77 - move lighttpd.conf to lighttpd.annotated.conf]
+Signed-off-by: Thomas Devoogdt <thomas.devoogdt@barco.com>
+---
+ doc/config/conf.d/access_log.conf  |  2 +-
+ doc/config/lighttpd.annotated.conf | 14 +++++++-------
+ 2 files changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/doc/config/conf.d/access_log.conf b/doc/config/conf.d/access_log.conf
+index f8294802..9886cddf 100644
+--- a/doc/config/conf.d/access_log.conf
++++ b/doc/config/conf.d/access_log.conf
+@@ -7,7 +7,7 @@ server.modules += ( "mod_accesslog" )
+ ##
+ ## Default access log.
+ ##
+-accesslog.filename          = log_root + "/access.log"
++accesslog.filename          = log_root + "/lighttpd-access.log"
+ 
+ ##
+ ## The default format produces CLF compatible output.
+diff --git a/doc/config/lighttpd.annotated.conf b/doc/config/lighttpd.annotated.conf
+index c94f703b..35263a1e 100644
+--- a/doc/config/lighttpd.annotated.conf
++++ b/doc/config/lighttpd.annotated.conf
+@@ -13,8 +13,8 @@
+ ## if you add a variable here. Add the corresponding variable in the
+ ## chroot example as well.
+ ##
+-var.log_root    = "/var/log/lighttpd"
+-var.server_root = "/srv/www"
++var.log_root    = "/var/log"
++var.server_root = "/var/www"
+ var.state_dir   = "/run"
+ var.home_dir    = "/var/lib/lighttpd"
+ var.conf_dir    = "/etc/lighttpd"
+@@ -97,8 +97,8 @@ include conf_dir + "/modules.conf"
+ ## Run as a different username/groupname.
+ ## This requires root permissions during startup.
+ ##
+-server.username  = "lighttpd"
+-server.groupname = "lighttpd"
++server.username  = "www-data"
++server.groupname = "www-data"
+ 
+ ##
+ ## Enable lighttpd to serve requests on sockets received from systemd
+@@ -114,7 +114,7 @@ server.groupname = "lighttpd"
+ ##
+ ## Document root
+ ##
+-server.document-root = server_root + "/htdocs"
++server.document-root = server_root
+ 
+ ##
+ ## The value for the "Server:" response field.
+@@ -140,7 +140,7 @@ server.pid-file = state_dir + "/lighttpd.pid"
+ ##
+ ## Path to the error log file
+ ##
+-server.errorlog             = log_root + "/error.log"
++server.errorlog             = log_root + "/lighttpd-error.log"
+ 
+ ##
+ ## If you want to log to syslog you have to unset the
+@@ -187,7 +187,7 @@ include conf_dir + "/conf.d/debug.conf"
+ ## and write(). Every modern OS provides its own syscall to help network
+ ## servers transfer files as fast as possible
+ ##
+-#server.network-backend = "sendfile"
++server.network-backend = "writev"
+ 
+ ##
+ ## As lighttpd is a single-threaded server, its main resource limit is
+-- 
+2.43.0
+

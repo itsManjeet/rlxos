@@ -1,0 +1,28 @@
+comment "nut needs a toolchain w/ C++, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_NUT
+	bool "nut"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  Network UPS tools
+
+	  The primary goal of the Network UPS Tools (NUT) project is
+	  to provide support for Power Devices, such as
+	  Uninterruptible Power Supplies, Power Distribution Units and
+	  Solar Controllers.
+
+	  http://www.networkupstools.org/
+
+if BR2_PACKAGE_NUT
+
+config BR2_PACKAGE_NUT_DRIVERS
+	string "drivers"
+	help
+	  Select the individual drivers to enable, in a
+	  comma-separated list. Leave empty for all.
+
+endif # BR2_PACKAGE_NUT

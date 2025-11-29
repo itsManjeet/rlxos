@@ -1,0 +1,30 @@
+config BR2_PACKAGE_CAIRO
+	bool "cairo"
+	select BR2_PACKAGE_PIXMAN
+	select BR2_PACKAGE_FONTCONFIG
+	select BR2_PACKAGE_XLIB_LIBX11 if BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBXEXT if BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBXRENDER if BR2_PACKAGE_XORG7
+	help
+	  Cairo is a 2D graphics library with support for multiple
+	  output devices. Currently supported output targets include
+	  the X Window System, Win32, image buffers, and PostScript,
+	  PDF, and SVG file output. Experimental backends include
+	  OpenGL (through glitz), Quartz, and XCB.
+
+	  http://cairographics.org/
+
+if BR2_PACKAGE_CAIRO
+
+config BR2_PACKAGE_CAIRO_PNG
+	bool "png support (png and svg surfaces)"
+	select BR2_PACKAGE_LIBPNG
+
+config BR2_PACKAGE_CAIRO_TEE
+	bool "tee support"
+
+config BR2_PACKAGE_CAIRO_ZLIB
+	bool "zlib support (script, ps, pdf, and xml surfaces)"
+	select BR2_PACKAGE_ZLIB
+
+endif

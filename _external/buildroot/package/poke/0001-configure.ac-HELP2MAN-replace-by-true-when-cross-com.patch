@@ -1,0 +1,36 @@
+From a7e29f73dab5f9bd4fc7a2407f1ed2022c4ff109 Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@gmail.com>
+Date: Fri, 30 Apr 2021 15:43:59 +0200
+Subject: [PATCH] configure.ac: HELP2MAN replace ':' by 'true' when
+ cross-compiling
+
+Avoid:
+/usr/bin/make  ./../poke/poke
+../run \
+  : -p poke --name="The GNU extensible binary editor" \
+      ./../poke/poke -o ./poke.1
+../run: line 51: exec: :: not found
+
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+[Julien: refreshed the patch to be applied with fuzz factor 0]
+Signed-off-by: Julien Olivain <ju.o@free.fr>
+---
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 71b4d86..6487b57 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -88,7 +88,7 @@ gl_LIBTEXTSTYLE_OPTIONAL([0.20.5])
+ if test $cross_compiling = no; then
+   AM_MISSING_PROG(HELP2MAN, help2man)
+ else
+-  HELP2MAN=:
++  HELP2MAN=true
+ fi
+ 
+ dnl The following Automake conditional is used in some Makefile.am files
+-- 
+2.45.2
+

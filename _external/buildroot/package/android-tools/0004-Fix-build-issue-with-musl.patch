@@ -1,0 +1,51 @@
+From d14ca3e3362448590adaebacb76d4d8046f9b556 Mon Sep 17 00:00:00 2001
+From: Gary Bisson <gary.bisson@boundarydevices.com>
+Date: Sun, 1 Dec 2024 15:44:16 +0100
+Subject: [PATCH] Fix build issue with musl
+
+arpa/nameser.h doesn't use the same macro name to avoid several
+inclusions.
+
+Finally had an issue with framebuffer_service.c since it was missing the
+TEMP_FAILURE_RETRY macro.
+
+Signed-off-by: Gary Bisson <gary.bisson@boundarydevices.com>
+---
+ core/adbd/arpa_nameser.h        | 3 +++
+ core/adbd/framebuffer_service.c | 1 +
+ 2 files changed, 4 insertions(+)
+
+diff --git a/core/adbd/arpa_nameser.h b/core/adbd/arpa_nameser.h
+index 438dc04..f3d2fee 100644
+--- a/core/adbd/arpa_nameser.h
++++ b/core/adbd/arpa_nameser.h
+@@ -52,6 +52,8 @@
+ 
+ #ifndef _ARPA_NAMESER_H_
+ #define _ARPA_NAMESER_H_
++#ifndef _ARPA_NAMESER_H
++#define _ARPA_NAMESER_H
+ 
+ #define BIND_4_COMPAT
+ 
+@@ -574,4 +576,5 @@ __END_DECLS
+ #define  XLOG(...)   do {} while (0)
+ #endif
+ 
++#endif /* !_ARPA_NAMESER_H */
+ #endif /* !_ARPA_NAMESER_H_ */
+diff --git a/core/adbd/framebuffer_service.c b/core/adbd/framebuffer_service.c
+index 20c08d2..48e0241 100644
+--- a/core/adbd/framebuffer_service.c
++++ b/core/adbd/framebuffer_service.c
+@@ -26,6 +26,7 @@
+ #include "fdevent.h"
+ #include "adb.h"
+ 
++#include <cutils/fs.h>
+ #include <linux/fb.h>
+ #include <sys/ioctl.h>
+ #include <sys/mman.h>
+-- 
+2.47.0
+

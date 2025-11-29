@@ -1,0 +1,5 @@
+# From https://sourceforge.net/projects/opencore-amr/files/fdk-aac/
+sha1  29f5485a6ec718335243440600ff78418cd4765b  fdk-aac-2.0.3.tar.gz
+# Locally computed:
+sha256  829b6b89eef382409cda6857fd82af84fabb63417b08ede9ea7a553f811cb79e  fdk-aac-2.0.3.tar.gz
+sha256  95ec80da40b4af12ad4c4f3158c9cfb80f2479f3246e4260cb600827cc8c7836  NOTICE

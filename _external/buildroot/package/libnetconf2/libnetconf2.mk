@@ -1,0 +1,41 @@
+################################################################################
+#
+# libnetconf2
+#
+################################################################################
+
+LIBNETCONF2_VERSION = 3.7.1
+LIBNETCONF2_SITE = $(call github,CESNET,libnetconf2,v$(LIBNETCONF2_VERSION))
+LIBNETCONF2_INSTALL_STAGING = YES
+LIBNETCONF2_LICENSE = BSD-3-Clause
+LIBNETCONF2_LICENSE_FILES = LICENSE
+LIBNETCONF2_DEPENDENCIES = libyang
+HOST_LIBNETCONF2_DEPENDENCIES = host-libyang
+
+LIBNETCONF2_CONF_OPTS = \
+	-DENABLE_TESTS=OFF \
+	-DENABLE_VALGRIND_TESTS=OFF
+
+ifeq ($(BR2_PACKAGE_LIBNETCONF2_SSH_TLS),y)
+LIBNETCONF2_CONF_OPTS += -DENABLE_SSH_TLS=ON
+LIBNETCONF2_DEPENDENCIES += libcurl libssh
+ifeq ($(BR2_PACKAGE_MBEDTLS),y)
+LIBNETCONF2_DEPENDENCIES += mbedtls
+else
+LIBNETCONF2_DEPENDENCIES += openssl
+endif
+else
+LIBNETCONF2_CONF_OPTS += -DENABLE_SSH_TLS=OFF
+endif
+
+ifeq ($(BR2_PACKAGE_LIBXCRYPT),y)
+LIBNETCONF2_DEPENDENCIES += libxcrypt
+endif
+
+HOST_LIBNETCONF2_CONF_OPTS = \
+	-DENABLE_TESTS=OFF \
+	-DENABLE_VALGRIND_TESTS=OFF \
+	-DENABLE_SSH_TLS=OFF
+
+$(eval $(cmake-package))
+$(eval $(host-cmake-package))

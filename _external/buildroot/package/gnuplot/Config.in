@@ -1,0 +1,7 @@
+config BR2_PACKAGE_GNUPLOT
+	bool "gnuplot"
+	select BR2_PACKAGE_READLINE if !BR2_PACKAGE_LIBEDIT
+	help
+	  A portable command-line driven graphing utility.
+
+	  http://www.gnuplot.info/

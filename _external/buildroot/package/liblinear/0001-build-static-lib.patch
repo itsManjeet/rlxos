@@ -1,0 +1,33 @@
+From 43a6b4c7b3a63b1cd7f1ed2772a1147be892560f Mon Sep 17 00:00:00 2001
+From: Marcus Hoffmann <marcus.hoffmann@othermo.de>
+Date: Wed, 9 Apr 2025 16:03:59 +0200
+Subject: [PATCH] Makefile: add a rule to build a static library
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+[Fabrice: update for 2.43]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Marcus: update for 2.48]
+Signed-off-by: Marcus Hoffmann <marcus.hoffmann@othermo.de>
+---
+ Makefile | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/Makefile b/Makefile
+index 4f22d17..5cf9b26 100644
+--- a/Makefile
++++ b/Makefile
+@@ -16,6 +16,11 @@ all: train predict
+ lib: linear.o newton.o blas/blas.a
+ 	$(CXX) $(SHARED_LIB_FLAG) linear.o newton.o blas/blas.a -o liblinear.so.$(SHVER)
+ 
++# Keeping blas/blas.a as a pre-requisite, to ensure all .o files are built
++static-lib: linear.o newton.o blas/blas.a
++	$(AR) rcv liblinear.a linear.o newton.o blas/*.o
++	$(RANLIB) liblinear.a
++
+ train: newton.o linear.o train.c blas/blas.a
+ 	$(CXX) $(CFLAGS) -o train train.c newton.o linear.o $(LIBS)
+ 
+-- 
+2.43.0
+

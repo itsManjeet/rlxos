@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/sockjs/json
+md5  0d35a367e2e82644112d6070d867bf7c  sockjs-0.13.0.tar.gz
+sha256  57e959a23f20a8d55149d1e5db0b3b870726f2b4ad8166d41bdcf411b36cdf76  sockjs-0.13.0.tar.gz
+# Locally computed sha256 checksums
+sha256  7be23c071df0314fadeba6077a3830340a5121ad88bfa66b0c095051a766e141  LICENSE

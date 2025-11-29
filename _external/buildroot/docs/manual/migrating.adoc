@@ -1,0 +1,224 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+[[migrating-from-ol-versions]]
+== Migrating from older Buildroot versions
+
+Some versions have introduced backward incompatibilities. This section
+explains those incompatibilities, and for each explains what to do to
+complete the migration.
+
+[[migrating-approach]]
+=== General approach
+
+To migrate from an older Buildroot version, take the following steps.
+
+. For all your configurations, do a build in the old Buildroot
+  environment. Run +make graph-size+. Save
+  +graphs/file-size-stats.csv+ in a different location. Run +make
+  clean+ to remove the rest.
+. Review the specific migration notes below and make the required
+  adaptations to external packages and custom build scripts.
+. Update Buildroot.
+. Run +make menuconfig+ starting from the existing +.config+.
+. If anything is enabled in the Legacy menu, check its help text,
+  unselect it, and save the configuration.
+. For more details, review the git commit messages for the packages that
+  you need. Change into the +packages+ directory and run
+  +git log <old version>.. -- <your packages>+.
+. Build in the new Buildroot environment.
+. Fix build issues in external packages (usually due to updated
+  dependencies).
+. Run +make graph-size+.
+. Compare the new +file-size-stats.csv+ with the original one, to
+  check if no required files have disappeared and if no new big unneeded
+  files have appeared.
+. For configuration (and other) files in a custom overlay that overwrite
+  files created by Buildroot, check if there are changes in the
+  Buildroot-generated file that need to be propagated to your custom
+  file.
+
+[[br2-external-converting]]
+=== Migrating to 2016.11
+
+Before Buildroot 2016.11, it was possible to use only one br2-external
+tree at once. With Buildroot 2016.11 came the possibility to use more
+than one simultaneously (for details, see xref:outside-br-custom[]).
+
+This however means that older br2-external trees are not usable as-is.
+A minor change has to be made: adding a name to your br2-external tree.
+
+This can be done very easily in just a few steps:
+
+ * First, create a new file named +external.desc+, at the root of your
+   br2-external tree, with a single line defining the name of your
+   br2-external tree:
++
+----
+$ echo 'name: NAME_OF_YOUR_TREE' >external.desc
+----
++
+.Note
+Be careful when choosing a name: It has to be unique and be made
+with only ASCII characters from the set +[A-Za-z0-9_]+.
+
+ * Then, change every occurrence of +BR2_EXTERNAL+ in your br2-external
+   tree with the new variable:
++
+----
+$ find . -type f | xargs sed -i 's/BR2_EXTERNAL/BR2_EXTERNAL_NAME_OF_YOUR_TREE_PATH/g'
+----
+
+Now, your br2-external tree can be used with Buildroot 2016.11 onward.
+
+.Note:
+This change makes your br2-external tree incompatible with Buildroot
+before 2016.11.
+
+[[migrating-host-usr]]
+=== Migrating to 2017.08
+
+Before Buildroot 2017.08, host packages were installed in +$(HOST_DIR)/usr+
+(with e.g. the autotools' +--prefix=$(HOST_DIR)/usr+). With Buildroot
+2017.08, they are now installed directly in +$(HOST_DIR)+.
+
+Whenever a package installs an executable that is linked with a library
+in +$(HOST_DIR)/lib+, it must have an RPATH pointing to that directory.
+
+An RPATH pointing to +$(HOST_DIR)/usr/lib+ is no longer accepted.
+
+[[migrating-svn-externals]]
+=== Migrating to 2023.11
+
+Before Buildroot 2023.11, the subversion download backend unconditionally
+retrieved the external references (objects with an `svn:externals`
+property). Starting with 2023.11, externals are no longer retrieved by
+default; if you need them, set +LIBFOO_SVN_EXTERNALS+ to +YES+. This
+change implies that:
+
+* the generated archive content may change, and thus the hashes may need
+  to be updated appropriately;
+* the archive version suffix has been updated to +-br3+, so the hash
+  files must be updated appropriately.
+
+Before Buildroot 2023.11, it was possible (but undocumented and unused)
+to apply architecture-specific patches, by prefixing the patch filename
+with the architecture, e.g. `0001-some-changes.patch.arm` and such a
+patch would only be applied for that architecture. With Buildroot 2023.11,
+this is no longer supported, and such patches are no longer applied at
+all.
+
+If you still need per-architecture patches, then you may provide a
+xref:hooks[pre-patch hook] that copies the patches applicable to the
+configured architecture, e.g.:
+
+----
+define LIBFOO_ARCH_PATCHES
+    $(foreach p,$(wildcard $(LIBFOO_PKGDIR)/*.patch.$(ARCH)), \
+        cp -f $(p) $(patsubst %.$(ARCH),%,$(p))
+    )
+endef
+LIBFOO_PRE_PATCH_HOOKS += LIBFOO_ARCH_PATCHES
+----
+
+Note that no package in Buildroot has architecture-specific patches, and
+that such patches will most probably not be accepted.
+
+[[migrating-git-attributes]]
+=== Migrating to 2024.05
+
+The download backends have been extended in various ways.
+
+* All locally generated tarballs are even more reproducible. Before
+  2024.05, it was possible that the access mode of files in the archives
+  were not consistent when the download directory has specific ACLs (e.g.
+  with the +default+ ACL set). This impacts the archives generated for
+  git and subversion repositories, as well as those for vendored cargo
+  and go packages.
+* The git download backend now properly expands the `export-subst`
+  https://git-scm.com/docs/gitattributes[git attribute] when generating
+  archives.
+* A newer +tar+ version, _1.35_, is required to generate the archives.
+  For compatibility reasons, +tar+ 1.35 changes the way it stores some
+  fields (`devmajor` and `devminor`), which has an impact in the metadata
+  stored in the archives (but the content of files is not affected).
+
+To accommodate those changes, the archive suffix has been updated or
+added:
+
+* for git: +-git4+
+* for subversion: +-svn5+
+* for cargo (rust) packages: +-cargo2+
+* for go packages: +-go2+
+
+Note that, if two such prefixes would apply to a generated archive, like
+for a cargo package downloaded from git, both suffixes need to be added,
+first the one for the download mechanism, then the one for the vendoring,
+e.g.: +libfoo-1.2.3-git4-cargo2.tar.gz+.
+
+Because of this, the hash file of any custom packages or custom versions
+for kernel and bootloaders must be updated. The following sed scripts can
+automate the rename in the hash file (assuming such files are kept under
+git):
+
+----
+# For git and svn packages, which originally had -br2 resp. -br3 suffix
+sed -r -i -e 's/-br2/-git4/; s/-br3/-svn5/' $(
+    git grep -l -E -- '-br2|-br3' -- '*.hash'
+)
+
+# For go packages, which originally had no suffix
+sed -r -i -e 's/(\.tar\.gz)$/-go2\1/' $(
+    git grep -l -E '\$\(eval \$\((host-)?golang-package\)\)' -- '*.mk' \
+    |sed -r -e 's/\.mk$/.hash/' \
+    |sort -u
+)
+
+# For cargo packages, which originally had no suffix
+sed -r -i -e 's/(\.tar\.gz)$/-cargo2\1/' $(
+    git grep -l -E '\$\(eval \$\((host-)?cargo-package\)\)' -- '*.mk' \
+    |sed -r -e 's/\.mk$/.hash/' \
+    |sort -u
+)
+----
+
+Note that the hash _will_ have changed, so that needs to be updated
+(manually) as well.
+
+[[migrating-mender]]
+=== Migrating to 2025.02
+
+Mender now requires a special bootstrap artifact to be placed in
++/var/lib/mender+. This replaces the +artifact_info+ file. Just like a
+normal artifact, the bootstrap artifact is generated with
+host-mender-artifact. See +board/mender/x86_64/post-image-efi.sh+ for an
+example of how to generate the bootstrap.mender file. See 
+https://docs.mender.io/release-information/release-notes-changelog/mender-client#mender-3-5-0-1[the
+release notes], under features, for more information.
+
+[[migrating-resolv.conf]]
+=== Migrating to 2025.05
+
+In 2025.05, for SYS-V-like systems (busybox, sysvinit, openrc), the
+`/etc/resolv.conf` symlink was changed to point to `/run/resolv.conf`,
+rather than the legacy location in `/tmp`. Users of a custom `fstab`
+will need to ensure that `/run` is writable before resolv.conf is
+created (usually by a DHCP client), either with an entry for `/run`,
+or with a startup script.
+
+Note that systems using systemd are not impacted: systemd always ensures
+that `/run` is writable. Systems further using systemd-resolved already
+had a `/etc/resolv.conf` that pointed into `/run` anyway.
+
+Due to the update of Rust to a version greater than 1.84.0 making the
+Cargo.lock file mandatory and the change from +.cargo/config+ to
++.cargo/config.toml+, tarballs generated by Cargo-fetched packages
+have changed. Therefore the suffix of such tarballs has been changed
+from +-cargo2+ to +-cargo4+.
+
+[[migrating-systemd]]
+=== Migrating to 2025.08
+
+In 2025.08, starting with systemd version 257, systemd-networkd requires kernel
+5.4 or later. If you are still using a kernel older than 5.4, please update
+your kernel or use an alternative network manager.

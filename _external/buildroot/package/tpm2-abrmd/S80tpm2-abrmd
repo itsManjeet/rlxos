@@ -1,0 +1,69 @@
+#!/bin/sh
+
+DAEMON="tpm2-abrmd"
+PIDFILE="/var/run/$DAEMON.pid"
+
+TABRMD_ARGS="--tcti=device --logger=syslog --max-connections=20"
+
+# shellcheck source=/dev/null
+[ -r "/etc/default/$DAEMON" ] && . "/etc/default/$DAEMON"
+
+check_device() {
+	if ! ls /dev/tpm[0-9]* > /dev/null 2>&1; then
+		echo "no TPM device found, skipping."
+		exit 0
+	fi
+	if [ ! -x /sbin/udevd ]; then
+		chown tss:tss /dev/tpm[0-9]* && chmod 660 /dev/tpm*
+	fi
+}
+
+start() {
+	printf 'Starting %s: ' "$DAEMON"
+	check_device
+	# shellcheck disable=SC2086 # we need the word splitting
+	start-stop-daemon --start --background --chuid tss:tss --make-pidfile \
+		--pidfile "$PIDFILE" --exec "/usr/sbin/$DAEMON" \
+		-- ${TABRMD_ARGS}
+	status=$?
+	if [ "$status" -eq 0 ]; then
+		echo "OK"
+	else
+		echo "FAIL"
+	fi
+	return "$status"
+}
+
+stop() {
+	printf 'Stopping %s: ' "$DAEMON"
+	start-stop-daemon --stop --pidfile "$PIDFILE" --exec "/usr/sbin/$DAEMON"
+	status=$?
+	if [ "$status" -eq 0 ]; then
+		echo "OK"
+	else
+		echo "FAIL"
+		return "$status"
+	fi
+	while start-stop-daemon --stop --test --quiet --pidfile "$PIDFILE" \
+		--exec "/usr/sbin/$DAEMON"; do
+		sleep 0.1
+	done
+	rm -f "$PIDFILE"
+	return "$status"
+}
+
+restart() {
+	stop
+	start
+}
+
+case "$1" in
+	start|stop|restart)
+		"$1";;
+	reload)
+		# Restart, since there is no true "reload" feature.
+		restart;;
+	*)
+		echo "Usage: tpm2-abrmd {start|stop|restart|reload}" >&2
+		exit 1
+esac

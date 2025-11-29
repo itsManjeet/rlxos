@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/magic-wormhole-mailbox-server/json
+md5  bb9f84e7ecddc43413b4287b7b20d285  magic-wormhole-mailbox-server-0.5.1.tar.gz
+sha256  a007a03672293204657681dbf502045d6d5817c57f9aae2f2226e6ea1a008ca1  magic-wormhole-mailbox-server-0.5.1.tar.gz
+# Locally computed sha256 checksums
+sha256  4a9cc2415c52cef591b6822eee68fed36d7e6d80284b09638cff61d762d99060  LICENSE

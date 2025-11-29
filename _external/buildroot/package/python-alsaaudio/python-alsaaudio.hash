@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/pyalsaaudio/json
+md5  8c11664f8787e3d9900d666f15565713  pyalsaaudio-0.11.0.tar.gz
+sha256  a78a9dca33524b2c9064b34e21f5ab874272313cf324a9a77592f396a5e0fddc  pyalsaaudio-0.11.0.tar.gz
+# Locally computed sha256 checksums
+sha256  ef6ba930f96986d78082e67c817ac617b9e833d60d5a0460f24c9c674a010935  LICENSE

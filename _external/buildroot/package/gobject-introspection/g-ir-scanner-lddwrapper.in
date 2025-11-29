@@ -1,0 +1,2 @@
+#!/usr/bin/env sh
+@TARGET_OBJDUMP@ -p "$@"

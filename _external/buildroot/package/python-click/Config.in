@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PYTHON_CLICK
+	bool "python-click"
+	help
+	  Python composable command line interface toolkit.
+
+	  https://pypi.python.org/pypi/click

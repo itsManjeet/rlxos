@@ -1,0 +1,5 @@
+# From https://www.mail-archive.com/xorg-announce@lists.x.org/msg01797.html
+sha256  faafea166bf2451a173d9d593352940ec6404145c5d1da5c213423ce4d359e92  xtrans-1.6.0.tar.xz
+sha512  e0ac4a2df0eeacdf23cedd74fee063a8eea81d05c4c4c9a9a113b9b4238db7cacb3c831973ac647fe1a5b06426dcdf0b2f8be5ac27862700333269880e25725b  xtrans-1.6.0.tar.xz
+# Locally computed
+sha256  3fe68a84ab89e82947e560316ab70cf2d02a8b978ae5cf4fbdfd53fc5b917308  COPYING

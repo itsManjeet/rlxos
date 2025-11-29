@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/httpx/json
+md5  774cf32b9cd94a44189fbe5871026664  httpx-0.28.1.tar.gz
+sha256  75e98c5f16b0f35b567856f597f06ff2270a374470a5c2392242528e3e3e42fc  httpx-0.28.1.tar.gz
+# Locally computed sha256 checksums
+sha256  4ec59d544f12b5f539a3a716fd321ac58ccd8030b465221f2c880200cdf28d8d  LICENSE.md

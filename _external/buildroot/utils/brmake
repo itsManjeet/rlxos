@@ -1,0 +1,38 @@
+#!/bin/bash
+# (C) 2016, "Yann E. MORIN" <yann.morin.1998@free.fr>
+# License: WTFPL, https://spdx.org/licenses/WTFPL.html
+
+main() {
+    local ret start d h m mf
+
+    start=${SECONDS}
+
+    make "${@}" \
+    &> >( while read -r line; do
+             printf "%(%Y-%m-%dT%H:%M:%S)T %s\n" -1 "${line}"
+         done \
+         |tee -a br.log \
+         |grep --line-buffered --colour=never -E '>>>' \
+         |sed --unbuffered -E 's/^([0-9T:-]{19}) [[:print:]]*(.*>>> )/\1 \2/'
+       )
+    ret=${?}
+
+    d=$((SECONDS-start))
+    printf "Done in "
+    h=$((d/3600))
+    d=$((d%3600))
+    [ ${h} -eq 0 ] || { printf "%dh " ${h}; mf="02"; }
+    m=$((d/60))
+    d=$((d%60))
+    [ ${m} -eq 0 ] || { printf "%${mf}dmin " ${m}; sf="02"; }
+    printf "%${sf}ds" ${d}
+
+    if [ ${ret} -ne 0 ]; then
+        printf "  (error code: %s)" ${ret}
+    fi
+    printf "\n"
+
+    return ${ret}
+}
+
+main "${@}"

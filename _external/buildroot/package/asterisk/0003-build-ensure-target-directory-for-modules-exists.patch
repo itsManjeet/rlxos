@@ -1,0 +1,34 @@
+From 93edc41d3ae60e6ee9b9bbb7cdcc592133521fa3 Mon Sep 17 00:00:00 2001
+From: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Date: Mon, 27 Nov 2017 12:52:52 +0100
+Subject: [PATCH] build: ensure target directory for modules exists
+
+Currently, in highly-parallel builds, it is possible that installing
+modules fails because the target directory does not exist yet.
+
+We fix that by instructing $(INSTALL) to create the destination directory
+first.
+
+Signed-off-by: Julien Olivain <ju.o@free.fr>
+[Julien: rebase patch on tag 20.7.0]
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+---
+ Makefile.moddir_rules | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile.moddir_rules b/Makefile.moddir_rules
+index 795b32c716..7d5e5d241a 100644
+--- a/Makefile.moddir_rules
++++ b/Makefile.moddir_rules
+@@ -106,7 +106,7 @@ clean::
+ 
+ install:: all
+ 	@echo "Installing modules from `basename $(CURDIR)`..."
+-	@for x in $(LOADABLE_MODS:%=%.so); do $(INSTALL) -m 755 $$x "$(DESTDIR)$(ASTMODDIR)" ; done
++	@for x in $(LOADABLE_MODS:%=%.so); do $(INSTALL) -D -m 755 $$x "$(DESTDIR)$(ASTMODDIR)" ; done
+ ifneq ($(findstring :,$(XMLSTARLET)$(BASH)),:)
+ 	@if [ -f .moduleinfo ] ; then \
+ 		declare -A DISABLED_MODS ;\
+-- 
+2.45.2
+

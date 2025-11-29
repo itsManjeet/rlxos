@@ -1,0 +1,80 @@
+From 571445ec4643865566d2c5a9e27d9b78b8b00107 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Mon, 29 May 2017 23:03:48 +0300
+Subject: [PATCH] Add a --{enable,disable}-progs configure option
+
+Add a --{enable,disable}-progs configuration option to elfutils. This
+allows to selectively disable the compilation of the elfutils programs
+(in which case only the libraries are built and installed). This is
+useful because the programs are often not needed, and also because
+building the programs against uClibc causes several issues (lack of
+obstack_printf() in uClibc for example).
+
+Based on the former patch by Thomas Petazzoni.
+
+[Vincent: tweak patch for 0.166]
+[Bernd: rebased patch for 0.177]
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+[Rebased on 0.183]
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+[Fabrice: don't error out if obstack is not found]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Rebased on 0.192]
+Signed-off-by: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
+[Rebased on 0.193]
+Signed-off-by: Thomas Perale <thomas.perale@mind.be>
+---
+ Makefile.am  | 6 +++++-
+ configure.ac | 8 +++++++-
+ 2 files changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index 92130b57..00f5176b 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -28,8 +28,12 @@ AM_MAKEFLAGS = --no-print-directory
+ 
+ pkginclude_HEADERS = version.h
+ 
++if ENABLE_PROGS
++PROGS_SUBDIR = src
++endif
++
+ SUBDIRS = config lib libelf libcpu backends libebl libdwelf libdwfl \
+-	  libdwfl_stacktrace libdw libasm debuginfod src po doc tests
++	  libdwfl_stacktrace libdw libasm debuginfod $(PROGS_SUBDIR) po doc tests
+
+ EXTRA_DIST = elfutils.spec GPG-KEY NOTES CONTRIBUTING SECURITY \
+ 	     COPYING COPYING-GPLV2 COPYING-LGPLV3 CONDUCT
+diff --git a/configure.ac b/configure.ac
+index f191488f..87d91f8f 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -427,6 +427,12 @@ AS_HELP_STRING([--enable-tests-rpath],[build $ORIGIN-using rpath into tests]),
+ 	       [tests_use_rpath=$enableval], [tests_use_rpath=no])
+ AM_CONDITIONAL(TESTS_RPATH, test "$tests_use_rpath" = yes)
+ 
++AC_ARG_ENABLE([progs],
++	AS_HELP_STRING([--enable-progs], [enable progs]),
++	enable_progs=$enableval,
++	enable_progs=yes)
++AM_CONDITIONAL(ENABLE_PROGS, test "$enable_progs" = yes)
++
+ dnl zlib is mandatory.
+ save_LIBS="$LIBS"
+ LIBS=
+@@ -671,7 +677,7 @@ saved_LIBS="$LIBS"
+ AC_SEARCH_LIBS([_obstack_free], [obstack])
+ LIBS="$saved_LIBS"
+ case "$ac_cv_search__obstack_free" in
+-        no) AC_MSG_FAILURE([failed to find _obstack_free]) ;;
++        no) obstack_LIBS= ;;
+         -l*) obstack_LIBS="$ac_cv_search__obstack_free" ;;
+         *) obstack_LIBS= ;;
+ esac
+-- 
+2.47.1
+

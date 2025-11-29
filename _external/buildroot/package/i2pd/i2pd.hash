@@ -1,0 +1,4 @@
+# From https://github.com/PurpleI2P/i2pd/releases/download/2.50.2/SHA512SUMS
+sha512  7df7a578711a959feee4326060829cf87c0d1669e473934549cb59d868a7aef7300ecd2d7a6b92a2295aa7e97964cc16d0e44a334db917e22b0b59573a9052de  i2pd-2.50.2.tar.gz
+# Locally computed:
+sha256  e32cc0171ce3301afa67d83f61598f29af7efdf8218dfb66cc1a72224474ec2c  LICENSE

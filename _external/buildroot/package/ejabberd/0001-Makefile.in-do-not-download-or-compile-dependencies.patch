@@ -1,0 +1,36 @@
+From bfcc72e5bb96fc9fc1f3558191a1a3f40c7f159a Mon Sep 17 00:00:00 2001
+From: Johan Oudinet <johan.oudinet@gmail.com>
+Date: Fri, 2 Aug 2024 17:32:37 +0200
+Subject: [PATCH] Makefile.in: do not download or compile dependencies
+
+Signed-off-by: Johan Oudinet <johan.oudinet@gmail.com>
+Upstream: N/A, not upstreamable
+---
+ Makefile.in | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile.in b/Makefile.in
+index 5adf241d5..74aad3156 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -201,7 +201,7 @@ endif
+ #' main targets
+ #
+ 
+-all: scripts deps src
++all: scripts src
+ 
+ deps: $(DEPSDIR)/.got
+ 
+@@ -215,7 +215,7 @@ $(DEPSDIR)/.got:
+ $(DEPSDIR)/.built: $(DEPSDIR)/.got
+ 	$(REBAR) compile && :> $(DEPSDIR)/.built
+ 
+-src: $(DEPSDIR)/.built
++src:
+ 	$(REBAR) $(SKIPDEPS) compile
+ 	$(EXPLICIT_ELIXIR_COMPILE)
+ 
+-- 
+2.34.1
+

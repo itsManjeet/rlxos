@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/automat/json
+md5  c023f8848366053a76f99cffba3ea34e  automat-24.8.1.tar.gz
+sha256  b34227cf63f6325b8ad2399ede780675083e439b20c323d376373d8ee6306d88  automat-24.8.1.tar.gz
+# Locally computed sha256 checksums
+sha256  b2201301678d0a937d938543827ca1360712eb34e23de8ee3f3bfffbd4c0e376  LICENSE

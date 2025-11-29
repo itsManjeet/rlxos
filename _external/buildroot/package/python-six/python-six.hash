@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/six/json
+md5  a0387fe15662c71057b4fb2b7aa9056a  six-1.17.0.tar.gz
+sha256  ff70335d468e7eb6ec65b95b99d3a2836546063f63acc5171de367e834932a81  six-1.17.0.tar.gz
+# Locally computed sha256 checksums
+sha256  4375ba20e2b9c6c4e7cad2940a628fd90e95cc3d50ee92aae755715d8ba1fbd0  LICENSE

@@ -1,0 +1,143 @@
+bits 32
+
+section .text
+
+global limine_spinup_32
+limine_spinup_32:
+    ; If available, set PAT as:
+    ; PAT0 -> WB  (06)
+    ; PAT1 -> WT  (04)
+    ; PAT2 -> UC- (07)
+    ; PAT3 -> UC  (00)
+    ; PAT4 -> WP  (05)
+    ; PAT5 -> WC  (01)
+    mov eax, 1
+    xor ecx, ecx
+    cpuid
+    test edx, 1 << 16
+    jz .no_pat
+    mov eax, 0x00070406
+    mov edx, 0x00000105
+    mov ecx, 0x277
+    wrmsr
+  .no_pat:
+
+    ; Enable EFER.NXE
+    cmp dword [esp+32], 0 ; nx_available
+    je .no_nx
+    mov ecx, 0xc0000080
+    rdmsr
+    bts eax, 11
+    wrmsr
+  .no_nx:
+
+    ; Enable CR4.LA57
+    cmp dword [esp+4], 0 ; level5pg
+    je .no_la57
+    mov eax, cr4
+    bts eax, 12
+    mov cr4, eax
+  .no_la57:
+
+    ; Enable CR0.WP
+    mov eax, cr0
+    bts eax, 16
+    mov cr0, eax
+
+    cld
+
+    mov eax, [esp+8] ; pagemap_top_lv
+    mov cr3, eax
+
+    ; Enable CR4.PAE
+    mov eax, cr4
+    bts eax, 5
+    mov cr4, eax
+
+    ; Enable EFER.LME
+    mov ecx, 0xc0000080
+    rdmsr
+    bts eax, 8
+    wrmsr
+
+    ; Enable CR0.PG
+    mov eax, cr0
+    bts eax, 31
+    mov cr0, eax
+
+    ; Go 64
+    push 0x28
+    call .p1
+  .p1:
+    add dword [esp], .mode64 - .p1
+    retfd
+
+bits 64
+  .mode64:
+    mov eax, 0x30
+    mov ds, eax
+    mov es, eax
+    mov fs, eax
+    mov gs, eax
+    mov ss, eax
+
+    ; Load 64-bit GDT
+    mov eax, [rsp+28] ; local_gdt
+    lgdt [rax]
+
+    ; Jump to higher half
+    mov rax, qword [rsp+36]
+    add rsp, rax
+    call .p2
+  .p2:
+    add qword [rsp], .hh - .p2
+    add qword [rsp], rax
+    retq
+  .hh:
+
+    cmp dword [rsp+44], 1
+    jb .no_unmap_lower_half
+
+    ; Unmap lower half entirely
+    mov rsi, cr3
+    lea rdi, [rsi + rax]
+    mov rcx, 256
+    xor rax, rax
+    rep stosq
+    mov cr3, rsi
+
+  .no_unmap_lower_half:
+
+    ; Push fake return address
+    mov rsi, [rsp+20] ; stack
+    sub rsi, 8
+    mov qword [rsi], 0
+
+    ; Prepare iretq frame
+    mov rax, qword [rsp+12] ; entry_point
+    push 0x30
+    push rsi
+    pushfq
+    push 0x28
+    push rax
+
+    ; Zero out all GPRs
+    xor eax, eax
+    xor ebx, ebx
+    xor ecx, ecx
+    xor edx, edx
+    xor esi, esi
+    xor edi, edi
+    xor ebp, ebp
+    xor r8d, r8d
+    xor r9d, r9d
+    xor r10d, r10d
+    xor r11d, r11d
+    xor r12d, r12d
+    xor r13d, r13d
+    xor r14d, r14d
+    xor r15d, r15d
+
+    iretq
+
+section .note.GNU-stack noalloc noexec nowrite progbits

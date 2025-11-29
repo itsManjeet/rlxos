@@ -1,0 +1,101 @@
+section .rodata
+
+invalid_idt:
+    dq 0, 0
+
+section .text
+
+extern flush_irqs
+
+%macro push32 1
+    sub rsp, 4
+    mov dword [rsp], %1
+%endmacro
+
+extern gdt
+
+global common_spinup
+bits 64
+common_spinup:
+    cli
+
+    lgdt [rel gdt]
+    lidt [rel invalid_idt]
+
+    lea rbx, [rel .reload_cs]
+
+    push 0x28
+    push rbx
+    retfq
+.reload_cs:
+    mov eax, 0x30
+    mov ds, eax
+    mov es, eax
+    mov fs, eax
+    mov gs, eax
+    mov ss, eax
+
+    push r8
+    push r9
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    call flush_irqs
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rcx
+    pop r9
+    pop r8
+
+    mov rbp, rsp
+
+    cmp esi, 4
+    jle .no_stack_args
+
+.push_stack_args:
+    dec esi
+    mov eax, [rbp + 8 + rsi*8]
+    push32 eax
+    test esi, esi
+    jnz .push_stack_args
+
+.no_stack_args:
+    push32 r9d
+    push32 r8d
+    push32 ecx
+    push32 edx
+
+    lea rbx, [rel .go_32]
+
+    push 0x18
+    push rbx
+    retfq
+
+bits 32
+.go_32:
+    mov eax, 0x20
+    mov ds, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
+    mov ss, ax
+
+    xor eax, eax
+    lldt ax
+
+    mov eax, 0x00000011
+    mov cr0, eax
+
+    mov ecx, 0xc0000080
+    xor eax, eax
+    xor edx, edx
+    wrmsr
+
+    xor eax, eax
+    mov cr4, eax
+
+    call edi
+
+section .note.GNU-stack noalloc noexec nowrite progbits

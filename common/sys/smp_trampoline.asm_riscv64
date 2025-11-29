@@ -1,0 +1,84 @@
+.section .text
+
+.global smp_trampoline_start
+smp_trampoline_start:
+.option norelax
+        // The AP begins executing here with the following state:
+        //      satp            = 0
+        //      sstatus.SIE     = 0
+        //      a0              = hartid
+        //      a1              = struct trampoline_passed_info *
+        //
+        // All other registers are undefined.
+
+#define smp_tpl_booted_flag     0
+#define smp_tpl_satp            8
+#define smp_tpl_info_struct     16
+#define smp_tpl_hhdm_offset     24
+
+        ld      a0, smp_tpl_info_struct(a1)
+        ld      t1, smp_tpl_hhdm_offset(a1)
+
+        // Set `stvec` so we page fault into the higher half after loading `satp`.
+        lla     t0, 0f
+        add     t0, t1, t0
+        csrw    stvec, t0
+        ld      t0, smp_tpl_satp(a1)
+        csrw    satp, t0
+        sfence.vma
+        unimp
+0:
+        // Relocate the smp_info and passed_info pointers to the higher half.
+        add     a0, t1, a0
+        add     a1, t1, a1
+
+        // Tell the BSP we've started.
+        li      t0, 1
+        fence   rw, w
+        sd      t0, (a1)
+
+        // Zero all the things.
+        // Preserve a0
+        mv      a1, zero
+        mv      a2, zero
+        mv      a3, zero
+        mv      a4, zero
+        mv      a5, zero
+        mv      a6, zero
+        mv      a7, zero
+        mv      s0, zero
+        mv      s1, zero
+        mv      s2, zero
+        mv      s3, zero
+        mv      s4, zero
+        mv      s5, zero
+        mv      s6, zero
+        mv      s7, zero
+        mv      s8, zero
+        mv      s9, zero
+        mv      s10, zero
+        mv      s11, zero
+        mv      t1, zero
+        mv      t2, zero
+        mv      t3, zero
+        mv      t4, zero
+        mv      t5, zero
+        mv      t6, zero
+        mv      tp, zero
+        mv      ra, zero
+
+        csrw    sie, zero
+        csrw    stvec, zero
+
+        // Wait for kernel to tell us where to go.
+0:      .4byte 0x0100000f    // pause
+        ld      t0, 24(a0)
+        fence   r, rw
+        beqz    t0, 0b
+
+        // Load sp from reserved field of info struct
+        ld      sp, 16(a0)
+
+        jr      t0
+
+.section .note.GNU-stack,"",%progbits

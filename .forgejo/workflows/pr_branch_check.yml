@@ -1,0 +1,15 @@
+name: Check that the PR is targetting trunk
+
+on: [ pull_request ]
+
+jobs:
+  pr_branch_check:
+    name: Check that the PR is targetting trunk
+    runs-on: codeberg-tiny
+    steps:
+      - name: Check that the PR is targetting trunk
+        if: ${{ forge.base_ref != 'trunk' }}
+        run: |
+          set -e
+          echo "The PR is not targetting the trunk branch, please fix that."
+          false

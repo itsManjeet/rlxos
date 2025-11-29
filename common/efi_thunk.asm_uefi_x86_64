@@ -1,0 +1,10 @@
+section .text
+
+global efi_main
+extern uefi_entry
+efi_main:
+    xor eax, eax
+    mov [rsp], rax
+    jmp uefi_entry
+
+section .note.GNU-stack noalloc noexec nowrite progbits

@@ -1,0 +1,5 @@
+{
+    "stage": "init",
+    "kind": "oneshot",
+    "exec-start": "udevadm trigger --action=add"
+}

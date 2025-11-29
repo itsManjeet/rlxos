@@ -18,12 +18,12 @@ func TestReadLine(t *testing.T) {
 	case "android", "plan9", "windows", "wasip1":
 		t.Skipf("not supported on %s", runtime.GOOS)
 	}
-	filename := "/etc/services" // a nice big file
+	filename := "/config/services" // a nice big file
 
 	fd, err := os.Open(filename)
 	if err != nil {
 		// The file is missing even on some Unix systems.
-		t.Skipf("skipping because failed to open /etc/services: %v", err)
+		t.Skipf("skipping because failed to open /config/services: %v", err)
 	}
 	defer fd.Close()
 	br := bufio.NewReader(fd)

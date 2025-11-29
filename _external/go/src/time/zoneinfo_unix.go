@@ -19,10 +19,10 @@ import (
 // /usr/share/lib/zoneinfo, IRIX 6 has /usr/lib/locale/TZ,
 // NixOS has /etc/zoneinfo.
 var platformZoneSources = []string{
-	"/usr/share/zoneinfo/",
-	"/usr/share/lib/zoneinfo/",
-	"/usr/lib/locale/TZ/",
-	"/etc/zoneinfo",
+	"/data/zoneinfo/",
+	"/data/lib/zoneinfo/",
+	"/lib/locale/TZ/",
+	"/config/zoneinfo",
 }
 
 func initLocal() {
@@ -36,7 +36,7 @@ func initLocal() {
 	tz, ok := syscall.Getenv("TZ")
 	switch {
 	case !ok:
-		z, err := loadLocation("localtime", []string{"/etc"})
+		z, err := loadLocation("localtime", []string{"/config"})
 		if err == nil {
 			localLoc = *z
 			localLoc.name = "Local"
@@ -49,7 +49,7 @@ func initLocal() {
 		if tz != "" && tz[0] == '/' {
 			if z, err := loadLocation(tz, []string{""}); err == nil {
 				localLoc = *z
-				if tz == "/etc/localtime" {
+				if tz == "/config/localtime" {
 					localLoc.name = "Local"
 				} else {
 					localLoc.name = tz

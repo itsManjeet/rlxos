@@ -26,7 +26,7 @@ type fileTransport struct {
 //	t := &http.Transport{}
 //	t.RegisterProtocol("file", http.NewFileTransport(http.Dir("/")))
 //	c := &http.Client{Transport: t}
-//	res, err := c.Get("file:///etc/passwd")
+//	res, err := c.Get("file:///config/passwd")
 //	...
 func NewFileTransport(fs FileSystem) RoundTripper {
 	return fileTransport{fileHandler{fs}}

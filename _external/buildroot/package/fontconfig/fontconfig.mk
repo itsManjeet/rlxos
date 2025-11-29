@@ -17,7 +17,7 @@ FONTCONFIG_LICENSE_FILES = COPYING
 FONTCONFIG_CPE_ID_VALID = YES
 
 FONTCONFIG_CONF_OPTS = \
-	-Dcache-dir=/var/cache/fontconfig \
+	-Dcache-dir=/cache/fontconfig \
 	-Dtests=disabled \
 	-Ddoc=disabled
 

@@ -4,7 +4,7 @@
 
 //go:build unix || js || wasip1
 
-// Read system port mappings from /etc/services
+// Read system port mappings from /config/services
 
 package net
 
@@ -16,7 +16,7 @@ import (
 var onceReadServices sync.Once
 
 func readServices() {
-	file, err := open("/etc/services")
+	file, err := open("/config/services")
 	if err != nil {
 		return
 	}

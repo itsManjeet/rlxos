@@ -366,7 +366,7 @@ type resolverConfig struct {
 var resolvConf resolverConfig
 
 func getSystemDNSConfig() *dnsConfig {
-	resolvConf.tryUpdate("/etc/resolv.conf")
+	resolvConf.tryUpdate("/config/resolv.conf")
 	return resolvConf.dnsConfig.Load()
 }
 
@@ -374,7 +374,7 @@ func getSystemDNSConfig() *dnsConfig {
 func (conf *resolverConfig) init() {
 	// Set dnsConfig and lastChecked so we don't parse
 	// resolv.conf twice the first time.
-	conf.dnsConfig.Store(dnsReadConfig("/etc/resolv.conf"))
+	conf.dnsConfig.Store(dnsReadConfig("/config/resolv.conf"))
 	conf.lastChecked = time.Now()
 
 	// Prepare ch so that only one update of resolverConfig may
@@ -384,7 +384,7 @@ func (conf *resolverConfig) init() {
 
 // tryUpdate tries to update conf with the named resolv.conf file.
 // The name variable only exists for testing. It is otherwise always
-// "/etc/resolv.conf".
+// "/config/resolv.conf".
 func (conf *resolverConfig) tryUpdate(name string) {
 	conf.initOnce.Do(conf.init)
 
@@ -535,7 +535,7 @@ func (conf *dnsConfig) nameList(name string) []string {
 
 // hostLookupOrder specifies the order of LookupHost lookup strategies.
 // It is basically a simplified representation of nsswitch.conf.
-// "files" means /etc/hosts.
+// "files" means /config/hosts.
 type hostLookupOrder int
 
 const (
@@ -564,7 +564,7 @@ func (o hostLookupOrder) String() string {
 
 func (r *Resolver) goLookupHostOrder(ctx context.Context, name string, order hostLookupOrder, conf *dnsConfig) (addrs []string, err error) {
 	if order == hostLookupFilesDNS || order == hostLookupFiles {
-		// Use entries from /etc/hosts if they match.
+		// Use entries from /config/hosts if they match.
 		addrs, _ = lookupStaticHost(name)
 		if len(addrs) > 0 {
 			return
@@ -585,7 +585,7 @@ func (r *Resolver) goLookupHostOrder(ctx context.Context, name string, order hos
 	return
 }
 
-// lookup entries from /etc/hosts
+// lookup entries from /config/hosts
 func goLookupIPFiles(name string) (addrs []IPAddr, canonical string) {
 	addr, canonical := lookupStaticHost(name)
 	for _, haddr := range addr {
@@ -694,7 +694,7 @@ func (r *Resolver) goLookupIPCNAMEOrder(ctx context.Context, network, name strin
 			}
 
 			// Presotto says it's okay to assume that servers listed in
-			// /etc/resolv.conf are recursive resolvers.
+			// /config/resolv.conf are recursive resolvers.
 			//
 			// We asked for recursion, so it should have included all the
 			// answers we need in this one packet.

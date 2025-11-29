@@ -1,0 +1,1 @@
+SERVER_BASE_URL := http://repo.rlxos.dev/releases/unstable

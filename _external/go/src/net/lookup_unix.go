@@ -15,7 +15,7 @@ import (
 // readProtocolsOnce loads contents of /etc/protocols into protocols map
 // for quick access.
 var readProtocolsOnce = sync.OnceFunc(func() {
-	file, err := open("/etc/protocols")
+	file, err := open("/config/protocols")
 	if err != nil {
 		return
 	}

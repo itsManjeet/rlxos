@@ -1,0 +1,8 @@
+{
+    "exec-start": "/services/display",
+    "environ": [
+        "XDG_RUNTIME_DIR=/cache"
+    ],
+    "tty": "/dev/%i",
+    "restart": true
+}

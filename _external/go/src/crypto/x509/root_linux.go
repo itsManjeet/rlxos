@@ -8,18 +8,18 @@ import "internal/goos"
 
 // Possible certificate files; stop after finding one.
 var certFiles = []string{
-	"/etc/ssl/certs/ca-certificates.crt",                // Debian/Ubuntu/Gentoo etc.
-	"/etc/pki/tls/certs/ca-bundle.crt",                  // Fedora/RHEL 6
-	"/etc/ssl/ca-bundle.pem",                            // OpenSUSE
-	"/etc/pki/tls/cacert.pem",                           // OpenELEC
-	"/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem", // CentOS/RHEL 7
-	"/etc/ssl/cert.pem",                                 // Alpine Linux
+	"/config/ssl/certs/ca-certificates.crt",                // Debian/Ubuntu/Gentoo etc.
+	"/config/pki/tls/certs/ca-bundle.crt",                  // Fedora/RHEL 6
+	"/config/ssl/ca-bundle.pem",                            // OpenSUSE
+	"/config/pki/tls/cacert.pem",                           // OpenELEC
+	"/config/pki/ca-trust/extracted/pem/tls-ca-bundle.pem", // CentOS/RHEL 7
+	"/config/ssl/cert.pem",                                 // Alpine Linux
 }
 
 // Possible directories with certificate files; all will be read.
 var certDirectories = []string{
-	"/etc/ssl/certs",     // SLES10/SLES11, https://golang.org/issue/12139
-	"/etc/pki/tls/certs", // Fedora/RHEL
+	"/config/ssl/certs",     // SLES10/SLES11, https://golang.org/issue/12139
+	"/config/pki/tls/certs", // Fedora/RHEL
 }
 
 func init() {

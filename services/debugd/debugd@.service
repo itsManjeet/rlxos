@@ -1,0 +1,5 @@
+{
+    "exec-start": "busybox sh",
+    "tty": "/dev/%i",
+    "restart": true
+}

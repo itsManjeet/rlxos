@@ -20,15 +20,15 @@ func init() {
 // for the FreeDesktop Shared MIME-info Database specification.
 var mimeGlobs = []string{
 	"/usr/local/share/mime/globs2",
-	"/usr/share/mime/globs2",
+	"/data/mime/globs2",
 }
 
 // Common locations for mime.types files on unix.
 var typeFiles = []string{
-	"/etc/mime.types",
-	"/etc/apache2/mime.types",
-	"/etc/apache/mime.types",
-	"/etc/httpd/conf/mime.types",
+	"/config/mime.types",
+	"/config/apache2/mime.types",
+	"/config/apache/mime.types",
+	"/config/httpd/conf/mime.types",
 }
 
 func loadMimeGlobsFile(filename string) error {

@@ -7,8 +7,8 @@ package user
 import "sync"
 
 const (
-	userFile  = "/etc/passwd"
-	groupFile = "/etc/group"
+	userFile  = "/config/passwd"
+	groupFile = "/config/group"
 )
 
 var colon = []byte{':'}

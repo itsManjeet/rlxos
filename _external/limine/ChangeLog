@@ -1,0 +1,1537 @@
+2025-11-23  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 10.3.2 ***
+
+    Noteworthy changes compared to the previous release, 10.3.1:
+
+    CI-related changes, otherwise, same as 10.3.1.
+
+2025-11-23  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 10.3.1 ***
+
+    Noteworthy changes compared to the previous release, 10.3.0:
+
+    Bug fixes:
+        - Fix wrong virtual address related constants, for the loongarch64
+          port, that made Limine-protocol kernels fail to boot.
+        - Fix issue that caused the MBR ID in the Limine boot protocol
+          limine_file structure to always be 0.
+
+2025-11-07  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 10.3.0 ***
+
+    Noteworthy changes compared to the previous release, 10.2.1:
+
+    **Special notes:**
+        Despite there being breaking changes in this release, no major version
+        bump is done; this is because the changes are minor enough, there are
+        no big new features, and version 10.x was not released long enough ago.
+        This is technically in violation of Semantic Versioning, but considered
+        to be an acceptable exception.
+
+    Breaking changes:
+        - Change default paths and default path ordering for configuration file
+          search. Mainly, search first for a configuration file in the same
+          directory as the EFI application file of Limine, on EFI ports.
+        - Change default path ordering for stage 3 file search on BIOS ports.
+        - No longer install the limine.h header file on the host.
+        - No longer install PROTOCOL.md (Limine Boot Protocol specification) on
+          the host.
+
+    Bug fixes:
+        - Fix an issue where code assumed that the RSDT address in the RSDP was
+          always non-NULL, which could cause crashes or hangs when using base
+          revision 4 of the Limine Boot Protocol.
+
+2025-10-29  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 10.2.1 ***
+
+    Noteworthy changes compared to the previous release, 10.2.0:
+
+    Bug fixes:
+        - Add workaround for skipping SPI flash devices exposed as EFI volumes.
+          This fixes the hanging issues on many ARM laptops, without breaking
+          U-Boot unlike the previous workaround.
+
+2025-10-26  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 10.2.0 ***
+
+    Noteworthy changes compared to the previous release, 10.1.1:
+
+    New features:
+        - Implement base revision 4 of the Limine boot protocol as per
+          documentation (read documentation for specific details).
+
+    Bug fixes:
+        - "Fix" multiboot1 framebuffer structure to match GRUB instead of the
+          multiboot1 specification.
+
+2025-10-13  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 10.1.1 ***
+
+    Noteworthy changes compared to the previous release, 10.1.0:
+
+    Bug fixes:
+        - DTBs: Always reallocate DTBs to bootloader-reclaimable memory. This
+          is to prevent pointers to EFI/reserved memory from being leaked to
+          Limine protocol executables, which is against said protocol, which
+          mandates that DTBs have to be in bootloader-reclaimable memory.
+
+2025-10-05  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 10.1.0 ***
+
+    Noteworthy changes compared to the previous release, 10.0.1:
+
+    New features:
+        - Expand safety checks of the `limine bios-install` command and replace
+          the `--force-mbr` flag with just `--force`.
+        - Add autodetection of the BIOS boot partition if no explicit partition
+          index is passed to `limine bios-install`.
+
+    Bug fixes:
+        - Only use ASCII characters for terminal output when graphical output
+          fails to initialise and the EFI standard output console is used
+          instead.
+
+    Miscellaneous:
+        - Remove left-over logic that was meant to supplement the removed GPT
+          embedding feature.
+        - Remove workaround to allow building the RISC-V port with LLVM <=16.
+        - Update a bunch of output messages from the `limine` host tool.
+
+2025-09-21  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 10.0.1 ***
+
+    Noteworthy changes compared to the previous release, 10.0.0:
+
+    Bug fixes:
+        - Fix a potential use-after-free issue when flushing interrupts on x86
+          UEFI systems.
+        - Prefer using the 32-bit Linux protocol unless it is strictly
+          necessary to use the 64-bit protocol due to allocation constraints.
+          This is due to reports of the 32-bit protocol being more reliable
+          on certain rare systems where the 64-bit protocol crashes or hangs.
+
+2025-09-15  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 10.0.0 ***
+
+    Noteworthy changes compared to the previous release, 9.6.7:
+
+    Breaking changes:
+        - GPT embedding is no longer supported as a deployment method for
+          GPT-with-BIOS configurations. The rationale for this being that it is
+          far too fragile, especially with regards to growing or shrinking disk
+          images, and it may cause certain machines to refuse to boot such
+          setups as they are technically in violation of the GPT specification.
+        - The default baud rate for serial I/O on BIOS systems is now 115200,
+          instead of 9600.
+        - BIOS (chainloading) boot menu entries are now hidden when booting in
+          UEFI mode, and EFI (chainloading) entries are hidden when booting in
+          BIOS mode.
+        - For the Limine boot protocol, for relocatable executables, KASLR now
+          defaults to being disabled. The rationale for this being that KASLR
+          is a somewhat niche and fairly bypassable security technique, which
+          can cause headaches for kernels not wanting to support it, and make
+          troubleshooting harder.
+        - For the Limine boot protocol, for PE format kernels, do not discard
+          discardable sections, as code put to a discardable section like INIT
+          might be intended to only be discarded after early kernel init, not
+          before the kernel is even loaded.
+
+2025-09-13  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 9.6.7 ***
+
+    Noteworthy changes compared to the previous release, 9.6.6:
+
+    Bug fixes:
+        - Relax EFI handle validation before running fallback volume detection.
+          This further addresses issues caused by 9.5.4.
+
+2025-09-06  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 9.6.6 ***
+
+    Noteworthy changes compared to the previous release, 9.6.5:
+
+    Bug fixes:
+        - Fix regression introduced by 9.5.4 that caused Limine to fail to boot
+          with U-Boot.
+
+2025-08-30  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 9.6.3 through 9.6.5 ***
+
+    Noteworthy changes compared to the previous release, 9.6.2:
+
+    These are special hotfix releases attempting to address issues with the
+    Forgejo release workflow after the migration to Codeberg.
+
+    Other than that, they have no differences compared to 9.6.2.
+
+2025-08-30  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 9.6.2 ***
+
+    Noteworthy changes compared to the previous release, 9.6.1:
+
+    Miscellaneous:
+        - The Limine project has moved its home to Codeberg.
+        - Nyu-EFI was rebranded to PicoEFI.
+        - Minor build system improvements and subproject bumps.
+
+2025-08-16  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 9.6.1 ***
+
+    Noteworthy changes compared to the previous release, 9.6.0:
+
+    Bug fixes:
+        - EFI chainloading: Make EFI device path of loaded image relative to
+          the loaded image device handle. This now complies with the EFI
+          specification, and, amongst others, it fixes chainloading Shim.
+
+    Miscellaneous:
+        - Miscellaneous build system changes and improvements.
+        - Do not disable linker relaxations for LoongArch64.
+        - `limine` host tool: Add check to ensure that a provided GPT BIOS
+          partition is at least 32KiB in size.
+
+2025-08-07  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 9.6.0 ***
+
+    Noteworthy changes compared to the previous release, 9.5.4:
+
+    Miscellaneous:
+        - Get rid of the fragile and messy "freestanding-toolchain" build
+          helper tool. This allows for a simpler and more predictable way of
+          selecting the target toolchain components via ./configure.
+
+2025-08-06  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 9.5.4 ***
+
+    Noteworthy changes compared to the previous release, 9.5.3:
+
+    Bug fixes:
+        - Exclude non-PCI devices from the volume discovery process on UEFI.
+          This is because on (especially, but not limited to) Snapdragon X
+          systems, firmware/flash devices, which are non-PCI, are exposed as
+          block I/O volumes too. This skips them, which makes the bootloader
+          more reliable and avoids long hangs at boot.
+        - Miscellaneous changes and fixes to the fallback volume discovery
+          path, to increase reliability and reduce the chance of accidental
+          damage or data loss. See GitHub issue #525.
+        - Minor assembly improvement that fixed Limine not building with old
+          NASM.
+
+2025-08-04  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 9.5.3 ***
+
+    Noteworthy changes compared to the previous release, 9.5.2:
+
+    Bug fixes:
+        - Miscellaneous build system fixes, mainly to sort out possible issues
+          introduced by 9.5.2.
+
+2025-08-01  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 9.5.2 ***
+
+    Noteworthy changes compared to the previous release, 9.5.1:
+
+    Bug fixes:
+        - Revert change that moved to `nm` from `objdump` for generating the
+          symbol table, as that broke section-specific symbol dumps and caused
+          BIOS stage 2 to be bloated with the full symbol table.
+
+    Miscellaneous:
+        - Miscellaneous build system updates and improvements.
+
+2025-07-29  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 9.5.1 ***
+
+    Noteworthy changes compared to the previous release, 9.5.0:
+
+    Bug fixes:
+        - Unbreak build using ld.gold as linker.
+
+    Miscellaneous:
+        - Miscellaneous build system updates and improvements.
+
+2025-07-14  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 9.5.0 ***
+
+    Noteworthy changes compared to the previous release, 9.4.0:
+
+    New features:
+        - protocols/efi: Hybridise loading mechanism with old memory-device
+          based approach. This may work around the redundant requirement that
+          EFI applications be signed, and it may fix certain issues created
+          when the chainload mechanism was changed in 9.0.1.
+
+    Bug fixes:
+        - `limine` host tool: Fix some mismatched printf format specifiers.
+
+    Miscellaneous:
+        - Miscellaneous build system updates and improvements.
+        - Many dependencies had their commits bumped, some new dependencies
+          were added (limine-protocol), some were changed (libfdt moved to a
+          different repository that only includes BSD-2-Clause licensable
+          code).
+
+2025-07-10  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 9.4.0 ***
+
+    Noteworthy changes compared to the previous release, 9.3.4:
+
+    New features:
+        - BLI: Implement `LoaderTimeInitUSec` and `LoaderTimeExecUSec`.
+          These are variables used by `systemd-analyze` and are useful for boot
+          performance metrics.
+        - Limine boot protocol: Add bootloader performance feature.
+          This feature provides the same information as the new Boot Loader
+          Interface variables, but encoded in a nicer way for Limine protocol
+          executables.
+
+    Miscellaneous:
+        - Use `nm` instead of `objdump` for generating the symbol table, which
+          results in a better, more consistent output, especially for non-x86
+          architectures.
+        - Miscellaneous build system updates and improvements.
+
+2025-06-21  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 9.3.4 ***
+
+    Noteworthy changes compared to the previous release, 9.3.3:
+
+    Bug fixes:
+        - ELF: Make an optimisation related to skipping scanning of .bss
+          regions for finding of structures in the loaded image (for Limine
+          protocol structures or otherwise) less overeager as that could break
+          in certain cases.
+        - SMP: On x86, ensure that the value of IA32_APIC_BASE is the same on
+          the APs as it is on the BSP.
+        - PMM: Mark EfiLoader{Code,Data} regions as bootloader reclaimable
+          rather than reserved memory, as for certain protocols, like the
+          Limine boot protocol, reserved memory is unmapped at runtime, while
+          these regions may contain hot data that is still needed, like Limine
+          bootloader memory stacks.
+
+2025-05-27  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 9.3.3 ***
+
+    Noteworthy changes compared to the previous release, 9.3.2:
+
+    Bug fixes:
+        - Reinstate the limit for scanned drives to 0xf0. This is due to a
+          report of int 13h hangs when used on drives >=0xf0.
+
+2025-05-19  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 9.3.2 ***
+
+    Noteworthy changes compared to the previous release, 9.3.1:
+
+    Bug fixes:
+        - PMM: Mark EfiBootServices{Code,Data} memory regions as bootloader
+          reclaimable instead of usable free memory as apparently the ACPI
+          and UEFI specifications make no guarantees about useful structures
+          being left in these areas after leaving boot services (namely BGRT
+          and ESRT).
+
+2025-05-15  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 9.3.1 ***
+
+    Noteworthy changes compared to the previous release, 9.3.0:
+
+    Bug fixes:
+        - Remove .git directory mistakenly left over inside release tarballs.
+        - Fix bug that would lead to panics when booting Linux protocol kernels
+          without modules on x86.
+
+2025-05-07  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 9.3.0 ***
+
+    Noteworthy changes compared to the previous release, 9.2.3:
+
+    New features:
+        - Add optional support for the 64-bit x86-64 boot protocol for Linux.
+          This is supported on the UEFI/x86-64 port of Limine, and it is
+          preferred over the 32-bit boot protocol if supported by the given
+          kernel. This helps with loading larger modules on certain systems
+          with low amounts of low memory which would otherwise panic.
+
+    Bug fixes:
+        - Fix away some ungraceful handling of out-of-memory situations when
+          loading files using the Linux boot protocol. Make into panics instead
+          of crashes or hangs.
+
+    Miscellaneous:
+        - Improve performance and memory usage of loading modules for the Linux
+          boot protocol.
+
+2025-04-12  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 9.2.3 ***
+
+    Noteworthy changes compared to the previous release, 9.2.2:
+
+    Bug fixes:
+        - Fix issues introduced by the stb_image fix introduced in 9.2.1 which
+          could cause hangs or crashes when certain wallpaper images are used.
+
+    Miscellaneous:
+        - Update cc-runtime to new, integer-only, packed version.
+
+2025-03-31  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 9.2.2 ***
+
+    Noteworthy changes compared to the previous release, 9.2.1:
+
+    Bug fixes:
+        - Two quick bug fixes and workarounds in order to make multiboot2 more
+          resilient when booting specific kernels such as Xen.
+        - Avoid mistakenly allocating more memory than necessary when creating
+          the volume index.
+
+2025-03-25  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 9.2.1 ***
+
+    Noteworthy changes compared to the previous release, 9.2.0:
+
+    Bug fixes:
+        - Fix potential buffer overflow bug with our stb_image support code.
+
+    Miscellaneous:
+        - Dynamically allocate volume index instead of relying on a hard coded
+          limit and a fixed allocation. This fixes potential panics or failure
+          to access volumes on systems with a lot of drives/partitions.
+        - Limine boot protocol/ELF: Print the name of unresolved symbols on
+          panic.
+
+2025-03-16  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 9.2.0 ***
+
+    Noteworthy changes compared to the previous release, 9.1.3:
+
+    New features:
+        - Introduce initial support for the Boot Loader Interface
+          specification.
+        - Add /EFI/limine/limine.conf to the paths tried for config file when
+          using EFI.
+
+    Miscellaneous:
+        - Do not try config path /EFI/BOOT/limine.conf unless booted using EFI.
+
+2025-03-13  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 9.1.3 ***
+
+    Noteworthy changes compared to the previous release, 9.1.2:
+
+    Bug fixes:
+        - Loongarch64: Fix alignment of TLB-refill handler.
+
+    Miscellaneous:
+        - Many fixes and improvements to documentation, installed or otherwise,
+          including further licensing clarifications.
+
+2025-03-11  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 9.1.2 ***
+
+    Noteworthy changes compared to the previous release, 9.1.1:
+
+    This release does not change anything code-wise, but rather it focuses on
+    sorting out the licensing mess of Nyu-EFI, by updating it to the latest
+    revision which tackles this problem, and furthermore it improves the
+    COPYING file to be more explicit about submodules and their licensing.
+
+2025-03-10  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 9.1.1 ***
+
+    Noteworthy changes compared to the previous release, 9.1.0:
+
+    Bug fixes:
+        - Do not use ConOut for serial output exclusively unless serial is
+          verified to be present to the best of our abilities. This fixes an
+          issue where if `serial=yes` is used on some machines (including
+          several Apple Mac models) a black screen will be shown instead of the
+          Limine menu.
+
+    Miscellaneous:
+        - Begin signing tarballs and (most) commits.
+
+2025-03-07  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 9.1.0 ***
+
+    Noteworthy changes compared to the previous release, 9.0.1:
+
+    New features:
+        - `limine` host tool: When using the `bios-install` command on an
+          ISOHYBRID with a GPT, automatically convert it to MBR, if possible
+          and unless explicitly disabled, in order to enhance compatibility of
+          said ISOHYBRIDs with many systems (of note, Lenovo Thinkpads).
+
+2025-02-25  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 9.0.1 ***
+
+    Noteworthy changes compared to the previous release, 9.0.0:
+
+    Miscellaneous:
+        - EFI chainload: Replace old chainload method with one that is more
+          friendly to other EFI bootloaders such as rEFInd.
+        - Limine boot protocol/PE: Map previously unmapped PE image headers.
+
+2025-02-17  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 9.0.0 ***
+
+    Noteworthy changes compared to the previous release, 8.7.0:
+
+    Breaking changes:
+        - Support for the ext2/3/4 filesystems has been once again dropped due
+          to lack of maintenance and to avoid extra potential attack surface
+          during Secure Boot Limine usage.
+        - Drop support for the legacy config format (limine.cfg) and only keep
+          around the new one (limine.conf) introduced with Limine 8.x.
+        - Drop support for the (barely worked and seldom used) `chainload_next`
+          protocol.
+
+    New features:
+        - Limine boot protocol: Introduce API revision 3, for the `limine.h`
+          file with several renamed identifiers for better clarity.
+        - Limine boot protocol: Specify and implement a new, convenience,
+          "Executable Command Line feature".
+        - Limine boot protocol: Use monitor/mwait CPU instructions, when
+          available, to reduce CPU usage and increase performance during
+          multiprocessor initialisation.
+        - Add preferred aliases for BIOS and EFI chainload (namely `bios` and
+          `efi`) protocol names for the `protocol` config option.
+
+    Bug fixes:
+        - EFI (chainload) boot protocol: Fix `path` option alias not working.
+
+    Miscellaneous:
+        - Update Flanterm submodule to latest.
+
+2025-01-10  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 8.7.0 ***
+
+    Noteworthy changes compared to the previous release, 8.6.1:
+
+    New features:
+        - Limine boot protocol: Add support for PE executables.
+        - Linux boot protocol: Enable support for Loongarch64.
+        - Add support for selecting a random wallpaper every boot if multiple
+          are provided.
+        - Add `path` aliases for `kernel_path` and `image_path` for the Linux
+          and EFI Chainloading protocols respectively.
+
+    Miscellaneous:
+        - Submodule version/commit bumps.
+
+2024-12-26  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 8.6.1 ***
+
+    Noteworthy changes compared to the previous release, 8.6.0:
+
+    Bug fixes:
+        - Propagate EFI PXE device handle properly when chainloading.
+        - Ensure that, when specifying a `dtb_path`, extra space is properly
+          allocated just as is done for EFI-provided DTBs.
+
+    Miscellaneous:
+        - Linux on RISCs: General code clean up; pass EFI memory map and initrd
+          information as EFI configuration tables alongside already passed DTB
+          parameters for the same, in preparation for loongarch64 support.
+
+2024-12-05  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 8.6.0 ***
+
+    Noteworthy changes compared to the previous release, 8.5.0:
+
+    New features:
+        - Limine boot protocol: Specify and implement new "RISC-V BSP Hart ID"
+          feature.
+        - Limine boot protocol: Add a new "SBI" firmware type to the firmware
+          type feature
+        - Limine boot protocol: Add a new API revision 2 to the limine.h header
+          file. This replaces many mentions of 'kernel' with a more neutral
+          'executable' instead.
+        - Config: add 'path' alias for 'kernel_path' for the Limine and
+          multiboot1 and 2 protocols.
+
+2024-11-30  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 8.5.0 ***
+
+    Noteworthy changes compared to the previous release, 8.4.1:
+
+    New features:
+        - Limine boot protocol: Introduce limine.h API revisions to avoid API
+          breaks.
+
+    Bug fixes:
+        - Limine boot protocol: Amend base revision 3 to keep EFI memmap
+          pointer as virtual. Making it physical made no sense and is
+          henceforth considered a bug.
+
+    Miscellaneous:
+        - Limine boot protocol: Rename SMP feature to MP feature for limine.h
+          API revision 1+.
+        - Limine boot protocol: Make some types that were void pointers into
+          uint64_t's to better represent their physical nature; limine.h API
+          revision 1+.
+
+2024-11-25  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 8.4.1 ***
+
+    Noteworthy changes compared to the previous release, 8.4.0:
+
+    Miscellaneous:
+        - Limine boot protocol: Ensure machines with pre-enabled x2APIC are
+          properly supported.
+        - Reuse a viable framebuffer for UEFI fallback terminal output (like on
+          panics) if boot services have been exited instead of bailing out.
+        - Miscellaneous build system updates.
+
+2024-11-08  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 8.4.0 ***
+
+    Noteworthy changes compared to the previous release, 8.3.2:
+
+    New features:
+        - Support passing Limine its configuration via SMBIOS tables.
+
+    Miscellaneous:
+        - Update cc-runtime to latest; use non-packed version.
+
+2024-10-31  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 8.3.2 ***
+
+    Noteworthy changes compared to the previous release, 8.3.1:
+
+    Miscellaneous:
+        - Limine boot protocol: Amend base revision 3 to mandate reporting base
+          revision used to kernels.
+
+2024-10-28  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 8.3.1 ***
+
+    Noteworthy changes compared to the previous release, 8.3.0:
+
+    Bug fixes:
+        - Limine boot protocol: Revert broken optimisation.
+
+2024-10-28  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 8.3.0 ***
+
+    Noteworthy changes compared to the previous release, 8.2.0:
+
+    New features:
+        - Limine boot protocol: Specify and implement base revision 3. See the
+          specification for further info.
+        - Add a new `FW_TYPE` built-in config macro.
+
+    Miscellaneous:
+        - Bump Flanterm revision to a6f6edd6631c01caab932a59dce97bbd5f0c72c8.
+        - Limine boot protocol: Misc optimisations to page tables usage.
+
+2024-10-23  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 8.2.0 ***
+
+    Noteworthy changes compared to the previous release, 8.1.2:
+
+    New features:
+        - Add device tree blob override configuration options for the Limine
+          and Linux boot protocols.
+        - Limine boot protocol: Filter `memory@...` nodes out of device trees.
+
+    Miscellaneous:
+        - Documentation: USAGE.md: Update `xorriso` command to produce
+          ISOHYBRIDs with Joliet info and an HFS+ filesystem for broader
+          compatibility.
+        - Increase the size of the `limine-cd-uefi.bin` image to 5760 sectors;
+          this allows more and/or larger EFI executables to fit (like for
+          example those generated when compiling with -O0).
+        - Bump cc-runtime revision to d5425655388977fa12ff9b903e554a20b20c426e.
+
+2024-10-15  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 8.1.2 ***
+
+    Noteworthy changes compared to the previous release, 8.1.1:
+
+    Bug fixes:
+        - Add missing register saves and restores around call from assembly to
+          C code for the x86-64 UEFI port. This bug could have caused crashes
+          with certain compiler optimisation levels (like -O0).
+        - Adjust size of reserved area of VBE mode info struct to be the right
+          size. This bug could have caused crashes with certain compiler
+          optimisation levels (like -O0).
+        - Ignore UEFI memory map entries of length 0. This fixes crashes that
+          could have happened on quirky UEFI firmwares passing such entries.
+
+2024-10-12  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 8.1.1 ***
+
+    Noteworthy changes compared to the previous release, 8.1.0:
+
+    Bug fixes:
+        - Limine boot protocol: Do not hard depend on the CPU supporting the
+          Page Attribute Table (PAT) *for SMP processors as well*.
+
+2024-10-12  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 8.1.0 ***
+
+    Noteworthy changes compared to the previous release, 8.0.14:
+
+    Bug fixes:
+        - Limine boot protocol: Do not hard depend on the CPU supporting the
+          Page Attribute Table (PAT).
+
+    New features:
+        - Limine boot protocol: Add a `randomise_hhdm_base` config file option.
+
+    Miscellaneous:
+        - Update libfdt (from dtc) to 1.7.1.
+
+2024-09-29  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 8.0.14 ***
+
+    Noteworthy changes compared to the previous release, 8.0.13:
+
+    Miscellaneous:
+        - Limine boot protocol: Increase maximum memory map entry count from
+          256 to 1024 as it would otherwise cause issues on certain systems.
+
+2024-09-18  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 8.0.13 ***
+
+    Noteworthy changes compared to the previous release, 8.0.12:
+
+    Bug fixes:
+        - multiboot2: Fix handling of relocatable kernels.
+
+2024-09-15  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 8.0.12 ***
+
+    Noteworthy changes compared to the previous release, 8.0.11:
+
+    Bug fixes:
+        - Fix a build system problem that could cause configure failures if
+          STRIP variable set to an absolute path.
+
+    Miscellaneous:
+        - Updates for "freestanding-headers" being rebranded to
+          "freestnd-c-hdrs-0bsd".
+        - Updates for "limine-efi" being rebranded to "nyu-efi".
+
+2024-09-10  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 8.0.11 ***
+
+    Noteworthy changes compared to the previous release, 8.0.10:
+
+    Miscellaneous:
+        - Replace "freestnd-c-hdrs" back with "freestanding-headers" due to
+          GPLv3 with Runtime Exceptions licensing concerns and size.
+
+2024-09-09  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 8.0.10 ***
+
+    Noteworthy changes compared to the previous release, 8.0.9:
+
+    Bug fixes:
+        - Fix bug where contents of loaded EFI image size variable could be off
+          significantly compared to actual size when compiled with GCC, causing
+          many issues.
+        - Fix memory manager bug introduced in 2021 during optimisation work.
+
+    Miscellaneous:
+        - Replace "freestanding-headers" with GCC-provided "freestnd-c-hdrs".
+
+2024-09-04  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 8.0.9 ***
+
+    Noteworthy changes compared to the previous release, 8.0.8:
+
+    Bug fixes:
+        - Fix an issue that could cause Limine to not boot on UEFI systems with
+          too many memory map entries.
+
+2024-09-03  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 8.0.8 ***
+
+    Noteworthy changes compared to the previous release, 8.0.7:
+
+    Bug fixes:
+        - Work around makefile issues that caused GNU make versions 4.0 and 4.1
+          as well as version 3.80 to fail to build Limine.
+
+2024-09-02  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 8.0.7 ***
+
+    Noteworthy changes compared to the previous release, 8.0.6:
+
+    Miscellaneous:
+        - Remove GNU make version check as we now support building on older
+          make versions.
+        - Miscellaneous build system improvements.
+
+2024-08-25  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 8.0.6 ***
+
+    Noteworthy changes compared to the previous release, 8.0.5:
+
+    Bug fixes:
+        - Fix issue with makefiles that would cause, among others, issues with
+          job control on older GNU make versions.
+
+    Miscellaneous:
+        - Update limine-efi dependency to latest.
+        - Minor build system improvements.
+
+2024-08-12  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 8.0.5 ***
+
+    Noteworthy changes compared to the previous release, 8.0.4:
+
+    Bug fixes:
+        - Limine boot protocol: Obtain LAPIC ID from LAPIC instead of CPUID.
+          This fixes crashes on some odd machines whose firmware remaps the
+          BSP's LAPIC ID from the default one.
+
+2024-08-10  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 8.0.4 ***
+
+    Noteworthy changes compared to the previous release, 8.0.3:
+
+    Bug fixes:
+        - Limine boot protocol: Fix off-by-1 error in HHDM MAXPHYADDR bounds
+          check.
+
+    Miscellaneous:
+        - Updated cc-runtime dependency to latest, packed version.
+
+2024-08-09  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 8.0.3 ***
+
+    Noteworthy changes compared to the previous release, 8.0.2:
+
+    Bug fixes:
+        - AArch64, riscv64: SMP: Fix BSP potentially timing out while waiting
+          for APs due to missing delay.
+
+2024-08-08  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 8.0.2 ***
+
+    Noteworthy changes compared to the previous release, 8.0.1:
+
+    Bug fixes:
+        - Menu: Miscellaneous cosmetic fixes.
+        - Editor: Fix input and displaying of tab characters.
+
+    Miscellaneous:
+        - Config: Accept tab characters as whitespace after option colon.
+
+2024-08-05  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 8.0.1 ***
+
+    Noteworthy changes compared to the previous release, 8.0.0:
+
+    Bug fixes:
+        - Assortment of menu fixes to issues that could cause things not to
+          render as they should.
+
+    Miscellaneous:
+        - Documentation fixes for 8.x.
+
+2024-08-02  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 8.0.0 ***
+
+    Noteworthy changes compared to the previous release, 7.13.3:
+
+    New features:
+        - Add loongarch64 support.
+
+    Bug fixes:
+        - Limine boot protocol: Ensure higher half direct map size does not
+          exceed MAXPHYADDR on x86.
+
+    Miscellaneous:
+        - Extensive changes to the config syntax. (See CONFIG.md).
+        - Rename term_wallpaper, term_wallpaper_style, and term_backdrop config
+          options to remove the term_ prefix.
+        - Removed support for GZ-compressed files (and internal Limine
+          protocol modules).
+
+2024-08-02  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.13.3 ***
+
+    Noteworthy changes compared to the previous release, 7.13.2:
+
+    Bug fixes:
+        - Limine boot protocol: Fix broken comparison that could cause an HHDM
+          too large to not be properly detected.
+        - Limine boot protocol: aarch64: Fix incorrect macro value that would
+          cause the size of the higher half to be incorrectly detected as half.
+
+    Miscellaneous:
+        - Remove Nix flake stuff from repository/tarball.
+
+2024-07-30  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.13.2 ***
+
+    Noteworthy changes compared to the previous release, 7.13.1:
+
+    Bug fixes:
+        - Limine boot protocol: Fix a bug introduced in 7.13.0 that made
+          compressed modules not work on IA-32 ports.
+
+2024-07-29  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.13.1 ***
+
+    Noteworthy changes compared to the previous release, 7.13.0:
+
+    Bug fixes:
+        - Limine boot protocol: Fix a bug introduced in 7.13.0 that made the
+          protocol unusable with the BIOS port when loading any modules, when
+          Limine was linked using ld.bfd.
+
+2024-07-29  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.13.0 ***
+
+    Noteworthy changes compared to the previous release, 7.12.1:
+
+    New features:
+        - Limine boot protocol: Allow above-4GiB load of modules on IA-32
+          ports.
+
+    Miscellaneous:
+        - Build system improvements.
+
+2024-07-27  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.12.1 ***
+
+    Noteworthy changes compared to the previous release, 7.12.0:
+
+    Miscellaneous:
+        - Limine boot protocol: limit the HHDM size to half of the higher half
+          in all conditions; limit HHDM KASLR wiggle room to a quarter rather
+          than half of the higher half.
+        - Build system improvements.
+
+2024-07-21  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.12.0 ***
+
+    Noteworthy changes compared to the previous release, 7.11.0:
+
+    New features:
+        - Reinstate support for ext2/3/4, albeit in an unsupported and
+          unmaintained state, at least for the time being.
+        - Menu: Add vertical bars around entry title in entry editor.
+        - Menu: Add clearer indications of what is wrong when config invalid or
+          missing.
+
+    Bug fixes:
+        - Terminal: Fix long standing wallpaper drawing related bug that under
+          certain circumstances could cause memory corruption.
+        - Miscellaneous VBE related bug fixes.
+        - Miscellaneous A20 line related improvements/fixes.
+
+    Miscellaneous:
+        - Limine boot protocol: perform appropriate checks to ensure that the
+          higher half direct map fits in the higher half; enforce paging modes
+          as needed.
+        - Limine boot protocol: aarch64: Specify that the granule size for both
+          TTBR0_EL1 and TTBR1_EL1 is 4KiB.
+        - Limine boot protocol: aarch64: Specify the values of TCR_EL1.T0SZ and
+          TCR_EL1.T1SZ depending on the paging mode used.
+        - Limine boot protocol: aarch64: Specify the condition of TTBR0_EL1 and
+          TTBR1_EL1 at entry.
+
+2024-07-18  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.11.0 ***
+
+    Noteworthy changes compared to the previous release, 7.10.3:
+
+    New features:
+        - Limine boot protocol: Specify and implement "firmware type" feature.
+        - Limine boot protocol: Specify and implement revision 1 "paging mode"
+          request extension.
+
+2024-07-16  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.10.3 ***
+
+    Noteworthy changes compared to the previous release, 7.10.2:
+
+    Bug fixes:
+        - Menu: Fix high menu entry count support that was previously broken in
+          a regression.
+        - Linux boot protocol: Install "memory reservation" EFI configuration
+          table on aarch64/riscv64.
+
+    Miscellaneous:
+        - Miscellaneous improvements and optimisations of code introduced in
+          version 7.10.2.
+
+2024-07-14  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.10.2 ***
+
+    Noteworthy changes compared to the previous release, 7.10.1:
+
+    Bug fixes:
+        - Fix a long standing issue with volume detection on UEFI.
+        - Fix issue returning to editor after a panic when coming from a blank
+          entry without a valid config.
+        - Add missing "loading" prints when booting Linux on non-x86.
+
+2024-07-12  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.10.1 ***
+
+    Noteworthy changes compared to the previous release, 7.10.0:
+
+    Bug fixes:
+        - DTB: Never pass UEFI DTB buffer directly; fix misuse of libfdt API.
+
+2024-07-12  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.10.0 ***
+
+    Noteworthy changes compared to the previous release, 7.9.2:
+
+    New features:
+        - SMP: Support SMP on AArch64 without ACPI.
+
+    Bug fixes:
+        - SMP: Do not allocate a useless stack for the BSP.
+        - `limine`: Protect against overwriting MBR partitions beginning at
+          exceedingly low sector values (outside de facto specification).
+
+    Miscellaneous:
+        - Limine boot protocol: Do not pass responses if RSDP or SMBIOS not
+          available instead of returning responses with NULL pointers.
+        - Limine boot protocol: Do not pass a framebuffer response if no
+          framebuffers are available.
+
+2024-07-06  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.9.2 ***
+
+    Noteworthy changes compared to the previous release, 7.9.1:
+
+    Bug fixes:
+        - Limine boot protocol: Return NULL response instead of a response with
+          erroneous CPU count of 0 for SMP on x86-64, if x2APIC support not
+          enabled and missing xAPIC fallback.
+        - Limine boot protocol: Do not ignore MAX_PAGING_MODE config setting if
+          paging mode request missing from loaded kernel.
+
+    Miscellaneous:
+        - Limine boot protocol/ELF: Apply a slide of 0xffffffff80000000 minus
+          the ELF-reported base load address for relocatable kernels that have
+          lower half load addresses, instead of always applying a slide of
+          0xffffffff80000000.
+
+2024-06-29  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.9.1 ***
+
+    Noteworthy changes compared to the previous release, 7.9.0:
+
+    Bug fixes:
+        - `limine`: Revert change that marked protective MBR wrapper partition
+          as active on GPT.
+
+2024-06-28  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.9.0 ***
+
+    Noteworthy changes compared to the previous release, 7.8.0:
+
+    New features:
+        - Linux boot protocol: Add support on aarch64 and riscv64.
+
+    Bug fixes:
+        - multiboot1/2: Relax ELF file type requirements (mainly for multiboot2
+          relocatable kernels).
+        - UEFI: Fix bug that caused delete key to behave as if it was backspace
+          even when the SERIAL config option was not "yes".
+
+    Miscellaneous:
+        - Limine boot protocol/ELF: Do not consider ELFs relocatable unless the
+          ELF file type is ET_DYN.
+        - Some dead code removal.
+
+2024-06-24  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.8.0 ***
+
+    Noteworthy changes compared to the previous release, 7.7.2:
+
+    New features:
+        - Return to booted edited entry on panic.
+
+    Bug fixes:
+        - `limine`: Mark protective MBR wrapper partition as active on GPT.
+
+    Miscellaneous:
+        - UEFI: Allocate most memory as EfiLoaderCode instead of EfiLoaderData.
+        - Smaller fixes and improvements.
+
+2024-06-09  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.7.2 ***
+
+    Noteworthy changes compared to the previous release, 7.7.1:
+
+    Bug fixes:
+        - Limine boot protocol/ELF: Ignore PT_LOAD segments with 0 memory size.
+        - Limine boot protocol/ELF: Panic on non-weak unresolved symbols.
+        - Limine boot protocol/ELF: Do not sanity check DT_RELAENT size for non
+          DT_RELA relocations. This is because DT_RELAENT may not be present.
+        - multiboot 1 and 2 protocols: Reject relocatable ELFs.
+
+2024-06-06  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.7.1 ***
+
+    Noteworthy changes compared to the previous release, 7.7.0:
+
+    Bug fixes:
+        - Limine boot protocol/ELF: Stop parsing PT_DYNAMIC segment once
+          DT_NULL is reached.
+
+2024-06-04  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.7.0 ***
+
+    Noteworthy changes compared to the previous release, 7.6.0:
+
+    New features:
+        - Limine boot protocol/ELF: Add support for GLOB_DAT, JUMP_SLOT, 64,
+          and NONE relocation types.
+        - Limine boot protocol/ELF: Add RELR (packed relative relocations)
+          support.
+
+    Bug fixes:
+        - Limine boot protocol/ELF: Reject ELFs that depend on external
+          dynamically linked libraries.
+
+    Miscellaneous:
+        - Bring back .xz compressed release tarball.
+
+2024-06-01  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.6.0 ***
+
+    Noteworthy changes compared to the previous release, 7.5.3:
+
+    New features:
+        - RISC-V: Add support for RISC-V systems without ACPI (using DTBs).
+
+2024-05-24  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.5.3 ***
+
+    Noteworthy changes compared to the previous release, 7.5.2:
+
+    Bug fixes:
+        - Multiboot 2 protocol: Fix an issue where the 32-bit EFI Image Handle
+          tag would be generated under 64-bit EFI and vice versa.
+        - Do not set VirtualStart to PhysicalStart when generating the EFI
+          memory map; set it to 0 instead.
+        - Do not perform additional checks when loading relocatable ELF files
+          after verifying that they are of type ET_DYN and have a PT_DYNAMIC
+          segment. This ensures that certain relocatable ELF files that were
+          previously misidentified as non-relocatable are recognised as such.
+
+2024-05-22  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.5.2 ***
+
+    Noteworthy changes compared to the previous release, 7.5.1:
+
+    Bug fixes:
+        - Fix missing checks in the FAT filesystem driver that could cause
+          divide-by-0 exceptions when parsing malformed/corrupted filesystems.
+        - Limine boot protocol: Do not reject relocatable kernels with ELF PHDR
+          load addresses at or around 0, instead slide them all the way to the
+          topmost 2GiB (0xffffffff80000000). This allows setting a base load
+          address of 0 in LD BFD/LLD linker scripts which makes LD BFD (the
+          default GNU LD) actually emit an ELF with ET_DYN type.
+
+2024-05-08  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.5.1 ***
+
+    Noteworthy changes compared to the previous release, 7.5.0:
+
+    Bug fixes:
+        - Workarounds for issues related to drive iteration on BIOS. Discovered
+          on an HP Pavilion dv6-3152er.
+
+2024-05-03  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.5.0 ***
+
+    Noteworthy changes compared to the previous release, 7.4.1:
+
+    New features:
+        - Limine boot protocol: Add support for requests start marker, to
+          complement the previously called delimiter, now renamed to "end
+          marker".
+        - Limine boot protocol: Add base revision 2. The sole difference
+          compared to base revision 1 being that it mandates bootloaders to
+          support request delimiters.
+
+    Bug fixes:
+        - Fix an issue regarding commit date parsing in the bootstrap script.
+
+    Miscellaneous:
+        - General documentation updates and improvements; split USAGE.md from
+          README.md and install the former only.
+
+2024-04-29  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.4.1 ***
+
+    Noteworthy changes compared to the previous release, 7.4.0:
+
+    Miscellaneous:
+        - Bump max volume limit for UEFI from 64 to 256.
+        - Improve how ISA name and firmware type is reported as part of the
+          default branding.
+
+2024-04-20  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.4.0 ***
+
+    Noteworthy changes compared to the previous release, 7.3.1:
+
+    New features:
+        - ISA name and firmware type is now printed as part of the default
+          bootloader branding.
+        - Add 'B' key shortcut to menu to open up a blank entry.
+
+    Bug fixes:
+        - Fix missing NULL pointer check in configuration related function.
+
+    Miscellaneous:
+        - Console has been removed.
+
+2024-04-11  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.3.1 ***
+
+    Noteworthy changes compared to the previous release, 7.3.0:
+
+    Bug fixes:
+        - Fix a minor issue with scrolling when using the EFI console fallback.
+
+    Miscellaneous:
+        - Bump the Flanterm revision to current latest.
+        - Some dead code removal.
+
+2024-03-31  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.3.0 ***
+
+    Noteworthy changes compared to the previous release, 7.2.1:
+
+    New features:
+        - Limine boot protocol: Add a `MAX_PAGING_MODE` configuration option
+          to override kernel/bootloader selected paging mode.
+
+    Bug fixes:
+        - Fix a couple of minor bugs with the 4GiB workaround introduced in
+          version 7.2.1.
+
+    Miscellaneous:
+        - No longer produce xz compressed release tarballs. Add bzip2, lzip,
+          and zstd as alternatives in its place.
+
+2024-03-28  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.2.1 ***
+
+    Noteworthy changes compared to the previous release, 7.2.0:
+
+    Bug fixes:
+        - Implement workaround to allow Limine loaded above 4GiB by UEFI on
+          x86-64 to work in some configurations, instead of panicking.
+
+2024-03-24  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.2.0 ***
+
+    Noteworthy changes compared to the previous release, 7.1.0:
+
+    New features:
+        - Add support for remembering the last booted entry on UEFI by means
+          of the `REMEMBER_LAST_ENTRY` config option.
+
+2024-03-19  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.1.0 ***
+
+    Noteworthy changes compared to the previous release, 7.0.5:
+
+    New features:
+        - Limine boot protocol: Add support for requests delimiter.
+
+    Bug fixes:
+        - Fixed a potential security vulnerability in the ISO9660 driver.
+
+2024-02-15  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.0.5 ***
+
+    Noteworthy changes compared to the previous release, 7.0.4:
+
+    Bug fixes:
+        - Build system related fixes and improvements. This fixes an issue that
+          caused Limine 7.0.4 to fail building on Busybox systems.
+
+2024-02-14  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.0.4 ***
+
+    Noteworthy changes compared to the previous release, 7.0.3:
+
+    Bug fixes:
+        - Minor build system related fixes and improvements.
+
+    Miscellaneous:
+        - Significantly improve reproducibility of builds.
+
+2024-02-08  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.0.3 ***
+
+    Noteworthy changes compared to the previous release, 7.0.2:
+
+    Bug fixes:
+        - multiboot2 protocol: Do not panic if there is a ENTRY_ADDRESS_EFI64
+          tag, but there is a valid alternative entry point. This further aligns
+          our behaviour with GRUB2.
+
+    Miscellaneous:
+        - Terminal: Significantly improve serial and fallback UEFI console's
+          rendition (especially colour palettes).
+        - Serial: Add a baud rate config setting for Limine's BIOS version.
+
+2024-01-26  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.0.2 ***
+
+    Noteworthy changes compared to the previous release, 7.0.1:
+
+    Bug fixes:
+        - Fix a cosmetic bug in the menu where, when the editor was disabled,
+          the controls showed "ENTER Expand" even for boot entries instead of
+          only for menu directories.
+
+    Miscellaneous:
+        - Exclusively use git for obtaining dependencies in "bootstrap" script.
+
+2024-01-22  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.0.1 ***
+
+    Noteworthy changes compared to the previous release, 7.0.0:
+
+    Bug fixes:
+        - Fix ARM64/aarch64 spinup code to properly support Apple Silicon
+          chips.
+        - Prevent users from building Limine with a GNU Make version older than
+          4.2, as that is not supported, by gracefully erroring out with a
+          useful error message.
+        - Avoid usage of reserved C identifiers in certain cases.
+
+    Miscellaneous:
+        - Drop usage of "libgcc-binaries" for "cc-runtime". This finally makes
+          us able to ship Limine tarballs without included binary blobs, and
+          should improve compatibility with more obscure toolchain set ups.
+
+2024-01-14  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 7.0.0 ***
+
+    Noteworthy changes compared to the previous release, 6.20240107.0:
+
+    Bug fixes:
+        - Minor fix of newline handling when reading user input lines.
+
+    Miscellaneous:
+        - Bump major version to 7. Note: There is no breaking change in 7.x
+          compared to 6.x; the major version bump is done due to a change in
+          the versioning scheme used by Limine (move to proper Semantic
+          Versioning).
+        - Fix versions of external dependencies in "bootstrap" script.
+
+2024-01-07  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 6.20240107.0 ***
+
+    Noteworthy changes compared to the previous release, 6.20231227.0:
+
+    New features:
+        - Limine boot protocol: Add support for compressed internal modules.
+
+    Miscellaneous:
+        - Improve error reporting from host "limine" executable.
+        - Track "master" branch of stb_image upstream.
+
+2023-12-27  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 6.20231227.0 ***
+
+    Noteworthy changes compared to the previous release, 6.20231226.0:
+
+    Bug fixes:
+        - Actually regenerate build system with GNU Autoconf 2.72 instead of
+          GNU Autoconf 2.71.
+
+2023-12-26  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 6.20231226.0 ***
+
+    Noteworthy changes compared to the previous release, 6.20231216.0:
+
+    New features:
+        - Ignore trailing whitespace in Limine config file.
+
+    Miscellaneous:
+        - Regenerate build system with GNU Autoconf 2.72.
+        - Minor build system adjustments.
+
+2023-12-16  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 6.20231216.0 ***
+
+    Noteworthy changes compared to the previous release, 6.20231210.0:
+
+    New features:
+        - Added a `--print-datadir` switch to the `limine` program in order
+          to print the directory where Limine files are stored when installed
+          on a host distro.
+
+    Miscellaneous:
+        - General improvements to the `--help` texts for the `limine` program.
+
+2023-12-10  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 6.20231210.0 ***
+
+    This is the first release in the 6.x series.
+
+    Breaking changes compared to the 5.x series:
+
+    - Support for the unmaintained ext2/3/4 filesystems dropped in compliance
+      with the Limine bootloader design philosophy.
+    - Chainloading protocol split into 2 protocols: EFI chainloading and BIOS
+      chainloading.
+
+2023-12-07  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 5.20231207.1 ***
+
+    Noteworthy changes compared to the previous release, 5.20231207.0:
+
+    Bug fixes:
+        - multiboot2/elf: Fix issue where ELF vaddrs were taken into account
+          instead of paddrs when loading executables.
+        - Fix implementation of a function that detects whether a given memory
+          range is physical RAM.
+
+2023-12-07  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 5.20231207.0 ***
+
+    Noteworthy changes compared to the previous release, 5.20231124.0:
+
+    New features:
+        - multiboot2 protocol: Add support for relocatable header tag.
+        - multiboot2 protocol: Add support for console flags header tag.
+        - Limine protocol: Add support for EFI memory map feature.
+
+    Miscellaneous:
+        - Improve error reporting from host "limine" executable.
+        - Do not ignore errors from mtools when building limine-uefi-cd.bin.
+
+2023-11-24  Mintsuki  <mintsuki@protonmail.com>
+
+    *** Release 5.20231124.0 ***
+
+    Compared to previous release, 5.20231121.0:
+
+    New features:
+        - Add support for rebooting to UEFI firmware setup.
+
+    Bug fixes:
+        - Fix SMP (multiprocessor) initialisation regression on aarch64.
+
+    Miscellaneous:
+        - Move to new, handwritten ChangeLog from autogenerated one.

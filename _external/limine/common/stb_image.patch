@@ -1,0 +1,90 @@
+--- common/lib/stb_image.h	2023-03-05 18:57:03.930649341 +0100
++++ common/lib/stb_image.h	2023-03-05 18:55:53.767318782 +0100
+@@ -127,6 +127,54 @@
+ #ifndef STBI_INCLUDE_STB_IMAGE_H
+ #define STBI_INCLUDE_STB_IMAGE_H
+ 
++#include <stddef.h>
++#include <lib/libc.h>
++#include <lib/misc.h>
++#include <mm/pmm.h>
++
++#define STBI_ASSERT(x)
++
++#define STBI_MALLOC(x) ({ \
++    size_t STBI_MALLOC_alloc_size = (x); \
++    STBI_MALLOC_alloc_size += 16; \
++    void *STBI_MALLOC_buf = ext_mem_alloc(STBI_MALLOC_alloc_size); \
++    size_t *STBI_MALLOC_alloc_size_ptr = STBI_MALLOC_buf; \
++    *STBI_MALLOC_alloc_size_ptr = STBI_MALLOC_alloc_size; \
++    STBI_MALLOC_buf + 16; \
++})
++
++#define STBI_FREE(x) do { \
++    void *STBI_FREE_buf = (x); \
++    if (STBI_FREE_buf == NULL) { \
++        break; \
++    } \
++    STBI_FREE_buf -= 16; \
++    size_t *STBI_FREE_alloc_size_ptr = STBI_FREE_buf; \
++    size_t STBI_FREE_alloc_size = *STBI_FREE_alloc_size_ptr; \
++    pmm_free(STBI_FREE_buf, STBI_FREE_alloc_size); \
++} while (0)
++
++#define STBI_REALLOC(x, y) ({ \
++    void *STBI_REALLOC_buf = (x); \
++    size_t STBI_REALLOC_alloc_size = (y); \
++    void *STBI_REALLOC_new_buf = STBI_MALLOC(STBI_REALLOC_alloc_size); \
++    if (STBI_REALLOC_buf != NULL) { \
++        size_t STBI_REALLOC_old_size = (*(size_t *)((void *)STBI_REALLOC_buf - 16)) - 16; \
++        memcpy(STBI_REALLOC_new_buf, STBI_REALLOC_buf, \
++               MIN(STBI_REALLOC_alloc_size, STBI_REALLOC_old_size)); \
++        STBI_FREE(STBI_REALLOC_buf); \
++    } \
++    STBI_REALLOC_new_buf; \
++})
++
++#define STBI_NO_THREAD_LOCALS
++#define STBI_NO_STDIO
++#define STBI_NO_SIMD
++#define STBI_NO_LINEAR
++#define STBI_ONLY_JPEG
++#define STBI_ONLY_PNG
++#define STBI_ONLY_BMP
++
+ // DOCUMENTATION
+ //
+ // Limitations:
+@@ -381,7 +429,7 @@
+    STBI_rgb_alpha  = 4
+ };
+ 
+-#include <stdlib.h>
++// #include <stdlib.h>
+ typedef unsigned char stbi_uc;
+ typedef unsigned short stbi_us;
+ 
+@@ -584,8 +632,8 @@
+ 
+ #include <stdarg.h>
+ #include <stddef.h> // ptrdiff_t on osx
+-#include <stdlib.h>
+-#include <string.h>
++// #include <stdlib.h>
++// #include <string.h>
+ #include <limits.h>
+ 
+ #if !defined(STBI_NO_LINEAR) || !defined(STBI_NO_HDR)
+@@ -1574,10 +1622,12 @@
+ STBIDEF void   stbi_ldr_to_hdr_scale(float scale) { stbi__l2h_scale = scale; }
+ #endif
+ 
++/*
+ static float stbi__h2l_gamma_i=1.0f/2.2f, stbi__h2l_scale_i=1.0f;
+ 
+ STBIDEF void   stbi_hdr_to_ldr_gamma(float gamma) { stbi__h2l_gamma_i = 1/gamma; }
+ STBIDEF void   stbi_hdr_to_ldr_scale(float scale) { stbi__h2l_scale_i = 1/scale; }
++*/
+ 
+ 
+ //////////////////////////////////////////////////////////////////////////////

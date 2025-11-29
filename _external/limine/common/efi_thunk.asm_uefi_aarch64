@@ -1,0 +1,12 @@
+.section .text
+
+.global efi_main
+.extern uefi_entry
+
+efi_main:
+    mov x30, xzr
+    mov x29, xzr
+
+    b uefi_entry
+
+.section .note.GNU-stack,"",%progbits

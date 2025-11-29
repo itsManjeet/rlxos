@@ -187,6 +187,10 @@ define GRUB2_CONFIGURE_CMDS
 			--host=$(GNU_TARGET_NAME) \
 			--build=$(GNU_HOST_NAME) \
 			--prefix=/ \
+			--bindir=/cmd \
+			--sbindir=/cmd \
+			--sysconfdir=/config \
+			--datadir=/data \
 			--exec-prefix=/ \
 			--disable-grub-mkfont \
 			--enable-efiemu=no \

@@ -109,7 +109,7 @@ endef
 define PPD_PYTHON_REMOVE_SYSCONFIGDATA_PYC
 	$(Q)find $(HOST_DIR) \
 		\(    -path '$(HOST_DIR)/lib/python*' \
-		   -o -path '$(STAGING_DIR)/usr/lib/python*' \
+		   -o -path '$(STAGING_DIR)/lib/python*' \
 		\) \
 		\( -name "_sysconfigdata*.pyc" -delete \)
 endef
@@ -315,22 +315,22 @@ $(BUILD_DIR)/%/.stamp_staging_installed:
 		$(call MESSAGE,"Fixing package configuration files") ;\
 			$(SED)  "s,$(HOST_DIR),@HOST_DIR@,g" \
 				-e "s,$(BASE_DIR),@BASE_DIR@,g" \
-				-e "s,^\(exec_\)\?prefix=.*,\1prefix=@STAGING_DIR@/usr,g" \
-				-e "s,-I/usr/,-I@STAGING_DIR@/usr/,g" \
-				-e "s,-L/usr/,-L@STAGING_DIR@/usr/,g" \
+				-e "s,^\(exec_\)\?prefix=.*,\1prefix=@STAGING_DIR@,g" \
+				-e "s,-I/usr/,-I@STAGING_DIR@/,g" \
+				-e "s,-L/usr/,-L@STAGING_DIR@/,g" \
 				-e 's,@STAGING_DIR@,$$(dirname $$(readlink -e $$0))/../..,g' \
 				-e 's,@HOST_DIR@,$$(dirname $$(readlink -e $$0))/../../../..,g' \
 				-e "s,@BASE_DIR@,$(BASE_DIR),g" \
-				$(addprefix $(STAGING_DIR)/usr/bin/,$($(PKG)_CONFIG_SCRIPTS)) ;\
+				$(addprefix $(STAGING_DIR)/cmd/,$($(PKG)_CONFIG_SCRIPTS)) ;\
 	fi
 	@$(call MESSAGE,"Fixing libtool files")
-	for la in $$(find $(STAGING_DIR)/usr/lib* -name "*.la"); do \
+	for la in $$(find $(STAGING_DIR)/lib* -name "*.la"); do \
 		cp -a "$${la}" "$${la}.fixed" && \
 		$(SED) "s:$(BASE_DIR):@BASE_DIR@:g" \
 			-e "s:$(STAGING_DIR):@STAGING_DIR@:g" \
 			$(if $(TOOLCHAIN_EXTERNAL_INSTALL_DIR),\
 				-e "s:$(TOOLCHAIN_EXTERNAL_INSTALL_DIR):@TOOLCHAIN_EXTERNAL_INSTALL_DIR@:g") \
-			-e "s:\(['= ]\)/usr:\\1@STAGING_DIR@/usr:g" \
+			-e "s:\(['= ]\)/usr:\\1@STAGING_DIR@:g" \
 			-e "s:\(['= ]\)/lib:\\1@STAGING_DIR@/lib:g" \
 			$(if $(TOOLCHAIN_EXTERNAL_INSTALL_DIR),\
 				-e "s:@TOOLCHAIN_EXTERNAL_INSTALL_DIR@:$(TOOLCHAIN_EXTERNAL_INSTALL_DIR):g") \
@@ -371,7 +371,7 @@ $(BUILD_DIR)/%/.stamp_target_installed:
 			$($(PKG)_INSTALL_INIT_SYSV)))
 	$(foreach hook,$($(PKG)_POST_INSTALL_TARGET_HOOKS),$(call $(hook))$(sep))
 	$(Q)if test -n "$($(PKG)_CONFIG_SCRIPTS)" ; then \
-		$(RM) -f $(addprefix $(TARGET_DIR)/usr/bin/,$($(PKG)_CONFIG_SCRIPTS)) ; \
+		$(RM) -f $(addprefix $(TARGET_DIR)/cmd/,$($(PKG)_CONFIG_SCRIPTS)) ; \
 	fi
 	@$(call step_end,install-target)
 	$(Q)touch $@

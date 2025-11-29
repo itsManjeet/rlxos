@@ -174,10 +174,13 @@ define $(2)_CONFIGURE_CMDS
 		--target=$$(GNU_TARGET_NAME) \
 		--host=$$(GNU_TARGET_NAME) \
 		--build=$$(GNU_HOST_NAME) \
-		--prefix=/usr \
-		--exec-prefix=/usr \
-		--sysconfdir=/etc \
-		--localstatedir=/var \
+		--prefix=/ \
+		--exec-prefix=/ \
+		--bindir=/cmd \
+		--sbindir=/cmd \
+		--datadir=/data \
+		--sysconfdir=/config \
+		--localstatedir=/cache \
 		--program-prefix="" \
 		--disable-gtk-doc \
 		--disable-gtk-doc-html \

@@ -11,8 +11,8 @@ strip = '@TARGET_STRIP@'
 cmake = '@BR2_CMAKE@'
 fortran = '@TARGET_FC@'
 pkg-config = '@PKGCONF_HOST_BINARY@'
-g-ir-compiler = '@STAGING_DIR@/usr/bin/g-ir-compiler'
-g-ir-scanner = '@STAGING_DIR@/usr/bin/g-ir-scanner'
+g-ir-compiler = '@STAGING_DIR@/cmd/g-ir-compiler'
+g-ir-scanner = '@STAGING_DIR@/cmd/g-ir-scanner'
 
 [built-in options]
 c_args = [@TARGET_CFLAGS@]
@@ -22,12 +22,12 @@ cpp_link_args = [@TARGET_LDFLAGS@]
 fortran_args = [@TARGET_FCFLAGS@]
 fortran_link_args = [@TARGET_LDFLAGS@]
 wrap_mode = 'nodownload'
-cmake_prefix_path = '@STAGING_DIR@/usr/lib/cmake'
+cmake_prefix_path = '@STAGING_DIR@/lib/cmake'
 
 [properties]
 needs_exe_wrapper = true
 sys_root = '@STAGING_DIR@'
-pkg_config_libdir = '@STAGING_DIR@/usr/lib/pkgconfig:@STAGING_DIR@/usr/share/pkgconfig'
+pkg_config_libdir = '@STAGING_DIR@/lib/pkgconfig:@STAGING_DIR@/data/pkgconfig'
 pkg_config_static = '@STATIC@'
 # enable meson build to pass a toolchain file to cmake
 cmake_toolchain_file = '@HOST_DIR@/share/buildroot/toolchainfile.cmake'

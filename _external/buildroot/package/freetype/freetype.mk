@@ -63,7 +63,7 @@ endif
 define FREETYPE_FIX_CONFIG_FILE
 	$(SED) 's:^includedir=.*:includedir="$${prefix}/include":' \
 		-e 's:^libdir=.*:libdir="$${exec_prefix}/lib":' \
-		$(STAGING_DIR)/usr/bin/freetype-config
+		$(STAGING_DIR)/cmd/freetype-config
 endef
 FREETYPE_POST_INSTALL_STAGING_HOOKS += FREETYPE_FIX_CONFIG_FILE
 

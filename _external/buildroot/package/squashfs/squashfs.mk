@@ -76,7 +76,7 @@ endef
 
 define SQUASHFS_INSTALL_TARGET_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) $(SQUASHFS_MAKE_ARGS) \
-		-C $(@D)/squashfs-tools/ INSTALL_DIR=$(TARGET_DIR)/usr/bin \
+		-C $(@D)/squashfs-tools/ INSTALL_DIR=$(TARGET_DIR)/cmd \
 		INSTALL_MANPAGES_DIR="" install
 endef
 

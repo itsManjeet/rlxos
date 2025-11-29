@@ -14,7 +14,8 @@ SEATD_INSTALL_STAGING = YES
 SEATD_CONF_OPTS += \
 	-Dman-pages=disabled \
 	-Dexamples=disabled \
-	-Dwerror=false
+	-Dwerror=false \
+	-Ddefaultpath=/cache/seatd.sock
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_LOGIND),y)
 SEATD_CONF_OPTS += -Dlibseat-logind=systemd

@@ -24,7 +24,7 @@ NUT_CONF_OPTS = \
 	--with-group=nut
 
 NUT_CONF_ENV = \
-	PKG_CONFIG_LIBDIR=$(STAGING_DIR)/usr/lib/pkgconfig:$(STAGING_DIR)/usr/share/pkgconfig \
+	PKG_CONFIG_LIBDIR=$(STAGING_DIR)/lib/pkgconfig:$(STAGING_DIR)/data/pkgconfig \
 	ax_cv_check_cflags__Werror__Wno_unknown_warning_option=no \
 	ax_cv_check_cxxflags__Werror__Wno_unknown_warning_option=no \
 	ac_cv_func_strcasecmp=yes \

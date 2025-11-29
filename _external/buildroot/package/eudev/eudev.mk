@@ -12,9 +12,10 @@ EUDEV_INSTALL_STAGING = YES
 
 EUDEV_CONF_OPTS = \
 	--disable-manpages \
-	--sbindir=/sbin \
+	--sbindir=/cmd \
 	--libexecdir=/lib \
 	--enable-kmod \
+	--with-rootrundir=/cache/ \
 	--enable-blkid
 
 # eudev requires only the util-linux libraries at build time

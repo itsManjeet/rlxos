@@ -35,9 +35,7 @@
 # This function handles the merged or non-merged /usr cases
 ifeq ($(BR2_ROOTFS_MERGED_USR),y)
 define SYSTEM_USR_SYMLINKS_OR_DIRS
-	ln -snf usr/bin $(1)/bin
-	ln -snf usr/sbin $(1)/sbin
-	ln -snf usr/lib $(1)/lib
+	ln -snf . $(1)/usr
 endef
 else
 define SYSTEM_USR_SYMLINKS_OR_DIRS
@@ -87,12 +85,12 @@ SYSTEM_GETTY_OPTIONS = $(call qstrip,$(BR2_TARGET_GENERIC_GETTY_OPTIONS))
 ifeq ($(BR2_TARGET_GENERIC_REMOUNT_ROOTFS_RW),y)
 # Find commented line, if any, and remove leading '#'s
 define SYSTEM_REMOUNT_ROOT_INITTAB
-	$(SED) '/^#.*-o remount,rw \/$$/s~^#\+~~' $(TARGET_DIR)/etc/inittab
+	$(SED) '/^#.*-o remount,rw \/$$/s~^#\+~~' $(TARGET_DIR)/config/inittab
 endef
 else
 # Find uncommented line, if any, and add a leading '#'
 define SYSTEM_REMOUNT_ROOT_INITTAB
-	$(SED) '/^[^#].*-o remount,rw \/$$/s~^~#~' $(TARGET_DIR)/etc/inittab
+	$(SED) '/^[^#].*-o remount,rw \/$$/s~^~#~' $(TARGET_DIR)/config/inittab
 endef
 endif
 

@@ -19,7 +19,7 @@ OPENSSH_CONF_ENV = \
 	LIBS=`$(PKG_CONFIG_HOST_BINARY) --libs openssl`
 OPENSSH_CPE_ID_VENDOR = openbsd
 OPENSSH_CONF_OPTS = \
-	--sysconfdir=/etc/ssh \
+	--sysconfdir=/config/ssh \
 	--with-default-path=$(BR2_SYSTEM_DEFAULT_PATH) \
 	$(if $(BR2_PACKAGE_OPENSSH_SANDBOX),--with-sandbox,--without-sandbox) \
 	--disable-lastlog \

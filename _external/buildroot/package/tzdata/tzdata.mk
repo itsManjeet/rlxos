@@ -29,20 +29,20 @@ endif
 TZDATA_LOCALTIME = $(call qstrip,$(BR2_TARGET_LOCALTIME))
 ifneq ($(TZDATA_LOCALTIME),)
 define TZDATA_SET_LOCALTIME
-	if [ ! -f $(TARGET_DIR)/usr/share/zoneinfo/$(TZDATA_LOCALTIME) ]; then \
+	if [ ! -f $(TARGET_DIR)/data/zoneinfo/$(TZDATA_LOCALTIME) ]; then \
 		printf "Error: '%s' is not a valid timezone, check your BR2_TARGET_LOCALTIME setting\n" \
 			"$(TZDATA_LOCALTIME)"; \
 		exit 1; \
 	fi
-	ln -sf ../usr/share/zoneinfo/$(TZDATA_LOCALTIME) $(TARGET_DIR)/etc/localtime
-	echo "$(TZDATA_LOCALTIME)" >$(TARGET_DIR)/etc/timezone
+	ln -sf ../data/zoneinfo/$(TZDATA_LOCALTIME) $(TARGET_DIR)/config/localtime
+	echo "$(TZDATA_LOCALTIME)" >$(TARGET_DIR)/config/timezone
 endef
 endif
 
 define TZDATA_INSTALL_TARGET_CMDS
-	$(INSTALL) -d -m 0755 $(TARGET_DIR)/usr/share/zoneinfo
-	cp -a $(HOST_DIR)/share/zoneinfo/* $(TARGET_DIR)/usr/share/zoneinfo
-	cd $(TARGET_DIR)/usr/share/zoneinfo; \
+	$(INSTALL) -d -m 0755 $(TARGET_DIR)/data/zoneinfo
+	cp -a $(HOST_DIR)/share/zoneinfo/* $(TARGET_DIR)/data/zoneinfo
+	cd $(TARGET_DIR)/data/zoneinfo; \
 	for zone in posix/*; do \
 	    ln -sfn "$${zone}" "$${zone##*/}"; \
 	done

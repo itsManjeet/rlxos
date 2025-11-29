@@ -158,7 +158,11 @@ define $(2)_CONFIGURE_CMDS
 	CXX_FOR_BUILD="$$(HOSTCXX)" \
 	$$($$(PKG)_CONF_ENV) \
 	$$(MESON) setup \
-		--prefix=/usr \
+		--prefix=/ \
+		--bindir=cmd \
+		--datadir=data \
+		--sbindir=cmd \
+		--sysconfdir=config \
 		--libdir=lib \
 		--default-library=$(PKG_MESON_DEFAULT_LIBRARY) \
 		--buildtype=$(if $(BR2_ENABLE_RUNTIME_DEBUG),debug,release) \

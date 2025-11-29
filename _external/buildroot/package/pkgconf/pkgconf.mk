@@ -22,7 +22,7 @@ HOST_PKGCONF_CONF_ENV = \
 PKG_CONFIG_HOST_BINARY = $(HOST_DIR)/bin/pkg-config
 
 define PKGCONF_LINK_PKGCONFIG
-	ln -sf pkgconf $(TARGET_DIR)/usr/bin/pkg-config
+	ln -sf pkgconf $(TARGET_DIR)/cmd/pkg-config
 endef
 
 define HOST_PKGCONF_INSTALL_WRAPPER

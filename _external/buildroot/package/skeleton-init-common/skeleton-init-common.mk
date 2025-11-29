@@ -20,7 +20,7 @@ define SKELETON_INIT_COMMON_INSTALL_TARGET_CMDS
 	$(call SYSTEM_RSYNC,$(SKELETON_INIT_COMMON_PATH),$(TARGET_DIR))
 	$(call SYSTEM_USR_SYMLINKS_OR_DIRS,$(TARGET_DIR))
 	$(call SYSTEM_LIB_SYMLINK,$(TARGET_DIR))
-	$(SED) 's,@PATH@,$(BR2_SYSTEM_DEFAULT_PATH),' $(TARGET_DIR)/etc/profile
+	$(SED) 's,@PATH@,$(BR2_SYSTEM_DEFAULT_PATH),' $(TARGET_DIR)/config/profile
 	$(INSTALL) -m 0644 support/misc/target-dir-warning.txt \
 		$(TARGET_DIR_WARNING_FILE)
 endef
@@ -32,7 +32,7 @@ define SKELETON_INIT_COMMON_INSTALL_STAGING_CMDS
 	$(call SYSTEM_RSYNC,$(SKELETON_INIT_COMMON_PATH),$(STAGING_DIR))
 	$(call SYSTEM_USR_SYMLINKS_OR_DIRS,$(STAGING_DIR))
 	$(call SYSTEM_LIB_SYMLINK,$(STAGING_DIR))
-	$(INSTALL) -d -m 0755 $(STAGING_DIR)/usr/include
+	$(INSTALL) -d -m 0755 $(STAGING_DIR)/include
 endef
 
 SKELETON_INIT_COMMON_HOSTNAME = $(call qstrip,$(BR2_TARGET_GENERIC_HOSTNAME))
@@ -48,18 +48,18 @@ ifneq ($(SKELETON_INIT_COMMON_HOSTNAME),$(SKELETON_INIT_COMMON_SHORT_HOSTNAME))
 SKELETON_INIT_COMMON_HOSTS_LINE += $(SKELETON_INIT_COMMON_SHORT_HOSTNAME)
 endif
 define SKELETON_INIT_COMMON_SET_HOSTNAME
-	mkdir -p $(TARGET_DIR)/etc
-	echo "$(SKELETON_INIT_COMMON_HOSTNAME)" > $(TARGET_DIR)/etc/hostname
+	mkdir -p $(TARGET_DIR)/config
+	echo "$(SKELETON_INIT_COMMON_HOSTNAME)" > $(TARGET_DIR)/config/hostname
 	$(SED) '$$a \127.0.1.1\t$(SKELETON_INIT_COMMON_HOSTS_LINE)' \
-		-e '/^127.0.1.1/d' $(TARGET_DIR)/etc/hosts
+		-e '/^127.0.1.1/d' $(TARGET_DIR)/config/hosts
 endef
 SKELETON_INIT_COMMON_TARGET_FINALIZE_HOOKS += SKELETON_INIT_COMMON_SET_HOSTNAME
 endif
 
 ifneq ($(SKELETON_INIT_COMMON_ISSUE),)
 define SKELETON_INIT_COMMON_SET_ISSUE
-	mkdir -p $(TARGET_DIR)/etc
-	echo "$(SKELETON_INIT_COMMON_ISSUE)" > $(TARGET_DIR)/etc/issue
+	mkdir -p $(TARGET_DIR)/config
+	echo "$(SKELETON_INIT_COMMON_ISSUE)" > $(TARGET_DIR)/config/issue
 endef
 SKELETON_INIT_COMMON_TARGET_FINALIZE_HOOKS += SKELETON_INIT_COMMON_SET_ISSUE
 endif
@@ -76,27 +76,27 @@ else # !BR2_TARGET_ENABLE_ROOT_LOGIN
 SKELETON_INIT_COMMON_ROOT_PASSWORD = "*"
 endif
 define SKELETON_INIT_COMMON_SET_ROOT_PASSWD
-	$(SED) s,^root:[^:]*:,root:$(SKELETON_INIT_COMMON_ROOT_PASSWORD):, $(TARGET_DIR)/etc/shadow
+	$(SED) s,^root:[^:]*:,root:$(SKELETON_INIT_COMMON_ROOT_PASSWORD):, $(TARGET_DIR)/config/shadow
 endef
 SKELETON_INIT_COMMON_TARGET_FINALIZE_HOOKS += SKELETON_INIT_COMMON_SET_ROOT_PASSWD
 
 ifeq ($(BR2_SYSTEM_BIN_SH_NONE),y)
 define SKELETON_INIT_COMMON_SET_BIN_SH
-	rm -f $(TARGET_DIR)/bin/sh
+	rm -f $(TARGET_DIR)/config/sh
 endef
 else
 # Add /bin/sh to /etc/shells otherwise some login tools like dropbear
 # can reject the user connection. See man shells.
 define SKELETON_INIT_COMMON_ADD_SH_TO_SHELLS
-	grep -qsE '^/bin/sh$$' $(TARGET_DIR)/etc/shells \
-		|| echo "/bin/sh" >> $(TARGET_DIR)/etc/shells
+	grep -qsE '^/bin/sh$$' $(TARGET_DIR)/config/shells \
+		|| echo "/bin/sh" >> $(TARGET_DIR)/config/shells
 endef
 SKELETON_INIT_COMMON_TARGET_FINALIZE_HOOKS += SKELETON_INIT_COMMON_ADD_SH_TO_SHELLS
 ifneq ($(SKELETON_INIT_COMMON_BIN_SH),)
 define SKELETON_INIT_COMMON_SET_BIN_SH
-	ln -sf $(SKELETON_INIT_COMMON_BIN_SH) $(TARGET_DIR)/bin/sh
+	ln -sf $(SKELETON_INIT_COMMON_BIN_SH) $(TARGET_DIR)/config/sh
 	$(SED) '/^root:/s,[^/]*$$,$(SKELETON_INIT_COMMON_BIN_SH),' \
-		$(TARGET_DIR)/etc/passwd
+		$(TARGET_DIR)/config/passwd
 endef
 endif
 endif

@@ -20,7 +20,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBRESSL_BIN),)
 define LIBRESSL_REMOVE_BIN
-	$(RM) -f $(TARGET_DIR)/usr/bin/openssl
+	$(RM) -f $(TARGET_DIR)/cmd/openssl
 endef
 LIBRESSL_POST_INSTALL_TARGET_HOOKS += LIBRESSL_REMOVE_BIN
 endif

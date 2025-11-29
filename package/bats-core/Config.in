@@ -1,0 +1,19 @@
+config BR2_PACKAGE_BATS_CORE
+	bool "bats"
+	depends on BR2_PACKAGE_BASH # runtime
+	help
+	  Bats: Bash Automated Testing System
+
+	  Bats is a TAP-compliant testing framework for Bash. It
+	  provides a simple way to verify that the UNIX programs you
+	  write behave as expected.
+
+	  https://github.com/bats-core/bats-core
+
+if BR2_PACKAGE_BATS_CORE
+
+source "package/bats-assert/Config.in"
+source "package/bats-file/Config.in"
+source "package/bats-support/Config.in"
+
+endif

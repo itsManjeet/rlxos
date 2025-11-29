@@ -1,0 +1,5 @@
+# From https://github.com/troglobit/netcalc/releases/tag/v2.1.7
+sha256  7300ceac519dd14a8431d27339359f064eb5d80bdd7307ecb1b1cb1b0ab42969  netcalc-2.1.7.tar.gz
+
+# Locally computed
+sha256  c9462bef0a7f70323f782e10def048ea0bb281d35e93dd0de896ea9805856015  LICENSE

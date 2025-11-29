@@ -1,0 +1,4 @@
+# From https://mirrors.edge.kernel.org/pub/linux/utils/rt-tests/sha256sums.asc
+sha256  13190fda63fae640a354d3378c16030f1bd4c243e514515810145dd9d1ae16d8  rt-tests-2.8.tar.xz
+# locally computed hash
+sha256  ab15fd526bd8dd18a9e77ebc139656bf4d33e97fc7238cd11bf60e2b9b8666c6  COPYING

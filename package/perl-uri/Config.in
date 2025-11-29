@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PERL_URI
+	bool "perl-uri"
+	select BR2_PACKAGE_PERL_MIME_BASE32 # runtime
+	help
+	  Uniform Resource Identifiers (absolute and relative).
+
+	  https://github.com/libwww-perl/URI

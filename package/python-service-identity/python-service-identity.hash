@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/service-identity/json
+md5  e575db51719742ec39191c896e4c2971  service_identity-24.2.0.tar.gz
+sha256  b8683ba13f0d39c6cd5d625d2c5f65421d6d707b013b375c355751557cbe8e09  service_identity-24.2.0.tar.gz
+# Locally computed sha256 checksums
+sha256  24bd0a9ba7d0eae08a3a6e32a1b09f8e6871fa0325520a2fcb00e1539eaa602a  LICENSE

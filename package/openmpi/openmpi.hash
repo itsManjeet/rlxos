@@ -1,0 +1,6 @@
+# From: https://www.open-mpi.org/software/ompi/v4.1/
+md5  72e95168a62a5b951da9afe4f48b0be9  openmpi-4.1.8.tar.bz2
+sha1  821df691e2c37ecc40b2784237cfdfda734bf13a  openmpi-4.1.8.tar.bz2
+sha256  466f68e3132a1dc02710cc2011fafced8336d98359fa2dae4dddcfd5719f12a9  openmpi-4.1.8.tar.bz2
+# Locally computed
+sha256  2db71de9577ebfe15c186605844c470dcecd3717f4ef0118c9440d801c0f58f8  LICENSE

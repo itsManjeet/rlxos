@@ -1,0 +1,113 @@
+From ae84e5ef59bb24d5b8fd17e6756952f42c2d5c36 Mon Sep 17 00:00:00 2001
+From: rpm-build <rpm-build>
+Date: Thu, 23 Feb 2017 08:17:07 +0100
+Subject: [PATCH] Do not export/use setools.InfoFlowAnalysis and
+ setools.DomainTransitionAnalysis
+
+dta and infoflow modules require networkx which brings lot of dependencies.
+These dependencies are not necessary for setools module itself as it's
+used in policycoreutils.
+
+Therefore it's better to use setools.infoflow.InfoFlowAnalysis and
+setools.dta.DomainTransitionAnalysis and let the package containing
+sedta and seinfoflow to require python3-networkx
+
+Signed-off-by: Antoine Tenart <antoine.tenart@bootlin.com>
+[Refreshed for 4.3.0]
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
+[Refreshed for 4.5.1]
+Signed-off-by: Adam Duskett <adam.duskett@amarulasolutions.com>
+---
+ sedta                  | 3 ++-
+ seinfoflow             | 5 +++--
+ setools/__init__.py    | 2 +-
+ tests/test_dta.py      | 2 +-
+ tests/test_infoflow.py | 2 +-
+ 5 files changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/sedta b/sedta
+index 9b580fc..bec89d4 100755
+--- a/sedta
++++ b/sedta
+@@ -12,6 +12,7 @@ import warnings
+ 
+ import networkx as nx
+ import setools
++import setools.dta
+ 
+ 
+ signal.signal(signal.SIGPIPE, signal.SIG_DFL)
+@@ -68,7 +69,7 @@ else:
+ 
+ try:
+     p = setools.SELinuxPolicy(args.policy)
+-    g = setools.DomainTransitionAnalysis(p, exclude=args.exclude)
++    g = setools.dta.DomainTransitionAnalysis(p, exclude=args.exclude)
+ 
+     pathnum: int = 0
+     path: setools.DTAPath
+diff --git a/seinfoflow b/seinfoflow
+index b4ad328..61f1ef5 100755
+--- a/seinfoflow
++++ b/seinfoflow
+@@ -13,6 +13,7 @@ from typing import Dict, Optional
+ 
+ import networkx as nx
+ import setools
++import setools.infoflow
+ 
+ signal.signal(signal.SIGPIPE, signal.SIG_DFL)
+ 
+@@ -104,8 +105,8 @@ elif args.booleans is not None:
+ try:
+     p = setools.SELinuxPolicy(args.policy)
+     m = setools.PermissionMap(args.map)
+-    g = setools.InfoFlowAnalysis(p, m, min_weight=args.min_weight, exclude=args.exclude,
+-                                 booleans=booleans)
++    g = setools.infoflow.InfoFlowAnalysis(p, m, min_weight=args.min_weight, exclude=args.exclude,
++                                          booleans=booleans)
+ 
+     flownum: int = 0
+     flow: setools.InfoFlowPath
+diff --git a/setools/__init__.py b/setools/__init__.py
+index 1efd2cc..fe54ab2 100644
+--- a/setools/__init__.py
++++ b/setools/__init__.py
+@@ -81,7 +81,7 @@ from .infoflow import *
+ from .permmap import PermissionMap, RuleWeight, Mapping
+ 
+ # Domain Transition Analysis
+-from .dta import *
++# from .dta import *
+ 
+ # Policy difference
+ from .diff import PolicyDifference
+diff --git a/tests/test_dta.py b/tests/test_dta.py
+index 2398b3f..b943bd6 100644
+--- a/tests/test_dta.py
++++ b/tests/test_dta.py
+@@ -5,7 +5,7 @@
+ import os
+ import unittest
+ 
+-from setools import DomainTransitionAnalysis
++from setools.dta import DomainTransitionAnalysis
+ from setools import TERuletype as TERT
+ from setools.exception import InvalidType
+ from setools.policyrep import Type
+diff --git a/tests/test_infoflow.py b/tests/test_infoflow.py
+index ba2983f..9cd6ab3 100644
+--- a/tests/test_infoflow.py
++++ b/tests/test_infoflow.py
+@@ -5,7 +5,7 @@
+ import os
+ import unittest
+ 
+-from setools import InfoFlowAnalysis
++from setools.infoflow import InfoFlowAnalysis
+ from setools import TERuletype as TERT
+ from setools.exception import InvalidType
+ from setools.permmap import PermissionMap
+-- 
+2.46.0
+

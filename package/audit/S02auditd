@@ -1,0 +1,102 @@
+#!/bin/sh
+#
+# auditd       This starts and stops auditd
+#
+# description: This starts the Linux Auditing System Daemon,
+#              which collects security related events in a dedicated
+#              audit log. If this daemon is turned off, audit events
+#              will be sent to syslog.
+#
+
+DAEMON="auditd"
+PIDFILE="/var/run/${DAEMON}.pid"
+
+start(){
+	printf "Starting %s: " "${DAEMON}"
+
+	# Create dir to store log files in if one doesn't exist. Create
+	# the directory with SELinux permissions if possible
+	if command -v selabel_lookup >/dev/null 2>&1; then
+		audit_log_selable="$(selabel_lookup -b file -k /var/log/audit | cut -d ' ' -f 3)"
+		mkdir -p --context="${audit_log_selable}" /var/log/audit
+	else
+		mkdir -p /var/log/audit
+	fi
+
+	start-stop-daemon --start --pidfile "${PIDFILE}" \
+		--exec "/usr/sbin/${DAEMON}"
+	status=$?
+	if [ "${status}" -eq 0 ]; then
+		# Load the default rules
+		test -f /etc/audit/audit.rules && /usr/sbin/auditctl -R /etc/audit/audit.rules >/dev/null
+		echo "OK"
+	else
+		echo "FAIL"
+	fi
+	return "${status}"
+}
+
+stop(){
+	printf "Stopping %s: " "${DAEMON}"
+	start-stop-daemon --stop --pidfile "${PIDFILE}" --exec "/usr/sbin/${DAEMON}"
+	status=$?
+	if [ "${status}" -eq 0 ]; then
+		echo "OK"
+	else
+		echo "FAIL"
+		return "${status}"
+	fi
+	while start-stop-daemon --stop --test --quiet --pidfile "${PIDFILE}" \
+		--exec "/sbin/${DAEMON}"; do
+		sleep 0.1
+	done
+	rm -f "${PIDFILE}"
+	return "${status}"
+}
+
+reload(){
+	printf "Reloading %s configuration: " "${DAEMON}"
+	start-stop-daemon --stop --signal HUP --pidfile "${PIDFILE}" 1>/dev/null
+	status=$?
+	if [ "${status}" -eq 0 ]; then
+		echo "OK"
+	else
+		echo "FAIL"
+	fi
+	return "${status}"
+}
+
+rotate(){
+	printf "Rotating %s logs: " "${DAEMON}"
+	start-stop-daemon --stop --signal SIGUSR1 --pidfile "${PIDFILE}" 1>/dev/null
+	status=$?
+	if [ "${status}" -eq 0 ]; then
+		echo "OK"
+	else
+		echo "FAIL"
+	fi
+	return "${status}"
+}
+
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	restart)
+		stop
+		start
+		;;
+	reload)
+		reload
+		;;
+	rotate)
+		rotate
+		;;
+	*)
+		echo "Usage: $0 {start|stop|restart|reload|rotate}"
+		exit 1
+		;;
+esac

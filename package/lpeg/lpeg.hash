@@ -1,0 +1,4 @@
+# computed by luarocks/buildroot
+sha256  6637fcf4d3ddef7be490a2f0155bd2dcd053272d1bb78c015498709ef9fa75dd  lpeg-1.1.0-1.src.rock
+# computed locally
+sha256  3f4f8a7997d9e0d9d0fca6d2b9877a5714251fff056783dd71288413b0abcf36  lpeg-1.1.0/lpeg.html

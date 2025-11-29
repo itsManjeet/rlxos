@@ -1,0 +1,9 @@
+config BR2_PACKAGE_CGROUPFS_MOUNT
+	bool "cgroupfs-mount"
+	depends on !BR2_INIT_SYSTEMD
+	help
+	  cgroupfs mount and umount scripts.
+
+	  Requires a Linux kernel >= 3.0
+
+	  https://github.com/tianon/cgroupfs-mount

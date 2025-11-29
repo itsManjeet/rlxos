@@ -1,0 +1,8 @@
+config BR2_PACKAGE_LIBNVME
+	bool "libnvme"
+	depends on BR2_USE_MMU # malloc_usable_size()
+	help
+	  libnvme provides type definitions for NVMe specification
+	  and utilities for nvme devices handling in Linux.
+
+	  https://github.com/linux-nvme/libnvme

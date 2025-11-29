@@ -1,0 +1,232 @@
+if BR2_PACKAGE_LIBOPENSSL
+
+# 4xx PowerPC cores seem to have trouble with openssl's ASM
+# optimizations
+config BR2_PACKAGE_LIBOPENSSL_TARGET_ARCH_LINUX_PPC
+	bool
+	default y if BR2_powerpc
+	depends on !BR2_powerpc_401
+	depends on !BR2_powerpc_403
+	depends on !BR2_powerpc_405
+	depends on !BR2_powerpc_405fp
+	depends on !BR2_powerpc_440
+	depends on !BR2_powerpc_440fp
+
+config BR2_PACKAGE_LIBOPENSSL_TARGET_ARCH
+	string
+	# Doesn't work for thumb-only (Cortex-M?)
+	default "linux-armv4"			if BR2_ARM_CPU_HAS_ARM
+	default "linux-aarch64"			if BR2_aarch64
+	default "linux-ppc"			if BR2_PACKAGE_LIBOPENSSL_TARGET_ARCH_LINUX_PPC
+	default "linux-ppc64"			if BR2_powerpc64
+	default "linux-ppc64le"			if BR2_powerpc64le
+	default "linux-x86"			if BR2_i386 && !BR2_TOOLCHAIN_HAS_LIBATOMIC
+	default "linux-x86-latomic"		if BR2_i386 && BR2_TOOLCHAIN_HAS_LIBATOMIC
+	default "linux-x86_64"			if BR2_x86_64
+	default "linux64-riscv64"               if BR2_riscv && BR2_ARCH_IS_64
+	default "linux32-riscv32"               if BR2_riscv && !BR2_ARCH_IS_64
+	default "linux64-s390x"                 if BR2_s390x
+	# no-asm is needed with generic architectures such as
+	# linux-generic{32,64}, see
+	# https://github.com/openssl/openssl/issues/9839
+	default "linux-generic64 no-asm"	if BR2_ARCH_IS_64 && !BR2_MIPS_NABI32
+	default "linux-latomic no-asm"		if BR2_TOOLCHAIN_HAS_LIBATOMIC
+	default "linux-generic32 no-asm"
+
+config BR2_PACKAGE_LIBOPENSSL_BIN
+	bool "openssl binary"
+	help
+	  Install the openssl binary and the associated helper scripts
+	  to the target file system. This is a command line tool for
+	  doing various cryptographic stuff.
+
+config BR2_PACKAGE_LIBOPENSSL_ENGINES
+	bool "openssl additional engines"
+	help
+	  Install additional encryption engine libraries.
+
+config BR2_PACKAGE_LIBOPENSSL_ENABLE_CHACHA
+	bool "enable CHACHA"
+	default y
+
+config BR2_PACKAGE_LIBOPENSSL_ENABLE_RC2
+	bool "enable RC2"
+	default y
+
+config BR2_PACKAGE_LIBOPENSSL_ENABLE_RC4
+	bool "enable RC4"
+	default y
+
+config BR2_PACKAGE_LIBOPENSSL_ENABLE_MD2
+	bool "enable MD2"
+	default y
+
+config BR2_PACKAGE_LIBOPENSSL_ENABLE_MD4
+	bool "enable MD4"
+	default y
+
+config BR2_PACKAGE_LIBOPENSSL_ENABLE_MDC2
+	bool "enable MDC2"
+	default y
+	select BR2_PACKAGE_LIBOPENSSL_ENABLE_DES
+
+config BR2_PACKAGE_LIBOPENSSL_ENABLE_BLAKE2
+	bool "enable BLAKE2"
+	default y
+
+config BR2_PACKAGE_LIBOPENSSL_ENABLE_IDEA
+	bool "enable IDEA"
+	default y
+
+config BR2_PACKAGE_LIBOPENSSL_ENABLE_SEED
+	bool "enable SEED"
+	default y
+
+config BR2_PACKAGE_LIBOPENSSL_ENABLE_DES
+	bool "enable DES"
+	default y
+
+config BR2_PACKAGE_LIBOPENSSL_ENABLE_RMD160
+	bool "enable RMD160"
+	default y
+
+config BR2_PACKAGE_LIBOPENSSL_ENABLE_WHIRLPOOL
+	bool "enable WHIRLPOOL"
+	default y
+
+config BR2_PACKAGE_LIBOPENSSL_ENABLE_BLOWFISH
+	bool "enable BLOWFISH"
+	default y
+
+config BR2_PACKAGE_LIBOPENSSL_ENABLE_SSL
+	bool "enable SSL"
+	default y
+
+config BR2_PACKAGE_LIBOPENSSL_ENABLE_SSL3
+	bool "enable SSL3"
+	default y
+
+config BR2_PACKAGE_LIBOPENSSL_ENABLE_WEAK_SSL
+	bool "enable WEAK_SSL"
+	default y
+
+config BR2_PACKAGE_LIBOPENSSL_ENABLE_PSK
+	bool "enable mode PSK"
+	default y
+
+config BR2_PACKAGE_LIBOPENSSL_ENABLE_CAST
+	bool "enable mode CAST"
+	default y
+
+config BR2_PACKAGE_LIBOPENSSL_UNSECURE
+	bool "enable unit test, debug, backtrace"
+	default y
+	help
+	  Enable unit-test crypto-mdebug-backtrace
+	  crypto-mdebug autoerrinit mode.
+
+config BR2_PACKAGE_LIBOPENSSL_DYNAMIC_ENGINE
+	bool "enable dynamic engine"
+	default y
+
+config BR2_PACKAGE_LIBOPENSSL_ENABLE_COMP
+	bool "enable compression"
+	default y
+
+config BR2_PACKAGE_LIBOPENSSL_ENABLE_ARGON2
+	bool "enable ARGON2"
+	default y
+
+config BR2_PACKAGE_LIBOPENSSL_ENABLE_CACHED_FETCH
+	bool "enable cached fetch"
+	default y
+	help
+	  Cache algorithms when they are fetched from a provider.
+	  Normally, a provider indicates if the algorithms it supplies
+	  can be cached or not. Using this option will reduce run-time
+	  memory usage but it also introduces a significant performance
+	  penalty. This option is primarily designed to help with
+	  detecting incorrect reference counting.
+
+config BR2_PACKAGE_LIBOPENSSL_ENABLE_CMP
+	bool "enable CMP"
+	default y
+	help
+	  Build support for Certificate Management Protocol (CMP) and
+	  Certificate Request Message Format (CRMF).
+
+config BR2_PACKAGE_LIBOPENSSL_ENABLE_THREAD_POOL
+	bool "enable thread pool"
+	default y
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  Build with thread pool functionality. If enabled, OpenSSL
+	  algorithms may use the thread pool to perform parallel
+	  computation. This option in itself does not enable OpenSSL
+	  to spawn new threads. Currently the only supported thread
+	  pool mechanism is the default thread pool.
+
+config BR2_PACKAGE_LIBOPENSSL_ENABLE_ECX
+	bool "enable ECX"
+	default y
+	help
+	  Build with ECX support. Disabling this option can be used
+	  to disable support for X25519, X448, and EdDSA.
+
+config BR2_PACKAGE_LIBOPENSSL_ENABLE_LOADER_ENGINE
+	bool "enable 'loader_attic' engine"
+	default y
+	depends on BR2_PACKAGE_LIBOPENSSL_DYNAMIC_ENGINE
+	help
+	  Build with 'loader_attic' engine support, which is meant
+	  just for internal OpenSSL testing purposes and supports
+	  loading keys, parameters, certificates, and CRLs from files.
+	  When this engine is used, files with such credentials are
+	  read via this engine.
+
+config BR2_PACKAGE_LIBOPENSSL_ENABLE_PADLOCK_ENGINE
+	bool "enable padlock engine"
+	default y
+	help
+	  Build the padlock engine.
+
+config BR2_PACKAGE_LIBOPENSSL_ENABLE_MODULE
+	bool "enable modules"
+	default y
+	help
+	  Build modules.
+
+config BR2_PACKAGE_LIBOPENSSL_ENABLE_QUIC
+	bool "enable QUIC"
+	default y
+	help
+	  Build with QUIC support.
+
+config BR2_PACKAGE_LIBOPENSSL_SECURE_MEMORY
+	bool "enable secure memory"
+	default y
+	help
+	  Build with secure memory support.
+
+config BR2_PACKAGE_LIBOPENSSL_ENABLE_SIV
+	bool "enable SIV"
+	default y
+	help
+	  Build with RFC5297 AES-SIV support.
+
+config BR2_PACKAGE_LIBOPENSSL_ENABLE_SM2_PRECOMP_TABLE
+	bool "enable SM2 precomputed table"
+	default y
+	depends on BR2_aarch64
+	help
+	  Enable using the SM2 precomputed table. Disabling this option
+	  makes the library smaller.
+
+config BR2_PACKAGE_LIBOPENSSL_ENABLE_SSL_TRACE
+	bool "enable SSL trace"
+	default y
+	help
+	  Build with SSL Trace support. Disabling this option may
+	  provide a small reduction in libssl binary size.
+
+endif # BR2_PACKAGE_LIBOPENSSL

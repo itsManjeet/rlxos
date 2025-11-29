@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/tcolorpy/json
+md5  6232d098c4531507e2aa04fe34fb8cd3  tcolorpy-0.1.7.tar.gz
+sha256  0fbf6bf238890bbc2e32662aa25736769a29bf6d880328f310c910a327632614  tcolorpy-0.1.7.tar.gz
+# Locally computed sha256 checksums
+sha256  a26e357cfe6ba55f8d8e1e9d82c928ee7ed3c1ecd351b29455ca7a3f5d5a664d  LICENSE

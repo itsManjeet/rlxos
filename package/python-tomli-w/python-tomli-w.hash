@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/tomli-w/json
+md5  bfc49ccce117afc20bcaf50e80fcecfe  tomli_w-1.2.0.tar.gz
+sha256  2dd14fac5a47c27be9cd4c976af5a12d87fb1f0b4512f81d69cce3b35ae25021  tomli_w-1.2.0.tar.gz
+# Locally computed sha256 checksums
+sha256  b80816b0d530b8accb4c2211783790984a6e3b61922c2b5ee92f3372ab2742fe  LICENSE

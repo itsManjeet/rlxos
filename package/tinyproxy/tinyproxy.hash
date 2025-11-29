@@ -1,0 +1,4 @@
+# From https://github.com/tinyproxy/tinyproxy/releases/tag/1.11.2
+sha512  008e43b770f946965d5a3fbad1881859e30b66a3a4a97cf9982e63d81139da7a8f23937601b72f32276166cd170008cafec9231b616fc840f05cae3c1329be35  tinyproxy-1.11.2.tar.xz
+# locally computed
+sha256  ab15fd526bd8dd18a9e77ebc139656bf4d33e97fc7238cd11bf60e2b9b8666c6  COPYING

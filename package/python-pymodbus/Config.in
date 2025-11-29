@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PYTHON_PYMODBUS
+	bool "python-pymodbus"
+	help
+	  A fully featured modbus protocol stack in python.
+
+	  https://github.com/pymodbus-dev/pymodbus/

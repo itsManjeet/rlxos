@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/spake2/json
+md5  612dc68fb0e8844de550cfba7ea61060  spake2-0.9.tar.gz
+sha256  421fc4a8d5ac395af7af0206ffd9e6cdf188c105cb1b883d9d683312bb5a9334  spake2-0.9.tar.gz
+# Locally computed sha256 checksums
+sha256  2a8a1200c3a2769d1815727f3b4439bd800f3bc88163118a36ff30b007d30031  LICENSE

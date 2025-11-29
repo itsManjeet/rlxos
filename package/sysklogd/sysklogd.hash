@@ -1,0 +1,4 @@
+# Upstream .sha256 from https://github.com/troglobit/sysklogd/releases/tag/v2.7.2
+sha256  bc410ca64551a11fac6518b418fb6b8afbd888a70af2c5eb353334a706727bca  sysklogd-2.7.2.tar.gz
+# Locally calculated
+sha256  7a71d7603a7c4456df441463e54da35acf151c1be0879246de63544f1f34f477  LICENSE

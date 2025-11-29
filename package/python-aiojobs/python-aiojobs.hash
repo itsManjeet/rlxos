@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/aiojobs/json
+md5  62057a870d80ed0d9ebe951ba3457cff  aiojobs-1.4.0.tar.gz
+sha256  463665c75d1fcc46c78d44375c1034abf5e3f087894b0fc5ec4dd16ef90fdc98  aiojobs-1.4.0.tar.gz
+# Locally computed sha256 checksums
+sha256  1803dc89455114eefad3b827543343edc2452432fdac29b5edc66c8b66d4cbf3  LICENSE

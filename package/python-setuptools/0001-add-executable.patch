@@ -1,0 +1,73 @@
+From 6fe6747c7d7509cc1af9667e1dae610657e5ccdf Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=B6rg=20Krause?= <joerg.krause@embedded.rocks>
+Date: Mon, 7 Dec 2015 01:14:33 +0100
+Subject: [PATCH] add executable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Add a new --executable option to distribute so that we can
+force the shebang line in installed python scripts.
+
+[Thomas: refresh for setuptools 5.8.]
+[Jörg: refresh for setuptools 18.7.1]
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+---
+ setuptools/command/install.py         | 2 ++
+ setuptools/command/install_scripts.py | 9 +++++++++
+ 2 files changed, 11 insertions(+)
+
+diff --git a/setuptools/command/install.py b/setuptools/command/install.py
+index 19ca60145..c4bb536b9 100644
+--- a/setuptools/command/install.py
++++ b/setuptools/command/install.py
+@@ -35,6 +35,7 @@ class install(orig.install):
+     distribution: Distribution  # override distutils.dist.Distribution with setuptools.dist.Distribution
+ 
+     user_options = orig.install.user_options + [
++        ('executable=', 'e', "specify final destination interpreter path"),
+         ('old-and-unmanageable', None, "Try not to use this!"),
+         (
+             'single-version-externally-managed',
+@@ -67,6 +68,7 @@ class install(orig.install):
+         )
+ 
+         super().initialize_options()
++        self.executable = None
+         self.old_and_unmanageable = None
+         self.single_version_externally_managed = None
+ 
+diff --git a/setuptools/command/install_scripts.py b/setuptools/command/install_scripts.py
+index 537181e32..6893e6a8c 100644
+--- a/setuptools/command/install_scripts.py
++++ b/setuptools/command/install_scripts.py
+@@ -18,6 +18,13 @@ class install_scripts(orig.install_scripts):
+     def initialize_options(self) -> None:
+         orig.install_scripts.initialize_options(self)
+         self.no_ep = False
++        self.executable = None
++
++    def finalize_options(self):
++        orig.install_scripts.finalize_options(self)
++        self.set_undefined_options('install',
++                ('executable','executable')
++        )
+ 
+     def run(self) -> None:
+         self.run_command("egg_info")
+@@ -39,6 +46,8 @@ class install_scripts(orig.install_scripts):
+         dist = metadata.Distribution.at(path=ei_cmd.egg_info)
+         bs_cmd = self.get_finalized_command('build_scripts')
+         exec_param = getattr(bs_cmd, 'executable', None)
++        if self.executable is not None:
++            exec_param = self.executable
+         writer = _scripts.ScriptWriter
+         if exec_param == sys.executable:
+             # In case the path to the Python executable contains a space, wrap
+-- 
+2.34.1
+

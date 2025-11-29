@@ -1,0 +1,32 @@
+config BR2_PACKAGE_PROJ
+	bool "proj"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 # C++11
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	depends on BR2_USE_WCHAR
+	select BR2_PACKAGE_SQLITE
+	help
+	  proj.4 is a standard UNIX filter function which converts
+	  geographic longitude and latitude coordinates into cartesian
+	  coordinates (and vice versa), and it is a C API for software
+	  developers to include coordinate transformation in their own
+	  software.
+
+	  http://proj4.org/
+
+if BR2_PACKAGE_PROJ
+
+config BR2_PACKAGE_PROJ_APPS
+	bool "build apps"
+	select BR2_PACKAGE_LIBCURL
+	help
+	  Build and install proj command line apps. Those command line
+	  applications are: cct, cs2cs, geod, gie, invgeod, invproj,
+	  proj, projinfo, projsync.
+
+endif
+
+comment "proj needs a toolchain w/ C++, gcc >= 4.7, NPTL, wchar"
+	depends on !BR2_INSTALL_LIBSTDCPP || \
+		!BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 || \
+		!BR2_TOOLCHAIN_HAS_THREADS_NPTL || !BR2_USE_WCHAR

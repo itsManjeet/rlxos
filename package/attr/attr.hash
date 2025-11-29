@@ -1,0 +1,6 @@
+# Locally calculated after checking pgp signature
+sha256  f2e97b0ab7ce293681ab701915766190d607a1dba7fae8a718138150b700a70b  attr-2.5.2.tar.xz
+
+# Locally calculated
+sha256  98f318493be6b08bff3cd295791cde06c54e17882a3c74a1ed245eaa02533d52  doc/COPYING
+sha256  5decad7e58d90d44335bf2f45ce27563bd911065c6a1a02dfa7647c4efee75c8  doc/COPYING.LGPL

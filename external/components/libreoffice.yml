@@ -29,7 +29,7 @@ pre-script: |-
 
   ./configure --prefix=%{prefix}  \
       --sysconfdir=%{sysconfdir}  \
-      --with-vendor=RLXOS         \
+      --with-vendor=AVYOS         \
       --with-myspell-dicts        \
       --with-lang=ALL             \
       --without-junit             \

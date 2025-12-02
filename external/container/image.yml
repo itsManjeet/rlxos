@@ -1,6 +1,6 @@
-id: rlxos-container-devel
+id: avyos-container-devel
 merge: [version.yml, external/include/container.inc]
-about: rlxos container developers image
+about: avyos container developers image
 
 capabilities:
   - CAP_SYS_CHROOT
